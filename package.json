@@ -1,0 +1,30 @@
+{
+  "name": "quantum-dom",
+  "version": "0.1.0",
+  "description": "A virtual dom builder",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha",
+    "coverage": "./node_modules/mocha/bin/mocha -R html-file-cov"
+  },
+  "author": "james.smyth@ocado.com",
+  "license": "MIT",
+  "devDependencies": {
+    "blanket": "^1.1.7",
+    "chai": "^2.3.0",
+    "html-file-cov": "^1.0.0",
+    "mocha": "^2.2.5"
+  },
+  "config": {
+    "blanket": {
+      "data-cover-never": "node_modules",
+      "pattern": "index.js"
+    }
+  },
+  "dependencies": {
+    "bluebird": "^2.9.30"
+  }
+}
