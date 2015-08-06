@@ -1,0 +1,3 @@
+@inlinedContent
+  @button: Hello 2
+  @inline source3.um

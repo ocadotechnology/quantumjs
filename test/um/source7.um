@@ -1,0 +1,5 @@
+@test
+  @button: Hello World
+  @inline source8.txt [parse]
+  @inline source8.um [text]
+  @button: Hello World 2
