@@ -15,6 +15,7 @@
   "devDependencies": {
     "blanket": "^1.1.7",
     "chai": "^2.3.0",
+    "fs-extra": "^0.23.0",
     "html-file-cov": "^1.0.0",
     "mocha": "^2.2.5"
   },
