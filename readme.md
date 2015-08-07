@@ -20,7 +20,8 @@ This module contains the parser, the selection api and an api for constructing a
 
 ### quantum.read(glob: Array[String]/String, [options])
 
-Args
+  Args
+
     glob: This can either be an array of glob strings or a glob string. This selects the files to process
     options: {
       inline: true,      // whether or not to follow inline links
