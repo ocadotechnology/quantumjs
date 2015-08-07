@@ -296,15 +296,61 @@ describe('parse', function() {
       ])
     })
 
-    // it('should have correct indentation when multiple entites on the same line are followed by another line', function() {
-    //   tokenize("@one: @two\n@three").should.eql([
-    //     {type: "TYPE", value: 'one'},
-    //     { type: "START_SAME_LINE_CONTENT" },
-    //     {type: "TYPE", value: 'two'},
-    //     { type: "END_SAME_LINE_CONTENT" },
-    //     {type: "TYPE", value: 'three'}
-    //   ])
-    // })
+    it('two inline, then indented newline', function() {
+      tokenize("@one: @two\n  @three").should.eql([
+        {type: "TYPE", value: 'one'},
+        { type: "START_SAME_LINE_CONTENT" },
+        {type: "TYPE", value: 'two'},
+        { type: "END_SAME_LINE_CONTENT" },
+        { type: "INDENT", value: 2 },
+        {type: "TYPE", value: 'three'}
+      ])
+    })
+
+    it('three inline, then newline', function() {
+      tokenize("@one: @two: @three\n@four").should.eql([
+        {type: "TYPE", value: 'one'},
+        { type: "START_SAME_LINE_CONTENT" },
+        {type: "TYPE", value: 'two'},
+        { type: "START_SAME_LINE_CONTENT" },
+        {type: "TYPE", value: 'three'},
+        { type: "END_SAME_LINE_CONTENT" },
+        {type: "TYPE", value: 'four'}
+      ])
+    })
+
+    it('three inline, then params, then newline', function() {
+      tokenize("@one: @two: @three params!\n@four").should.eql([
+        {type: "TYPE", value: 'one'},
+        { type: "START_SAME_LINE_CONTENT" },
+        {type: "TYPE", value: 'two'},
+        { type: "START_SAME_LINE_CONTENT" },
+        {type: "TYPE", value: 'three'},
+        {type: "PARAMS", value: 'params!'},
+        { type: "END_SAME_LINE_CONTENT" },
+        {type: "TYPE", value: 'four'}
+      ])
+    })
+
+    it('two entites not indented', function() {
+      tokenize("@one\n@two").should.eql([
+        {type: "TYPE", value: 'one'},
+        {type: "TYPE", value: 'two'}
+      ])
+    })
+
+    it('two entites not indented with colon', function() {
+      tokenize("@one:\n@two").should.eql([
+        {type: "TYPE", value: 'one'},
+        { type: "START_SAME_LINE_CONTENT" },
+        { type: "END_SAME_LINE_CONTENT" },
+        {type: "TYPE", value: 'two'}
+      ])
+    })
+
+
+
+
   })
 
 
@@ -558,7 +604,86 @@ describe('parse', function() {
       ]))
     })
 
+
+    it('three inline, then newline entity', function() {
+      tokens = [
+        { type: "TYPE", value: 'one' },
+        { type: "START_SAME_LINE_CONTENT" },
+        { type: "TYPE", value: 'two' },
+        { type: "START_SAME_LINE_CONTENT" },
+        { type: "TYPE", value: 'three' },
+        { type: "END_SAME_LINE_CONTENT" },
+        { type: "TYPE", value: 'four' }
+      ]
+
+      ast(tokens).should.eql(selection([
+        {
+          type: 'one',
+          params: [],
+          content: [
+            {
+              type: 'two',
+              params: [],
+              content: [
+                {
+                  type: 'three',
+                  params: [],
+                  content: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'four',
+          params: [],
+          content: []
+        }
+      ]))
+    })
+
+    it('three inline, then parameter then newline entity', function() {
+      tokens = [
+        { type: "TYPE", value: 'one' },
+        { type: "START_SAME_LINE_CONTENT" },
+        { type: "TYPE", value: 'two' },
+        { type: "START_SAME_LINE_CONTENT" },
+        { type: "TYPE", value: 'three' },
+        { type: "PARAMS", value: 'params!' },
+        { type: "END_SAME_LINE_CONTENT" },
+        { type: "TYPE", value: 'four' }
+      ]
+
+      ast(tokens).should.eql(selection([
+        {
+          type: 'one',
+          params: [],
+          content: [
+            {
+              type: 'two',
+              params: [],
+              content: [
+                {
+                  type: 'three',
+                  params: ['params!'],
+                  content: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'four',
+          params: [],
+          content: []
+        }
+      ]))
+    })
+
+
   })
+
+
 
 
 
@@ -841,7 +966,7 @@ describe('parse', function() {
       chai.expect(parse(source)).to.eql(expected);
     });
 
-    it('should parse multple entities that start on the same line', function() {
+    it('should parse multiple entities that start on the same line', function() {
       var expected, source;
       source = "@button: @tag: content";
       expected = selection([
@@ -860,7 +985,7 @@ describe('parse', function() {
       chai.expect(parse(source)).to.eql(expected);
     });
 
-    it('should parse multple entities that start on the same line, then continue parsing content on the next line', function() {
+    it('should parse multiple entities that start on the same line, then continue parsing content on the next line', function() {
       var expected, source;
       source = "@button: @tag: content\n  @tag2: content2";
       expected = selection([
@@ -1216,6 +1341,33 @@ describe('parse', function() {
       chai.expect(parse(source)).to.eql(expected);
     })
 
+    it('should have correct indentation when multiple entites on the same line are followed by another line', function() {
+      var source = "@one: @two\n@three";
+      var expected = {
+        content: [
+          {
+            type: 'one',
+            params: [],
+            content: [
+              {
+                type: 'two',
+                params: [],
+                content: []
+              }
+            ]
+          },
+          {
+            type: 'three',
+            params: [],
+            content: []
+          }
+        ]
+      }
+
+      chai.expect(parse(source)).to.eql(expected);
+    })
+
   });
+
 
 })
