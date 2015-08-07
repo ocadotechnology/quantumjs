@@ -141,13 +141,11 @@ function randomId() {
 }
 
 transforms.js = function(entity, page, transforms) {
-  //page.scripts[entity.ps() || randomId()] = entity.cs()
   page.head.add(page.create('script').text(entity.cs()))
 }
 
 transforms.css = function(entity, page, transforms) {
   page.body.add(page.create('style').text(entity.cs()), true)
-  //page.styles[entity.ps() || randomId()] = entity.cs()
 }
 
 // runs the content string of the entity through highlight.js and returns the result
