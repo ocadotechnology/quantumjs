@@ -11,7 +11,7 @@
   ====
 
   This module provides an api for building up a virtual representation
-  of the dom, which can then be rendered out to a html string.
+  of the dom, which can then be stringifyed out to a html string.
 
 */
 
@@ -34,6 +34,7 @@ function Element(page, type, uid) {
   this.type = type
   this.attrs = {}
   this.content = []
+  this.endContent = []
 };
 
 // sets the unique id (if you need to refer to the element in the future)
@@ -77,7 +78,7 @@ Element.prototype['class'] = function(cls) {
 };
 
 // adds an element to this element, and returns this element
-Element.prototype.add = function(element) {
+Element.prototype.add = function(element, addToEnd) {
   if (element.then){
     var self = this
     return element.then(function(el){
@@ -89,16 +90,24 @@ Element.prototype.add = function(element) {
   if (Array.isArray(element)) {
     var self = this
     element.forEach(function(el) {
-      self.content.push(el)
+      if(addToEnd) {
+        self.endContent.push(el)
+      } else {
+        self.content.push(el)
+      }
     })
   } else {
-    this.content.push(element)
+    if(addToEnd) {
+      this.endContent.push(element)
+    } else {
+      this.content.push(element)
+    }
   }
   return this
 };
 
 // adds an element to this element and returns the added element
-Element.prototype.append = function(element) {
+Element.prototype.append = function(element, addToEnd) {
   if (element.then){
     var self = this
     return element.then(function(el){
@@ -110,10 +119,18 @@ Element.prototype.append = function(element) {
   if (Array.isArray(element)) {
     var self = this
     element.forEach(function(el) {
-      self.content.push(el)
+      if(addToEnd) {
+        self.endContent.push(el)
+      } else {
+        self.content.push(el)
+      }
     })
   } else {
-    this.content.push(element)
+    if(addToEnd) {
+      this.endContent.push(element)
+    } else {
+      this.content.push(element)
+    }
   }
   return element
 };
@@ -144,7 +161,7 @@ Element.prototype.remove = function() {
 };
 
 // turns the element into an html string
-Element.prototype.render = function() {
+Element.prototype.stringify = function() {
   var self = this
 
   var attributes = Object.keys(this.attrs).map(function(k) {
@@ -156,10 +173,14 @@ Element.prototype.render = function() {
   }
 
   var content = this.content.map(function(d){
-    return d.render ? d.render() : d
+    return d.stringify ? d.stringify() : d
   }).join('')
 
-  return '<' + this.type + attributes + '>' + content + '</' + this.type + '>'
+  var endContent = this.endContent.map(function(d){
+    return d.stringify ? d.stringify() : d
+  }).join('')
+
+  return '<' + this.type + attributes + '>' + content + endContent + '</' + this.type + '>'
 };
 
 function TextElement (page, text, uid) {
@@ -170,7 +191,7 @@ function TextElement (page, text, uid) {
 }
 
 // turns the element into an html string
-TextElement.prototype.render = function() {
+TextElement.prototype.stringify = function() {
   return this.text
 };
 
@@ -180,7 +201,6 @@ function Page() {
   this.html = this.create('html')
   this.head = this.html.append(this.create('head'))
   this.body = this.html.append(this.create('body'))
-  this.bodyEnd = this.create('<--script-holder-->')
   this.styles = {}
   this.scripts = {}
 };
@@ -225,21 +245,8 @@ Page.prototype.remove = function(element) {
   return this
 };
 
-Page.prototype.render = function() {
-  var self = this
-
-  Object.keys(this.styles).forEach(function(k) {
-    self.head.append(self.create('style').text(self.styles[k]))
-  })
-
-  Object.keys(this.scripts).forEach(function(k) {
-    self.body.append(self.create('script').text(self.scripts[k]))
-  })
-
-  this.bodyEnd.content.forEach(function(item) {
-    self.body.append(item)
-  })
-  return '<!DOCTYPE html>\n' + this.html.render()
+Page.prototype.stringify = function() {
+  return '<!DOCTYPE html>\n' + this.html.stringify()
 }
 
 // loads the file specified
@@ -255,9 +262,10 @@ Page.prototype.addAssets = function(obj) {
   if (obj.js) {
     Object.keys(obj.js).forEach(function(k){
       if (!page.scripts[k]) {
+        page.scripts[k] = true
         promises.push(loadAsset(obj.js[k])
           .then(function(p){
-            page.scripts[k] = p
+            page.scripts[k] = page.body.append(page.create('script').text(p), true)
           }))
       }
     })
@@ -266,9 +274,10 @@ Page.prototype.addAssets = function(obj) {
   if (obj.css) {
     Object.keys(obj.css).forEach(function(k){
       if (!page.styles[k]) {
+        page.styles[k] = true
         promises.push(loadAsset(obj.css[k])
           .then(function(p){
-            page.styles[k] = p
+            page.styles[k] = page.head.append(page.create('style').text(p), true)
           }))
       }
     })
@@ -303,5 +312,4 @@ Page.prototype.addCommonMetaTags = function() {
 module.exports = function() {
   return new Page()
 };
-
 

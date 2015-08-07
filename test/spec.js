@@ -41,29 +41,29 @@ describe('Element', function() {
     p.create('div').class('onion').class().should.equal('onion')
   })
 
-  it('should render correctly', function() {
+  it('should stringify correctly', function() {
     var p = page()
-    p.create('div').render().should.equal('<div></div>')
+    p.create('div').stringify().should.equal('<div></div>')
   })
 
-  it('should render correctly with an attribute set', function() {
+  it('should stringify correctly with an attribute set', function() {
     var p = page()
-    p.create('div').attr('test', 'thing').render().should.equal('<div test="thing"></div>')
+    p.create('div').attr('test', 'thing').stringify().should.equal('<div test="thing"></div>')
   })
 
-  it('should render correctly with multiple attributes set', function() {
+  it('should stringify correctly with multiple attributes set', function() {
     var p = page()
     p.create('div')
       .attr('test', 'thing')
       .attr('test2', 'thing2')
-      .render().should.equal('<div test="thing" test2="thing2"></div>')
+      .stringify().should.equal('<div test="thing" test2="thing2"></div>')
   })
 
-  it('should render content correctly', function() {
+  it('should stringify content correctly', function() {
     var p = page()
     p.create('div').id('outer')
       .add(p.create('div').id('inner'))
-      .render().should.equal('<div id="outer"><div id="inner"></div></div>')
+      .stringify().should.equal('<div id="outer"><div id="inner"></div></div>')
   })
 
   it('should add arrays of content correctly', function() {
@@ -73,7 +73,7 @@ describe('Element', function() {
         p.create('div').id('inner-1'),
         p.create('div').id('inner-2')
       ])
-      .render().should.equal('<div id="outer"><div id="inner-1"></div><div id="inner-2"></div></div>')
+      .stringify().should.equal('<div id="outer"><div id="inner-1"></div><div id="inner-2"></div></div>')
   })
 
   it('should append arrays of content correctly', function() {
@@ -85,15 +85,15 @@ describe('Element', function() {
     var div = p.create('div').id('outer')
     var res = div.append(elements)
     res.should.equal(elements)
-    div.render().should.equal('<div id="outer"><div id="inner-1"></div><div id="inner-2"></div></div>')
+    div.stringify().should.equal('<div id="outer"><div id="inner-1"></div><div id="inner-2"></div></div>')
   })
 
-  it('should render text content correctly', function() {
+  it('should stringify text content correctly', function() {
     var p = page()
     p.create('div').id('outer')
       .text('cabbage')
       .add(p.create('div').id('inner'))
-      .render().should.equal('<div id="outer">cabbage<div id="inner"></div></div>')
+      .stringify().should.equal('<div id="outer">cabbage<div id="inner"></div></div>')
   })
 
   it('should remove an element from a parent correctly', function() {
@@ -128,16 +128,16 @@ describe('Element', function() {
 
 describe('TextElement', function() {
 
-  it('should render correctly', function() {
+  it('should stringify correctly', function() {
     var p = page()
     el = p.textNode('pineapple')
-    el.render().should.equal('pineapple')
+    el.stringify().should.equal('pineapple')
   })
 
-  it('should render in an Element correctly', function() {
+  it('should stringify in an Element correctly', function() {
     var p = page()
     el = p.create('div').add(p.textNode('pineapple'))
-    el.render().should.equal('<div>pineapple</div>')
+    el.stringify().should.equal('<div>pineapple</div>')
   })
 
 })
@@ -188,23 +188,23 @@ describe('Page', function() {
     el1.text.should.equal('pineapple')
   })
 
-  it('should render as expected with a script', function() {
+  it('should stringify as expected with a script', function() {
     var p = page()
-    p.bodyEnd.add(p.script('test.js'))
+    p.body.add(p.script('test.js'), true)
     p.body.add(p.create('div').text('pineapple'))
-    p.render().should.equal('<!DOCTYPE html>\n<html><head></head><body><div>pineapple</div><script src="test.js"></script></body></html>')
+    p.stringify().should.equal('<!DOCTYPE html>\n<html><head></head><body><div>pineapple</div><script src="test.js"></script></body></html>')
   })
 
-  it('should render as expected with a stylesheet', function() {
+  it('should stringify as expected with a stylesheet', function() {
     var p = page()
     p.head.add(p.stylesheet('test.css'))
     p.body.add(p.create('div').text('pineapple'))
-    p.render().should.equal('<!DOCTYPE html>\n<html><head><link rel="stylesheet" type="text/css" href="test.css"></link></head><body><div>pineapple</div></body></html>')
+    p.stringify().should.equal('<!DOCTYPE html>\n<html><head><link rel="stylesheet" type="text/css" href="test.css"></link></head><body><div>pineapple</div></body></html>')
   })
 
-  it('should render as expected with a stylesheet', function() {
+  it('should stringify as expected with a stylesheet', function() {
     var p = page().addCommonMetaTags()
-    p.render().should.equal('<!DOCTYPE html>\n<html><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta></head><body></body></html>')
+    p.stringify().should.equal('<!DOCTYPE html>\n<html><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta></head><body></body></html>')
   })
 
 
