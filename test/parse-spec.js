@@ -680,6 +680,40 @@ describe('parse', function() {
       ]))
     })
 
+    it('should handle empty lines correctly', function(){
+
+      var tokens = [
+        { type: "TYPE", value: 'fruits'},
+        { type: "PARAMS", value: 'ripe'},
+        { type: "EMPTY_CONTENT", value: ''},
+        { type: "INDENT", value: 2},
+        { type: "TYPE", value: 'banana'},
+        { type: "EMPTY_CONTENT", value: '  '},
+        { type: "TYPE", value: 'lychee'}
+      ]
+
+      ast(tokens).should.eql(selection([
+        {
+          type: 'fruits',
+          params: ['ripe'],
+          content: [
+            '',
+            {
+              type: 'banana',
+              params: [],
+              content: []
+            },
+            '  ',
+            {
+              type: 'lychee',
+              params: [],
+              content: []
+            }
+          ]
+        }
+      ]))
+    })
+
 
   })
 

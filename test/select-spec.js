@@ -169,4 +169,26 @@ describe('select', function() {
       })
   });
 
+  it('should include empty lines when for cs', function() {
+    select({
+      type: 'fruits',
+      params: ['ripe'],
+      content: [
+        '',
+        {
+          type: 'banana',
+          params: [],
+          content: []
+        },
+        '  ',
+        {
+          type: 'lychee',
+          params: [],
+          content: []
+        },
+        'strawberry'
+      ]
+    }).cs().should.equal('\n  \nstrawberry')
+  })
+
 });
