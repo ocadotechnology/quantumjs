@@ -1,7 +1,7 @@
 {
-  "name": "quantum-dom",
+  "name": "quantum-template",
   "version": "0.1.0",
-  "description": "A virtual dom",
+  "description": "Basic templating (ast -> ast) transform for quantum.js",
   "main": "index.js",
   "directories": {
     "test": "test"
