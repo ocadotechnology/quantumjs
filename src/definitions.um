@@ -1,0 +1,50 @@
+# font and stylesheet includes
+@define quantum-styles
+  @stylesheet(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600)
+  @stylesheet(http://fonts.googleapis.com/css?family=Ubuntu+Mono|Cousine:400,700)
+  @stylesheet quantum.css
+  @css: @inline quantum.css
+
+# the titlebar template
+@define quantum-titlebar
+  @div .qm-header
+    @div .qm-header-section
+      @span .qm-header-icon:
+        @img: @attr src: /quantum.svg
+      @span .qm-header-title: QUANTUM.JS
+      @span .qm-header-nav
+        @hyperlink #: Overview
+        @hyperlink #getting-started: Getting Started
+        @hyperlink #markup: Markup
+        @hyperlink #gulp-grunt: Gulp/Grunt
+        @hyperlink #api: Api
+
+
+## utility templates
+
+# list of modules and descriptions
+@define module-list
+  @table
+    @define.foreach @module as module
+      @tr
+        @td: @b[{{module.ps}}]
+        @td: {{module.content}}
+
+
+# @define name
+#   static content
+
+# @define name
+#   @define.with @type as $alias
+#   @define.with @type2 as $alias2
+#   @define.content
+#     template goes here
+
+#     @define.foreach @type as $alias3
+#       $alias3
+#       $alias3.ps
+#       $alias3.cs
+#       $alias3.params
+#       $alias3.content
+#       $alias3.paramas[3]
+#       $alias3.content[3]

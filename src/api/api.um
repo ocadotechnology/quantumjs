@@ -1,0 +1,49 @@
+@define element-renderer
+  @entity {{ps}}
+    @params
+    @description: Adds a {{ps}} element
+    @entity id
+      @description: Sets the id attribute property to a value
+      @params: value
+    @entity class
+      @description: Sets the class attribute property to a value
+      @params: value
+    @entity attr
+      @description: Sets an attribute property to a value
+      @params name: value
+
+@h2: Transforms
+
+@h3: quantum-template
+@p: TODO: mostly done. finish off + document
+
+@h3: quantum-version
+@p: TODO: port over + document
+
+@h3: quantum-html
+@p: TODO: docs
+
+@h3: quantum-replace
+@p: TODO: consider making this (but leave on the backlog for now) - a module for replacing entities with other entites. (ast -> ast transform)
+
+@h2: HTML entity renderers
+
+@h3: quantum-html
+
+@inline html.um
+
+@h3: quantum-html-hexagon
+
+TODO: hexagon components renderers
+
+@h3: quantum-html-docs
+
+@p: TODO: decide where these should go? probably not enough to warrent a module anymore, since it is just the @(@example) renderer. that particular renderer is quite specific to the hexagon site, so could just go into hexagon-core (and not be part of any of the standard quantum libraries?)
+
+@h3: quantum-html-api
+
+TODO
+
+@h3: quantum-html-changelog
+
+TODO

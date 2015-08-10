@@ -1,0 +1,21 @@
+{
+  "name": "quantum-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "james.smyth@ocado.com",
+  "license": "MIT",
+  "devDependencies": {
+    "bluebird": "^2.9.27",
+    "browser-sync": "^2.7.6",
+    "dagre": "^0.7.2",
+    "gulp": "^3.9.0",
+    "highlight.js": "^8.7.0",
+    "quantum": "^0.1.0",
+    "quantum-html": "^0.1.0",
+    "quantum-template": "^0.1.0"
+  }
+}
