@@ -45,7 +45,7 @@ describe('select', function() {
 
   it('should be able to select items by tag with required equal to true (and no error should be thrown)', function() {
     var value;
-    value = select(parse(source2)).select('tag', true);
+    value = select(parse(source2)).select('tag', {required: true});
     return value.should.eql(select({
       type: 'tag',
       params: [],
@@ -84,7 +84,7 @@ describe('select', function() {
   it('should throw error when selected required tag that does not exist', function() {
     var s;
     s = select(parse(source2));
-    chai.expect(function() { s.select('button', true)}).to.throw()
+    chai.expect(function() { s.select('button', {required: true})}).to.throw()
   });
 
   it('should correctly retrieve a parameter by position', function() {
