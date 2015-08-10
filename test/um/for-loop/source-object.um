@@ -1,0 +1,2 @@
+@for key value in obj
+  @div: {{key}} {{value}}

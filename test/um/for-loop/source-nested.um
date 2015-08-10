@@ -1,0 +1,5 @@
+@for a in items
+  @for b in items
+    @div
+      @div {{b}}: {{a}}
+      @div {{name}}

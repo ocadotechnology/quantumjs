@@ -1,0 +1,3 @@
+@ifnot public
+  @ifnot friday
+    @div: Hello World

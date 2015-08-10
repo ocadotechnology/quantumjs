@@ -1,0 +1,27 @@
+@div
+  @div one: one
+  @div bob
+@div
+  @div two: one
+  @div bob
+@div
+  @div three: one
+  @div bob
+@div
+  @div one: two
+  @div bob
+@div
+  @div two: two
+  @div bob
+@div
+  @div three: two
+  @div bob
+@div
+  @div one: three
+  @div bob
+@div
+  @div two: three
+  @div bob
+@div
+  @div three: three
+  @div bob

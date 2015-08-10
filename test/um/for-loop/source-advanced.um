@@ -1,0 +1,2 @@
+@for item in items
+  @div: {{item}}
