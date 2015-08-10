@@ -82,8 +82,7 @@ Element.prototype.add = function(element, addToEnd) {
   if (element.then){
     var self = this
     return element.then(function(el){
-      self.add(el)
-      return self
+      return self.add(el)
     })
   }
   element.parent = this
