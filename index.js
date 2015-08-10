@@ -1,6 +1,7 @@
 var dom       = require('quantum-dom')
 var select    = require('quantum').select
-var highlight = require('highlight.js')
+var hljs      = require('highlight.js')
+var umsyntax  = require('./um-syntax.js')
 var unique    = require('array-unique')
 
 var types = [
@@ -8,7 +9,6 @@ var types = [
   'b',
   'br',
   'button',
-  'code',
   'div',
   'form',
   'h1',
@@ -28,7 +28,6 @@ var types = [
   'option',
   'p',
   'pre',
-  'script',
   'select',
   'span',
   'style',
@@ -141,42 +140,41 @@ function randomId() {
 }
 
 transforms.js = function(entity, page, transforms) {
-  page.head.add(page.create('script').text(entity.cs()))
+  page.body.add(page.create('script').text(entity.cs()))
 }
 
 transforms.css = function(entity, page, transforms) {
-  page.body.add(page.create('style').text(entity.cs()), true)
+  page.head.add(page.create('style').text(entity.cs()), true)
 }
 
-// runs the content string of the entity through highlight.js and returns the result
-function renderCode(page, entity) {
-  var language = entity.params[0]
+hljs.registerLanguage('um', umsyntax)
+
+function highlightCode(language, code){
   if (language) {
-    return page.create('pre').text(highlight.highlight(language, entity.cs()).value)
+    return hljs.highlight(language, code).value
   } else {
-    return page.create('pre').text(highlight.highlightAuto(entity.cs()).value)
+    return hljs.highlightAuto(code).value
   }
 }
 
 transforms.codeblock = function(entity, page, transform) {
-  return page.addAssets({
-    css: {
-      'docs_codestyle.css': __dirname + '/client/codestyle.css',
-      'docs_codeblock.css': __dirname + '/client/codeblock.css'
-    }
-  }).then(function(){
-    return renderCode(page, entity).class('codeblock')
-  })
+  return page.addAssets({css: {
+      'code-highlight.css': __dirname + '/client/code-highlight.css'
+    }}).then(function() {
+
+      return page.create('div').class('codeblock')
+        .add(page.create('pre').text(highlightCode(entity.ps(), entity.cs())))
+    })
 }
 
 transforms.code = function(entity, page, transform) {
-  return page.addAssets({
-    css: {
-      'docs_codestyle.css': __dirname + '/client/codestyle.css'
-    }
-  }).then(function(){
-    return renderCode(page, entity).class('code')
-  })
+  return page.addAssets({css: {
+      'code-highlight.css': __dirname + '/client/code-highlight.css'
+    }}).then(function() {
+      return page.create('code')
+        .class('code')
+        .text(highlightCode(entity.ps(), entity.cs()))
+    })
 }
 
 // flattens out namespaced renderers into a single object
