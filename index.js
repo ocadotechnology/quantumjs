@@ -1,8 +1,9 @@
-var dom       = require('quantum-dom')
-var select    = require('quantum').select
-var hljs      = require('highlight.js')
-var umsyntax  = require('./um-syntax.js')
-var unique    = require('array-unique')
+var dom          = require('quantum-dom')
+var select       = require('quantum').select
+var hljs         = require('highlight.js')
+var umsyntax     = require('./um-syntax.js')
+var unique       = require('array-unique')
+var coffeescript = require('coffee-script')
 
 var types = [
   'a',
@@ -116,7 +117,7 @@ transforms.html = function(entity, page, transform) {
 }
 
 transforms.script = function(entity, page, transform) {
-  page.bodyEnd.add(page.script(entity.ps()))
+  page.body.add(page.script(entity.ps()), true)
 }
 
 transforms.stylesheet = function(entity, page, transform) {
@@ -140,12 +141,21 @@ function randomId() {
 }
 
 transforms.js = function(entity, page, transforms) {
-  page.body.add(page.create('script').text(entity.cs()))
+  page.body.add(page.create('script').text(entity.cs()), true)
+}
+
+transforms.coffee = function(entity, page, transforms) {
+  page.body.add(page.create('script').text(coffeescript.compile(entity.cs())), true)
 }
 
 transforms.css = function(entity, page, transforms) {
   page.head.add(page.create('style').text(entity.cs()), true)
 }
+
+//TODO
+// transforms.scss = function(entity, page, transforms) {
+//   page.head.add(page.create('style').text(entity.cs()), true)
+// }
 
 hljs.registerLanguage('um', umsyntax)
 

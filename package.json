@@ -13,9 +13,10 @@
   "author": "james.smyth@ocado.com",
   "license": "MIT",
   "dependencies": {
+    "coffee-script": "^1.9.3",
     "highlight.js": "^8.6.0",
-    "quantum-dom": "^0.1.0",
-    "quantum": "^0.1.0"
+    "quantum": "^0.1.0",
+    "quantum-dom": "^0.1.0"
   },
   "devDependencies": {
     "array-unique": "^0.2.1",
