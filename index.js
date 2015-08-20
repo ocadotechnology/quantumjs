@@ -3,7 +3,12 @@ var quantum = require('quantum')
 function replacer(variables, str) {
   var res = str
   variables.forEach(function(v) {
-    res = res.replace('{{' + v.key + '}}', v.value)
+    if (typeof(v.value) === 'object') {
+      var val = JSON.stringify(v.value)
+    } else {
+      var val = v.value
+    }
+    res = res.replace('{{' + v.key + '}}', val)
   })
   return res
 }
