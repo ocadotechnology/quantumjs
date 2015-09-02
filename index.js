@@ -104,6 +104,11 @@ types.forEach(function(type) {
   }
 })
 
+transforms.bodyClass = function(entity, page, transform) {
+  page.body.class(page.body.class() + ' ' + entity.ps())
+  return
+}
+
 transforms.head = function(entity, page, transform) {
   return entity.transform(transform)
     .then(function(elements){
