@@ -1,5 +1,5 @@
 {
-  "name": "quantum",
+  "name": "quantum-core",
   "version": "0.1.0",
   "description": "The quantum parser, selection api and construction api",
   "main": "lib/index.js",
