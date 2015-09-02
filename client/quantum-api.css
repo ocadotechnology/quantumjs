@@ -1,0 +1,316 @@
+/* XXX: remove */
+body {
+  background: rgb(240, 241, 243);
+  color: rgb(61, 61, 61);
+}
+
+/* fix in html */
+.codeblock > pre {
+  margin: 0;
+}
+
+.codeblock {
+  background: white;
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+}
+
+/* hexagon config */
+::selection {
+  background: #7CD2EC;
+}
+
+/* start of api css */
+
+.qm-api {
+  padding: 0.5em;
+}
+
+.qm-api-item {
+  padding: 0px;
+  margin: 0.5em;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.qm-api-item > .hx-tree-node > .hx-tree-node-children {
+  margin: 0;
+  padding: 0;
+  padding-left: 2em;
+  margin-top: 1em;
+  padding-bottom: 0.5em;
+}
+
+.qm-api-item > .hx-tree-node > .hx-tree-node-children > .hx-tree-node {
+  margin: 0;
+  padding: 0;
+}
+
+.qm-api-item > .hx-tree-node > .hx-tree-node-children > .hx-tree-node > .hx-tree-node-content {
+  margin: 0;
+  padding: 0;
+}
+
+.qm-api-header {
+  display: flex;
+}
+
+.qm-api-header-details {
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+
+.qm-api-header-tags {
+  flex-shrink: 1;
+  flex-grow: 0;
+}
+
+.qm-api-content {
+  padding: 0.5em;
+}
+
+.qm-api-optional {
+  opacity: 0.5;
+}
+
+.qm-api-optional:before {
+  content: "[";
+}
+
+.qm-api-optional:after {
+  content: "]";
+}
+
+.qm-api-function-name {}
+
+.qm-api-function-param {}
+
+.qm-api-function-params:before {
+  content: "(";
+}
+
+.qm-api-function-params:after {
+  content: ")";
+}
+
+.qm-api-function-param:after {
+  content: ",";
+  margin-right: 4px;
+}
+
+.qm-api-function-param:last-child:after {
+  content: none;
+  margin-right: 0;
+}
+
+.qm-api-function-param-name {}
+
+.qm-api-function-param-type {}
+
+.qm-api-function-returns:before {
+  content: ":";
+  margin-right: 4px;
+}
+
+.qm-api-function-returns:empty:before {
+  content: none;
+  margin-right: 0;
+}
+
+.qm-api-property-type:before {
+  content: ":";
+  margin-right: 4px;
+}
+
+.qm-api-property-type:empty:before {
+  content: none;
+  margin-right: 0;
+}
+
+.qm-api-function-param-type {
+  padding-left: 0.25em;
+}
+
+.qm-api-function-param-type:empty {
+  padding-left: 0;
+}
+
+.qm-api-property-name, .qm-api-function-name, .qm-api-type-name {
+  font-weight: bold;
+}
+
+.qm-api-item > .hx-tree-node {
+  border-left: solid 2px #13A4CE;
+}
+
+.qm-api-type-link:after {
+  content: "/";
+  margin-left: 0.1em;
+  margin-right: 0.1em;
+}
+
+.qm-api-type-link:last-child:after {
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.qm-api-tag {
+  margin-left: 0.25em;
+  font-size: 13px;
+  color: white;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+}
+
+.qm-api-tag.qm-api-tag-added {
+  background: #A0B511;
+}
+
+.qm-api-tag.qm-api-tag-removed {
+  background: #EC3A65;
+}
+
+.qm-api-tag.qm-api-tag-updated {
+  background: #AB7BC1;
+}
+
+.qm-api-tag.qm-api-tag-deprecated {
+  background: #D8942A;
+}
+
+.qm-api-deprecated {
+  opacity: 0.5;
+}
+
+.qm-api-removed {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.qm-api-notice {
+  margin-bottom: 0.5em;
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+}
+
+.qm-api-notice-body {
+  background: white;
+  padding: 1em;
+}
+
+.qm-api-notice-body > h4 {
+  margin: 0;
+}
+
+.qm-api-notice-deprecated-header {
+  background: #D8942A;
+  padding: 0.5em;
+  color: white;
+  margin: 0;
+}
+
+.qm-api-notice-deprecated-body {}
+
+.qm-api-notice-removed-header {
+  background: #EC3A65;
+  padding: 0.5em;
+  color: white;
+  margin: 0;
+}
+
+.qm-api-notice-removed-body {}
+
+.qm-no-description > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
+  display: none;
+}
+
+.qm-no-description > .hx-tree-node > .hx-tree-node-children {
+  /* has to be important to deal with trees being opened via double clicking or with the api */
+  display: none !important;
+}
+
+.qm-api-item > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-content {
+  background: white;
+}
+
+.qm-api-item > .hx-tree-node > .hx-tree-node-children > .hx-tree-node > .hx-tree-node-content {
+  background: transparent;
+}
+
+.qm-api-item > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
+  background: #13A4CE;
+  color: #FFF;
+}
+
+.qm-api-prototype > .hx-tree-node {
+  border-color: #AB7BC1;
+}
+
+.qm-api-prototype > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
+  background-color: #AB7BC1;
+}
+
+.qm-api-method > .hx-tree-node {
+  border-color: #A0B511;
+}
+
+.qm-api-method > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
+  background-color: #A0B511;
+}
+
+.qm-api-function > .hx-tree-node {
+  border-color: #A0B511;
+}
+
+.qm-api-function > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
+  background-color: #A0B511;
+}
+
+.qm-api-object > .hx-tree-node {
+  border-color: #D8942A;
+}
+
+.qm-api-object > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
+  background-color: #D8942A;
+}
+
+.qm-api-event > .hx-tree-node {
+  border-color: #EC3A65;
+}
+
+.qm-api-event > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
+  background-color: #EC3A65;
+}
+
+.qm-api-returns > .hx-tree-node {
+  border-color: #757575;
+}
+
+.qm-api-returns > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
+  background-color: #757575;
+}
+
+.qm-api-description {
+  padding: 0.5em;
+  background: white;
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+}
+
+.qm-api-description:empty {
+  display: none;
+}
+
+.hx-tree-node-parent {
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+}
+
+.qm-optional > .qm-api-header > .qm-api-header-details {
+  opacity: 0.75;
+}
+
+.qm-optional > .qm-api-header > .qm-api-header-details:before {
+  content: "[";
+}
+
+.qm-optional > .qm-api-header > .qm-api-header-details:after {
+  content: "]";
+}
