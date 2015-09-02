@@ -26,6 +26,7 @@ function nextId(){
 };
 
 
+
 // an abstract representation of a dom node
 function Element(page, type, uid) {
   this.page = page
@@ -36,6 +37,20 @@ function Element(page, type, uid) {
   this.content = []
   this.endContent = []
 };
+
+function elementyPromise(promise) {
+  promise.add = function(el, end){
+    return elementyPromise(promise.then(function(p) {
+      return p.add(el, end)
+    }))
+  }
+  promise.append = function(el, end){
+    return elementyPromise(promise.then(function(p) {
+      return p.append(el, end)
+    }))
+  }
+  return promise
+}
 
 // sets the unique id (if you need to refer to the element in the future)
 Element.prototype.uuid = function(id) {
@@ -79,11 +94,14 @@ Element.prototype['class'] = function(cls) {
 
 // adds an element to this element, and returns this element
 Element.prototype.add = function(element, addToEnd) {
-  if (element.then){
+  if (element && element.then){
     var self = this
-    return element.then(function(el){
-      return self.add(el)
-    })
+    return elementyPromise(element.then(function(el){
+      return self.add(el, addToEnd)
+    }))
+  }
+  if(element === undefined) {
+    return this
   }
   element.parent = this
   if (Array.isArray(element)) {
@@ -107,12 +125,14 @@ Element.prototype.add = function(element, addToEnd) {
 
 // adds an element to this element and returns the added element
 Element.prototype.append = function(element, addToEnd) {
-  if (element.then){
+  if (element && element.then){
     var self = this
-    return element.then(function(el){
-      self.add(el)
-      return self
-    })
+    return elementyPromise(element.then(function(el){
+      return self.append(el, addToEnd)
+    }))
+  }
+  if(element === undefined) {
+    return this
   }
   element.parent = this
   if (Array.isArray(element)) {
@@ -307,6 +327,10 @@ Page.prototype.addCommonMetaTags = function() {
   this.head.append(this.create('meta').attr('name', 'viewport').attr('content', 'width=device-width, initial-scale=1'))
   return this
 }
+
+Page.prototype.nextId = function() {
+  return nextId()
+};
 
 module.exports = function() {
   return new Page()
