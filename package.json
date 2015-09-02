@@ -15,7 +15,7 @@
   "dependencies": {
     "coffee-script": "^1.9.3",
     "highlight.js": "^8.6.0",
-    "quantum": "^0.1.0",
+    "quantum-core": "^0.1.0",
     "quantum-dom": "^0.1.0"
   },
   "devDependencies": {
