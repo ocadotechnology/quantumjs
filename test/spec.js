@@ -124,6 +124,70 @@ describe('Element', function() {
     el1.content.length.should.equal(0)
   })
 
+  it('classed should get existance of a single class correctly', function() {
+    var p = page()
+    var el = p.create('div')
+    el.classed('satsuma').should.equal(false)
+    el.class('satsuma').classed('satsuma').should.equal(true)
+  })
+
+  it('classed should add a class correctly', function() {
+    var p = page()
+    var el = p.create('div')
+    el.classed('satsuma').should.equal(false)
+    el.classed('satsuma', true).classed('satsuma').should.equal(true)
+  })
+
+  it('classed should add a class correctly to an existing class attribute', function() {
+    var p = page()
+    var el = p.create('div')
+    el.class('banana')
+    el.classed('satsuma', true).classed('banana satsuma').should.equal(true)
+  })
+
+  it('classed should remove a class correctly', function() {
+    var p = page()
+    var el = p.create('div')
+    el.class('banana satsuma')
+    el.classed('satsuma', false).class().should.equal('banana')
+  })
+
+  it('classed should be fine removing a class that doesnt exist', function() {
+    var p = page()
+    var el = p.create('div')
+    el.class('banana satsuma')
+    el.classed('lemon', false).class().should.equal('banana satsuma')
+  })
+
+  it('classed should not add a class twice', function() {
+    var p = page()
+    var el = p.create('div')
+    el.class('banana satsuma')
+    el.classed('satsuma', true).class().should.equal('banana satsuma')
+  })
+
+  it('classed should get existance of multiple classes correctly', function() {
+    var p = page()
+    var el = p.create('div').class('satsuma lemon')
+    el.classed('satsuma').should.equal(true)
+    el.classed('lemon').should.equal(true)
+    el.classed('satsuma lemon').should.equal(true)
+    el.classed('satsuma banana').should.equal(false)
+    el.classed('satsuma banana lemon').should.equal(false)
+  })
+
+  it('classed should add multiple classes correctly', function() {
+    var p = page()
+    var el = p.create('div').class('satsuma lemon')
+    el.classed('satsuma banana lemon', true).class().should.equal('satsuma lemon banana')
+  })
+
+  it('classed should remove multiple classes correctly', function() {
+    var p = page()
+    var el = p.create('div').class('satsuma lemon')
+    el.classed('banana lemon', false).class().should.equal('satsuma')
+  })
+
 })
 
 describe('TextElement', function() {

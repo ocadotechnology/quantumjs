@@ -86,9 +86,41 @@ Element.prototype.id = function(id) {
 // sets the class attribute for this element
 Element.prototype['class'] = function(cls) {
   if (arguments.length === 0) {
-    return this.attr('class')
+    return this.attr('class') || ''
   } else {
     return this.attr('class', cls)
+  }
+};
+
+// sets the id for this element
+Element.prototype.classed = function(cls, add) {
+  var parts = cls.split(' ')
+
+  if(parts.length > 1) {
+    var self = this
+    if (arguments.length > 1) {
+      parts.forEach(function(c) { return self.classed(c, add) })
+      return this
+    } else {
+      return parts.every(function(c) { return self.classed(c) })
+    }
+  }
+
+  var hasClass = this.class().split(' ').indexOf(cls) !== -1
+  if (arguments.length > 1) {
+    if(add) {
+      if (!hasClass) {
+        this.class(this.class() + ' ' + cls)
+      }
+    } else {
+      if(hasClass) {
+        var newClass = this.class().split(' ').filter(function(c) { return c !== cls }).join(' ')
+        this.class(newClass)
+      }
+    }
+    return this
+  } else {
+    return hasClass
   }
 };
 
