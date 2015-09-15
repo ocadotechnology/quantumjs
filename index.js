@@ -126,23 +126,25 @@ Element.prototype.classed = function(cls, add) {
 
 // adds an element to this element, and returns this element
 Element.prototype.add = function(element, addToEnd) {
+  if(element === undefined) {
+    return this
+  }
   if (element && element.then){
     var self = this
     return elementyPromise(element.then(function(el){
       return self.add(el, addToEnd)
     }))
   }
-  if(element === undefined) {
-    return this
-  }
   element.parent = this
   if (Array.isArray(element)) {
     var self = this
     element.forEach(function(el) {
-      if(addToEnd) {
-        self.endContent.push(el)
-      } else {
-        self.content.push(el)
+      if(el !== undefined) {
+        if(addToEnd) {
+          self.endContent.push(el)
+        } else {
+          self.content.push(el)
+        }
       }
     })
   } else {
@@ -157,23 +159,25 @@ Element.prototype.add = function(element, addToEnd) {
 
 // adds an element to this element and returns the added element
 Element.prototype.append = function(element, addToEnd) {
+  if(element === undefined) {
+    return this
+  }
   if (element && element.then){
     var self = this
     return elementyPromise(element.then(function(el){
       return self.append(el, addToEnd)
     }))
   }
-  if(element === undefined) {
-    return this
-  }
   element.parent = this
   if (Array.isArray(element)) {
     var self = this
     element.forEach(function(el) {
-      if(addToEnd) {
-        self.endContent.push(el)
-      } else {
-        self.content.push(el)
+      if(el !== undefined) {
+        if(addToEnd) {
+          self.endContent.push(el)
+        } else {
+          self.content.push(el)
+        }
       }
     })
   } else {
@@ -188,7 +192,9 @@ Element.prototype.append = function(element, addToEnd) {
 
 // adds text to the content of the element
 Element.prototype.text = function(text) {
-  this.content.push(text)
+  if(text !== undefined) {
+    this.content.push(text)
+  }
   return this
 };
 
@@ -249,9 +255,9 @@ TextElement.prototype.stringify = function() {
 // factory for elements, and a manager for retrieving elements by uid
 function Page() {
   this.elements = {}
-  this.html = this.create('html')
-  this.head = this.html.append(this.create('head'))
-  this.body = this.html.append(this.create('body'))
+  this.html = this.create('html', 'html')
+  this.head = this.html.append(this.create('head', 'head'))
+  this.body = this.html.append(this.create('body', 'body'))
   this.styles = {}
   this.scripts = {}
 };
