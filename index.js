@@ -1,5 +1,5 @@
 var dom          = require('quantum-dom')
-var select       = require('quantum').select
+var select       = require('quantum-core').select
 var hljs         = require('highlight.js')
 var umsyntax     = require('./um-syntax.js')
 var unique       = require('array-unique')
@@ -106,6 +106,14 @@ types.forEach(function(type) {
 
 transforms.bodyClass = function(entity, page, transform) {
   page.body.class(page.body.class() + ' ' + entity.ps())
+  return
+}
+
+transforms.classed = function(entity, page, transform) {
+  var element = page.get(entity.params[0])
+  if(element) {
+    element.classed(entity.params[1], entity.params[2])
+  }
   return
 }
 
