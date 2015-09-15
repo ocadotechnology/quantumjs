@@ -1,4 +1,4 @@
-var quantum = require('quantum')
+var quantum = require('quantum-core')
 
 function replacer(variables, str) {
   var res = str
@@ -15,14 +15,16 @@ function replacer(variables, str) {
 
 function processEntity(entity, dictionary, content) {
   var res = content.slice(0)
-  entity.content.forEach(function(child){
-    var r = template(child, dictionary)
-    if(Array.isArray(r)){
-      res = res.concat(r)
-    } else {
-      res.push(r)
-    }
-  })
+  if(entity && entity.content) {
+    entity.content.forEach(function(child){
+      var r = template(child, dictionary)
+      if(Array.isArray(r)){
+        res = res.concat(r)
+      } else {
+        res.push(r)
+      }
+    })
+  }
 
   return res
 }
@@ -189,7 +191,7 @@ function applyDefinitions(parsed, definitions) {
     return parsed
   } else if(parsed.type === 'define') {
     return undefined
-  } else if(parsed.type in definitions) {
+  } else if(definitions.hasOwnProperty(parsed.type)) {
     var selection = quantum.select(parsed)
 
     //XXX: add sub-entites name.ps, name.cs, age.ps, age.cs, etc
@@ -238,7 +240,7 @@ module.exports = function(options) {
 
     return {
       filename: obj.filename,
-      content: applyDefinitions(applyVariables(obj.content, variables), definitions)
+      content: applyVariables(applyDefinitions(obj.content, definitions), variables)
     }
   }
 }

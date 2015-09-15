@@ -2,7 +2,7 @@ blanket  = require('blanket')('..')
 chai     = require('chai')
 template = require('..')
 should = chai.should()
-quantum  = require('quantum')
+quantum  = require('quantum-core')
 
 describe('Template', function() {
   // promise friendly version of 'it'
