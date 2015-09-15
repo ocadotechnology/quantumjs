@@ -191,4 +191,32 @@ describe('select', function() {
     }).cs().should.equal('\n  \nstrawberry')
   })
 
+  it('should be able to replace params', function() {
+    var entity = {
+      type: 'fruits',
+      params: ['ripe'],
+      content: [
+        'lychee',
+        'banana'
+      ]
+    }
+
+    select(entity).replaceParams(['unripe'])
+    entity.params.should.eql(['unripe'])
+  })
+
+  it('should be able to replace content', function() {
+    var entity = {
+      type: 'fruits',
+      params: ['ripe'],
+      content: [
+        'lychee',
+        'banana'
+      ]
+    }
+
+    select(entity).replaceContent(['apple', 'pear', 'cherry'])
+    entity.content.should.eql(['apple', 'pear', 'cherry'])
+  })
+
 });
