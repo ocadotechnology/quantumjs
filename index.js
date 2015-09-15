@@ -21,6 +21,8 @@
 // - classes
 // - move to a config powered setup (so other types can easily be defined)
 
+var quantum = require('quantum-core')
+
 module.exports = function(options) {
   options = options || {}
   var types = options.types || {}
@@ -81,7 +83,7 @@ module.exports = function(options) {
       .add(createTags(entity, page))
   }
 
-  // create a notice section
+  // create a notice section XXX: change to use hexagon's notices?
   function createNotice(type, title) {
     return function(entity, page, transforms) {
       if (entity.has(type)) {
@@ -185,6 +187,26 @@ module.exports = function(options) {
     return createHeader('function', details, entity, page, transforms)
   }
 
+  function constructorHeader(entity, page, transforms) {
+
+    var name = page.create('span').class('qm-api-function-name').text('constructor')
+
+    var params = entity.selectAll(['param', 'param?']).map(function(paramEntity) {
+      return page.create('span').class('qm-api-function-param')
+        .add(page.create('span').class('qm-api-function-param-name').text(paramEntity.params[0]))
+        .add(page.create('span').class('qm-api-function-param-type').add(createType(paramEntity.params[1], page)))
+    })
+
+    var returns = page.create('span').class('qm-api-function-returns').add(createType(entity.select('returns').ps(), page))
+
+    var details = page.create('span')
+      .add(name)
+      .add(page.create('span').class('qm-api-function-params').add(params))
+      .add(returns)
+
+    return createHeader('function', details, entity, page, transforms)
+  }
+
   // creates a header for property type items
   function propertyHeader(entity, page, transforms) {
 
@@ -193,6 +215,18 @@ module.exports = function(options) {
       .add(page.create('span').class('qm-api-property-type').add(createType(entity.params[1], page)))
 
     return createHeader('property', details, entity, page, transforms)
+
+  }
+
+  // creates a header for entity type items
+  function entityHeader(entity, page, transforms) {
+
+    var details = page.create('span')
+      .add(page.create('span').class('qm-api-entity-name').text('@'+entity.params[0] || ''))
+      .add(page.create('span').class('qm-api-entity-params').text(entity.select('params').ps()))
+      .add(page.create('span').class('qm-api-entity-content').text(entity.select('params').cs()))
+
+    return createHeader('entity', details, entity, page, transforms)
 
   }
 
@@ -215,7 +249,9 @@ module.exports = function(options) {
   }
   var deprecated = createNotice('deprecated', 'Deprecated')
   var removed = createNotice('removed', 'Removed')
+
   var prototypes = createItemGroup('prototype', 'Prototypes')
+  var constructors = createItemGroup('constructor', 'Constructors')
   var objects = createItemGroup('object', 'Objects')
   var params = createItemGroup(['param', 'param?'], 'Arguments')
   var properties = createItemGroup(['property', 'property?'], 'Properties')
@@ -223,11 +259,20 @@ module.exports = function(options) {
   var events = createItemGroup('event', 'Events')
   var functions = createItemGroup('function', 'Functions')
   var returns = createItemGroup('returns', 'Returns')
+  var classes = createItemGroup('class', 'Classes')
+  var extraClasses = createItemGroup('extraclass', 'Extra Classes')
+  var childClasses = createItemGroup('childclass', 'Child Classes')
+  var entities = createItemGroup('entity', 'Entities')
 
   /* item builders */
 
   var createApiLike = createItemBuilder({
-    content: [ description, properties, objects, prototypes, functions ]
+    content: [ description, properties, objects, prototypes, functions, classes, entities ]
+  })
+
+  var createConstructorLike = createItemBuilder({
+    header: [ constructorHeader ],
+    content: [ description, params ]
   })
 
   var createFunctionLike = createItemBuilder({
@@ -246,6 +291,11 @@ module.exports = function(options) {
     renderAsOther: { 'Function': createFunctionLike, 'Object': createObjectLike }
   })
 
+  var createClassLike = createItemBuilder({
+    header: [ typeHeader ],
+    content: [ description, classes, extraClasses, childClasses ]
+  })
+
   var createTypeLike = createItemBuilder({
     header: [ typeHeader ],
     content: [ description ],
@@ -254,30 +304,84 @@ module.exports = function(options) {
 
   var createPrototypeLike = createItemBuilder({
     header: [ typeHeader ],
-    content: [ description, properties, methods ]
+    content: [ description, constructors, properties, methods, functions ]
+  })
+
+  var createEntityLike = createItemBuilder({
+    header: [ entityHeader],
+    content: [ description, entities ],
   })
 
   /* transforms */
 
   function api(entity, page, transforms) {
-    return page.addAssets({css: {
-        'quantum-api.css': __dirname + '/client/quantum-api.css'
-      }}).then(function() {
+    return page.addAssets({
+        css: { 'quantum-api.css': __dirname + '/client/quantum-api.css' },
+        js: { 'quantum-api.js': __dirname + '/client/quantum-api.js' }
+      }).then(function() {
         return createApiLike('qm-api')(entity, page, transforms)
       })
   }
 
+  function example(entity, page, transforms) {
+    var body = page.create('div').class('qm-api-example-body')
+      .add(entity.transform(transforms))
+
+    var codeBody = page.create('div').class('qm-api-example-code-body')
+
+    function addCodeSection(type, title) {
+      if(entity.has(type)) {
+        var subEntity = entity.select(type)
+        var fake = quantum.select({
+          content: [{
+            type: 'codeblock',
+            params: [type],
+            content: subEntity.content
+          }]
+        })
+
+        codeBody = codeBody
+          .add(page.create('div').text(title))
+          .add(fake.transform(transforms))
+      }
+    }
+
+    addCodeSection('html', 'HTML')
+    addCodeSection('js', 'JavaScript')
+    addCodeSection('coffee', 'CoffeeScript')
+    addCodeSection('css', 'CSS')
+    addCodeSection('json', 'JSON')
+
+    var code = page.create('div').class('qm-api-example-code qm-collapsible')
+      .add(page.create('div').class('hx-collapsible-heading').text('Code'))
+      .add(page.create('div').class('hx-collapsible-content')
+        .add(page.create('div').class('qm-api-code-container')
+          .add(codeBody)
+        )
+      )
+
+    return page.create('div').class('qm-api-example')
+      .add(body)
+      .add(code)
+  }
+
   return {
     'api': api,
+    'example': example,
     'prototype': createPrototypeLike('qm-api-prototype'),
     'object': createObjectLike('qm-api-object'),
     'method': createFunctionLike('qm-api-method'),
     'function': createFunctionLike('qm-api-function'),
+    'constructor': createConstructorLike('qm-api-constructor'),
     'param': createPropertyLike('qm-api-param'),
     'param?': createPropertyLike('qm-api-param'),
     'property': createPropertyLike('qm-api-property'),
     'property?': createPropertyLike('qm-api-property'),
     'event': createPropertyLike('qm-api-event'),
-    'returns': createTypeLike('qm-api-returns')
+    'returns': createTypeLike('qm-api-returns'),
+    'class': createClassLike('qm-api-class'),
+    'extraclass': createClassLike('qm-api-extraclass'),
+    'childclass': createClassLike('qm-api-childclass'),
+    'entity': createEntityLike('qm-api-entity')
   }
 }

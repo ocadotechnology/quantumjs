@@ -134,7 +134,10 @@ body {
   padding-left: 0;
 }
 
-.qm-api-property-name, .qm-api-function-name, .qm-api-type-name {
+.qm-api-property-name,
+.qm-api-function-name,
+.qm-api-type-name,
+.qm-api-entity-name {
   font-weight: bold;
 }
 
@@ -313,4 +316,38 @@ body {
 
 .qm-optional > .qm-api-header > .qm-api-header-details:after {
   content: "]";
+}
+
+.qm-api-example {
+  border: solid 1px rgb(234, 230, 230);
+}
+
+.qm-api-example > .qm-api-example-body {
+  margin: 0.5em;
+}
+
+.qm-api-code-container {
+  padding: 1em;
+}
+
+.qm-api-entity-params {
+  margin-left: 0.25em;
+}
+
+.qm-api-entity-params:empty {
+  margin-left: 0;
+}
+
+.qm-api-entity-content {
+
+}
+
+.qm-api-entity-content:before {
+  content: ":";
+  margin-right: 0.25em;
+}
+
+.qm-api-entity-content:empty {
+  content: none;
+  display: none;
 }
