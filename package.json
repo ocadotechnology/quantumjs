@@ -7,8 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
-    "coverage": "mocha -R html-file-cov"
+    "test": "./node_modules/mocha/bin/mocha",
+    "coverage": "./node_modules/mocha/bin/mocha -R html-file-cov"
   },
   "author": "james.smyth@ocado.com",
   "license": "MIT",
@@ -16,7 +16,8 @@
     "blanket": "^1.1.7",
     "chai": "^2.3.0",
     "hexagon-js": "^0.12.7",
-    "html-file-cov": "^1.0.0"
+    "html-file-cov": "^1.0.0",
+    "mocha": "^2.3.3"
   },
   "config": {
     "blanket": {
