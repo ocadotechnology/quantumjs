@@ -1,0 +1,324 @@
+
+@spec Basic text replacement
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        Content 1
+      @version 0.2.0
+        Content 2
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @content
+        Content 1
+
+    @output
+      @filename 0.2.0/filename.um
+      @content
+        Content 2
+
+@spec Text should override entities
+  @versions
+    0.1.0
+    0.2.0
+    0.3.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        Content 1
+        @tag
+      @version 0.2.0
+        Content 2
+      @version 0.3.0
+        Content 3
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @content
+        Content 1
+        @tag
+
+    @output
+      @filename 0.2.0/filename.um
+      @content
+        Content 2
+
+    @output
+      @filename 0.3.0/filename.um
+      @content
+        Content 3
+
+@spec Entites should be merged together by overlaying changes
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        @tag
+          @innerTag one: Content 1
+          @innerTag two: Content 2
+      @version 0.2.0
+        @tag
+          @innerTag two: Content 3
+          @innerTag three: Content 4
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @content
+        @tag
+          @innerTag one: Content 1
+          @innerTag two: Content 2
+
+    @output
+      @filename 0.2.0/filename.um
+      @content
+        @tag
+          @innerTag one: Content 1
+          @innerTag two: Content 3
+          @innerTag three: Content 4
+
+@spec Unmergable entites should not be merged together
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        @unmergable
+          @innerTag one: Content 1
+          @innerTag two: Content 2
+      @version 0.2.0
+        @unmergable
+          @innerTag two: Content 3
+          @innerTag three: Content 4
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @content
+        @unmergable
+          @innerTag one: Content 1
+          @innerTag two: Content 2
+
+    @output
+      @filename 0.2.0/filename.um
+      @content
+        @unmergable
+          @innerTag two: Content 3
+          @innerTag three: Content 4
+
+@spec Taggable things should get tagged correctly
+  @versions
+    0.1.0
+    0.2.0
+    0.3.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        @function test
+          @description: Blah blah blah
+          @param input [String]: Whatever
+        @function test2
+      @version 0.2.0
+        @function test
+          @description: Blah blah blah 2
+          @param input [String]: Whatever
+        @function test3
+        @function test2
+          @removed
+      @version 0.3.0
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @content
+        @function test
+          @description: Blah blah blah
+          @param input [String]: Whatever
+        @function test2
+
+    @output
+      @filename 0.2.0/filename.um
+      @content
+        @function test
+          @description: Blah blah blah 2
+          @param input [String]: Whatever
+          @updated
+        @function test2
+          @removed
+        @function test3
+          @added
+
+    @output
+      @filename 0.3.0/filename.um
+      @content
+        @function test
+          @description: Blah blah blah 2
+          @param input [String]: Whatever
+        @function test3
+
+@spec Non root versions
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      @container
+        @version 0.1.0
+          Content 1
+        @version 0.2.0
+          Content 2
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @content
+        @container
+          Content 1
+
+    @output
+      @filename 0.2.0/filename.um
+      @content
+        @container
+          Content 2
+
+
+@spec Mixed Depths
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      @container
+        @version 0.1.0
+          Content 1
+      @container
+        @container2
+          @version 0.2.0
+            Content 2
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @content
+        @container
+          Content 1
+        @container
+          @container2
+
+    @output
+      @filename 0.2.0/filename.um
+      @content
+        @container
+          Content 2
+        @container
+          @container2
+
+@spec Pass through unversioned content
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      Unversioned
+      @version 0.1.0
+        Content 1
+      @version 0.2.0
+        Content 2
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @content
+        Unversioned
+        Content 1
+
+    @output
+      @filename 0.2.0/filename.um
+      @content
+        Unversioned
+        Content 2
+
+@spec Should handle typical api docs
+  @versions
+    0.1.0
+    0.2.0
+    0.3.0
+  @source
+    @filename filename.um
+    @content
+      @module
+        @version 0.1.0
+          @api
+            @prototype Bob
+              @constructor
+                @description: Does something
+                @param a [Number]: The a parameter
+        @version 0.2.0
+          @api
+            @prototype Bob
+              @constructor
+                @description: Does something better
+                @param a [Number]: The a parameter
+
+              @constructor
+                @description: Does another thing
+                @param a [Number]: The a parameter
+                @param b [Number]: The b parameter
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @content
+        @module
+          @api
+            @prototype Bob
+              @constructor
+                @description: Does something
+                @param a [Number]: The a parameter
+
+    @output
+      @filename 0.2.0/filename.um
+      @content
+        @module
+          @api
+            @prototype Bob
+              @constructor
+                @description: Does something better
+                @param a [Number]: The a parameter
+                @updated
+              @constructor
+                @description: Does another thing
+                @param a [Number]: The a parameter
+                @param b [Number]: The b parameter
+                @added
+              @updated
+
+    @output
+      @filename 0.3.0/filename.um
+      @content
+        @module
+          @api
+            @prototype Bob
+              @constructor
+                @description: Does something better
+                @param a [Number]: The a parameter
+              @constructor
+                @description: Does another thing
+                @param a [Number]: The a parameter
+                @param b [Number]: The b parameter
