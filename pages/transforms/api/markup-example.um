@@ -1,0 +1,7 @@
+@api
+  @function min
+    @description: Returns the minimum of two numbers
+    @param a [Number]: The first number
+    @param b [Number]: The second number
+    @returns Number
+      @description: The minimum of a and b

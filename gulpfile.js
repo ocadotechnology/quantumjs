@@ -1,12 +1,15 @@
-var gulp       = require('gulp')
-var quantum  = require('quantum')
-var html       = require('quantum-html')
-var transforms = require('./transforms')
+var gulp        = require('gulp')
 var browserSync = require('browser-sync').create()
-var template    = require('quantum-template')
+
+var hexagon        = require('hexagon-js')
+var quantum        = require('quantum-core')
+var html           = require('quantum-html')
+var template       = require('quantum-template')
+var api            = require('quantum-api')
+var version        = require('quantum-version')
 
 var copySource = [
-  'src/quantum.svg'
+  'resources/**/*'
 ]
 
 function requireUncached(module){
@@ -19,24 +22,34 @@ function build() {
     version: require('./package.json').version
   }
 
+  var apiOptions = {}
+  var hexagonOptions = {}
+  var hexagonDocsOptions = {}
+
   var htmlTransforms = {
     html: html.transforms,
     qm: requireUncached('./transforms/index'),
     sketch: requireUncached('./transforms/sketch'),
-    entity: require('./transforms/entity-api')
+    api: requireUncached('quantum-api')(apiOptions)
   }
 
-  return quantum.read('src/index.um', { base: 'src' })
+  return quantum.read('pages/transforms/html/index.um', { base: 'pages' })
     .map(template(templateVars))
     .map(html(htmlTransforms))
     .map(html.stringify())
     .map(quantum.write('target'))
 }
 
+function buildHexagon() {
+  return hexagon.build().then(hexagon.build.store('target/resources'))
+}
+
 gulp.task('build', build)
 
+gulp.task('hexagon', buildHexagon)
+
 gulp.task('copy', function() {
-  return gulp.src(copySource).pipe(gulp.dest('target'))
+  return gulp.src(copySource).pipe(gulp.dest('target/resources'))
 })
 
 gulp.task('server', function() {
@@ -48,7 +61,7 @@ gulp.task('server', function() {
 })
 
 gulp.task('watch', function(){
-  gulp.watch('src/**/*').on('change', function(){
+  gulp.watch(['pages/**/*', 'resources/**/*']).on('change', function(){
     build().then(browserSync.reload)
   })
   gulp.watch(copySource, ['copy'])

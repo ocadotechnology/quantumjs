@@ -1,0 +1,170 @@
+@inline ../../common.um
+@quantum-titlebar
+
+# hacky spacer - replace with proper css
+@div
+  @attr style: height:50px;
+
+
+@qm.content
+  @section
+
+    @h1: About
+
+    @p: The api html renderers are for writing api docs for a JavaScript, CSS or quantum api. It can be customised to support other structures / langauges, but these are the ones supported out of the box.
+
+    @p: The api renderers work well with the version transform (added, updated, deprecated and removed tags affect the rendered html)
+
+    @h1: Example
+
+    @p: Using the api renderers is simple - just add them to the html transforms:
+
+    @codeblock js
+      var quantum = require('quantum-core')
+      var api     = require('quantum-api')
+      var html    = require('quantum-html')
+
+      var htmlTransforms = {
+        html: html.transforms,
+        api: api()              // this is the bit that includes the api renderers
+      }
+
+      quantum.read('index.um')
+        .map(html(htmlTransforms))
+        .map(html.stringify())
+        .map(quantum.write('target'))
+
+    @p: Example markup
+    @codeblock um: @inline markup-example.um [text]
+
+    @p: Example result
+    @inline markup-example.um
+
+    @h1: Api
+
+    @api
+      @function api
+        @param? options [Object]
+          @description
+            @p: XXX: This is a description for the html transform - move this to the right place
+
+            @p: An object containing the html transforms to use:
+
+            @p: This is the default:
+            @codeblock js
+              {
+                html: html.transforms
+              }
+
+            @p: The key used in the options object will be used as the namespace for the entity transforms. This means that in the markup you can create a div using @(@div) or @(html.div) when using the default settings. If the options object was passed in as this instead:
+
+            @codeblock js
+              {
+                bob: html.transforms
+              }
+
+            @p: Then you could create a div with @(@bob.div) instead. Namespaces allow you to remove ambiguity when multiple modules use the same entity names, and the type of entity you mean is not clear.
+
+        @returns Object
+          An object containing the transform functions - to be passed to the html transformer.
+
+
+      @entity api
+        @description: The root container for any api
+
+      @entity function
+        @description: An entity for describing a function
+        @params name
+
+        @entity description
+          @description: A description of what the function does.
+
+        @entity param
+          @description: Denotes an argument. @(@param) and @(param?) entites should be specified in the same order that the arguments appear in in the actual function. If type if Object then this entity may be treated as an @(@object) entity. If type is Function then this entity may be treated as a @(@function) entity.
+          @params name type
+          @entity description
+            @description: A description of what the returned value is.
+
+        @entity param?
+          @description: Denotes an optional argument. If type if Object then this entity may be treated as an @(@object) entity. If type is Function then this entity may be treated as a @(@function) entity.
+          @params name type
+          @entity description
+            @description: A description of what the returned value is.
+          @entity default
+            @description: The default value of the parameter
+
+        @entity returns
+          @description: Documents the return value for the function.  If type if Object then this entity may be treated as an @(@object) entity. If type is Function then this entity may be treated as a @(@function) entity.
+          @params type
+          @entity description
+            @description: A description of what the returned value is.
+
+      @entity property
+        @description: Denotes an argument. @(@param) and @(param?) entites should be specified in the same order that the arguments appear in in the actual prototype.
+        @params name type
+        @entity description
+          @description: A description of what the returned value is.
+
+      @entity prototype
+        @description: An entity for describing a prototype
+        @params name
+
+        @entity description
+          @description: A description of what the prototype does.
+
+        @entity constructor
+          @entity description
+            @description: A description of what the constructor does.
+
+          @entity param
+            @description: Denotes an argument. @(@param) and @(param?) entites should be specified in the same order that the arguments appear in in the actual constructor. If type if Object then this entity may be treated as an @(@object) entity. If type is Function then this entity may be treated as a @(@function) entity.
+            @params name type
+            @entity description
+              @description: A description of what the returned value is.
+
+          @entity param?
+            @description: Denotes an optional argument.  If type if Object then this entity may be treated as an @(@object) entity. If type is Function then this entity may be treated as a @(@function) entity.
+            @params name type
+            @entity description
+              @description: A description of what the returned value is.
+            @entity default
+              @description: The default value of the parameter
+
+        @entity property
+          @description: See the @(@property) entity for full details.
+
+        @entity method
+          @description: An entity for describing a method
+
+          @entity description
+            @description: A description of what the method does.
+
+          @entity param
+            @description: Denotes an argument. @(@param) and @(param?) entites should be specified in the same order that the arguments appear in in the actual method. If type if Object then this entity may be treated as an @(@object) entity. If type is Function then this entity may be treated as a @(@function) entity.
+            @params name type
+            @entity description
+              @description: A description of what the returned value is.
+
+          @entity param?
+            @description: Denotes an optional argument.  If type if Object then this entity may be treated as an @(@object) entity. If type is Function then this entity may be treated as a @(@function) entity.
+            @params name type
+            @entity description
+              @description: A description of what the returned value is.
+            @entity default
+              @description: The default value of the parameter
+
+          @entity returns
+            @description: Documents the return value for the method. If type if Object then this entity may be treated as an @(@object) entity. If type is Function then this entity may be treated as a @(@function) entity.
+            @params type
+            @entity description
+              @description: A description of what the returned value is.
+
+        @entity event
+          @description: Documents an event emitted
+          @params: name type
+          @entity description
+            @description: A description of the event - when it is emitted, information it contains.
+
+        @entity function
+          @description: See the @(@function) entity for full details.
+

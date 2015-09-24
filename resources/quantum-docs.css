@@ -88,7 +88,7 @@ pre {
 
 .qm-content {
   min-height: 100%;
-  margin-top: 80px;
+  margin-top: 1em;
   margin-left: 1em;
   margin-right: 1em;
 }
@@ -238,3 +238,34 @@ pre {
   font-weight: 100;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.docs-menu-container {
+  overflow: auto;
+  max-width: 1080px;
+  max-height: 90%;
+  border: solid 5px #4B5057;
+  border-top: none;
+  background: #F0F1F3;
+}
+
+.docs-menu {
+  background: rgba(255,255,255,0.1);
+}
+
+.docs-dropdown-link {
+  display: block;
+}

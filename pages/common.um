@@ -1,0 +1,36 @@
+# common scripts and stylesheets
+
+@stylesheet /resources/hexagon.css
+@script /resources/hexagon.js
+
+@stylesheet /resources/quantum-docs.css
+@script /resources/quantum-docs.js
+
+# the titlebar template
+@define quantum-titlebar
+  @div .qm-header
+    @div .qm-header-section
+      @span .qm-header-icon:
+        @img: @attr src: /resources/icon-v1.svg
+      @span .qm-header-title: QUANTUM.JS
+      @span .qm-header-nav
+        @a: Overview
+          @attr href: /#
+        @a: Getting Started
+          @attr href: /#getting-started
+        @span: Transforms
+          @attr id: transforms-menu
+        @a: Markup
+          @attr href: /#markup
+        @a: Gulp/Grunt
+          @attr href: /#gulp-grunt
+        @a: Api
+          @attr href: /#api
+
+# list of modules and descriptions
+@define module-list
+  @table
+    @define.foreach @module as module
+      @tr
+        @td: @b[{{module.ps}}]
+        @td: {{module.content}}
