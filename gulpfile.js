@@ -33,7 +33,7 @@ function build() {
     api: requireUncached('quantum-api')(apiOptions)
   }
 
-  return quantum.read('pages/transforms/html/index.um', { base: 'pages' })
+  return quantum.read('pages/**/index.um', { base: 'pages' })
     .map(template(templateVars))
     .map(html(htmlTransforms))
     .map(html.stringify())

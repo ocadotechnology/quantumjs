@@ -194,8 +194,6 @@
 
     @p: There is no grunt plugin yet. Want to make one?
 
-    @h1: Api Docs @attr(id)[api]
-
 @footer
   @section
     @p: Created @(@) Ocado Technology
