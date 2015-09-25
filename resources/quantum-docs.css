@@ -131,11 +131,17 @@ pre {
 }
 
 #qm-block-1 .sk-svg {
-  height: 40px;
+  width: 200px;
+  margin: 0 auto;
+  display: block;
+  height: 500px;
 }
 
 #qm-block-2 .sk-svg {
-  height: 40px;
+  width: 220px;
+  margin: 0 auto;
+  display: block;
+  height: 320px;
 }
 
 .qm-banner {
@@ -166,7 +172,7 @@ pre {
 }
 
 .hljs-params {
-  color: #B75994 !important
+  color: #B75994 !important;
 }
 
 .hljs-content {
@@ -176,14 +182,6 @@ pre {
 .codeblock {
   background: rgb(249, 249, 249);
 }
-
-
-
-
-
-
-
-
 
 .qm-entity {
   background: rgb(249, 249, 249);
@@ -213,6 +211,7 @@ pre {
 .qm-entity .qm-entity .qm-entity-header {
   padding-left: 0.5em;
 }
+
 .qm-entity-header {
   padding: 0.25em;
   padding-left: 1em;
@@ -238,21 +237,6 @@ pre {
   font-weight: 100;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .docs-menu-container {
   overflow: auto;
   max-width: 1080px;
@@ -263,7 +247,7 @@ pre {
 }
 
 .docs-menu {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .docs-dropdown-link {

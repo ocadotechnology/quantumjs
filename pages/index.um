@@ -96,7 +96,7 @@
 
     @h2: Basic html rendering example
 
-  @div .qm-accent-block
+  @div #qm-block-2.qm-accent-block
     @section
       @graph
         @node read

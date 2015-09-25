@@ -61,7 +61,7 @@ gulp.task('server', function() {
 })
 
 gulp.task('watch', function(){
-  gulp.watch(['pages/**/*', 'resources/**/*']).on('change', function(){
+  gulp.watch(['pages/**/*', 'resources/**/*', 'transforms/**/*']).on('change', function(){
     build().then(browserSync.reload)
   })
   gulp.watch(copySource, ['copy'])
