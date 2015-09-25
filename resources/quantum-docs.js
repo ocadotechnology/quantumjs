@@ -25,5 +25,17 @@ function setupMenu(element) {
   hx.select(element).text('Api')
 }
 
-new hx.Dropdown('#transforms-menu', setupMenu)
+new hx.Menu('#transforms-menu', {
+  items: [
+    {name: 'Html',  link: '/transforms/html' },
+    {name: 'Api',  link: '/transforms/api' },
+    {name: 'Version',  link: '/transforms/version' },
+    {name: 'Template', link: '/transforms/template' }
+  ],
+  renderer: function(element, data) {
+    hx.select(element).append('a')
+      .text(data.name)
+      .attr('href', data.link)
+  }
+})
 

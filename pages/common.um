@@ -11,21 +11,17 @@
   @div .qm-header
     @div .qm-header-section
       @span .qm-header-icon:
-        @img: @attr src: /resources/icon-v1.svg
+        @a
+          @attr href: /
+          @img: @attr src: /resources/icon-v1.svg
       @span .qm-header-title: QUANTUM.JS
       @span .qm-header-nav
-        @a: Overview
-          @attr href: /#
-        @a: Getting Started
-          @attr href: /#getting-started
+        @a: Core
+          @attr href: /core
         @span: Transforms
           @attr id: transforms-menu
-        @a: Markup
-          @attr href: /#markup
-        @a: Gulp/Grunt
-          @attr href: /#gulp-grunt
-        @a: Api
-          @attr href: /#api
+
+
 
 # list of modules and descriptions
 @define module-list
