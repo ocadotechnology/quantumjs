@@ -204,6 +204,14 @@ pre {
   padding-left: 0.5em;
 }
 
+.language-json .hljs-attribute {
+  font-weight: normal;
+}
+
+.language-um .hljs-keyword {
+  font-weight: normal;
+}
+
 .qm-entity .qm-entity .qm-entity-type {
   color: #B45791;
 }
@@ -252,4 +260,12 @@ pre {
 
 .docs-dropdown-link {
   display: block;
+}
+
+.qm-divider {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: 25%;
+  margin-right: 25%;
+  border-bottom: solid 1px #DDD;
 }

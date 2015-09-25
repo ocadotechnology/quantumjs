@@ -22,3 +22,7 @@ exports.footer = function(entity, page, transform) {
 exports.infobox = function(entity, page, transform) {
   return page.create('div').class('qm-infobox').add(entity.transform(transform))
 }
+
+exports.divider = function(entity, page, transform) {
+  return page.create('div').class('qm-divider')
+}
