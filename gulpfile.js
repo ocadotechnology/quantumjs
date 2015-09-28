@@ -9,7 +9,11 @@ var api            = require('quantum-api')
 var version        = require('quantum-version')
 
 var copySource = [
-  'resources/**/*'
+  'resources/**/*',
+  'node_modules/font-awesome/css/**/*',
+  '!node_modules/font-awesome/less/**/*',
+  '!node_modules/font-awesome/scss/**/*',
+  '!node_modules/font-awesome/*'
 ]
 
 function requireUncached(module){

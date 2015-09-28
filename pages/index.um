@@ -122,7 +122,7 @@
       @inline the-markup.json [text]
 
     @divider
-    @h1: Grunt/Gulp @attr(id)[gulp-grunt]
+    @h1: Gulp/Grunt @attr(id)[gulp-grunt]
 
     @h2: Gulp
 

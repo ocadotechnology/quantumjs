@@ -6,6 +6,8 @@
 @stylesheet /resources/quantum-docs.css
 @script /resources/quantum-docs.js
 
+@stylesheet /resources/font-awesome.css
+
 # the titlebar template
 @define quantum-titlebar
   @div .qm-header

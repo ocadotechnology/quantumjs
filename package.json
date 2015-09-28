@@ -18,5 +18,8 @@
     "quantum-html": "^0.1.0",
     "quantum-template": "^0.1.0",
     "quantum-version": "^0.1.0"
+  },
+  "dependencies": {
+    "font-awesome": "^4.4.0"
   }
 }
