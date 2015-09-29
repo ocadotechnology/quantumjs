@@ -1,10 +1,5 @@
-@inline ../../common.um
+@inline ../../../shared/common.um
 @quantum-titlebar
-
-# hacky spacer - replace with proper css
-@div
-  @attr style: height:50px;
-
 
 @qm.content
   @section

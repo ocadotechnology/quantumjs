@@ -1,4 +1,4 @@
-@inline common.um
+@inline ../shared/common.um
 @quantum-titlebar
 
 @div .qm-banner

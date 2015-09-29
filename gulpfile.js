@@ -37,7 +37,7 @@ function build() {
     api: requireUncached('quantum-api')(apiOptions)
   }
 
-  return quantum.read('pages/**/index.um', { base: 'pages' })
+  return quantum.read('content/pages/**/index.um', { base: 'content/pages' })
     .map(template(templateVars))
     .map(html(htmlTransforms))
     .map(html.stringify())
@@ -65,7 +65,7 @@ gulp.task('server', function() {
 })
 
 gulp.task('watch', function(){
-  gulp.watch(['pages/**/*', 'resources/**/*', 'transforms/**/*']).on('change', function(){
+  gulp.watch(['content/**/*', 'resources/**/*', 'transforms/**/*']).on('change', function(){
     build().then(browserSync.reload)
   })
   gulp.watch(copySource, ['copy'])
