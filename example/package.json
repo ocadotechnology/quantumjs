@@ -1,0 +1,15 @@
+{
+  "name": "quantum-api-example",
+  "version": "0.1.0",
+  "description": "",
+  "main": "build.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Smyth <james.smyth@ocado.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^0.24.0",
+    "hexagon-js": "^0.14.1"
+  }
+}

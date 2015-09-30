@@ -12,6 +12,9 @@
   },
   "author": "james.smyth@ocado.com",
   "license": "MIT",
+  "dependencies": {
+    "quantum-js": "^0.1.0"
+  },
   "devDependencies": {
     "blanket": "^1.1.7",
     "chai": "^2.3.0",

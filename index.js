@@ -21,7 +21,7 @@
 // - classes
 // - move to a config powered setup (so other types can easily be defined)
 
-var quantum = require('quantum-core')
+var quantum = require('quantum-js')
 
 module.exports = function(options) {
   options = options || {}
