@@ -20,7 +20,7 @@
     "chai": "^2.3.0",
     "html-file-cov": "^1.0.0",
     "mocha": "^2.2.5",
-    "quantum-core": "^0.1.0"
+    "quantum-js": "^0.1.0"
   },
   "config": {
     "blanket": {
