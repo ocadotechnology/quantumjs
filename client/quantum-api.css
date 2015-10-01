@@ -69,14 +69,14 @@ body {
 }
 
 .qm-api-optional {
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
-.qm-api-optional:before {
+.qm-api-optional::before {
   content: "[";
 }
 
-.qm-api-optional:after {
+.qm-api-optional::after {
   content: "]";
 }
 
@@ -99,6 +99,16 @@ body {
 
 .qm-api-function-param:last-child:after {
   content: none;
+  margin-right: 0;
+}
+
+.qm-api-function-param.qm-api-optional:after {
+  content: "],";
+  margin-right: 4px;
+}
+
+.qm-api-function-param.qm-api-optional:last-child:after {
+  content: "]";
   margin-right: 0;
 }
 
@@ -338,9 +348,7 @@ body {
   margin-left: 0;
 }
 
-.qm-api-entity-content {
-
-}
+.qm-api-entity-content {}
 
 .qm-api-entity-content:before {
   content: ":";

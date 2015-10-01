@@ -19,8 +19,8 @@
         This is a test added flag
       @description
         Constructs a new animation that will be applied to the node specified.
-      @param node [HTMLElement]
-      @param? ease [Function]
+      @param? node [HTMLElement]
+      @param ease [Function]
         The easing function to use for the animations. See hx.ease for some pre-built easing functions.
         @param value [Number]: The input value
         @returns Number: The value after it has been transformed by the easing function

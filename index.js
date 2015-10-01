@@ -172,7 +172,8 @@ module.exports = function(options) {
     var name = page.create('span').class('qm-api-function-name').text(entity.params[0])
 
     var params = entity.selectAll(['param', 'param?']).map(function(paramEntity) {
-      return page.create('span').class('qm-api-function-param')
+      var isOptional = paramEntity.type[paramEntity.type.length-1] === '?'
+      return page.create('span').class(isOptional ? 'qm-api-function-param qm-api-optional' : 'qm-api-function-param')
         .add(page.create('span').class('qm-api-function-param-name').text(paramEntity.params[0]))
         .add(page.create('span').class('qm-api-function-param-type').add(createType(paramEntity.params[1], page)))
     })
