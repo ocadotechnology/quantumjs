@@ -13,7 +13,7 @@
 
 */
 
-var quantum = require('quantum-core')   // needed for its selection api
+var quantum = require('quantum-js')     // needed for its selection api
 var path    = require('path')           // required for the default filename renamer
 
 //NOTE: this function may mutate content1 - pass in a cloned copy if you don't want to mutate the original
@@ -171,7 +171,8 @@ module.exports = function(options) {
         // build the new result with new filename and add the result to the results list
         results.push({
           filename: filenameModifier(obj.filename, v),
-          content: source
+          content: source,
+          version: v
         })
       })
 
