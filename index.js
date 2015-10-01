@@ -1,5 +1,5 @@
 var dom          = require('quantum-dom')
-var select       = require('quantum-core').select
+var select       = require('quantum-js').select
 var hljs         = require('highlight.js')
 var umsyntax     = require('./um-syntax.js')
 var unique       = require('array-unique')
@@ -185,7 +185,7 @@ transforms.codeblock = function(entity, page, transform) {
       'code-highlight.css': __dirname + '/client/code-highlight.css'
     }}).then(function() {
 
-      return page.create('div').class('codeblock')
+      return page.create('div').class('codeblock language-' + entity.ps())
         .add(page.create('pre').text(highlightCode(entity.ps(), entity.cs())))
     })
 }
@@ -195,7 +195,7 @@ transforms.code = function(entity, page, transform) {
       'code-highlight.css': __dirname + '/client/code-highlight.css'
     }}).then(function() {
       return page.create('code')
-        .class('code')
+        .class('code language-' + entity.ps())
         .text(highlightCode(entity.ps(), entity.cs()))
     })
 }

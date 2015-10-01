@@ -15,11 +15,11 @@
   "dependencies": {
     "coffee-script": "^1.9.3",
     "highlight.js": "^8.6.0",
-    "quantum-core": "^0.1.0",
-    "quantum-dom": "^0.1.0"
+    "quantum-js": "^0.1.0",
+    "quantum-dom": "^0.1.0",
+    "array-unique": "^0.2.1"
   },
   "devDependencies": {
-    "array-unique": "^0.2.1",
     "blanket": "^1.1.7",
     "bluebird": "^2.9.27",
     "chai": "^2.3.0",
