@@ -2,7 +2,7 @@ var blanket  = require('blanket')('../')
 var chai     = require('chai')
 var version  = require('..')
 var should   = chai.should()
-var quantum  = require('quantum-core')
+var quantum  = require('quantum-js')
 var path     = require('path')
 
 
