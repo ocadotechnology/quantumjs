@@ -2,7 +2,7 @@ var gulp        = require('gulp')
 var browserSync = require('browser-sync').create()
 
 var hexagon        = require('hexagon-js')
-var quantum        = require('quantum-core')
+var quantum        = require('quantum-js')
 var html           = require('quantum-html')
 var template       = require('quantum-template')
 var api            = require('quantum-api')

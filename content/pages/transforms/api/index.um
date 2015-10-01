@@ -15,7 +15,7 @@
     @p: Using the api renderers is simple - just add them to the html transforms:
 
     @codeblock js
-      var quantum = require('quantum-core')
+      var quantum = require('quantum-js')
       var api     = require('quantum-api')
       var html    = require('quantum-html')
 

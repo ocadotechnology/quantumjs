@@ -14,7 +14,7 @@
 
     @p: Build script
     @codeblock js
-      var quantum = require('quantum-core')
+      var quantum = require('quantum-js')
       var html    = require('quantum-html')
 
       quantum.read('source.um')
