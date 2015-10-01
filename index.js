@@ -1,4 +1,4 @@
-var quantum = require('quantum-core')
+var quantum = require('quantum-js')
 
 function replacer(variables, str) {
   var res = str
