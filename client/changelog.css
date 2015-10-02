@@ -1,0 +1,62 @@
+.qm-changelog-description,
+.qm-changelog-entries,
+.qm-changelog-extra {
+  margin: 0.5em 0;
+}
+
+.qm-changelog-description:first-child,
+.qm-changelog-entries:first-child,
+.qm-changelog-extra:first-child {
+  margin-top: 0;
+}
+
+.qm-changelog-description:last-child,
+.qm-changelog-entries:last-child,
+.qm-changelog-extra:last-child {
+  margin-bottom: 0;
+}
+
+.qm-changelog-item {
+  margin: 0.5em 0;
+}
+
+.qm-changelog-item-title {
+  max-width: 240px;
+}
+
+.qm-changelog-item-body {
+  border: 1px solid #DDD;
+}
+
+.qm-changelog-item-title,
+.qm-changelog-item-labels,
+.qm-changelog-item-body {
+  padding: 0.4em;
+}
+
+.qm-changelog-entry {
+  margin: 0.5em 0;
+}
+
+.qm-changelog-entry-icon {
+  width: 20px;
+  text-align: center;
+}
+
+.qm-changelog-entry-head {
+  margin-bottom: 0.5em;
+}
+
+.qm-changelog-entry-content {
+  font-size: 0.9em;
+}
+
+.qm-changelog-entry + .qm-changelog-entry {
+  border-top: 2px solid #EEE;
+  padding-top: 0.5em;
+}
+
+.qm-changelog-alternative-head {
+  font-weight: bold;
+  margin: 0.5em 0 0.2em 0;
+}
