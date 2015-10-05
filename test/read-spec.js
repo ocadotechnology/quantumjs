@@ -108,7 +108,7 @@ describe('read', function() {
       }
     }]
 
-    return read(filename, { entityType: 'altinline' })
+    return read(filename, { inlineEntityType: 'altinline' })
       .then(function(parsed){
         parsed.should.eql(expected)
       })
