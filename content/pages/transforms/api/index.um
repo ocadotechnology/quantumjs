@@ -15,7 +15,7 @@
     @p: Using the api renderers is simple - just add them to the html transforms:
 
     @codeblock js
-      var quantum = require('quantum-core')
+      var quantum = require('quantum-js')
       var api     = require('quantum-api')
       var html    = require('quantum-html')
 
@@ -39,29 +39,24 @@
 
     @api
       @function api
+        @description: Transforms api docs entites to virtual dom.
         @param? options [Object]
-          @description
-            @p: XXX: This is a description for the html transform - move this to the right place
+          @property? types [Object]
+            @description
+              @p: An object with links to documentation for types.
 
-            @p: An object containing the html transforms to use:
-
-            @p: This is the default:
-            @codeblock js
-              {
-                html: html.transforms
-              }
-
-            @p: The key used in the options object will be used as the namespace for the entity transforms. This means that in the markup you can create a div using @(@div) or @(html.div) when using the default settings. If the options object was passed in as this instead:
-
-            @codeblock js
-              {
-                bob: html.transforms
-              }
-
-            @p: Then you could create a div with @(@bob.div) instead. Namespaces allow you to remove ambiguity when multiple modules use the same entity names, and the type of entity you mean is not clear.
-
-        @returns Object
-          An object containing the transform functions - to be passed to the html transformer.
+              @p: Example
+              @codeblock js
+                {
+                  'String': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
+                  'Number': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number',
+                  'Boolean': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean',
+                  'Node': 'https://developer.mozilla.org/en/docs/Web/API/Node',
+                  'Element': 'https://developer.mozilla.org/en/docs/Web/API/Element',
+                  'HTMLElement': 'https://developer.mozilla.org/en/docs/Web/API/HTMLElement',
+                  'SVGElement': 'https://developer.mozilla.org/en/docs/Web/API/SVGElement',
+                  'Date': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date'
+                }
 
 
       @entity api

@@ -14,12 +14,13 @@
     "dagre": "^0.7.2",
     "gulp": "^3.9.0",
     "highlight.js": "^8.7.0",
-    "quantum-core": "^0.1.0",
+    "quantum-js": "^0.1.0",
     "quantum-html": "^0.1.0",
     "quantum-template": "^0.1.0",
     "quantum-version": "^0.1.0"
   },
   "dependencies": {
-    "font-awesome": "^4.4.0"
+    "font-awesome": "^4.4.0",
+    "hexagon-js": "^0.15.1"
   }
 }
