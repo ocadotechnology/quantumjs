@@ -83,7 +83,7 @@
 
     @h3: build.js
     @codeblock js
-        var quantum = require('quantum-core')
+        var quantum = require('quantum-js')
         var html = require('quantum-html')
 
         quantum.load('index.um')              // load and parse a source file
@@ -130,7 +130,7 @@
 
     @codeblock js
       var gulp = require('gulp')
-      var quantum = require('quantum-core')
+      var quantum = require('quantum-js')
       var html = require('quantum-html')
 
       gulp.task('build', function(){
