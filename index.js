@@ -184,8 +184,6 @@ function process(wrapper, options) {
     wrapper.original.content.reverse()
   }
 
-  console.log(wrapper.original.content)
-
 }
 
 // searches for @changelog entities with @process in them and generates the changelog from the contents of process
