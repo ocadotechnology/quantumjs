@@ -1,250 +1,234 @@
-var select       = require('quantum-js').select
-var dom          = require('quantum-dom')
-var html         = require('quantum-html')
-var Promise      = require('bluebird')
 
-/* Example:
-  @changelog
-    @item Item Name
-      @link(url)[Item Link]
+var quantum = require('quantum-js')
 
-      @description: Item description
-      @extra
-        @api
-          @prototype thing
-            @description: A thing
-
-
-      @added [Added thing]
-        @description: Added thing description
-        @issue 500
-        @extra
-          @api
-            @prototype thing
-              @description: A thing
-
-      @deprecated [Deprecated thing]
-        @description: Deprecated thing description
-        @alternative: Deprecated thing alternative thing
-
-    @item Item Name
-      @link(url)[Item Link 1]
-      @link(url)[Item Link 2]
-
-      @extra: Extra suff for item
-
-      @added [Added thing]:
-        @description: Added thing description
-        @issue 500
-        @issue 501
-        @issue 502
-        @issue 503
-        @extra: Extra stuff for Added thing
-
-      @deprecated [Deprecated thing]
-        @description: Deprecated thing description
-        @alternative: Deprecated thing alternative thing
-
-      @removed [Removed thing]
-        @description: This thing was removed
-*/
-
-module.exports = function (options) {
-  if (!options) {
-    options = {}
+function constructKey(parentKey, entity) {
+  if(entity.type === 'function' || entity.type === 'method' || entity.type === 'constructor') {
+    return parentKey + ':' + entity.type + ':' + entity.ps() + '(' + entity.selectAll(['param', 'param?']).map(function(param){  return param.ps() }).join(',') + ')'
+  } else {
+    return parentKey + ':' + entity.type + ':' + entity.ps()
   }
+}
 
-  options.types = options.types || {
-    added: {
-      class: 'hx-positive',
-      icon: 'fa-plus',
-      title: 'Added',
-      order: 1
-    },
-    updated: {
-      class: 'hx-default',
-      icon: 'fa-level-up',
-      title: 'Updated',
-      order: 2
-    },
-    deprecated: {
-      class: 'hx-warning',
-      icon: 'fa-recycle',
-      title: 'Deprecated',
-      order: 3
-    },
-    removed: {
-      class: 'hx-negative',
-      icon: 'fa-times',
-      title: 'Removed',
-      order: 4
-    },
-    enhancement: {
-      class: 'hx-info',
-      icon: 'fa-magic',
-      title: 'Enhancement',
-      order: 5
-    },
-    bugfix: {
-      class: 'hx-warning',
-      icon: 'fa-bug',
-      title: 'Bug Fix',
-      order: 6
-    },
-    docs: {
-      class: 'hx-default',
-      icon: 'fa-book',
-      title: 'Documentation',
-      order: 7
-    },
-    info: {
-      class: 'hx-contrast',
-      icon: 'fa-info',
-      title: 'Information',
-      order: 8
+function buildApiMap(apiEntity, options, apiCurrent, parentKey) {
+  var contents = apiEntity.selectAll(options.types)
+
+  contents.forEach(function(entity){
+    var key = constructKey(parentKey, entity)
+    apiCurrent[key] = entity
+    if (!(entity.has(['removed']))) {
+      buildApiMap(entity, options, apiCurrent, key)
     }
+  })
+}
+
+function createItem(apiName, apiObject, options) {
+  var tags = Object.keys(options.tags)
+
+  var item = quantum.create('item').ps(apiName)
+
+  for (key in apiObject.apiContent) {
+    var apiComponent = apiObject.apiContent[key]
+    quantum.select(apiComponent).selectAll(tags).forEach(function(selection) {
+      if (selection.type !== undefined) {
+        item.add(quantum.create(selection.type).ps(key))
+      }
+    })
   }
 
-  function alternative (entity, page, transforms) {
-    return page.create('div').class('qm-changelog-alternative')
-      .add(page.create('div').class('qm-changelog-alternative-head').text('Alternative'))
-      .add(page.create('div').class('qm-changelog-alternative-body')
-        .add(entity.transform(transforms)))
-  }
+  return item.build()
+}
 
-  function issue (entity, page, transforms) {
-    return page.create('a')
-      .attr('href', options.issueUrl + entity.ps())
-      .text('#' + entity.ps())
-  }
+// processes a single changelog that contains a @process entity. Returns an array of entites
+function process(wrapper, options) {
 
+  var targetVersions = wrapper.selectAll('version')
+  var targetVersionList = targetVersions.map(function(version) {
+    return version.ps()
+  })
 
-  function entry (entity, page, transforms) {
-    var type = options.types[entity.type]
-    var icon = page.create('i').class('fa ' + type.icon + ' ' + type.class.replace('hx-', 'hx-text-'))
+  var versions = wrapper.select('process').selectAll('version', {recursive: true})
 
-    if (!!options.issueUrl && entity.has('issue')) {
-      var heading = page.create('span')
-      entity.selectAll('issue').forEach( function (issueEntity, index) {
-        heading = heading
-          .add(index > 0 ? ', ' : entity.ps() + ': ')
-          .add(issue(issueEntity, page, transforms))
-      })
-    } else {
-      var heading = entity.ps()
+  wrapper.remove('process')
+
+  var apisGroupedByVersion = {}
+  versions.forEach(function(version) {
+    apisGroupedByVersion[version.ps()] = apisGroupedByVersion[version.ps()] || []
+    if (version.has('api')) {
+      apisGroupedByVersion[version.ps()].push(version.select('api').entityContent())
     }
-
-    if (entity.has('description')) {
-      var description = page.create('div').class('qm-changelog-entry-description').add(entity.select('description').transform(transforms))
-    }
-
-    if (entity.has('alternative')) {
-      var alternativeMessage = alternative(entity.select('alternative'), page, transforms)
-    }
-
-    if (entity.has('extra')) {
-      var extra = page.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
-    }
-
-    return page.create('div').class('qm-changelog-entry hx-group hx-horizontal')
-      .add(page.create('div').class('qm-changelog-entry-icon hx-section hx-fixed')
-        .add(icon))
-      .add(page.create('div').class('hx-section')
-        .add(page.create('div').class('qm-changelog-entry-head')
-          .add(heading))
-        .add(page.create('div').class('qm-changelog-entry-content')
-          .add(description)
-          .add(alternativeMessage)
-          .add(extra)))
-  }
+  })
 
 
-  function label (page, type, count) {
-    return page.create('div').class('qm-changelog-label hx-label ' + type.class)
-        .add(page.create('i').class('fa ' + type.icon))
-        .add(page.create('span').text(count));
-  }
+  // collect the apis up by (version, api) and flatten each of those apis to flat objects
+  var previous = undefined
+  var flattenedApiMapByVersion = {}
+  targetVersionList.forEach(function(versionName) {
+    var apis = apisGroupedByVersion[versionName] || []
+    var current = {}
+    flattenedApiMapByVersion[versionName] = current
 
-
-  function link (entity, page, transforms) {
-    return page.create('a').class('qm-changelog-item-link hx-btn hx-info')
-      .attr('href', entity.ps())
-      .add(entity.transform(transforms))
-  }
-
-
-  function item (entity, page, transforms) {
-    var id = page.nextId()
-
-    var unprocessedEntries = entity.content.filter( function (entryEntity) {
-      return !!options.types[entryEntity.type];
-    }).sort( function (a, b) {
-      return options.types[a.type].order - options.types[b.type].order
+    apis.forEach(function(api) {
+      var apiName = api.ps()
+      var apiCurrent = {
+        api: api,
+        apiContent: {}
+      }
+      current[apiName] = apiCurrent
+      buildApiMap(api, options, apiCurrent.apiContent, '')
     })
 
-    var entries = page.create('div').class('qm-changelog-entries')
-      .add(Promise.all( unprocessedEntries.map( function (entryEntity) {
-        return entry(select(entryEntity), page, transforms)
-      }))
-    )
+    if (previous) {
 
-    var labels = page.create('div').class('qm-changelog-item-labels hx-section hx-no-margin')
-    for (var key in options.types) {
-      var count = unprocessedEntries.reduce(function(total, e){ return e.type == key ? total + 1 : total }, 0);
-      if (count > 0) {
-        labels = labels.add(label(page, options.types[key], count))
+      // handle cases where new content is added or content is updated
+      for (apiName in current) {
+        if (!(apiName in previous)) {
+          current[apiName].api.content.push(quantum.create('added').build())
+        } else {
+          var currentApiContent = current[apiName].apiContent
+          var previousApiContent = previous[apiName].apiContent
+
+          for (key in currentApiContent) {
+            var entity = quantum.select(currentApiContent[key])
+            if(!(key in previousApiContent)) {
+              entity.content.push(quantum.create('added').build())
+            } else {
+              if(!entity.has(['removed', 'deprecated', 'updated', 'info', 'bugfix', 'enhancement', 'docs'])) {
+                var hasNewDescription = (entity.has('description') && (JSON.stringify(entity.select('description')) !== JSON.stringify(quantum.select(previousApiContent[key]).select('description'))))
+                var hasNewContentString = (entity.nonEmpty().cs() && (entity.nonEmpty().cs() !== quantum.select(previousApiContent[key]).nonEmpty().cs()))
+                if (hasNewDescription || hasNewContentString) {
+                  entity.content.push(quantum.create('updated').build())
+                }
+              }
+            }
+          }
+        }
       }
     }
 
-    if (entity.has('link')) {
-      var links = Promise.all(entity.selectAll('link').map( function (linkEntity) {
-          return link(select(linkEntity), page, transforms);
-      }))
+    previous = current
+  })
+
+  targetVersions.forEach(function(versionEntity) {
+    var version = versionEntity.original
+    version.type = 'changelog'
+    var versionName = versionEntity.ps()
+
+    var apiMap = flattenedApiMapByVersion[versionName]
+    var newContent = []
+    for (apiName in apiMap) {
+      if (apiMap[apiName])
+      var item = createItem(apiName, apiMap[apiName], options)
+      if(item.content.length) {
+        newContent.push(item)
+      }
     }
 
-    if (entity.has('description')) {
-      var description = page.create('div').class('qm-changelog-description').add(entity.select('description').transform(transforms))
+    version.content = newContent
+  })
+
+
+
+}
+
+// searches for @changelog entities with @process in them and generates the changelog from the contents of process
+function processAll(content, options) {
+
+  var changelogs = quantum.select(content)
+    .selectAll(['wrapper', options.namespace + '.' + 'wrapper'], {recursive: true})
+    .filter(function(changelog) {
+      return changelog.has('process')
+    })
+
+  changelogs.forEach(function(changelog) {
+    process(changelog, options)
+
+  })
+
+  return content
+}
+
+module.exports = function(options) {
+
+  options = {
+    namespace: 'changelog',
+    types: [
+      'function',
+      'prototype',
+      'method',
+      'property',
+      'property?',
+      'object',
+      'param',
+      'param?',
+      'constructor',
+      'returns',
+      'event',
+      'data',
+      'class',
+      'extraclass',
+      'childclass'
+    ],
+    tags: {
+      added: {
+        class: 'hx-positive',
+        icon: 'fa-plus',
+        title: 'Added',
+        order: 1
+      },
+      updated: {
+        class: 'hx-default',
+        icon: 'fa-level-up',
+        title: 'Updated',
+        order: 2
+      },
+      deprecated: {
+        class: 'hx-warning',
+        icon: 'fa-recycle',
+        title: 'Deprecated',
+        order: 3
+      },
+      removed: {
+        class: 'hx-negative',
+        icon: 'fa-times',
+        title: 'Removed',
+        order: 4
+      },
+      enhancement: {
+        class: 'hx-info',
+        icon: 'fa-magic',
+        title: 'Enhancement',
+        order: 5
+      },
+      bugfix: {
+        class: 'hx-warning',
+        icon: 'fa-bug',
+        title: 'Bug Fix',
+        order: 6
+      },
+      docs: {
+        class: 'hx-default',
+        icon: 'fa-book',
+        title: 'Documentation',
+        order: 7
+      },
+      info: {
+        class: 'hx-contrast',
+        icon: 'fa-info',
+        title: 'Information',
+        order: 8
+      }
     }
+  }
 
-    if (entity.has('extra')) {
-      var extra = page.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
+  var transform = function(obj) {
+    return {
+      filename: obj.filename,
+      content: processAll(obj.content, options)
     }
-
-    page.body.add(page.create('script').text('new hx.Collapsible("#' + id + '");\n'), true)
-
-    return page.create('div').class('qm-changelog-item hx-collapsible').id(id)
-      .add(page.create('div').class('qm-changelog-item-head hx-collapsible-heading hx-collapsible-heading-no-hover hx-input-group hx-input-group-full-width')
-        .add(page.create('button').class('hx-collapsible-toggle hx-btn hx-info'))
-        .add(page.create('div').class('qm-changelog-item-title hx-section hx-no-margin')
-          .text(entity.ps()))
-        .add(labels)
-        .add(links))
-      .add(page.create('div').class('qm-changelog-item-body hx-collapsible-content')
-        .add(description)
-        .add(entries)
-        .add(extra))
   }
 
+  transform.transforms = require('./html-transforms')(options)
 
-  function changelog (entity, page, transforms) {
-    var items = Promise.all(entity.selectAll('item').map( function (itemEntity) {
-      return item(itemEntity, page, transforms);
-    }))
+  return transform
 
-    return page.addAssets({
-        css: {
-        'changelog.css': __dirname + '/client/changelog.css'
-        }
-      })
-      .then(function() {
-        return page.create('div').class('qm-changelog')
-        .add(page.create('div').class('qm-changelog-body')
-          .add(items)
-        )
-      })
-  }
-
-  return {
-    'changelog': changelog
-  }
 }

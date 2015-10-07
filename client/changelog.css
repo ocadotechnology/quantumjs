@@ -60,3 +60,7 @@
   font-weight: bold;
   margin: 0.5em 0 0.2em 0;
 }
+
+.qm-changelog-header {
+  font-size: 2em;
+}
