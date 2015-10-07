@@ -50,9 +50,13 @@ function cloneAndRemoveTags(version) {
   for(apiName in versionClone) {
     var apiMap = versionClone[apiName].apiContent
 
-    for(key in apiMap) {
-      apiMap[key].entity.removeAll(['added', 'updated', 'removed', 'enhancement', 'docs', 'info', 'bugfix'])
-    }
+    Object.keys(apiMap).forEach(function(key) {
+      if(apiMap[key].entity.has('removed')) {
+        delete apiMap[key]
+      } else {
+        apiMap[key].entity.removeAll(['added', 'updated', 'enhancement', 'docs', 'info', 'bugfix'])
+      }
+    })
   }
 
   return versionClone
@@ -120,7 +124,10 @@ function process(wrapper, options) {
             var currentApiElement = currentApiContent[key]
             var entity = quantum.select(currentApiElement.entity)
 
-            if(!(key in previousApiContent)) {
+            // check if the api-element has just been removed in the previous version, or if it does not exist
+            // in the previous version). In either case, the api-element can be considered to be added (since it
+            // did not exist in the previous version of the api)
+            if(!(key in previousApiContent) || previousApiContent[key].entity.has('removed')) {
               if(currentParent === undefined || key.indexOf(currentParent) !== 0) {
                 currentParent = key
 
