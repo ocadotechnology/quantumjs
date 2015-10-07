@@ -13,6 +13,7 @@
   "author": "charlie.frater@ocado.com",
   "license": "MIT",
   "dependencies": {
+    "clone": "^1.0.2"
   },
   "devDependencies": {
     "array-unique": "^0.2.1",
