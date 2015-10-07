@@ -70,7 +70,7 @@ function process(wrapper, options) {
   versionEntities.forEach(function(versionEntity) {
     versionEntitesMap[versionEntity.ps()] = versionEntity
   })
-  var targetVersionList = versionEntities.map(function(version) {
+  var targetVersionList = options.targetVersions || versionEntities.map(function(version) {
     return version.ps()
   })
 
@@ -161,7 +161,7 @@ function process(wrapper, options) {
 
   // replace the wrapper content with the calculated changelog
 
-  wrapper.original.content = (options.targetVersions || targetVersionList).map(function(versionName) {
+  wrapper.original.content = targetVersionList.map(function(versionName) {
     var changelogEntityBuilder = quantum.create('changelog').ps(versionName)
     var versionEntity = versionEntitesMap[versionName]
 
@@ -177,6 +177,7 @@ function process(wrapper, options) {
       }
     }
 
+    //TODO: only add if it contains stuff
     return changelogEntityBuilder.build()
   })
 
