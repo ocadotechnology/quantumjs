@@ -65,8 +65,12 @@ function cloneAndRemoveTags(version) {
 // processes a single changelog that contains a @process entity. Returns an array of entites
 function process(wrapper, options) {
 
-  var targetVersions = wrapper.selectAll('version')
-  var targetVersionList = targetVersions.map(function(version) {
+  var versionEntities = wrapper.selectAll('version')
+  var versionEntitesMap = {}
+  versionEntities.forEach(function(versionEntity) {
+    versionEntitesMap[versionEntity.ps()] = versionEntity
+  })
+  var targetVersionList = versionEntities.map(function(version) {
     return version.ps()
   })
 
@@ -155,10 +159,13 @@ function process(wrapper, options) {
     previous = current
   })
 
-  targetVersions.forEach(function(versionEntity) {
-    var version = versionEntity.original
-    version.type = 'changelog'
-    var versionName = versionEntity.ps()
+  // replace the wrapper content with the calculated changelog
+
+  wrapper.original.content = (options.targetVersions || targetVersionList).map(function(versionName) {
+    var changelogEntityBuilder = quantum.create('changelog').ps(versionName)
+    var versionEntity = versionEntitesMap[versionName]
+
+    //TODO: merge in the description and link from the versionEntity
 
     var apiMap = flattenedApiMapByVersion[versionName]
     var newContent = []
@@ -166,14 +173,18 @@ function process(wrapper, options) {
       if (apiMap[apiName])
       var item = createItem(apiName, apiMap[apiName], options)
       if(item.content.length) {
-        newContent.push(item)
+        changelogEntityBuilder.add(item)
       }
     }
 
-    version.content = newContent
+    return changelogEntityBuilder.build()
   })
 
+  if(options.reverseVisibleList) {
+    wrapper.original.content.reverse()
+  }
 
+  console.log(wrapper.original.content)
 
 }
 
@@ -194,10 +205,12 @@ function processAll(content, options) {
   return content
 }
 
-module.exports = function(options) {
+module.exports = function(opts) {
 
+  //TODO: sort out these options
   options = {
     namespace: 'changelog',
+    reverseVisibleList: true,
     types: [
       'function',
       'prototype',
@@ -270,6 +283,8 @@ module.exports = function(options) {
       }
     }
   }
+
+  options.targetVersions = opts.targetVersions
 
   var transform = function(obj) {
     return {
