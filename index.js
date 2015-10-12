@@ -111,6 +111,7 @@ module.exports = function(options) {
     // generate the versioned parts
     var content = quantum.select(obj.content)
     var versions = content.selectAll('version', {recursive: true})
+
     if(versions.length > 0) {
       var versionsMap = {}
       versions.forEach(function(version) {
@@ -140,7 +141,7 @@ module.exports = function(options) {
           if(Array.isArray(entity.content)){
             var index = -1
             entity.content.forEach(function(v, i){
-              if(v.params && v.params[0] === versions[0].params[0]) {
+              if(v.type === 'version' && v.params && v.params[0] === versions[0].params[0]) {
                 index = i
               }
             })
@@ -174,7 +175,10 @@ module.exports = function(options) {
           content: source,
           version: v
         })
+
+
       })
+
 
       return results
     } else {

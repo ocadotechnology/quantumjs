@@ -25,7 +25,8 @@ function testSuite(filename) {
             var outputSelection = quantum.select(outputEntity)
             var outputFilename = outputSelection.select('filename').ps()
             var outputContent = {content: outputSelection.select('content').content}
-            return {filename: outputFilename, content: outputContent}
+            var outputVersion = outputSelection.select('version').ps()
+            return {filename: outputFilename, content: outputContent, version: outputVersion }
           })
 
           var options = {
