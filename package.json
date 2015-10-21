@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "bluebird": "^2.9.27",
+    "flatten": "0.0.1",
     "glob": "^5.0.10",
     "glob-base": "^0.3.0",
     "merge": "^1.2.0"
