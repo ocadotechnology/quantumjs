@@ -1,20 +1,15 @@
 
 var read = require('../lib').read
+var chai = require("chai")
+var chaiAsPromised = require("chai-as-promised")
+chai.use(chaiAsPromised)
+var should = chai.should()
 
 describe('read', function() {
 
-  // promise friendly version of 'it'
-  var pit = function(desc, f) {
-    it(desc, function(done){
-      f().then(function(){
-        done()
-      }).done(null, done)
-    })
-  }
-
   var filename = 'test/um/source1.um'
 
-  pit('should work', function() {
+  it('should work', function() {
     var expected = [{
       filename: filename,
       content: {
@@ -56,15 +51,12 @@ describe('read', function() {
       }
     }]
 
-    return read(filename)
-      .then(function(parsed){
-        parsed.should.eql(expected)
-      })
+    return read(filename).should.eventually.eql(expected)
 
   })
 
 
-  pit('different entity tag kind', function() {
+  it('different entity tag kind', function() {
     var filename = 'test/um/source1.um'
 
     var expected = [{
@@ -108,15 +100,12 @@ describe('read', function() {
       }
     }]
 
-    return read(filename, { inlineEntityType: 'altinline' })
-      .then(function(parsed){
-        parsed.should.eql(expected)
-      })
+    return read(filename, { inlineEntityType: 'altinline' }).should.eventually.eql(expected)
 
   });
 
 
-  pit('should read non um files as content', function() {
+  it('should read non um files as content', function() {
     var filename = 'test/um/source4.um'
 
     var expected = [{
@@ -146,14 +135,11 @@ describe('read', function() {
       }
     }]
 
-    return read(filename)
-      .then(function(parsed){
-        parsed.should.eql(expected)
-      })
+    return read(filename).should.eventually.eql(expected)
 
   })
 
-  pit('should be able to read non um files as um files with parse specified as the second parameter', function() {
+  it('should be able to read non um files as um files with parse specified as the second parameter', function() {
     var filename = 'test/um/source7.um'
 
     var expected = [{
@@ -193,30 +179,19 @@ describe('read', function() {
       }
     }]
 
-    return read(filename)
-      .then(function(parsed){
-        parsed.should.eql(expected)
-      })
+    return read(filename).should.eventually.eql(expected)
 
   })
 
-  pit('should return an error when a file is not found', function() {
-    var called = false
-    return read('test/um/not-a-source.um')
-      .then(function(result){
-        // shouldn't even get in here
-        result.should.not.be.defined
-        called = true
-      })
-      .catch(function(error) {
-        error.should.be.defined
-      })
-      .then(function() {
-        called.should.be.false
-      })
+  it('should return an error when a file is not found', function() {
+    return read.single('test/um/not-a-source.um').should.be.rejected
   })
 
-  pit('should not inline if inline is false', function() {
+  it('should return an empty array when a file is not found - when using glob', function() {
+    return read('test/um/not-a-source.um').should.eventually.eql([])
+  })
+
+  it('should not inline if inline is false', function() {
     var filename = 'test/um/source2.um'
 
     var expected = [{
@@ -243,9 +218,7 @@ describe('read', function() {
       }
     }]
 
-    return read(filename, {inline: false})
-      .then(function(result){
-        result.should.eql(expected)
-      })
+    return read(filename, {inline: false}).should.eventually.eql(expected)
+
   })
 })
