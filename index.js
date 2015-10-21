@@ -88,11 +88,12 @@ module.exports = function(options) {
     return function(entity, page, transforms) {
       if (entity.has(type)) {
         var notice = entity.select(type)
+
         return page.create('div').class('qm-api-notice qm-api-notice-' + type)
           .add(page.create('div').class('qm-api-notice-header qm-api-notice-' + type  + '-header').text(title))
           .add(page.create('div').class('qm-api-notice-body qm-api-notice-' + type  + '-body')
-            .add(page.create('h4').text('Alternative'))
-            .add(notice.has('alternative') ? notice.select('alternative').transform(transforms) : page.create('span').text('None')))
+            .add(notice.transform(transforms))
+          )
       }
     }
   }
