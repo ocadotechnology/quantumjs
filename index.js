@@ -177,9 +177,10 @@ function process(wrapper, options) {
       }
     }
 
-    //TODO: only add if it contains stuff
-    return changelogEntityBuilder.build()
-  })
+    // only add if it contains stuff
+    if (changelogEntityBuilder.content.length) return changelogEntityBuilder.build()
+    else undefined
+  }).filter(function (d) { return d != undefined})
 
   if(options.reverseVisibleList) {
     wrapper.original.content.reverse()
