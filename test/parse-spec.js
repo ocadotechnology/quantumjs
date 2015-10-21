@@ -1244,6 +1244,36 @@ describe('parse', function() {
 
     it('colon in an escaped parameter should be fine', function() {
       var expected, source;
+      source = "@link [http://example.com]: example.com";
+      expected = {
+        content: [
+          {
+            type: 'link',
+            params: ['http://example.com'],
+            content: ['example.com']
+          }
+        ]
+      };
+      chai.expect(parse(source)).to.eql(expected);
+    });
+
+    it('colon in an escaped parameter should be fine (newline content)', function() {
+      var expected, source;
+      source = "@link [http://example.com]\n  example.com";
+      expected = {
+        content: [
+          {
+            type: 'link',
+            params: ['http://example.com'],
+            content: ['example.com']
+          }
+        ]
+      };
+      chai.expect(parse(source)).to.eql(expected);
+    });
+
+    it('colon in an inline escaped parameter should be fine', function() {
+      var expected, source;
       source = "@link([http://example.com])[example.com]";
       expected = {
         content: [
