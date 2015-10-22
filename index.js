@@ -27,16 +27,18 @@ function buildApiMap(apiEntity, options, apiCurrent, parentKey) {
   })
 }
 
-function createItem(apiName, apiObject, options) {
+function createItem(apiName, apiObject, options, transforms) {
   var tags = Object.keys(options.tags)
-
   var item = quantum.create('item').ps(apiName)
 
   for (key in apiObject.apiContent) {
     var apiComponent = apiObject.apiContent[key].entity
     quantum.select(apiComponent).selectAll(tags).forEach(function(selection) {
       if (selection.type !== undefined) {
-        item.add(quantum.create(selection.type).ps(key))
+        var desc = quantum.create('description')
+        desc.content = selection.content
+        var entry = quantum.create(selection.type).ps(key)
+        item = item.add(entry.add(desc))
       }
     })
   }
@@ -67,12 +69,11 @@ function process(wrapper, options) {
 
   var versionEntities = wrapper.selectAll('version')
   var versionEntitesMap = {}
-  versionEntities.forEach(function(versionEntity) {
+  var actualVersions = versionEntities.map(function(versionEntity) {
     versionEntitesMap[versionEntity.ps()] = versionEntity
+    return versionEntity.ps()
   })
-  var targetVersionList = options.targetVersions || versionEntities.map(function(version) {
-    return version.ps()
-  })
+  var targetVersionList = options.targetVersions || actualVersions;
 
   var versions = wrapper.select('process').selectAll('version', {recursive: true})
 
