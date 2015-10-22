@@ -46,6 +46,8 @@ function mergeContent(content1, content2, options) {
 
             if(options.taggable.indexOf(entity.type) > -1 && !selected.has('removed')) {
               selected.content.push({ type: 'updated', params: [], content: [] })
+            } else if (selected.has('removed') && selected.has('deprecated')) {
+              selected.remove('deprecated')
             }
           }
         })
