@@ -46,8 +46,9 @@ function createItem(apiName, apiObject, options, transforms) {
   return item.build()
 }
 
+
 function cloneAndRemoveTags(version) {
-  var versionClone = clone(version)
+  var versionClone = clone(version, {circular: false})
 
   for(apiName in versionClone) {
     var apiMap = versionClone[apiName].apiContent
