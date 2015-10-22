@@ -27,7 +27,7 @@ function buildApiMap(apiEntity, options, apiCurrent, parentKey) {
   })
 }
 
-function createItem(apiName, apiObject, options, transforms) {
+function createItem(apiName, apiObject, options) {
   var tags = Object.keys(options.tags)
   var item = quantum.create('item').ps(apiName)
 
