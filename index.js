@@ -88,12 +88,15 @@ module.exports = function(options) {
     return function(entity, page, transforms) {
       if (entity.has(type)) {
         var notice = entity.select(type)
+        notice.removeAll('issue')
 
-        return page.create('div').class('qm-api-notice qm-api-notice-' + type)
-          .add(page.create('div').class('qm-api-notice-header qm-api-notice-' + type  + '-header').text(title))
-          .add(page.create('div').class('qm-api-notice-body qm-api-notice-' + type  + '-body')
-            .add(notice.transform(transforms))
-          )
+        if (notice.content.length) {
+          return page.create('div').class('qm-api-notice qm-api-notice-' + type)
+            .add(page.create('div').class('qm-api-notice-header qm-api-notice-' + type  + '-header').text(title))
+            .add(page.create('div').class('qm-api-notice-body qm-api-notice-' + type  + '-body')
+              .add(notice.transform(transforms))
+            )
+        }
       }
     }
   }
