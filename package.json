@@ -1,0 +1,19 @@
+{
+  "name": "quantum-watch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Smyth <james.smyth@ocado.com>",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^2.10.2",
+    "debounce": "^1.0.0",
+    "gaze": "^0.5.2",
+    "glob": "^5.0.15",
+    "merge": "^1.2.0",
+    "minimatch": "^3.0.0"
+  }
+}
