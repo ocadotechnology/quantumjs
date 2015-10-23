@@ -12,7 +12,7 @@ var debounce     = require('debounce')
 function createWatcher(globString, customLoader) {
   return new Promise(function (resolve, reject) {
     gaze(globString, function (watcher) {
-      var loader = new WatcherLoader(globString, this, customLoader)
+      var loader = new WatcherLoader(globString, Promise.promisifyAll(this), customLoader)
 
       this.on('changed', function (filename) {
         loader.emit('change', loader.getAffectedFiles(filename))
@@ -38,6 +38,8 @@ function WatcherLoader(globString, watcher, loader) {
   this.globString = globString
   this.watcher = watcher
   this.links = {}
+  this.watching = {}
+  this.toWatch = {}
 
 }
 
@@ -62,11 +64,21 @@ WatcherLoader.prototype = merge(new EventEmitter, {
       this.links[fname][path.resolve(inlineParent)] = true
     }
 
-    if(!minimatch(filename, this.globString)) {
-      this.watcher.add(filename)
+    if(!(filename in this.watching) && !minimatch(filename, this.globString)) {
+      this.toWatch[filename] = true
     }
 
     return this.fileLoader(filename, inlineParent)
+  },
+  updateWatches: function () {
+    var self = this
+    return this.watcher.addAsync(Object.keys(this.toWatch))
+      .then(function () {
+        Object.keys(self.toWatch).forEach(function (filename) {
+          self.watching[filename] = true
+        })
+        self.toWatch = {}
+      })
   }
 })
 
@@ -82,10 +94,21 @@ function watch (globString, options, renderer, initialDone) {
     function build (filenames) {
       // only rebuild those that match the original glob
       return Promise.all(filenames.filter(function (filename) {
-        return minimatch(filename, globString)
-      }).map(function (filename) {
+        if(path.isAbsolute(filename)) {
+          return minimatch(path.relative(process.cwd(), filename), globString)
+        } else {
+          return minimatch(filename, globString)
+        }
+      })).map(function (filename) {
         return quantum.read.single(filename, opts)
-      })).then(renderer)
+      })
+      .then(function (objs) {
+        return loader.updateWatches().then(function () { return objs })
+      }).then(function (objs) {
+        if (objs.length > 0) {
+          return renderer(objs)
+        }
+      })
     }
 
     var debouncedBuild = debounce(build, 5)
@@ -95,7 +118,11 @@ function watch (globString, options, renderer, initialDone) {
 
     // perform the initial load/render
     glob(globString, function(err, filenames) {
-      build(filenames)
+      if (err) {
+        console.error(err)
+      } else {
+        build(filenames)
+      }
     })
   })
 
