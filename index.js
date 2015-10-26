@@ -116,14 +116,13 @@ function watch (globString, options, renderer, initialDone) {
 
     loader.on('change', debouncedBuild)
 
-    // perform the initial load/render
-    glob(globString, function(err, filenames) {
-      if (err) {
-        console.error(err)
-      } else {
-        build(filenames)
-      }
-    })
+    // return a function that allows manual triggering of a full build
+    return function () {
+      return glob(globString)
+        .then(function (filenames) {
+          build(filenames)
+        })
+    }
   })
 
 }
