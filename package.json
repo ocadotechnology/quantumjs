@@ -18,7 +18,6 @@
   "devDependencies": {
     "blanket": "^1.1.7",
     "chai": "^2.3.0",
-    "hexagon-js": "^0.12.7",
     "html-file-cov": "^1.0.0",
     "mocha": "^2.3.3"
   },
