@@ -335,7 +335,7 @@ Page.prototype.addAssets = function(obj) {
         page.scripts[k] = true
         promises.push(loadAsset(obj.js[k])
           .then(function(p){
-            page.scripts[k] = page.body.append(page.create('script').text(p), true)
+            page.scripts[k] = page.body.append(page.create('script').text(p, true), true)
           }))
       }
     })
@@ -347,7 +347,7 @@ Page.prototype.addAssets = function(obj) {
         page.styles[k] = true
         promises.push(loadAsset(obj.css[k])
           .then(function(p){
-            page.styles[k] = page.head.append(page.create('style').text(p), true)
+            page.styles[k] = page.head.append(page.create('style').text(p, true), true)
           }))
       }
     })
