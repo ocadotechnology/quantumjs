@@ -13,7 +13,7 @@
 	<array>
 		<dict>
 			<key>begin</key>
-			<string>(@js)\s*$|(@codeblock) (js)\s*$</string>
+			<string>(@{1,2}js)\s*$|(@{1,2}codeblock) (js)\s*$</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -46,7 +46,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>(@json)\s*$|(@codeblock) (json)\s*$</string>
+			<string>(@{1,2}json)\s*$|(@{1,2}codeblock) (json)\s*$</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -79,7 +79,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>(@html)\s*$|(@codeblock) (html)\s*$</string>
+			<string>(@{1,2}html)\s*$|(@{1,2}codeblock) (html)\s*$</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -112,7 +112,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>(@css)\s*$|(@codeblock) (css)\s*$</string>
+			<string>(@{1,2}css)\s*$|(@{1,2}codeblock) (css)\s*$</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -144,8 +144,28 @@
 			</array>
 		</dict>
 		<dict>
+			<key>match</key>
+			<string>\t</string>
+			<key>name</key>
+			<string>invalid.illegal.um</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>@@@+</string>
+			<key>name</key>
+			<string>invalid.illegal.um</string>
+		</dict>
+		<dict>
 			<key>begin</key>
-			<string>(@[^\[\(: ]*)</string>
+			<string>#</string>
+			<key>end</key>
+			<string>$</string>
+			<key>name</key>
+			<string>comment.line.um</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(@{1,2}[^\[\(: ]*)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -174,25 +194,11 @@
 					<key>begin</key>
 					<string>\[</string>
 					<key>end</key>
-					<string>\]</string>
+					<string>\]{1,2}</string>
 					<key>name</key>
 					<string>string.um</string>
 				</dict>
 			</array>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>\t</string>
-			<key>name</key>
-			<string>invalid.illegal.um</string>
-		</dict>
-		<dict>
-			<key>begin</key>
-			<string>#</string>
-			<key>end</key>
-			<string>$</string>
-			<key>name</key>
-			<string>comment.line.um</string>
 		</dict>
 	</array>
 	<key>scopeName</key>
