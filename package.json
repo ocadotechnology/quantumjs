@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "James Smyth <james.smyth@ocado.com>",
+  "publishConfig": {
+    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
+  },
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.10.2",
@@ -14,6 +17,7 @@
     "gaze": "^0.5.2",
     "glob": "^5.0.15",
     "merge": "^1.2.0",
-    "minimatch": "^3.0.0"
+    "minimatch": "^3.0.0",
+    "quantum-js": "^0.1.1"
   }
 }
