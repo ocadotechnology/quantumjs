@@ -113,10 +113,8 @@ module.exports = function(options) {
   }
 
   // creates a hexagon tree
-  function createTree(page, clas, header, content) {
-    var id = page.nextId()
-    page.body.add(page.create('script').text('new hx.Tree("#' + id + '");\n'), true)
-    return page.create('div').class('qm-api-item ' + clas + ' hx-tree').attr('id', id)
+  function createTree (page, clas, header, content) {
+    return page.create('div').class('qm-api-tree qm-api-item ' + clas + ' hx-tree')
       .add(page.create('div').class('hx-tree-node')
         .add(page.create('div').class('hx-tree-node-parent')
           .add(page.create('div').class('hx-tree-node-content').add(header)))
@@ -319,13 +317,13 @@ module.exports = function(options) {
 
   /* transforms */
 
-  function api(entity, page, transforms) {
+  function api (entity, page, transforms) {
     return page.addAssets({
-        css: { 'quantum-api.css': __dirname + '/client/quantum-api.css' },
-        js: { 'quantum-api.js': __dirname + '/client/quantum-api.js' }
-      }).then(function() {
-        return createApiLike('qm-api')(entity, page, transforms)
-      })
+      css: { 'quantum-api.css': __dirname + '/client/quantum-api.css' },
+      js: { 'quantum-api.js': __dirname + '/client/quantum-api.js' }
+    }).then(function () {
+      return createApiLike('qm-api')(entity, page, transforms)
+    })
   }
 
   function example(entity, page, transforms) {
@@ -357,7 +355,7 @@ module.exports = function(options) {
     addCodeSection('css', 'CSS')
     addCodeSection('json', 'JSON')
 
-    var code = page.create('div').class('qm-api-example-code qm-collapsible')
+    var code = page.create('div').class('qm-api-example-code qm-api-collapsible')
       .add(page.create('div').class('hx-collapsible-heading').text('Code'))
       .add(page.create('div').class('hx-collapsible-content')
         .add(page.create('div').class('qm-api-code-container')
