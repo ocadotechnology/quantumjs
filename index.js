@@ -153,16 +153,16 @@ function randomId() {
   return res.join('')
 }
 
-transforms.js = function(entity, page, transforms) {
-  page.body.add(page.create('script').text(entity.cs()), true)
+transforms.js = function (entity, page, transforms) {
+  page.body.add(page.create('script').text(entity.cs(), true), true)
 }
 
-transforms.coffee = function(entity, page, transforms) {
-  page.body.add(page.create('script').text(coffeescript.compile(entity.cs())), true)
+transforms.coffee = function (entity, page, transforms) {
+  page.body.add(page.create('script').text(coffeescript.compile(entity.cs()), true), true)
 }
 
-transforms.css = function(entity, page, transforms) {
-  page.head.add(page.create('style').text(entity.cs()), true)
+transforms.css = function (entity, page, transforms) {
+  page.head.add(page.create('style').text(entity.cs(), true), true)
 }
 
 //TODO
@@ -180,24 +180,23 @@ function highlightCode(language, code){
   }
 }
 
-transforms.codeblock = function(entity, page, transform) {
+transforms.codeblock = function (entity, page, transform) {
   return page.addAssets({css: {
       'code-highlight.css': __dirname + '/client/code-highlight.css'
-    }}).then(function() {
-
-      return page.create('div').class('codeblock language-' + entity.ps())
-        .add(page.create('pre').text(highlightCode(entity.ps(), entity.cs())))
-    })
+  }}).then(function () {
+    return page.create('div').class('codeblock language-' + entity.ps())
+      .add(page.create('pre').text(highlightCode(entity.ps(), entity.cs()), true))
+  })
 }
 
-transforms.code = function(entity, page, transform) {
+transforms.code = function (entity, page, transform) {
   return page.addAssets({css: {
       'code-highlight.css': __dirname + '/client/code-highlight.css'
-    }}).then(function() {
-      return page.create('code')
-        .class('code language-' + entity.ps())
-        .text(highlightCode(entity.ps(), entity.cs()))
-    })
+  }}).then(function () {
+    return page.create('code')
+      .class('code language-' + entity.ps())
+      .text(highlightCode(entity.ps(), entity.cs()), true)
+  })
 }
 
 // flattens out namespaced renderers into a single object
