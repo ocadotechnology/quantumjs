@@ -1,6 +1,6 @@
 {
   "name": "quantum-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The quantum parser, selection api and construction api",
   "main": "lib/index.js",
   "directories": {
