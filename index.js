@@ -52,6 +52,19 @@ function elementyPromise(promise) {
   return promise
 }
 
+var entityMap = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;'
+}
+
+function escapeHTML (text) {
+  return String(text).replace(/[&<>"'\/]/g, function (s) {return entityMap[s]})
+}
+
 // sets the unique id (if you need to refer to the element in the future)
 Element.prototype.uuid = function(id) {
   if(arguments.length === 0) {
@@ -191,12 +204,12 @@ Element.prototype.append = function(element, addToEnd) {
 };
 
 // adds text to the content of the element
-Element.prototype.text = function(text) {
-  if(text !== undefined) {
-    this.content.push(text)
+Element.prototype.text = function (text, dontEscape) {
+  if (text !== undefined) {
+    this.content.push(dontEscape ? text : escapeHTML(text))
   }
   return this
-};
+}
 
 Element.prototype.removeChild = function(element) {
   var index = this.content.indexOf(element)
@@ -273,14 +286,14 @@ Page.prototype.create = function(type, uid) {
 };
 
 // create an element
-Page.prototype.textNode = function(text, uid) {
-  if(uid === undefined) {
+Page.prototype.textNode = function (text, uid, dontEscape) {
+  if (uid === undefined) {
     uid = nextId()
   }
-  var element = new TextElement(this, text, uid)
+  var element = new TextElement(this, (dontEscape ? text : escapeHTML(text)), uid)
   this.elements[uid] = element
   return element
-};
+}
 
 // get an element by its uid
 Page.prototype.get = function(uid) {
