@@ -349,6 +349,23 @@ describe('parse', function() {
     })
 
 
+    it('@@ should not parse any of the content', function () {
+      tokenize('@@one\n  @two').should.eql([
+        { type: 'TYPE', value: 'one'},
+        { type: 'INDENT', value: 2},
+        { type: 'CONTENT', value: '@two'}
+      ])
+    })
+
+    it('it should resume parsing like normal after an @@ block', function () {
+      tokenize('@@one\n  @two\n@three').should.eql([
+        { type: 'TYPE', value: 'one'},
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: '@two'},
+        { type: 'DEDENT', value: 2 },
+        { type: 'TYPE', value: 'three' },
+      ])
+    })
 
 
   })
