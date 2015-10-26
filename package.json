@@ -10,7 +10,13 @@
     "test": "./node_modules/mocha/bin/mocha",
     "coverage": "./node_modules/mocha/bin/mocha -R html-file-cov"
   },
-  "author": "james.smyth@ocado.com",
+  "author": "James Smyth <james.smyth@ocado.com>",
+  "contributors": [
+    "Charlie Frater <charlie.frater@ocado.com>"
+  ],
+  "publishConfig": {
+    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
+  },
   "license": "MIT",
   "devDependencies": {
     "blanket": "^1.1.7",
