@@ -1,4 +1,3 @@
-var blanket  = require('blanket')('../')
 var chai     = require('chai')
 var version  = require('..')
 var should   = chai.should()
