@@ -10,6 +10,9 @@
     "test": "./node_modules/mocha/bin/mocha",
     "coverage": "./node_modules/mocha/bin/mocha -R html-file-cov"
   },
+  "publishConfig": {
+    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
+  },
   "author": "james.smyth@ocado.com",
   "license": "MIT",
   "dependencies": {
