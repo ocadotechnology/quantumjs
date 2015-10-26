@@ -7,8 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
-    "coverage": "./node_modules/mocha/bin/mocha -R html-file-cov"
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
   "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
@@ -24,13 +23,8 @@
     "chai-as-promised": "^5.1.0",
     "fs-extra": "^0.23.0",
     "html-file-cov": "^1.0.0",
+    "istanbul": "^0.4.0",
     "mocha": "^2.2.5"
-  },
-  "config": {
-    "blanket": {
-      "data-cover-never": "node_modules",
-      "pattern": "lib"
-    }
   },
   "dependencies": {
     "bluebird": "^2.9.27",

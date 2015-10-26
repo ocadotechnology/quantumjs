@@ -1,4 +1,3 @@
-var blanket  = require('blanket')('../lib')
 var chai     = require('chai')
 var should = chai.should()
 var parse = require('../lib').parse
