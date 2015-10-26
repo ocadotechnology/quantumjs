@@ -7,23 +7,21 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
-    "coverage": "mocha -R html-file-cov"
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
+  },
+  "publishConfig": {
+    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
   },
   "author": "james.smyth@ocado.com",
   "license": "MIT",
   "dependencies": {
-    "quantum-js": "^0.1.0"
+    "quantum-js": "^0.1.1"
   },
   "devDependencies": {
     "blanket": "^1.1.7",
     "chai": "^2.3.0",
-    "html-file-cov": "^1.0.0"
-  },
-  "config": {
-    "blanket": {
-      "data-cover-never": "node_modules",
-      "pattern": "index.js"
-    }
+    "html-file-cov": "^1.0.0",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.3"
   }
 }
