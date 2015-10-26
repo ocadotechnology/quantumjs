@@ -1,8 +1,7 @@
-blanket  = require('blanket')('..')
-chai     = require('chai')
-template = require('..')
-should = chai.should()
-quantum  = require('quantum-js')
+var chai     = require('chai')
+var template = require('..')
+var should = chai.should()
+var quantum  = require('quantum-js')
 
 describe('Template', function() {
   // promise friendly version of 'it'
