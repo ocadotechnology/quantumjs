@@ -1,4 +1,3 @@
-blanket  = require('blanket')('../')
 chai     = require('chai')
 dom      = require('quantum-dom')
 html     = require('..')
