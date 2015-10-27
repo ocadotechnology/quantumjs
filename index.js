@@ -1,5 +1,5 @@
 var Promise      = require('bluebird')
-var glob         = require('glob')
+var glob         = Promise.promisify(require('glob'))
 var gaze         = require('gaze')
 var quantum      = require('quantum-js')
 var merge        = require('merge')
@@ -87,7 +87,7 @@ function watch (globString, options, renderer, initialDone) {
 
   var opts = merge({}, options)
 
-  createWatcher(globString, opts.loader).then(function (loader) {
+  return createWatcher(globString, opts.loader).then(function (loader) {
 
     opts.loader = function (filename, inlineParent) { return loader.loader(filename, inlineParent) }
 
@@ -118,10 +118,7 @@ function watch (globString, options, renderer, initialDone) {
 
     // return a function that allows manual triggering of a full build
     return function () {
-      return glob(globString)
-        .then(function (filenames) {
-          build(filenames)
-        })
+      return glob(globString).then(build)
     }
   })
 
