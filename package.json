@@ -1,6 +1,6 @@
 {
   "name": "quantum-dom",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A virtual dom builder",
   "main": "index.js",
   "directories": {

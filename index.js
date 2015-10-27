@@ -323,16 +323,23 @@ function loadAsset (filename) {
 }
 
 // adds resources to the page from files. if an asset already exists it will not be reloaded
-Page.prototype.addAssets = function (obj) {
+Page.prototype.addAssets = function (obj, options) {
   var promises = []
   var page = this
 
+  if (!options) {
+    options = {}
+  }
+
   if (obj.js) {
     Object.keys(obj.js).forEach(function (k) {
-      if (!page.scripts[k]) {
-        page.scripts[k] = true
+      if (!page.scripts[k] || options.override) {
+        if (!page.scripts[k]) {
+          page.scripts[k] = page.body.append(page.create('script'), true)
+        }
         promises.push(loadAsset(obj.js[k])
           .then(function (p) {
+            page.scripts[k].remove()
             page.scripts[k] = page.body.append(page.create('script').text(p, true), true)
           }))
       }
@@ -341,10 +348,13 @@ Page.prototype.addAssets = function (obj) {
 
   if (obj.css) {
     Object.keys(obj.css).forEach(function (k) {
-      if (!page.styles[k]) {
-        page.styles[k] = true
+      if (!page.styles[k] || options.override) {
+        if (!page.styles[k]) {
+          page.styles[k] = page.head.append(page.create('style'), true)
+        }
         promises.push(loadAsset(obj.css[k])
           .then(function (p) {
+            page.styles[k].remove()
             page.styles[k] = page.head.append(page.create('style').text(p, true), true)
           }))
       }
