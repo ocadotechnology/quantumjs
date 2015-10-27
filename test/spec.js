@@ -1,7 +1,5 @@
-chai     = require('chai')
+chai = require('chai')
 api = require('..')
 should = chai.should()
 
-describe('api', function() {
-
-})
+describe('api', function () {})

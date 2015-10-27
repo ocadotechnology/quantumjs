@@ -13,7 +13,7 @@
 
 */
 
-//TODO:
+// TODO:
 // - optional params
 // - default values
 // - changelog
@@ -23,19 +23,19 @@
 
 var quantum = require('quantum-js')
 
-module.exports = function(options) {
+module.exports = function (options) {
   options = options || {}
   var types = options.types || {}
 
   // creates a span containing one or more / separated types (complete with links for known types)
-  function createType(type, page) {
-    if(type === undefined || type === '') {
+  function createType (type, page) {
+    if (type === undefined || type === '') {
       return
     }
 
     var container = page.create('span')
-    type.split('/').forEach(function(part){
-      if(part in types) {
+    type.split('/').forEach(function (part) {
+      if (part in types) {
         container = container.add(page.create('a').class('qm-api-type-link').attr('href', types[part]).text(part))
       } else {
         continer = container.add(page.create('span').text(part))
@@ -45,11 +45,11 @@ module.exports = function(options) {
     return container
   }
 
-  function createTagClasses(entity) {
+  function createTagClasses (entity) {
     var tags = []
 
-    function maybeTag(name, force) {
-      if(entity.has(name) || force) {
+    function maybeTag (name, force) {
+      if (entity.has(name) || force) {
         tags.push(name)
       }
     }
@@ -64,10 +64,10 @@ module.exports = function(options) {
     return tags
   }
 
-  function createTags(entity, page) {
+  function createTags (entity, page) {
     var tags = page.create('span').class('qm-api-header-tags')
 
-    createTagClasses(entity).forEach(function(name) {
+    createTagClasses(entity).forEach(function (name) {
       tags.add(page.create('span').class('qm-api-tag qm-api-tag-' + name).text(name))
     })
 
@@ -75,8 +75,8 @@ module.exports = function(options) {
   }
 
   // general template for headers (handles the tags automatically, just provide the details span)
-  function createHeader(type, details, entity, page, transforms) {
-    var tagClasses = createTagClasses(entity).map(function(name) { return 'qm-api-' + name }).join(' ')
+  function createHeader (type, details, entity, page, transforms) {
+    var tagClasses = createTagClasses(entity).map(function (name) { return 'qm-api-' + name }).join(' ')
 
     return page.create('div').class('qm-api-header qm-api-' + type + '-header')
       .add(details.class('qm-api-header-details ' + tagClasses))
@@ -84,26 +84,26 @@ module.exports = function(options) {
   }
 
   // create a notice section XXX: change to use hexagon's notices?
-  function createNotice(type, title) {
-    return function(entity, page, transforms) {
+  function createNotice (type, title) {
+    return function (entity, page, transforms) {
       if (entity.has(type)) {
         var notice = entity.select(type)
         notice.removeAll('issue')
 
         if (notice.content.length) {
           return page.create('div').class('qm-api-notice qm-api-notice-' + type)
-            .add(page.create('div').class('qm-api-notice-header qm-api-notice-' + type  + '-header').text(title))
-            .add(page.create('div').class('qm-api-notice-body qm-api-notice-' + type  + '-body')
+            .add(page.create('div').class('qm-api-notice-header qm-api-notice-' + type + '-header').text(title))
+            .add(page.create('div').class('qm-api-notice-body qm-api-notice-' + type + '-body')
               .add(notice.transform(transforms))
-            )
+          )
         }
       }
     }
   }
 
   // creates a group of items (like all the methods on a prototype, or all the properties on an object)
-  function createItemGroup(type, title) {
-    return function(entity, page, transforms) {
+  function createItemGroup (type, title) {
+    return function (entity, page, transforms) {
       if (entity.has(type)) {
         return page.create('div').class('qm-api-' + type + '-group')
           .add(page.create('h2').text(title))
@@ -123,37 +123,35 @@ module.exports = function(options) {
             .add(page.create('div').class('hx-tree-node-content').add(content)))))
   }
 
-  function createItemBuilder(opts) {
-    return function(clas) {
-
+  function createItemBuilder (opts) {
+    return function (clas) {
       var standard = [deprecated, removed]
 
-      return function(entity, page, transforms) {
-
+      return function (entity, page, transforms) {
         // render as something else if the type parameter matches
         // (eg @property bob [Function] should be rendered as a function)
         var others = opts.renderAsOther || {}
         var otherKeys = Object.keys(others)
-        for(var i=0; i<otherKeys.length; i++) {
+        for (var i = 0; i < otherKeys.length; i++) {
           var name = otherKeys[i]
-          if(entity.params[1] === name || (entity.params[1] === undefined && entity.params[0] === name)) {
+          if (entity.params[1] === name || (entity.params[1] === undefined && entity.params[0] === name)) {
             return others[name](clas)(entity, page, transforms)
           }
         }
 
         var content = page.create('div').class('qm-item-content')
 
-        standard.concat(opts.content).forEach(function(builder){
+        standard.concat(opts.content).forEach(function (builder) {
           content = content.add(builder(entity, page, transforms))
         })
 
         if (opts.header) {
-          //XXX: do optional check
+          // XXX: do optional check
 
-          var extraHeaderClasses = (entity.type[entity.type.length-1] === '?') ? ' qm-optional' : ''
+          var extraHeaderClasses = (entity.type[entity.type.length - 1] === '?') ? ' qm-optional' : ''
           var header = page.create('div').class('qm-item-header' + extraHeaderClasses)
 
-          opts.header.forEach(function(builder) {
+          opts.header.forEach(function (builder) {
             header = header.add(builder(entity, page, transforms))
           })
 
@@ -169,12 +167,11 @@ module.exports = function(options) {
   /* header building blocks */
 
   // creates a header for function type items
-  function functionHeader(entity, page, transforms) {
-
+  function functionHeader (entity, page, transforms) {
     var name = page.create('span').class('qm-api-function-name').text(entity.params[0])
 
-    var params = entity.selectAll(['param', 'param?']).map(function(paramEntity) {
-      var isOptional = paramEntity.type[paramEntity.type.length-1] === '?'
+    var params = entity.selectAll(['param', 'param?']).map(function (paramEntity) {
+      var isOptional = paramEntity.type[paramEntity.type.length - 1] === '?'
       return page.create('span').class(isOptional ? 'qm-api-function-param qm-api-optional' : 'qm-api-function-param')
         .add(page.create('span').class('qm-api-function-param-name').text(paramEntity.params[0]))
         .add(page.create('span').class('qm-api-function-param-type').add(createType(paramEntity.params[1], page)))
@@ -190,11 +187,10 @@ module.exports = function(options) {
     return createHeader('function', details, entity, page, transforms)
   }
 
-  function constructorHeader(entity, page, transforms) {
-
+  function constructorHeader (entity, page, transforms) {
     var name = page.create('span').class('qm-api-function-name').text('constructor')
 
-    var params = entity.selectAll(['param', 'param?']).map(function(paramEntity) {
+    var params = entity.selectAll(['param', 'param?']).map(function (paramEntity) {
       return page.create('span').class('qm-api-function-param')
         .add(page.create('span').class('qm-api-function-param-name').text(paramEntity.params[0]))
         .add(page.create('span').class('qm-api-function-param-type').add(createType(paramEntity.params[1], page)))
@@ -211,8 +207,7 @@ module.exports = function(options) {
   }
 
   // creates a header for property type items
-  function propertyHeader(entity, page, transforms) {
-
+  function propertyHeader (entity, page, transforms) {
     var details = page.create('span')
       .add(page.create('span').class('qm-api-property-name').text(entity.params[0] || ''))
       .add(page.create('span').class('qm-api-property-type').add(createType(entity.params[1], page)))
@@ -222,10 +217,9 @@ module.exports = function(options) {
   }
 
   // creates a header for entity type items
-  function entityHeader(entity, page, transforms) {
-
+  function entityHeader (entity, page, transforms) {
     var details = page.create('span')
-      .add(page.create('span').class('qm-api-entity-name').text('@'+entity.params[0] || ''))
+      .add(page.create('span').class('qm-api-entity-name').text('@' + entity.params[0] || ''))
       .add(page.create('span').class('qm-api-entity-params').text(entity.select('params').ps()))
       .add(page.create('span').class('qm-api-entity-content').text(entity.select('params').cs()))
 
@@ -234,7 +228,7 @@ module.exports = function(options) {
   }
 
   // creates a header for type items
-  function typeHeader(entity, page, transforms) {
+  function typeHeader (entity, page, transforms) {
     var details = page.create('span')
       .add(page.create('span').class('qm-api-type-name').add(createType(entity.params[0], page)))
 
@@ -243,7 +237,7 @@ module.exports = function(options) {
 
   /* content building blocks */
 
-  function description(entity, page, transforms) {
+  function description (entity, page, transforms) {
     if (entity.has('description')) {
       return page.create('div').class('qm-api-description').add(entity.select('description').transform(transforms))
     } else {
@@ -326,14 +320,14 @@ module.exports = function(options) {
     })
   }
 
-  function example(entity, page, transforms) {
+  function example (entity, page, transforms) {
     var body = page.create('div').class('qm-api-example-body')
       .add(entity.transform(transforms))
 
     var codeBody = page.create('div').class('qm-api-example-code-body')
 
-    function addCodeSection(type, title) {
-      if(entity.has(type)) {
+    function addCodeSection (type, title) {
+      if (entity.has(type)) {
         var subEntity = entity.select(type)
         var fake = quantum.select({
           content: [{
@@ -360,8 +354,8 @@ module.exports = function(options) {
       .add(page.create('div').class('hx-collapsible-content')
         .add(page.create('div').class('qm-api-code-container')
           .add(codeBody)
-        )
       )
+    )
 
     return page.create('div').class('qm-api-example')
       .add(body)
