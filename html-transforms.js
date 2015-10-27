@@ -166,9 +166,7 @@ module.exports = function (options) {
       var extra = page.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
     }
 
-    page.body.add(page.create('script').text('new hx.Collapsible("#' + id + '");\n'), true)
-
-    return page.create('div').class('qm-changelog-item hx-collapsible').id(id)
+    return page.create('div').class('qm-changelog-item hx-collapsible')
       .add(page.create('div').class('qm-changelog-item-head hx-collapsible-heading hx-collapsible-heading-no-hover hx-input-group hx-input-group-full-width')
         .add(page.create('button').class('hx-collapsible-toggle hx-btn hx-info'))
         .add(page.create('div').class('qm-changelog-item-title hx-section hx-no-margin')
@@ -190,6 +188,9 @@ module.exports = function (options) {
     return page.addAssets({
         css: {
         'changelog.css': __dirname + '/client/changelog.css'
+        },
+        js: {
+        'changelog.js': __dirname + '/client/changelog.js'
         }
       })
       .then(function() {
