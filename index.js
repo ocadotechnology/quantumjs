@@ -1,9 +1,9 @@
 var quantum = require('quantum-js')
 
-function replacer(variables, str) {
+function replacer (variables, str) {
   var res = str
-  variables.forEach(function(v) {
-    if (typeof(v.value) === 'object') {
+  variables.forEach(function (v) {
+    if (typeof (v.value) === 'object') {
       var val = JSON.stringify(v.value)
     } else {
       var val = v.value
@@ -13,12 +13,12 @@ function replacer(variables, str) {
   return res
 }
 
-function processEntity(entity, dictionary, content) {
+function processEntity (entity, dictionary, content) {
   var res = content.slice(0)
-  if(entity && entity.content) {
-    entity.content.forEach(function(child){
+  if (entity && entity.content) {
+    entity.content.forEach(function (child) {
       var r = template(child, dictionary)
-      if(Array.isArray(r)){
+      if (Array.isArray(r)) {
         res = res.concat(r)
       } else {
         res.push(r)
@@ -29,14 +29,14 @@ function processEntity(entity, dictionary, content) {
   return res
 }
 
-function template(entity, variables) {
-  if(typeof(entity) === 'string') {
+function template (entity, variables) {
+  if (typeof (entity) === 'string') {
     return replacer(variables, entity)
   } else {
     var content = []
 
-    if(entity.type === 'for') {
-      if(entity.params.length < 3) {
+    if (entity.type === 'for') {
+      if (entity.params.length < 3) {
         throw new Error('for loop has wrong arguments: for ' + entity.params.join(' '))
       }
 
@@ -44,7 +44,7 @@ function template(entity, variables) {
         key: entity.params[0],
         value: undefined
       }
-      if(entity.params[1] !== 'in') {
+      if (entity.params[1] !== 'in') {
         var variable2 = {
           key: entity.params[1],
           value: undefined
@@ -54,7 +54,7 @@ function template(entity, variables) {
         var source = entity.params[2]
       }
 
-      var items = variables.filter(function(key){
+      var items = variables.filter(function (key) {
         return key.key == source
       })[0]
 
@@ -62,23 +62,21 @@ function template(entity, variables) {
         items = items.value
       }
 
-      if(Array.isArray(items)) {
-
+      if (Array.isArray(items)) {
         variables.push(variable1)
 
-        items.forEach(function(value) {
+        items.forEach(function (value) {
           variable1.value = value
           content = processEntity(entity, variables, content)
         })
 
         variables.pop()
 
-      } else if(items !== undefined) {
-
+      } else if (items !== undefined) {
         variables.push(variable1)
         variables.push(variable2)
 
-        Object.keys(items).forEach(function(key) {
+        Object.keys(items).forEach(function (key) {
           variable1.value = key
           variable2.value = items[key]
           content = processEntity(entity, variables, content)
@@ -90,29 +88,25 @@ function template(entity, variables) {
 
       return content
 
-    } else if(entity.type == 'if') {
-
-
+    } else if (entity.type == 'if') {
       var variableName = entity.params[0]
-      var variable = variables.filter(function(key){
+      var variable = variables.filter(function (key) {
         return key.key == variableName
       })[0]
 
-      if(variable && variable.value) {
+      if (variable && variable.value) {
         content = processEntity(entity, variables, content)
       }
 
       return content
 
-    } else if(entity.type == 'ifnot') {
-
+    } else if (entity.type == 'ifnot') {
       var variableName = entity.params[0]
-      var variable = variables.filter(function(key){
+      var variable = variables.filter(function (key) {
         return key.key == variableName
       })[0]
 
-
-      if(!variable || !variable.value) {
+      if (!variable || !variable.value) {
         content = processEntity(entity, variables, content)
       }
 
@@ -124,7 +118,7 @@ function template(entity, variables) {
       if (entity.type || entity.params) {
         return {
           type: entity.type,
-          params: entity.params.map(function(str){
+          params: entity.params.map(function (str) {
             return replacer(variables, str)
           }),
           content: content
@@ -138,24 +132,24 @@ function template(entity, variables) {
   }
 }
 
-function prepareVariables(variables, prefix) {
+function prepareVariables (variables, prefix) {
   var keys = []
 
   var prefix = prefix || ''
 
   var vars = variables || {}
 
-  Object.keys(vars).forEach(function(key){
+  Object.keys(vars).forEach(function (key) {
     var value = vars[key]
-    if (value !== null && typeof(value) === 'object' && !Array.isArray(value)) {
+    if (value !== null && typeof (value) === 'object' && !Array.isArray(value)) {
       keys.push({
         key: prefix + key,
         value: value
       })
       keys = keys.concat(prepareVariables(value, prefix + key + '.'))
     } else {
-      if(Array.isArray(value)) {
-        value.forEach(function(v, i) {
+      if (Array.isArray(value)) {
+        value.forEach(function (v, i) {
           keys.push({
             key: prefix + key + '[' + i + ']',
             value: v
@@ -172,29 +166,28 @@ function prepareVariables(variables, prefix) {
   return keys
 }
 
-function applyVariables(parsed, variables) {
+function applyVariables (parsed, variables) {
   return template(parsed, variables)
 }
 
-
-function digestDefinitions(parsed) {
+function digestDefinitions (parsed) {
   var defsList = quantum.select(parsed).selectAll('define', {recursive: true})
   var definitions = {}
-  defsList.forEach(function(def){
+  defsList.forEach(function (def) {
     definitions[def.ps()] = def
   })
   return definitions
 }
 
-function applyDefinitions(parsed, definitions) {
-  if(typeof parsed === 'string') {
+function applyDefinitions (parsed, definitions) {
+  if (typeof parsed === 'string') {
     return parsed
-  } else if(parsed.type === 'define') {
+  } else if (parsed.type === 'define') {
     return undefined
-  } else if(definitions.hasOwnProperty(parsed.type)) {
+  } else if (definitions.hasOwnProperty(parsed.type)) {
     var selection = quantum.select(parsed)
 
-    //XXX: add sub-entites name.ps, name.cs, age.ps, age.cs, etc
+    // XXX: add sub-entites name.ps, name.cs, age.ps, age.cs, etc
     var variables = [
       {key: 'ps', value: selection.ps()},
       {key: 'cs', value: selection.cs()}
@@ -202,14 +195,14 @@ function applyDefinitions(parsed, definitions) {
 
     return template({type: '', ps: [], content: definitions[parsed.type].content}, variables).content
   } else {
-    if(Array.isArray(parsed.content)) {
+    if (Array.isArray(parsed.content)) {
       var content = []
-      parsed.content.forEach(function(c){
+      parsed.content.forEach(function (c) {
         var res = applyDefinitions(c, definitions)
-        if(res !== undefined) {
-          if(Array.isArray(res)){
+        if (res !== undefined) {
+          if (Array.isArray(res)) {
             content = content.concat(res)
-          } else{
+          } else {
             content.push(res)
           }
         }
@@ -232,10 +225,10 @@ function applyDefinitions(parsed, definitions) {
   }
 }
 
-module.exports = function(options) {
+module.exports = function (options) {
   var variables = prepareVariables(options ? options.variables : {})
 
-  return function(obj) {
+  return function (obj) {
     var definitions = digestDefinitions(obj.content)
 
     return {
