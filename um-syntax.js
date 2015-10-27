@@ -1,5 +1,4 @@
-module.exports = function(hljs){
-
+module.exports = function (hljs) {
   var INLINE_CONTENT = {
     className: 'content',
     begin: '\\[', end: '\\]',
@@ -30,5 +29,5 @@ module.exports = function(hljs){
         ]
       }
     ]
-  };
+  }
 }
