@@ -1,15 +1,15 @@
-var Promise      = require('bluebird')
-var glob         = Promise.promisify(require('glob'))
-var gaze         = require('gaze')
-var quantum      = require('quantum-js')
-var merge        = require('merge')
-var fs           = Promise.promisifyAll(require('fs'))
-var minimatch    = require('minimatch')
+var Promise = require('bluebird')
+var glob = Promise.promisify(require('glob'))
+var gaze = require('gaze')
+var quantum = require('quantum-js')
+var merge = require('merge')
+var fs = Promise.promisifyAll(require('fs'))
+var minimatch = require('minimatch')
 var EventEmitter = require('events').EventEmitter
-var path         = require('path')
-var debounce     = require('debounce')
+var path = require('path')
+var debounce = require('debounce')
 
-function createWatcher(globString, customLoader) {
+function createWatcher (globString, customLoader) {
   return new Promise(function (resolve, reject) {
     gaze(globString, function (watcher) {
       var loader = new WatcherLoader(globString, Promise.promisifyAll(this), customLoader)
@@ -27,12 +27,11 @@ function createWatcher(globString, customLoader) {
   })
 }
 
-function WatcherLoader(globString, watcher, loader) {
+function WatcherLoader (globString, watcher, loader) {
   EventEmitter.call(this)
 
-
   this.fileLoader = loader || function (filename, inlineParent) {
-    return fs.readFileAsync(filename, 'utf-8')
+      return fs.readFileAsync(filename, 'utf-8')
   }
 
   this.globString = globString
@@ -48,7 +47,7 @@ WatcherLoader.prototype = merge(new EventEmitter, {
     if (filename in this.links) {
       var self = this
       var res = [filename]
-      Object.keys(this.links[filename]).map(function(filename) {
+      Object.keys(this.links[filename]).map(function (filename) {
         res = res.concat(self.getAffectedFiles(filename))
       })
       return res
@@ -57,14 +56,14 @@ WatcherLoader.prototype = merge(new EventEmitter, {
     }
   },
   loader: function (filename, inlineParent) {
-    if(inlineParent) {
+    if (inlineParent) {
       var fname = path.resolve(filename)
 
       this.links[fname] = this.links[fname] || {}
       this.links[fname][path.resolve(inlineParent)] = true
     }
 
-    if(!(filename in this.watching) && !minimatch(filename, this.globString)) {
+    if (!(filename in this.watching) && !minimatch(filename, this.globString)) {
       this.toWatch[filename] = true
     }
 
@@ -82,19 +81,16 @@ WatcherLoader.prototype = merge(new EventEmitter, {
   }
 })
 
-
 function watch (globString, options, renderer, initialDone) {
-
   var opts = merge({}, options)
 
   return createWatcher(globString, opts.loader).then(function (loader) {
-
     opts.loader = function (filename, inlineParent) { return loader.loader(filename, inlineParent) }
 
     function build (filenames) {
       // only rebuild those that match the original glob
       return Promise.all(filenames.filter(function (filename) {
-        if(path.isAbsolute(filename)) {
+        if (path.isAbsolute(filename)) {
           return minimatch(path.relative(process.cwd(), filename), globString)
         } else {
           return minimatch(filename, globString)
@@ -102,9 +98,9 @@ function watch (globString, options, renderer, initialDone) {
       })).map(function (filename) {
         return quantum.read.single(filename, opts)
       })
-      .then(function (objs) {
-        return loader.updateWatches().then(function () { return objs })
-      }).then(function (objs) {
+        .then(function (objs) {
+          return loader.updateWatches().then(function () { return objs })
+        }).then(function (objs) {
         if (objs.length > 0) {
           return renderer(objs)
         }
@@ -112,7 +108,6 @@ function watch (globString, options, renderer, initialDone) {
     }
 
     var debouncedBuild = debounce(build, 5)
-
 
     loader.on('change', debouncedBuild)
 
