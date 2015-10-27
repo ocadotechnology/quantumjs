@@ -1,7 +1,7 @@
-var select       = require('quantum-js').select
-var dom          = require('quantum-dom')
-var html         = require('quantum-html')
-var Promise      = require('bluebird')
+var select = require('quantum-js').select
+var dom = require('quantum-dom')
+var html = require('quantum-html')
+var Promise = require('bluebird')
 
 /* Example:
 
@@ -22,7 +22,6 @@ var Promise      = require('bluebird')
         @api
           @prototype thing
             @description: A thing
-
 
       @added [Added thing]
         @description: Added thing description
@@ -59,7 +58,6 @@ var Promise      = require('bluebird')
 */
 
 module.exports = function (options) {
-
   function alternative (entity, page, transforms) {
     return page.create('div').class('qm-changelog-alternative')
       .add(page.create('div').class('qm-changelog-alternative-head').text('Alternative'))
@@ -73,14 +71,13 @@ module.exports = function (options) {
       .text('#' + entity.ps())
   }
 
-
   function entry (entity, page, transforms) {
     var type = options.tags[entity.type]
     var icon = page.create('i').class('fa ' + type.icon + ' ' + type.class.replace('hx-', 'hx-text-'))
 
     if (!!options.issueUrl && entity.has('issue')) {
       var heading = page.create('span')
-      entity.selectAll('issue').forEach( function (issueEntity, index) {
+      entity.selectAll('issue').forEach(function (issueEntity, index) {
         heading = heading
           .add(index > 0 ? ', ' : entity.ps() + ': ')
           .add(issue(issueEntity, page, transforms))
@@ -113,13 +110,11 @@ module.exports = function (options) {
           .add(extra)))
   }
 
-
   function label (page, type, count) {
     return page.create('div').class('qm-changelog-label hx-label ' + type.class)
-        .add(page.create('i').class('fa ' + type.icon))
-        .add(page.create('span').text(count));
+      .add(page.create('i').class('fa ' + type.icon))
+      .add(page.create('span').text(count))
   }
-
 
   function link (entity, page, transforms) {
     return page.create('a').class('qm-changelog-item-link hx-btn hx-info')
@@ -127,34 +122,31 @@ module.exports = function (options) {
       .add(entity.transform(transforms))
   }
 
-
   function item (entity, page, transforms) {
-
-
     var id = page.nextId()
     var tags = Object.keys(options.tags)
 
-    var unprocessedEntries = entity.selectAll(tags).sort( function (a, b) {
+    var unprocessedEntries = entity.selectAll(tags).sort(function (a, b) {
       return options.tags[a.type].order - options.tags[b.type].order
     })
 
     var entries = page.create('div').class('qm-changelog-entries')
-      .add(Promise.all( unprocessedEntries.map( function (entryEntity) {
+      .add(Promise.all(unprocessedEntries.map(function (entryEntity) {
         return entry(select(entryEntity), page, transforms)
       }))
     )
 
     var labels = page.create('div').class('qm-changelog-item-labels hx-section hx-no-margin')
     for (var key in options.tags) {
-      var count = unprocessedEntries.reduce(function(total, e){ return e.type == key ? total + 1 : total }, 0);
+      var count = unprocessedEntries.reduce(function (total, e) { return e.type == key ? total + 1 : total }, 0)
       if (count > 0) {
         labels = labels.add(label(page, options.tags[key], count))
       }
     }
 
     if (entity.has('link')) {
-      var links = Promise.all(entity.selectAll('link').map( function (linkEntity) {
-          return link(select(linkEntity), page, transforms);
+      var links = Promise.all(entity.selectAll('link').map(function (linkEntity) {
+        return link(select(linkEntity), page, transforms)
       }))
     }
 
@@ -179,30 +171,29 @@ module.exports = function (options) {
         .add(extra))
   }
 
-
-  function changelog(entity, page, transforms) {
-    var items = Promise.all(entity.selectAll('item').map( function (itemEntity) {
-      return item(itemEntity, page, transforms);
+  function changelog (entity, page, transforms) {
+    var items = Promise.all(entity.selectAll('item').map(function (itemEntity) {
+      return item(itemEntity, page, transforms)
     }))
 
     return page.addAssets({
-        css: {
+      css: {
         'changelog.css': __dirname + '/client/changelog.css'
-        },
-        js: {
+      },
+      js: {
         'changelog.js': __dirname + '/client/changelog.js'
-        }
-      })
-      .then(function() {
+      }
+    })
+      .then(function () {
         return page.create('div').class('qm-changelog')
           .add(page.create('div').class('qm-changelog-header').text(entity.ps()))
           .add(page.create('div').class('qm-changelog-body')
             .add(items)
-          )
+        )
       })
   }
 
-  function wrapper(entity, page, transforms) {
+  function wrapper (entity, page, transforms) {
     return page.create('div').class('qm-changelog-wrapper').add(entity.transform(transforms))
   }
 
