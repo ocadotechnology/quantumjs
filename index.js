@@ -126,7 +126,7 @@ transforms.head = function (entity, page, transform) {
 }
 
 transforms.html = function (entity, page, transform) {
-  return page.textNode(entity.cs())
+  return page.textNode(entity.cs(), undefined, true)
 }
 
 transforms.script = function (entity, page, transform) {

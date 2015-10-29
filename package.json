@@ -1,6 +1,6 @@
 {
   "name": "quantum-html",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "quantum to virtual dom transform + some common element renderers",
   "main": "index.js",
   "directories": {
