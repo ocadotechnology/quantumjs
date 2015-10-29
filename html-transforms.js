@@ -2,6 +2,7 @@ var select = require('quantum-js').select
 var dom = require('quantum-dom')
 var html = require('quantum-html')
 var Promise = require('bluebird')
+var flatten = require('flatten')
 
 /* Example:
 
@@ -75,15 +76,71 @@ module.exports = function (options) {
     var type = options.tags[entity.type]
     var icon = page.create('i').class('fa ' + type.icon + ' ' + type.class.replace('hx-', 'hx-text-'))
 
+    var headingSeparator = (entity.ps().indexOf('class') === 1 ? ' ' : '.')
+
+    var heading = page.create('div')
+
+    function partMap (separator) {
+      return function (part, index) {
+        var res = []
+        if (index > 0) {
+          res.push(separator)
+        }
+        res.push(getPart(part))
+        return res
+      }
+    }
+
+    function getPart (part) {
+      if (part.indexOf(', ') !== -1) {
+        return part.split(', ').map(partMap(', '))
+      } else if (part.indexOf(' ') !== -1) {
+        return part.split(' ')[0]
+      } else if (part.indexOf('/') !== -1) {
+        return part.split('/').map(partMap('/'))
+      } else {
+        return part
+      }
+    }
+
+    function convertFunction (item, beginSymb, endSymb) {
+      var parts = []
+      parts.push(convertToParts(item.slice(0, item.indexOf(beginSymb))))
+      parts.push(beginSymb)
+      parts.push(convertToParts(item.slice(item.indexOf(beginSymb) + 1, item.indexOf(endSymb))))
+      parts.push(endSymb)
+      return parts
+    }
+
+    function convertToParts (item) {
+      if (item.indexOf('(') !== -1) {
+        return convertFunction(item, '(', ')')
+      } else {
+        return [getPart(item)]
+      }
+    }
+
+    entity.ps().split(/\:[^\:]*\:/).filter(function (item) {
+      return item && item.length > 0
+    }).forEach(function (item, index) {
+      if (index > 0) {
+        heading = heading.add(headingSeparator)
+      }
+      if (headingSeparator === ' ') {
+        heading = heading.add('.').add(item)
+      } else {
+        flatten(convertToParts(item)).forEach(function (part) {
+          heading = heading.add(part)
+        })
+      }
+    })
+
     if (!!options.issueUrl && entity.has('issue')) {
-      var heading = page.create('span')
       entity.selectAll('issue').forEach(function (issueEntity, index) {
         heading = heading
-          .add(index > 0 ? ', ' : entity.ps() + ': ')
+          .add(index > 0 ? ', ' : ': ')
           .add(issue(issueEntity, page, transforms))
       })
-    } else {
-      var heading = entity.ps()
     }
 
     if (entity.has('description')) {
