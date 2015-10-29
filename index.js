@@ -1,9 +1,51 @@
 var quantum = require('quantum-js')
 var clone = require('clone')
 
+// function cloneEntity (entity) {
+//   var newObj = {
+//     type: entity.type,
+//     params: entity.params,
+//     content: entity.content.slice(0)
+//   }
+//   if (entity.original) {
+//     newObj.original = entity.original
+//   }
+//   return newObj
+// }
+
+// function cloneApiContentChild (child) {
+//   return {
+//     entity: cloneEntity(child.entity),
+//     parentKey: child.parentKey
+//   }
+// }
+
+// function cloneApiContent (apiContent) {
+//   var newObj = {}
+//   Object.keys(apiContent).forEach(function (key) {
+//     newObj[key] = cloneApiContentChild(apiContent[key])
+//   })
+//   return newObj
+// }
+
+// function cloneVersion (version) {
+//   return {
+//     api: version.api,
+//     apiContent: cloneApiContent(version.apiContent)
+//   }
+// }
+
+// function quickClone (object) {
+//   var newObj = {}
+//   Object.keys(object).forEach(function (key) {
+//     newObj[key] = cloneVersion(object[key])
+//   })
+//   return newObj
+// }
+
 function constructKey (parentKey, entity) {
   if (entity.type === 'function' || entity.type === 'method' || entity.type === 'constructor') {
-    return parentKey + ':' + entity.type + ':' + entity.ps() + '(' + entity.selectAll(['param', 'param?']).map(function (param) {  return param.ps() }).join(',') + ')'
+    return parentKey + ':' + entity.type + ':' + entity.ps() + '(' + entity.selectAll(['param', 'param?']).map(function (param) {  return param.ps() }).join(', ') + ')'
   } else {
     return parentKey + ':' + entity.type + ':' + entity.ps()
   }
@@ -35,8 +77,12 @@ function createItem (apiName, apiObject, options) {
     quantum.select(apiComponent).selectAll(tags).forEach(function (selection) {
       if (selection.type !== undefined) {
         var desc = quantum.create('description')
-        desc.content = selection.content
+        desc.content = selection.content.filter(function (e) {return !e.type || (e.type && e.type !== 'issue')  })
         var entry = quantum.create(selection.type).ps(key)
+        entry = entry.add(desc)
+        selection.selectAll('issue').forEach(function (i) {
+          entry = entry.add(i)
+        })
         item = item.add(entry.add(desc))
       }
     })
@@ -47,15 +93,17 @@ function createItem (apiName, apiObject, options) {
 
 function cloneAndRemoveTags (version) {
   var versionClone = clone(version, {circular: false})
+  // var versionClone = quickClone(version)
 
   for (apiName in versionClone) {
     var apiMap = versionClone[apiName].apiContent
 
     Object.keys(apiMap).forEach(function (key) {
-      if (apiMap[key].entity.has('removed')) {
+      var entity = quantum.select(apiMap[key].entity)
+      if (entity.has('removed')) {
         delete apiMap[key]
       } else {
-        apiMap[key].entity.removeAll(['added', 'updated', 'enhancement', 'docs', 'info', 'bugfix'])
+        entity.removeAll(['added', 'updated', 'enhancement', 'docs', 'info', 'bugfix'])
       }
     })
   }
@@ -127,7 +175,7 @@ function process (wrapper, options) {
             // check if the api-element has just been removed in the previous version, or if it does not exist
             // in the previous version). In either case, the api-element can be considered to be added (since it
             // did not exist in the previous version of the api)
-            if (!(key in previousApiContent) || previousApiContent[key].entity.has('removed')) {
+            if (!(key in previousApiContent) || quantum.select(previousApiContent[key].entity).has('removed')) {
               if (currentParent === undefined || key.indexOf(currentParent) !== 0) {
                 currentParent = key
 
@@ -278,6 +326,8 @@ module.exports = function (opts) {
   }
 
   options.targetVersions = opts.targetVersions
+  options.jsTypes = opts.jsTypes
+  options.issueUrl = opts.issueUrl
 
   var transform = function (obj) {
     return {
