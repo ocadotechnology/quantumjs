@@ -36,6 +36,7 @@
 
 .qm-changelog-entry {
   margin: 0.5em 0;
+  flex-wrap: nowrap;
 }
 
 .qm-changelog-entry-icon {
