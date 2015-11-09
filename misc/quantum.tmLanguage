@@ -19,23 +19,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-js.um</string>
+			<string>meta.quantum.embedded-js.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -52,23 +52,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-json.um</string>
+			<string>meta.quantum.embedded-json.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -85,23 +85,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-html.um</string>
+			<string>meta.quantum.embedded-html.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -118,23 +118,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-xml.um</string>
+			<string>meta.quantum.embedded-xml.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -151,23 +151,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-coffee.um</string>
+			<string>meta.quantum.embedded-coffee.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -184,23 +184,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-python.um</string>
+			<string>meta.quantum.embedded-python.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -217,23 +217,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-csharp.um</string>
+			<string>meta.quantum.embedded-csharp.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -250,23 +250,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-scala.um</string>
+			<string>meta.quantum.embedded-scala.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -283,23 +283,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-java.um</string>
+			<string>meta.quantum.embedded-java.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -316,23 +316,23 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 			</dict>
 			<key>end</key>
 			<string>(?=@)</string>
 			<key>name</key>
-			<string>meta.quantum.embedded-css.um</string>
+			<string>meta.quantum.embedded-css.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -345,13 +345,13 @@
 			<key>match</key>
 			<string>\t</string>
 			<key>name</key>
-			<string>invalid.illegal.um</string>
+			<string>invalid.illegal.quantum</string>
 		</dict>
 		<dict>
 			<key>match</key>
 			<string>@@@+</string>
 			<key>name</key>
-			<string>invalid.illegal.um</string>
+			<string>invalid.illegal.quantum</string>
 		</dict>
 		<dict>
 			<key>begin</key>
@@ -359,7 +359,7 @@
 			<key>end</key>
 			<string>$</string>
 			<key>name</key>
-			<string>comment.line.um</string>
+			<string>comment.line.quantum</string>
 		</dict>
 		<dict>
 			<key>begin</key>
@@ -369,15 +369,15 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.function.um</string>
+					<string>entity.name.function.quantum</string>
 				</dict>
 			</dict>
 			<key>contentName</key>
-			<string>variable.parameter.um</string>
+			<string>variable.parameter.quantum</string>
 			<key>end</key>
 			<string>(:|$|(?&lt;=[\)\]]) [^\[])|\n</string>
 			<key>name</key>
-			<string>meta.quantum.um</string>
+			<string>meta.quantum.quantum</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -386,7 +386,7 @@
 					<key>end</key>
 					<string>\)</string>
 					<key>name</key>
-					<string>variable.parameter.um</string>
+					<string>variable.parameter.quantum</string>
 				</dict>
 				<dict>
 					<key>begin</key>
@@ -394,12 +394,14 @@
 					<key>end</key>
 					<string>\]{1,2}</string>
 					<key>name</key>
-					<string>string.um</string>
+					<string>string.quantum</string>
 				</dict>
 			</array>
 		</dict>
 	</array>
 	<key>scopeName</key>
-	<string>source.um</string>
+	<string>source.quantum</string>
+	<key>uuid</key>
+	<string>18c5274f-0ee9-4e9c-82fd-285061644134</string>
 </dict>
 </plist>

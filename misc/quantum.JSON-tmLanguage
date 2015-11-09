@@ -1,15 +1,16 @@
 {
   "name": "Quantum",
-  "scopeName": "source.um",
+  "scopeName": "source.quantum",
   "fileTypes": ["quantum", "um"],
+  "uuid": "18c5274f-0ee9-4e9c-82fd-285061644134",
   "patterns": [
     {
-      "name": "meta.quantum.embedded-js.um",
+      "name": "meta.quantum.embedded-js.quantum",
       "begin": "(@{1,2}js)\\s*$|(@{1,2}codeblock) (js)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -19,12 +20,12 @@
       ]
     },
     {
-      "name": "meta.quantum.embedded-json.um",
+      "name": "meta.quantum.embedded-json.quantum",
       "begin": "(@{1,2}json)\\s*$|(@{1,2}codeblock) (json)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -34,12 +35,12 @@
       ]
     },
     {
-      "name": "meta.quantum.embedded-html.um",
+      "name": "meta.quantum.embedded-html.quantum",
       "begin": "(@{1,2}html)\\s*$|(@{1,2}codeblock) (html)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -49,12 +50,12 @@
       ]
     },
     {
-      "name": "meta.quantum.embedded-xml.um",
+      "name": "meta.quantum.embedded-xml.quantum",
       "begin": "(@{1,2}xml)\\s*$|(@{1,2}codeblock) (xml)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -64,12 +65,12 @@
       ]
     },
     {
-      "name": "meta.quantum.embedded-coffee.um",
+      "name": "meta.quantum.embedded-coffee.quantum",
       "begin": "(@{1,2}coffee)\\s*$|(@{1,2}codeblock) (coffee)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -79,12 +80,12 @@
       ]
     },
     {
-      "name": "meta.quantum.embedded-python.um",
+      "name": "meta.quantum.embedded-python.quantum",
       "begin": "(@{1,2}python)\\s*$|(@{1,2}codeblock) (python)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -94,12 +95,12 @@
       ]
     },
     {
-      "name": "meta.quantum.embedded-csharp.um",
+      "name": "meta.quantum.embedded-csharp.quantum",
       "begin": "(@{1,2}csharp)\\s*$|(@{1,2}codeblock) (csharp)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -109,12 +110,12 @@
       ]
     },
     {
-      "name": "meta.quantum.embedded-scala.um",
+      "name": "meta.quantum.embedded-scala.quantum",
       "begin": "(@{1,2}scala)\\s*$|(@{1,2}codeblock) (scala)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -124,12 +125,12 @@
       ]
     },
     {
-      "name": "meta.quantum.embedded-java.um",
+      "name": "meta.quantum.embedded-java.quantum",
       "begin": "(@{1,2}java)\\s*$|(@{1,2}codeblock) (java)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -139,12 +140,12 @@
       ]
     },
     {
-      "name": "meta.quantum.embedded-css.um",
+      "name": "meta.quantum.embedded-css.quantum",
       "begin": "(@{1,2}css)\\s*$|(@{1,2}codeblock) (css)\\s*$",
       "beginCaptures": {
-        "1": {"name": "entity.name.function.um"},
-        "2": {"name": "entity.name.function.um"},
-        "3": {"name": "variable.parameter.um"}
+        "1": {"name": "entity.name.function.quantum"},
+        "2": {"name": "entity.name.function.quantum"},
+        "3": {"name": "variable.parameter.quantum"}
       },
       "end": "(?=@)",
       "patterns": [
@@ -154,36 +155,36 @@
       ]
     },
     {
-      "name": "invalid.illegal.um",
+      "name": "invalid.illegal.quantum",
       "match": "\\t"
     },
     {
-      "name": "invalid.illegal.um",
+      "name": "invalid.illegal.quantum",
       "match": "@@@+"
     },
     {
-      "name": "comment.line.um",
+      "name": "comment.line.quantum",
       "begin": "^\\s*#",
       "end": "$"
     },
     {
-      "name": "meta.quantum.um",
+      "name": "meta.quantum.quantum",
       "begin": "(@{1,2}[^\\[\\(: ]*)",
       "beginCaptures": {
         "1": {
-          "name": "entity.name.function.um"
+          "name": "entity.name.function.quantum"
         }
       },
       "end": "(:|$|(?<=[\\)\\]]) [^\\[])|\\n",
-      "contentName": "variable.parameter.um",
+      "contentName": "variable.parameter.quantum",
       "patterns": [
         {
-          "name": "variable.parameter.um",
+          "name": "variable.parameter.quantum",
           "begin": "\\(",
           "end": "\\)"
         },
         {
-          "name": "string.um",
+          "name": "string.quantum",
           "begin": "\\[",
           "end": "\\]{1,2}"
         }
