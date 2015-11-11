@@ -101,13 +101,60 @@ module.exports = function (options) {
     }
   }
 
+  function sortEntities (a, b) {
+    if (a.params[0] < b.params[0]) return -1
+    else if (a.params[0] > b.params[0]) return 1
+  }
+
+  function organiseEntity (entity) {
+    var addedE = []
+    var updatedE = []
+    var existingE = []
+    var deprecatedE = []
+    var removedE = []
+
+    entity.content.forEach(function (e) {
+      var e = quantum.select(e)
+      if (e.has('removed')) {
+        removedE.push(e)
+      } else if (e.has('deprecated')) {
+        deprecatedE.push(e)
+      } else if (e.has('updated')) {
+        updatedE.push(e)
+      } else if (e.has('added')) {
+        addedE.push(e)
+      } else {
+        existingE.push(e)
+      }
+    })
+
+    addedE = addedE.sort(sortEntities)
+    updatedE = updatedE.sort(sortEntities)
+    existingE = existingE.sort(sortEntities)
+    deprecatedE = deprecatedE.sort(sortEntities)
+    removedE = removedE.sort(sortEntities)
+
+    entity.content = addedE.concat(
+      updatedE.concat(
+        existingE.concat(
+          deprecatedE.concat(
+            removedE
+          )
+        )
+      )
+    )
+    return entity
+  }
+
   // creates a group of items (like all the methods on a prototype, or all the properties on an object)
-  function createItemGroup (type, title) {
+  function createItemGroup (type, title, options) {
     return function (entity, page, transforms) {
       if (entity.has(type)) {
+        var entity = entity.filter(type)
+        if (!options || !options.noSort) entity = organiseEntity(entity)
         return page.create('div').class('qm-api-' + type + '-group')
           .add(page.create('h2').text(title))
-          .add(entity.filter(type).transform(transforms))
+          .add(entity.transform(transforms))
       }
     }
   }
@@ -250,7 +297,7 @@ module.exports = function (options) {
   var prototypes = createItemGroup('prototype', 'Prototypes')
   var constructors = createItemGroup('constructor', 'Constructors')
   var objects = createItemGroup('object', 'Objects')
-  var params = createItemGroup(['param', 'param?'], 'Arguments')
+  var params = createItemGroup(['param', 'param?'], 'Arguments', {noSort: true})
   var properties = createItemGroup(['property', 'property?'], 'Properties')
   var methods = createItemGroup('method', 'Methods')
   var events = createItemGroup('event', 'Events')
