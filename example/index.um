@@ -7,6 +7,18 @@
   @h1: Api
   @api
 
+    @property test [Number]
+      @description: Constructs a new animation that will be applied to the node specified.
+      @default 200
+
+    @property test2 [Number]
+      @description: Constructs a new animation that will be applied to the node specified.
+      @default
+        @codeblock js
+          function () {
+            return 1
+          }
+
     @function test
       @added
       @removed

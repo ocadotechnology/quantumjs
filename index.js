@@ -291,6 +291,16 @@ module.exports = function (options) {
       return page.create('div').class('qm-api-description').text(entity.cs().trim())
     }
   }
+
+  function defaultValue (entity, page, transforms) {
+    if (entity.has('default')) {
+      return page.create('div').class('qm-api-default')
+        .add(page.create('span').class('qm-api-default-key').text('Default: '))
+        .add(page.create('span').class('qm-api-default-value').add(entity.select('default').ps().trim()))
+        .add(entity.select('default').transform(transforms))
+    }
+  }
+
   var deprecated = createNotice('deprecated', 'Deprecated')
   var removed = createNotice('removed', 'Removed')
 
@@ -331,7 +341,7 @@ module.exports = function (options) {
 
   var createPropertyLike = createItemBuilder({
     header: [ propertyHeader],
-    content: [ description ],
+    content: [ description, defaultValue ],
     renderAsOther: { 'Function': createFunctionLike, 'Object': createObjectLike }
   })
 

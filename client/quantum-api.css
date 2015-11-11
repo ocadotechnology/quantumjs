@@ -312,6 +312,19 @@ body {
   display: none;
 }
 
+.qm-api-default {
+  margin-top: 0.5em;
+  padding: 0.5em;
+  background: white;
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+}
+
+.qm-api-default-key {
+  font-weight: bold;
+}
+
+.qm-api-default-value {}
+
 .hx-tree-node-parent {
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
 }
