@@ -13,14 +13,6 @@
 
 */
 
-// TODO:
-// - optional params
-// - default values
-// - changelog
-// - quantum @entity type
-// - classes
-// - move to a config powered setup (so other types can easily be defined)
-
 var quantum = require('quantum-js')
 
 module.exports = function (options) {
@@ -301,6 +293,19 @@ module.exports = function (options) {
     }
   }
 
+  function groups (entity, page, transforms) {
+    if (entity.has('group')) {
+      var sortedEntity = organiseEntity(entity.filter('group'))
+      return page.create('div').class('qm-api-group-group')
+        .add(Promise.all(sortedEntity.selectAll('group').map(function (e) {
+          return page.create('div').class('qm-api-group')
+            .add(page.create('h2').text(e.ps()))
+            .add(page.create('div').class('qm-api-group-content')
+              .add(e.transform(transforms)))
+        })))
+    }
+  }
+
   var deprecated = createNotice('deprecated', 'Deprecated')
   var removed = createNotice('removed', 'Removed')
 
@@ -321,7 +326,11 @@ module.exports = function (options) {
   /* item builders */
 
   var createApiLike = createItemBuilder({
-    content: [ description, properties, objects, prototypes, functions, classes, entities ]
+    content: [ description, properties, groups, objects, prototypes, functions, classes, entities ]
+  })
+
+  var createGroupLike = createItemBuilder({
+    content: [ properties, groups, objects, prototypes, functions, methods, classes, entities ]
   })
 
   var createConstructorLike = createItemBuilder({
@@ -331,12 +340,12 @@ module.exports = function (options) {
 
   var createFunctionLike = createItemBuilder({
     header: [ functionHeader ],
-    content: [ description, params, events, returns ]
+    content: [ description, params, groups, events, returns ]
   })
 
   var createObjectLike = createItemBuilder({
     header: [ propertyHeader ],
-    content: [ description, properties, prototypes, functions, methods ]
+    content: [ description, groups, properties, prototypes, functions, methods ]
   })
 
   var createPropertyLike = createItemBuilder({
@@ -347,7 +356,7 @@ module.exports = function (options) {
 
   var createClassLike = createItemBuilder({
     header: [ typeHeader ],
-    content: [ description, classes, extraClasses, childClasses ]
+    content: [ description, groups, classes, extraClasses, childClasses ]
   })
 
   var createTypeLike = createItemBuilder({
@@ -358,12 +367,12 @@ module.exports = function (options) {
 
   var createPrototypeLike = createItemBuilder({
     header: [ typeHeader ],
-    content: [ description, constructors, properties, methods, functions ]
+    content: [ description, constructors, groups, properties, methods, functions ]
   })
 
   var createEntityLike = createItemBuilder({
     header: [ entityHeader],
-    content: [ description, entities ],
+    content: [ description, groups, entities ],
   })
 
   /* transforms */
@@ -421,6 +430,7 @@ module.exports = function (options) {
 
   return {
     'api': api,
+    'group': createGroupLike('qm-api-group'),
     'example': example,
     'prototype': createPrototypeLike('qm-api-prototype'),
     'object': createObjectLike('qm-api-object'),

@@ -7,6 +7,30 @@
   @h1: Api
   @api
 
+    @group Options
+
+      @property color
+        @description: Sets the color
+        @param color [String]: A color
+
+      @property color
+        @returns [String]: The color
+
+      @function test
+
+      @method test2
+
+      @class class
+
+    @group Options2
+
+      @property color
+        @description: Sets the color
+        @param color [String]: A color
+
+      @property color
+        @returns [String]: The color
+
     @property test [Number]
       @description: Constructs a new animation that will be applied to the node specified.
       @default 200
@@ -41,9 +65,8 @@
 
     @function hx.morph
       @removed
-        @alternative
-          @codeblock js
-            do.something.else();
+        @codeblock js
+          do.something.else();
       @description
         Constructs a new morph that will be applied to the node specified.
       @param node [HTMLElement]
