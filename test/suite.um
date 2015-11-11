@@ -333,6 +333,7 @@
                   @description: Does something better
                   @param a [Number]: The a parameter
                   @updated
+
                 @constructor
                   @description: Does another thing
                   @param a [Number]: The a parameter
@@ -355,6 +356,7 @@
                 @constructor
                   @description: Does something better
                   @param a [Number]: The a parameter
+
                 @constructor
                   @description: Does another thing
                   @param a [Number]: The a parameter

@@ -23,37 +23,39 @@ function mergeContent (content1, content2, options) {
   if (content2.some(function (e) { return typeof (e) === 'string' && e !== '' })) {
     return content2
   } else { // otherwise, we perform the per entity merging
-    content2.forEach(function (entity) {
-      if (entity.type !== undefined) {
-        // XXX: This is not very optimal - could be replaced with some kind of
-        //     map-lookup thing, so that there is only one loop going on here.
-        //     Only fix this once the api is working and passes the test suite
-        var inContent1 = false
-        content1.filter(function (e) {return e.type === entity.type}).forEach(function (ent) {
-          if (ent && ent.content && options.entitiesMatch(entity, ent)) {
-            inContent1 = true
-            var selected = quantum.select(ent)
+    var c1Map = {}
 
-            if (options.unmergable.indexOf(entity.type) > -1) {
-              selected.replaceContent(entity.content)
-            } else {
-              selected.replaceContent(mergeContent(selected.content, entity.content, options))
-            }
+    content1.forEach(function (e1) {
+      c1Map[options.entityMatchLookup(e1)] = e1
+    })
 
-            if (options.taggable.indexOf(entity.type) > -1 && !selected.has('removed')) {
-              selected.content.push({ type: 'updated', params: [], content: [] })
-            } else if (selected.has('removed') && selected.has('deprecated')) {
-              selected.remove('deprecated')
-            }
+    content2.forEach(function (e2) {
+      var e1 = c1Map[options.entityMatchLookup(e2)]
+      var e1s = quantum.select(e1)
+      var e2s = quantum.select(e2)
+
+      if (!!e1) {
+        if (e1.content && e2.content) {
+          if (options.unmergable.indexOf(e2.type) > -1) {
+            e1s.replaceContent(e2.content)
+          } else {
+            e1s.replaceContent(mergeContent(e1.content, e2.content, options))
           }
-        })
 
-        if (!inContent1) {
-          content1.push(entity)
-          if (options.taggable.indexOf(entity.type) > -1) {
-            entity.content.push({ type: 'added', params: [], content: [] })
+          var e1sCanBeUpdated = !e1s.has('removed') && !e1s.has('deprecated')
+          var e2sCanBeUpdated = !e2s.has('removed') && !e2s.has('deprecated')
+
+          if ((options.taggable.indexOf(e2.type) > -1) && e1sCanBeUpdated && e2sCanBeUpdated) {
+            e1.content.push({ type: 'updated', params: [], content: [] })
+          } else if (e2s.has('removed') && e2s.has('deprecated')) {
+            e1.remove('deprecated')
           }
         }
+      } else {
+        if (options.taggable.indexOf(e2.type) > -1) {
+          e2.content.push({ type: 'added', params: [], content: [] })
+        }
+        content1.push(e2)
       }
     })
 
@@ -83,20 +85,11 @@ module.exports = function (options) {
   options.unmergable = options.unmergable || []
   options.targetVersions = options.targetVersions || options.versions
 
-  // function for checking if two entities match - if they do, then they will be attempted
-  // to be merged (provided they are mergable etc)
-  options.entitiesMatch = options.entitiesMatch || function (e1, e2) {
-      var e1s = quantum.select(e1)
-      var e2s = quantum.select(e2)
-
-      var e1Params = e1s.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
-      var e2Params = e2s.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
-
-      var paramsMatch = (e1Params.length === 0 && e2Params.length === 0) || e1Params.every(function (v, i) {
-          return v === e2Params[i]
-      })
-
-      return e1s.ps() === e2s.ps() && paramsMatch
+  options.entityMatchLookup = options.entityMatchLookup || function (entity) {
+      entity = quantum.select(entity)
+      var name = entity.ps()
+      var params = entity.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
+      return entity.type + ': ' + name + '(' + params.join(', ') + ')'
   }
 
   var filenameModifier = options.filenameModifier || function (filename, version) {
