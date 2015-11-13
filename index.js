@@ -122,6 +122,10 @@ function createItem (apiName, apiObject, versionName, options) {
     var docsUrl = options.docsUrlLookup(versionName, apiName)
   }
 
+  if (options.renderSingleItemInRoot) {
+    item = item.add(quantum.create('renderSingleItemInRoot'))
+  }
+
   if (docsUrl) {
     item = item.add(quantum.create('link').ps(docsUrl.link).add(docsUrl.text))
   }
@@ -195,6 +199,7 @@ function process (wrapper, options) {
   var versions = wrapper.select('process').selectAll('version', {recursive: true})
 
   options.dontAddDocsLink = wrapper.select('process').has('dontAddDocsLink')
+  options.renderSingleItemInRoot = wrapper.select('process').has('renderSingleItemInRoot')
 
   wrapper.remove('process')
 
@@ -403,6 +408,7 @@ module.exports = function (opts) {
   }
 
   options.targetVersions = opts.targetVersions
+  options.renderSingleItemInRoot = opts.renderSingleItemInRoot
   options.jsTypes = opts.jsTypes
   options.issueUrl = opts.issueUrl
   options.docsUrlLookup = opts.docsUrlLookup || function (version, api) {

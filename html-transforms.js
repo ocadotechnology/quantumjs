@@ -120,14 +120,7 @@ module.exports = function (options) {
       .add(page.create('span').text(count))
   }
 
-  function link (entity, page, transforms) {
-    return
-  }
-
-  function createTree (page, header, content) {
-  }
-
-  function item (entity, page, transforms) {
+  function item (entity, page, transforms, singleItemMode) {
     var id = page.nextId()
     var tags = Object.keys(options.tags).sort(function (a, b) {
       return order = options.tags[a].order - options.tags[b].order
@@ -151,14 +144,6 @@ module.exports = function (options) {
       entries = entries.add(entry(select(entryEntity), page, transforms))
     })
 
-    var labels = page.create('div').class('qm-changelog-item-labels')
-    tags.forEach(function (tag) {
-      var count = unprocessedEntries.reduce(function (total, e) { return e.type == tag ? total + 1 : total }, 0)
-      if (count > 0) {
-        labels = labels.add(label(page, tag, options.tags[tag], count))
-      }
-    })
-
     if (entity.has('description')) {
       var description = page.create('div').class('qm-changelog-item-description').add(entity.select('description').transform(transforms))
     }
@@ -167,23 +152,39 @@ module.exports = function (options) {
       var extra = page.create('div').class('qm-changelog-item-extra').add(entity.select('extra').transform(transforms))
     }
 
-    return page.create('div').class('qm-changelog-item hx-tree')
-      .add(page.create('div').class('hx-tree-node')
-        .add(page.create('div').class('qm-changelog-parent hx-tree-node-parent')
-          .add(page.create('div').class('qm-changelog-parent-content hx-tree-node-content').add(page.create('div').class('qm-changelog-item-head')
-            .add(title)
-            .add(labels))))
-        .add(page.create('div').class('qm-changelog-children hx-tree-node-children').attr('style', 'display:none')
-          .add(page.create('div').class('hx-tree-node')
-            .add(page.create('div').class('qm-changelog-children-content hx-tree-node-content').add(page.create('div').class('qm-changelog-item-body')
-              .add(description)
-              .add(entries)
-              .add(extra))))))
+    if (singleItemMode) {
+      return page.create('div').class('qm-changelog-single-item')
+        .add(description)
+        .add(entries)
+        .add(extra)
+    } else {
+      var labels = page.create('div').class('qm-changelog-item-labels')
+      tags.forEach(function (tag) {
+        var count = unprocessedEntries.reduce(function (total, e) { return e.type == tag ? total + 1 : total }, 0)
+        if (count > 0) {
+          labels = labels.add(label(page, tag, options.tags[tag], count))
+        }
+      })
+
+      return page.create('div').class('qm-changelog-item hx-tree')
+        .add(page.create('div').class('hx-tree-node')
+          .add(page.create('div').class('qm-changelog-parent hx-tree-node-parent')
+            .add(page.create('div').class('qm-changelog-parent-content hx-tree-node-content').add(page.create('div').class('qm-changelog-item-head')
+              .add(title)
+              .add(labels))))
+          .add(page.create('div').class('qm-changelog-children hx-tree-node-children').attr('style', 'display:none')
+            .add(page.create('div').class('hx-tree-node')
+              .add(page.create('div').class('qm-changelog-children-content hx-tree-node-content').add(page.create('div').class('qm-changelog-item-body')
+                .add(description)
+                .add(entries)
+                .add(extra))))))
+    }
   }
 
   function changelog (entity, page, transforms) {
+    var singleItem = entity.selectAll('item').length === 1
     var items = Promise.all(entity.selectAll('item').map(function (itemEntity) {
-      return item(itemEntity, page, transforms)
+      return item(itemEntity, page, transforms, singleItem && itemEntity.has('renderSingleItemInRoot'))
     }))
 
     if (entity.has('description')) {
