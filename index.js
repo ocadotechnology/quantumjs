@@ -1,47 +1,7 @@
 var quantum = require('quantum-js')
 var clone = require('clone')
-
-// function cloneEntity (entity) {
-//   var newObj = {
-//     type: entity.type,
-//     params: entity.params,
-//     content: entity.content.slice(0)
-//   }
-//   if (entity.original) {
-//     newObj.original = entity.original
-//   }
-//   return newObj
-// }
-
-// function cloneApiContentChild (child) {
-//   return {
-//     entity: cloneEntity(child.entity),
-//     parentKey: child.parentKey
-//   }
-// }
-
-// function cloneApiContent (apiContent) {
-//   var newObj = {}
-//   Object.keys(apiContent).forEach(function (key) {
-//     newObj[key] = cloneApiContentChild(apiContent[key])
-//   })
-//   return newObj
-// }
-
-// function cloneVersion (version) {
-//   return {
-//     api: version.api,
-//     apiContent: cloneApiContent(version.apiContent)
-//   }
-// }
-
-// function quickClone (object) {
-//   var newObj = {}
-//   Object.keys(object).forEach(function (key) {
-//     newObj[key] = cloneVersion(object[key])
-//   })
-//   return newObj
-// }
+var path = require('path')
+var flatten = require('flatten')
 
 function constructKey (parentKey, entity) {
   if (entity.type === 'function' || entity.type === 'method' || entity.type === 'constructor') {
@@ -52,9 +12,7 @@ function constructKey (parentKey, entity) {
 }
 
 function buildApiMap (apiEntity, options, apiCurrent, parentKey) {
-  var contents = apiEntity.selectAll(options.types)
-
-  contents.forEach(function (entity) {
+  apiEntity.selectAll(options.types).forEach(function (entity) {
     var key = constructKey(parentKey, entity)
     if (options.dontActuallyAddTheseJustKeepLooking.indexOf(entity.type) === -1) {
       apiCurrent[key] = {
@@ -66,27 +24,140 @@ function buildApiMap (apiEntity, options, apiCurrent, parentKey) {
       buildApiMap(entity, options, apiCurrent, key)
     }
   })
-}
 
-function createItem (apiName, apiObject, options) {
-  var tags = Object.keys(options.tags)
-  var item = quantum.create('item').ps(apiName)
-
-  for (key in apiObject.apiContent) {
-    var apiComponent = apiObject.apiContent[key].entity
-    quantum.select(apiComponent).selectAll(tags).forEach(function (selection) {
-      if (selection.type !== undefined) {
-        var desc = quantum.create('description')
-        desc.content = selection.content.filter(function (e) {return !e.type || (e.type && e.type !== 'issue')  })
-        var entry = quantum.create(selection.type).ps(key)
-        entry = entry.add(desc)
-        selection.selectAll('issue').forEach(function (i) {
-          entry = entry.add(i)
-        })
-        item = item.add(entry.add(desc))
+  if (parentKey === '') {
+    var rootCount = 0
+    apiEntity.content.filter(function (i) {return Object.keys(options.tags).indexOf(i.type) > -1}).forEach(function (entity) {
+      apiCurrent['_root:' + apiEntity.ps() + ':' + entity.type + (rootCount += 1)] = {
+        entity: entity,
+        rootEntity: true
       }
     })
   }
+}
+
+function partMap (separator) {
+  return function (part, index) {
+    var res = []
+    if (index > 0) {
+      res.push(separator)
+    }
+    res.push(getPart(part))
+    return res
+  }
+}
+
+function getPart (part) {
+  if (part.indexOf(', ') !== -1) {
+    return part.split(', ').map(partMap(', '))
+  } else if (part.indexOf(' ') !== -1) {
+    return part.split(' ')[0]
+  } else if (part.indexOf('/') !== -1) {
+    return part.split('/').map(partMap('/'))
+  } else {
+    return part
+  }
+}
+
+function convertFunction (item, beginSymb, endSymb) {
+  var parts = []
+  parts.push(convertToParts(item.slice(0, item.indexOf(beginSymb))))
+  parts.push(beginSymb)
+  parts.push(convertToParts(item.slice(item.indexOf(beginSymb) + 1, item.indexOf(endSymb))))
+  parts.push(endSymb)
+  return parts
+}
+
+function convertToParts (item) {
+  if (item.indexOf('(') !== -1) {
+    return convertFunction(item, '(', ')')
+  } else {
+    return [getPart(item)]
+  }
+}
+
+function splitKey (key, headingSeparator) {
+  var heading = ''
+  key.split(/\:[^\:]*\:/).filter(function (item) {
+    return item && item.length > 0
+  }).forEach(function (item, index) {
+    if (index > 0) {
+      heading = heading + headingSeparator
+    }
+    if (headingSeparator === ' ') {
+      heading = heading + '.' + item
+    } else {
+      flatten(convertToParts(item)).forEach(function (part) {
+        heading = heading + part
+      })
+    }
+  })
+  return heading.replace('.(', '(')
+}
+
+function createEntry (entity, heading) {
+  entity = quantum.select(entity)
+
+  var entry = quantum.create(entity.type)
+  if (heading) {
+    entry.ps(heading)
+  } else if (entity.params && entity.params.length) {
+    entry.params = entity.params
+  }
+
+  var desc = quantum.create('description')
+  desc.content = entity.content.filter(function (e) {return !e.type || (e.type && e.type !== 'issue')  })
+
+  entity.selectAll('issue').forEach(function (i) {
+    entry = entry.add(i)
+  })
+  return entry.add(desc)
+}
+
+function createItem (apiName, apiObject, versionName, options) {
+  var tags = Object.keys(options.tags)
+  var item = quantum.create('item').ps(apiName)
+
+  if (!options.dontAddDocsLink) {
+    var docsUrl = options.docsUrlLookup(versionName, apiName)
+  }
+
+  if (docsUrl) {
+    item = item.add(quantum.create('link').ps(docsUrl.link).add(docsUrl.text))
+  }
+
+  for (key in apiObject.apiContent) {
+    var apiComponent = apiObject.apiContent[key]
+
+    if (apiComponent.rootEntity) {
+      var entity = apiComponent.entity
+      if (entity.type !== undefined) {
+        item = item.add(createEntry(entity))
+      }
+    } else {
+      quantum.select(apiComponent.entity).selectAll(tags).forEach(function (entity) {
+        if (entity.type !== undefined) {
+          var headingSeparator = (key.indexOf('class') === 1 ? ' ' : '.')
+          item = item.add(createEntry(entity, splitKey(key, headingSeparator)))
+        }
+      })
+    }
+  }
+
+  item.content = item.content.sort(function (a, b) {
+    if (tags.indexOf(a.type) === -1) {
+      return -1
+    } else if (tags.indexOf(b.type) === -1) {
+      return 1
+    } else {
+      var order = options.tags[a.type].order - options.tags[b.type].order
+      if (order === 0) {
+        return (a.params.join(' ').toLowerCase() > b.params.join(' ').toLowerCase() ? 1 : -1)
+      } else {
+        return order
+      }
+    }
+  })
 
   return item.build()
 }
@@ -100,7 +171,7 @@ function cloneAndRemoveTags (version) {
 
     Object.keys(apiMap).forEach(function (key) {
       var entity = quantum.select(apiMap[key].entity)
-      if (entity.has('removed')) {
+      if (entity.has('removed') || (apiMap[key].rootEntity && entity.type !== 'deprecated')) {
         delete apiMap[key]
       } else {
         entity.removeAll(['added', 'updated', 'enhancement', 'docs', 'info', 'bugfix'])
@@ -122,6 +193,8 @@ function process (wrapper, options) {
   var targetVersionList = options.targetVersions || actualVersions
 
   var versions = wrapper.select('process').selectAll('version', {recursive: true})
+
+  options.dontAddDocsLink = wrapper.select('process').has('dontAddDocsLink')
 
   wrapper.remove('process')
 
@@ -164,33 +237,35 @@ function process (wrapper, options) {
           var currentApiContent = current[apiName].apiContent
           var previousApiContent = previous[apiName].apiContent
 
-          var sortedCurrentApiContent = Object.keys(currentApiContent).sort()
+          var sortedCurrentApiKeys = Object.keys(currentApiContent).sort()
 
           var currentParent = undefined
 
-          sortedCurrentApiContent.forEach(function (key) {
+          sortedCurrentApiKeys.forEach(function (key) {
             var currentApiElement = currentApiContent[key]
             var entity = quantum.select(currentApiElement.entity)
 
-            // check if the api-element has just been removed in the previous version, or if it does not exist
-            // in the previous version). In either case, the api-element can be considered to be added (since it
-            // did not exist in the previous version of the api)
-            if (!(key in previousApiContent) || quantum.select(previousApiContent[key].entity).has('removed')) {
-              if (currentParent === undefined || key.indexOf(currentParent) !== 0) {
-                currentParent = key
+            if (!currentApiElement.rootEntity) {
+              // check if the api-element has just been removed in the previous version, or if it does not exist
+              // in the previous version). In either case, the api-element can be considered to be added (since it
+              // did not exist in the previous version of the api)
+              if (!(key in previousApiContent) || quantum.select(previousApiContent[key].entity).has('removed')) {
+                if (currentParent === undefined || key.indexOf(currentParent) !== 0) {
+                  currentParent = key
 
-                if (!entity.has(['added', 'removed'])) {
-                  entity.content.push(quantum.create('added').build())
+                  if (!entity.has(['added', 'removed'])) {
+                    entity.content.push(quantum.create('added').build())
+                  }
                 }
-              }
-            } else {
-              var previousApiElement = previousApiContent[key]
+              } else {
+                var previousApiElement = previousApiContent[key]
 
-              if (!entity.has(['removed', 'deprecated', 'updated', 'info', 'bugfix', 'enhancement', 'docs'])) {
-                var hasNewDescription = (entity.has('description') && (JSON.stringify(entity.select('description')) !== JSON.stringify(quantum.select(previousApiElement.entity).select('description'))))
-                var hasNewContentString = (entity.nonEmpty().cs() && (entity.nonEmpty().cs() !== quantum.select(previousApiElement.entity).nonEmpty().cs()))
-                if (hasNewDescription || hasNewContentString) {
-                  entity.content.push(quantum.create('updated').build())
+                if (!entity.has(['removed', 'deprecated', 'updated', 'info', 'bugfix', 'enhancement', 'docs'])) {
+                  var hasNewDescription = (entity.has('description') && (JSON.stringify(entity.select('description')) !== JSON.stringify(quantum.select(previousApiElement.entity).select('description'))))
+                  var hasNewContentString = (entity.nonEmpty().cs() && (entity.nonEmpty().cs() !== quantum.select(previousApiElement.entity).nonEmpty().cs()))
+                  if (hasNewDescription || hasNewContentString) {
+                    entity.content.push(quantum.create('updated').build())
+                  }
                 }
               }
             }
@@ -203,19 +278,30 @@ function process (wrapper, options) {
   })
 
   // replace the wrapper content with the calculated changelog
-
   wrapper.original.content = targetVersionList.map(function (versionName) {
     var changelogEntityBuilder = quantum.create('changelog').ps(versionName)
     var versionEntity = versionEntitesMap[versionName]
+    var selectedEntity = quantum.select(versionEntity)
 
-    // TODO: merge in the description and link from the versionEntity
+    if (selectedEntity.has('description')) {
+      changelogEntityBuilder.add(selectedEntity.select('description'))
+    }
+
+    if (selectedEntity.has('link')) {
+      changelogEntityBuilder.add(selectedEntity.select('link'))
+    }
+
+    if (selectedEntity.has('extra')) {
+      changelogEntityBuilder.add(selectedEntity.select('extra'))
+    }
 
     var apiMap = flattenedApiMapByVersion[versionName]
     var newContent = []
     for (apiName in apiMap) {
-      if (apiMap[apiName])
-        var item = createItem(apiName, apiMap[apiName], options)
-      if (item.content.length) {
+      if (apiMap[apiName]) {
+        var item = createItem(apiName, apiMap[apiName], versionName, options)
+      }
+      if (item.content.filter(function (e) { return e.type !== 'link'}).length > 0) {
         changelogEntityBuilder.add(item)
       }
     }
@@ -241,7 +327,6 @@ function processAll (content, options) {
 
   changelogs.forEach(function (changelog) {
     process(changelog, options)
-
   })
 
   return content
@@ -275,52 +360,44 @@ module.exports = function (opts) {
     ],
     tags: {
       added: {
-        class: 'hx-positive',
         icon: 'fa-plus',
         title: 'Added',
-        order: 1
+        order: 8
       },
       updated: {
-        class: 'hx-default',
         icon: 'fa-level-up',
         title: 'Updated',
-        order: 2
+        order: 7
       },
       deprecated: {
-        class: 'hx-warning',
         icon: 'fa-recycle',
         title: 'Deprecated',
-        order: 3
+        order: 5
       },
       removed: {
-        class: 'hx-negative',
         icon: 'fa-times',
         title: 'Removed',
         order: 4
       },
       enhancement: {
-        class: 'hx-info',
         icon: 'fa-magic',
         title: 'Enhancement',
-        order: 5
-      },
-      bugfix: {
-        class: 'hx-warning',
-        icon: 'fa-bug',
-        title: 'Bug Fix',
         order: 6
       },
+      bugfix: {
+        icon: 'fa-bug',
+        title: 'Bug Fix',
+        order: 3
+      },
       docs: {
-        class: 'hx-default',
         icon: 'fa-book',
         title: 'Documentation',
-        order: 7
+        order: 2
       },
       info: {
-        class: 'hx-contrast',
         icon: 'fa-info',
         title: 'Information',
-        order: 8
+        order: 1
       }
     }
   }
@@ -328,6 +405,12 @@ module.exports = function (opts) {
   options.targetVersions = opts.targetVersions
   options.jsTypes = opts.jsTypes
   options.issueUrl = opts.issueUrl
+  options.docsUrlLookup = opts.docsUrlLookup || function (version, api) {
+      return {
+        link: path.join('/', 'docs', version, api.split(' ').join('-').toLowerCase()),
+        text: 'Docs'
+      }
+  }
 
   var transform = function (obj) {
     return {

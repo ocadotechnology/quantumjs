@@ -1,67 +1,199 @@
-.qm-changelog-description,
-.qm-changelog-entries,
-.qm-changelog-extra {
-  margin: 0.5em 0;
+.qm-changelog {}
+
+.qm-changelog + .qm-changelog {
+  margin-top: 2em;
 }
 
-.qm-changelog-description:first-child,
-.qm-changelog-entries:first-child,
-.qm-changelog-extra:first-child {
-  margin-top: 0;
+.qm-changelog-head {
+  font-size: 1.5em;
+  margin: 1.5em 0 0.5em 0;
 }
 
-.qm-changelog-description:last-child,
-.qm-changelog-entries:last-child,
-.qm-changelog-extra:last-child {
-  margin-bottom: 0;
+.qm-changelog-body {}
+
+.qm-changelog-description {
+  margin-bottom: 1em;
+  padding: 0.5em;
 }
 
 .qm-changelog-item {
   margin: 0.5em 0;
+  padding: 0;
+  border-left: 2px solid #0090FF;
+}
+
+.qm-changelog-item > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
+  background: #0090FF;
+  color: white;
+}
+
+.qm-changelog-parent {}
+
+.qm-changelog-parent-content {}
+
+.qm-changelog-children {
+  padding: 0.5em 0 0.5em 2em;
+  margin: 0;
+  border: none;
+}
+
+.qm-changelog-children > .hx-tree-node {
+  padding: 0;
+  margin: 0;
+}
+
+.qm-changelog-children-content {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.qm-changelog-item-head {
+  display: flex;
+  flex-wrap: none;
+  align-items: center;
 }
 
 .qm-changelog-item-title {
-  max-width: 240px;
+  flex: 1;
 }
 
-.qm-changelog-item-body {
-  border: 1px solid #DDD;
+.qm-changelog-item-link {}
+
+.qm-changelog-item-labels {
+  margin: -0.2em;
 }
 
-.qm-changelog-item-title,
-.qm-changelog-item-labels,
-.qm-changelog-item-body {
-  padding: 0.4em;
-}
+.qm-changelog-item-body {}
+
+.qm-changelog-item-description {}
+
+.qm-changelog-item-entries {}
 
 .qm-changelog-entry {
-  margin: 0.5em 0;
+  display: flex;
   flex-wrap: nowrap;
 }
 
-.qm-changelog-entry-icon {
-  width: 20px;
-  text-align: center;
+.qm-changelog-entry,
+.qm-changelog-item-description {
+  margin: 0.5em 0;
+  padding: 0.5em;
 }
 
-.qm-changelog-entry-head {
-  margin-bottom: 0.5em;
-}
+.qm-changelog-entry-icon {}
 
 .qm-changelog-entry-content {
+  flex: 1;
+  margin-left: 0.5em;
+}
+
+.qm-changelog-entry-head {}
+
+.qm-changelog-entry-body {}
+
+.qm-changelog-entry-head + .qm-changelog-entry-body {
   font-size: 0.9em;
+  margin-top: 0.5em;
 }
 
-.qm-changelog-entry + .qm-changelog-entry {
-  border-top: 2px solid #EEE;
-  padding-top: 0.5em;
+.qm-changelog-entry-description {}
+
+.qm-changelog-description > :first-child,
+.qm-changelog-item-description > :first-child,
+.qm-changelog-entry-description > :first-child {
+  margin-top: 0;
 }
 
-.qm-changelog-alternative-head {
-  font-weight: bold;
-  margin: 0.5em 0 0.2em 0;
+.qm-changelog-description > :last-child,
+.qm-changelog-item-description > :last-child,
+.qm-changelog-entry-description > :last-child {
+  margin-bottom: 0;
 }
 
-.qm-changelog-header {
-  font-size: 2em;
+.qm-changelog-entry-extra {}
+
+.qm-changelog-label {}
+
+.qm-changelog-item-description,
+.qm-changelog-description,
+.qm-changelog-parent-content,
+.qm-changelog-entry {
+  background: white;
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+}
+
+.qm-changelog-background-added {
+  background: #6FB365;
+}
+
+.qm-changelog-background-updated {
+  background: #6582A6;
+}
+
+.qm-changelog-background-deprecated {
+  background: #CB9856;
+}
+
+.qm-changelog-background-removed {
+  background: #C74967;
+}
+
+.qm-changelog-background-enhancement {
+  background: #A36FA9;
+}
+
+.qm-changelog-background-bugfix {
+  background: #CB9856;
+}
+
+.qm-changelog-background-docs {
+  background: #6582A6;
+}
+
+.qm-changelog-background-info {
+  background: #3D3D3D;
+}
+
+.qm-changelog-background-added,
+.qm-changelog-background-updated,
+.qm-changelog-background-deprecated,
+.qm-changelog-background-removed,
+.qm-changelog-background-enhancement,
+.qm-changelog-background-bugfix,
+.qm-changelog-background-docs,
+.qm-changelog-background-info {
+  color: white;
+}
+
+.qm-changelog-text-added {
+  color: #6FB365;
+}
+
+.qm-changelog-text-updated {
+  color: #6582A6;
+}
+
+.qm-changelog-text-deprecated {
+  color: #CB9856;
+}
+
+.qm-changelog-text-removed {
+  color: #C74967;
+}
+
+.qm-changelog-text-enhancement {
+  color: #A36FA9;
+}
+
+.qm-changelog-text-bugfix {
+  color: #CB9856;
+}
+
+.qm-changelog-text-docs {
+  color: #6582A6;
+}
+
+.qm-changelog-text-info {
+  color: #3D3D3D;
 }

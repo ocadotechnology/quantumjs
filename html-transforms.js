@@ -15,6 +15,15 @@ var flatten = require('flatten')
       @description:
 
   @changelog 0.1.0
+    @link(url)[Item Link]
+
+    @description: Item description
+
+    @extra
+          @api
+            @prototype thing
+              @description: A thing
+
     @item Item Name
       @link(url)[Item Link]
 
@@ -59,13 +68,6 @@ var flatten = require('flatten')
 */
 
 module.exports = function (options) {
-  function alternative (entity, page, transforms) {
-    return page.create('div').class('qm-changelog-alternative')
-      .add(page.create('div').class('qm-changelog-alternative-head').text('Alternative'))
-      .add(page.create('div').class('qm-changelog-alternative-body')
-        .add(entity.transform(transforms)))
-  }
-
   function issue (entity, page, transforms) {
     return page.create('a')
       .attr('href', options.issueUrl + entity.ps())
@@ -74,164 +76,130 @@ module.exports = function (options) {
 
   function entry (entity, page, transforms) {
     var type = options.tags[entity.type]
-    var icon = page.create('i').class('fa ' + type.icon + ' ' + type.class.replace('hx-', 'hx-text-'))
+    var icon = page.create('i').class('fa fa-fw ' + type.icon + ' ' + (type.class || 'qm-changelog-text-' + entity.type))
 
-    var headingSeparator = (entity.ps().indexOf('class') === 1 ? ' ' : '.')
+    if (entity.ps().length > 0) {
+      var heading = page.create('div').class('qm-changelog-entry-head').add(entity.ps())
 
-    var heading = page.create('div')
-
-    function partMap (separator) {
-      return function (part, index) {
-        var res = []
-        if (index > 0) {
-          res.push(separator)
-        }
-        res.push(getPart(part))
-        return res
-      }
-    }
-
-    function getPart (part) {
-      if (part.indexOf(', ') !== -1) {
-        return part.split(', ').map(partMap(', '))
-      } else if (part.indexOf(' ') !== -1) {
-        return part.split(' ')[0]
-      } else if (part.indexOf('/') !== -1) {
-        return part.split('/').map(partMap('/'))
-      } else {
-        return part
-      }
-    }
-
-    function convertFunction (item, beginSymb, endSymb) {
-      var parts = []
-      parts.push(convertToParts(item.slice(0, item.indexOf(beginSymb))))
-      parts.push(beginSymb)
-      parts.push(convertToParts(item.slice(item.indexOf(beginSymb) + 1, item.indexOf(endSymb))))
-      parts.push(endSymb)
-      return parts
-    }
-
-    function convertToParts (item) {
-      if (item.indexOf('(') !== -1) {
-        return convertFunction(item, '(', ')')
-      } else {
-        return [getPart(item)]
-      }
-    }
-
-    entity.ps().split(/\:[^\:]*\:/).filter(function (item) {
-      return item && item.length > 0
-    }).forEach(function (item, index) {
-      if (index > 0) {
-        heading = heading.add(headingSeparator)
-      }
-      if (headingSeparator === ' ') {
-        heading = heading.add('.').add(item)
-      } else {
-        flatten(convertToParts(item)).forEach(function (part) {
-          heading = heading.add(part)
+      if (!!options.issueUrl && entity.has('issue')) {
+        entity.selectAll('issue').forEach(function (issueEntity, index) {
+          heading = heading
+            .add(index > 0 ? ', ' : ': ')
+            .add(issue(issueEntity, page, transforms))
         })
       }
-    })
-
-    if (!!options.issueUrl && entity.has('issue')) {
-      entity.selectAll('issue').forEach(function (issueEntity, index) {
-        heading = heading
-          .add(index > 0 ? ', ' : ': ')
-          .add(issue(issueEntity, page, transforms))
-      })
     }
 
     if (entity.has('description')) {
-      var description = page.create('div').class('qm-changelog-entry-description').add(entity.select('description').transform(transforms))
-    }
-
-    if (entity.has('alternative')) {
-      var alternativeMessage = alternative(entity.select('alternative'), page, transforms)
+      if (entity.select('description').content.length) {
+        var description = page.create('div').class('qm-changelog-entry-description').add(entity.select('description').transform(transforms))
+      }
     }
 
     if (entity.has('extra')) {
-      var extra = page.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
+      var extra = page.create('div').class('qm-changelog-entry-extra').add(entity.select('extra').transform(transforms))
     }
 
-    return page.create('div').class('qm-changelog-entry hx-group hx-horizontal')
-      .add(page.create('div').class('qm-changelog-entry-icon hx-section hx-fixed')
+    if (description || extra) {
+      var body = page.create('div').class('qm-changelog-entry-body')
+        .add(description)
+        .add(extra)
+    }
+
+    return page.create('div').class('qm-changelog-entry')
+      .add(page.create('div').class('qm-changelog-entry-icon')
         .add(icon))
-      .add(page.create('div').class('hx-section')
-        .add(page.create('div').class('qm-changelog-entry-head')
-          .add(heading))
-        .add(page.create('div').class('qm-changelog-entry-content')
-          .add(description)
-          .add(alternativeMessage)
-          .add(extra)))
+      .add(page.create('div').class('qm-changelog-entry-content')
+        .add(heading)
+        .add(body))
   }
 
-  function label (page, type, count) {
-    return page.create('div').class('qm-changelog-label hx-label ' + type.class)
-      .add(page.create('i').class('fa ' + type.icon))
+  function label (page, tag, type, count) {
+    return page.create('div').class('qm-changelog-label hx-label ' + (type.class || 'qm-changelog-background-' + tag))
+      .add(page.create('i').class('fa fa-fw ' + type.icon))
       .add(page.create('span').text(count))
   }
 
   function link (entity, page, transforms) {
-    return page.create('a').class('qm-changelog-item-link hx-btn hx-info')
-      .attr('href', entity.ps())
-      .add(entity.transform(transforms))
+    return
+  }
+
+  function createTree (page, header, content) {
   }
 
   function item (entity, page, transforms) {
     var id = page.nextId()
-    var tags = Object.keys(options.tags)
-
-    var unprocessedEntries = entity.selectAll(tags).sort(function (a, b) {
-      return options.tags[a.type].order - options.tags[b.type].order
+    var tags = Object.keys(options.tags).sort(function (a, b) {
+      return order = options.tags[a].order - options.tags[b].order
     })
 
-    var entries = page.create('div').class('qm-changelog-entries')
-      .add(Promise.all(unprocessedEntries.map(function (entryEntity) {
-        return entry(select(entryEntity), page, transforms)
-      }))
-    )
-
-    var labels = page.create('div').class('qm-changelog-item-labels hx-section hx-no-margin')
-    for (var key in options.tags) {
-      var count = unprocessedEntries.reduce(function (total, e) { return e.type == key ? total + 1 : total }, 0)
-      if (count > 0) {
-        labels = labels.add(label(page, options.tags[key], count))
-      }
-    }
+    var title = page.create('div').class('qm-changelog-item-title')
 
     if (entity.has('link')) {
-      var links = Promise.all(entity.selectAll('link').map(function (linkEntity) {
-        return link(select(linkEntity), page, transforms)
-      }))
+      title = title.add(page.create('a').class('qm-changelog-item-link')
+        .attr('href', entity.select('link').ps())
+        .add(entity.ps()))
+    } else {
+      title = title.add(entity.ps())
     }
 
+    var unprocessedEntries = entity.selectAll(tags)
+
+    var entries = page.create('div').class('qm-changelog-item-entries')
+
+    unprocessedEntries.forEach(function (entryEntity) {
+      entries = entries.add(entry(select(entryEntity), page, transforms))
+    })
+
+    var labels = page.create('div').class('qm-changelog-item-labels')
+    tags.forEach(function (tag) {
+      var count = unprocessedEntries.reduce(function (total, e) { return e.type == tag ? total + 1 : total }, 0)
+      if (count > 0) {
+        labels = labels.add(label(page, tag, options.tags[tag], count))
+      }
+    })
+
     if (entity.has('description')) {
-      var description = page.create('div').class('qm-changelog-description').add(entity.select('description').transform(transforms))
+      var description = page.create('div').class('qm-changelog-item-description').add(entity.select('description').transform(transforms))
     }
 
     if (entity.has('extra')) {
-      var extra = page.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
+      var extra = page.create('div').class('qm-changelog-item-extra').add(entity.select('extra').transform(transforms))
     }
 
-    return page.create('div').class('qm-changelog-item hx-collapsible')
-      .add(page.create('div').class('qm-changelog-item-head hx-collapsible-heading hx-collapsible-heading-no-hover hx-input-group hx-input-group-full-width')
-        .add(page.create('button').class('hx-collapsible-toggle hx-btn hx-info'))
-        .add(page.create('div').class('qm-changelog-item-title hx-section hx-no-margin')
-          .text(entity.ps()))
-        .add(labels)
-        .add(links))
-      .add(page.create('div').class('qm-changelog-item-body hx-collapsible-content')
-        .add(description)
-        .add(entries)
-        .add(extra))
+    return page.create('div').class('qm-changelog-item hx-tree')
+      .add(page.create('div').class('hx-tree-node')
+        .add(page.create('div').class('qm-changelog-parent hx-tree-node-parent')
+          .add(page.create('div').class('qm-changelog-parent-content hx-tree-node-content').add(page.create('div').class('qm-changelog-item-head')
+            .add(title)
+            .add(labels))))
+        .add(page.create('div').class('qm-changelog-children hx-tree-node-children').attr('style', 'display:none')
+          .add(page.create('div').class('hx-tree-node')
+            .add(page.create('div').class('qm-changelog-children-content hx-tree-node-content').add(page.create('div').class('qm-changelog-item-body')
+              .add(description)
+              .add(entries)
+              .add(extra))))))
   }
 
   function changelog (entity, page, transforms) {
     var items = Promise.all(entity.selectAll('item').map(function (itemEntity) {
       return item(itemEntity, page, transforms)
     }))
+
+    if (entity.has('description')) {
+      var description = page.create('div').class('qm-changelog-description').add(entity.select('description').transform(transforms))
+    }
+
+    if (entity.has('link')) {
+      var link = entity.select('link')
+      var title = page.create('a').class('qm-changelog-link').attr('href', link.ps()).text(entity.ps())
+    } else {
+      var title = entity.ps()
+    }
+
+    if (entity.has('extra')) {
+      var extra = page.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
+    }
 
     return page.addAssets({
       css: {
@@ -243,15 +211,18 @@ module.exports = function (options) {
     })
       .then(function () {
         return page.create('div').class('qm-changelog')
-          .add(page.create('div').class('qm-changelog-header').text(entity.ps()))
+          .add(page.create('div').class('qm-changelog-head').add(title))
           .add(page.create('div').class('qm-changelog-body')
+            .add(description)
             .add(items)
+            .add(extra)
         )
       })
   }
 
   function wrapper (entity, page, transforms) {
-    return page.create('div').class('qm-changelog-wrapper').add(entity.transform(transforms))
+    return page.create('div').class('qm-changelog-wrapper')
+      .add(entity.transform(transforms))
   }
 
   return {

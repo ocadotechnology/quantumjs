@@ -1,1 +1,1 @@
-hx.initializeCollapsibles('.qm-changelog-item');
+hx.initializeTrees('.qm-changelog-item')
