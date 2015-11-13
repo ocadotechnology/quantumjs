@@ -118,18 +118,6 @@ function createItem (apiName, apiObject, versionName, options) {
   var tags = Object.keys(options.tags)
   var item = quantum.create('item').ps(apiName)
 
-  if (!options.dontAddDocsLink) {
-    var docsUrl = options.docsUrlLookup(versionName, apiName)
-  }
-
-  if (options.renderSingleItemInRoot) {
-    item = item.add(quantum.create('renderSingleItemInRoot'))
-  }
-
-  if (docsUrl) {
-    item = item.add(quantum.create('link').ps(docsUrl.link).add(docsUrl.text))
-  }
-
   for (key in apiObject.apiContent) {
     var apiComponent = apiObject.apiContent[key]
 
@@ -162,6 +150,19 @@ function createItem (apiName, apiObject, versionName, options) {
       }
     }
   })
+
+  if (item.content.length) {
+    if (!options.dontAddDocsLink) {
+      var docsUrl = options.docsUrlLookup(versionName, apiName)
+    }
+    if (docsUrl) {
+      item = item.add(quantum.create('link').ps(docsUrl.link).add(docsUrl.text))
+    }
+
+    if (options.renderSingleItemInRoot) {
+      item = item.add(quantum.create('renderSingleItemInRoot'))
+    }
+  }
 
   return item.build()
 }
