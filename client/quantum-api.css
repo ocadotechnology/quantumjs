@@ -169,7 +169,8 @@ body {
 
 .qm-api-tag {
   margin-left: 0.25em;
-  font-size: 13px;
+  font-size: 11px;
+  font-weight: bold;
   color: white;
   padding-left: 0.25em;
   padding-right: 0.25em;
