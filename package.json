@@ -1,6 +1,6 @@
 {
   "name": "quantum-api",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "quantum entity to virtual dom transforms for writing api docs",
   "main": "index.js",
   "directories": {
