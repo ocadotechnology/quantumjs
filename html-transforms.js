@@ -183,7 +183,8 @@ module.exports = function (options) {
 
   function changelog (entity, page, transforms) {
     var singleItem = entity.selectAll('item').length === 1
-    var items = Promise.all(entity.selectAll('item').map(function (itemEntity) {
+    var itemArr = entity.selectAll('item')
+    var items = Promise.all(itemArr.map(function (itemEntity) {
       return item(itemEntity, page, transforms, singleItem && itemEntity.has('renderSingleItemInRoot'))
     }))
 
@@ -211,13 +212,15 @@ module.exports = function (options) {
       }
     })
       .then(function () {
-        return page.create('div').class('qm-changelog')
-          .add(page.create('div').class('qm-changelog-head').add(title))
-          .add(page.create('div').class('qm-changelog-body')
-            .add(description)
-            .add(items)
-            .add(extra)
-        )
+        // Only add a changelog if there is content to display
+        if (itemArr.length > 0 || description || extra) {
+          return page.create('div').class('qm-changelog')
+            .add(page.create('div').class('qm-changelog-head').add(title))
+            .add(page.create('div').class('qm-changelog-body')
+              .add(description)
+              .add(items)
+              .add(extra))
+        }
       })
   }
 
