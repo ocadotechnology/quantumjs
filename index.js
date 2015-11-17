@@ -297,6 +297,10 @@ function process (wrapper, options) {
       changelogEntityBuilder.add(selectedEntity.select('link'))
     }
 
+    if (selectedEntity.has('milestone')) {
+      changelogEntityBuilder.add(selectedEntity.select('milestone'))
+    }
+
     if (selectedEntity.has('extra')) {
       changelogEntityBuilder.add(selectedEntity.select('extra'))
     }
@@ -411,6 +415,7 @@ module.exports = function (opts) {
   options.targetVersions = opts.targetVersions
   options.renderSingleItemInRoot = opts.renderSingleItemInRoot
   options.jsTypes = opts.jsTypes
+  options.milestoneUrl = opts.milestoneUrl
   options.issueUrl = opts.issueUrl
   options.docsUrlLookup = opts.docsUrlLookup || function (version, api) {
       return {

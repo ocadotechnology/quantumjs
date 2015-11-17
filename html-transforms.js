@@ -195,6 +195,9 @@ module.exports = function (options) {
     if (entity.has('link')) {
       var link = entity.select('link')
       var title = page.create('a').class('qm-changelog-link').attr('href', link.ps()).text(entity.ps())
+    } else if (entity.has('milestone')) {
+      var milestone = entity.select('milestone')
+      title = page.create('a').class('qm-changelog-link').attr('href', options.milestoneUrl + milestone.ps()).text(entity.ps())
     } else {
       var title = entity.ps()
     }
