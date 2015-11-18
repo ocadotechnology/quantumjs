@@ -339,12 +339,12 @@ module.exports = function (options) {
   })
 
   var createFunctionLike = createItemBuilder({
-    header: [ functionHeader ],
+    header: [ functionHeader, defaultValue ],
     content: [ description, params, groups, events, returns ]
   })
 
   var createObjectLike = createItemBuilder({
-    header: [ propertyHeader ],
+    header: [ propertyHeader, defaultValue ],
     content: [ description, groups, properties, prototypes, functions, methods ]
   })
 
@@ -366,12 +366,12 @@ module.exports = function (options) {
   })
 
   var createPrototypeLike = createItemBuilder({
-    header: [ typeHeader ],
+    header: [ typeHeader, defaultValue ],
     content: [ description, constructors, groups, properties, methods, functions ]
   })
 
   var createEntityLike = createItemBuilder({
-    header: [ entityHeader],
+    header: [ entityHeader ],
     content: [ description, groups, entities ],
   })
 
