@@ -47,8 +47,8 @@ function mergeContent (content1, content2, options) {
 
           if ((options.taggable.indexOf(e2.type) > -1) && e1sCanBeUpdated && e2sCanBeUpdated) {
             e1.content.push({ type: 'updated', params: [], content: [] })
-          } else if (e2s.has('removed') && e2s.has('deprecated')) {
-            e1.remove('deprecated')
+          } else if (e1s.has('removed') && e1s.has('deprecated')) {
+            e1s.remove('deprecated')
           }
         }
       } else {
