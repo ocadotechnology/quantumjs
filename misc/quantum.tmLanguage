@@ -342,6 +342,39 @@
 			</array>
 		</dict>
 		<dict>
+			<key>begin</key>
+			<string>(@{1,2}scss)\s*$|(@{1,2}codeblock) (scss)\s*$</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.quantum</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.quantum</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>variable.parameter.quantum</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?=@)</string>
+			<key>name</key>
+			<string>meta.quantum.embedded-scss.quantum</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.sass</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
 			<key>match</key>
 			<string>\t</string>
 			<key>name</key>
@@ -375,7 +408,7 @@
 			<key>contentName</key>
 			<string>variable.parameter.quantum</string>
 			<key>end</key>
-			<string>(:|$|(?&lt;=[\)\]]) [^\[])|\n</string>
+			<string>(:|$|(?&lt;=[\)\]])[ ,.][^\[])|\n</string>
 			<key>name</key>
 			<string>meta.quantum.quantum</string>
 			<key>patterns</key>
