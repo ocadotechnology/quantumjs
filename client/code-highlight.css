@@ -4,6 +4,12 @@
   border: solid 1px #F0F0F0;
   color: #3D3D3D;
   overflow: auto;
+  background: white;
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+}
+
+.codeblock > pre {
+  margin: 0;
 }
 
 .code {
