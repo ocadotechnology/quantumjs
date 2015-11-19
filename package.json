@@ -6,6 +6,9 @@
   "directories": {
     "test": "test"
   },
+  "publishConfig": {
+    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
+  },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
     "coverage": "./node_modules/mocha/bin/mocha -R html-file-cov"
@@ -25,6 +28,7 @@
     }
   },
   "dependencies": {
-    "dagre": "0.7.4"
+    "dagre": "0.7.4",
+    "quantum-js": "^0.1.2"
   }
 }
