@@ -284,6 +284,14 @@ module.exports = function (options) {
     }
   }
 
+  function extras (entity, page, transforms) {
+    return page.create('div').class('qm-api-extras').add(
+      Promise.all(entity.selectAll('extra').map(function (e) {
+        return page.create('div').class('qm-api-extra')
+          .add(e.transform(transforms))
+      })))
+  }
+
   function defaultValue (entity, page, transforms) {
     if (entity.has('default')) {
       return page.create('div').class('qm-api-default')
@@ -326,7 +334,7 @@ module.exports = function (options) {
   /* item builders */
 
   var createApiLike = createItemBuilder({
-    content: [ description, properties, groups, objects, prototypes, functions, classes, entities ]
+    content: [ description, extras, properties, groups, objects, prototypes, functions, classes, entities ]
   })
 
   var createGroupLike = createItemBuilder({
@@ -335,44 +343,44 @@ module.exports = function (options) {
 
   var createConstructorLike = createItemBuilder({
     header: [ constructorHeader ],
-    content: [ description, params ]
+    content: [ description, extras, params ]
   })
 
   var createFunctionLike = createItemBuilder({
     header: [ functionHeader ],
-    content: [ description, defaultValue, params, groups, events, returns ]
+    content: [ description, extras, defaultValue, params, groups, events, returns ]
   })
 
   var createObjectLike = createItemBuilder({
     header: [ propertyHeader ],
-    content: [ description, defaultValue, groups, properties, prototypes, functions, methods ]
+    content: [ description, extras, defaultValue, groups, properties, prototypes, functions, methods ]
   })
 
   var createPropertyLike = createItemBuilder({
     header: [ propertyHeader ],
-    content: [ description, defaultValue ],
+    content: [ description, extras, defaultValue ],
     renderAsOther: { 'Function': createFunctionLike, 'Object': createObjectLike }
   })
 
   var createClassLike = createItemBuilder({
     header: [ typeHeader ],
-    content: [ description, groups, classes, extraClasses, childClasses ]
+    content: [ description, extras, groups, classes, extraClasses, childClasses ]
   })
 
   var createTypeLike = createItemBuilder({
     header: [ typeHeader ],
-    content: [ description ],
+    content: [ description, extras ],
     renderAsOther: { 'Function': createFunctionLike, 'Object': createObjectLike }
   })
 
   var createPrototypeLike = createItemBuilder({
     header: [ typeHeader ],
-    content: [ description, defaultValue, constructors, groups, properties, methods, functions ]
+    content: [ description, extras, defaultValue, constructors, groups, properties, methods, functions ]
   })
 
   var createEntityLike = createItemBuilder({
     header: [ entityHeader ],
-    content: [ description, groups, entities ],
+    content: [ description, extras, groups, entities ],
   })
 
   /* transforms */
