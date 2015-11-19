@@ -117,6 +117,10 @@ transforms.classed = function (entity, page, transform) {
   return
 }
 
+transforms.title = function (entity, page, transform) {
+  page.head.add(page.create('title').text(entity.ps()))
+}
+
 transforms.head = function (entity, page, transform) {
   return entity.transform(transform)
     .then(function (elements) {
