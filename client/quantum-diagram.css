@@ -1,0 +1,81 @@
+.qm-diagram-svg {
+  padding: 0.5em;
+}
+
+.qm-diagram-rectangle,
+.qm-diagram-path,
+.qm-diagram-group {
+  fill: none;
+  stroke: #494949;
+  stroke-linecap: round;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.qm-diagram-path {
+  stroke-dasharray: 6 6;
+  stroke-width: 3px;
+  stroke: #985F90;
+}
+
+.qm-diagram-rectangle {
+  fill: rgb(253, 248, 243);
+}
+
+.qm-diagram-group {
+  fill: rgba(48, 111, 134, 0.07);
+}
+
+.qm-diagram-divider {
+  stroke: #494949;
+  stroke-width: 3px;
+}
+
+.qm-diagram-text,
+.qm-diagram-row-text {
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: #494949;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 16px;
+}
+
+.qm-diagram-text {
+  font-weight: bold;
+}
+
+.qm-group-label {
+  text-anchor: start;
+}
+
+/*XXX: replace this with local copies (remove and use monospace by default?)*/
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 300;
+  src: local("Roboto Mono Light"), local("RobotoMono-Light"), url(https://fonts.gstatic.com/s/robotomono/v4/N4duVc9C58uwPiY8_59Fz_R_54zmj3SbGZQh3vCOwvY.woff) format("woff");
+}
+
+
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto Mono"), local("RobotoMono-Regular"), url(https://fonts.gstatic.com/s/robotomono/v4/hMqPNLsu_dywMa4C_DEpY7rIa-7acMAeDBVuclsi6Gc.woff) format("woff");
+}
+
+
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 500;
+  src: local("Roboto Mono Medium"), local("RobotoMono-Medium"), url(https://fonts.gstatic.com/s/robotomono/v4/N4duVc9C58uwPiY8_59Fz6TA90I55Xt7owhZwpPnMsc.woff) format("woff");
+}
+
+
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Roboto Mono Bold"), local("RobotoMono-Bold"), url(https://fonts.gstatic.com/s/robotomono/v4/N4duVc9C58uwPiY8_59FzxbnBKKEOwRKgsHDreGcocg.woff) format("woff");
+}

@@ -1,0 +1,12 @@
+{
+  "name": "quantum-diagram-example",
+  "version": "0.1.0",
+  "description": "Example for quantum-diagram",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build.js"
+  },
+  "author": "james.smyth@ocado.com",
+  "license": "MIT",
+  "private": true
+}
