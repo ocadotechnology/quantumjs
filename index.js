@@ -70,12 +70,11 @@ module.exports = function (options) {
   function createHeader (type, details, entity, page, transforms) {
     var tagClasses = createTagClasses(entity).map(function (name) { return 'qm-api-' + name }).join(' ')
 
-    return page.create('div').class('qm-api-header qm-api-' + type + '-header')
+    return page.create('div').class('qm-api-item-header qm-api-' + type + '-header')
       .add(details.class('qm-api-header-details ' + tagClasses))
       .add(createTags(entity, page))
   }
 
-  // create a notice section XXX: change to use hexagon's notices?
   function createNotice (type, title) {
     return function (entity, page, transforms) {
       if (entity.has(type)) {
@@ -84,8 +83,8 @@ module.exports = function (options) {
 
         if (notice.content.length) {
           return page.create('div').class('qm-api-notice qm-api-notice-' + type)
-            .add(page.create('div').class('qm-api-notice-header qm-api-notice-' + type + '-header').text(title))
-            .add(page.create('div').class('qm-api-notice-body qm-api-notice-' + type + '-body')
+            .add(page.create('div').class('qm-api-notice-header').text(title))
+            .add(page.create('div').class('qm-api-notice-body')
               .add(notice.transform(transforms))
           )
         }
@@ -151,15 +150,18 @@ module.exports = function (options) {
     }
   }
 
-  // creates a hexagon tree
-  function createTree (page, clas, header, content) {
-    return page.create('div').class('qm-api-tree qm-api-item ' + clas + ' hx-tree')
-      .add(page.create('div').class('hx-tree-node')
-        .add(page.create('div').class('hx-tree-node-parent')
-          .add(page.create('div').class('hx-tree-node-content').add(header)))
-        .add(page.create('div').class('hx-tree-node-children').attr('style', 'display:none')
-          .add(page.create('div').class('hx-tree-node')
-            .add(page.create('div').class('hx-tree-node-content').add(content)))))
+  var whiteChevron = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="14" viewBox="0 0 10 14"><path fill="#FFFFFF" d="M8.648 6.852l-5.797 5.797q-0.148 0.148-0.352 0.148t-0.352-0.148l-1.297-1.297q-0.148-0.148-0.148-0.352t0.148-0.352l4.148-4.148-4.148-4.148q-0.148-0.148-0.148-0.352t0.148-0.352l1.297-1.297q0.148-0.148 0.352-0.148t0.352 0.148l5.797 5.797q0.148 0.148 0.148 0.352t-0.148 0.352z"></path></svg>'
+  var blackChevron = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="14" viewBox="0 0 10 14"><path fill="#444444" d="M8.648 6.852l-5.797 5.797q-0.148 0.148-0.352 0.148t-0.352-0.148l-1.297-1.297q-0.148-0.148-0.148-0.352t0.148-0.352l4.148-4.148-4.148-4.148q-0.148-0.148-0.148-0.352t0.148-0.352l1.297-1.297q0.148-0.148 0.352-0.148t0.352 0.148l5.797 5.797q0.148 0.148 0.148 0.352t-0.148 0.352z"></path></svg>'
+
+  // creates a qm collapsible
+  function createCollapsible (page, clas, header, content) {
+    return page.create('div').class('qm-api-collapsible qm-api-item ' + clas)
+      .add(page.create('div').class('qm-api-collapsible-heading')
+        .add(page.create('div').class('qm-api-collapsible-toggle').text(whiteChevron, true))
+        .add(page.create('div').class('qm-api-collapsible-head')
+          .add(header)))
+      .add(page.create('div').class('qm-api-collapsible-content')
+        .add(content))
   }
 
   function createItemBuilder (opts) {
@@ -178,7 +180,7 @@ module.exports = function (options) {
           }
         }
 
-        var content = page.create('div').class('qm-item-content')
+        var content = page.create('div').class('qm-api-item-content')
 
         standard.concat(opts.content).forEach(function (builder) {
           content = content.add(builder(entity, page, transforms))
@@ -187,15 +189,15 @@ module.exports = function (options) {
         if (opts.header) {
           // XXX: do optional check
 
-          var extraHeaderClasses = (entity.type[entity.type.length - 1] === '?') ? ' qm-optional' : ''
-          var header = page.create('div').class('qm-item-header' + extraHeaderClasses)
+          var extraHeaderClasses = (entity.type[entity.type.length - 1] === '?') ? ' qm-api-optional' : ''
+          var header = page.create('div').class('qm-api-item-head' + extraHeaderClasses)
 
           opts.header.forEach(function (builder) {
             header = header.add(builder(entity, page, transforms))
           })
 
-          var extraClasses = entity.empty() ? ' qm-no-description' : ''
-          return createTree(page, clas + extraClasses, header, content)
+          var extraClasses = entity.empty() ? ' qm-api-item-no-description' : ''
+          return createCollapsible(page, clas + extraClasses, header, content)
         } else {
           return content
         }
@@ -207,30 +209,11 @@ module.exports = function (options) {
 
   // creates a header for function type items
   function functionHeader (entity, page, transforms) {
-    var name = page.create('span').class('qm-api-function-name').text(entity.params[0])
+    var name = page.create('span').class('qm-api-function-name').text(entity.type === 'constructor' ? 'constructor' : entity.params[0])
 
     var params = entity.selectAll(['param', 'param?']).map(function (paramEntity) {
       var isOptional = paramEntity.type[paramEntity.type.length - 1] === '?'
       return page.create('span').class(isOptional ? 'qm-api-function-param qm-api-optional' : 'qm-api-function-param')
-        .add(page.create('span').class('qm-api-function-param-name').text(paramEntity.params[0]))
-        .add(page.create('span').class('qm-api-function-param-type').add(createType(paramEntity.params[1], page)))
-    })
-
-    var returns = page.create('span').class('qm-api-function-returns').add(createType(entity.select('returns').ps(), page))
-
-    var details = page.create('span')
-      .add(name)
-      .add(page.create('span').class('qm-api-function-params').add(params))
-      .add(returns)
-
-    return createHeader('function', details, entity, page, transforms)
-  }
-
-  function constructorHeader (entity, page, transforms) {
-    var name = page.create('span').class('qm-api-function-name').text('constructor')
-
-    var params = entity.selectAll(['param', 'param?']).map(function (paramEntity) {
-      return page.create('span').class('qm-api-function-param')
         .add(page.create('span').class('qm-api-function-param-name').text(paramEntity.params[0]))
         .add(page.create('span').class('qm-api-function-param-type').add(createType(paramEntity.params[1], page)))
     })
@@ -304,7 +287,7 @@ module.exports = function (options) {
   function groups (entity, page, transforms) {
     if (entity.has('group')) {
       var sortedEntity = organiseEntity(entity.filter('group'))
-      return page.create('div').class('qm-api-group-group')
+      return page.create('div').class('qm-api-group-container')
         .add(Promise.all(sortedEntity.selectAll('group').map(function (e) {
           return page.create('div').class('qm-api-group')
             .add(page.create('h2').text(e.ps()))
@@ -342,7 +325,7 @@ module.exports = function (options) {
   })
 
   var createConstructorLike = createItemBuilder({
-    header: [ constructorHeader ],
+    header: [ functionHeader ],
     content: [ description, extras, params ]
   })
 
@@ -424,9 +407,11 @@ module.exports = function (options) {
     addCodeSection('json', 'JSON')
 
     var code = page.create('div').class('qm-api-example-code qm-api-collapsible')
-      .add(page.create('div').class('hx-collapsible-heading').text('Code'))
-      .add(page.create('div').class('hx-collapsible-content')
-        .add(page.create('div').class('qm-api-code-container')
+      .add(page.create('div').class('qm-api-collapsible-heading')
+        .text(blackChevron, true)
+        .add(page.create('span').text('Code')))
+      .add(page.create('div').class('qm-api-collapsible-content')
+        .add(page.create('div').class('qm-api-example-code-container')
           .add(codeBody)
       )
     )
