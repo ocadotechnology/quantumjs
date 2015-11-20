@@ -19,33 +19,7 @@
 .qm-changelog-item {
   margin: 0.5em 0;
   padding: 0;
-  border-left: 2px solid #0090FF;
-}
-
-.qm-changelog-item > .hx-tree-node > .hx-tree-node-parent > .hx-tree-node-parent-icon {
-  background: #0090FF;
-  color: white;
-}
-
-.qm-changelog-parent {}
-
-.qm-changelog-parent-content {}
-
-.qm-changelog-children {
-  padding: 0.5em 0 0.5em 2em;
-  margin: 0;
-  border: none;
-}
-
-.qm-changelog-children > .hx-tree-node {
-  padding: 0;
-  margin: 0;
-}
-
-.qm-changelog-children-content {
-  background: transparent;
-  padding: 0;
-  margin: 0;
+  border-left: 2px solid #00ADA8;
 }
 
 .qm-changelog-item-head {
@@ -113,7 +87,14 @@
 
 .qm-changelog-entry-extra {}
 
-.qm-changelog-label {}
+.qm-changelog-label {
+  display: inline-block;
+  margin-left: 0.25em;
+  font-size: 11px;
+  color: white;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+}
 
 .qm-changelog-item-description,
 .qm-changelog-description,
@@ -196,4 +177,49 @@
 
 .qm-changelog-text-info {
   color: #3D3D3D;
+}
+
+/* Collapsible */
+.qm-changelog-collapsible {}
+
+.qm-changelog-collapsible-heading {
+  display: flex;
+  align-items: center;
+  background: white;
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+}
+
+.qm-changelog-collapsible-toggle {
+  padding: 0.5em;
+  text-align: center;
+  cursor: pointer;
+  background: #00ADA8;
+  height: 1em;
+  width: 1em;
+  margin-left: -2px;
+}
+
+.qm-changelog-collapsible-toggle svg {
+  transition: transform 0.2s;
+}
+
+.qm-changelog-collapsible-open > .qm-changelog-collapsible-heading svg {
+  transform: rotate(90deg);
+}
+
+.qm-changelog-collapsible-head {
+  padding: 0.5em;
+  line-height: 1em;
+  flex-grow: 1;
+  flex-shrink: 0;
+  height: 1em;
+}
+
+.qm-changelog-collapsible-content {
+  display: none;
+  padding: 0.5em 0 0.5em 2em;
+}
+
+.qm-changelog-collapsible-open > .qm-changelog-collapsible-content {
+  display: block;
 }

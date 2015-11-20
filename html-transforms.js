@@ -115,9 +115,21 @@ module.exports = function (options) {
   }
 
   function label (page, tag, type, count) {
-    return page.create('div').class('qm-changelog-label hx-label ' + (type.class || 'qm-changelog-background-' + tag))
+    return page.create('div').class('qm-changelog-label ' + (type.class || 'qm-changelog-background-' + tag))
       .add(page.create('i').class('fa fa-fw ' + type.icon))
       .add(page.create('span').text(count))
+  }
+
+  var whiteChevron = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="14" viewBox="0 0 10 14"><path fill="#FFFFFF" d="M8.648 6.852l-5.797 5.797q-0.148 0.148-0.352 0.148t-0.352-0.148l-1.297-1.297q-0.148-0.148-0.148-0.352t0.148-0.352l4.148-4.148-4.148-4.148q-0.148-0.148-0.148-0.352t0.148-0.352l1.297-1.297q0.148-0.148 0.352-0.148t0.352 0.148l5.797 5.797q0.148 0.148 0.148 0.352t-0.148 0.352z"></path></svg>'
+
+  function createCollapsible (page, header, content) {
+    return page.create('div').class('qm-changelog-collapsible')
+      .add(page.create('div').class('qm-changelog-collapsible-heading')
+        .add(page.create('div').class('qm-changelog-collapsible-toggle').text(whiteChevron, true))
+        .add(page.create('div').class('qm-changelog-collapsible-head')
+          .add(header)))
+      .add(page.create('div').class('qm-changelog-collapsible-content')
+        .add(content))
   }
 
   function item (entity, page, transforms, singleItemMode) {
@@ -166,18 +178,15 @@ module.exports = function (options) {
         }
       })
 
-      return page.create('div').class('qm-changelog-item hx-tree')
-        .add(page.create('div').class('hx-tree-node')
-          .add(page.create('div').class('qm-changelog-parent hx-tree-node-parent')
-            .add(page.create('div').class('qm-changelog-parent-content hx-tree-node-content').add(page.create('div').class('qm-changelog-item-head')
-              .add(title)
-              .add(labels))))
-          .add(page.create('div').class('qm-changelog-children hx-tree-node-children').attr('style', 'display:none')
-            .add(page.create('div').class('hx-tree-node')
-              .add(page.create('div').class('qm-changelog-children-content hx-tree-node-content').add(page.create('div').class('qm-changelog-item-body')
-                .add(description)
-                .add(entries)
-                .add(extra))))))
+      var header = page.create('div').class('qm-changelog-item-head')
+        .add(title)
+        .add(labels)
+      var content = page.create('div').class('qm-changelog-item-body')
+        .add(description)
+        .add(entries)
+        .add(extra)
+
+      return page.create('div').class('qm-changelog-item').add(createCollapsible(page, header, content))
     }
   }
 
@@ -208,10 +217,10 @@ module.exports = function (options) {
 
     return page.addAssets({
       css: {
-        'changelog.css': __dirname + '/client/changelog.css'
+        'changelog.css': __dirname + '/client/quantum-changelog.css'
       },
       js: {
-        'changelog.js': __dirname + '/client/changelog.js'
+        'changelog.js': __dirname + '/client/quantum-changelog.js'
       }
     })
       .then(function () {
