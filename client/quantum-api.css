@@ -152,11 +152,11 @@
 .qm-api-updated {}
 
 .qm-api-deprecated {
-  opacity: 0.5;
+  color: #9E9E9E;
 }
 
 .qm-api-removed {
-  opacity: 0.5;
+  color: #9E9E9E;
   text-decoration: line-through;
 }
 
@@ -169,7 +169,7 @@
 }
 
 .qm-api-optional {
-  opacity: 0.75;
+  color: #9E9E9E;
 }
 
 .qm-api-optional > .qm-api-item-header > .qm-api-header-details:before,
@@ -209,7 +209,6 @@
 .qm-api-type-link {}
 
 .qm-api-type-link:not(:last-child):after {
-  content: "/";
   margin: 0 0.1em;
 }
 
@@ -341,6 +340,21 @@
 .qm-api-function-returns:not(:empty):before {
   content: ":";
   margin-right: 4px;
+}
+
+.qm-api-prototype-name {}
+
+.qm-api-prototype-extends {
+  color: #8C8C8C;
+}
+
+.qm-api-prototype-extends:before {
+  content: '(';
+  margin-left: 4px;
+}
+
+.qm-api-prototype-extends:after {
+  content: ')';
 }
 
 .qm-api-property-name {}

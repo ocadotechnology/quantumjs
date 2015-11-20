@@ -19,6 +19,34 @@ module.exports = function (options) {
   options = options || {}
   var types = options.types || {}
 
+  function matchBrackets (container, string, page) {
+    container = typeLookup(container, string.slice(0, string.indexOf('[')), page)
+    var match = string.slice(string.indexOf('[') + 1, string.lastIndexOf(']'))
+    container = container.add('[')
+    if (match.indexOf('[') > -1) {
+      container = matchBrackets(container, match, page)
+    } else {
+      container = typeLookup(container, match, page)
+    }
+    container = container.add(']')
+    return container
+  }
+
+  function typeLookup (container, type, page) {
+    var parts = type.split('/')
+    parts.forEach(function (part, index) {
+      if (part in types) {
+        container = container.add(page.create('a').class('qm-api-type-link').attr('href', types[part]).text(part))
+      } else {
+        container = container.add(part)
+      }
+      if (index !== parts.length - 1) {
+        container = container.add(' / ')
+      }
+    })
+    return container
+  }
+
   // creates a span containing one or more / separated types (complete with links for known types)
   function createType (type, page) {
     if (type === undefined || type === '') {
@@ -26,13 +54,11 @@ module.exports = function (options) {
     }
 
     var container = page.create('span')
-    type.split('/').forEach(function (part) {
-      if (part in types) {
-        container = container.add(page.create('a').class('qm-api-type-link').attr('href', types[part]).text(part))
-      } else {
-        continer = container.add(page.create('span').text(part))
-      }
-    })
+    if (type.indexOf('[') > -1) {
+      container = matchBrackets(container, type, page)
+    } else {
+      container = typeLookup(container, type, page)
+    }
 
     return container
   }
@@ -238,6 +264,20 @@ module.exports = function (options) {
 
   }
 
+  function prototypeHeader (entity, page, transforms) {
+    var details = page.create('span')
+      .add(page.create('span').class('qm-api-prototype-name').text(entity.params[0] || ''))
+
+    if (entity.params[1]) {
+      details = details.add(page.create('span').class('qm-api-prototype-extends')
+        .add('Extends: ')
+        .add(createType(entity.params[1], page)))
+    }
+
+    return createHeader('prototype', details, entity, page, transforms)
+
+  }
+
   // creates a header for entity type items
   function entityHeader (entity, page, transforms) {
     var details = page.create('span')
@@ -357,7 +397,7 @@ module.exports = function (options) {
   })
 
   var createPrototypeLike = createItemBuilder({
-    header: [ typeHeader ],
+    header: [ prototypeHeader ],
     content: [ description, extras, defaultValue, constructors, groups, properties, methods, functions ]
   })
 
