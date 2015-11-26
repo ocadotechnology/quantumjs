@@ -1,3 +1,7 @@
+.qm-diagram {
+  text-align: center;
+}
+
 .qm-diagram-svg {
   padding: 0.5em;
 }
@@ -6,29 +10,33 @@
 .qm-diagram-path,
 .qm-diagram-group {
   fill: none;
-  stroke: #494949;
+  stroke: #303846;
   stroke-linecap: round;
-  stroke-width: 3px;
-  stroke-linejoin: round;
+  stroke-width: 2px;
+  stroke-linejoin: bevel;
 }
 
 .qm-diagram-path {
+
+  stroke-width: 2px;
+  stroke: #535353;
+}
+
+.qm-diagram-path-dashed {
   stroke-dasharray: 6 6;
-  stroke-width: 3px;
-  stroke: #985F90;
 }
 
 .qm-diagram-rectangle {
-  fill: rgb(253, 248, 243);
+  fill: white;
 }
 
 .qm-diagram-group {
-  fill: rgba(48, 111, 134, 0.07);
+  fill: rgba(0, 160, 222, 0.05);
 }
 
 .qm-diagram-divider {
-  stroke: #494949;
-  stroke-width: 3px;
+  stroke: rgb(203, 203, 203);
+  stroke-width: 1px;
 }
 
 .qm-diagram-text,

@@ -54,8 +54,11 @@ function diagram (entity, page, transform) {
 
   handleGroup(entity)
 
+  var edges = {}
+
   quantum.select(entity).selectAll('link').forEach(function (link) {
     g.setEdge(link.params[0], link.params[2])
+    edges[link.params[0] + ':' + link.params[2]] = link
   })
 
   dagre.layout(g)
@@ -165,19 +168,31 @@ function diagram (entity, page, transform) {
       return [point.x, point.y]
     })
 
+    var join = edges[e.v + ':' + e.w].param(1)
+
     // XXX: make these into actual arrows
     var line = page.create('path')
       .class('qm-diagram-path')
       .attr('d', path(points))
-      .attr('marker-end', 'url(#arrow-end)')
-      .attr('marker-start', 'url(#arrow-start)')
+
+    if (join[0] === '<') {
+      line.attr('marker-start', 'url(#arrow-start)')
+    }
+
+    if (join.indexOf('--') > -1) {
+      line.class(line.class() + ' qm-diagram-path-dashed')
+    }
+
+    if (join[join.length - 1] === '>') {
+      line.attr('marker-end', 'url(#arrow-end)')
+    }
 
     svg.add(line)
   })
 
   return page.addAssets({css: { 'quantum-diagram.css': __dirname + '/client/quantum-diagram.css' }})
     .then(function () {
-      return svg
+      return page.create('div').class('qm-diagram').add(svg)
     })
 }
 
