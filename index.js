@@ -244,7 +244,13 @@ module.exports = function (options) {
         .add(page.create('span').class('qm-api-function-param-type').add(createType(paramEntity.params[1], page)))
     })
 
-    var returns = page.create('span').class('qm-api-function-returns').add(createType(entity.select('returns').ps(), page))
+    var returnsEntity = entity.selectAll('returns').filter(function (ent) {
+      return !ent.has('removed')
+    })[0]
+
+    if (returnsEntity) {
+      var returns = page.create('span').class('qm-api-function-returns').add(createType(returnsEntity.ps(), page))
+    }
 
     var details = page.create('span')
       .add(name)
