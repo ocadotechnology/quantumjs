@@ -345,7 +345,8 @@ module.exports = function (options) {
           return page.create('div').class('qm-api-group')
             .add(page.create('h2').text(e.ps()))
             .add(page.create('div').class('qm-api-group-content')
-              .add(e.transform(transforms)))
+              .add(description(e, page, transforms))
+              .add(e.filter(function (e) {return e.type !== 'description'}).transform(transforms)))
         })))
     }
   }
