@@ -38,6 +38,12 @@
   margin: -0.2em;
 }
 
+.qm-changelog-label > i {
+  font-size: 0.75em;
+  margin-right: 0.15em;
+  vertical-align: 1px;
+}
+
 .qm-changelog-item-body {}
 
 .qm-changelog-item-description {}
@@ -92,8 +98,8 @@
   margin-left: 0.25em;
   font-size: 11px;
   color: white;
-  padding-left: 0.25em;
-  padding-right: 0.25em;
+  padding: 0.1em 0.25em;
+  border-radius: 1px;
 }
 
 .qm-changelog-item-description,
@@ -105,35 +111,35 @@
 }
 
 .qm-changelog-background-added {
-  background: #6FB365;
+  background: #A0B511;
 }
 
 .qm-changelog-background-updated {
-  background: #6582A6;
+  background: #AB7BC1;
 }
 
 .qm-changelog-background-deprecated {
-  background: #CB9856;
+  background: #A9A9A9;
 }
 
 .qm-changelog-background-removed {
-  background: #C74967;
+  background: #EC3A65;
 }
 
 .qm-changelog-background-enhancement {
-  background: #A36FA9;
+  background: #44AFAC;
 }
 
 .qm-changelog-background-bugfix {
-  background: #CB9856;
+  background: #D69B24;
 }
 
 .qm-changelog-background-docs {
-  background: #6582A6;
+  background: #5E99D0;
 }
 
 .qm-changelog-background-info {
-  background: #3D3D3D;
+  background: #6F6F6F;
 }
 
 .qm-changelog-background-added,
@@ -148,35 +154,35 @@
 }
 
 .qm-changelog-text-added {
-  color: #6FB365;
+  color: #A0B511;
 }
 
 .qm-changelog-text-updated {
-  color: #6582A6;
+  color: #AB7BC1;
 }
 
 .qm-changelog-text-deprecated {
-  color: #CB9856;
+  color: #A9A9A9;
 }
 
 .qm-changelog-text-removed {
-  color: #C74967;
+  color: #EC3A65;
 }
 
 .qm-changelog-text-enhancement {
-  color: #A36FA9;
+  color: #44AFAC;
 }
 
 .qm-changelog-text-bugfix {
-  color: #CB9856;
+  color: #D69B24;
 }
 
 .qm-changelog-text-docs {
-  color: #6582A6;
+  color: #5E99D0;
 }
 
 .qm-changelog-text-info {
-  color: #3D3D3D;
+  color: #6F6F6F;
 }
 
 /* Collapsible */
