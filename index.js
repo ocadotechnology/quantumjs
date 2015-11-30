@@ -268,10 +268,17 @@ module.exports = function (options) {
     var details = page.create('span')
       .add(page.create('span').class('qm-api-prototype-name').text(entity.params[0] || ''))
 
-    if (entity.params[1]) {
-      details = details.add(page.create('span').class('qm-api-prototype-extends')
-        .add('Extends: ')
-        .add(createType(entity.params[1], page)))
+    var extenddEntities = entity.selectAll('extends')
+
+    if (extenddEntities.length > 0) {
+      details = details.add(page.create('span').class('qm-api-prototype-extends').text('extends'))
+
+      extenddEntities.forEach(function (ent) {
+        var extender = page.create('span')
+          .class('qm-api-prototype-extends-type')
+          .add(createType(ent.ps(), page))
+        details = details.add(extender)
+      })
     }
 
     return createHeader('prototype', details, entity, page, transforms)

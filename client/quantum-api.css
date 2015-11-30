@@ -342,19 +342,14 @@
   margin-right: 4px;
 }
 
-.qm-api-prototype-name {}
+.qm-api-prototype-name {
+  font-weight: bold;
+}
 
 .qm-api-prototype-extends {
-  color: #8C8C8C;
-}
-
-.qm-api-prototype-extends:before {
-  content: '(';
-  margin-left: 4px;
-}
-
-.qm-api-prototype-extends:after {
-  content: ')';
+  font-style: italic;
+  margin-left: 0.25em;
+  margin-right: 0.25em;
 }
 
 .qm-api-property-name {}
