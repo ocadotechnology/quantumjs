@@ -1,6 +1,6 @@
 {
   "name": "quantum-api",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "quantum entity to virtual dom transforms for writing api docs",
   "main": "index.js",
   "directories": {
@@ -15,6 +15,7 @@
   "author": "james.smyth@ocado.com",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.0.6",
     "quantum-js": "^0.1.1"
   },
   "devDependencies": {

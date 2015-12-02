@@ -13,6 +13,7 @@
 
 */
 
+var Promise = require('bluebird')
 var quantum = require('quantum-js')
 
 module.exports = function (options) {
