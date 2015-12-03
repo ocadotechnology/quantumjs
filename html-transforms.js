@@ -241,7 +241,26 @@ module.exports = function (options) {
       .add(entity.transform(transforms))
   }
 
+  function keyItem (page, name, tag) {
+    return page.create('div').class('qm-changelog-key-item')
+      .add(page.create('div').class('qm-changelog-key-item-icon')
+        .add(page.create('i').class('fa ' + tag.icon + ' qm-changelog-text-' + name)))
+      .add(page.create('div').class('qm-changelog-key-item-text')
+        .add(tag.title))
+  }
+
+  function key (entity, page, transforms) {
+    var keys = page.create('div').class('qm-changelog-keys')
+
+    Object.keys(options.tags).map(function (tag) {
+      keys = keys.add(keyItem(page, tag, options.tags[tag]))
+    })
+    return page.create('div').class('qm-changelog-key')
+      .add(keys)
+  }
+
   return {
+    'key': key,
     'changelog': changelog,
     'wrapper': wrapper,
     'entry': entry

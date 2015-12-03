@@ -229,3 +229,23 @@
 .qm-changelog-collapsible-open > .qm-changelog-collapsible-content {
   display: block;
 }
+
+.qm-changelog-key {}
+
+.qm-changelog-key-items {}
+
+.qm-changelog-key-item {
+  display: flex;
+  margin: 0 0.4em;
+}
+
+.qm-changelog-key-item-icon,
+.qm-changelog-key-item-text {
+  padding: 0.4em;
+}
+
+.qm-changelog-key-item-icon {}
+
+.qm-changelog-key-item-text {
+  flex-grow: 1;
+}
