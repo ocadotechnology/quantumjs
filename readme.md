@@ -1,4 +1,4 @@
-# quantum
+# quantum-js
 
 ## About
 

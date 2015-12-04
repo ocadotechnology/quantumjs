@@ -1,6 +1,6 @@
 {
   "name": "quantum-js",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "The quantum parser, selection api and construction api",
   "main": "lib/index.js",
   "directories": {
@@ -13,10 +13,7 @@
   "contributors": [
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
-  "publishConfig": {
-    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
-  },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "blanket": "^1.1.7",
     "chai": "^2.3.0",
