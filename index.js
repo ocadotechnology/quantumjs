@@ -174,14 +174,14 @@ function createItem (apiName, apiObject, versionName, options) {
 
 function cloneAndRemoveTags (version) {
   var versionClone = clone(version, {circular: false})
-  // var versionClone = quickClone(version)
 
   for (apiName in versionClone) {
     var apiMap = versionClone[apiName].apiContent
-
-    Object.keys(apiMap).forEach(function (key) {
+    var apiKeys = Object.keys(apiMap)
+    var isRemovedApi = apiKeys.filter(function (e) { return e.indexOf('_root') > -1 && e.indexOf('removed') > -1 }).length > 0
+    apiKeys.forEach(function (key) {
       var entity = quantum.select(apiMap[key].entity)
-      if (entity.has('removed') || (apiMap[key].rootEntity && entity.type !== 'deprecated')) {
+      if (entity.has('removed') || (apiMap[key].rootEntity && entity.type !== 'deprecated') || (isRemovedApi && entity.type === 'deprecated')) {
         delete apiMap[key]
       } else {
         entity.removeAll(['added', 'updated', 'enhancement', 'docs', 'info', 'bugfix'])
