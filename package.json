@@ -1,6 +1,6 @@
 {
   "name": "quantum-version",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "quantum transform that lets you specify versioned content, only specify what changes between versions",
   "main": "index.js",
   "directories": {
