@@ -68,10 +68,16 @@ function mergeContent (content1, content2, options) {
 // filters versions for added, updated and removed flags
 // added, updated: removes flags from item, leaves item in content
 // removed: removes item from content
-function removeTags (entity) {
+function removeTags (entity, tagsToRemove) {
   if (Array.isArray(entity.content)) {
-    entity.content = entity.content.filter(function (e) { return !quantum.select(e).has('removed') && e.type !== 'updated' && e.type !== 'added'})
-    entity.content.forEach(removeTags)
+    function isRemoved (e) {
+      var entityIsRemoved = quantum.select(e).has('removed')
+      var isTag = e.type === 'updated' || e.type === 'added'
+      var isRemovedTag = tagsToRemove.indexOf(e.type) > -1
+      return !entityIsRemoved && !isTag && !isRemovedTag
+    }
+    entity.content = entity.content.filter(isRemoved)
+    entity.content.forEach(function (e) {removeTags(e, tagsToRemove)})
   }
   return entity
 }
@@ -84,6 +90,7 @@ module.exports = function (options) {
   options.taggable = options.taggable || []
   options.unmergable = options.unmergable || []
   options.targetVersions = options.targetVersions || options.versions
+  options.removeTags = options.removeTags || []
 
   options.entityMatchLookup = options.entityMatchLookup || function (entity) {
       entity = quantum.select(entity)
@@ -115,10 +122,10 @@ module.exports = function (options) {
           if (base === undefined) {
             base = {content: version.content}
           } else {
-            base = {content: mergeContent(removeTags(quantum.select(base).clone()).content, version.content, options)}
+            base = {content: mergeContent(removeTags(quantum.select(base).clone(), options.removeTags).content, version.content, options)}
           }
         } else {
-          base = removeTags(quantum.select(base).clone())
+          base = removeTags(quantum.select(base).clone(), options.removeTags)
         }
 
         // replace the versioned parts for the @version entites
