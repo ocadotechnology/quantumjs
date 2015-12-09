@@ -13,8 +13,13 @@ function constructKey (parentKey, entity) {
 
 function buildApiMap (apiEntity, options, apiCurrent, parentKey) {
   apiEntity.selectAll(options.types).forEach(function (entity) {
+    if (options.skipIndexTypes.indexOf(entity.type) > -1) {
+      buildApiMap(entity, options, apiCurrent, parentKey)
+      return
+    }
+
     var key = constructKey(parentKey, entity)
-    if (options.dontActuallyAddTheseJustKeepLooking.indexOf(entity.type) === -1) {
+    if (options.untaggableTypes.indexOf(entity.type) === -1) {
       apiCurrent[key] = {
         entity: entity,
         parentKey: parentKey
@@ -356,6 +361,7 @@ module.exports = function (opts) {
       'object',
       'param',
       'param?',
+      'group',
       'constructor',
       'returns',
       'event',
@@ -364,9 +370,12 @@ module.exports = function (opts) {
       'extraclass',
       'childclass'
     ],
-    dontActuallyAddTheseJustKeepLooking: [
+    untaggableTypes: [
       'param',
       'param?'
+    ],
+    skipIndexTypes: [
+      'group'
     ],
     tags: {
       added: {
