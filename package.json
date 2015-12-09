@@ -1,6 +1,6 @@
 {
   "name": "quantum-changelog",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "changelog for quantum",
   "main": "index.js",
   "directories": {
