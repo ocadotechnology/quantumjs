@@ -432,54 +432,9 @@ module.exports = function (options) {
     })
   }
 
-  function example (entity, page, transforms) {
-    var body = page.create('div').class('qm-api-example-body')
-      .add(entity.transform(transforms))
-
-    var codeBody = page.create('div').class('qm-api-example-code-body')
-
-    function addCodeSection (type, title) {
-      if (entity.has(type)) {
-        var subEntity = entity.select(type)
-        var fake = quantum.select({
-          content: [{
-            type: 'codeblock',
-            params: [type],
-            content: subEntity.content
-          }]
-        })
-
-        codeBody = codeBody
-          .add(page.create('div').text(title))
-          .add(fake.transform(transforms))
-      }
-    }
-
-    addCodeSection('html', 'HTML')
-    addCodeSection('js', 'JavaScript')
-    addCodeSection('coffee', 'CoffeeScript')
-    addCodeSection('css', 'CSS')
-    addCodeSection('json', 'JSON')
-
-    var code = page.create('div').class('qm-api-example-code qm-api-collapsible')
-      .add(page.create('div').class('qm-api-collapsible-heading')
-        .text(blackChevron, true)
-        .add(page.create('span').text('Code')))
-      .add(page.create('div').class('qm-api-collapsible-content')
-        .add(page.create('div').class('qm-api-example-code-container')
-          .add(codeBody)
-      )
-    )
-
-    return page.create('div').class('qm-api-example')
-      .add(body)
-      .add(code)
-  }
-
   return {
     'api': api,
     'group': createGroupLike('qm-api-group'),
-    'example': example,
     'prototype': createPrototypeLike('qm-api-prototype'),
     'object': createObjectLike('qm-api-object'),
     'method': createFunctionLike('qm-api-method'),

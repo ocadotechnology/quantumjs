@@ -40,7 +40,11 @@
 .qm-api-collapsible {}
 
 .qm-api-collapsible-heading {
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
   align-items: center;
   background: white;
 }
@@ -52,17 +56,23 @@
 }
 
 .qm-api-collapsible-toggle svg {
+  transition: -webkit-transform 0.2s;
   transition: transform 0.2s;
 }
 
 .qm-api-collapsible-open > .qm-api-collapsible-heading svg {
+  -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
 .qm-api-collapsible-head {
   padding: 0.5em;
   line-height: 1em;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
   flex-grow: 1;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
   flex-shrink: 0;
   height: 1em;
 }
@@ -113,16 +123,26 @@
 }
 
 .qm-api-item-header {
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
 }
 
 .qm-api-header-details {
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
   flex-shrink: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
   flex-grow: 1;
 }
 
 .qm-api-header-tags {
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
   flex-shrink: 1;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
   flex-grow: 0;
 }
 
@@ -184,30 +204,6 @@
 .qm-api-optional > .qm-api-item-header > .qm-api-header-details:after,
 .qm-api-optional:not(.qm-api-item-head):after {
   content: "]";
-}
-
-.qm-api-example {
-  border: solid 1px rgb(234, 230, 230);
-}
-
-.qm-api-example-body {
-  margin: 0.5em;
-}
-
-.qm-api-example-code-container {
-  padding: 1em;
-}
-
-.qm-api-example-code-body {}
-
-.qm-api-example-code {}
-
-.qm-api-example-code .qm-api-collapsible-toggle:hover {
-  background: #D9D9D9;
-}
-
-.qm-api-example-code .qm-api-collapsible-toggle svg {
-  margin-right: 0.5em;
 }
 
 .qm-api-type-link {}
@@ -442,6 +438,10 @@
 }
 
 /* Additional */
+::-moz-selection {
+  background: #7CD2EC;
+}
+
 ::selection {
   background: #7CD2EC;
 }
