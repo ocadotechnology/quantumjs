@@ -1,6 +1,6 @@
 {
   "name": "quantum-api",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "quantum entity to virtual dom transforms for writing api docs",
   "main": "index.js",
   "directories": {
@@ -17,7 +17,7 @@
   "dependencies": {
     "bluebird": "^3.0.6",
     "merge": "^1.2.0",
-    "quantum-js": "^0.1.1"
+    "quantum-js": "^1.0.0"
   },
   "devDependencies": {
     "blanket": "^1.1.7",
