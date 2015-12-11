@@ -15,6 +15,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "merge": "^1.2.0",
     "quantum-js": "^0.1.1"
   },
   "devDependencies": {

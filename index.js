@@ -15,6 +15,7 @@
 
 var quantum = require('quantum-js') // needed for its selection api
 var path = require('path') // required for the default filename renamer
+var merge = require('merge')
 
 // NOTE: this function may mutate content1 - pass in a cloned copy if you don't want to mutate the original
 function mergeContent (content1, content2, options) {
@@ -60,72 +61,119 @@ function mergeContent (content1, content2, options) {
     })
 
     return content1
-
   }
+}
 
+function getRemovableTags (tags) {
+  return Object.keys(tags).filter(function (tag) {
+    return !tags[tag].retain
+  })
 }
 
 // filters versions for added, updated and removed flags
 // added, updated: removes flags from item, leaves item in content
 // removed: removes item from content
-function removeTags (entity, tagsToRemove) {
+function removeTags (entity, tags) {
   if (Array.isArray(entity.content)) {
-    function isRemoved (e) {
+    function tagFilter (e) {
       var entityIsRemoved = quantum.select(e).has('removed')
-      var isTag = e.type === 'updated' || e.type === 'added'
-      var isRemovedTag = tagsToRemove.indexOf(e.type) > -1
-      return !entityIsRemoved && !isTag && !isRemovedTag
+      var removeTag = tags.indexOf(e.type) > -1
+      return !entityIsRemoved && !removeTag
     }
-    entity.content = entity.content.filter(isRemoved)
-    entity.content.forEach(function (e) {removeTags(e, tagsToRemove)})
+    entity.content = entity.content.filter(tagFilter)
+    entity.content.forEach(function (e) {removeTags(e, tags)})
   }
   return entity
 }
 
 // returns a function that expands a quantum ast containing `version` entities into
 // potentially multiple ast's - one for each version
-module.exports = function (options) {
-  options = options || {}
-  options.versions = options.versions || []
-  options.taggable = options.taggable || []
-  options.unmergable = options.unmergable || []
-  options.targetVersions = options.targetVersions || options.versions
-  options.removeTags = options.removeTags || []
-
-  options.entityMatchLookup = options.entityMatchLookup || function (entity) {
-      entity = quantum.select(entity)
-      var name = entity.ps()
-      var params = entity.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
-      return entity.type + ': ' + name + '(' + params.join(', ') + ')'
+module.exports = function (opts) {
+  function defaultEntityMatchLookup (entity) {
+    entity = quantum.select(entity)
+    var name = entity.ps()
+    var params = entity.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
+    return entity.type + ': ' + name + '(' + params.join(', ') + ')'
   }
 
-  var filenameModifier = options.filenameModifier || function (filename, version) {
-      return path.join(path.dirname(filename), version, path.basename(filename))
+  function defaultFilenameModifier (filename, version) {
+    return path.join(path.dirname(filename), version, path.basename(filename))
+  }
+
+  var defaultOptions = {
+    versions: undefined,
+    targetVersions: undefined, // Target array of versions
+    entityMatchLookup: defaultEntityMatchLookup,
+    filenameModifier: defaultFilenameModifier,
+    taggable: [ // Elements that can be tagged and should be indexed
+      'function',
+      'prototype',
+      'method',
+      'property',
+      'object',
+      'constructor',
+      'returns',
+      'event',
+      'data',
+      'class',
+      'extraclass',
+      'childclass'
+    ],
+    indexable: [ // Elements that can't be tagged but should be indexed
+      'param',
+      'group'
+    ],
+    unmergeable: [], // Elements that can not be merged (e.g. descriptions)
+    tags: {
+      added: {
+        retain: false, // Whether to retain the tag across versions
+        removeEntity: false // Whether to remove the tagged entity in the next version
+      },
+      updated: {
+        retain: false,
+        removeEntity: false
+      },
+      deprecated: {
+        retain: true,
+        removeEntity: false
+      },
+      removed: {
+        retain: false,
+        removeEntity: true
+      }
     }
+  }
+
+  var options = merge.recursive(defaultOptions, opts)
+
+  options.targetVersions = options.targetVersions || options.versions
 
   return function (obj) {
     // generate the versioned parts
     var content = quantum.select(obj.content)
-    var versions = content.selectAll('version', {recursive: true})
+    var actualVersions = content.selectAll('version', {recursive: true})
 
-    if (versions.length > 0) {
+    if (actualVersions.length > 0) {
       var versionsMap = {}
-      versions.forEach(function (version) {
+      actualVersions.forEach(function (version) {
         versionsMap[version.ps()] = version
       })
       var base = undefined
       var results = []
-      options.targetVersions.forEach(function (v) {
+
+      var removableTags = getRemovableTags(options.tags)
+
+      options.versions.forEach(function (v) {
         var version = versionsMap[v]
 
         if (version !== undefined) {
           if (base === undefined) {
             base = {content: version.content}
           } else {
-            base = {content: mergeContent(removeTags(quantum.select(base).clone(), options.removeTags).content, version.content, options)}
+            base = {content: mergeContent(removeTags(quantum.select(base).clone(), removableTags).content, version.content, options)}
           }
         } else {
-          base = removeTags(quantum.select(base).clone(), options.removeTags)
+          base = removeTags(quantum.select(base).clone(), removableTags)
         }
 
         // replace the versioned parts for the @version entites
@@ -137,7 +185,7 @@ module.exports = function (options) {
           if (Array.isArray(entity.content)) {
             var index = -1
             entity.content.forEach(function (v, i) {
-              if (v.type === 'version' && v.params && v.params[0] === versions[0].params[0]) {
+              if (v.type === 'version' && v.params && v.params[0] === actualVersions[0].params[0]) {
                 index = i
               }
             })
@@ -166,11 +214,13 @@ module.exports = function (options) {
         removeVersions(source)
 
         // build the new result with new filename and add the result to the results list
-        results.push({
-          filename: filenameModifier(obj.filename, v),
-          content: source,
-          version: v
-        })
+        if (options.targetVersions.indexOf(v) > -1) {
+          results.push({
+            filename: options.filenameModifier(obj.filename, v),
+            content: source,
+            version: v
+          })
+        }
 
       })
 
