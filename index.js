@@ -2,6 +2,19 @@ var quantum = require('quantum-js')
 var clone = require('clone')
 var path = require('path')
 var flatten = require('flatten')
+var merge = require('merge')
+
+function getTags (options, ignore) {
+  var tags = Object.keys(options.tags)
+
+  if (ignore && ignore.length) {
+    return tags.filter(function (e) {
+      return ignore.indexOf(e) === -1
+    })
+  } else {
+    return tags
+  }
+}
 
 function constructKey (parentKey, entity) {
   if (entity.type === 'function' || entity.type === 'method' || entity.type === 'constructor') {
@@ -12,27 +25,24 @@ function constructKey (parentKey, entity) {
 }
 
 function buildApiMap (apiEntity, options, apiCurrent, parentKey) {
-  apiEntity.selectAll(options.types).forEach(function (entity) {
-    if (options.skipIndexTypes.indexOf(entity.type) > -1) {
+  apiEntity.selectAll(options.taggable.concat(options.indexable || [])).forEach(function (entity) {
+    if (options.indexable.indexOf(entity.type) > -1) {
       buildApiMap(entity, options, apiCurrent, parentKey)
-      return
-    }
-
-    var key = constructKey(parentKey, entity)
-    if (options.untaggableTypes.indexOf(entity.type) === -1) {
+    } else {
+      var key = constructKey(parentKey, entity)
       apiCurrent[key] = {
         entity: entity,
         parentKey: parentKey
       }
-    }
-    if (!(entity.has(['removed']))) {
-      buildApiMap(entity, options, apiCurrent, key)
+      if (!(entity.has(['removed']))) {
+        buildApiMap(entity, options, apiCurrent, key)
+      }
     }
   })
 
   if (parentKey === '') {
     var rootCount = 0
-    apiEntity.content.filter(function (i) {return Object.keys(options.tags).indexOf(i.type) > -1}).forEach(function (entity) {
+    apiEntity.content.filter(function (i) {return getTags(options).indexOf(i.type) > -1}).forEach(function (entity) {
       apiCurrent['_root:' + apiEntity.ps() + ':' + entity.type + (rootCount += 1)] = {
         entity: entity,
         rootEntity: true
@@ -120,7 +130,7 @@ function createEntry (entity, heading) {
 }
 
 function createItem (apiName, apiObject, versionName, options) {
-  var tags = Object.keys(options.tags)
+  var tags = getTags(options)
   var item = quantum.create('item').ps(apiName)
 
   for (key in apiObject.apiContent) {
@@ -172,7 +182,7 @@ function createItem (apiName, apiObject, versionName, options) {
   return item.build()
 }
 
-function cloneAndRemoveTags (version) {
+function cloneAndRemoveTags (options, version) {
   var versionClone = clone(version, {circular: false})
 
   for (apiName in versionClone) {
@@ -184,7 +194,7 @@ function cloneAndRemoveTags (version) {
       if (entity.has('removed') || (apiMap[key].rootEntity && entity.type !== 'deprecated') || (isRemovedApi && entity.type === 'deprecated')) {
         delete apiMap[key]
       } else {
-        entity.removeAll(['added', 'updated', 'enhancement', 'docs', 'info', 'bugfix'])
+        entity.removeAll(getTags(options, ['deprecated', 'removed']))
       }
     })
   }
@@ -202,7 +212,7 @@ function process (wrapper, options) {
   })
   var targetVersionList = options.targetVersions || actualVersions
 
-  var versions = wrapper.select('process').selectAll('version', {recursive: true})
+  var processEntities = wrapper.select('process').selectAll('version', {recursive: true})
 
   options.dontAddDocsLink = wrapper.select('process').has('dontAddDocsLink')
   options.renderSingleItemInRoot = wrapper.select('process').has('renderSingleItemInRoot')
@@ -210,7 +220,7 @@ function process (wrapper, options) {
   wrapper.remove('process')
 
   var apisGroupedByVersion = {}
-  versions.forEach(function (version) {
+  processEntities.forEach(function (version) {
     apisGroupedByVersion[version.ps()] = apisGroupedByVersion[version.ps()] || []
     if (version.has('api')) {
       apisGroupedByVersion[version.ps()].push(version.select('api').entityContent())
@@ -222,9 +232,9 @@ function process (wrapper, options) {
   var flattenedApiMapByVersion = {}
   var current = {}
 
-  targetVersionList.forEach(function (versionName) {
+  actualVersions.forEach(function (versionName) {
     var apis = apisGroupedByVersion[versionName] || []
-    current = cloneAndRemoveTags(current)
+    current = cloneAndRemoveTags(options, current)
 
     flattenedApiMapByVersion[versionName] = current
 
@@ -271,7 +281,7 @@ function process (wrapper, options) {
               } else {
                 var previousApiElement = previousApiContent[key]
 
-                if (!entity.has(['removed', 'deprecated', 'updated', 'info', 'bugfix', 'enhancement', 'docs'])) {
+                if (!entity.has(getTags(options, ['added']))) {
                   var hasNewDescription = (entity.has('description') && (JSON.stringify(entity.select('description')) !== JSON.stringify(quantum.select(previousApiElement.entity).select('description'))))
                   var hasNewContentString = (entity.nonEmpty().cs() && (entity.nonEmpty().cs() !== quantum.select(previousApiElement.entity).nonEmpty().cs()))
                   if (hasNewDescription || hasNewContentString) {
@@ -289,6 +299,7 @@ function process (wrapper, options) {
   })
 
   // replace the wrapper content with the calculated changelog
+  // using targetVersionList allows us to exclude versions from the output but still process them.
   wrapper.original.content = targetVersionList.map(function (versionName) {
     var changelogEntityBuilder = quantum.create('changelog').ps(versionName)
     var versionEntity = versionEntitesMap[versionName]
@@ -348,20 +359,22 @@ function processAll (content, options) {
 }
 
 module.exports = function (opts) {
-  // TODO: sort out these options
-  options = {
+  function defaultDocsUrlLookup (version, api) {
+    return {
+      link: path.join('/', 'docs', version, api.split(' ').join('-').toLowerCase()),
+      text: 'Docs'
+    }
+  }
+
+  var defaultOptions = {
     namespace: 'changelog',
-    reverseVisibleList: true,
-    types: [
+    targetVersions: undefined, // Target array of versions, used to exclude versions from the list.
+    taggable: [ // Elements that can be tagged and should be indexed
       'function',
       'prototype',
       'method',
       'property',
-      'property?',
       'object',
-      'param',
-      'param?',
-      'group',
       'constructor',
       'returns',
       'event',
@@ -370,68 +383,60 @@ module.exports = function (opts) {
       'extraclass',
       'childclass'
     ],
-    untaggableTypes: [
+    indexable: [ // Elements that can't be tagged but should be indexed
       'param',
-      'param?'
-    ],
-    skipIndexTypes: [
       'group'
     ],
+    reverseVisibleList: false, // Whether the list of items should be shown in the order provided or reversed. Default reversed.
+    renderSingleItemInRoot: false, // Whether changelogs with a single item should render the entries in the root of that changelog
+    milestoneUrl: '',
+    issueUrl: '',
+    docsUrlLookup: defaultDocsUrlLookup, // The lookup for urls from a changelog to a docs page
     tags: {
       added: {
-        icon: 'fa-plus',
-        title: 'Added',
-        order: 8
+        keyText: 'Added', // The text for the key
+        iconClass: 'fa fa-fw fa-plus', // The class for the icon
+        order: 8 // The order to display tagged content in
       },
       updated: {
-        icon: 'fa-level-up',
-        title: 'Updated',
+        keyText: 'Updated',
+        iconClass: 'fa fa-fw fa-level-up',
         order: 7
       },
       deprecated: {
-        icon: 'fa-recycle',
-        title: 'Deprecated',
+        keyText: 'Deprecated',
+        iconClass: 'fa fa-fw fa-recycle',
         order: 5
       },
       removed: {
-        icon: 'fa-times',
-        title: 'Removed',
+        keyText: 'Removed',
+        iconClass: 'fa fa-fw fa-times',
         order: 4
       },
       enhancement: {
-        icon: 'fa-magic',
-        title: 'Enhancement',
+        keyText: 'Enhancement',
+        iconClass: 'fa fa-fw fa-magic',
         order: 6
       },
       bugfix: {
-        icon: 'fa-bug',
-        title: 'Bug Fix',
+        keyText: 'Bug Fix',
+        iconClass: 'fa fa-fw fa-bug',
         order: 3
       },
       docs: {
-        icon: 'fa-book',
-        title: 'Documentation',
+        keyText: 'Documentation',
+        iconClass: 'fa fa-fw fa-book',
         order: 2
       },
       info: {
-        icon: 'fa-info',
-        title: 'Information',
+        keyText: 'Information',
+        iconClass: 'fa fa-fw fa-info',
         order: 1
       }
     }
   }
 
-  options.targetVersions = opts.targetVersions
-  options.renderSingleItemInRoot = opts.renderSingleItemInRoot
-  options.jsTypes = opts.jsTypes
-  options.milestoneUrl = opts.milestoneUrl
-  options.issueUrl = opts.issueUrl
-  options.docsUrlLookup = opts.docsUrlLookup || function (version, api) {
-      return {
-        link: path.join('/', 'docs', version, api.split(' ').join('-').toLowerCase()),
-        text: 'Docs'
-      }
-  }
+  var options = merge.recursive(defaultOptions, opts)
 
   var transform = function (obj) {
     return {

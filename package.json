@@ -18,6 +18,7 @@
     "bluebird": "^2.10.2",
     "clone": "^1.0.2",
     "flatten": "0.0.1",
+    "merge": "^1.2.0",
     "quantum-dom": "^0.1.0",
     "quantum-html": "^0.1.0",
     "quantum-js": "^0.1.1"

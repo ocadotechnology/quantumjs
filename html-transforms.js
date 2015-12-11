@@ -76,7 +76,7 @@ module.exports = function (options) {
 
   function entry (entity, page, transforms) {
     var type = options.tags[entity.type]
-    var icon = page.create('i').class('fa fa-fw ' + type.icon + ' ' + (type.class || 'qm-changelog-text-' + entity.type))
+    var icon = page.create('i').class(type.iconClass + ' ' + (type.textClass || 'qm-changelog-text-' + entity.type))
 
     if (entity.ps().length > 0) {
       var heading = page.create('div').class('qm-changelog-entry-head').add(entity.ps())
@@ -114,9 +114,9 @@ module.exports = function (options) {
         .add(body))
   }
 
-  function label (page, tag, type, count) {
-    return page.create('div').class('qm-changelog-label ' + (type.class || 'qm-changelog-background-' + tag))
-      .add(page.create('i').class('fa fa-fw ' + type.icon))
+  function label (page, tagName, tag, count) {
+    return page.create('div').class('qm-changelog-label ' + (tag.tagClass || 'qm-changelog-background-' + tagName))
+      .add(page.create('i').class(tag.iconClass))
       .add(page.create('span').text(count))
   }
 
@@ -171,10 +171,10 @@ module.exports = function (options) {
         .add(extra)
     } else {
       var labels = page.create('div').class('qm-changelog-item-labels')
-      tags.forEach(function (tag) {
-        var count = unprocessedEntries.reduce(function (total, e) { return e.type == tag ? total + 1 : total }, 0)
+      tags.forEach(function (tagName) {
+        var count = unprocessedEntries.reduce(function (total, e) { return e.type == tagName ? total + 1 : total }, 0)
         if (count > 0) {
-          labels = labels.add(label(page, tag, options.tags[tag], count))
+          labels = labels.add(label(page, tagName, options.tags[tagName], count))
         }
       })
 
@@ -244,9 +244,9 @@ module.exports = function (options) {
   function keyItem (page, name, tag) {
     return page.create('div').class('qm-changelog-key-item')
       .add(page.create('div').class('qm-changelog-key-item-icon')
-        .add(page.create('i').class('fa ' + tag.icon + ' qm-changelog-text-' + name)))
+        .add(page.create('i').class(tag.iconClass + ' ' + (tag.textClass || 'qm-changelog-text-' + name))))
       .add(page.create('div').class('qm-changelog-key-item-text')
-        .add(tag.title))
+        .add(tag.keyText))
   }
 
   function key (entity, page, transforms) {
