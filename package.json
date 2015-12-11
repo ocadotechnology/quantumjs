@@ -1,6 +1,6 @@
 {
   "name": "quantum-changelog",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "changelog for quantum",
   "main": "index.js",
   "directories": {
@@ -21,7 +21,7 @@
     "merge": "^1.2.0",
     "quantum-dom": "^0.1.0",
     "quantum-html": "^0.1.0",
-    "quantum-js": "^0.1.1"
+    "quantum-js": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^2.3.0",
