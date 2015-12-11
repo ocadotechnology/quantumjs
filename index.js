@@ -15,10 +15,33 @@
 
 var Promise = require('bluebird')
 var quantum = require('quantum-js')
+var merge = require('merge')
 
-module.exports = function (options) {
-  options = options || {}
-  var types = options.types || {}
+module.exports = function (opts) {
+  var defaultOptions = {
+    typeLinks: {},
+    tags: {
+      added: {
+        tagText: 'added', // The text to display on tags
+        order: 4
+      },
+      updated: {
+        tagText: 'updated',
+        order: 3
+      },
+      deprecated: {
+        tagText: 'deprecated',
+        order: 2
+      },
+      removed: {
+        tagText: 'removed',
+        order: 1
+      }
+    }
+  }
+
+  var options = merge.recursive(defaultOptions, opts)
+  var tagNames = Object.keys(options.tags).sort(function (a, b) {return options.tags[a].order - options.tags[b]})
 
   function matchBrackets (container, string, page) {
     container = typeLookup(container, string.slice(0, string.indexOf('[')), page)
@@ -36,8 +59,8 @@ module.exports = function (options) {
   function typeLookup (container, type, page) {
     var parts = type.split('/')
     parts.forEach(function (part, index) {
-      if (part in types) {
-        container = container.add(page.create('a').class('qm-api-type-link').attr('href', types[part]).text(part))
+      if (part in options.typeLinks) {
+        container = container.add(page.create('a').class('qm-api-type-link').attr('href', options.typeLinks[part]).text(part))
       } else {
         container = container.add(part)
       }
@@ -73,7 +96,7 @@ module.exports = function (options) {
       }
     }
 
-    var childUpdated = !entity.has(['added', 'updated', 'removed', 'deprecated']) && entity.has(['added', 'updated', 'removed', 'deprecated'], {recursive: true})
+    var childUpdated = !entity.has(tagNames) && entity.has(tagNames, {recursive: true})
 
     maybeTag('added')
     maybeTag('deprecated')
@@ -87,7 +110,7 @@ module.exports = function (options) {
     var tags = page.create('span').class('qm-api-header-tags')
 
     createTagClasses(entity).forEach(function (name) {
-      tags.add(page.create('span').class('qm-api-tag qm-api-tag-' + name).text(name))
+      tags.add(page.create('span').class('qm-api-tag qm-api-tag-' + name).text(options.tags[name].tagText))
     })
 
     return tags
