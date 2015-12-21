@@ -1,0 +1,32 @@
+@inline ../../../shared/common.um
+@quantum-titlebar
+
+@qm.content
+  @section
+
+    @h1: Version
+
+    @p: TODO
+
+    @h1: Example
+
+    @p: TODO
+
+    @p: Example markup
+    @codeblock um: @inline markup-example.um [text]
+
+    @p: Example result
+    @div .qm-example-result
+      @inline markup-example.um
+
+    @h1: Api
+
+    @api
+      TODO
+      # @function api
+      #   @description:
+      #     @p: TODO
+      #     @p: This is the function returned from @code[require('quantum-version')]
+      #   @param? options [Object]
+
+

@@ -4,18 +4,17 @@
 @qm.content
   @section
     @h1: About
-
-    The core quantum module (quantum-js) consists of the parser, a selection api and a builder api.
-
-    The read function is the most useful - used for reading markup files and parsing them. It returns promise which yields an object holding the filename and parsed content. The result of parsing a file is normally passed through the html transforms in order to build a web page. See the @hyperlink(/transforms/html/)[Html] module for an example.
+    @p: The core quantum module (quantum-js) consists of the parser, a selection api and a builder api.
+    @p: The read function is the most useful - used for reading markup files and parsing them. It returns promise which yields an object holding the filename and parsed content.
+    @p: The result of parsing a file is normally passed through the html transforms in order to build a web page.
+    @p: See the @hyperlink(/transforms/html/)[Html] module for an example.
 
     @h1: Examples
-
     @codeblock js
       var quantum = require('quantum-js')
 
       // Parsing and reading files
-      quantum.parse(<string>)  // parses a string, returning the result as an object
+      quantum.parse('<string>')  // parses a string, returning the result as an object
       quantum.read('index.um') // reads the file, parses the contents, and returns the result as a promise holding an array (read can load multiple files)
 
       // Selection Api
@@ -27,9 +26,9 @@
       selection.select('lemon').params[2] // gets the second parameter from the lemon entity in the selection
 
       // Builder Api
-      var entity = quantum.create('ice-cream')
-        .add(quantum.create('description').add('Ice cream of the week'))
-        .add(quantum.create('flavor').ps('choc chip'))
+      var entity = quantum.create('ice-cream')                            // creates an @ice-cream element
+        .add(quantum.create('description').add('Ice cream of the week'))  // creates the equivalent of @description: Ice cream of the week
+        .add(quantum.create('flavor').ps('choc chip'))                    // creates the equivalent of @flavor choc chip
         .add(quantum.create('flavor').ps('mint'))
         .add(quantum.create('flavor').ps('vanilla'))
         .build()
@@ -40,15 +39,13 @@
       @function parse
         @param input [String]
           @description:
-            A string containing markup to parse. Ie something that looks like this:
-
+            @p: A string containing markup to parse. Ie something that looks like this:
             @codeblock um
               @inline ../the-markup.um [text]
 
         @returns Object
           @description
-            The parsed ast. Looks something like this:
-
+            @p: The parsed ast. Looks something like this:
             @codeblock json
               @inline ../the-markup.json [text]
 
@@ -69,14 +66,12 @@
             @description: The base of the glob path that should be ignored when writing to the target.
         @returns [Promise[Object]]
           @description
-            A promise that yields the parsed ast wrapped in an object that looks like this:
-
+            @p: A promise that yields the parsed ast wrapped in an object that looks like this:
             @codeblock js
               {
                 filename: 'path/to/source.um',
-                content: <ast>
+                content: '<ast>'
               }
-
 
       @function write
         @description: Creates a function that can write {filename, content} objects to disk.

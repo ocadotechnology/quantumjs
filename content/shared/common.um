@@ -30,3 +30,12 @@
       @tr
         @td: @b[{{module.ps}}]
         @td: {{module.content}}
+
+
+@define footer
+  @div .qm-footer:
+    @div .qm-footer-content .hx-content:
+      @span .qm-footer-note: Created @(@) @hyperlink(https://github.com/ocadotechnology)[Ocado Technology]
+      @span .qm-footer-note: Code license @hyperlink(https://github.com/ocadotechnology/hexagonjs/blob/master/LICENCE)[Apache-2.0]
+      @span .qm-footer-note: Docs license @hyperlink(https://creativecommons.org/licenses/by/3.0/)[CC BY 3.0]
+      @span .qm-footer-note: This site on @hyperlink(https://github.com/ocadotechnology/hexagonjs-site)[GitHub]

@@ -21,7 +21,7 @@ h4, h5, h6 {
 }
 
 body {
-  background: white;
+  background: #F0F1F3;
   margin: 0;
   font-family: 'Open Sans', sans-serif;
 }
@@ -29,6 +29,14 @@ body {
 pre {
   font-family: 'Ubuntu Mono', monospace;
   /*font-size: 14px;*/
+}
+
+p:first-child {
+  margin-top: 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
 }
 
 .qm-header {
@@ -98,14 +106,20 @@ pre {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  overflow: auto;
+  /*overflow: auto;*/
 }
 
 .qm-footer {
   background: rgb(60, 60, 60);
   color: #AAA;
   text-align: center;
-  padding: 0.25em;
+  padding: 1em 0;
+}
+
+.qm-footer-content {}
+
+.qm-footer-note {
+  margin: 0 1em;
 }
 
 .qm-tagline {
@@ -183,6 +197,24 @@ pre {
 .codeblock {
   background: rgb(249, 249, 249);
 }
+
+.qm-example-result {
+  padding: 1em;
+  margin: 0.5em 0;
+  border: solid 1px #F0F0F0;
+  color: #3D3D3D;
+  overflow: auto;
+  background: #FFF;
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+}
+
+/*.qm-example-result :first-child {
+  margin-top: 0;
+}
+
+.qm-example-result :last-child {
+  margin-bottom: 0;
+}*/
 
 .qm-entity {
   background: rgb(249, 249, 249);

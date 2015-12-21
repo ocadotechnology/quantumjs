@@ -6,9 +6,10 @@
 @qm.content
   @section
 
-    @h1: About
+    @h1: Html
 
-    @p: TODO
+    @p: This module is used to transform parsed quantum AST objects to virtual dom content and then converting to html.
+    @p: The two conversion functions are provided separately to allow additional transforms to be performed between the virtual dom and stringified stage, giving flexibility to convert to formats other than pure html.
 
     @h1: Example
 
@@ -26,36 +27,53 @@
     @codeblock um: @inline markup-example.um [text]
 
     @p: Example result
-    @inline markup-example.um
-
+    @div .qm-example-result
+      @inline markup-example.um
 
     @h1: Api
 
     @api
       @function api
-        @param? options [Object]
+        @description
+          @p: A function that returns a function for taking AST objects and transforming them into virtual dom
+          @p: This is the function returned from @code[require('quantum-html')]
+
+        @param? transforms [Object]
           @description
-
-            @p: An object containing the html transforms to use:
-
-            @p: This is the default:
-            @codeblock js
-              {
-                html: html.transforms
-              }
-
-            @p: The key used in the options object will be used as the namespace for the entity transforms. This means that in the markup you can create a div using @(@div) or @(html.div) when using the default settings. If the options object was passed in as this instead:
-
+            @p: An object containing the html transforms to use.
+            @p: The key used in the options object will be used as the namespace for the entity transforms.
+            @p: This means that in the markup you can create a div using @(@div) or @(html.div) when using the default settings.
+            @p: If the options object was passed in as this:
             @codeblock js
               {
                 bob: html.transforms
               }
 
-            @p: Then you could create a div with @(@bob.div) instead. Namespaces allow you to remove ambiguity when multiple modules use the same entity names, and the type of entity you mean is not clear.
+            @p: Then you could create a div with @(@bob.div) instead.
+            @p: Namespaces allow you to remove ambiguity when multiple modules use the same entity names, and the type of entity you mean is not clear.
 
-        @returns Object
-          An object containing the transform functions - to be passed to the html transformer.
+          @default
+            @codeblock js
+              {
+                html: require('quantum-html').transforms
+              }
 
+        @returns Function: A function that takes an AST object and transforms it to virtual dom
+          @param entities [Object/Array[Object]]: The object or objects to transform
+          @returns [Object/Array[Object]]: The transformed objects
+
+      @function stringify
+        @description
+          @p: A function that returns a function for converting transformed virtual dom content to html
+          @p: This function is accessible through @code[require('quantum-html').stringify]
+        @param? options [Object]
+          @description: This function currently doesn't take any options but it is structured to allow them to be passed in.
+        @returns Function
+          @description: A function that renders the virtual dom content (created using @code[api(options)]) to html that can then be written to file
+          @param file [Object]: The AST object with transformed content to convert to HTML
+          @returns Object: An object containing the output filename and stringified content
+            @property filename: The name for the file
+            @property content: The stringified content
 
       @entity html
         @params: html
@@ -138,5 +156,3 @@
       @element-renderer tr
       @element-renderer ul
       @element-renderer vr
-
-
