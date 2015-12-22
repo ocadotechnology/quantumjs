@@ -227,6 +227,58 @@
                     @version Version 3
                       @description: Version 3 description
 
+      @define extra
+        @entity extra
+          @description
+            @p: The @(extra) entity can contain any transforms available in the @code(js)[htmlTransforms].
+            @p: The content added by extra will always be shown after the other elements in the {{ps}}
+            @@codeblock um
+              @{{ps}} title
+                @description: {{ps}} description
+
+                @extra
+                  @div: Extra Item Div
+
+
+      @define tag
+        @entity {{ps}}
+          @params title
+          @description
+            @p: Adds an {{ps}} entry to an item in the changelog.
+            @p: Defined by @code(js)[tags.{{ps}}]
+            @@codeblock um
+              @item Item
+                @{{ps}} [Change Name]
+                  @description: Change Description
+
+          @entity description
+            @description: The description of the entry. This is normally an explanation of the changes made.
+
+          @entity extra
+            @description
+              @p: The @(extra) entity can contain any transforms available in the @code(js)[htmlTransforms].
+              @p: The content added by extra will always be shown after the other elements in the {{ps}}
+              @@codeblock um
+                @{{ps}} title
+                  @description: {{ps}} description
+
+                  @extra
+                    @div: Extra Item Div
+
+          @entity issue
+            @description
+              @p: If an @code(js)[issueUrl] has been provided in the options, issues will be rendered as a link to the relevant issue number.
+              @p: For instance, if the @code(js)[issueUrl] was set to @code(js)[www.example.com]
+              @@codeblock um
+                @issue 1
+              @p: This would render a link to @code(js)[www.example.com/1] next to the entry title.
+              @p: An entry can have as many issues as required:
+              @@codeblock um
+                @added
+                  @issue 1
+                  @issue 2
+                  @issue 3
+
       @entity changelog
         @params title
         @description
@@ -237,8 +289,7 @@
             @changelog Version
               @description: Description
 
-        @entity extra
-          @description: See the @(@extra) entity for more information.
+        @extra changelog
 
         @entity milestone
           @params milestone
@@ -265,8 +316,7 @@
           @params title
           @description: A changelog item, for instance a module or part of the api that has changed. An item can contain multiple entries in the form of tags.
 
-          @entity extra
-            @description: See the @(@extra) entity for more information.
+          @extra item
 
           @entity link
             @params url
@@ -279,78 +329,25 @@
           @entity description
             @description: The description of the item.
 
-          @entity <entry>
-            @params title
+
+          @group Tags
             @description
-              @p: An entry is the bottom level of the changelog and contains the change and change description.
-              @@codeblock um
-                @item Item
-                  @added [Change Name]
-                    @description: Change Description
-
-              @p: Then entities available item are defined by the @code(js)[tags] option.
-              @p: By default, the available entities are:
-              @ul
-                @li: @(@added)
-                @li: @(@updated)
-                @li: @(@deprecated)
-                @li: @(@removed)
-                @li: @(@docs)
-                @li: @(@info)
-                @li: @(@enhancement)
-                @li: @(@bugfix)
-              @p: They are defined by the key value of the tag as specified in the options.
+              @p: The tags below are defined by the @code(js)[tags] api option.
               @p: See the @code(js)[tags] api option for more info.
+            @tag added
+            @tag updated
+            @tag deprecated
+            @tag removed
+            @tag docs
+            @tag info
+            @tag enhancement
+            @tag bugfix
 
-            @entity description
-              @description: The description of the entry. This is normally an explanation of the changes made.
-
-            @entity extra
-              @description: See the @(@extra) entity for more information.
-
-            @entity issue
-              @description
-                @p: If an @code(js)[issueUrl] has been provided in the options, issues will be rendered as a link to the relevant issue number.
-                @p: For instance, if the @code(js)[issueUrl] was set to @code(js)[www.example.com]
-                @@codeblock um
-                  @@issue 1
-                @p: This would render a link to @code(js)[www.example.com/1] next to the entry title.
-                @p: An entry can have as many issues as required:
-                @@codeblock um
-                  @added
-                    @issue 1
-                    @issue 2
-                    @issue 3
 
         @entity renderSingleItemInRoot
           @description:
             @p: This entity is a flag that enables a single changelog to be rendered differently from other changelogs without having to use a separate build process.
             @p: See the @code(js)[renderSingleItemInRoot] option in the api options for more details.
-
-
-      @entity extra
-        @description
-          @p: The extra entity can be used inside @(@changelog), @(@item) and @(@<tag>) entities to add any content within each of the changelog levels.
-          @p: The @(extra) entity can contain any transforms available in the @code(js)[htmlTransforms].
-          @@codeblock um
-            @changelog Version
-              @description: Version Description
-              @extra
-                @div: Extra Version Div
-
-              @item Item
-                @description: Item Description
-
-                @extra
-                  @div: Extra Item Div
-
-                @added [Added Thing]
-                  @description: This thing was added
-
-                  @extra
-                    @div: Extra Entry Div
-
-          @p: The content added by extra will always be shown after the other elements at each level and only the first @(@extra) entity at each level will be rendered.
 
       @entity wrapper
         @description
