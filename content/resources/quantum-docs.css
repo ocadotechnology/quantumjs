@@ -111,9 +111,10 @@ p:last-child {
 
 .qm-footer {
   background: rgb(60, 60, 60);
-  color: #AAA;
+  color: white;
   text-align: center;
   padding: 1em 0;
+  margin-top: 1em;
 }
 
 .qm-footer-content {}
@@ -198,7 +199,7 @@ p:last-child {
   background: rgb(249, 249, 249);
 }
 
-.qm-example-result {
+.qm-card-background {
   padding: 1em;
   margin: 0.5em 0;
   border: solid 1px #F0F0F0;
@@ -207,14 +208,6 @@ p:last-child {
   background: #FFF;
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
 }
-
-/*.qm-example-result :first-child {
-  margin-top: 0;
-}
-
-.qm-example-result :last-child {
-  margin-bottom: 0;
-}*/
 
 .qm-entity {
   background: rgb(249, 249, 249);

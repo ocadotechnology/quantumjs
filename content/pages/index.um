@@ -14,8 +14,9 @@
 
     @p: The process of converting markup into rendered html happens in a customisable pipeline of transforms. The transforms convert the markup from one form to another, eventually ending up as html which can be written to a file.
 
-  @div #qm-block-1.qm-accent-block
-    @section
+  @section
+    @div #qm-block-1.qm-card-background
+
       @graph
         @node read
           @name Read (index.um)
@@ -53,8 +54,8 @@
           @height 40
 
 
-  @div #qm-block-2.qm-tagline
-    @section: A vague representation of how quantum works.
+    @div #qm-block-2.qm-tagline
+      @section: A vague representation of how quantum works.
 
   @section
     @p: Quantum can be used to decouple page content from the final page structure, allowing radical changes to be made to the way content is displayed without touching the content files. This is achieved through defining custom types and transform functions for those types.

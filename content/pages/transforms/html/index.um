@@ -1,7 +1,5 @@
 @inline ../../../shared/common.um
-@quantum-titlebar
-
-
+@quantum-titlebar Html
 
 @qm.content
   @section
@@ -27,7 +25,7 @@
     @codeblock um: @inline markup-example.um [text]
 
     @p: Example result
-    @div .qm-example-result
+    @div .qm-card-background
       @inline markup-example.um
 
     @h1: Api

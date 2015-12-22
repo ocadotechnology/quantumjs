@@ -4,23 +4,31 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node build/index.js",
+    "build-hexagon": "node build/index.js build-hexagon",
+    "build-release": "node build/index.js build-release"
   },
   "author": "james.smyth@ocado.com",
   "license": "MIT",
   "devDependencies": {
-    "bluebird": "^2.9.27",
+    "bluebird": "^3.1.1",
     "browser-sync": "^2.7.6",
+    "chalk": "^1.1.1",
     "dagre": "^0.7.2",
-    "gulp": "^3.9.0",
-    "highlight.js": "^8.7.0",
-    "quantum-js": "^1.0.0",
-    "quantum-html": "^0.1.0",
-    "quantum-template": "^0.1.0",
-    "quantum-version": "^0.1.0"
-  },
-  "dependencies": {
+    "flatten": "0.0.1",
     "font-awesome": "^4.4.0",
-    "hexagon-js": "^1.0.0"
-  }
+    "fs-extra": "^0.26.3",
+    "glob": "^6.0.1",
+    "hexagon-js": "^1.0.0",
+    "highlight.js": "^8.7.0",
+    "live-server": "^0.9.0",
+    "progress": "^1.1.8",
+    "quantum-api": "^0.1.0",
+    "quantum-html": "^0.1.0",
+    "quantum-js": "^1.0.0",
+    "quantum-template": "^0.1.0",
+    "quantum-version": "^0.1.0",
+    "quantum-watch": "^0.1.0"
+  },
+  "dependencies": {}
 }

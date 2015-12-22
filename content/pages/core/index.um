@@ -1,22 +1,28 @@
 @inline ../../shared/common.um
-@quantum-titlebar
+@quantum-titlebar Core
 
 @qm.content
   @section
-    @h1: About
+    @h1: Core
     @p: The core quantum module (quantum-js) consists of the parser, a selection api and a builder api.
     @p: The read function is the most useful - used for reading markup files and parsing them. It returns promise which yields an object holding the filename and parsed content.
     @p: The result of parsing a file is normally passed through the html transforms in order to build a web page.
     @p: See the @hyperlink(/transforms/html/)[Html] module for an example.
 
     @h1: Examples
+
+    @p: Quantum can be accessed by requiring the quantum-js module.
     @codeblock js
       var quantum = require('quantum-js')
 
+    @p: You can then access the various methods:
+    @codeblock js
       // Parsing and reading files
-      quantum.parse('<string>')  // parses a string, returning the result as an object
-      quantum.read('index.um') // reads the file, parses the contents, and returns the result as a promise holding an array (read can load multiple files)
+      quantum.parse('<string>')   // parses a string, returning the result as an object
+      quantum.read('index.um')    // reads the file, parses the contents, and returns the result as a promise
 
+    @p: The selection api allows the selection and manipulation of quantum entities:
+    @codeblock js
       // Selection Api
       var selection = quantum.select(entity)
       selection.ps()                      // extract the parameter string from an entity
@@ -25,13 +31,23 @@
       selection.selectAll('kiwi')         // selects all the kiwi entities from the currently selected entity (returns an array)
       selection.select('lemon').params[2] // gets the second parameter from the lemon entity in the selection
 
+    @p: The builder api allows the creation of quantum entities. Once build is called, entities are converted into a selection.
+    @codeblock js
       // Builder Api
-      var entity = quantum.create('ice-cream')                            // creates an @ice-cream element
-        .add(quantum.create('description').add('Ice cream of the week'))  // creates the equivalent of @description: Ice cream of the week
-        .add(quantum.create('flavor').ps('choc chip'))                    // creates the equivalent of @flavor choc chip
+      var entity = quantum.create('ice-cream')
+        .add(quantum.create('description').add('Ice cream of the week'))
+        .add(quantum.create('flavor').ps('choc chip'))
         .add(quantum.create('flavor').ps('mint'))
         .add(quantum.create('flavor').ps('vanilla'))
         .build()
+
+    @p: The above code using the builder api would generate the equivalent of the following:
+    @@codeblock um
+      @ice-cream
+        @description: Ice cream of the week
+        @flavor choc chip
+        @flavor mint
+        @flavot vanilla
 
     @h1: Api
 
