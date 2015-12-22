@@ -54,10 +54,13 @@
         @a
           @attr href: /
           @img: @attr src: /resources/icon-v1.svg
-      @span .qm-header-title: QUANTUM.JS
+      @a .qm-header-title: QUANTUM.JS
+        @attr href: /
       @span .qm-header-nav
         @a: Core
           @attr href: /core
+        @a: Watch
+          @attr href: /watch
         @a: Transforms
           @attr id: transforms-menu
 

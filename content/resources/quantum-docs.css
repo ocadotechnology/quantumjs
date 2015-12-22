@@ -69,6 +69,11 @@ p:last-child {
   padding-right: 0.5em;
   padding-left: 0.5em;
   border-left: solid 1px rgb(242, 242, 242);
+  text-decoration: none;
+}
+
+.qm-header-title:hover {
+  text-decoration: none;
 }
 
 .qm-header-nav {
