@@ -253,7 +253,13 @@
   background-color: #92BF17;
 }
 
-.qm-api-property {}
+.qm-api-property {
+  border-color: #EEAD2B;
+}
+
+.qm-api-property > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #EEAD2B;
+}
 
 .qm-api-param {}
 

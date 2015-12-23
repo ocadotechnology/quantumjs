@@ -395,11 +395,11 @@ module.exports = function (opts) {
   /* item builders */
 
   var createApiLike = createItemBuilder({
-    content: [ description, extras, properties, groups, objects, prototypes, functions, classes, entities ]
+    content: [ description, extras, groups, properties, prototypes, objects, functions, classes, entities ]
   })
 
   var createGroupLike = createItemBuilder({
-    content: [ properties, groups, objects, prototypes, functions, methods, classes, entities ]
+    content: [ groups, properties, prototypes, objects, functions, methods, classes, entities ]
   })
 
   var createConstructorLike = createItemBuilder({
