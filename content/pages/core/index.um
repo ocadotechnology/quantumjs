@@ -72,7 +72,7 @@
             @description: The entity type to use for inlining other files. The default is "inline".
             @default inline
           @property inline [Boolean]
-            @description: Whether or not inline mode. When inline mode is on, the inlineEntityType will be replaced with the content of the specified files.
+            @description: When inline mode is on, the inlineEntityType (@code(um)[@inline] by default) will be replaced with the content of the specified files.
             @default true
           @property loader [Function]
             @description: A function for loading a file as a string.

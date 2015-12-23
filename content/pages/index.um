@@ -87,7 +87,7 @@
         var quantum = require('quantum-js')
         var html = require('quantum-html')
 
-        quantum.load('index.um')              // load and parse a source file
+        quantum.read('index.um')              // load and parse a source file
           .map(html())                        // transform the ast to virtual dom
           .map(html.stringify())              // render the virtual dom to html
           .map(quantum.write('target'))       // write the result to target/index.html
@@ -135,7 +135,7 @@
       var html = require('quantum-html')
 
       gulp.task('build', function(){
-        return quantum.load('source.um')
+        return quantum.read('source.um')
           .map(html())
           .map(html.stringify())
           .map(quantum.write('target'))

@@ -30,6 +30,5 @@
     "quantum-template": "^0.1.0",
     "quantum-version": "^0.1.0",
     "quantum-watch": "^0.1.0"
-  },
-  "dependencies": {}
+  }
 }
