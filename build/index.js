@@ -1,12 +1,5 @@
 var path = require('path')
 var liveServer = require('live-server')
-var hexagon = require('hexagon-js')
-var quantum = require('quantum-js')
-var html = require('quantum-html')
-var template = require('quantum-template')
-var api = require('quantum-api')
-var version = require('quantum-version')
-var watch = require('quantum-watch')
 var Progress = require('progress')
 var chalk = require('chalk')
 var flatten = require('flatten')
@@ -14,6 +7,15 @@ var flatten = require('flatten')
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs-extra'))
 var glob = Promise.promisify(require('glob'))
+
+var hexagon = require('hexagon-js')
+var quantum = require('quantum-js')
+var api = require('quantum-api')
+var changelog = require('quantum-changelog')
+var html = require('quantum-html')
+var template = require('quantum-template')
+var version = require('quantum-version')
+var watch = require('quantum-watch')
 
 function requireUncached (module) {
   delete require.cache[require.resolve(module)]
@@ -39,17 +41,63 @@ function getOptions (dev) {
     }
   }
 
-  var hexagonOptions = {}
-  var hexagonDocsOptions = {}
+  var buildTags = {
+    added: {
+      order: 8
+    },
+    updated: {
+      order: 7
+    },
+    deprecated: {
+      order: 5
+    },
+    removed: {
+      order: 4
+    },
+    enhancement: {
+      keyText: 'Enhancement',
+      iconClass: 'fa fa-fw fa-magic',
+      order: 6,
+      retain: false,
+      removeEntity: false
+    },
+    bugfix: {
+      keyText: 'Bug Fix',
+      iconClass: 'fa fa-fw fa-bug',
+      order: 3,
+      retain: false,
+      removeEntity: false
+    },
+    docs: {
+      keyText: 'Documentation',
+      iconClass: 'fa fa-fw fa-book',
+      order: 2,
+      retain: false,
+      removeEntity: false
+    },
+    info: {
+      keyText: 'Information',
+      iconClass: 'fa fa-fw fa-info',
+      order: 1,
+      retain: false,
+      removeEntity: false
+    }
+  }
+
+  var changelogOptions = {
+    tags: buildTags
+  }
 
   var htmlTransforms = {
     html: html.transforms,
     qm: requireUncached('../transforms/index'),
     sketch: requireUncached('../transforms/sketch'),
-    api: requireUncached('quantum-api')(apiOptions)
+    api: requireUncached('quantum-api')(apiOptions),
+    changelog: changelog(changelogOptions).transforms
   }
 
   return Promise.props({
+    changelogOptions: changelogOptions,
     htmlTransforms: htmlTransforms
   })
 }
@@ -79,6 +127,7 @@ function buildPages (objs) {
     return progressSequence('Building pages', chalk.green('='), objs, function (obj) {
       return Promise.resolve(obj)
         .then(template({variables: templateVariables}))
+        .then(changelog(options.changelogOptions))
         .then(function (res) { return Array.isArray(res) ? res : [res] })
         .then(flatten)
         .map(html(options.htmlTransforms))
