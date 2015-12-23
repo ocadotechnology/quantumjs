@@ -124,12 +124,20 @@ function copyResources () {
   ])
 }
 
+function copyServer () {
+  return fs.copyAsync('server/', 'target/')
+}
+
 if (process.argv[2] === 'build-hexagon') {
   buildHexagon()
 } else if (process.argv[2] === 'build-release') {
   buildHexagon()
     .then(copyResources)
-    .then(buildPages)
+    .then(function () {
+      return quantum.read('content/pages/**/index.um')
+        .then(buildPages)
+    })
+    .then(copyServer)
 } else {
   buildHexagon()
     .then(copyResources)
