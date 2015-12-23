@@ -262,7 +262,6 @@ module.exports = function (options) {
   return {
     'key': key,
     'changelog': changelog,
-    'wrapper': wrapper,
-    'entry': entry
+    'wrapper': wrapper
   }
 }

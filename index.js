@@ -388,6 +388,7 @@ module.exports = function (opts) {
       'group'
     ],
     reverseVisibleList: false, // Whether the list of items should be shown in the order provided or reversed. Default reversed.
+    dontAddDocsLink: false, // Whether docs links should be ignored and the docsUrlLookup should not be run
     renderSingleItemInRoot: false, // Whether changelogs with a single item should render the entries in the root of that changelog
     milestoneUrl: '',
     issueUrl: '',
