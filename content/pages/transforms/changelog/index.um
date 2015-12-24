@@ -45,7 +45,7 @@
     @api
       @function api
         @description:
-          @p: A function that returns a function for taking @(@changelog) AST objects and transforming them into virtual dom
+          @p: A function that returns a function for taking @(@changelog) entities and transforming them into virtual dom
           @p: This is the function returned from @code(js)[require('quantum-changelog')]
         @param? options [Object]
           @description

@@ -108,7 +108,7 @@
       @define element-renderer
         @entity {{ps}}
           @params
-          @description: Adds a {{ps}} element
+          @description: Adds a @code(html)[<{{ps}}>] element
           @entity id
             @description: Sets the id attribute property to a value
             @params: value
