@@ -117,7 +117,15 @@ function progressSequence (desc, completeStyle, list, func) {
 
 function getTemplateVariables () {
   return Promise.props({
-    version: require('../package.json').version
+    version: require('../package.json').version,
+    examples: {
+      exampleList: [1, 2, 3],
+      exampleObject: {name: 'Bob', age: 25},
+    },
+    example: {
+      property1: [1, 2, 3],
+      property2: 4
+    }
   })
 }
 
