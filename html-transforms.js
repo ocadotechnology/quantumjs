@@ -80,20 +80,22 @@ module.exports = function (options) {
 
     if (entity.ps().length > 0) {
       var heading = page.create('div').class('qm-changelog-entry-head').add(entity.ps())
-
-      if (!!options.issueUrl && entity.has('issue')) {
-        entity.selectAll('issue').forEach(function (issueEntity, index) {
-          heading = heading
-            .add(index > 0 ? ', ' : ': ')
-            .add(issue(issueEntity, page, transforms))
-        })
-      }
     }
 
     if (entity.has('description')) {
       if (entity.select('description').content.length) {
         var description = page.create('div').class('qm-changelog-entry-description').add(entity.select('description').transform(transforms))
       }
+    }
+
+    if (!!options.issueUrl && entity.has('issue')) {
+      var elem = (heading ? heading : description)
+
+      entity.selectAll('issue').forEach(function (issueEntity, index) {
+        elem = elem
+          .add(index > 0 ? ', ' : ': ')
+          .add(issue(issueEntity, page, transforms))
+      })
     }
 
     if (entity.has('extra')) {

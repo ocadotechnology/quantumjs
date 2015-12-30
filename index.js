@@ -25,8 +25,12 @@ function constructKey (parentKey, entity) {
 }
 
 function buildApiMap (apiEntity, options, apiCurrent, parentKey) {
-  apiEntity.selectAll(options.taggable.concat(options.indexable || [])).forEach(function (entity) {
-    if (options.indexable.indexOf(entity.type) > -1) {
+  var tags = options.taggable.concat(options.indexable || [])
+  var optionalTags = tags.map(function (tag) {
+    return tag + '?'
+  })
+  apiEntity.selectAll(tags.concat(optionalTags)).forEach(function (entity) {
+    if (options.indexable.indexOf(entity.type.replace('?', '')) > -1) {
       buildApiMap(entity, options, apiCurrent, parentKey)
     } else {
       var key = constructKey(parentKey, entity)
