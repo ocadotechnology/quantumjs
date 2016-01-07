@@ -1,0 +1,27 @@
+{
+  "name": "quantum-html",
+  "version": "1.0.0",
+  "description": "quantum to virtual dom transform + some common element renderers",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
+  },
+  "author": "james.smyth@ocado.com",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "array-unique": "^0.2.1",
+    "coffee-script": "^1.9.3",
+    "highlight.js": "^8.6.0",
+    "quantum-dom": "^1.0.0",
+    "quantum-js": "^1.0.0"
+  },
+  "devDependencies": {
+    "bluebird": "^2.9.27",
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5",
+    "istanbul": "^0.3.21"
+  }
+}
