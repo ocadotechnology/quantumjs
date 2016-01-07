@@ -1,6 +1,6 @@
 {
   "name": "quantum-changelog",
-  "version": "0.1.17",
+  "version": "1.0.0",
   "description": "changelog for quantum",
   "main": "index.js",
   "directories": {
@@ -9,18 +9,15 @@
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
-  "publishConfig": {
-    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
-  },
   "author": "charlie.frater@ocado.com",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "bluebird": "^2.10.2",
     "clone": "^1.0.2",
     "flatten": "0.0.1",
     "merge": "^1.2.0",
-    "quantum-dom": "^0.1.0",
-    "quantum-html": "^0.1.0",
+    "quantum-dom": "^1.0.0",
+    "quantum-html": "^1.0.0",
     "quantum-js": "^1.0.0"
   },
   "devDependencies": {
