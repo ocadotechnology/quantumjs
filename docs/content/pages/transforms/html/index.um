@@ -1,0 +1,156 @@
+@inline ../../../shared/common.um
+@quantum-titlebar Html
+
+@qm.content
+  @section
+
+    @h1: Html
+
+    @p: This module is used to transform parsed quantum AST objects to virtual dom content and then converting to html.
+    @p: The two conversion functions are provided separately to allow additional transforms to be performed between the virtual dom and stringified stage, giving flexibility to convert to formats other than pure html.
+
+    @h1: Example
+
+    @p: Build script
+    @codeblock js
+      var quantum = require('quantum-js')
+      var html    = require('quantum-html')
+
+      quantum.read('source.um')
+        .map(html())
+        .map(html.stringify())
+        .map(quantum.write('target'))
+
+    @p: Example markup
+    @codeblock um: @inline markup-example.um [text]
+
+    @p: Example result
+    @div .qm-card-background
+      @inline markup-example.um
+
+    @h1: Api
+
+    @api
+      @function api
+        @description
+          @p: A function that returns a function for taking AST objects and transforming them into virtual dom
+          @p: This is the function returned from @code[require('quantum-html')]
+
+        @param? transforms [Object]
+          @description
+            @p: An object containing the html transforms to use.
+            @p: The key used in the options object will be used as the namespace for the entity transforms.
+            @p: This means that in the markup you can create a div using @(@div) or @(html.div) when using the default settings.
+            @p: If the options object was passed in as this:
+            @codeblock js
+              {
+                bob: html.transforms
+              }
+
+            @p: Then you could create a div with @(@bob.div) instead.
+            @p: Namespaces allow you to remove ambiguity when multiple modules use the same entity names, and the type of entity you mean is not clear.
+
+          @default
+            @codeblock js
+              {
+                html: require('quantum-html').transforms
+              }
+
+        @returns Function: A function that takes an AST object and transforms it to virtual dom
+          @param entities [Object/Array[Object]]: The object or objects to transform
+          @returns [Object/Array[Object]]: The transformed objects
+
+      @function stringify
+        @description
+          @p: A function that returns a function for converting transformed virtual dom content to html
+          @p: This function is accessible through @code[require('quantum-html').stringify]
+        @param? options [Object]
+          @description: This function currently doesn't take any options but it is structured to allow them to be passed in.
+        @returns Function
+          @description: A function that renders the virtual dom content (created using @code[api(options)]) to html that can then be written to file
+          @param file [Object]: The AST object with transformed content to convert to HTML
+          @returns Object: An object containing the output filename and stringified content
+            @property filename: The name for the file
+            @property content: The stringified content
+
+      @entity html
+        @params: html
+        @description: Adds some html directly to the page
+
+      @entity css
+        @params: css
+        @description: Adds some styles to be applied to the page (added to the head)
+
+      @entity js
+        @params: javascript
+        @description: Adds some javascript to be executed on the page (added at the end of the body)
+
+      @entity code
+        @params language: code
+        @description: Shows some inline syntax highlighted code
+
+      @entity codeblock
+        @params language: code
+        @description: Shows some syntax highlighted code in a block
+
+      @entity script
+        @params link
+        @description: Adds a link to a javascript file
+
+      @entity stylesheet
+        @params link
+        @description: Adds a link to a css file
+
+      @entity hyperlink
+        @params link: content
+        @description: Adds a @code(html)[<link>] element, with the href set to the link specified in the parameters
+
+      @define element-renderer
+        @entity {{ps}}
+          @params
+          @description: Adds a @code(html)[<{{ps}}>] element
+          @entity id
+            @description: Sets the id attribute property to a value
+            @params: value
+          @entity class
+            @description: Sets the class attribute property to a value
+            @params: value
+          @entity attr
+            @description: Sets an attribute property to a value
+            @params name: value
+
+      @element-renderer a
+      @element-renderer b
+      @element-renderer br
+      @element-renderer button
+      @element-renderer div
+      @element-renderer form
+      @element-renderer h1
+      @element-renderer h2
+      @element-renderer h3
+      @element-renderer h4
+      @element-renderer h5
+      @element-renderer h6
+      @element-renderer hr
+      @element-renderer i
+      @element-renderer img
+      @element-renderer input
+      @element-renderer label
+      @element-renderer li
+      @element-renderer link
+      @element-renderer ol
+      @element-renderer option
+      @element-renderer p
+      @element-renderer pre
+      @element-renderer select
+      @element-renderer span
+      @element-renderer style
+      @element-renderer table
+      @element-renderer tbody
+      @element-renderer td
+      @element-renderer textarea
+      @element-renderer th
+      @element-renderer thead
+      @element-renderer tr
+      @element-renderer ul
+      @element-renderer vr

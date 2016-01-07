@@ -1,0 +1,19 @@
+.sk-svg {
+  padding: 0.5em;
+  width: 100%;
+  width: calc(100% - 2em);
+  height: 40px;
+}
+
+.sk-rectangle, .sk-path {
+  fill: none;
+  stroke: black;
+  stroke-linecap: square;
+  stroke-width: 2px;
+}
+
+.sk-text {
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: black;
+}

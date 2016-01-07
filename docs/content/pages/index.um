@@ -1,0 +1,148 @@
+@inline ../shared/common.um
+@quantum-titlebar
+
+@div .qm-banner
+  @img: @attr src: resources/icon-v1.svg
+  @section: @div .qm-banner-text: A static site generator for nodejs
+
+@qm.content
+
+  @section
+    @h1: About
+
+    @p: Quantum is comprised of a simple markup language, and several modules for transforming the parsed markup into rendered web pages. Its goal is to be as readable as markdown whilst maintaing the flexibiliy of html.
+
+    @p: The process of converting markup into rendered html happens in a customisable pipeline of transforms. The transforms convert the markup from one form to another, eventually ending up as html which can be written to a file.
+
+  @section
+    @div #qm-block-1.qm-card-background
+
+      @graph
+        @node read
+          @name Read (index.um)
+          @width 180
+          @height 40
+          @link one
+
+        @node one
+          @name Transform 1
+          @width 200
+          @height 40
+          @link two
+
+        @node two
+          @name Transform 2
+          @width 160
+          @height 40
+          @link ellipsis
+
+        @node ellipsis
+          @name ...
+          @width 160
+          @height 40
+          @link n
+
+        @node n
+          @name Transform N
+          @width 160
+          @height 40
+          @link result-file
+
+        @node result-file
+          @name Write (index.html)
+          @width 160
+          @height 40
+
+
+    @div #qm-block-2.qm-tagline
+      @section: A vague representation of how quantum works.
+
+  @section
+    @p: Quantum can be used to decouple page content from the final page structure, allowing radical changes to be made to the way content is displayed without touching the content files. This is achieved through defining custom types and transform functions for those types.
+
+    @p: Having the ability to manipulate the AST (abstract syntax tree) also opens up the possibility to add features that are not baked into the language, such as support for templating with basic logic, defining new types within a document, and even using diffs to describe what has changed between two versions of a document.
+
+    @p: The code to set up the transforms follows a similar pattern to the above flowchart, making use of promises to provide a clean api for chaining transforms.
+
+  @divider
+
+  @section
+    @h1: Quick Start
+
+  @section
+
+    @h2: Create a new project and install with npm
+    @codeblock bash
+      mkdir quantum-example
+      cd quantum-example
+
+      npm init
+      npm install --save-dev quantum-js
+      npm install --save-dev quantum-html
+
+    @h2: Create a simple build script and a source file
+
+    @h3: build.js
+    @codeblock js
+        var quantum = require('quantum-js')
+        var html = require('quantum-html')
+
+        quantum.read('index.um')              // load and parse a source file
+          .map(html())                        // transform the ast to virtual dom
+          .map(html.stringify())              // render the virtual dom to html
+          .map(quantum.write('target'))       // write the result to target/index.html
+
+    @h3: index.um
+    @codeblock um
+      @inline source.um [text]
+
+    @h2: Run the build script
+    @codeblock bash
+      node build.js
+
+    @h2: Expected output: target/index.html
+    @codeblock html
+      <h1>My Page</h1>
+      <p>Hello World!</p>
+
+    @divider
+    @h1: The Markup @attr(id)[markup]
+
+    @p: The markup language is simple, and should be fairly easy to pick up. The following block of code demonstrates the entire language. Everything is either an entity or is text. Entities are things that start with an @(@). An entity can have parameters and nested content.
+
+    @codeblock um
+      @inline the-markup.um [text]
+
+
+    @h1: The AST @attr(id)[markup]
+    @p: Parsing the above give something we refer to as the AST (abstract syntax tree). After parsing, you can do anything you like with the parsed result - it is just JSON.
+
+    @p: The HTML module (quantum-html) takes this json structure and converts it first into a virtual dom (an in memory representation of some html) which can then be converted into a html string. This is just one particular use for the parsed AST - there are endless other possible things that the markup could be used for. One could for example output to pdf instead of html.
+
+    @codeblock json
+      @inline the-markup.json [text]
+
+    @divider
+    @h1: Gulp/Grunt @attr(id)[gulp-grunt]
+
+    @h2: Gulp
+
+    @p: There is no need for a gulp plugin. The api can be used within a gulp task:
+
+    @codeblock js
+      var gulp = require('gulp')
+      var quantum = require('quantum-js')
+      var html = require('quantum-html')
+
+      gulp.task('build', function(){
+        return quantum.read('source.um')
+          .map(html())
+          .map(html.stringify())
+          .map(quantum.write('target'))
+      })
+
+    @h2: Grunt
+
+    @p: There is no grunt plugin yet. Want to make one?
+
+@footer

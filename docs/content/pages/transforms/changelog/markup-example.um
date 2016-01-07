@@ -1,0 +1,14 @@
+@changelog Version
+  @link(#version)
+
+  @description: Version Description
+
+  @item Item
+    @link(#item)
+    @description: Item Description
+
+    @added [Added Thing]
+      @description: This thing was added
+
+    @removed [Removed Thing]
+      @description: This thing was removed

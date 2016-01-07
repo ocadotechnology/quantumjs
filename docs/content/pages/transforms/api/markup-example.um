@@ -1,0 +1,19 @@
+@api
+  @prototype Table
+    @constructor
+      @param? options [Object]
+        @description: The options to use when constructing, see the prototype options for details
+
+    # Use group to change the header shown
+    @group Options
+      @property data [Array]: The data to use
+      @property sort [Boolean]: Whether to sort
+
+  @function min
+    # show the 'added' tag
+    @added
+    @description: Gets the minimum value
+    @param arr [Array]: The array of values
+    @param? ignoreNegative [Boolean]: Whether to ignore negative values
+      @default false
+    @returns Number: The min value
