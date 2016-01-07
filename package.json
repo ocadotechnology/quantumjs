@@ -1,16 +1,13 @@
 {
   "name": "quantum-watch",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "James Smyth <james.smyth@ocado.com>",
-  "publishConfig": {
-    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
-  },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "bluebird": "^2.10.2",
     "debounce": "^1.0.0",
@@ -18,6 +15,6 @@
     "glob": "^5.0.15",
     "merge": "^1.2.0",
     "minimatch": "^3.0.0",
-    "quantum-js": "^0.1.1"
+    "quantum-js": "^1.0.0"
   }
 }
