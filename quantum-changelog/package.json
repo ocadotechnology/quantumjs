@@ -1,0 +1,28 @@
+{
+  "name": "quantum-changelog",
+  "version": "1.0.0",
+  "description": "changelog for quantum",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
+  },
+  "author": "charlie.frater@ocado.com",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "bluebird": "^2.10.2",
+    "clone": "^1.0.2",
+    "flatten": "0.0.1",
+    "merge": "^1.2.0",
+    "quantum-dom": "^1.0.0",
+    "quantum-html": "^1.0.0",
+    "quantum-js": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.2.5"
+  }
+}
