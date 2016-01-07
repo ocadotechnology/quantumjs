@@ -1,6 +1,6 @@
 {
   "name": "quantum-dom",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "A virtual dom builder",
   "main": "index.js",
   "directories": {
@@ -11,10 +11,7 @@
     "coverage": "./node_modules/mocha/bin/mocha -R html-file-cov"
   },
   "author": "james.smyth@ocado.com",
-  "publishConfig": {
-    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
-  },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "blanket": "^1.1.7",
     "chai": "^2.3.0",
