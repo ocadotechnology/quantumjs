@@ -1,6 +1,6 @@
 {
   "name": "quantum-api",
-  "version": "0.1.11",
+  "version": "1.0.0",
   "description": "quantum entity to virtual dom transforms for writing api docs",
   "main": "index.js",
   "directories": {
@@ -9,11 +9,8 @@
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
-  "publishConfig": {
-    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
-  },
   "author": "james.smyth@ocado.com",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "bluebird": "^3.0.6",
     "merge": "^1.2.0",
