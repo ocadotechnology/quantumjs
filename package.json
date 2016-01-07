@@ -1,6 +1,6 @@
 {
   "name": "quantum-version",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "quantum transform that lets you specify versioned content, only specify what changes between versions",
   "main": "index.js",
   "directories": {
@@ -10,10 +10,7 @@
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
   "author": "james.smyth@ocado.com",
-  "publishConfig": {
-    "registry": "http://maven.ocado.com/nexus/content/repositories/Hexagon_Releases"
-  },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "merge": "^1.2.0",
     "quantum-js": "^1.0.0"

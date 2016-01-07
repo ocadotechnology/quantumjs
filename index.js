@@ -35,9 +35,12 @@ function mergeContent (content1, content2, options) {
       var e1s = quantum.select(e1)
       var e2s = quantum.select(e2)
 
+      var entityType = (e2.type ? e2.type.replace('?', '') : e2.type)
+      var isTaggable = (options.taggable.indexOf(entityType) > -1)
+
       if (!!e1) {
         if (e1.content && e2.content) {
-          if (options.unmergable.indexOf(e2.type) > -1) {
+          if (options.unmergable.indexOf(entityType) > -1) {
             e1s.replaceContent(e2.content)
           } else {
             e1s.replaceContent(mergeContent(e1.content, e2.content, options))
@@ -46,14 +49,14 @@ function mergeContent (content1, content2, options) {
           var e1sCanBeUpdated = !e1s.has('removed') && !e1s.has('deprecated')
           var e2sCanBeUpdated = !e2s.has('removed') && !e2s.has('deprecated')
 
-          if ((options.taggable.indexOf(e2.type) > -1) && e1sCanBeUpdated && e2sCanBeUpdated) {
+          if (isTaggable && e1sCanBeUpdated && e2sCanBeUpdated) {
             e1.content.push({ type: 'updated', params: [], content: [] })
           } else if (e1s.has('removed') && e1s.has('deprecated')) {
             e1s.remove('deprecated')
           }
         }
       } else {
-        if (options.taggable.indexOf(e2.type) > -1) {
+        if (isTaggable) {
           e2.content.push({ type: 'added', params: [], content: [] })
         }
         content1.push(e2)
