@@ -1,0 +1,2 @@
+@ifnot site.public
+  @div: Hello World
