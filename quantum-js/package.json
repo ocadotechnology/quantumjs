@@ -1,0 +1,34 @@
+{
+  "name": "quantum-js",
+  "version": "1.0.0",
+  "description": "The quantum parser, selection api and construction api",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
+  },
+  "author": "James Smyth <james.smyth@ocado.com>",
+  "contributors": [
+    "Charlie Frater <charlie.frater@ocado.com>"
+  ],
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "blanket": "^1.1.7",
+    "chai": "^2.3.0",
+    "chai-as-promised": "^5.1.0",
+    "fs-extra": "^0.23.0",
+    "html-file-cov": "^1.0.0",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.2.5"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.27",
+    "flatten": "0.0.1",
+    "fs-extra": "^0.26.0",
+    "glob": "^5.0.10",
+    "glob-base": "^0.3.0",
+    "merge": "^1.2.0"
+  }
+}

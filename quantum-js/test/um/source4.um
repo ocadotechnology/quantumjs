@@ -1,0 +1,5 @@
+@test
+  @button: Hello World
+  @inline source5.txt
+  @altinline source2.um
+  @button: Hello World 2
