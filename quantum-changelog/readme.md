@@ -1,7 +1,7 @@
-# quantum-dom
+# quantum-changelog
 
 Part of the `quantum-js` library.
 
-A simple virtual dom used by quantum as part of the html generation process.
+This module provides a set of transforms for creating a changelog as well as the @process transform that allows the generation of a changelog from versioned content.
 
 This readme includes no details about how to use the library itself as there is documentation for the library available here: https://quantum.hexagonjs.io.

@@ -1,7 +1,7 @@
-# quantum-dom
+# quantum-version
 
 Part of the `quantum-js` library.
 
-A simple virtual dom used by quantum as part of the html generation process.
+This module provides a transform that enables the generation of incrementally versioned content.
 
 This readme includes no details about how to use the library itself as there is documentation for the library available here: https://quantum.hexagonjs.io.

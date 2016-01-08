@@ -1,7 +1,7 @@
-# quantum-dom
+# quantum-diagram
 
 Part of the `quantum-js` library.
 
-A simple virtual dom used by quantum as part of the html generation process.
+A module for creating flow diagrams with linked elements using @diagram
 
 This readme includes no details about how to use the library itself as there is documentation for the library available here: https://quantum.hexagonjs.io.
