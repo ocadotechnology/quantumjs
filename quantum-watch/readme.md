@@ -1,6 +1,6 @@
 # quantum-watch
 
-A transform for the `quantum-js` library
+A module intended for use with `quantum-js`
 
 This module watches quantum files for changes, and calls a callback when changes are made. It keeps track of @inline entity references, allowing only the files affected by a file change to be rebuilt.
 

@@ -1,6 +1,6 @@
 # quantum-dom
 
-A transform for the `quantum-js` library
+A module intended for use with `quantum-js`
 
 A simple virtual dom used by quantum as part of the html generation process.
 

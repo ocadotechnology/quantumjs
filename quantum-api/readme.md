@@ -1,6 +1,6 @@
 # quantum-api
 
-A transform for the `quantum-js` library
+A module intended for use with `quantum-js`
 
 This module provides a set of transforms for writing api docs for a JavaScript, CSS or quantum api.
 

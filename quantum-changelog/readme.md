@@ -1,7 +1,7 @@
 # quantum-changelog
 
-A transform for the `quantum-js` library
+A module intended for use with `quantum-js`
 
-This module provides a set of transforms for creating a changelog as well as the @process transform that allows the generation of a changelog from versioned content.
+This module provides a set of html transforms for creating changelogs manually, and an ast transform for automatically generating changelogs from versioned api content.
 
 This readme includes no details about how to use the library itself as there is documentation for the library available here: https://quantum.hexagonjs.io.

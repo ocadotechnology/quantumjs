@@ -1,6 +1,6 @@
 # quantum-html
 
-A transform for the `quantum-js` library
+A module intended for use with `quantum-js`
 
 This module is used to transform parsed quantum AST objects to virtual dom content and then converting to html.
 
