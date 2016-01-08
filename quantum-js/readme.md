@@ -1,6 +1,6 @@
 # quantum-js
 
-A transform for the `quantum-js` library
+The core module for the QuantumJS collection
 
 This module contains the parser, the selection api and an api for constructing ast.
 
