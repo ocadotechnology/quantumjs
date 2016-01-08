@@ -1,6 +1,6 @@
 # quantum-changelog
 
-Part of the `quantum-js` library.
+A transform for the `quantum-js` library
 
 This module provides a set of transforms for creating a changelog as well as the @process transform that allows the generation of a changelog from versioned content.
 

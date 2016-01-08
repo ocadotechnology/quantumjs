@@ -1,6 +1,6 @@
 # quantum-version
 
-Part of the `quantum-js` library.
+A transform for the `quantum-js` library
 
 This module provides a transform that enables the generation of incrementally versioned content.
 

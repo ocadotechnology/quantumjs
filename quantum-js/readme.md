@@ -1,6 +1,6 @@
 # quantum-js
 
-Part of the `quantum-js` library.
+A transform for the `quantum-js` library
 
 This module contains the parser, the selection api and an api for constructing ast.
 

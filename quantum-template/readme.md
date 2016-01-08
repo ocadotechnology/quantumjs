@@ -1,6 +1,6 @@
 # quantum-template
 
-Part of the `quantum-js` library.
+A transform for the `quantum-js` library
 
 This module adds the ability to create templates using @define which can then be re-used as entities throughout.
 

@@ -1,6 +1,6 @@
 # quantum-diagram
 
-Part of the `quantum-js` library.
+A transform for the `quantum-js` library
 
 A module for creating flow diagrams with linked elements using @diagram
 
