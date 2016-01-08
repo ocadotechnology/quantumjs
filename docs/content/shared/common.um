@@ -57,6 +57,8 @@
       @a .qm-header-title: QUANTUM.JS
         @attr href: /
       @span .qm-header-nav
+        @a: Getting Started
+          @attr href: /guide/getting-started
         @a: Core
           @attr href: /core
         @a: Watch

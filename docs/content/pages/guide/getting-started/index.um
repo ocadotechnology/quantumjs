@@ -1,0 +1,29 @@
+@inline ../../../shared/common.um
+@quantum-titlebar Getting Started
+
+@qm.content
+  @section
+
+    @h1: Getting Started
+
+    @p: The quantum library consists of multiple modules that each provide a different set of transforms, both in terms of entities (e.g. @(@api) ) as well as functionality, such as creating versioned content.
+    @p: This page is intended as a basic tutorial as to where to start and includes step-by-step instructions for how to build a basic project.
+
+    @section
+      @h3: Installing Dependencies
+      @p: The first step is to install the core module as a dependency, as well as the HTML module as these are the minimum files required for outputting to HTML.
+
+      @codeblock bash
+        npm install --save quantum-js
+        npm install --save quantum-html
+
+      @p: The optional modules can then be required as follows:
+      @codeblock bash
+        npm install --save quantum-api
+        npm install --save quantum-changelog
+        npm install --save quantum-drawing
+        npm install --save quantum-template
+        npm install --save quantum-version
+        npm install --save quantum-watch
+
+
