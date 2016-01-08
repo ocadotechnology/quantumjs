@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "dagre": "0.7.4",
-    "quantum-js": "^0.1.2"
+    "quantum-js": "^1.0.0"
   },
   "devDependencies": {
     "blanket": "^1.1.7",
