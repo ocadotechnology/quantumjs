@@ -2,6 +2,19 @@
   "name": "quantum-dom",
   "version": "1.0.0",
   "description": "A virtual dom builder",
+  "author": "James Smyth <james.smyth@ocado.com>",
+  "contributors": [
+    "Charlie Frater <charlie.frater@ocado.com>"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ocadotechnology/quantumjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ocadotechnology/quantumjs/issues"
+  },
+  "homepage": "https://quantum.hexagonjs.io",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -9,14 +22,6 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
     "coverage": "./node_modules/mocha/bin/mocha -R html-file-cov"
-  },
-  "author": "james.smyth@ocado.com",
-  "license": "Apache-2.0",
-  "devDependencies": {
-    "blanket": "^1.1.7",
-    "chai": "^2.3.0",
-    "html-file-cov": "^1.0.0",
-    "mocha": "^2.2.5"
   },
   "config": {
     "blanket": {
@@ -26,5 +31,11 @@
   },
   "dependencies": {
     "bluebird": "^2.9.30"
+  },
+  "devDependencies": {
+    "blanket": "^1.1.7",
+    "chai": "^2.3.0",
+    "html-file-cov": "^1.0.0",
+    "mocha": "^2.2.5"
   }
 }

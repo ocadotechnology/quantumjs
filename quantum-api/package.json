@@ -2,6 +2,19 @@
   "name": "quantum-api",
   "version": "1.0.0",
   "description": "quantum entity to virtual dom transforms for writing api docs",
+  "author": "James Smyth <james.smyth@ocado.com>",
+  "contributors": [
+    "Charlie Frater <charlie.frater@ocado.com>"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ocadotechnology/quantumjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ocadotechnology/quantumjs/issues"
+  },
+  "homepage": "https://quantum.hexagonjs.io",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -9,8 +22,6 @@
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
-  "author": "james.smyth@ocado.com",
-  "license": "Apache-2.0",
   "dependencies": {
     "bluebird": "^3.0.6",
     "merge": "^1.2.0",

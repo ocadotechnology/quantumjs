@@ -2,12 +2,23 @@
   "name": "quantum-watch",
   "version": "1.0.0",
   "description": "",
+  "author": "James Smyth <james.smyth@ocado.com>",
+  "contributors": [
+    "Charlie Frater <charlie.frater@ocado.com>"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ocadotechnology/quantumjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ocadotechnology/quantumjs/issues"
+  },
+  "homepage": "https://quantum.hexagonjs.io",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "James Smyth <james.smyth@ocado.com>",
-  "license": "Apache-2.0",
   "dependencies": {
     "bluebird": "^2.10.2",
     "debounce": "^1.0.0",
