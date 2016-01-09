@@ -1,0 +1,45 @@
+#! /bin/bash
+
+# This script is useful for developing locally - it will npm link all the modules
+
+pushd ..
+
+pushd quantum-js
+sudo npm link
+popd
+
+pushd quantum-dom
+sudo npm link
+popd
+
+pushd quantum-html
+npm link quantum-js quantum-dom
+sudo npm link
+popd
+
+pushd quantum-api
+npm link quantum-js
+sudo npm link
+popd
+
+pushd quantum-changelog
+npm link quantum-js
+sudo npm link
+popd
+
+pushd quantum-diagram
+npm link quantum-js
+sudo npm link
+popd
+
+pushd quantum-version
+npm link quantum-js
+sudo npm link
+popd
+
+pushd quantum-watch
+npm link quantum-js
+sudo npm link
+popd
+
+popd

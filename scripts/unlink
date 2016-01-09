@@ -1,0 +1,46 @@
+#! /bin/bash
+
+# This script does the reverse of link - it will npm unlink everything
+# that was linked by the link script
+
+pushd ..
+
+pushd quantum-js
+sudo npm unlink
+popd
+
+pushd quantum-dom
+sudo npm unlink
+popd
+
+pushd quantum-html
+npm unlink quantum-js quantum-dom
+sudo npm unlink
+popd
+
+pushd quantum-api
+npm unlink quantum-js
+sudo npm unlink
+popd
+
+pushd quantum-changelog
+npm unlink quantum-js
+sudo npm unlink
+popd
+
+pushd quantum-diagram
+npm unlink quantum-js
+sudo npm unlink
+popd
+
+pushd quantum-version
+npm unlink quantum-js
+sudo npm unlink
+popd
+
+pushd quantum-watch
+npm unlink quantum-js
+sudo npm unlink
+popd
+
+popd

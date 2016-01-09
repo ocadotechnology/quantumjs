@@ -1,17 +1,32 @@
-QuantumJS
-=========
+# QuantumJS
 
-About
------
+Documentation: https://quantum.hexagonjs.io
 
-Quantum is comprised of a simple markup language, and several modules for transforming the parsed markup into rendered web pages. Its goal is to be as readable as markdown whilst maintaing the flexibiliy of html.
+A fast, customisable static site generator.
 
-The process of converting markup into rendered html happens in a customisable pipeline of transforms. The transforms convert the markup from one form to another, eventually ending up as html which can be written to a file.
+QuantumJS has one main goal: convert structured markup into html.
 
-Quantum can be used to decouple page content from the final page structure, allowing radical changes to be made to the way content is displayed without touching the content files. This is achieved through defining custom types and transform functions for those types.
+QuantumJS is a static site generator with the following design goals
 
-Having the ability to manipulate the AST (abstract syntax tree) also opens up the possibility to add features that are not baked into the language, such as support for templating with basic logic, defining new types within a document, and even using diffs to describe what has changed between two versions of a document.
+ - extensible & customisable
+ - no enforced directory structure
+ - clean separation of content from final styled output
+ - simplicity
+ - speed
+ - output format agnostic (be able to output to html, pdf, markdown, ect)
 
-The code to set up the transforms follows a similar pattern to the above flowchart, making use of promises to provide a clean api for chaining transforms.
+This respository contains the parser for the language along with some common transforms:
 
-This readme includes no details about how to use the library itself as there is extensive documentation for the library available here: https://quantum.hexagonjs.io.
+|directory|description|
+|----------|-----------|
+| quantum-js | The language parser, and utilities for working with the parsed ast |
+| quantum-dom | A virtual dom library which quantum uses to build the html |
+| quantum-watch | An api for watching quantum files for changes, notifying you when they do |
+| quantum-template | A transform which adds common templating abilities |
+| quantum-version | A transform that lets you write versioned content with incremental changes |
+| quantum-html | A transform for converting ast to quantum virtual dom |
+| quantum-api | A set of html entity transforms for writing api documentation (for javascript and css) |
+| quantum-changelog | A set of html entity transforms for writing changelogs (and a transform for generating changelogs automatically from api docs) |
+| quantum-diagram | A set of html entity transforms for creating graphviz style diagrams |
+| quantum-docs | A set of html entity transforms for building technical documentation sites |
+| docs | Contains the documentation site (https://quantum.hexagonjs.io) |
