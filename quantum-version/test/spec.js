@@ -28,7 +28,7 @@ function testSuite (filename) {
           })
 
           var options = {
-            unmergable: ['unmergable'],
+            unmergeable: ['unmergeable'],
             taggable: ['function', 'method', 'constructor', 'property', 'object', 'class', 'prototype'],
             versions: spec.select('versions').content
           }
@@ -64,7 +64,7 @@ describe('extra tests', function () {
       }
     }
 
-    version({})(src).should.eql(src)
+    version({})(src).should.eql([src])
   })
 
 })

@@ -40,7 +40,7 @@ function mergeContent (content1, content2, options) {
 
       if (!!e1) {
         if (e1.content && e2.content) {
-          if (options.unmergable.indexOf(entityType) > -1) {
+          if (options.unmergeable.indexOf(entityType) > -1) {
             e1s.replaceContent(e2.content)
           } else {
             e1s.replaceContent(mergeContent(e1.content, e2.content, options))
@@ -89,6 +89,30 @@ function removeTags (entity, tags) {
   return entity
 }
 
+// adds the versions to the @versionList entity. mutates the input
+function populateVersionList (entity, versions, currentVersion) {
+  if (entity.type === 'versionList') {
+    entity.content.push({type: 'current', params: [currentVersion], content: []})
+    versions.forEach(function (v) {
+      entity.content.push({type: 'version', params: [v], content: []})
+    })
+  } else if (Array.isArray(entity.content)) {
+    entity.content.forEach(function (e) {
+      populateVersionList(e, versions, currentVersion)
+    })
+  }
+  return entity
+}
+
+// de-version the source (remove all @version entities)
+// this removes the @version entites recursively
+function removeVersions (entity) {
+  if (Array.isArray(entity.content) && entity.type !== 'versionList') {
+    entity.content = entity.content.filter(function (e) { return e.type !== 'version' })
+    entity.content.forEach(removeVersions)
+  }
+}
+
 // returns a function that expands a quantum ast containing `version` entities into
 // potentially multiple ast's - one for each version
 module.exports = function (opts) {
@@ -108,6 +132,7 @@ module.exports = function (opts) {
     targetVersions: undefined, // Target array of versions
     entityMatchLookup: defaultEntityMatchLookup,
     filenameModifier: defaultFilenameModifier,
+    outputLatest: false,
     taggable: [ // Elements that can be tagged and should be indexed
       'function',
       'prototype',
@@ -120,7 +145,8 @@ module.exports = function (opts) {
       'data',
       'class',
       'extraclass',
-      'childclass'
+      'childclass',
+      'entity'
     ],
     indexable: [ // Elements that can't be tagged but should be indexed
       'param',
@@ -149,14 +175,33 @@ module.exports = function (opts) {
 
   var options = merge.recursive(defaultOptions, opts)
 
-  options.targetVersions = options.targetVersions || options.versions
-
   return function (obj) {
-    // generate the versioned parts
     var content = quantum.select(obj.content)
+    var fullVersionList = options.versions || []
+
+    if (content.has('versionList')) {
+      var inputList = content.selectAll('versionList').filter(function (versionList) {
+        return versionList.selectAll('version').length > 0
+      })[0]
+
+      if (inputList) {
+        var inputVersionList = inputList.selectAll('version').map(function (v) {
+          return v.ps()
+        })
+        if (inputVersionList.length > 0) {
+          fullVersionList = inputVersionList
+        }
+
+        // remove the list of versions - they will be repopulated by the populateVersionList function
+        inputList.original.content = []
+      }
+
+    }
+
+    var targetVersions = options.targetVersions || fullVersionList
     var actualVersions = content.selectAll('version', {recursive: true})
 
-    if (actualVersions.length > 0) {
+    if (fullVersionList.length > 0) {
       var versionsMap = {}
       actualVersions.forEach(function (version) {
         versionsMap[version.ps()] = version
@@ -166,7 +211,7 @@ module.exports = function (opts) {
 
       var removableTags = getRemovableTags(options.tags)
 
-      options.versions.forEach(function (v) {
+      fullVersionList.forEach(function (v) {
         var version = versionsMap[v]
 
         if (version !== undefined) {
@@ -206,30 +251,35 @@ module.exports = function (opts) {
           insertVersionedContent(source)
         }
 
-        // de-version the source (remove all @version entities)
-        // this removes the @version entites recursively
-        function removeVersions (entity) {
-          if (Array.isArray(entity.content)) {
-            entity.content = entity.content.filter(function (e) { return e.type !== 'version' })
-            entity.content.forEach(removeVersions)
-          }
-        }
+        populateVersionList(source, fullVersionList, v)
         removeVersions(source)
 
         // build the new result with new filename and add the result to the results list
-        if (options.targetVersions.indexOf(v) > -1) {
+        if (targetVersions.indexOf(v) > -1) {
           results.push({
             filename: options.filenameModifier(obj.filename, v),
             content: source,
             version: v
           })
+
+          // optionally output the latest version without the filename modification
+          if (options.outputLatest && v === fullVersionList[fullVersionList.length - 1]) {
+            results.push({
+              filename: obj.filename,
+              content: quantum.select(source).clone(),
+              version: v
+            })
+          }
         }
 
       })
 
       return results
     } else {
-      return obj
+      // return an array for consistent return type - without this
+      // the user would have to check if the return type is an array
+      // which wouldn't be nice to use
+      return [obj]
     }
 
   }

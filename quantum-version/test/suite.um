@@ -94,7 +94,7 @@
           @innerTag two: Content 3
           @innerTag three: Content 4
 
-@spec Unmergable entites should not be merged together
+@spec Unmergeable entites should not be merged together
   @versions
     0.1.0
     0.2.0
@@ -102,11 +102,11 @@
     @filename filename.um
     @content
       @version 0.1.0
-        @unmergable
+        @unmergeable
           @innerTag one: Content 1
           @innerTag two: Content 2
       @version 0.2.0
-        @unmergable
+        @unmergeable
           @innerTag two: Content 3
           @innerTag three: Content 4
 
@@ -115,7 +115,7 @@
       @filename 0.1.0/filename.um
       @version 0.1.0
       @content
-        @unmergable
+        @unmergeable
           @innerTag one: Content 1
           @innerTag two: Content 2
 
@@ -123,7 +123,7 @@
       @filename 0.2.0/filename.um
       @version 0.2.0
       @content
-        @unmergable
+        @unmergeable
           @innerTag two: Content 3
           @innerTag three: Content 4
 
@@ -365,3 +365,143 @@
             @changelog 0.1.0
             @changelog 0.2.0
             @changelog 0.3.0
+
+@spec Should remove the @deprecated tag if @removed is present
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        @item
+          @deprecated
+      @version 0.2.0
+        @item
+          @removed
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @version 0.1.0
+      @content
+        @item
+          @deprecated
+
+    @output
+      @filename 0.2.0/filename.um
+      @version 0.2.0
+      @content
+        @item
+          @removed
+
+@spec Fill the @versionList entity with a list of versions
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      Unversioned
+      @version 0.1.0
+        Content 1
+      @version 0.2.0
+        Content 2
+      @versionList
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @version 0.1.0
+      @content
+        Unversioned
+        Content 1
+        @versionList
+          @current 0.1.0
+          @version 0.1.0
+          @version 0.2.0
+
+    @output
+      @filename 0.2.0/filename.um
+      @version 0.2.0
+      @content
+        Unversioned
+        Content 2
+        @versionList
+          @current 0.2.0
+          @version 0.1.0
+          @version 0.2.0
+
+
+@spec The @versionList should override the passed in versions (if it has entries)
+  @versions
+    0.1.0
+  @source
+    @filename filename.um
+    @content
+      @div
+        @versionList
+      Unversioned
+      @version 0.1.0
+        Content 1
+      @version 0.2.0
+        Content 2
+      @versionList
+        @version 0.1.0
+        @version 0.2.0
+        @version 0.3.0
+
+  @expected
+    @output
+      @filename 0.1.0/filename.um
+      @version 0.1.0
+      @content
+        @div
+          @versionList
+            @current 0.1.0
+            @version 0.1.0
+            @version 0.2.0
+            @version 0.3.0
+        Unversioned
+        Content 1
+        @versionList
+          @current 0.1.0
+          @version 0.1.0
+          @version 0.2.0
+          @version 0.3.0
+
+    @output
+      @filename 0.2.0/filename.um
+      @version 0.2.0
+      @content
+        @div
+          @versionList
+            @current 0.2.0
+            @version 0.1.0
+            @version 0.2.0
+            @version 0.3.0
+        Unversioned
+        Content 2
+        @versionList
+          @current 0.2.0
+          @version 0.1.0
+          @version 0.2.0
+          @version 0.3.0
+
+    @output
+      @filename 0.3.0/filename.um
+      @version 0.3.0
+      @content
+        @div
+          @versionList
+            @current 0.3.0
+            @version 0.1.0
+            @version 0.2.0
+            @version 0.3.0
+        Unversioned
+        Content 2
+        @versionList
+          @current 0.3.0
+          @version 0.1.0
+          @version 0.2.0
+          @version 0.3.0
