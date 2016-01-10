@@ -1,5 +1,5 @@
 {
-  "name": "quantum-api-example",
+  "name": "quantum-changelog-example",
   "version": "0.1.0",
   "description": "",
   "main": "build.js",
@@ -9,7 +9,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "quantum-js": "^1.0.0",
     "quantum-html": "^1.0.0",
-    "quantum-api": "^1.0.0"
+    "quantum-changelog": "^1.0.0"
   }
 }

@@ -200,14 +200,12 @@ module.exports = function (opts) {
     }
   }
 
-  var whiteChevron = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="14" viewBox="0 0 10 14"><path fill="#FFFFFF" d="M8.648 6.852l-5.797 5.797q-0.148 0.148-0.352 0.148t-0.352-0.148l-1.297-1.297q-0.148-0.148-0.148-0.352t0.148-0.352l4.148-4.148-4.148-4.148q-0.148-0.148-0.148-0.352t0.148-0.352l1.297-1.297q0.148-0.148 0.352-0.148t0.352 0.148l5.797 5.797q0.148 0.148 0.148 0.352t-0.148 0.352z"></path></svg>'
-  var blackChevron = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="14" viewBox="0 0 10 14"><path fill="#444444" d="M8.648 6.852l-5.797 5.797q-0.148 0.148-0.352 0.148t-0.352-0.148l-1.297-1.297q-0.148-0.148-0.148-0.352t0.148-0.352l4.148-4.148-4.148-4.148q-0.148-0.148-0.148-0.352t0.148-0.352l1.297-1.297q0.148-0.148 0.352-0.148t0.352 0.148l5.797 5.797q0.148 0.148 0.148 0.352t-0.148 0.352z"></path></svg>'
-
   // creates a qm collapsible
   function createCollapsible (page, clas, header, content) {
     return page.create('div').class('qm-api-collapsible qm-api-item ' + clas)
       .add(page.create('div').class('qm-api-collapsible-heading')
-        .add(page.create('div').class('qm-api-collapsible-toggle').text(whiteChevron, true))
+        .add(page.create('div').class('qm-api-collapsible-toggle')
+          .add(page.create('i').class('qm-api-chevron-icon')))
         .add(page.create('div').class('qm-api-collapsible-head')
           .add(header)))
       .add(page.create('div').class('qm-api-collapsible-content')

@@ -35,7 +35,6 @@
     "chai": "^2.3.0",
     "chai-as-promised": "^5.1.0",
     "fs-extra": "^0.23.0",
-    "html-file-cov": "^1.0.0",
     "istanbul": "^0.4.0",
     "mocha": "^2.2.5"
   }

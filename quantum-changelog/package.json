@@ -27,8 +27,6 @@
     "clone": "^1.0.2",
     "flatten": "0.0.1",
     "merge": "^1.2.0",
-    "quantum-dom": "^1.0.0",
-    "quantum-html": "^1.0.0",
     "quantum-js": "^1.0.0"
   },
   "devDependencies": {

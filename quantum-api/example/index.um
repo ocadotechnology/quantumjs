@@ -1,8 +1,12 @@
-@script hexagon.js
-@stylesheet hexagon.css
-@stylesheet [//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css]
+@stylesheet [https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css]
 
-@div .hx-content
+@css
+  .content {
+    margin: 0 auto;
+    width: 960px;
+  }
+
+@div .content
 
   @h1: Api
   @api

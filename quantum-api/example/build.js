@@ -1,7 +1,6 @@
-var hexagon = require('hexagon-js')
 var quantum = require('quantum-js')
-var html    = require('quantum-html')
-var api     = require('..')  // normally require('quantum-api')
+var html = require('quantum-html')
+var api = require('quantum-api')
 
 var apiOptions = {
   types: {
@@ -25,6 +24,3 @@ quantum.read('index.um')
   .map(html(htmlTransforms))
   .map(html.stringify())
   .map(quantum.write('target'))
-
-// build a version of hexagon
-// hexagon.build().then(hexagon.build.store('target'))
