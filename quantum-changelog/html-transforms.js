@@ -217,25 +217,19 @@ module.exports = function (options) {
       var extra = page.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
     }
 
-    return page.addAssets({
-      css: {
-        'changelog.css': __dirname + '/client/quantum-changelog.css'
-      },
-      js: {
-        'changelog.js': __dirname + '/client/quantum-changelog.js'
-      }
-    })
-      .then(function () {
-        // Only add a changelog if there is content to display
-        if (itemArr.length > 0 || description || extra) {
-          return page.create('div').class('qm-changelog')
-            .add(page.create('div').class('qm-changelog-head').add(title))
-            .add(page.create('div').class('qm-changelog-body')
-              .add(description)
-              .add(items)
-              .add(extra))
-        }
-      })
+    // Only add a changelog if there is content to display
+    if (itemArr.length > 0 || description || extra) {
+      page
+        .asset('quantum-changelog.css', __dirname + '/client/quantum-changelog.css')
+        .asset('quantum-changelog.js', __dirname + '/client/quantum-changelog.js')
+
+      return page.create('div').class('qm-changelog')
+        .add(page.create('div').class('qm-changelog-head').add(title))
+        .add(page.create('div').class('qm-changelog-body')
+          .add(description)
+          .add(items)
+          .add(extra))
+    }
   }
 
   function wrapper (entity, page, transforms) {

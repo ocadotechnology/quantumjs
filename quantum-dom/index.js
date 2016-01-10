@@ -263,14 +263,25 @@ TextElement.prototype.stringify = function () {
   return this.text
 }
 
+// sets the unique id (if you need to refer to the element in the future)
+TextElement.prototype.uuid = function (id) {
+  if (arguments.length === 0) {
+    return this.uid
+  } else {
+    delete this.page.elements[this.uid]
+    this.uid = id
+    this.page.elements[this.uid] = this
+    return this
+  }
+}
+
 // factory for elements, and a manager for retrieving elements by uid
 function Page () {
   this.elements = {}
   this.html = this.create('html', 'html')
   this.head = this.html.append(this.create('head', 'head'))
   this.body = this.html.append(this.create('body', 'body'))
-  this.styles = {}
-  this.scripts = {}
+  this.assets = {}
 }
 
 // create an element
@@ -284,11 +295,12 @@ Page.prototype.create = function (type, uid) {
 }
 
 // create an element
-Page.prototype.textNode = function (text, uid, dontEscape) {
+Page.prototype.textNode = function (text, uid, options) {
   if (uid === undefined) {
     uid = nextId()
   }
-  var element = new TextElement(this, (dontEscape ? text : escapeHTML(text)), uid)
+  var escape = (options && options.escape !== false) || options === undefined
+  var element = new TextElement(this, (escape ? escapeHTML(text) : text), uid)
   this.elements[uid] = element
   return element
 }
@@ -314,7 +326,20 @@ Page.prototype.remove = function (element) {
 }
 
 Page.prototype.stringify = function () {
-  return '<!DOCTYPE html>\n' + this.html.stringify()
+  var page = this
+  return Promise.all(Object.keys(page.assets).map(function (k) {
+    if (page.assets[k]) {
+      return loadAsset(page.assets[k]).then(function (content) {
+        if (k.endsWith('.js')) {
+          page.body.add(page.create('script').text(content, true), true)
+        } else if (k.endsWith('.css')) {
+          page.head.add(page.create('style').text(content, true), true)
+        }
+      })
+    }
+  })).then(function () {
+    return '<!DOCTYPE html>\n' + page.html.stringify()
+  })
 }
 
 // loads the file specified
@@ -322,49 +347,14 @@ function loadAsset (filename) {
   return fs.readFileAsync(filename, 'utf-8')
 }
 
-// adds resources to the page from files. if an asset already exists it will not be reloaded
-Page.prototype.addAssets = function (obj, options) {
-  var promises = []
-  var page = this
-
-  if (!options) {
-    options = {}
+// adds an asset to the page
+Page.prototype.asset = function (resourceFilename, filename) {
+  if (arguments.length > 1) {
+    this.assets[resourceFilename] = filename
+    return this
+  } else {
+    return this.assets[resourceFilename]
   }
-
-  if (obj.js) {
-    Object.keys(obj.js).forEach(function (k) {
-      if (!page.scripts[k] || options.override) {
-        if (!page.scripts[k]) {
-          page.scripts[k] = page.body.append(page.create('script'), true)
-        }
-        promises.push(loadAsset(obj.js[k])
-          .then(function (p) {
-            page.scripts[k].remove()
-            page.scripts[k] = page.body.append(page.create('script').text(p, true), true)
-          }))
-      }
-    })
-  }
-
-  if (obj.css) {
-    Object.keys(obj.css).forEach(function (k) {
-      if (!page.styles[k] || options.override) {
-        if (!page.styles[k]) {
-          page.styles[k] = page.head.append(page.create('style'), true)
-        }
-        promises.push(loadAsset(obj.css[k])
-          .then(function (p) {
-            page.styles[k].remove()
-            page.styles[k] = page.head.append(page.create('style').text(p, true), true)
-          }))
-      }
-    })
-  }
-
-  return Promise.all(promises)
-    .then(function () {
-      return page
-    })
 }
 
 // utilities / shorthand for certain elements

@@ -4,6 +4,7 @@ var hljs = require('highlight.js')
 var umsyntax = require('./um-syntax.js')
 var unique = require('array-unique')
 var coffeescript = require('coffee-script')
+var Promise = require('bluebird')
 
 var types = [
   'a',
@@ -169,11 +170,7 @@ transforms.css = function (entity, page, transforms) {
   page.head.add(page.create('style').text(entity.cs(), true), true)
 }
 
-// TODO
-// transforms.scss = function(entity, page, transforms) {
-//   page.head.add(page.create('style').text(entity.cs()), true)
-// }
-
+// XXX: try and get um registered in hljs
 hljs.registerLanguage('um', umsyntax)
 
 function highlightCode (language, code) {
@@ -185,22 +182,16 @@ function highlightCode (language, code) {
 }
 
 transforms.codeblock = function (entity, page, transform) {
-  return page.addAssets({css: {
-      'code-highlight.css': __dirname + '/client/code-highlight.css'
-  }}).then(function () {
-    return page.create('div').class('codeblock language-' + entity.ps())
-      .add(page.create('pre').text(highlightCode(entity.ps(), entity.cs()), true))
-  })
+  page.asset('quantum-html-code-highlight.css', __dirname + '/client/code-highlight.css')
+  return page.create('div').class('codeblock language-' + entity.ps())
+    .add(page.create('pre').text(highlightCode(entity.ps(), entity.cs()), true))
 }
 
 transforms.code = function (entity, page, transform) {
-  return page.addAssets({css: {
-      'code-highlight.css': __dirname + '/client/code-highlight.css'
-  }}).then(function () {
-    return page.create('code')
-      .class('code language-' + entity.ps())
-      .text(highlightCode(entity.ps(), entity.cs()), true)
-  })
+  page.asset('quantum-html-code-highlight.css', __dirname + '/client/code-highlight.css')
+  return page.create('code')
+    .class('code language-' + entity.ps())
+    .text(highlightCode(entity.ps(), entity.cs()), true)
 }
 
 // flattens out namespaced renderers into a single object
@@ -267,9 +258,9 @@ function rename (filename) {
 // renders
 module.exports.stringify = function (options) {
   return function (obj) {
-    return {
+    return Promise.props({
       filename: rename(obj.filename),
       content: obj.content.stringify()
-    }
+    })
   }
 }

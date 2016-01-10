@@ -95,7 +95,7 @@
 .css .hljs-tag,
 .css .unit,
 .css .hljs-important {
-  color: #c40030;
+  color: #C40088;
   font-weight: bold;
 }
 
@@ -109,7 +109,7 @@
 .hljs-variable,
 .hljs-params,
 .hljs-class .hljs-title {
-  color: #3D3D3D;
+  color: #E16813;
 }
 
 .hljs-string,
@@ -153,6 +153,10 @@
   color: #999;
 }
 
+.hljs-content {
+  color: #A9C927;
+}
+
 .coffeescript .javascript,
 .javascript .xml,
 .tex .hljs-formula,
@@ -163,4 +167,8 @@
 .xml .php,
 .php .xml {
   opacity: 0.5;
+}
+
+.language-um .hljs-params, .language-json .hljs-attribute {
+  font-weight: normal;
 }

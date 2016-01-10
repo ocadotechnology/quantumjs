@@ -447,12 +447,10 @@ module.exports = function (opts) {
   /* transforms */
 
   function api (entity, page, transforms) {
-    return page.addAssets({
-      css: { 'quantum-api.css': __dirname + '/client/quantum-api.css' },
-      js: { 'quantum-api.js': __dirname + '/client/quantum-api.js' }
-    }).then(function () {
-      return createApiLike('qm-api')(entity, page, transforms)
-    })
+    page
+      .asset('quantum-api.css', __dirname + '/client/quantum-api.css')
+      .asset('quantum-api.js', __dirname + '/client/quantum-api.js')
+    return createApiLike('qm-api')(entity, page, transforms)
   }
 
   return {
