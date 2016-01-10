@@ -113,21 +113,130 @@ function removeVersions (entity) {
   }
 }
 
-// returns a function that expands a quantum ast containing `version` entities into
-// potentially multiple ast's - one for each version
+function defaultEntityMatchLookup (entity) {
+  entity = quantum.select(entity)
+  var name = entity.ps()
+  var params = entity.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
+  return entity.type + ': ' + name + '(' + params.join(', ') + ')'
+}
+
+function defaultFilenameModifier (filename, version) {
+  return path.join(path.dirname(filename), version, path.basename(filename))
+}
+
+function versionTransform (obj, options) {
+  var content = quantum.select(obj.content)
+  var fullVersionList = options.versions || []
+
+  if (content.has('versionList')) {
+    var inputList = content.selectAll('versionList').filter(function (versionList) {
+      return versionList.selectAll('version').length > 0
+    })[0]
+
+    if (inputList) {
+      var inputVersionList = inputList.selectAll('version').map(function (v) {
+        return v.ps()
+      })
+      if (inputVersionList.length > 0) {
+        fullVersionList = inputVersionList
+      }
+
+      // remove the list of versions - they will be repopulated by the populateVersionList function
+      inputList.original.content = []
+    }
+
+  }
+
+  var targetVersions = options.targetVersions || fullVersionList
+  var actualVersions = content.selectAll('version', {recursive: true})
+
+  if (fullVersionList.length > 0) {
+    var versionsMap = {}
+    actualVersions.forEach(function (version) {
+      versionsMap[version.ps()] = version
+    })
+    var base = undefined
+    var results = []
+
+    var removableTags = getRemovableTags(options.tags)
+
+    fullVersionList.forEach(function (v) {
+      var version = versionsMap[v]
+
+      if (version !== undefined) {
+        if (base === undefined) {
+          base = {content: version.content}
+        } else {
+          base = {content: mergeContent(removeTags(quantum.select(base).clone(), removableTags).content, version.content, options)}
+        }
+      } else {
+        base = removeTags(quantum.select(base).clone(), removableTags)
+      }
+
+      // replace the versioned parts for the @version entites
+      var source = {content: content.clone().content}
+
+      // insert the versioned content just before the first version entity
+      // this searches recursively until it finds the right one
+      function insertVersionedContent (entity) {
+        if (Array.isArray(entity.content)) {
+          var index = -1
+          entity.content.forEach(function (v, i) {
+            if (v.type === 'version' && v.params && v.params[0] === actualVersions[0].params[0]) {
+              index = i
+            }
+          })
+
+          if (index > -1) {
+            // this bit actually inserts the content
+            entity.content.splice.apply(entity.content, [index, 0].concat(base.content))
+          } else {
+            entity.content.forEach(insertVersionedContent)
+          }
+        }
+      }
+
+      if (base !== undefined) {
+        insertVersionedContent(source)
+      }
+
+      populateVersionList(source, fullVersionList, v)
+      removeVersions(source)
+
+      // XXX [OPTIMISATION]: this can be done with fewer clones when versions are missing from the targetVersions list
+      // build the new result with new filename and add the result to the results list
+      if (targetVersions.indexOf(v) > -1) {
+        results.push({
+          filename: options.filenameModifier(obj.filename, v),
+          content: source,
+          version: v
+        })
+
+        // optionally output the latest version without the filename modification
+        if (options.outputLatest && v === fullVersionList[fullVersionList.length - 1]) {
+          results.push({
+            filename: obj.filename,
+            content: quantum.select(source).clone(),
+            version: v
+          })
+        }
+      }
+
+    })
+
+    return results
+  } else {
+    // return an array for consistent return type - without this
+    // the user would have to check if the return type is an array
+    // which wouldn't be nice to use
+    return [obj]
+  }
+}
+
+// returns a function that expands a quantum ast containing `version`
+// entities into multiple ast's - one for each version
 module.exports = function (opts) {
-  function defaultEntityMatchLookup (entity) {
-    entity = quantum.select(entity)
-    var name = entity.ps()
-    var params = entity.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
-    return entity.type + ': ' + name + '(' + params.join(', ') + ')'
-  }
-
-  function defaultFilenameModifier (filename, version) {
-    return path.join(path.dirname(filename), version, path.basename(filename))
-  }
-
-  var defaultOptions = {
+  var options = merge.recursive({
     versions: undefined,
     targetVersions: undefined, // Target array of versions
     entityMatchLookup: defaultEntityMatchLookup,
@@ -171,116 +280,9 @@ module.exports = function (opts) {
         removeEntity: true
       }
     }
-  }
-
-  var options = merge.recursive(defaultOptions, opts)
+  }, opts)
 
   return function (obj) {
-    var content = quantum.select(obj.content)
-    var fullVersionList = options.versions || []
-
-    if (content.has('versionList')) {
-      var inputList = content.selectAll('versionList').filter(function (versionList) {
-        return versionList.selectAll('version').length > 0
-      })[0]
-
-      if (inputList) {
-        var inputVersionList = inputList.selectAll('version').map(function (v) {
-          return v.ps()
-        })
-        if (inputVersionList.length > 0) {
-          fullVersionList = inputVersionList
-        }
-
-        // remove the list of versions - they will be repopulated by the populateVersionList function
-        inputList.original.content = []
-      }
-
-    }
-
-    var targetVersions = options.targetVersions || fullVersionList
-    var actualVersions = content.selectAll('version', {recursive: true})
-
-    if (fullVersionList.length > 0) {
-      var versionsMap = {}
-      actualVersions.forEach(function (version) {
-        versionsMap[version.ps()] = version
-      })
-      var base = undefined
-      var results = []
-
-      var removableTags = getRemovableTags(options.tags)
-
-      fullVersionList.forEach(function (v) {
-        var version = versionsMap[v]
-
-        if (version !== undefined) {
-          if (base === undefined) {
-            base = {content: version.content}
-          } else {
-            base = {content: mergeContent(removeTags(quantum.select(base).clone(), removableTags).content, version.content, options)}
-          }
-        } else {
-          base = removeTags(quantum.select(base).clone(), removableTags)
-        }
-
-        // replace the versioned parts for the @version entites
-        var source = {content: content.clone().content}
-
-        // insert the versioned content just before the first version entity
-        // this searches recursively until it finds the right one
-        function insertVersionedContent (entity) {
-          if (Array.isArray(entity.content)) {
-            var index = -1
-            entity.content.forEach(function (v, i) {
-              if (v.type === 'version' && v.params && v.params[0] === actualVersions[0].params[0]) {
-                index = i
-              }
-            })
-
-            if (index > -1) {
-              // this bit actually inserts the content
-              entity.content.splice.apply(entity.content, [index, 0].concat(base.content))
-            } else {
-              entity.content.forEach(insertVersionedContent)
-            }
-          }
-        }
-
-        if (base !== undefined) {
-          insertVersionedContent(source)
-        }
-
-        populateVersionList(source, fullVersionList, v)
-        removeVersions(source)
-
-        // build the new result with new filename and add the result to the results list
-        if (targetVersions.indexOf(v) > -1) {
-          results.push({
-            filename: options.filenameModifier(obj.filename, v),
-            content: source,
-            version: v
-          })
-
-          // optionally output the latest version without the filename modification
-          if (options.outputLatest && v === fullVersionList[fullVersionList.length - 1]) {
-            results.push({
-              filename: obj.filename,
-              content: quantum.select(source).clone(),
-              version: v
-            })
-          }
-        }
-
-      })
-
-      return results
-    } else {
-      // return an array for consistent return type - without this
-      // the user would have to check if the return type is an array
-      // which wouldn't be nice to use
-      return [obj]
-    }
-
+    return versionTransform(obj, options)
   }
 }
