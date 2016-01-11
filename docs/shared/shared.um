@@ -1,0 +1,22 @@
+@stylesheet [/resources/font-awesome/css/font-awesome.css]
+@stylesheet [/resources/hexagon-js/hexagon.css]
+@script [/resources/hexagon-js/hexagon.js]
+@stylesheet [/resources/quantum-site.css]
+
+@define titlebar
+  @bodyClass hx-heading-fixed
+
+  @div .hx-heading
+    @div .hx-titlebar
+      @div .hx-titlebar-container
+        @div .hx-titlebar-header
+          @a .hx-titlebar-icon
+            @attr href: /
+            @image /resources/logo.svg
+          @div .hx-titlebar-title: QuantumJS
+          @div .hx-section
+          @versionSelector: @versionList
+
+@define footer
+  @div .footer
+
