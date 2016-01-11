@@ -120,8 +120,14 @@ function defaultEntityMatchLookup (entity) {
   return entity.type + ': ' + name + '(' + params.join(', ') + ')'
 }
 
+function endsWith(string, searchString) {
+  var position = string.length - searchString.length
+  var i = string.indexOf(searchString, position)
+  return i !== -1 && i === position
+}
+
 function defaultFilenameModifier (filename, version) {
-  if (filename.endsWith('index.um')) {
+  if (endsWith(filename, 'index.um')) {
     return filename.replace('index.um', version) + '/' + 'index.um'
   } else {
     return filename.replace('.um', '') + '/' + version + '.um'

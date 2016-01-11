@@ -326,6 +326,12 @@ Page.prototype.remove = function (element) {
   return this
 }
 
+function endsWith(string, searchString) {
+  var position = string.length - searchString.length
+  var i = string.indexOf(searchString, position)
+  return i !== -1 && i === position
+}
+
 Page.prototype.stringify = function (opts) {
   var options = merge({
     embedAssets: true,
@@ -336,29 +342,24 @@ Page.prototype.stringify = function (opts) {
   return Promise.all(Object.keys(page.assets).map(function (k) {
     if (options.embedAssets) {
       if (page.assets[k]) {
-        return loadAsset(page.assets[k]).then(function (content) {
-          if (k.endsWith('.js')) {
+        return fs.readFileAsync(page.assets[k], 'utf-8').then(function (content) {
+          if (endsWith(k, '.js')) {
             page.body.add(page.create('script').text(content, true), true)
-          } else if (k.endsWith('.css')) {
+          } else if (endsWith(k, '.css')) {
             page.head.add(page.create('style').text(content, true), true)
           }
         })
       }
     } else {
-      if (k.endsWith('.js')) {
+      if (endsWith(k, '.js')) {
         page.body.add(page.script(options.assetPath + '/' + k), true)
-      } else if (k.endsWith('.css')) {
+      } else if (endsWith(k, '.css')) {
         page.head.add(page.stylesheet(options.assetPath + '/' + k), true)
       }
     }
   })).then(function () {
     return '<!DOCTYPE html>\n' + page.html.stringify()
   })
-}
-
-// loads the file specified
-function loadAsset (filename) {
-  return fs.readFileAsync(filename, 'utf-8')
 }
 
 // adds an asset to the page

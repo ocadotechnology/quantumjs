@@ -152,7 +152,7 @@ transforms.versionSelector = function (entity, page, transforms) {
 
     page.body.add(page.create('script').text(script, {escape: false}), true)
 
-    return page.create('button').id(id).class('qm-docs-version-selector hx-btn hx-action')
+    return page.create('button').id(id).class('qm-docs-version-selector hx-btn')
       .add(page.create('span').text(current + ' '))
       .add(page.create('i').class('fa fa-caret-down'))
   }
