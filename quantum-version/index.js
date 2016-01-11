@@ -121,7 +121,11 @@ function defaultEntityMatchLookup (entity) {
 }
 
 function defaultFilenameModifier (filename, version) {
-  return path.join(path.dirname(filename), version, path.basename(filename))
+  if (filename.endsWith('index.um')) {
+    return filename.replace('index.um', version) + '/' + 'index.um'
+  } else {
+    return filename.replace('.um', '') + '/' + version + '.um'
+  }
 }
 
 function versionTransform (obj, options) {
@@ -241,7 +245,7 @@ module.exports = function (opts) {
     targetVersions: undefined, // Target array of versions
     entityMatchLookup: defaultEntityMatchLookup,
     filenameModifier: defaultFilenameModifier,
-    outputLatest: false,
+    outputLatest: true,
     taggable: [ // Elements that can be tagged and should be indexed
       'function',
       'prototype',
