@@ -237,3 +237,21 @@ module.exports = function (options) {
     }
   }
 }
+
+// insert the page title by wrapping the passed in object
+module.exports.wrapper = function (options) {
+  return function (obj) {
+    return quantum.read.single(options.templateFilename)
+      .then(function (template) {
+        var newContent = template.content.content
+        var contentEntity = quantum.select(template.content).select('content', {recursive: true}).original
+        var content = contentEntity.content
+        obj.content.content.forEach(function (c) {
+          content.push(c)
+        })
+        obj.content.content = newContent
+        contentEntity.type = 'div' // XXX: hack
+        return obj
+      })
+  }
+}
