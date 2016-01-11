@@ -10,6 +10,13 @@ exports.section = function (entity, page, transform) {
   return page.create('div').class('qm-section').add(entity.transform(transform))
 }
 
+exports.topicsection = function (entity, page, transform) {
+  return page.create('div').class('qm-topic-section')
+    .add(page.create('h3').text(entity.ps()).attr('id', entity.ps().toLowerCase().split(' ').join('-')))
+    .add(page.create('div').class('qm-topic-section-content')
+      .add(entity.transform(transform)))
+}
+
 exports.content = function (entity, page, transform) {
   return page.create('div').class('qm-content').add(entity.transform(transform))
 }
