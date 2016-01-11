@@ -450,8 +450,13 @@ module.exports = function (opts) {
     }
   }
 
-  transform.transforms = require('./html-transforms')(options)
-
   return transform
 
+}
+
+module.exports.transforms = require('./html-transforms')
+
+module.exports.assets = {
+  'quantum-changelog.css': __dirname + '/client/quantum-changelog.css',
+  'quantum-changelog.js': __dirname + '/client/quantum-changelog.js'
 }

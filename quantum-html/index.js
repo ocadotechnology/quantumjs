@@ -5,6 +5,9 @@ var umsyntax = require('./um-syntax.js')
 var unique = require('array-unique')
 var coffeescript = require('coffee-script')
 var Promise = require('bluebird')
+var fs = Promise.promisifyAll(require('fs-extra'))
+var path = require('path')
+var merge = require('merge')
 
 var types = [
   'a',
@@ -248,19 +251,40 @@ module.exports = function (inputTransforms) {
   }
 }
 
-module.exports.transforms = transforms
-module.exports.prepareTransforms = prepareTransforms
-
 function rename (filename) {
   return filename.replace('.um', '.html')
 }
 
-// renders
-module.exports.stringify = function (options) {
+function stringify (opts) {
+  var options = merge({
+    embedAssets: true,
+    assetPath: undefined
+  }, opts)
+
   return function (obj) {
     return Promise.props({
       filename: rename(obj.filename),
-      content: obj.content.stringify()
+      content: obj.content.stringify({
+        embedAssets: options.embedAssets,
+        assetPath: options.assetPath
+      })
     })
   }
+}
+
+function exportAssets (targetDir, assetObjs) {
+  return Promise.all(assetObjs.map(function (obj) {
+    return Promise.all(Object.keys(obj).map(function (key) {
+      return fs.copyAsync(obj[key], path.join(targetDir, key))
+    }))
+  }))
+}
+
+module.exports.transforms = transforms
+module.exports.prepareTransforms = prepareTransforms
+module.exports.stringify = stringify
+module.exports.exportAssets = exportAssets
+
+module.exports.assets = {
+  'quantum-html-code-highlight.css': __dirname + '/client/code-highlight.css'
 }

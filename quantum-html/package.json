@@ -23,10 +23,12 @@
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
   "dependencies": {
-    "bluebird": "^2.9.27",
     "array-unique": "^0.2.1",
+    "bluebird": "^2.9.27",
     "coffee-script": "^1.9.3",
+    "fs-extra": "^0.26.4",
     "highlight.js": "^8.6.0",
+    "merge": "^1.2.0",
     "quantum-dom": "^1.0.0",
     "quantum-js": "^1.0.0"
   },

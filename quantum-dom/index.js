@@ -17,6 +17,7 @@
 
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs'))
+var merge = require('merge')
 
 // utility for creating ids
 var uidCounter = 0
@@ -325,17 +326,30 @@ Page.prototype.remove = function (element) {
   return this
 }
 
-Page.prototype.stringify = function () {
+Page.prototype.stringify = function (opts) {
+  var options = merge({
+    embedAssets: true,
+    assetPath: undefined
+  }, opts)
+
   var page = this
   return Promise.all(Object.keys(page.assets).map(function (k) {
-    if (page.assets[k]) {
-      return loadAsset(page.assets[k]).then(function (content) {
-        if (k.endsWith('.js')) {
-          page.body.add(page.create('script').text(content, true), true)
-        } else if (k.endsWith('.css')) {
-          page.head.add(page.create('style').text(content, true), true)
-        }
-      })
+    if (options.embedAssets) {
+      if (page.assets[k]) {
+        return loadAsset(page.assets[k]).then(function (content) {
+          if (k.endsWith('.js')) {
+            page.body.add(page.create('script').text(content, true), true)
+          } else if (k.endsWith('.css')) {
+            page.head.add(page.create('style').text(content, true), true)
+          }
+        })
+      }
+    } else {
+      if (k.endsWith('.js')) {
+        page.body.add(page.script(options.assetPath + '/' + k), true)
+      } else if (k.endsWith('.css')) {
+        page.head.add(page.stylesheet(options.assetPath + '/' + k), true)
+      }
     }
   })).then(function () {
     return '<!DOCTYPE html>\n' + page.html.stringify()

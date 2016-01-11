@@ -190,14 +190,17 @@ function diagram (entity, page, transform) {
     svg.add(line)
   })
 
-  return page.addAssets({css: { 'quantum-diagram.css': __dirname + '/client/quantum-diagram.css' }})
-    .then(function () {
-      return page.create('div').class('qm-diagram').add(svg)
-    })
+  page.asset('quantum-diagram.css', __dirname + '/client/quantum-diagram.css')
+  return page.create('div').class('qm-diagram').add(svg)
+
 }
 
 module.exports = function (options) {
   return {
     diagram: diagram
   }
+}
+
+module.exports.assets = {
+  'quantum-diagram.css': __dirname + '/client/quantum-diagram.css'
 }

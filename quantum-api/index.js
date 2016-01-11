@@ -471,3 +471,8 @@ module.exports = function (opts) {
     'entity': createEntityLike('qm-api-entity')
   }
 }
+
+module.exports.assets = {
+  'quantum-api.css': __dirname + '/client/quantum-api.css',
+  'quantum-api.js': __dirname + '/client/quantum-api.js'
+}
