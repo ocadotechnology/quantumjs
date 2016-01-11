@@ -1,0 +1,361 @@
+
+.qm-docs-centered {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.qm-docs-topic {
+  margin-bottom: 32px;
+}
+
+.qm-docs-topic-header {
+  font-size: 32px;
+  font-weight: 100;
+  margin-bottom: 0.5em;
+  position: relative;
+  top: 50px;
+}
+
+.qm-docs-topic-body {
+  margin-left: 1em;
+}
+
+.qm-docs-section {
+  margin-bottom: 1em;
+}
+
+.qm-docs-section-header {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+  position: relative;
+  top: 50px;
+}
+
+.qm-docs-section-body {
+  margin-left: 1em;
+}
+
+.qm-docs-subsection {
+  margin-bottom: 1em;
+  margin-left: 0.5em;
+}
+
+.qm-docs-subsection-header {
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+p,
+.qm-docs-paragraph {
+  margin: 1em 0;
+}
+
+p:first-child,
+.qm-docs-paragraph:first-child {
+  margin-top: 0;
+}
+
+p:last-child,
+.qm-docs-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.codeblock * {
+  font-family: 'Inconsolata', monospace;
+}
+
+.qm-docs-list-bullet {
+  font-size: 0.4em;
+  margin: 1.05em;
+  width: 1em;
+  left: -2.75em;
+}
+
+.qm-docs-list > li {
+  margin: 0.15em;
+}
+
+.qm-docs-table-of-contents {
+  position: fixed;
+  padding: 1.5em;
+  top: 46px;
+  right: 0;
+  bottom: 0;
+  font-weight: bold;
+  background: #F3F3F3;
+  box-shadow: inset 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
+  border-left: solid 1px #DEDEDE;
+}
+
+.qm-docs-table-of-contents-topic {
+  padding: 0.25em;
+}
+
+.qm-docs-table-of-contents-section {
+  padding: 0;
+  margin-left: 1em;
+  font-weight: normal;
+}
+
+.qm-docs-anchor {
+  position: relative;
+  top: -50px;
+  pointer-events: none;
+}
+
+.qm-docs-search-icon {
+  color: rgba(255, 255, 255, 0.89);
+  margin: 9px 14px;
+  font-size: 18px;
+}
+
+.qm-docs-search-container {
+  flex: 1 1 auto;
+}
+
+.qm-docs-search {
+  height: 35px;
+  background: rgba(255, 255, 255, 0.21);
+  margin: 7px;
+  border-radius: 2px;
+  display: flex;
+}
+
+.qm-docs-search:focus {
+  background: white;
+  border-color: white;
+  color: #3D3D3D;
+}
+
+.qm-docs-search-input {
+  background: none;
+  border: none;
+  outline: none;
+  margin: 0;
+  height: 24px;
+  flex: 1 1 auto;
+}
+
+.qm-docs-search-input::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: #FFFFFF;
+}
+
+.qm-docs-search-input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #FFFFFF;
+  opacity: 1;
+}
+
+.qm-docs-search-input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #FFFFFF;
+  opacity: 1;
+}
+
+.qm-docs-search-input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #FFFFFF;
+}
+
+.qm-docs-title {
+  font-size: 1.7em;
+  margin-right: 5px;
+  margin-left: 9px;
+}
+
+.qm-docs-subtitle {
+  font-size: 1.3em;
+  flex: 1 1 auto;
+}
+
+.qm-docs-summary {
+  min-width: 320px;
+  margin: 8px;
+  background: #FFFFFF;
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.qm-docs-summary-header {
+  font-weight: 100;
+  margin: 10px;
+  margin-bottom: 0;
+  font-size: 32px;
+  text-align: center;
+  color: #774A8A;
+}
+
+.qm-docs-summary-body {
+  margin: 0.75em;
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.qm-docs-summary-link {
+  padding: 0.5em;
+  cursor: pointer;
+  color: #D44E7D;
+  text-align: center;
+  background: #F6F6F6;
+}
+
+.qm-docs-summary-link:hover {
+  background: #D44E7D;
+  text-decoration: none;
+  color: white;
+}
+
+.qm-docs-summary-link-icon {
+  margin-left: 0.5em;
+}
+
+.qm-docs-group {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5em;
+}
+
+.qm-docs-sheet {
+  padding: 1em;
+  background: white;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+  border: solid 1px #F0F0F0;
+  margin: 0.5em 0;
+}
+
+.qm-docs-error-message {
+  margin-top: 2.5em;
+  font-size: 50px;
+  text-align: center;
+  font-weight: 100;
+  color: rgba(20, 63, 79, 0.24);
+}
+
+.qm-docs-top-section {
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #CC447B;
+  color: white;
+  margin-top: 46px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.hx-heading + .qm-docs-content-section {
+  padding-top: 76px;
+}
+
+.qm-docs-content-section {
+  background: #F5F5F5;
+  padding: 1px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.qm-docs-top-section-title {
+  font-size: 48px;
+  font-weight: 100;
+  margin-top: 0.5em;
+}
+
+.qm-docs-breadcrumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.qm-docs-breadcrumb-padding {
+  padding: 0.75em 0;
+}
+
+.qm-docs-breadcrumb-section {
+  padding: 0.25em 0.5em;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.5em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  color: white;
+}
+
+.qm-docs-breadcrumb-section:hover {
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.qm-docs-breadcrumb-arrow-icon {
+  opacity: 0.5;
+}
+
+.qm-docs-top-section-description {
+  padding: 1em 0;
+  opacity: 0.8;
+  font-size: 16px;
+}
+
+
+.qm-docs-bottom-section {
+  padding: 1em 1em;
+  background: #333;
+}
+
+.qm-docs-pagination-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.qm-docs-pagination-button {
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  padding: 1em 1.5em;
+  display: flex;
+  align-items: center;
+  border-radius: 0.25em;
+  cursor: pointer;
+  margin: 0.5em;
+}
+
+.qm-docs-pagination-button.qm-docs-pagination-button-prev {
+  text-align: right;
+}
+
+.qm-docs-pagination-button.qm-docs-pagination-button-next {
+  text-align: left;
+}
+
+.qm-docs-pagination-button:hover {
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.1)
+}
+
+.qm-docs-pagination-button:focus {
+  outline: solid 2px #CC447B;
+}
+
+.qm-docs-pagination-button-arrow {
+  opacity: 0.5;
+  font-size: 48px;
+}
+
+.qm-docs-pagination-button.qm-docs-pagination-button-prev .qm-docs-pagination-button-arrow {
+  margin-right: 0.5em;
+}
+
+.qm-docs-pagination-button.qm-docs-pagination-button-next .qm-docs-pagination-button-arrow {
+  margin-left: 0.5em;
+}
+
+.qm-docs-pagination-button-description {
+  opacity: 0.8;
+}
+
+.qm-docs-pagination-button-direction {
+  font-size: 18px;
+}

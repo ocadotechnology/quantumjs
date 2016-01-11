@@ -1,0 +1,31 @@
+{
+  "name": "quantum-docs",
+  "version": "0.1.0",
+  "description": "quantum.js html transfoms for writing documentation style web pages",
+  "license": "Apache-2.0",
+  "author": "James Smyth <james.smyth@ocado.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ocadotechnology/quantumjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ocadotechnology/quantumjs/issues"
+  },
+  "homepage": "https://quantum.hexagonjs.io",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
+  },
+  "dependencies": {
+    "bluebird": "^3.1.1",
+    "quantum-js": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5",
+    "istanbul": "^0.3.21"
+  }
+}

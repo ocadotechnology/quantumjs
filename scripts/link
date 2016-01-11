@@ -32,6 +32,11 @@ npm link quantum-js
 sudo npm link
 popd
 
+pushd quantum-docs
+npm link quantum-js
+sudo npm link
+popd
+
 pushd quantum-version
 npm link quantum-js
 sudo npm link

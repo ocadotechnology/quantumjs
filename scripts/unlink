@@ -33,6 +33,11 @@ npm unlink quantum-js
 sudo npm unlink
 popd
 
+pushd quantum-docs
+npm unlink quantum-js
+sudo npm unlink
+popd
+
 pushd quantum-version
 npm unlink quantum-js
 sudo npm unlink
