@@ -300,3 +300,15 @@ p:last-child {
   margin-right: 25%;
   border-bottom: solid 1px #DDD;
 }
+
+.qm-topic-section {
+  margin: 2em 0;
+}
+
+.qm-topic-section h3 {
+
+}
+
+.qm-topic-section-content {
+  margin-left: 1em;
+}
