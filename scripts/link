@@ -47,4 +47,10 @@ npm link quantum-js
 sudo npm link
 popd
 
+pushd quantum-hub
+npm link quantum-js
+npm link quantum-watch
+sudo npm link
+popd
+
 popd
