@@ -1,0 +1,149 @@
+/*
+     ____                    __                      _
+    / __ \__  ______ _____  / /___  ______ ___      (_)____
+   / / / / / / / __ `/ __ \/ __/ / / / __ `__ \    / / ___/
+  / /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / /   / (__  )
+  \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
+                                              /___/
+
+  CLI
+  ===
+
+  This file wraps the client library in a command line tool. This command line tool
+  is used for working on the docs locally and for publishing them to a central hub.
+
+*/
+
+var program = require('commander')
+var isOutdated = require('is-outdated')
+var client = require('./index')
+var chalk = require('chalk')
+var merge = require('merge')
+
+function start (opts) {
+  var options = merge({
+    resourceDir: undefined,
+    pipeline: undefined,
+    includeServerCommands: true
+  }, opts)
+
+  // notify the user if they are behind the times. packageName should be supplied for this feature to work.
+  if (options.packageName) {
+    isOutdated(options.packageName, require('../../package.json').version, function (err, res) {
+      if (!err) {
+        console.log('The latest version of this app is %s', res.version)
+        console.log('Please update it with: npm update -g ' + packageName)
+      }
+    })
+  }
+
+  program
+    .version(require('../../package.json').version)
+    .description('A command line utility for building a website using quantum.js')
+
+  program
+    .command('init [dir]')
+    .description('initialises a new project in the current directory, or the directory specified')
+    .action(function (dir) {
+      client.init({
+        dir: dir || process.cwd()
+      }).then(function () {
+        console.log('Project initialised. quantum.json file created.')
+      }).catch(function (err) {
+        console.error(chalk.red(err))
+      })
+    })
+
+  program
+    .command('watch [dir]')
+    .description('watches the docs project and starts a server locally')
+    .option('-o, --output [output]', 'The directory to output to', 'target')
+    .option('-p, --port [port]', 'The port to run the web server on', 4000)
+    .option('-q, --quiet', 'Only log errors', false)
+    .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
+    .action(function (dir) {
+      client.watch({
+        dir: dir || process.cwd(),
+        dest: program.output,
+        port: program.port,
+        quiet: program.quiet,
+        progress: program.progress,
+        config: require((dir || process.cwd()) + '/quantum.json'),
+        pipeline: options.pipeline,
+        resourceDir: options.resourceDir
+      })
+    })
+
+  program
+    .command('build [dir]')
+    .description('builds the project')
+    .option('-o, --output [output]', 'The directory to output to', 'target')
+    .option('-q, --quiet', 'Only log errors', false)
+    .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
+    .action(function (dir) {
+      client.build({
+        dir: dir,
+        dest: program.output,
+        quiet: program.quiet,
+        progress: program.progress,
+        config: require((dir || process.cwd()) + '/quantum.json'),
+        pipeline: options.pipeline,
+        resourceDir: options.resourceDir
+      }).catch(function (err) {
+        console.error(chalk.red(err))
+      })
+    })
+
+  if (includeServerCommands) {
+    function setRevision (dir, hubname, revision) {
+      return client.setRevision({
+        dir: dir,
+        hubname: hubname,
+        revision: revision
+      }).then(function () {
+        console.log('Live version changed to ' + chalk.yellow(revision))
+      })
+    }
+
+    program
+      .command('publish <hubname> [dir]')
+      .description('publishes the project')
+      .option('-u, --update', 'Promote the project to live straight away', false)
+      .action(function (hubname, dir, options) {
+        client.publish({
+          dir: dir,
+          hubname: hubname
+        }).then(function (revision) {
+          console.log('Revision ' + chalk.yellow(revision) + ' published')
+          if (options.update) {
+            return setRevision(dir || process.cwd(), hubname, revision)
+          }
+        }).catch(function (err) {
+          console.error(chalk.red(err))
+        })
+      })
+
+    program
+      .command('set-revision <hubname> <revision> [dir]')
+      .description('sets the live version of the site to a specific revision')
+      .action(function (hubname, revision, dir) {
+        setRevision(dir || process.cwd(), hubname, revision)
+          .catch(function (err) {
+            console.error(chalk.red(err))
+          })
+      })
+  }
+
+  program
+    .command('help', {isDefault: true})
+    .description('shows the help information for this tool')
+    .action(function () {
+      program.help()
+    })
+
+  program.parse(process.argv)
+}
+
+module.exports = {
+  start: start
+}
