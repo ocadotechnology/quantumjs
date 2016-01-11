@@ -67,7 +67,7 @@
 
       @function read
         @param glob [String]: A filename or glob string which matches files to load.
-        @param options [Object]
+        @param? options [Object]
           @property inlineEntityType [String]
             @description: The entity type to use for inlining other files. The default is "inline".
             @default inline

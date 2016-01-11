@@ -38,7 +38,7 @@
       @function watch
         @param glob [String]
           @description: A glob which matches the files to watch. eg '**/index.um'
-        @param options [Object]
+        @param? options [Object]
           @property loader [Function]
             @description: Can be set to replace the default loader function. This should take a filename and return a promise that holds the contents of the file.
             @param filename [String]: The path to the file to load.
