@@ -1,15 +1,7 @@
-quantum-watch
-=============
+# quantum-watch
 
-A glob watcher that handles @inline links
+A module intended for use with `quantum-js`
 
-Example Use
------------
+This module provides a glob watcher for quantum files that calls a callback when changes are made. It keeps track of @inline entity references, allowing only the files affected by a file change to be rebuilt.
 
-    quantum.watch('**/*.um', {base: 'whatever'}, function(objs) {
-      return objs
-        .map(template())
-        .map(html())
-        .map(html.stringify())
-        .map(quantum.write('dest'))
-    })
+This readme includes no details about how to use the library itself as there is documentation for the library available here: https://quantum.hexagonjs.io.

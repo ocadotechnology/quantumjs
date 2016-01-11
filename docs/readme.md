@@ -1,6 +1,6 @@
-# quantum-site
+# docs
 
-Docs site for quantum.js.
+The source for the Quantum JS docs site: https://quantum.hexagonjs.io
 
 # Building
 

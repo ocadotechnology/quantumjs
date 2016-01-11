@@ -1,7 +1,7 @@
-# quantum-js
+# quantum-diagram
 
-The core module for the QuantumJS collection
+A module intended for use with `quantum-js`
 
-This module contains the parser, the selection api and an api for constructing ast.
+A module for creating flow diagrams with linked elements using @diagram.
 
 This readme includes no details about how to use the library itself as there is documentation for the library available here: https://quantum.hexagonjs.io.
