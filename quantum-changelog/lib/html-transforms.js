@@ -1,8 +1,11 @@
 var select = require('quantum-js').select
 var Promise = require('bluebird')
 var flatten = require('flatten')
+var merge = require('merge')
 
-module.exports = function (options) {
+module.exports = function (opts) {
+  var options = merge.recursive(require('./config.js'), opts)
+
   function issue (entity, page, transforms) {
     return page.create('a')
       .attr('href', options.issueUrl + entity.ps())
