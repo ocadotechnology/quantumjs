@@ -20,7 +20,7 @@
       @link /docs/core-concepts/: Docs
 
     @summary Customising
-      @description: How to add custom entity transforms and how pipeline transforms can be used to add new features to the language
+      @description: How to add custom entity transforms and how pipeline transforms can be used to add new features to the language.
       @link: Creating custom entity transforms
       @link: Creating custom pipeline transforms
 
@@ -34,10 +34,12 @@
     @summary Transforms
       @link /docs/transforms/: Transforms
 
-    @summary Tutorials
-      @link: Custom entity transforms: Creating a blog
-      @link: Writing api docs: Documenting a javascript api
-      @link: Docs and diagrams: Documenting data flow
+    @summary Tutorial
+      @description: A tutorial that covers a complete walkthrough of the quantum library modules from installing the dependencies to viewing a completed example site.
+      @link /docs/tutorial/: Complete Walkthrough
+      # @link: Custom entity transforms: Creating a blog
+      # @link: Writing api docs: Documenting a javascript api
+      # @link: Docs and diagrams: Documenting data flow
 
   @group
 
