@@ -1,3 +1,5 @@
+var path = require('path')
+
 function defaultDocsUrlLookup (version, api) {
   return {
     link: path.join('/', 'docs', version, api.split(' ').join('-').toLowerCase()),

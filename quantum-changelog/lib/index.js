@@ -1,6 +1,5 @@
 var quantum = require('quantum-js')
 var clone = require('clone')
-var path = require('path')
 var flatten = require('flatten')
 var merge = require('merge')
 

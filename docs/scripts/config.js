@@ -18,7 +18,7 @@ function pipeline () {
   var htmlTransforms = {
     html: html.transforms,
     api: api(),
-    changelog: changelog.transforms,
+    changelog: changelog.transforms(),
     diagram: diagram(),
     docs: docs(),
     site: quantumSite

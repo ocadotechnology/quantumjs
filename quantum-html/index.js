@@ -134,7 +134,7 @@ transforms.head = function (entity, page, transform) {
 }
 
 transforms.html = function (entity, page, transform) {
-  return page.textNode(entity.cs(), undefined, true)
+  return page.textNode(entity.cs(), undefined, {escape: false})
 }
 
 transforms.script = function (entity, page, transform) {
