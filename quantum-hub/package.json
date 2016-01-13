@@ -27,7 +27,7 @@
     "escape-html": "^1.0.3",
     "express": "^4.13.3",
     "extract-zip": "^1.3.0",
-    "fs-extra": "^0.26.3",
+    "fs-extra": "^0.26.4",
     "gcloud": "^0.27.0",
     "globby": "^4.0.0",
     "is-outdated": "^1.2.0",

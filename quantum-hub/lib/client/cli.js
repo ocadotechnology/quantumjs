@@ -61,13 +61,13 @@ function start (opts) {
     .option('-p, --port [port]', 'The port to run the web server on', 4000)
     .option('-q, --quiet', 'Only log errors', false)
     .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
-    .action(function (dir) {
+    .action(function (dir, cliOptions) {
       client.watch({
         dir: dir || process.cwd(),
-        dest: program.output,
-        port: program.port,
-        quiet: program.quiet,
-        progress: program.progress,
+        dest: cliOptions.output,
+        port: cliOptions.port,
+        quiet: cliOptions.quiet,
+        progress: cliOptions.progress,
         config: require((dir || process.cwd()) + '/quantum.json'),
         pipeline: options.pipeline,
         resourceDir: options.resourceDir
@@ -80,12 +80,12 @@ function start (opts) {
     .option('-o, --output [output]', 'The directory to output to', 'target')
     .option('-q, --quiet', 'Only log errors', false)
     .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
-    .action(function (dir) {
+    .action(function (dir, cliOptions) {
       client.build({
-        dir: dir,
-        dest: program.output,
-        quiet: program.quiet,
-        progress: program.progress,
+        dir: dir || process.cwd(),
+        dest: cliOptions.outputs,
+        quiet: cliOptions.quiet,
+        progress: cliOptions.progress,
         config: require((dir || process.cwd()) + '/quantum.json'),
         pipeline: options.pipeline,
         resourceDir: options.resourceDir
@@ -94,10 +94,10 @@ function start (opts) {
       })
     })
 
-  if (includeServerCommands) {
+  if (options.includeServerCommands) {
     function setRevision (dir, hubname, revision) {
       return client.setRevision({
-        dir: dir,
+        dir: dir || process.cwd(),
         hubname: hubname,
         revision: revision
       }).then(function () {
@@ -109,13 +109,13 @@ function start (opts) {
       .command('publish <hubname> [dir]')
       .description('publishes the project')
       .option('-u, --update', 'Promote the project to live straight away', false)
-      .action(function (hubname, dir, options) {
+      .action(function (hubname, dir, cliOptions) {
         client.publish({
-          dir: dir,
+          dir: dir || process.cwd(),
           hubname: hubname
         }).then(function (revision) {
           console.log('Revision ' + chalk.yellow(revision) + ' published')
-          if (options.update) {
+          if (cliOptions.update) {
             return setRevision(dir || process.cwd(), hubname, revision)
           }
         }).catch(function (err) {

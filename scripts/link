@@ -12,6 +12,11 @@ pushd quantum-dom
 sudo npm link
 popd
 
+pushd quantum-template
+npm link quantum-js
+sudo npm link
+popd
+
 pushd quantum-html
 npm link quantum-js quantum-dom
 sudo npm link

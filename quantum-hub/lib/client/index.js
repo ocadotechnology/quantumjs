@@ -74,7 +74,7 @@ function init (options) {
 // posts the project to the central server
 function publish (options) {
   if (options.dir === undefined) {
-    return Promise.reject(new Error('Missing option "dir" - this should be set to the directory you wish to initialise a new project in'))
+    return Promise.reject(new Error('Missing option "dir" - this should be set to the directory you wish to publish'))
   }
 
   if (options.hubname === undefined) {
