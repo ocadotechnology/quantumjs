@@ -1,4 +1,3 @@
-var Promise = require('bluebird')
 var quantum = require('quantum-js')
 
 function toContextClass (context) {
@@ -9,19 +8,20 @@ function spinalCase (string) {
   return string.toLowerCase().split(' ').join('-')
 }
 
-function transformSectionContent (entity, page, transform) {
+function paragraphTransform (entity, page, transform) {
   var paragraphs = []
   var currentParagraph = undefined
 
   entity.content.forEach(function (e) {
     if (e === '') {
       if (currentParagraph) {
+        console.log(currentParagraph)
         paragraphs.push(currentParagraph)
         currentParagraph = undefined
       }
     } else {
       if (!currentParagraph) {
-        currentParagraph = page.create('div').class('qm-docs-paragraph')
+        currentParagraph = page.create('p') // .class('qm-docs-paragraph')
       }
 
       if (quantum.select.isEntity(e)) {
@@ -38,7 +38,7 @@ function transformSectionContent (entity, page, transform) {
     currentParagraph = undefined
   }
 
-  return Promise.all(paragraphs)
+  return page.all(paragraphs)
 }
 
 var transforms = {}
@@ -47,20 +47,20 @@ transforms.topic = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-topic')
     .add(page.create('div').class('qm-docs-anchor').id(spinalCase(entity.ps()))
       .add(page.create('div').class('qm-docs-topic-header').text(entity.ps())))
-    .add(page.create('div').class('qm-docs-topic-body').add(transformSectionContent(entity, page, transforms)))
+    .add(page.create('div').class('qm-docs-topic-body').add(paragraphTransform(entity, page, transforms)))
 }
 
 transforms.section = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-section')
     .add(page.create('div').class('qm-docs-anchor').id(spinalCase(entity.ps()))
       .add(page.create('div').class('qm-docs-section-header').text(entity.ps())))
-    .add(page.create('div').class('qm-docs-section-body').add(transformSectionContent(entity, page, transforms)))
+    .add(page.create('div').class('qm-docs-section-body').add(paragraphTransform(entity, page, transforms)))
 }
 
 transforms.subsection = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-subsection')
     .add(page.create('div').class('qm-docs-subsection-header').text(entity.ps()))
-    .add(page.create('div').class('qm-docs-subsection-body').add(transformSectionContent(entity, page, transforms)))
+    .add(page.create('div').class('qm-docs-subsection-body').add(paragraphTransform(entity, page, transforms)))
 }
 
 transforms.notice = function (entity, page, transforms) {
@@ -72,7 +72,7 @@ transforms.notice = function (entity, page, transforms) {
 transforms.list = function (entity, page, transforms) {
   var ordered = entity.ps() === 'ordered'
   return page.create(ordered ? 'ol' : 'ul').class(ordered ? 'qm-docs-list' : 'qm-docs-list fa-ul')
-    .add(Promise.all(entity.selectAll('item').map(function (e) {
+    .add(page.all(entity.selectAll('item').map(function (e) {
       return page.create('li')
         .add(ordered ? undefined : page.create('i').class('fa fa-li ' + (e.ps() || 'qm-docs-list-bullet fa-circle')))
         .add(e.transform(transforms))
@@ -120,7 +120,7 @@ transforms.summary = function (entity, page, transforms) {
 }
 
 transforms.sheet = function (entity, page, transforms) {
-  return page.create('div').class('qm-docs-sheet').add(transformSectionContent(entity, page, transforms))
+  return page.create('div').class('qm-docs-sheet').add(paragraphTransform(entity, page, transforms))
 }
 
 transforms.group = function (entity, page, transforms) {

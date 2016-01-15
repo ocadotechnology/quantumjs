@@ -13,7 +13,6 @@
 
 */
 
-var Promise = require('bluebird')
 var quantum = require('quantum-js')
 var merge = require('merge')
 
@@ -344,7 +343,7 @@ module.exports = function (opts) {
 
   function extras (entity, page, transforms) {
     return page.create('div').class('qm-api-extras').add(
-      Promise.all(entity.selectAll('extra').map(function (e) {
+      page.all(entity.selectAll('extra').map(function (e) {
         return page.create('div').class('qm-api-extra')
           .add(e.transform(transforms))
       })))
@@ -363,7 +362,7 @@ module.exports = function (opts) {
     if (entity.has('group')) {
       var sortedEntity = organiseEntity(entity.filter('group'))
       return page.create('div').class('qm-api-group-container')
-        .add(Promise.all(sortedEntity.selectAll('group').map(function (e) {
+        .add(page.all(sortedEntity.selectAll('group').map(function (e) {
           return page.create('div').class('qm-api-group')
             .add(page.create('h2').text(e.ps()))
             .add(page.create('div').class('qm-api-group-content')
