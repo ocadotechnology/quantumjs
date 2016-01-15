@@ -170,7 +170,6 @@ function diagram (entity, page, transform) {
 
     var join = edges[e.v + ':' + e.w].param(1)
 
-    // XXX: make these into actual arrows
     var line = page.create('path')
       .class('qm-diagram-path')
       .attr('d', path(points))
