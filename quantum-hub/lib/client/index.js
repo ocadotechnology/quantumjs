@@ -213,7 +213,13 @@ function watch (opts) {
     port: 8000
   }, opts)
 
-  return buildSite(options)
+  var watchResult = compiler.watch(options)
+
+  watchResult.events.on('start', function (evt) {
+    maybeDisplayProgress(evt.events, options)
+  })
+
+  return watchResult.promise
     .then(function () {
       return copyResources(options)
     })
@@ -223,10 +229,6 @@ function watch (opts) {
         root: path.join(options.dir, options.dest)
       })
 
-      compiler.watch(options)
-        .on('start', function (evt) {
-          maybeDisplayProgress(evt.events, options)
-        })
     })
 }
 
