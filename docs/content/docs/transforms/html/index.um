@@ -8,8 +8,10 @@
 @topSection
   @title HTML Transforms
   @description
-    @p: This page describes how the html ast to virual dom transform works, and shows how individual entity transforms can be passed into the html transform.
-    @p: It also lists out the inbuilt html entity transforms.
+    This page describes how the html ast to virual dom transform works, and
+    shows how individual entity transforms can be passed into the html transform.
+
+    It also lists out the inbuilt html entity transforms.
   @breadcrumb
     @item /docs/: Docs
     @item /docs/transforms: Transforms
@@ -18,9 +20,12 @@
 @contentSection
 
   @topic About
+    This module is used to transform parsed quantum AST objects to virtual
+    dom content and then converting to html.
 
-    @p: This module is used to transform parsed quantum AST objects to virtual dom content and then converting to html.
-    @p: The two conversion functions are provided separately to allow additional transforms to be performed between the virtual dom and stringified stage, giving flexibility to convert to formats other than pure html.
+    The two conversion functions are provided separately to allow additional
+    transforms to be performed between the virtual dom and stringified stage,
+    giving flexibility to convert to formats other than pure html.
 
   @topic Example
 
