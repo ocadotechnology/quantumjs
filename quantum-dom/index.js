@@ -326,7 +326,7 @@ Page.prototype.remove = function (element) {
   return this
 }
 
-function endsWith(string, searchString) {
+function endsWith (string, searchString) {
   var position = string.length - searchString.length
   var i = string.indexOf(searchString, position)
   return i !== -1 && i === position
@@ -390,6 +390,12 @@ Page.prototype.addCommonMetaTags = function () {
   this.head.append(this.create('meta').attr('charset', 'UTF-8'))
   this.head.append(this.create('meta').attr('name', 'viewport').attr('content', 'width=device-width, initial-scale=1'))
   return this
+}
+
+// like Promise.all - but if no entry in the array is a promise
+// then the result remains as an array
+Page.prototype.all = function (arr) {
+  return arr.some(function (x) { return !!x.then }) ? Promise.all(arr) : arr
 }
 
 Page.prototype.nextId = function () {
