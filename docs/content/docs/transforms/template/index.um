@@ -1,15 +1,32 @@
-@inline ../../../shared/common.um
-@quantum-titlebar Template
+@inline ../../../../shared/shared.um
 
-@qm.content
-  @section
+@versionList
+  @version 1.0.0
 
-    @h1: Template
+@titlebar
 
-    @p: This module adds the ability to create templates using @(@define) which can then be re-used as entities throughout.
-    @p: Variables can also be defined in the template options which are then accessible using {{variableName}}
+@topSection
+  @title Template
+  @description
+    This page describes how the html ast to virual dom transform works, and
+    shows how individual entity transforms can be passed into the html transform.
 
-    @h1: Example
+    It also lists out the inbuilt html entity transforms.
+  @breadcrumb
+    @item /docs/: Docs
+    @item /docs/transforms: Transforms
+    @item /docs/transforms/html/: Template
+
+@contentSection
+
+
+  @topic About
+    @sheet
+      This module adds the ability to create templates using @code(um)[@define] which can then be re-used
+      as entities throughout. Variables can also be defined in the template options which are then
+      accessible using @code(um)[{{mustache-style}}] brackets.
+
+  @topic Example
 
     @p: When using templates, this module should normally be the first stage of the transform process:
     @@codeblock js
@@ -108,11 +125,11 @@
                 @div: {{example.property1}}
                 @div: {{example.property2}}
 
-      @entity describe
+      @entity define
         @params entityType
         @description
-          @p: An entity for describing a template.
-          @p: When describing an entity, there are two elements that can be used, {{ps}} and {{cs}}:
+          @p: An entity for defining a template.
+          @p: When defining an entity, there are two elements that can be used, {{ps}} and {{cs}}:
           @@codeblock um
             @define exampleTemplate
               @div
