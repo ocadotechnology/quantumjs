@@ -15,13 +15,12 @@ function paragraphTransform (entity, page, transform) {
   entity.content.forEach(function (e) {
     if (e === '') {
       if (currentParagraph) {
-        console.log(currentParagraph)
         paragraphs.push(currentParagraph)
         currentParagraph = undefined
       }
     } else {
       if (!currentParagraph) {
-        currentParagraph = page.create('p') // .class('qm-docs-paragraph')
+        currentParagraph = page.create('div').class('qm-docs-paragraph')
       }
 
       if (quantum.select.isEntity(e)) {
@@ -181,7 +180,8 @@ transforms.topSection = function (entity, page, transforms) {
     .add(breadcrumb(entity.select('breadcrumb'), page, transforms))
     .add(page.create('div').class('qm-docs-centered')
       .add(page.create('div').class('qm-docs-top-section-title').text(entity.select('title').ps()))
-      .add(page.create('div').class('qm-docs-top-section-description').add(entity.select('description').transform(transforms))))
+      .add(page.create('div').class('qm-docs-top-section-description')
+        .add(paragraphTransform(entity.select('description'), page, transforms))))
 }
 
 function breadcrumb (entity, page, transforms) {
