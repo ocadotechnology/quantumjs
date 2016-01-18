@@ -30,7 +30,11 @@ Builder.prototype = {
     return this
   },
   add: function (entity) {
-    this.content.push(entity)
+    if (Array.isArray(entity)) {
+      this.content = this.content.concat(entity)
+    } else {
+      this.content.push(entity)
+    }
     return this
   },
   build: function () {
