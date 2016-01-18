@@ -120,7 +120,7 @@ function defaultEntityMatchLookup (entity) {
   return entity.type + ': ' + name + '(' + params.join(', ') + ')'
 }
 
-function endsWith(string, searchString) {
+function endsWith (string, searchString) {
   var position = string.length - searchString.length
   var i = string.indexOf(searchString, position)
   return i !== -1 && i === position
@@ -138,8 +138,8 @@ function versionTransform (obj, options) {
   var content = quantum.select(obj.content)
   var fullVersionList = options.versions || []
 
-  if (content.has('versionList')) {
-    var inputList = content.selectAll('versionList').filter(function (versionList) {
+  if (content.has('versionList', {recursive: true})) {
+    var inputList = content.selectAll('versionList', {recursive: true}).filter(function (versionList) {
       return versionList.selectAll('version').length > 0
     })[0]
 
