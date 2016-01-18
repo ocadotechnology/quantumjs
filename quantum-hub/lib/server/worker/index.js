@@ -53,7 +53,8 @@ function Worker (options) {
         dest: msg.buildDir,
         resourceDir: undefined,
         pipeline: options.pipeline,
-        config: config
+        config: config,
+        isLocal: false // we are building for the server
       })
       utils.verboseLogger(build.events)
       buildLoggerLogger(buildLogger, build.events)

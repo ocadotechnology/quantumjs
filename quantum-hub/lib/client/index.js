@@ -169,7 +169,9 @@ function setRevision (options) {
 }
 
 function buildSite (options) {
-  var b = compiler.build(options)
+  var b = compiler.build(merge({
+    isLocal: true // we are building as a local client
+  }, options))
   maybeDisplayProgress(b.events, options)
   return b.promise
 }
@@ -213,7 +215,9 @@ function watch (opts) {
     port: 8000
   }, opts)
 
-  var watchResult = compiler.watch(options)
+  var watchResult = compiler.watch(merge({
+    isLocal: true // we are building as a local client
+  }, options))
 
   watchResult.events.on('start', function (evt) {
     maybeDisplayProgress(evt.events, options)

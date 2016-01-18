@@ -174,7 +174,7 @@ module.exports = function (manager, storage, opts) {
 
   router.get('/revisions', function (req, res) {
     // should get all the revisions (not just the active ones)
-    storage.getActiveBuild().then(function (revisions) {
+    storage.getActiveBuilds().then(function (revisions) {
       res.json(revisions)
     }).catch(function (err) {
       console.error(err)
@@ -243,7 +243,7 @@ module.exports = function (manager, storage, opts) {
           })
           .catch(function (err) {
             console.error(err)
-            console.log(err.response.body)
+            if (err.response && err.response.body) console.log(err.response.body)
             res.status(500).json({error: err.toString()})
             throw err
           })

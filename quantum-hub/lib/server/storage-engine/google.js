@@ -98,7 +98,7 @@ module.exports = function (options) {
           value: JSON.stringify(data),
           excludeFromIndexes: true
         }]
-      }).catch(function(err) {
+      }).catch(function (err) {
         console.log(err.response.body.toString())
         throw err
       })

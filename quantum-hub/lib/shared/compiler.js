@@ -24,7 +24,7 @@ function resolveOptions (options) {
 
 // builds the pages supplied as {filename, content} objects and logs to an event emitter
 function buildPages (objs, eventEmitter, options) {
-  var compile = options.pipeline(options.config)
+  var compile = options.pipeline(options.config, {isLocal: options.isLocal })
 
   eventEmitter.emit('start', {})
 
