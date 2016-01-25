@@ -160,7 +160,8 @@ function versionTransform (obj, options) {
   var targetVersions = options.targetVersions || fullVersionList
   var actualVersions = content.selectAll('version', {recursive: true})
 
-  if (fullVersionList.length > 0) {
+  // Check if there are actual versions in the object, if there arent then no versioning is required.
+  if (actualVersions.length > 0) {
     var versionsMap = {}
     actualVersions.forEach(function (version) {
       versionsMap[version.ps()] = version
