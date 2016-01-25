@@ -16,6 +16,7 @@
 var quantum = require('quantum-js') // needed for its selection api
 var path = require('path') // required for the default filename renamer
 var merge = require('merge')
+var chalk = require('chalk')
 
 // NOTE: this function may mutate content1 - pass in a cloned copy if you don't want to mutate the original
 function mergeContent (content1, content2, options) {
@@ -162,6 +163,15 @@ function versionTransform (obj, options) {
 
   // Check if there are actual versions in the object, if there arent then no versioning is required.
   if (actualVersions.length > 0) {
+    if (fullVersionList.length === 0) {
+      console.error(
+        chalk.yellow('\n\nquantum-version Warning: processing content with no version list defined\n') +
+        '  A file was processed and @version entities found but no @versionList was\n' +
+        '  found and options.versions was not defined.\n' +
+        '  Please define a ' + chalk.yellow('@versionList') + ' or pass in ' + chalk.yellow('options.versions') + '\n'
+      )
+    }
+
     var versionsMap = {}
     actualVersions.forEach(function (version) {
       versionsMap[version.ps()] = version
