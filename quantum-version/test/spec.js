@@ -30,7 +30,8 @@ function testSuite (filename) {
           var options = {
             unmergeable: ['unmergeable'],
             taggable: ['function', 'method', 'constructor', 'property', 'object', 'class', 'prototype'],
-            versions: spec.select('versions').content
+            versions: spec.select('versions').content,
+            outputLatest: false
           }
 
           version(options)(input).should.eql(output)
@@ -64,7 +65,7 @@ describe('extra tests', function () {
       }
     }
 
-    version({})(src).should.eql([src])
+    version({outputLatest: false})(src).should.eql([src])
   })
 
 })
