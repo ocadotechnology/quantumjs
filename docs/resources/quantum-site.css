@@ -1,0 +1,132 @@
+/* XXX: should really be made into a hexagon theme */
+
+.hx-titlebar-title {
+  color: #484748;
+  padding-left: 0;
+}
+
+.hx-titlebar {
+  background: #FFFFFF;
+}
+
+.hx-titlebar-icon {
+  background: #FFFFFF;
+}
+
+
+/* start of main styles */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  background: #1B1B1B;
+}
+
+.header {
+  margin-top: 46px;
+  padding: 1em 1em;
+  background: #F5F5F5;
+  text-align: center;
+}
+
+.logo {
+  width: 20%;
+  height: auto;
+}
+
+.title {
+  font-size: 5vw;
+  font-weight: 100;
+  color: #7C4CAA;
+  position: relative;
+  top: -0.25em;
+}
+
+.tagline {
+  font-size: 24px;
+  padding-bottom: 1em;
+}
+
+.color-band {
+  background: #CC447B;
+  color: white;
+}
+
+.full-page {
+  margin-top: 46px;
+  background: #F5F5F5;
+}
+
+/* XXX: replace with a quantum-docs equivalent */
+.content {
+  padding: 1em;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* XXX: replace with a quantum-docs equivalent */
+.content.thin {
+  max-width: 960px;
+}
+
+.install-link-stip {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+}
+
+.github-icon-container {
+  text-align: right;
+}
+
+.github-icon {
+  opacity: 0.5;
+  margin-right: 2em;
+}
+
+.github-icon:hover {
+  opacity: 0.8;
+}
+
+.install {
+  margin: 0;
+  padding: 1.25em;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.selling-point-container {
+  text-align: center;
+}
+
+.selling-point {
+  margin: 1em;
+  flex: 1;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.selling-point-title {
+  font-weight: 100;
+  font-size: 2em;
+  padding: 0.5em;
+  padding-bottom: 0;
+}
+
+.selling-point-text {
+  opacity: 0.8;
+  padding: 1em;
+  font-size: 1.2em;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.footer {
+  height: 30px;
+  padding: 1em 1em;
+  background: #252525;
+}

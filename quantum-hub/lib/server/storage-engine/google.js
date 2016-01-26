@@ -93,9 +93,14 @@ module.exports = function (options) {
     put: function (kind, id, data) {
       return dataset.saveAsync({
         key: dataset.key([kind, id]),
-        data: {
-          data: JSON.stringify(data)
-        }
+        data: [{
+          name: 'data',
+          value: JSON.stringify(data),
+          excludeFromIndexes: true
+        }]
+      }).catch(function (err) {
+        console.log(err.response.body.toString())
+        throw err
       })
     },
     /* get something from storage */

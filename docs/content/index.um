@@ -1,0 +1,47 @@
+@inline ../shared/shared.um
+
+@titlebar
+
+@div .header
+  @img .logo: @attr src: /resources/logo.svg
+  @div .title: QuantumJS
+  @div .tagline: A static site generator with a focus on extensibility and speed.
+
+@div .color-band
+  @div .content.thin
+    @div .install-link-stip
+      @div .spacer
+
+      @pre .install
+        npm install quantum-js quantum-html --save-dev
+
+      @div .spacer.github-icon-container
+        @hyperlink [https://github.com/ocadotechnology/quantumjs]
+          @img .github-icon
+            @attr src: /resources/github-mark.svg
+
+    @div .selling-point-container
+
+      @sellingPoint Simple
+        @div: Comes with an @bold[easy-to-pickup markup language].
+        @div: Markup goes in, html comes out.
+
+      @sellingPoint Speedy
+        @bold[Sub 10ms] page compile times.
+
+      @sellingPoint Extensible
+        @div: Define @bold[custom pipelines] for building your site.
+        @div: Plug @bold[custom transforms] into your pipeline to extend the capabilities for your own needs.
+
+      @sellingPoint No complicated folder structures
+        @div: @bold[You] choose how to structure your project.
+
+      @sellingPoint Great for technical documentation
+        @div: Writing technical documentation?
+        @div: QuantumJS particularly excels in this area with features such as @bold[versioned content], @bold[api docs], and automatic @bold[changelog generation].
+
+@bottomSection
+  @paginationButtons
+    @next /docs/quick-start/: Quick Start
+
+@footer

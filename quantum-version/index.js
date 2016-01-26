@@ -16,6 +16,11 @@
 var quantum = require('quantum-js') // needed for its selection api
 var path = require('path') // required for the default filename renamer
 var merge = require('merge')
+var chalk = require('chalk')
+
+function getEntityType (type) {
+  return type ? type.replace('?', '') : undefined
+}
 
 // NOTE: this function may mutate content1 - pass in a cloned copy if you don't want to mutate the original
 function mergeContent (content1, content2, options) {
@@ -35,7 +40,7 @@ function mergeContent (content1, content2, options) {
       var e1s = quantum.select(e1)
       var e2s = quantum.select(e2)
 
-      var entityType = (e2.type ? e2.type.replace('?', '') : e2.type)
+      var entityType = getEntityType(e2.type)
       var isTaggable = (options.taggable.indexOf(entityType) > -1)
 
       if (!!e1) {
@@ -58,6 +63,13 @@ function mergeContent (content1, content2, options) {
       } else {
         if (isTaggable) {
           e2.content.push({ type: 'added', params: [], content: [] })
+        } else if (options.indexable.indexOf(entityType) > -1) {
+          e2.content.forEach(function (e) {
+            var subIsTaggable = options.taggable.indexOf(getEntityType(e.type)) > -1
+            if (e && subIsTaggable) {
+              e.content.push({ type: 'added', params: [], content: [] })
+            }
+          })
         }
         content1.push(e2)
       }
@@ -120,8 +132,14 @@ function defaultEntityMatchLookup (entity) {
   return entity.type + ': ' + name + '(' + params.join(', ') + ')'
 }
 
+function endsWith (string, searchString) {
+  var position = string.length - searchString.length
+  var i = string.indexOf(searchString, position)
+  return i !== -1 && i === position
+}
+
 function defaultFilenameModifier (filename, version) {
-  if (filename.endsWith('index.um')) {
+  if (endsWith(filename, 'index.um')) {
     return filename.replace('index.um', version) + '/' + 'index.um'
   } else {
     return filename.replace('.um', '') + '/' + version + '.um'
@@ -132,8 +150,8 @@ function versionTransform (obj, options) {
   var content = quantum.select(obj.content)
   var fullVersionList = options.versions || []
 
-  if (content.has('versionList')) {
-    var inputList = content.selectAll('versionList').filter(function (versionList) {
+  if (content.has('versionList', {recursive: true})) {
+    var inputList = content.selectAll('versionList', {recursive: true}).filter(function (versionList) {
       return versionList.selectAll('version').length > 0
     })[0]
 
@@ -154,7 +172,17 @@ function versionTransform (obj, options) {
   var targetVersions = options.targetVersions || fullVersionList
   var actualVersions = content.selectAll('version', {recursive: true})
 
-  if (fullVersionList.length > 0) {
+  // Check if there are actual versions in the object, if there arent then no versioning is required.
+  if (actualVersions.length > 0) {
+    if (fullVersionList.length === 0) {
+      console.error(
+        chalk.yellow('\n\nquantum-version Warning: processing content with no version list defined\n') +
+        '  A file was processed and @version entities found but no @versionList was\n' +
+        '  found and options.versions was not defined.\n' +
+        '  Please define a ' + chalk.yellow('@versionList') + ' or pass in ' + chalk.yellow('options.versions') + '\n'
+      )
+    }
+
     var versionsMap = {}
     actualVersions.forEach(function (version) {
       versionsMap[version.ps()] = version

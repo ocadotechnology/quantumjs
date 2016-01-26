@@ -12,12 +12,11 @@
   fill: none;
   stroke: #303846;
   stroke-linecap: round;
-  stroke-width: 2px;
+  stroke-width: 1px;
   stroke-linejoin: bevel;
 }
 
 .qm-diagram-path {
-
   stroke-width: 2px;
   stroke: #535353;
 }

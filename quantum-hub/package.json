@@ -27,7 +27,7 @@
     "escape-html": "^1.0.3",
     "express": "^4.13.3",
     "extract-zip": "^1.3.0",
-    "fs-extra": "^0.26.3",
+    "fs-extra": "^0.26.4",
     "gcloud": "^0.27.0",
     "globby": "^4.0.0",
     "is-outdated": "^1.2.0",
@@ -39,12 +39,13 @@
     "mime": "^1.3.4",
     "parseurl": "^1.3.0",
     "progress": "^1.1.8",
+    "quantum-js": "^1.0.0",
+    "quantum-watch": "^1.0.0",
+    "request": "^2.67.0",
     "streamifier": "^0.1.1",
     "sublevel": "^2.4.0",
     "uuid": "^2.0.1",
-    "yazl": "^2.2.2",
-    "quantum-js": "^1.0.0",
-    "quantum-watch": "^1.0.0"
+    "yazl": "^2.2.2"
   },
   "devDependencies": {
     "chai": "^2.3.0",

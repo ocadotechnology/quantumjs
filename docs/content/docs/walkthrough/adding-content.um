@@ -1,0 +1,43 @@
+@inline ../../../shared/shared.um
+
+@title Adding Content | Walkthrough
+@author Charlie Frater
+@author James Smyth
+@date 12/01/2016
+
+@titlebar
+
+@topSection
+  @breadcrumb
+    @item /docs/: Docs
+    @item /docs/walkthrough/setting-up/: Walkthrough
+    @item /docs/walkthrough/setting-up/: Adding Content
+  @title Walkthrough / Adding Content
+  @description
+
+
+@contentSection
+
+  @topic Adding content to the site
+    @sheet
+      TODO
+
+    @section Creating a home page
+      @sheet
+        TODO
+
+    @section Creating the versioned APIs
+      @sheet
+        TODO
+
+    @section Adding a changelog
+      @sheet
+        TODO
+
+@bottomSection
+  @paginationButtons
+    @previous /docs/walkthrough/setting-up: Setting Up
+    @next /docs/walkthrough/flow-diagram: Flow Diagram
+
+
+@footer

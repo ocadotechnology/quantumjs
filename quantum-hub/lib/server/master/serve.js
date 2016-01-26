@@ -54,6 +54,12 @@ function redirectTrailingSlash (req, res) {
   res.end(msg)
 }
 
+function endsWith(string, searchString) {
+  var position = string.length - searchString.length
+  var i = string.indexOf(searchString, position)
+  return i !== -1 && i === position
+}
+
 // serves content from storage
 module.exports = function (storage, opts) {
   var options = merge({
@@ -77,7 +83,7 @@ module.exports = function (storage, opts) {
     var parts = resolvedPath.split('/')
     var last = parts[parts.length - 1]
 
-    var isDir = !supportedFileTypes.some(function (type) { return last.endsWith(type) })
+    var isDir = !supportedFileTypes.some(function (type) { return endsWith(last, type) })
     if (isDir && resolvedPath.length > 0 && resolvedPath[resolvedPath.length - 1] !== '/') {
       redirectTrailingSlash(req, res)
     } else {

@@ -264,7 +264,8 @@ p:last-child,
 .qm-docs-top-section-title {
   font-size: 48px;
   font-weight: 100;
-  margin-top: 0.5em;
+  margin-top: 0.25em;
+  padding: 0 8px;
 }
 
 .qm-docs-breadcrumb {
@@ -294,9 +295,9 @@ p:last-child,
 }
 
 .qm-docs-top-section-description {
-  padding: 1em 0;
   opacity: 0.8;
   font-size: 16px;
+  padding: 1em 8px;
 }
 
 

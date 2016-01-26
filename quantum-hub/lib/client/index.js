@@ -74,7 +74,7 @@ function init (options) {
 // posts the project to the central server
 function publish (options) {
   if (options.dir === undefined) {
-    return Promise.reject(new Error('Missing option "dir" - this should be set to the directory you wish to initialise a new project in'))
+    return Promise.reject(new Error('Missing option "dir" - this should be set to the directory you wish to publish'))
   }
 
   if (options.hubname === undefined) {
@@ -169,7 +169,9 @@ function setRevision (options) {
 }
 
 function buildSite (options) {
-  var b = compiler.build(options)
+  var b = compiler.build(merge({
+    isLocal: true // we are building as a local client
+  }, options))
   maybeDisplayProgress(b.events, options)
   return b.promise
 }
@@ -213,7 +215,15 @@ function watch (opts) {
     port: 8000
   }, opts)
 
-  return buildSite(options)
+  var watchResult = compiler.watch(merge({
+    isLocal: true // we are building as a local client
+  }, options))
+
+  watchResult.events.on('start', function (evt) {
+    maybeDisplayProgress(evt.events, options)
+  })
+
+  return watchResult.promise
     .then(function () {
       return copyResources(options)
     })
@@ -223,10 +233,6 @@ function watch (opts) {
         root: path.join(options.dir, options.dest)
       })
 
-      compiler.watch(options)
-        .on('start', function (evt) {
-          maybeDisplayProgress(evt.events, options)
-        })
     })
 }
 

@@ -12,6 +12,11 @@ pushd quantum-dom
 sudo npm link
 popd
 
+pushd quantum-template
+npm link quantum-js
+sudo npm link
+popd
+
 pushd quantum-html
 npm link quantum-js quantum-dom
 sudo npm link
@@ -44,6 +49,12 @@ popd
 
 pushd quantum-watch
 npm link quantum-js
+sudo npm link
+popd
+
+pushd quantum-hub
+npm link quantum-js
+npm link quantum-watch
 sudo npm link
 popd
 

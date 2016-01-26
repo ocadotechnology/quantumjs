@@ -4,34 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node build/index.js",
-    "build-hexagon": "node build/index.js build-hexagon",
-    "build-release": "node build/index.js build-release",
-    "upload": "gcloud preview app deploy target/app.yaml --project causal-galaxy-939 --version 2 --promote",
-    "release": "npm run build-release && npm run upload"
+    "start": "node scripts/watch.js",
+    "build": "node scripts/build.js",
+    "prepare-release": "node scripts/prepare-release.js",
+    "upload": "gcloud preview app deploy target/app.yaml --project causal-galaxy-939 --version 3 --promote",
+    "release": "npm run build && npm run prepare-release && npm run upload"
   },
   "author": "james.smyth@ocado.com",
   "license": "Apache-2.0",
   "devDependencies": {
     "bluebird": "^3.1.1",
-    "browser-sync": "^2.7.6",
-    "chalk": "^1.1.1",
-    "dagre": "^0.7.2",
-    "flatten": "0.0.1",
-    "font-awesome": "^4.4.0",
     "fs-extra": "^0.26.3",
-    "glob": "^6.0.1",
-    "hexagon-js": "^1.0.0",
-    "highlight.js": "^8.7.0",
-    "live-server": "^0.9.0",
-    "progress": "^1.1.8",
     "quantum-api": "^1.0.0",
     "quantum-changelog": "^1.0.0",
     "quantum-html": "^1.0.0",
-    "quantum-js": "^1.0.0",
     "quantum-template": "^1.0.0",
     "quantum-version": "^1.0.0",
-    "quantum-watch": "^1.0.0"
+    "quantum-docs": "^0.1.0",
+    "quantum-hub": "^0.1.0"
   },
   "private": true
 }

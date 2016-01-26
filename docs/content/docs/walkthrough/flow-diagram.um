@@ -1,0 +1,177 @@
+@inline ../../../shared/shared.um
+
+@title Diagram Tutorial
+@author James Smyth
+@date 12/01/2016
+
+@titlebar
+
+@topSection
+  @breadcrumb
+    @item /docs/: Docs
+    @item /docs/walkthrough/setting-up/: Walkthrough
+    @item /docs/walkthrough/flow-diagram/: Flow Diagram
+  @title Walkthrough / Flow Diagram
+  @description
+
+
+@contentSection
+  @topic Creating flow diagrams
+
+    @notice TODO [warning]
+      Change this so that it is docuementing the process of making tea/coffee
+
+    @sheet
+      This part of the walkthrough follows the process of defining a diagram
+      using the @code(um)[@diagram] entity. The final diagram will display the
+      system behind our fictitious "rest api for ordering hot drinks".
+
+      We begin with a simple diagram containing just one thing - one of our users.
+
+    @diagram
+      @item user User
+
+    @@codeblock um
+      @diagram
+        @item user User
+
+    @sheet
+      This user can interact with our rest api. So lets add that as another item.
+
+    @diagram
+      @item user User
+      @item rest-api [Rest Api Service]
+
+    @@codeblock um
+      @diagram
+        @item user User
+        @item rest-api [Rest Api Service]
+
+    @notice Note [info]
+      Note that here, the @code(um)[@item] entity takes two parameters - an id and a visible name. The words "@code(um)[Rest Api]" are surrounded by square brackets so that together they are treated as the second parameter. Without the square brackets the text "@code(um)[rest-api Rest Api]" would be treated as 3 separate parameters.
+
+  @topic Linking Items
+
+    @sheet
+      Now we want to define a link between these items, to indicate that the user makes requests to the rest api:
+
+    @diagram
+      @item user User
+      @item rest-api [Rest Api Service]
+      @link user -> rest-api
+
+    @@codeblock um
+      @diagram
+        @item user User
+        @item rest-api [Rest Api Service]
+
+        @link user -> rest-api
+
+    @sheet
+      But there is more to the imaginary rest api than meets the eye, of course. Lets add in some more components that describe how the system works in more detail:
+
+    @diagram
+      @item user User
+      @item load-balancer [Load Balancer]
+      @item rest-api-1 [Rest Api Service]
+      @item rest-api-2 [Rest Api Service]
+      @item rest-api-3 [Rest Api Service]
+      @item redis [Redis]: Cache for performance
+      @item database [BeverageDB]: Persistence for orders
+
+      @link user -> load-balancer
+      @link load-balancer -> rest-api-1
+      @link load-balancer -> rest-api-2
+      @link load-balancer -> rest-api-3
+
+      @link rest-api-1 -> redis
+      @link rest-api-2 -> redis
+      @link rest-api-3 -> redis
+
+      @link redis -> database
+
+
+    @@codeblock um
+      @diagram
+        @item user User
+        @item load-balancer [Load Balancer]
+        @item rest-api-1 [Rest Api Service]
+        @item rest-api-2 [Rest Api Service]
+        @item rest-api-3 [Rest Api Service]
+        @item redis [Redis]: Cache for performance
+        @item database [BeverageDB]: Persistence for orders
+
+        @link user -> load-balancer
+        @link load-balancer -> rest-api-1
+        @link load-balancer -> rest-api-2
+        @link load-balancer -> rest-api-3
+
+        @link rest-api-1 -> redis
+        @link rest-api-2 -> redis
+        @link rest-api-3 -> redis
+
+        @link redis -> database
+
+    @sheet
+      It looks like there is a lot more going on here, but really it is more of the same - defining items and links between those items.
+
+  @topic Creating Groups
+
+    @sheet
+      What if we want to indicate where some of the components are running? The @code(um)[@group] entity groups together items, and draws a rectangle around them:
+
+    @diagram
+      @item user User
+
+      @group Cloud Provider X
+        @item load-balancer [Load Balancer]
+        @item rest-api-1 [Rest Api Service]
+        @item rest-api-2 [Rest Api Service]
+        @item rest-api-3 [Rest Api Service]
+        @item redis [Redis]: Cache for performance
+        @item database [BeverageDB]: Persistence for orders
+
+      @link user -> load-balancer
+      @link load-balancer -> rest-api-1
+      @link load-balancer -> rest-api-2
+      @link load-balancer -> rest-api-3
+
+      @link rest-api-1 -> redis
+      @link rest-api-2 -> redis
+      @link rest-api-3 -> redis
+
+      @link redis -> database
+
+
+    @@codeblock um
+      @diagram
+        @item user User
+
+        @group Cloud
+          @item load-balancer [Load Balancer]
+          @item rest-api-1 [Rest Api Service]
+          @item rest-api-2 [Rest Api Service]
+          @item rest-api-3 [Rest Api Service]
+          @item redis [Redis]: Cache for performance
+          @item database [BeverageDB]: Persistence for orders
+
+        @link user -> load-balancer
+        @link load-balancer -> rest-api-1
+        @link load-balancer -> rest-api-2
+        @link load-balancer -> rest-api-3
+
+        @link rest-api-1 -> redis
+        @link rest-api-2 -> redis
+        @link rest-api-3 -> redis
+
+        @link redis -> database
+
+
+  @topic Link Styles
+
+@bottomSection
+  @paginationButtons
+    @previous /docs/walkthrough/adding-content: Adding Content
+    @next /docs/walkthrough/custom-transforms: Adding a Custom Tranform
+
+@footer

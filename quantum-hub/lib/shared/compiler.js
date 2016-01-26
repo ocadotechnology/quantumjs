@@ -24,7 +24,7 @@ function resolveOptions (options) {
 
 // builds the pages supplied as {filename, content} objects and logs to an event emitter
 function buildPages (objs, eventEmitter, options) {
-  var compile = options.pipeline(options.config)
+  var compile = options.pipeline(options.config, {isLocal: options.isLocal })
 
   eventEmitter.emit('start', {})
 
@@ -64,19 +64,24 @@ function build (opts) {
   }
 }
 
-// watch for changes in the directory specified and rebuild on change
+// build, then watch for changes in the directory specified and rebuild on change
 function watch (opts) {
   var options = resolveOptions(opts)
 
   var watchEventEmitter = new EventEmitter
 
-  quantumwatch(options.config.pages, {base: options.config.base}, function (objs) {
+  var promise = quantumwatch(options.config.pages, {base: options.config.base}, function (objs) {
     var eventEmitter = new EventEmitter
     watchEventEmitter.emit('start', { events: eventEmitter })
     return buildPages(objs, eventEmitter, options)
+  }).then(function (build) {
+    return build()
   })
 
-  return watchEventEmitter
+  return {
+    promise: promise,
+    events: watchEventEmitter
+  }
 }
 
 module.exports = {
