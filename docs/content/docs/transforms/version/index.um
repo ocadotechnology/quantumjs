@@ -76,12 +76,14 @@
               @p: This allows a subset of the complete list of versions to be output whilst still processing the changes made in other versions.
               @p: If left undefined, this will be the same as @code[versions].
 
+          @property outputLatest [Boolean]: Whether to output the latest version without the filename modifier applied.
+            @default true
           @property entityMatchLookup [Function]: A function that returns a unique string for each entity to allow entities to be compared.
             @param entity [Object]: The current entity.
             @returns String: A unique signature or id that describes an entity. This enables the version transform to compare entities and check whether they should be merged when versioning.
             @default
               @codeblock js
-                function (entity) {
+                function  (entity) {
                   entity = quantum.select(entity)
                   var name = entity.ps()
                   var params = entity.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
@@ -95,7 +97,11 @@
             @default
               @codeblock js
                 function (filename, version) {
-                  return path.join(path.dirname(filename), version, path.basename(filename))
+                  if (endsWith(filename, 'index.um')) {
+                    return filename.replace('index.um', version) + '/' + 'index.um'
+                  } else {
+                    return filename.replace('.um', '') + '/' + version + '.um'
+                  }
                 }
           @property taggable [Array[String]]: The array of entities to look for tags within, including the element itself
             @default

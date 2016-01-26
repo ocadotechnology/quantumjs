@@ -1,17 +1,35 @@
-@inline ../../../shared/common.um
-@quantum-titlebar Api
+@inline ../../../../shared/shared.um
 
-@qm.content
-  @section
+@versionList
+  @version 1.0.0
 
-    @h1: Api
+@titlebar
 
-    @p: This module provides a set of transforms for writing api docs for a JavaScript, CSS or quantum api.
-    @p: It can be customised to support other structures / langauges, but these are the ones supported out of the box.
-    @p: The api renderers work well with the @hyperlink(../version/)[version transform] (added, updated, deprecated and removed tags affect the rendered html)
+@topSection
+  @title Api
+  @description
 
-    @h1: Example
+  @breadcrumb
+    @item /docs/: Docs
+    @item /docs/transforms: Transforms
+    @item /docs/transforms/api/: Api
 
+@contentSection
+  @notice TODO [warning]
+    @p: Add Page description to topSection
+
+  @topic About
+    @sheet
+      This module provides a set of transforms for writing api docs
+      for a JavaScript, CSS or quantum api.
+
+      It can be customised to support other structures / langauges,
+      but these are the ones supported out of the box.
+
+      The api renderers work well with the @hyperlink(../version/)[version transform] (
+      added, updated, deprecated and removed tags affect the rendered html)
+
+  @topic Example
     @p: Using the api renderers is simple - just add them to the html transforms:
 
     @codeblock js
@@ -33,11 +51,10 @@
     @codeblock um: @inline markup-example.um [text]
 
     @p: Example result
-    @div .qm-card-background
+    @sheet
       @inline markup-example.um
 
-    @h1: Api
-
+  @topic Api
     @api
       @function api
         @description:

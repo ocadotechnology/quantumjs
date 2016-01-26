@@ -1,16 +1,33 @@
-@inline ../../../shared/common.um
-@quantum-titlebar Changelog
+@inline ../../../../shared/shared.um
 
-@qm.content
-  @section
+@versionList
+  @version 1.0.0
 
-    @h1: Changelog
+@titlebar
 
-    @p: This module provides a set of transforms for creating a changelog as well as the @(@process) transform that allows the generation of a changelog from versioned content.
-    @p: The changelog renderers work well with the @hyperlink(../version/)[version transform] and @hyperlink(../api/)[api transform] as the content is iterated upon in a similar method, showing the various tags available.
+@topSection
+  @title Changelog
+  @description
 
-    @h1: Examples
+  @breadcrumb
+    @item /docs/: Docs
+    @item /docs/transforms: Transforms
+    @item /docs/transforms/changelog/: Changelog
 
+@contentSection
+  @notice TODO [warning]
+    @p: Add Page description to topSection
+
+  @topic About
+    @sheet
+      This module provides a set of transforms for creating a changelog as well as
+      the @(@process) transform that allows the generation of a changelog from versioned content.
+
+      The changelog renderers work well with the @hyperlink(../version/)[version transform] and
+      @hyperlink(../api/)[api transform] as the content is iterated upon in a similar method,
+      showing the various tags available.
+
+  @topic Example
     @p: Using the api renderers is simple - just add them to the html transforms:
 
     @@codeblock js
@@ -37,10 +54,10 @@
     @codeblock um: @inline markup-example.um [text]
 
     @p: Example result
-    @div .qm-card-background
+    @sheet
       @inline markup-example.um
 
-    @h1: Api
+  @topic Api
 
     @api
       @function api
@@ -417,7 +434,7 @@
             @changelog.key
 
           @p: Using the default tags, the above code evaluates to the following on the page:
-          @div .qm-card-background
+          @sheet
             @changelog.key
 
 

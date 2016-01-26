@@ -70,7 +70,7 @@
       @div: {{exampleObject.name}}
 
     @p: Example result
-    @div .qm-card-background
+    @sheet
       @define exampleTemplate
         @div
           @h4: {{ps}}
@@ -118,7 +118,7 @@
                 @div: {{object.property1}}
                 @div: {{object.property2}}
 
-              @div .qm-card-background
+              @sheet
                 @div: {{example}}
                 @div: {{example.property1}}
                 @div: {{example.property2}}
@@ -162,7 +162,7 @@
           @@codeblock um
             @for val in exampleList
               @div: Value: {{val}}
-          @div .qm-card-background
+          @sheet
             @for val in examples.exampleList
               @div: Value: {{val}}
 
@@ -171,7 +171,7 @@
             @for a in exampleList
               @for b in exampleList
                 @div: {{a}}: {{b}}
-          @div .qm-card-background
+          @sheet
             @for a in examples.exampleList
               @for b in examples.exampleList
                 @div: {{a}}: {{b}}
@@ -200,7 +200,7 @@
             @for key val in exampleObject
               @div: {{key}}: {{val}}
 
-          @div .qm-card-background
+          @sheet
             @for key val in examples.exampleObject
               @div: {{key}}: {{val}}
 
@@ -213,7 +213,7 @@
                   @p: {{key2}}: {{val2}}
                 @hr
 
-          @div .qm-card-background
+          @sheet
             @for key1 val1 in examples.exampleObject
               @for key2 val2 in examples.exampleObject
                 @div
@@ -232,7 +232,7 @@
               @div: {{exampleObject.name}}
               @div: {{exampleObject.age}}
 
-          @div .qm-card-background
+          @sheet
             @if examples.exampleObject.name
               @div: {{examples.exampleObject.name}}
               @div: {{examples.exampleObject.age}}
