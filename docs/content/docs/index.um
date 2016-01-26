@@ -14,7 +14,7 @@
     @list
       @item: Customising | Creating custom entity transforms
       @item: Customising | Creating custom pipeline transforms
-      @item: Tutorials (add at least one tutorial)
+      @item: @strikethrough[Tutorials (add at least one tutorial)]
       @item: Utilities | Quantum JS
       @item: Utilities | Quantum DOM
       @item: Utilities | Quantum Watch
@@ -44,9 +44,6 @@
       @summary Walkthrough
         @description: A tutorial that covers a complete walkthrough of the quantum library modules from installing the dependencies to viewing a completed example site.
         @link /docs/walkthrough/setting-up: Walkthrough
-
-      @summary Tutorials
-        @description: More examples
 
 
   @topic Modules
