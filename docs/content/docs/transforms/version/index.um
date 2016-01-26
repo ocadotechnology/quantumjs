@@ -43,7 +43,17 @@
         .map(quantum.write('target'))
 
     @p: Example markup
-    @codeblock um: @inline markup-example.um [text]
+    @@codeblock um
+      @version 1.0.0
+        @api Module 1
+          @object example
+            @added
+            @property exampleString [String]: A string
+
+      @version 2.0.0
+        @api Module 1
+          @object example
+            @property exampleFunction [Function]: A Function
 
     @p: The above example would output two files, equivalent to:
     @h4: File 1

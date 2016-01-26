@@ -24,10 +24,20 @@ function pipeline () {
     site: quantumSite
   }
 
+  var templateVariables = {
+    examples: {
+      exampleList: [1, 2, 3],
+      exampleObject: {
+        name: 'Dave',
+        age: 25
+      }
+    }
+  }
+
   // returns a function that compiles a page out to html
   return function (obj) {
     return Promise.resolve(obj)
-      .then(template())
+      .then(template({variables: templateVariables}))
       .then(changelog())
       .then(version())
       .map(html(htmlTransforms))

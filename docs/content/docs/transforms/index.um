@@ -11,7 +11,8 @@
 
 @contentSection
   @notice TODO [warning]
-    @p: quantum-api, quantum-changelog, quantum-diagram, quantum-docs
+    @p: quantum-diagram, quantum-docs
+    @p: Add page descriptions to every page (see quantum-html for example)
 
   @topic Pipeline Transforms
     @sheet

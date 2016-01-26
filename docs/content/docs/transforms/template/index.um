@@ -17,7 +17,6 @@
 @contentSection
   @notice TODO [warning]
     @p: Add Page description to topSection
-    @p: Add template variables for examples (exampleList, exampleObject.name, exampleObject.age)
 
   @topic About
     @sheet
