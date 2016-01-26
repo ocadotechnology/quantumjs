@@ -10,11 +10,11 @@
 @topSection
   @breadcrumb
     @item /docs/: Docs
-    @item /docs/walkthrough/: Walkthrough
+    @item /docs/walkthrough/setting-up/: Walkthrough
     @item /docs/walkthrough/setting-up/: Adding Content
   @title Walkthrough / Adding Content
   @description
-    A tutorial that covers a complete walkthrough of the quantum library modules from installing the dependencies to viewing a completed example site.
+
 
 @contentSection
 
@@ -33,12 +33,6 @@
     @section Adding a changelog
       @sheet
         TODO
-
-
-
-  @topic Creating a custom transform
-    @sheet
-      TODO: Custom transform for something simple?
 
 @bottomSection
   @paginationButtons

@@ -9,6 +9,22 @@
   @description
 
 @contentSection
+  @notice TODO [warning]
+    Links without pages
+    @list
+      @item: Customising | Creating custom entity transforms
+      @item: Customising | Creating custom pipeline transforms
+      @item: Tutorials (add at least one tutorial)
+      @item: Utilities | Quantum JS
+      @item: Utilities | Quantum DOM
+      @item: Utilities | Quantum Watch
+      @item: Quantum Hub | Docs
+
+    Other todo:
+    @list
+      @item: Transforms (see todo on transforms page)
+      @item: Walkthrough (finish walthrough, todos on page(s))
+
 
   @topic Guides
     @group

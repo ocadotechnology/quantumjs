@@ -9,7 +9,7 @@
 @topSection
   @breadcrumb
     @item /docs/: Docs
-    @item /docs/walkthrough/: Walkthrough
+    @item /docs/walkthrough/setting-up/: Walkthrough
     @item /docs/walkthrough/flow-diagram/: Flow Diagram
   @title Walkthrough / Flow Diagram
   @description

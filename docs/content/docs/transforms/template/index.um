@@ -8,17 +8,16 @@
 @topSection
   @title Template
   @description
-    This page describes how the html ast to virual dom transform works, and
-    shows how individual entity transforms can be passed into the html transform.
 
-    It also lists out the inbuilt html entity transforms.
   @breadcrumb
     @item /docs/: Docs
     @item /docs/transforms: Transforms
-    @item /docs/transforms/html/: Template
+    @item /docs/transforms/template/: Template
 
 @contentSection
-
+  @notice TODO [warning]
+    @p: Add Page description to topSection
+    @p: Add template variables for examples (exampleList, exampleObject.name, exampleObject.age)
 
   @topic About
     @sheet
@@ -92,8 +91,7 @@
       @div: Nested Variable
       @div: {{examples.exampleObject.name}}
 
-    @h1: Api
-
+  @topic Api
     @api
       @function api
         @description:

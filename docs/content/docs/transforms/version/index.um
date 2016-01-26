@@ -1,16 +1,30 @@
-@inline ../../../shared/common.um
-@quantum-titlebar Version
+@inline ../../../../shared/shared.um
 
-@qm.content
-  @section
+@versionList
+  @version 1.0.0
 
-    @h1: Version
+@titlebar
 
-    @p: This module provides a transform that enables the generation of incrementally versioned content.
-    @p: The changelog renderers work well with the @hyperlink(../changelog/)[changelog transform] and @hyperlink(../api/)[api transform] as the content is iterated upon in a similar method, showing the various tags available.
+@topSection
+  @title Version
+  @description
 
-    @h1: Example
+  @breadcrumb
+    @item /docs/: Docs
+    @item /docs/transforms: Transforms
+    @item /docs/transforms/version/: Version
 
+@contentSection
+  @notice TODO [warning]
+    Add Page description to topSection
+
+  @topic About
+    @sheet
+      This module provides a transform that enables the generation of incrementally versioned content.
+      The version transform works well with the @hyperlink(../changelog/)[changelog] and @hyperlink(../api/)[api] transforms
+      as the content is iterated upon in a similar method, showing the various tags available.
+
+  @topic Example
     @p: Using the version transform is easy:
 
     @@codeblock js
@@ -48,8 +62,7 @@
           @property exampleFunction [Function]: A Function
             @added
 
-    @h1: Api
-
+  @topic Api
     @api
       @function api
         @description:

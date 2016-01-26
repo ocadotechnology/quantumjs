@@ -20,12 +20,13 @@
 @contentSection
 
   @topic About
-    This module is used to transform parsed quantum AST objects to virtual
-    dom content and then converting to html.
+    @sheet
+      This module is used to transform parsed quantum AST objects to virtual
+      dom content and then converting to html.
 
-    The two conversion functions are provided separately to allow additional
-    transforms to be performed between the virtual dom and stringified stage,
-    giving flexibility to convert to formats other than pure html.
+      The two conversion functions are provided separately to allow additional
+      transforms to be performed between the virtual dom and stringified stage,
+      giving flexibility to convert to formats other than pure html.
 
   @topic Example
 

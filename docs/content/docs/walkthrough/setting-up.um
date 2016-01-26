@@ -10,7 +10,7 @@
 @topSection
   @breadcrumb
     @item /docs/: Docs
-    @item /docs/walkthrough/: Walkthrough
+    @item /docs/walkthrough/setting-up/: Walkthrough
     @item /docs/walkthrough/setting-up/: Setting Up
   @title Walkthrough / Setting up
   @description
