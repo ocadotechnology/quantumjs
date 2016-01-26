@@ -505,3 +505,34 @@
           @version 0.1.0
           @version 0.2.0
           @version 0.3.0
+
+
+@spec @version should handle indexable entities correctly
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        @function test
+      @version 0.2.0
+        @group Dave
+          @function test3
+          @untaggable Bob
+
+  @expected
+    @output
+      @filename filename/0.1.0.um
+      @version 0.1.0
+      @content
+        @function test
+    @output
+      @filename filename/0.2.0.um
+      @version 0.2.0
+      @content
+        @function test
+        @group Dave
+          @function test3
+            @added
+          @untaggable Bob

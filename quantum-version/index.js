@@ -65,7 +65,7 @@ function mergeContent (content1, content2, options) {
           e2.content.push({ type: 'added', params: [], content: [] })
         } else if (options.indexable.indexOf(entityType) > -1) {
           e2.content.forEach(function (e) {
-            var subIsTaggable = options.taggable.indexOf(getEntityType(e.type) > -1)
+            var subIsTaggable = options.taggable.indexOf(getEntityType(e.type)) > -1
             if (e && subIsTaggable) {
               e.content.push({ type: 'added', params: [], content: [] })
             }
