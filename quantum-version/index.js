@@ -18,6 +18,10 @@ var path = require('path') // required for the default filename renamer
 var merge = require('merge')
 var chalk = require('chalk')
 
+function getEntityType (type) {
+  return type ? type.replace('?', '') : undefined
+}
+
 // NOTE: this function may mutate content1 - pass in a cloned copy if you don't want to mutate the original
 function mergeContent (content1, content2, options) {
   // it isn't possible to reliably merge text - so we just return the new content, and
@@ -36,7 +40,7 @@ function mergeContent (content1, content2, options) {
       var e1s = quantum.select(e1)
       var e2s = quantum.select(e2)
 
-      var entityType = (e2.type ? e2.type.replace('?', '') : e2.type)
+      var entityType = getEntityType(e2.type)
       var isTaggable = (options.taggable.indexOf(entityType) > -1)
 
       if (!!e1) {
@@ -59,6 +63,13 @@ function mergeContent (content1, content2, options) {
       } else {
         if (isTaggable) {
           e2.content.push({ type: 'added', params: [], content: [] })
+        } else if (options.indexable.indexOf(entityType) > -1) {
+          e2.content.forEach(function (e) {
+            var subIsTaggable = options.taggable.indexOf(getEntityType(e.type) > -1)
+            if (e && subIsTaggable) {
+              e.content.push({ type: 'added', params: [], content: [] })
+            }
+          })
         }
         content1.push(e2)
       }
