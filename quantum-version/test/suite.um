@@ -13,13 +13,13 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         Content 1
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         Content 2
@@ -42,20 +42,20 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         Content 1
         @tag
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         Content 2
 
     @output
-      @filename 0.3.0/filename.um
+      @filename filename/0.3.0.um
       @version 0.3.0
       @content
         Content 3
@@ -78,7 +78,7 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         @tag
@@ -86,7 +86,7 @@
           @innerTag two: Content 2
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         @tag
@@ -112,7 +112,7 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         @unmergeable
@@ -120,7 +120,7 @@
           @innerTag two: Content 2
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         @unmergeable
@@ -151,7 +151,7 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         @function test
@@ -160,7 +160,7 @@
         @function test2
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         @function test
@@ -173,7 +173,7 @@
           @added
 
     @output
-      @filename 0.3.0/filename.um
+      @filename filename/0.3.0.um
       @version 0.3.0
       @content
         @function test
@@ -196,14 +196,14 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         @container
           Content 1
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         @container
@@ -227,7 +227,7 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         @container
@@ -236,7 +236,7 @@
           @container2
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         @container
@@ -259,14 +259,14 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         Unversioned
         Content 1
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         Unversioned
@@ -306,7 +306,7 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         @div
@@ -322,7 +322,7 @@
             @changelog 0.3.0
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         @div
@@ -346,7 +346,7 @@
             @changelog 0.3.0
 
     @output
-      @filename 0.3.0/filename.um
+      @filename filename/0.3.0.um
       @version 0.3.0
       @content
         @div
@@ -382,14 +382,14 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         @item
           @deprecated
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         @item
@@ -411,7 +411,7 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         Unversioned
@@ -422,7 +422,7 @@
           @version 0.2.0
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         Unversioned
@@ -453,7 +453,7 @@
 
   @expected
     @output
-      @filename 0.1.0/filename.um
+      @filename filename/0.1.0.um
       @version 0.1.0
       @content
         @div
@@ -471,7 +471,7 @@
           @version 0.3.0
 
     @output
-      @filename 0.2.0/filename.um
+      @filename filename/0.2.0.um
       @version 0.2.0
       @content
         @div
@@ -489,7 +489,7 @@
           @version 0.3.0
 
     @output
-      @filename 0.3.0/filename.um
+      @filename filename/0.3.0.um
       @version 0.3.0
       @content
         @div
@@ -505,3 +505,34 @@
           @version 0.1.0
           @version 0.2.0
           @version 0.3.0
+
+
+@spec @version should handle indexable entities correctly
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        @function test
+      @version 0.2.0
+        @group Dave
+          @function test3
+          @untaggable Bob
+
+  @expected
+    @output
+      @filename filename/0.1.0.um
+      @version 0.1.0
+      @content
+        @function test
+    @output
+      @filename filename/0.2.0.um
+      @version 0.2.0
+      @content
+        @function test
+        @group Dave
+          @function test3
+            @added
+          @untaggable Bob
