@@ -249,9 +249,13 @@ function paragraphTransform (entity, page, transform) {
 // returns the transform function that converts parsed um source to virtual dom.
 // returns a new transform function for the transforms object supplied. this curried
 // function makes that api a bit more fluid.
-module.exports = function (inputTransforms) {
+module.exports = function (opts) {
+  var options = merge({
+    transforms: transforms
+  }, opts)
+
   // holds all transforms with namespace variants and non namespace variants
-  var transformMap = prepareTransforms(inputTransforms || transforms)
+  var transformMap = prepareTransforms(options.transforms)
 
   // the actual transform function that turns parsed content into html content
   return function (obj) {
@@ -320,5 +324,6 @@ module.exports.exportAssets = exportAssets
 module.exports.paragraphTransform = paragraphTransform
 
 module.exports.assets = {
-  'quantum-html-code-highlight.css': __dirname + '/client/code-highlight.css'
+  'quantum-html-code-highlight.css': __dirname + '/client/code-highlight.css',
+  'quantum-html-paragraph.css': __dirname + '/client/html-paragraph.css'
 }
