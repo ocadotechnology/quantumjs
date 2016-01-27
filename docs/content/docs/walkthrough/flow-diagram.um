@@ -1,10 +1,8 @@
 @inline ../../../shared/shared.um
 
-@title Diagram Tutorial
+@titlebar Flow Diagram | Walkthrough
 @author James Smyth
 @date 12/01/2016
-
-@titlebar
 
 @topSection
   @breadcrumb

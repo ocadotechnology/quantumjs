@@ -1,11 +1,9 @@
 @inline ../../../shared/shared.um
 
-@title Adding Content | Walkthrough
+@titlebar Adding Content | Walkthrough
 @author Charlie Frater
 @author James Smyth
 @date 12/01/2016
-
-@titlebar
 
 @topSection
   @breadcrumb
