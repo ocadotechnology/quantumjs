@@ -1,4 +1,4 @@
-@inline ../../../../shared/shared.um
+@inline ../../../shared/shared.um
 
 @versionList
   @version 1.0.0
@@ -11,8 +11,8 @@
 
   @breadcrumb
     @item /docs/: Docs
-    @item /docs/transforms: Transforms
-    @item /docs/transforms/api/: Api
+    @item /docs/modules: Modules
+    @item /docs/modules/api/: Api
 
 @contentSection
   @notice TODO [warning]

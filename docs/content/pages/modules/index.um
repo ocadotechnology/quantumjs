@@ -1,4 +1,4 @@
-@inline ../../../shared/shared.um
+@inline ../../shared/shared.um
 
 @titlebar Transforms
 

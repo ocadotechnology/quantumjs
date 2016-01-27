@@ -1,4 +1,4 @@
-@inline ../../shared/common.um
+@inline ../../../shared/shared.um
 @quantum-titlebar Core
 
 @qm.content
