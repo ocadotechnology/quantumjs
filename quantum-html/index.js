@@ -1,5 +1,5 @@
 var dom = require('quantum-dom')
-var select = require('quantum-js').select
+var quantum = require('quantum-js')
 var hljs = require('highlight.js')
 var umsyntax = require('./um-syntax.js')
 var unique = require('array-unique')
@@ -260,7 +260,7 @@ module.exports = function (inputTransforms) {
 
     // the default transform just makes a text node
     function defaultTransform (entity) {
-      return page.textNode(select.isEntity(entity) ? entity.cs() : entity)
+      return page.textNode(quantum.select.isEntity(entity) ? entity.cs() : entity)
     }
 
     // renders an entity by looking at its type and selecting the transform from the list
@@ -273,7 +273,7 @@ module.exports = function (inputTransforms) {
     }
 
     // select and transform the content, then returns the page object
-    return select(obj.content).transform(transformEntity)
+    return quantum.select(obj.content).transform(transformEntity)
       .then(function (elements) {
         page.body.add(elements.filter(function (d) { return d }))
         return {
