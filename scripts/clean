@@ -2,43 +2,15 @@
 
 # This script removes all the node_modules folders
 
-pushd ..
-
-pushd quantum-js
-rm -r node_modules
-popd
-
-pushd quantum-dom
-rm -r node_modules
-popd
-
-pushd quantum-html
-rm -r node_modules
-popd
-
-pushd quantum-api
-rm -r node_modules
-popd
-
-pushd quantum-changelog
-rm -r node_modules
-popd
-
-pushd quantum-diagram
-rm -r node_modules
-popd
-
-pushd quantum-docs
-rm -r node_modules
-popd
-
-pushd quantum-version
-rm -r node_modules
-popd
-
-pushd quantum-watch
-rm -r node_modules
-popd
-
-
-popd
+rm -rf quantum-js/node_modules
+rm -rf quantum-dom/node_modules
+rm -rf quantum-html/node_modules
+rm -rf quantum-api/node_modules
+rm -rf quantum-changelog/node_modules
+rm -rf quantum-diagram/node_modules
+rm -rf quantum-docs/node_modules
+rm -rf quantum-version/node_modules
+rm -rf quantum-watch/node_modules
+rm -rf quantum-hub/node_modules
+rm -rf docs/node_modules
+rm -rf docs/target

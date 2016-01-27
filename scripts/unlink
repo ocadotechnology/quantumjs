@@ -3,13 +3,16 @@
 # This script does the reverse of link - it will npm unlink everything
 # that was linked by the link script
 
-pushd ..
-
 pushd quantum-js
 sudo npm unlink
 popd
 
 pushd quantum-dom
+sudo npm unlink
+popd
+
+pushd quantum-template
+npm unlink quantum-js
 sudo npm unlink
 popd
 
@@ -19,11 +22,11 @@ sudo npm unlink
 popd
 
 pushd quantum-api
-npm unlink quantum-js
+npm unlink quantum-js quantum-html
 sudo npm unlink
 popd
 
-pushd quantum-changelog
+pushd quantum-changelog quantum-html
 npm unlink quantum-js
 sudo npm unlink
 popd
@@ -34,7 +37,7 @@ sudo npm unlink
 popd
 
 pushd quantum-docs
-npm unlink quantum-js
+npm unlink quantum-js quantum-html
 sudo npm unlink
 popd
 
@@ -48,4 +51,11 @@ npm unlink quantum-js
 sudo npm unlink
 popd
 
+pushd quantum-hub
+npm unlink quantum-js quantum-watch
+sudo npm unlink
+popd
+
+pushd docs
+npm unlink quantum-hub quantum-html quantum-template quantum-api quantum-changelog quantum-diagram quantum-docs quantum-version
 popd

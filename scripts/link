@@ -2,8 +2,6 @@
 
 # This script is useful for developing locally - it will npm link all the modules
 
-pushd ..
-
 pushd quantum-js
 sudo npm link
 popd
@@ -23,12 +21,12 @@ sudo npm link
 popd
 
 pushd quantum-api
-npm link quantum-js
+npm link quantum-js quantum-html
 sudo npm link
 popd
 
 pushd quantum-changelog
-npm link quantum-js
+npm link quantum-js quantum-html
 sudo npm link
 popd
 
@@ -38,7 +36,7 @@ sudo npm link
 popd
 
 pushd quantum-docs
-npm link quantum-js
+npm link quantum-js quantum-html
 sudo npm link
 popd
 
@@ -53,9 +51,10 @@ sudo npm link
 popd
 
 pushd quantum-hub
-npm link quantum-js
-npm link quantum-watch
+npm link quantum-js quantum-watch
 sudo npm link
 popd
 
+pushd docs
+npm link quantum-hub quantum-html quantum-template quantum-api quantum-changelog quantum-diagram quantum-docs quantum-version
 popd
