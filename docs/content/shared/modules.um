@@ -1,3 +1,11 @@
+@notice TODO [warning]
+  @p: Add Page description to topSection of each module page (quantum-html is the only one that has a description)
+  @p: quantum-dom
+  @p: quantum-hub
+  @p: quantum-diagram
+  @p: quantum-docs
+  @p: Make sure other modules docs/api are up to date
+
 @group
   @div
     @attr style: flex:1 1 320px;

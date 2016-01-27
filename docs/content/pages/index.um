@@ -43,6 +43,11 @@
         @div: QuantumJS particularly excels in this area with features such as @bold[versioned content], @bold[api docs], and automatic @bold[changelog generation].
 
 @contentSection
+  @notice TODO [warning]
+    Guides/Modules todos
+    Change the back/forward buttons on all pages to make more sense
+    All TODO sections in content folder
+
   @topic Guides
     @inline ../shared/guides.um
 

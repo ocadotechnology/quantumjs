@@ -15,9 +15,6 @@
     @item /modules/quantum-api/: Quantum Api
 
 @contentSection
-  @notice TODO [warning]
-    @p: Add Page description to topSection
-
   @topic About
     @sheet
       This module provides a set of transforms for writing api docs
