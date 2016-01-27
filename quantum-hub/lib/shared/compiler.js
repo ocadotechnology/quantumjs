@@ -35,6 +35,9 @@ function buildPages (objs, eventEmitter, options) {
     .map(function (obj) {
       eventEmitter.emit('pagestart', { filename: obj.filename })
       return compile(obj)
+        .then(function (res) {
+          return Array.isArray(res) ? res : [res]
+        })
         .map(quantum.write(options.dest))
         .then(function () {
           eventEmitter.emit('pagefinish', { filename: obj.filename })
