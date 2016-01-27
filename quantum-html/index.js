@@ -213,6 +213,39 @@ function prepareTransforms (transforms, namespace, target) {
   return target
 }
 
+function paragraphTransform (entity, page, transform) {
+  page.asset('quantum-html-paragraph.css', __dirname + '/client/html-paragraph.css')
+
+  var paragraphs = []
+  var currentParagraph = undefined
+
+  entity.content.forEach(function (e) {
+    if (e === '') {
+      if (currentParagraph) {
+        paragraphs.push(currentParagraph)
+        currentParagraph = undefined
+      }
+    } else {
+      if (!currentParagraph) {
+        currentParagraph = page.create('div').class('qm-html-paragraph')
+      }
+
+      if (quantum.select.isEntity(e)) {
+        currentParagraph = currentParagraph.add(transform(quantum.select(e))).add(page.textNode(' '))
+      } else {
+        currentParagraph = currentParagraph.add(page.textNode(e + ' '))
+      }
+    }
+  })
+
+  if (currentParagraph) {
+    paragraphs.push(currentParagraph)
+    currentParagraph = undefined
+  }
+
+  return page.all(paragraphs)
+}
+
 // returns the transform function that converts parsed um source to virtual dom.
 // returns a new transform function for the transforms object supplied. this curried
 // function makes that api a bit more fluid.
@@ -284,6 +317,7 @@ module.exports.transforms = transforms
 module.exports.prepareTransforms = prepareTransforms
 module.exports.stringify = stringify
 module.exports.exportAssets = exportAssets
+module.exports.paragraphTransform = paragraphTransform
 
 module.exports.assets = {
   'quantum-html-code-highlight.css': __dirname + '/client/code-highlight.css'

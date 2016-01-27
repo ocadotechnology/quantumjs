@@ -49,18 +49,15 @@
   margin-bottom: 0.25em;
 }
 
-p,
-.qm-docs-paragraph {
+p {
   margin: 1em 0;
 }
 
-p:first-child,
-.qm-docs-paragraph:first-child {
+p:first-child  {
   margin-top: 0;
 }
 
-p:last-child,
-.qm-docs-paragraph:last-child {
+p:last-child {
   margin-bottom: 0;
 }
 

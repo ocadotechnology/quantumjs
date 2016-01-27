@@ -1,4 +1,4 @@
-node_modules
-target
-coverage.html
+/node_modules
+/target
 .DS_Store
+npm-debug.log

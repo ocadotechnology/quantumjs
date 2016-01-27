@@ -28,9 +28,7 @@
     "quantum-js": "^1.0.0"
   },
   "devDependencies": {
-    "blanket": "^1.1.7",
     "chai": "^2.3.0",
-    "html-file-cov": "^1.0.0",
     "istanbul": "^0.4.0",
     "mocha": "^2.3.3"
   }

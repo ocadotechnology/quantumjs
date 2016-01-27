@@ -1,4 +1,5 @@
 var quantum = require('quantum-js')
+var paragraphTransform = require('quantum-html').paragraphTransform
 
 function toContextClass (context) {
   return context ? 'hx-background-' + context : ''
@@ -6,38 +7,6 @@ function toContextClass (context) {
 
 function spinalCase (string) {
   return string.toLowerCase().split(' ').join('-')
-}
-
-function paragraphTransform (entity, page, transform) {
-  var paragraphs = []
-  var currentParagraph = undefined
-
-  entity.content.forEach(function (e) {
-    if (e === '') {
-      if (currentParagraph) {
-        paragraphs.push(currentParagraph)
-        currentParagraph = undefined
-      }
-    } else {
-      if (!currentParagraph) {
-        currentParagraph = page.create('div').class('qm-docs-paragraph')
-      }
-
-      if (quantum.select.isEntity(e)) {
-        currentParagraph = currentParagraph.add(transform(quantum.select(e))).add(page.textNode(' '))
-      } else {
-        currentParagraph = currentParagraph.add(page.textNode(e + ' '))
-      }
-    }
-
-  })
-
-  if (currentParagraph) {
-    paragraphs.push(currentParagraph)
-    currentParagraph = undefined
-  }
-
-  return page.all(paragraphs)
 }
 
 var transforms = {}
