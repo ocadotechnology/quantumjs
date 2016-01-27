@@ -49,8 +49,8 @@ function pipeline () {
 module.exports = {
   pipeline: pipeline,
   config: {
-    pages: 'content/**/*.um',
-    base: 'content'
+    pages: 'content/pages/**/*.um',
+    base: 'content/pages'
   },
-  resourceDir: 'resources'
+  resourceDir: 'content/resources'
 }
