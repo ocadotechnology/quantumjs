@@ -66,7 +66,7 @@ body, html {
 
 /* XXX: replace with a quantum-docs equivalent */
 .content.thin {
-  max-width: 960px;
+  max-width: 1000px;
 }
 
 .install-link-stip {
@@ -101,11 +101,14 @@ body, html {
 
 .selling-point-container {
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .selling-point {
-  margin: 1em;
-  flex: 1;
+  margin: 0.7em;
+  flex: 1 1 320px;
   text-align: center;
   background: rgba(255, 255, 255, 0.07);
 }

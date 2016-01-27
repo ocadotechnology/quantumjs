@@ -17,13 +17,18 @@
 @contentSection
   @topic About
     @sheet
-      The core quantum module (quantum-js) consists of the parser, a selection api and a builder api.
+      The core quantum module (quantum-js) consists of the parser, a selection
+      api and a builder api.
 
-      The read function is the most useful - used for reading markup files and parsing them. It returns promise which yields an object holding the filename and parsed content.
+      The read function is the most useful - used for reading markup files and
+      parsing them. It returns promise which yields an object holding the
+      filename and parsed content.
 
-      The result of parsing a file is normally passed through the html transforms in order to build a web page.
+      The result of parsing a file is normally passed through the html
+      transforms in order to build a web page.
 
-      See the @hyperlink(/modules/quantum-html/)[Quantum Html] module for an example.
+      See the @hyperlink(/modules/quantum-html/)[Quantum Html] module for an
+      example.
 
   @topic Example
     @p: Quantum can be accessed by requiring the quantum-js module.

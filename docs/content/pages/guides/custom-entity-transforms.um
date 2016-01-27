@@ -1,0 +1,17 @@
+@inline ../../shared/shared.um
+
+@titlebar
+
+@topSection
+  @title Custom Entity Transforms
+  @description
+
+  @breadcrumb
+    @item /: Home
+    @item /guides/: Guides
+    @item /guides/custom-entity-transforms/: Custom Entity Transforms
+
+@contentSection
+  TODO
+
+@footer

@@ -1,7 +1,7 @@
 @notice TODO [warning]
-  Both the Customising pages
-  Finish the walkthrough
-  Make sure the getting started / core Concepts pages are up to date
+  @p: Both the Customising pages
+  @p: Finish the walkthrough
+  @p: Make sure the getting started / core Concepts pages are up to date
 
 @group
   @summary Quick Start
@@ -15,8 +15,8 @@
 @group
   @summary Customising
     @description: How to add custom entity transforms and how pipeline transforms can be used to add new features to the language.
-    @link: Creating custom entity transforms
-    @link: Creating custom pipeline transforms
+    @link /guides/custom-entity-transforms/: Creating custom entity transforms
+    @link /guides/custom-pipeline-transforms/: Creating custom pipeline transforms
 
   @summary Walkthrough
     @description: A tutorial that covers a complete walkthrough of the quantum library modules from installing the dependencies to viewing a completed example site.

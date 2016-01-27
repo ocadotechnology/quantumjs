@@ -10,7 +10,7 @@
   @div .tagline: A static site generator with a focus on extensibility and speed.
 
 @div .color-band
-  @div .content.thin
+  @div .content
     @div .install-link-stip
       @div .spacer
 
@@ -28,15 +28,17 @@
         @div: Comes with an @bold[easy-to-pickup markup language].
         @div: Markup goes in, html comes out.
 
+    @div .selling-point-container
       @sellingPoint Speedy
         @bold[Sub 10ms] page compile times.
 
+      @sellingPoint No complicated folder structures
+        @div: @bold[You] choose how to structure your project.
+
+    @div .selling-point-container
       @sellingPoint Extensible
         @div: Define @bold[custom pipelines] for building your site.
         @div: Plug @bold[custom transforms] into your pipeline to extend the capabilities for your own needs.
-
-      @sellingPoint No complicated folder structures
-        @div: @bold[You] choose how to structure your project.
 
       @sellingPoint Great for technical documentation
         @div: Writing technical documentation?
