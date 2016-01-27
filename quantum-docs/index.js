@@ -63,14 +63,6 @@ transforms.image = function (entity, page, transforms) {
   return page.create('img').attr('src', entity.ps()).attr('alt', entity.cs())
 }
 
-transforms.title = function (entity, page, transforms) {
-  var subtitle = page.get('qm-docs-subtitle')
-  if (subtitle) {
-    subtitle.text(entity.ps())
-  }
-  page.head.add(page.create('title').text(entity.ps()))
-}
-
 transforms.summary = function (entity, page, transforms) {
   var element = page.create('div').class('qm-docs-summary')
     .add(page.create('div').text(entity.ps()).class('qm-docs-summary-header'))
@@ -145,10 +137,16 @@ transforms.tableOfContents = function (entity, page, transforms) {
 }
 
 transforms.topSection = function (entity, page, transforms) {
+  var pageTitle = entity.select('title').ps()
+  if (pageTitle.length) {
+    page.remove('title')
+    page.head.add(page.create('title', 'title').text(pageTitle))
+  }
+
   return page.create('div').class('qm-docs-top-section')
     .add(breadcrumb(entity.select('breadcrumb'), page, transforms))
     .add(page.create('div').class('qm-docs-centered')
-      .add(page.create('div').class('qm-docs-top-section-title').text(entity.select('title').ps()))
+      .add(page.create('div').class('qm-docs-top-section-title').text(pageTitle))
       .add(page.create('div').class('qm-docs-top-section-description')
         .add(paragraphTransform(entity.select('description'), page, transforms))))
 }

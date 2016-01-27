@@ -1,16 +1,17 @@
 @inline ../../../shared/shared.um
 
-@titlebar Adding Content | Walkthrough
+@titlebar
 @author Charlie Frater
 @author James Smyth
 @date 12/01/2016
 
 @topSection
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/walkthrough/setting-up/: Walkthrough
-    @item /docs/walkthrough/setting-up/: Adding Content
-  @title Walkthrough / Adding Content
+    @item /: Home
+    @item /guides/: Guides
+    @item /guides/walkthrough/: Walkthrough
+    @item /guides/walkthrough/adding-content/: Adding Content
+  @title Adding Content
   @description
 
 

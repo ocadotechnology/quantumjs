@@ -3,16 +3,16 @@
 @versionList
   @version 1.0.0
 
-@titlebar Changelog Transforms
+@titlebar
 
 @topSection
-  @title Changelog
+  @title Quantum Changelog
   @description
 
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/transforms: Transforms
-    @item /docs/transforms/changelog/: Changelog
+    @item /: Home
+    @item /modules/: Modules
+    @item /modules/quantum-changelog/: Quantum Changelog
 
 @contentSection
   @notice TODO [warning]

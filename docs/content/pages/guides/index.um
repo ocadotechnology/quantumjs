@@ -1,0 +1,16 @@
+@inline ../../shared/shared.um
+
+@titlebar
+
+@topSection
+  @breadcrumb
+    @item /: Home
+    @item /guides/: Guides
+  @title Guides
+  @description
+    Guides demonstrating how to use the various quantum libraries
+
+@contentSection
+  @inline ../../shared/guides.um
+
+@footer

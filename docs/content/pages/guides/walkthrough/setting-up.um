@@ -1,16 +1,17 @@
 @inline ../../../shared/shared.um
 
-@titlebar Setting Up | Walkthrough
+@titlebar
 @author Charlie Frater
 @author James Smyth
 @date 12/01/2016
 
 @topSection
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/walkthrough/setting-up/: Walkthrough
-    @item /docs/walkthrough/setting-up/: Setting Up
-  @title Walkthrough / Setting up
+    @item /: Home
+    @item /guides/: Guides
+    @item /guides/walkthrough/: Walkthrough
+    @item /guides/walkthrough/setting-up/: Setting Up
+  @title Setting up
   @description
     A tutorial that covers a complete walkthrough of the quantum library modules from installing the dependencies to viewing a completed example site.
 

@@ -3,16 +3,16 @@
 @versionList
   @version 1.0.0
 
-@titlebar Api Transforms
+@titlebar
 
 @topSection
-  @title Api
+  @title Quantum Api
   @description
 
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/modules: Modules
-    @item /docs/modules/api/: Api
+    @item /: Docs
+    @item /modules: Modules
+    @item /modules/quantum-api/: Quantum Api
 
 @contentSection
   @notice TODO [warning]

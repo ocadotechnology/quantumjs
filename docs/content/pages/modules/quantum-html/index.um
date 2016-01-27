@@ -3,19 +3,19 @@
 @versionList
   @version 1.0.0
 
-@titlebar HTML Transforms
+@titlebar
 
 @topSection
-  @title HTML Transforms
+  @title Quantum Html
   @description
     This page describes how the html ast to virual dom transform works, and
     shows how individual entity transforms can be passed into the html transform.
 
     It also lists out the inbuilt html entity transforms.
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/transforms: Transforms
-    @item /docs/transforms/html/: HTML Transforms
+    @item /: Home
+    @item /modules/: Modules
+    @item /modules/quantum-html/: Quantum Html
 
 @contentSection
 

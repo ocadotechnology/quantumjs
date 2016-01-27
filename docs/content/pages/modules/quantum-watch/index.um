@@ -1,21 +1,31 @@
 @inline ../../../shared/shared.um
-@quantum-titlebar Watch
 
-@qm.content
-  @section
+@versionList
+  @version 1.0.0
 
-    @h1: Watch
+@titlebar
 
-    @p:
-      This module watches quantum files for changes, and calls a callback when changes are made. It keeps track of @code(um)[@inline] entity references, allowing only the files affected by a file change to be rebuilt.
+@topSection
+  @title Quantum Watch
+  @description
 
-    @h2: Installation
+  @breadcrumb
+    @item /: Home
+    @item /modules/: Modules
+    @item /modules/quantum-watch/: Quantum Watch
 
+@contentSection
+  @topic About
+    @sheet
+      This module watches quantum files for changes, and calls a callback when
+      changes are made. It keeps track of @code(um)[@inline] entity references,
+      allowing only the files affected by a file change to be rebuilt.
+
+
+  @topic Example
     Install via npm:
     @codeblock bash
       npm install --save quantum-watch
-
-    @h1: Example
 
     @p
       This example watches for changes to all .um files, and rebuilds them upon change.
@@ -32,8 +42,8 @@
           .map(quantum.write('target'))       // write the result to target/index.html
       })
 
-    @h1: Api
 
+  @topic Api
     @api
       @function watch
         @param glob [String]

@@ -129,4 +129,15 @@ body, html {
   height: 30px;
   padding: 1em 1em;
   background: #252525;
+  color: white;
+/*  flex: 0;*/
 }
+/*
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.qm-docs-content-section {
+  flex-grow: 1;
+}*/

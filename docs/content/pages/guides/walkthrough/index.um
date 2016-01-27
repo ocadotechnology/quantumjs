@@ -1,0 +1,16 @@
+@inline ../../../shared/shared.um
+
+@titlebar
+
+@contentSection
+  @group
+    @summary Setting Up
+      @link /guides/walkthrough/setting-up/: Go to walkthrough page
+    @summary Adding Content
+      @link /guides/walkthrough/adding-content/: Go to walkthrough page
+    @summary Flow Diagram
+      @link /guides/walkthrough/flow-diagram/: Go to walkthrough page
+    @summary Custom Transforms
+      @link /guides/walkthrough/custom-transforms/: Go to walkthrough page
+
+@footer

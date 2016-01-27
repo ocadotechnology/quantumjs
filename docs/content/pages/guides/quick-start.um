@@ -1,11 +1,12 @@
-@inline ../shared/shared.um
+@inline ../../shared/shared.um
 
-@titlebar Quick Start
+@titlebar
 
 @topSection
   @breadcrumb
     @item /: Home
-    @item /quick-start/: Quick Start
+    @item /guides/: Guides
+    @item /guides/quick-start/: Quick Start
   @title Quick Start
   @description
     This page will guide you through creating your first page

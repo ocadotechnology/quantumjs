@@ -1,15 +1,16 @@
 @inline ../../../shared/shared.um
 
-@titlebar Flow Diagram | Walkthrough
+@titlebar
 @author James Smyth
 @date 12/01/2016
 
 @topSection
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/walkthrough/setting-up/: Walkthrough
-    @item /docs/walkthrough/flow-diagram/: Flow Diagram
-  @title Walkthrough / Flow Diagram
+    @item /: Home
+    @item /guides/: Guides
+    @item /guides/walkthrough/: Walkthrough
+    @item /guides/walkthrough/flow-diagram/: Flow Diagram
+  @title Flow Diagram
   @description
 
 

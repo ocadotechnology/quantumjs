@@ -1,56 +1,15 @@
 @inline ../../shared/shared.um
 
-@titlebar Transforms
+@titlebar
 
 @topSection
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/transforms/: Transforms
-  @title Transforms
+    @item /: Home
+    @item /modules/: Modules
+  @title Modules
   @description
 
 @contentSection
-  @notice TODO [warning]
-    @p: quantum-diagram, quantum-docs
-    @p: Add page descriptions to every page (see quantum-html for example)
-
-  @topic Pipeline Transforms
-    @sheet
-      These transform an entire 'file' from one form to another.
-
-    @group
-      @summary Quantum HTML
-        @description:
-        @link /docs/transforms/html/: Docs
-
-      @summary Quantum Template
-        @description:
-        @link /docs/transforms/template/: Docs
-
-      @summary Quantum Version
-        @description:
-        @link /docs/transforms/version/: Docs
-
-
-  @topic Entity Transforms
-    @sheet
-      These transform individual entities within a file (used with quantum-html).
-
-    @group
-      @summary Quantum Api
-        @description:
-        @link /docs/transforms/api/: Docs
-
-      @summary Quantum Changelog
-        @description:
-        @link /docs/transforms/changelog/: Docs
-
-      @summary Quantum Diagram
-        @description:
-        @link /docs/transforms/diagram/: Docs
-
-      @summary Quantum Docs
-        @description:
-        @link /docs/transforms/docs/: Docs
+  @inline ../../shared/modules.um
 
 @footer

@@ -3,21 +3,18 @@
 @versionList
   @version 1.0.0
 
-@titlebar Template Transforms
+@titlebar
 
 @topSection
-  @title Template
+  @title Quantum Template
   @description
 
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/transforms: Transforms
-    @item /docs/transforms/template/: Template
+    @item /: Home
+    @item /modules/: Modules
+    @item /modules/template/: Quantum Template
 
 @contentSection
-  @notice TODO [warning]
-    @p: Add Page description to topSection
-
   @topic About
     @sheet
       This module adds the ability to create templates using @code(um)[@define] which can then be re-used

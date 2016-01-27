@@ -6,13 +6,13 @@
 @titlebar
 
 @topSection
-  @title Quantum Docs
+  @title Quantum DOM
   @description
 
   @breadcrumb
     @item /: Home
     @item /modules/: Modules
-    @item /modules/quantum-docs/: Quantum Docs
+    @item /modules/quantum-dom/: Quantum DOM
 
 @contentSection
   @topic About

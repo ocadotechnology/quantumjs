@@ -1,16 +1,17 @@
 @inline ../../../shared/shared.um
 
-@titlebar Custom Transforms | Walkthrough
+@titlebar
 @author Charlie Frater
 @author James Smyth
 @date 12/01/2016
 
 @topSection
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/walkthrough/setting-up/: Walkthrough
-    @item /docs/walkthrough/setting-up/: Custom Transforms
-  @title Walkthrough / Custom Transforms
+    @item /: Home
+    @item /guides/: Guides
+    @item /guides/walkthrough/: Walkthrough
+    @item /guides/walkthrough/custom-transforms/: Custom Transforms
+  @title Custom Transforms
   @description
 
 @contentSection

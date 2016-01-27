@@ -1,11 +1,12 @@
-@inline ../shared/shared.um
+@inline ../../shared/shared.um
 
-@titlebar Core Concepts
+@titlebar
 
 @topSection
   @breadcrumb
     @item /: Home
-    @item /core-concepts/: Core Concepts
+    @item /guides/: Guides
+    @item /guides/core-concepts/: Core Concepts
   @title Core Concepts
   @description
     This page explains some of the concepts used in quantumjs, including the pipeline, pipeline transforms and entity html transforms.

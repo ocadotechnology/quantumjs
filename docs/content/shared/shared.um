@@ -4,11 +4,6 @@
 @stylesheet [/resources/quantum-site.css]
 
 @define titlebar
-  @if ps
-    @title {{ps}} | Quantum.js
-  @ifnot ps
-    @title Quantum.js
-
   @bodyClass hx-heading-fixed
 
   @div .hx-heading
@@ -24,4 +19,3 @@
 
 @define footer
   @div .footer
-

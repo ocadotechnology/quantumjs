@@ -3,21 +3,18 @@
 @versionList
   @version 1.0.0
 
-@titlebar Version Transforms
+@titlebar
 
 @topSection
-  @title Version
+  @title Quantum Version
   @description
 
   @breadcrumb
-    @item /docs/: Docs
-    @item /docs/transforms: Transforms
-    @item /docs/transforms/version/: Version
+    @item /: Home
+    @item /modules/: Modules
+    @item /modules/version/: Quantum Version
 
 @contentSection
-  @notice TODO [warning]
-    Add Page description to topSection
-
   @topic About
     @sheet
       This module provides a transform that enables the generation of incrementally versioned content.
