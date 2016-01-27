@@ -43,36 +43,41 @@
 @contentSection
 
   @topic Guides
-    @group
-      @summary Quick Start
-        @description: A quick 5 minute guide for getting started with quantum
-        @link /quick-start/: Get Started
+    @summary Quick Start
+      @description: A quick 5 minute guide for getting started with quantum
+      @link /quick-start/: Get Started
 
-      @summary Core Concepts
-        @description: A more in depth look at how quantum works
-        @link /core-concepts/: Docs
+    @summary Core Concepts
+      @description: A more in depth look at how quantum works
+      @link /core-concepts/: Docs
 
-      @summary Customising
-        @description: How to add custom entity transforms and how pipeline transforms can be used to add new features to the language.
-        @link: Creating custom entity transforms
-        @link: Creating custom pipeline transforms
+    @summary Customising
+      @description: How to add custom entity transforms and how pipeline transforms can be used to add new features to the language.
+      @link: Creating custom entity transforms
+      @link: Creating custom pipeline transforms
 
-      @summary Walkthrough
-        @description: A tutorial that covers a complete walkthrough of the quantum library modules from installing the dependencies to viewing a completed example site.
-        @link /walkthrough/setting-up: Walkthrough
+    @summary Walkthrough
+      @description: A tutorial that covers a complete walkthrough of the quantum library modules from installing the dependencies to viewing a completed example site.
+      @link /walkthrough/setting-up: Walkthrough
 
   @topic Modules
-    @group
-      @summary Utilities
-        @link: Quantum JS
-        @link: Quantum DOM
-        @link: Quantum Watch
 
-      @summary Transforms
-        @link /transforms/: Transforms
+    @summary Utilities
+      @link /modules/quantum-js/: Quantum JS
+      @link /modules/quantum-dom/: Quantum DOM
+      @link /modules/quantum-watch/: Quantum Watch
 
-      @summary Quantum Hub
-        @description: A service for hosting multiple quantumjs managed microsites
-        @link: Docs
+    @summary Transforms
+      @link /modules/quantum-html/: Quantum Html
+      @link /modules/quantum-template/: Quantum Template
+      @link /modules/quantum-version/: Quantum Version
+      @link /modules/quantum-api/: Quantum Api
+      @link /modules/quantum-changelog/: Quantum Changelog
+      @link /modules/quantum-diagram/: Quantum Diagram
+      @link /modules/quantum-docs/: Quantum Docs
+
+    @summary Quantum Hub
+      @description: A service for hosting multiple quantumjs managed microsites
+      @link /modules/quantum-hub/: Quantum Hub
 
 @footer
