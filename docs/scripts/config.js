@@ -37,10 +37,10 @@ function pipeline () {
   // returns a function that compiles a page out to html
   return function (obj) {
     return Promise.resolve(obj)
-      .then(template({variables: templateVariables}))
+      .then(template({ variables: templateVariables }))
       .then(changelog())
       .then(version())
-      .map(html(htmlTransforms))
+      .map(html({ transforms: htmlTransforms }))
       .map(html.stringify(htmlOptions))
       .map(hub.utils.htmlRenamer)
   }

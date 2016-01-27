@@ -92,25 +92,45 @@
           @p: A function that returns a function for taking AST objects and transforming them into virtual dom
           @p: This is the function returned from @code[require('quantum-html')]
 
-        @param? transforms [Object]
-          @description
-            @p: An object containing the html transforms to use.
-            @p: The key used in the options object will be used as the namespace for the entity transforms.
-            @p: This means that in the markup you can create a div using @(@div) or @(html.div) when using the default settings.
-            @p: If the options object was passed in as this:
-            @codeblock js
-              {
-                bob: html.transforms
-              }
+        @param? options [Object]
+          @property transforms [Object]
+            @description
+              @p: An object containing the html transforms to use.
+              @p: The key used in the options object will be used as the namespace for the entity transforms.
+              @p: This means that in the markup you can create a div using @(@div) or @(html.div) when using the default settings.
+              @p: If the options object was passed in as this:
+              @codeblock js
+                var html = require('quantum-html')
 
-            @p: Then you could create a div with @(@bob.div) instead.
-            @p: Namespaces allow you to remove ambiguity when multiple modules use the same entity names, and the type of entity you mean is not clear.
+                var htmlOptions = {
+                  transforms: {
+                    bob: html.transforms
+                  }
+                }
 
-          @default
-            @codeblock js
-              {
-                html: require('quantum-html').transforms
-              }
+                quantum.read('index.um')
+                  .then(html(htmlOptions))
+                  .then(html.stringify())
+                  .then(quantum.write('target'))
+
+
+              @p: Then you could create a div with @(@bob.div) instead.
+              @p: Namespaces allow you to remove ambiguity when multiple modules use the same entity names, and the type of entity you mean is not clear.
+
+            @default
+              @codeblock js
+                var html = require('quantum-html')
+
+                var htmlOptions = {
+                  transforms: {
+                    html: html.transforms
+                  }
+                }
+
+                quantum.read('index.um')
+                  .then(html(htmlOptions))
+                  .then(html.stringify())
+                  .then(quantum.write('target'))
 
         @returns Function: A function that takes an AST object and transforms it to virtual dom
           @param entities [Object/Array[Object]]: The object or objects to transform
@@ -121,10 +141,48 @@
           @p: A function that returns a function for converting transformed virtual dom content to html
           @p: This function is accessible through @code[require('quantum-html').stringify]
         @param? options [Object]
-          @description: This function currently doesn't take any options but it is structured to allow them to be passed in.
+          @property embedAssets [Boolean]
+            @description
+              Whether to embed css and js assets in the page. By default this is turned on as it is
+              makes pages portable. Turning this option off can be useful to allow pages to share assets.
+              Assets can be exported to a directory for pages to share - you must specify the location of
+              the directory with the assetPath option if doing this.
+            @default true
+          @property assetPath [String]
+            @description
+              The location of the shared assets - this will only be used if embedAssets is false. Use an
+              absolute path.
+            @default undefined
         @returns Function
           @description: A function that renders the virtual dom content (created using @code[api(options)]) to html that can then be written to file
           @param file [Object]: The AST object with transformed content to convert to HTML
           @returns Object: An object containing the output filename and stringified content
             @property filename: The name for the file
             @property content: The stringified content
+
+      @function html.exportAssets
+        @description
+          @p: Exports assets from quantum html transform modules to a given directory.
+          @p: This function is accessible through @code[require('quantum-html').exportAssets]
+
+        @param targetDir [String]
+          @description: The directory to dump the assets into
+        @param assetsObj [Array]
+          @description
+            An array of asset objects.
+
+          @extra
+            @codeblock js
+              var html = require('quantum-html')
+              var api = require('quantum-api')
+              var diagram = require('quantum-diagram')
+
+              html.exportAssets('target/assets', [
+                html.assets,
+                api.assets,
+                diagram.assets
+              ])
+
+        @returns Promise
+          @description
+            Returns a promise that completes when the exporting has finished
