@@ -317,10 +317,12 @@ Page.prototype.remove = function (element) {
     element = this.get(element)
   }
 
-  if (element.parent !== undefined) {
-    element.parent.removeChild(element)
-  } else {
-    delete this.elements[element.uid]
+  if (element) {
+    if (element.parent !== undefined) {
+      element.parent.removeChild(element)
+    } else {
+      delete this.elements[element.uid]
+    }
   }
 
   return this
