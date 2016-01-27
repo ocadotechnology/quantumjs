@@ -1,11 +1,9 @@
 @inline ../../../shared/shared.um
 
-@title Walkthrough
+@titlebar Setting Up | Walkthrough
 @author Charlie Frater
 @author James Smyth
 @date 12/01/2016
-
-@titlebar
 
 @topSection
   @breadcrumb
