@@ -156,7 +156,7 @@
         @returns Function
           @description: A function that renders the virtual dom content (created using @code[api(options)]) to html that can then be written to file
           @param file [Object]: The AST object with transformed content to convert to HTML
-          @returns Object: An object containing the output filename and stringified content
+          @returns Promise[Object]: A promise that yields an object containing the output filename and stringified content
             @property filename: The name for the file
             @property content: The stringified content
 
