@@ -241,10 +241,13 @@ p:last-child {
   top: 0;
   left: 0;
   right: 0;
-  background: #CC447B;
+  background: #00ADA8;
   color: white;
-  margin-top: 46px;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.hx-heading + .qm-docs-top-section {
+  margin-top: 46px;
 }
 
 .hx-heading + .qm-docs-content-section {

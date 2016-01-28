@@ -144,3 +144,7 @@ body {
 .qm-docs-content-section {
   flex-grow: 1;
 }*/
+
+.qm-docs-top-section {
+  background: #CC447B;
+}

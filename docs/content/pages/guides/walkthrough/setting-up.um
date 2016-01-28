@@ -13,7 +13,7 @@
     @item /guides/walkthrough/setting-up/: Setting Up
   @title Setting up
   @description
-    A tutorial that covers a complete walkthrough of the quantum library modules from installing the dependencies to viewing a completed example site.
+    This section of the walkthrough covers the setup required to make the site build a simple file from markup to html using quantum-hub.
 
 @contentSection
 
