@@ -22,7 +22,7 @@
 
 @bottomSection
   @paginationButtons
-    @previous /docs/walkthrough/flow-diagram: Flow Diagram
+    @previous /guides/walkthrough/flow-diagram: Flow Diagram
 
 
 @footer

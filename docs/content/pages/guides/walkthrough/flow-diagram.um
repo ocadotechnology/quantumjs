@@ -170,7 +170,7 @@
 
 @bottomSection
   @paginationButtons
-    @previous /docs/walkthrough/adding-content: Adding Content
-    @next /docs/walkthrough/custom-transforms: Adding a Custom Tranform
+    @previous /guides/walkthrough/adding-content: Adding Content
+    @next /guides/walkthrough/custom-transforms: Adding a Custom Tranform
 
 @footer

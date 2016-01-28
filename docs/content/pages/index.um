@@ -46,9 +46,9 @@
 
 @contentSection
   @notice TODO [warning]
-    Guides/Modules todos
-    Change the back/forward buttons on all pages to make more sense
-    All TODO sections in content folder
+    @p: Guides/Modules todos
+    @p: Change the back/forward buttons on all pages to make more sense
+    @p: All TODO sections in content folder
 
   @topic Guides
     @inline ../shared/guides.um

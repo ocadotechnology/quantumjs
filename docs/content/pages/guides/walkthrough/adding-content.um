@@ -35,8 +35,8 @@
 
 @bottomSection
   @paginationButtons
-    @previous /docs/walkthrough/setting-up: Setting Up
-    @next /docs/walkthrough/flow-diagram: Flow Diagram
+    @previous /guides/walkthrough/setting-up: Setting Up
+    @next /guides/walkthrough/flow-diagram: Flow Diagram
 
 
 @footer
