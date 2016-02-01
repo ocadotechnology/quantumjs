@@ -1,0 +1,8 @@
+@define transcludeTest
+  Top Text: {{ps}}
+  {{content}}
+  Bottom Text
+@transcludeTest Test 1: Middle Text
+@transcludeTest Test 2
+  @p: Paragraph
+  @div: div
