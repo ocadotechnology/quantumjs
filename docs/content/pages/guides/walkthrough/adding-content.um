@@ -126,6 +126,13 @@
                   \# Add the header text
                   @div .hx-titlebar-title: BeverageInc.
 
+      @sheet
+        The template uses the following site logo, which should be copied to the site:
+
+      @bold: content/resources/coffee.png
+
+      @image /resources/coffee.png
+
 
     @section Creating a home page
       @sheet

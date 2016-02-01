@@ -188,7 +188,7 @@ p:last-child {
   margin-bottom: 0;
   font-size: 32px;
   text-align: center;
-  color: #774A8A;
+  color: #006B68;
 }
 
 .qm-docs-summary-body {
@@ -200,13 +200,13 @@ p:last-child {
 .qm-docs-summary-link {
   padding: 0.5em;
   cursor: pointer;
-  color: #D44E7D;
+  color: #00ADA8;
   text-align: center;
   background: #F6F6F6;
 }
 
 .qm-docs-summary-link:hover {
-  background: #D44E7D;
+  background: #00ADA8;
   text-decoration: none;
   color: white;
 }
@@ -337,7 +337,7 @@ p:last-child {
 }
 
 .qm-docs-pagination-button:focus {
-  outline: solid 2px #CC447B;
+  outline: solid 2px #00ADA8;
 }
 
 .qm-docs-pagination-button-arrow {

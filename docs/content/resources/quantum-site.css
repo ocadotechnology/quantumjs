@@ -146,5 +146,18 @@ body {
 }*/
 
 .qm-docs-top-section {
-  background: #CC447B;
+  background: #CC447B !important;
+}
+.qm-docs-summary-header {
+  color: #774A8A !important;
+}
+.qm-docs-summary-link {
+  color: #D44E7D !important;
+}
+.qm-docs-summary-link:hover {
+  background: #D44E7D !important;
+  color: white !important;
+}
+.qm-docs-pagination-button:focus {
+  outline: solid 2px #CC447B;
 }
