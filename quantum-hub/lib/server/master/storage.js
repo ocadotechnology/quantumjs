@@ -12,7 +12,7 @@
   The storage library for the hub server. This expects a storage
   engine to be passed in - the storage engine will actually do the
   storage to something persistent - this just provides a convenient
-  api for working on the storage entites needed for quantumhub.
+  api for working on the storage entities needed for quantumhub.
 
 */
 

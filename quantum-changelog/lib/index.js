@@ -205,7 +205,7 @@ function cloneAndRemoveTags (options, version) {
   return versionClone
 }
 
-// processes a single changelog that contains a @process entity. Returns an array of entites
+// processes a single changelog that contains a @process entity. Returns an array of entities
 function process (wrapper, options) {
   var versionEntities = wrapper.selectAll('version')
   var versionEntitesMap = {}

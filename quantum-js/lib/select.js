@@ -9,7 +9,7 @@
   Select
   ======
 
-  An api for working with entites, which makes it easier to extract information from them.
+  An api for working with entities, which makes it easier to extract information from them.
   It is possible to work with the parsed ast without the use of this api -- this api
   simply makes some things easier.
 

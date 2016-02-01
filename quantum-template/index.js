@@ -187,7 +187,7 @@ function applyDefinitions (parsed, definitions) {
   } else if (definitions.hasOwnProperty(parsed.type)) {
     var selection = quantum.select(parsed)
 
-    // XXX: add sub-entites name.ps, name.cs, age.ps, age.cs, etc
+    // XXX: add sub-entities name.ps, name.cs, age.ps, age.cs, etc
     var variables = [
       {key: 'ps', value: selection.ps()},
       {key: 'cs', value: selection.cs()}
