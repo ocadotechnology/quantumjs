@@ -14,7 +14,7 @@
   is processing the token stream to produce an abstract syntax tree.
 
   The abstract syntax tree is made of entities that have a type, parameters and content.
-  The parameters are a list of strings. The content is a list of entites or strings (or a mixture).
+  The parameters are a list of strings. The content is a list of entities or strings (or a mixture).
 
 */
 
@@ -327,7 +327,7 @@ function ast (tokens) {
   var current = state
   var active = current
   var stack = []
-  var lineStackSize = 0 // when inline entites are used this gets incremented so that when you
+  var lineStackSize = 0 // when inline entities are used this gets incremented so that when you
   // go onto a new line we can go back to the correct location in the stack
 
   var l = tokens.length

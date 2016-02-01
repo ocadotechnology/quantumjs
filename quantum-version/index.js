@@ -117,7 +117,7 @@ function populateVersionList (entity, versions, currentVersion) {
 }
 
 // de-version the source (remove all @version entities)
-// this removes the @version entites recursively
+// this removes the @version entities recursively
 function removeVersions (entity) {
   if (Array.isArray(entity.content) && entity.type !== 'versionList') {
     entity.content = entity.content.filter(function (e) { return e.type !== 'version' })
@@ -205,7 +205,7 @@ function versionTransform (obj, options) {
         base = removeTags(quantum.select(base).clone(), removableTags)
       }
 
-      // replace the versioned parts for the @version entites
+      // replace the versioned parts for the @version entities
       var source = {content: content.clone().content}
 
       // insert the versioned content just before the first version entity

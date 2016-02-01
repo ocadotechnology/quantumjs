@@ -324,14 +324,14 @@ describe('parse', function () {
       ])
     })
 
-    it('two entites not indented', function () {
+    it('two entities not indented', function () {
       tokenize('@one\n@two').should.eql([
         {type: 'TYPE', value: 'one'},
         {type: 'TYPE', value: 'two'}
       ])
     })
 
-    it('two entites not indented with colon', function () {
+    it('two entities not indented with colon', function () {
       tokenize('@one:\n@two').should.eql([
         {type: 'TYPE', value: 'one'},
         { type: 'START_SAME_LINE_CONTENT' },
@@ -374,7 +374,7 @@ describe('parse', function () {
 
     })
 
-    it('basic entites one after another', function () {
+    it('basic entities one after another', function () {
       tokens = [
         { type: 'TYPE', value: 'fruits'},
         { type: 'TYPE', value: 'veg'}
@@ -1399,7 +1399,7 @@ describe('parse', function () {
       chai.expect(parse(source)).to.eql(expected)
     })
 
-    it('should have correct indentation when multiple entites on the same line are followed by another line', function () {
+    it('should have correct indentation when multiple entities on the same line are followed by another line', function () {
       var source = '@one: @two\n@three'
       var expected = {
         content: [
