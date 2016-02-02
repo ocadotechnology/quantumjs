@@ -1,6 +1,6 @@
 {
   "name": "quantum-diagram",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "description": "Quantum html entities for building simple diagrams",
   "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [

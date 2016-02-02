@@ -1,6 +1,6 @@
 {
   "name": "quantum-hub",
-  "version": "0.1.0",
+  "version": "0.9.0",
   "description": "A service which can host quantum sites & a command line tool for building docs locally and publishing",
   "main": "lib/index.js",
   "directories": {
