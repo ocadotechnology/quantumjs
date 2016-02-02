@@ -36,10 +36,13 @@ function Manager (opts) {
 
   var options = merge({
     authenticationMiddleware: undefined,
+    setupApp: undefined,
     builderVersion: '0.0.0',
     resourceDir: undefined,
     entityCacheTimeout: 60 * 60 * 1000, // cache entity values for 1 hour (by default)
-    entityRefreshInterval: 60 * 1000 // replace cached values every minute (by default)
+    entityRefreshInterval: 60 * 1000, // replace cached values every minute (by default)
+    port: 3030,
+    ssl: {}
   }, opts)
 
   this.options = options
@@ -55,7 +58,10 @@ function Manager (opts) {
   var server = new Server(this, this.storage, {
     authenticationMiddleware: options.authenticationMiddleware,
     builderVersion: options.builderVersion,
-    resourceDir: options.resourceDir
+    resourceDir: options.resourceDir,
+    setupApp: options.setupApp,
+    ssl: options.ssl,
+    port: options.port
   })
 
   cluster.on('fork', function (worker) {

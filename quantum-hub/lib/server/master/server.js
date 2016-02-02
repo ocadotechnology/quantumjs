@@ -17,6 +17,8 @@ var express = require('express')
 var api = require('./rest-api')
 var serve = require('./serve')
 var merge = require('merge')
+var https = require('https')
+var fs = require('fs')
 
 function fallback404Handler (req, res, next) {
   res.status(404)
@@ -28,10 +30,16 @@ function Server (manager, storage, opts) {
   var options = merge({
     authenticationMiddleware: undefined,
     builderVersion: undefined,
-    resourceDir: undefined
+    resourceDir: undefined,
+    port: 3030,
+    ssl: undefined
   }, opts)
 
   var app = express()
+
+  if (options.setupApp) {
+    options.setupApp(app)
+  }
 
   app.use('/api/v1/', api(manager, storage, {
     builderVersion: options.builderVersion,
@@ -57,9 +65,16 @@ function Server (manager, storage, opts) {
 
   app.use(fallback404Handler)
 
-  var server = app.listen(3030, function () {
-    console.log('listening on port ' + server.address().port)
-  })
+  if (options.ssl) {
+    https.createServer({
+      cert: fs.readFileSync(options.ssl.certFilename),
+      key: fs.readFileSync(options.ssl.keyFilename)
+    }, app).listen(options.port)
+  } else {
+    var server = app.listen(options.port, function () {
+      console.log('listening on port ' + server.address().port)
+    })
+  }
 
 }
 
