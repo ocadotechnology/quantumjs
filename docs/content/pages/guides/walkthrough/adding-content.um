@@ -157,60 +157,157 @@
             @sheet
               This api has broken the digital wall and provides the functionality to make real tea and coffee using Javascript.
 
-    @section Adding the api
-      @sheet
-        The first step to add the api is to install the dependency:
+  @topic Adding the api
+    @sheet
+      The first step to add the api is to install the dependency:
 
-      @codeblock bash
-        npm install --save quantum-api
+    @codeblock bash
+      npm install --save quantum-api
 
-      @sheet
-        Then add the script to build/build.js to include api in the build process:
+    @sheet
+      Then add the script to build/build.js to include api in the build process:
 
-      @codeblock js
-        // Add this to the top of the page, alongside the other require statements
-        var api = require('api')
+    @codeblock js
+      // Add this to the top of the page, alongside the other require statements
+      var api = require('api')
 
-        ...
+      ...
 
-        var htmlOptions = {
-          transforms: {
-            html: html.transforms,
-            docs: docs(),
-            api: api() // Add the api renderers
-          }
+      var htmlOptions = {
+        transforms: {
+          html: html.transforms,
+          docs: docs(),
+          api: api() // Add the api renderers
         }
+      }
 
+      ...
+
+    @sheet
+      The api can then be added as a new topic in the contentSection. For this
+      walkthrough, we'll document the tea function:
+
+    @@codeblock um
+      @topic About
         ...
 
-      @sheet
-        The api can then be added as a new topic in the contentSection. For this
-        walkthrough, we'll document the tea function:
+      \# The api section
+      @topic Api
+        \# Define the api content area
+        @api
+          @function tea
+            @description: A function for making cups of tea
+            @param? options [Object]: The options to use when making a cup of tea
+              @property sugar [Number]: The number of sugars to add
+                @default: 0
+              @property milk [String/Boolean]: A string indicating the type of milk to use, can be 'skimmed', 'semi-skimmed' or 'full-cream'
+                @default: true
 
-      @@codeblock um
-        @topic About
-          ...
 
-        \# The api section
-        @topic Api
-          \# Define the api content area
+  @topic Adding versioning to the api
+    @sheet
+      Again, the first step for adding versioned content is to install the dependency:
+
+    @codeblock bash
+      npm install --save quantum-version
+
+    @sheet
+      Then add the script to build/build.js to include template in the build process:
+
+    @codeblock js
+      // Add this to the top of the page, alongside the other require statements
+      var version = require('version')
+
+      ...
+
+      return Promise.resolve(obj)
+        .then(template())
+        .then(version()) // Add this line to the build pipeline, this includes the version functionality.
+        .map(html(htmlOptions))
+        .map(html.stringify())
+
+      ...
+
+    @sheet
+      Versions can then be defined in the content. For this example, we'll add
+      versioning to the api by adding the 'coffee' function, as well as making
+      some changes to the 'tea' function.
+
+      Start by adding a @(@versionList) to the top of the file:
+
+    @@codeblock um
+      @versionList
+        @version 1.0.0
+        @version 2.0.0
+        @version 3.0.0
+
+    @sheet
+      The versions that will be used should be defined before adding the versioning
+      otherwise quantum-version will not version any content. For example, if you
+      were to add content for version 1.1.0, "@(@version 1.1.0)" should be added to
+      the version list.
+
+      Now we've set up the file ready for 3 versions, we'll add some versioned content.
+
+    @@codeblock um
+      @topic Api
+        \# Define version 1.0.0
+        @version 1.0.0
           @api
             @function tea
+              @added: Added the tea function in this version
               @description: A function for making cups of tea
               @param? options [Object]: The options to use when making a cup of tea
-                @property sugar [Number]: The number of sugars to add
+                @property sugars [Number]: The number of sugars to add
                   @default: 0
                 @property milk [String/Boolean]: A string indicating the type of milk to use, can be 'skimmed', 'semi-skimmed' or 'full-cream'
                   @default: true
 
+        \# Define version 2.0.0
+        @version 2.0.0
+          @api
+            @function tea
+              @param? options [Object]
+                @property sugars [Number]
+                @property type [String]: The type of teabag to use, can be 'english-breakfast', 'earl-grey' or 'green'
+                  @default: 'english-breakfast'
 
-    @section Adding versioning to the api
-      @sheet
-        TODO
+            @function coffee
+              @description: A function for making cups of coffee
+              @param? options [Object]: The options to use when making a cup of coffee
+                @property sugars [Number]: The number of sugars to add
+                  @default: 0
+                @property milk [String/Boolean]: A string indicating the type of milk to use, can be 'skimmed', 'semi-skimmed' or 'full-cream'
+                  @default: true
 
-    @section Adding a changelog
-      @sheet
-        TODO
+        \# Define version 3.0.0
+        @version 3.0.0
+          @api
+            @function coffee
+              @param? options [Object]
+                @property type [String]: The type of teabag to use, can be 'capuccino', 'americano' or 'latte'
+                  @default: 'americano'
+                  @added: Added the type option to the coffee function
+
+    @sheet
+      This provides us wth a versioned api. To switch between versions, the
+      following needs to be added to the titlebar template:
+
+    @@codeblock um
+      @div .hx-titlebar-title: BeverageInc.
+      \# New content
+      @div .hx-section
+      @versionSelector: @versionList
+
+    @sheet
+      A version dropdown will now be available on the right hand side of the titlebar.
+      Navigating to '/' will show the latest version, with each version available under
+      '/x.0.0/'.
+
+
+  @topic Adding a changelog
+    @sheet
+      TODO
 
 @bottomSection
   @paginationButtons

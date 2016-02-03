@@ -159,5 +159,5 @@ body {
   color: white !important;
 }
 .qm-docs-pagination-button:focus {
-  outline: solid 2px #CC447B;
+  outline: solid 2px #CC447B !important;
 }

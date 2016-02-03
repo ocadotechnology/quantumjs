@@ -16,10 +16,6 @@
     This section of the walkthrough covers the setup required to make the site build a simple file from markup to html using quantum-hub.
 
 @contentSection
-
-  @notice TODO [warning]
-    Make example repo + add link to example repo
-
   @sheet
     In this tutorial we are going to cover the process of documenting a ficticous hot drink delivery service.
 

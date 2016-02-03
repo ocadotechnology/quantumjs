@@ -13,6 +13,9 @@
     from installing the dependencies to viewing a completed example site.
 
 @contentSection
+  @notice TODO [warning]
+    Make example repo + add link to example repo
+
   @group
     @summary [1) Setting Up]
       @link /guides/walkthrough/setting-up/: Go to walkthrough page
