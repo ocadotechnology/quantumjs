@@ -306,12 +306,12 @@ p:last-child {
   background: #333;
 }
 
-.qm-docs-pagination-buttons {
+.qm-docs-related-buttons {
   display: flex;
   justify-content: center;
 }
 
-.qm-docs-pagination-button {
+.qm-docs-related-button {
   border: none;
   background: rgba(255, 255, 255, 0.05);
   color: white;
@@ -323,40 +323,19 @@ p:last-child {
   margin: 0.5em;
 }
 
-.qm-docs-pagination-button.qm-docs-pagination-button-prev {
-  text-align: right;
-}
-
-.qm-docs-pagination-button.qm-docs-pagination-button-next {
-  text-align: left;
-}
-
-.qm-docs-pagination-button:hover {
+.qm-docs-related-button:hover {
   text-decoration: none;
   background: rgba(255, 255, 255, 0.1)
 }
 
-.qm-docs-pagination-button:focus {
+.qm-docs-related-button:focus {
   outline: solid 2px #00ADA8;
 }
 
-.qm-docs-pagination-button-arrow {
-  opacity: 0.5;
-  font-size: 48px;
-}
-
-.qm-docs-pagination-button.qm-docs-pagination-button-prev .qm-docs-pagination-button-arrow {
-  margin-right: 0.5em;
-}
-
-.qm-docs-pagination-button.qm-docs-pagination-button-next .qm-docs-pagination-button-arrow {
-  margin-left: 0.5em;
-}
-
-.qm-docs-pagination-button-description {
+.qm-docs-related-button-description {
   opacity: 0.8;
 }
 
-.qm-docs-pagination-button-direction {
+.qm-docs-related-button-title {
   font-size: 18px;
 }

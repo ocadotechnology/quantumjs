@@ -176,37 +176,18 @@ transforms.bottomSection = function (entity, page, transforms) {
     .add(entity.transform(transforms))
 }
 
-transforms.paginationButtons = function (entity, page, transforms) {
-  var prevButton = undefined
-  var nextButton = undefined
+transforms.relatedButtons = function (entity, page, transforms) {
+  var buttons = entity.selectAll('button').map(function (e) {
+    return page.create('a')
+      .attr('href', e.ps())
+      .class('qm-docs-related-button')
+      .add(page.create('div')
+        .add(page.create('div').class('qm-docs-related-button-title').text(e.select('title').cs()))
+        .add(page.create('div').class('qm-docs-related-button-description').text(e.select('description').cs())))
+  })
 
-  if (entity.has('previous')) {
-    previous = entity.select('previous')
-    prevButton = page.create('a')
-      .attr('href', previous.ps())
-      .class('qm-docs-pagination-button qm-docs-pagination-button-prev')
-      .add(page.create('div')
-        .add(page.create('i').class('qm-docs-pagination-button-arrow fa fa-chevron-left')))
-      .add(page.create('div')
-        .add(page.create('div').class('qm-docs-pagination-button-direction').text('Previous'))
-        .add(page.create('div').class('qm-docs-pagination-button-description').text(previous.cs())))
-  }
-
-  if (entity.has('next')) {
-    next = entity.select('next')
-    nextButton = page.create('a')
-      .attr('href', next.ps())
-      .class('qm-docs-pagination-button qm-docs-pagination-button-next')
-      .add(page.create('div')
-        .add(page.create('div').class('qm-docs-pagination-button-direction').text('Next'))
-        .add(page.create('div').class('qm-docs-pagination-button-description').text(next.cs())))
-      .add(page.create('div')
-        .add(page.create('i').class('qm-docs-pagination-button-arrow fa fa-chevron-right')))
-  }
-
-  return page.create('div').class('qm-docs-pagination-buttons')
-    .add(prevButton)
-    .add(nextButton)
+  return page.create('div').class('qm-docs-related-buttons')
+    .add(buttons)
 
 }
 
