@@ -21,9 +21,13 @@
       @link /guides/walkthrough/setting-up/: Go to walkthrough page
     @summary [2) Adding Content]
       @link /guides/walkthrough/adding-content/: Go to walkthrough page
-    @summary [3) Flow Diagram]
+    @summary [3) Adding an Api]
+      @link /guides/walkthrough/adding-an-api/: Go to walkthrough page
+    @summary [4) Adding a Changelog]
+      @link /guides/walkthrough/adding-a-changelog/: Go to walkthrough page
+    @summary [5) Flow Diagram]
       @link /guides/walkthrough/flow-diagram/: Go to walkthrough page
-    @summary [4) Custom Transforms]
+    @summary [6) Custom Transforms]
       @link /guides/walkthrough/custom-transforms/: Go to walkthrough page
 
 @footer

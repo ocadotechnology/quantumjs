@@ -1,0 +1,41 @@
+@inline ../../../shared/shared.um
+
+@titlebar
+@author Charlie Frater
+@author James Smyth
+@date 12/01/2016
+
+@topSection
+  @breadcrumb
+    @item /: Home
+    @item /guides/: Guides
+    @item /guides/walkthrough/: Walkthrough
+    @item /guides/walkthrough/adding-a-changelog/: Adding a Changelog
+  @title Adding a Changelog
+  @description
+    This section of the walkthrough covers the creation of a changelog page using a versioned api.
+
+@contentSection
+  @topic Adding a changelog
+    @sheet
+      TODO
+
+      install dependency
+
+      add to build script
+
+      move api content to content/shared/api.um and inline on index.um
+
+      create content/pages/changelog.um and inline shared/api.um, make sure backlink is added to home page
+
+      add link to changelog on home page
+
+
+
+@bottomSection
+  @paginationButtons
+    @previous /guides/walkthrough/adding-an-api: Adding an api
+    @next /guides/walkthrough/flow-diagram: Flow Diagram
+
+
+@footer
