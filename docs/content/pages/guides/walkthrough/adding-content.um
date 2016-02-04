@@ -17,29 +17,6 @@
 
 
 @contentSection
-
-  # Move onto versioning
-
-  # install version
-  # add version to build script
-
-  # add version tags / versioned content
-  # add @versionSelector: @versionList to shared
-
-  # add coffee function to api
-  # update tea options
-
-  # move onto changelog
-
-  # install changelog
-  # add changelog to build script
-
-  # move api to /shared/api
-
-  # add changelog to page
-  # populate
-
-
   @topic Adding content to the site
     @section Install and build Hexagon.js
       @sheet
@@ -104,7 +81,7 @@
 
         In this walkthrough, we only need one template for the titlebar:
 
-      @bold: shared/shared.um
+      @bold: content/shared/shared.um
       @@codeblock um
         \# Include the Hexagon library on all pages that include this file.
         @stylesheet [/resources/hexagon-js/hexagon.css]
@@ -136,7 +113,7 @@
 
     @section Creating a home page
       @sheet
-        The next step is to create the home page for the site.
+        The next step is to create the home page for the site using the template you just created
 
       @bold: content/pages/index.um
       @@codeblock um
@@ -157,65 +134,13 @@
             @sheet
               This api has broken the digital wall and provides the functionality to make real tea and coffee using Javascript.
 
-    @section Adding the api
       @sheet
-        The first step to add the api is to install the dependency:
-
-      @codeblock bash
-        npm install --save quantum-api
-
-      @sheet
-        Then add the script to build/build.js to include api in the build process:
-
-      @codeblock js
-        // Add this to the top of the page, alongside the other require statements
-        var api = require('api')
-
-        ...
-
-        var htmlOptions = {
-          transforms: {
-            html: html.transforms,
-            docs: docs(),
-            api: api() // Add the api renderers
-          }
-        }
-
-        ...
-
-      @sheet
-        The api can then be added as a new topic in the contentSection. For this
-        walkthrough, we'll document the tea function:
-
-      @@codeblock um
-        @topic About
-          ...
-
-        \# The api section
-        @topic Api
-          \# Define the api content area
-          @api
-            @function tea
-              @description: A function for making cups of tea
-              @param? options [Object]: The options to use when making a cup of tea
-                @property sugar [Number]: The number of sugars to add
-                  @default: 0
-                @property milk [String/Boolean]: A string indicating the type of milk to use, can be 'skimmed', 'semi-skimmed' or 'full-cream'
-                  @default: true
-
-
-    @section Adding versioning to the api
-      @sheet
-        TODO
-
-    @section Adding a changelog
-      @sheet
-        TODO
+        Content can be added easily in this way by adding more pages and folders as required.
 
 @bottomSection
   @paginationButtons
     @previous /guides/walkthrough/setting-up: Setting Up
-    @next /guides/walkthrough/flow-diagram: Flow Diagram
+    @next /guides/walkthrough/adding-an-api: Adding an api
 
 
 @footer
