@@ -17,6 +17,7 @@ var express = require('express')
 var api = require('./rest-api')
 var serve = require('./serve')
 var merge = require('merge')
+var http = require('http')
 var https = require('https')
 var fs = require('fs')
 
