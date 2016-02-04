@@ -24,12 +24,13 @@ function start (opts) {
   var options = merge({
     resourceDir: undefined,
     pipeline: undefined,
-    includeServerCommands: true
+    includeServerCommands: true,
+    version: undefined
   }, opts)
 
   // notify the user if they are behind the times. packageName should be supplied for this feature to work.
   if (options.packageName) {
-    isOutdated(options.packageName, require('../../package.json').version, function (err, res) {
+    isOutdated(options.packageName, options.version, function (err, res) {
       if (!err) {
         console.log('The latest version of this app is %s', res.version)
         console.log('Please update it with: npm update -g ' + packageName)
@@ -38,7 +39,7 @@ function start (opts) {
   }
 
   program
-    .version(require('../../package.json').version)
+    .version(options.version)
     .description('A command line utility for building a website using quantum.js')
 
   program

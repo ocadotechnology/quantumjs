@@ -12,6 +12,7 @@ function resolveOptions (options) {
     dir: process.cwd(),
     pipeline: undefined,
     resourceDir: undefined,
+    isLocal: false,
     dest: path.join(process.cwd(), 'target'),
     config: {
       pages: '**/*.um',

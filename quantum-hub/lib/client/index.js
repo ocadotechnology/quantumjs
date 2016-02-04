@@ -198,7 +198,8 @@ function copyResources (options) {
 function build (opts) {
   var options = merge({
     dir: process.cwd(),
-    dest: 'target'
+    dest: 'target',
+    isLocal: true
   }, opts)
 
   return buildSite(options)

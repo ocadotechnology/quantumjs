@@ -32,6 +32,7 @@ function Server (manager, storage, opts) {
     builderVersion: undefined,
     resourceDir: undefined,
     port: 3030,
+    redirectorPort: 3020,
     ssl: undefined
   }, opts)
 
@@ -70,6 +71,17 @@ function Server (manager, storage, opts) {
       cert: fs.readFileSync(options.ssl.certFilename),
       key: fs.readFileSync(options.ssl.keyFilename)
     }, app).listen(options.port)
+
+    var redirectServer = http.createServer(function (req, res) {
+      res.writeHead(301, {
+        Location: 'https://' + req.headers.host + req.url
+      })
+      res.end()
+    }).listen(3020, function () {
+      var host = redirectServer.address().address
+      var port = redirectServer.address().port
+      console.info('http redirector service listening at http://%s:%s', host, port)
+    })
   } else {
     var server = app.listen(options.port, function () {
       console.log('listening on port ' + server.address().port)

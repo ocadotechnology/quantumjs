@@ -42,7 +42,7 @@ function Manager (opts) {
     entityCacheTimeout: 60 * 60 * 1000, // cache entity values for 1 hour (by default)
     entityRefreshInterval: 60 * 1000, // replace cached values every minute (by default)
     port: 3030,
-    ssl: {}
+    ssl: undefined
   }, opts)
 
   this.options = options
