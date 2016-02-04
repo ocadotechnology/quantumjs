@@ -25,7 +25,8 @@ function start (opts) {
     resourceDir: undefined,
     pipeline: undefined,
     includeServerCommands: true,
-    version: undefined
+    version: undefined,
+    ca: undefined
   }, opts)
 
   // notify the user if they are behind the times. packageName should be supplied for this feature to work.
@@ -100,7 +101,8 @@ function start (opts) {
       return client.setRevision({
         dir: dir || process.cwd(),
         hubname: hubname,
-        revision: revision
+        revision: revision,
+        ca: options.ca
       }).then(function () {
         console.log('Live version changed to ' + chalk.yellow(revision))
       })
@@ -113,7 +115,8 @@ function start (opts) {
       .action(function (hubname, dir, cliOptions) {
         client.publish({
           dir: dir || process.cwd(),
-          hubname: hubname
+          hubname: hubname,
+          ca: options.ca
         }).then(function (revision) {
           console.log('Revision ' + chalk.yellow(revision) + ' published')
           if (cliOptions.update) {

@@ -101,7 +101,12 @@ function publish (options) {
 
           var projectRcDetails = rc[project.projectId][options.hubname]
 
-          zipfile.outputStream.pipe(request.post(projectRcDetails.url + '/api/v1/projects/' + project.projectId + '?key=' + projectRcDetails.secret + '&projectId=' + project.projectId, {}, function (err, res, body) {
+          zipfile.outputStream.pipe(request.post({
+            url: projectRcDetails.url + '/api/v1/projects/' + project.projectId + '?key=' + projectRcDetails.secret + '&projectId=' + project.projectId,
+            agentOptions: {
+              ca: options.ca
+            }
+          }, function (err, res, body) {
             if (err) {
               reject(err)
             } else {
@@ -153,7 +158,10 @@ function setRevision (options) {
         url: projectRcDetails.url + '/api/v1/projects/' + project.projectId + '/revision?key=' + projectRcDetails.secret + '&projectId=' + project.projectId,
         method: 'POST',
         json: true,
-        body: {revision: options.revision}
+        body: {revision: options.revision},
+        agentOptions: {
+          ca: options.ca
+        }
       }, function (err, res, body) {
         if (res.statusCode === 200) {
           resolve()
