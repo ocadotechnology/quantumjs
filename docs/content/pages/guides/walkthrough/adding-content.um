@@ -17,17 +17,8 @@
 
 
 @contentSection
-
-  # Move onto versioning
-
-  # install version
-  # add version to build script
-
-  # add version tags / versioned content
-  # add @versionSelector: @versionList to shared
-
-  # add coffee function to api
-  # update tea options
+  @notice TODO [warning]
+    Split this up into smaller chunks, it's tldr; at the moment: adding content, adding an api, adding versioned pages, adding a changelog
 
   # move onto changelog
 
@@ -104,7 +95,7 @@
 
         In this walkthrough, we only need one template for the titlebar:
 
-      @bold: shared/shared.um
+      @bold: content/shared/shared.um
       @@codeblock um
         \# Include the Hexagon library on all pages that include this file.
         @stylesheet [/resources/hexagon-js/hexagon.css]
@@ -185,7 +176,19 @@
 
     @sheet
       The api can then be added as a new topic in the contentSection. For this
-      walkthrough, we'll document the tea function:
+      walkthrough, we'll document the ficticious 'tea' function:
+
+    @codeblock js
+      function tea (options) {
+        if(options === undefined) { options = {} }
+        if(options.sugar === undefined) { options.sugar = 0 }
+        if(options.milk === undefined) { options.milk = true }
+
+        ...// Make tea
+      }
+
+    @sheet
+      Then add the documentation for the tea function as a topic below the 'About' section:
 
     @@codeblock um
       @topic About
@@ -202,6 +205,7 @@
                 @default: 0
               @property milk [String/Boolean]: A string indicating the type of milk to use, can be 'skimmed', 'semi-skimmed' or 'full-cream'
                 @default: true
+
 
 
   @topic Adding versioning to the api
@@ -249,6 +253,7 @@
 
       Now we've set up the file ready for 3 versions, we'll add some versioned content.
 
+    @bold: content/pages/index.um
     @@codeblock um
       @topic Api
         \# Define version 1.0.0
@@ -291,8 +296,9 @@
 
     @sheet
       This provides us wth a versioned api. To switch between versions, the
-      following needs to be added to the titlebar template:
+      following needs to be added to the titlebar template, alongside the title:
 
+    @bold: content/shared/shared.um
     @@codeblock um
       @div .hx-titlebar-title: BeverageInc.
       \# New content
