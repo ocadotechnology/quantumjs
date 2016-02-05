@@ -16,20 +16,104 @@
     This section of the walkthrough covers the creation of a changelog page using a versioned api.
 
 @contentSection
-  @topic Adding a changelog
+  @topic Installing the dependency
     @sheet
-      TODO
+      Creating a changelog using versioned api content is an easy process.
 
-      install dependency
+      The first step is to install the quantum-changelog dependency and add the relevant build scripts:
 
-      add to build script
+    @codeblock bash
+      npm install --save quantum-changelog
 
-      move api content to content/shared/api.um and inline on index.um
+    @sheet
+      Then add the script to build/build.js to include template in the build process:
 
-      create content/pages/changelog.um and inline shared/api.um, make sure backlink is added to home page
+    @bold: build/build.js
+    @codeblock js
+      // Add this to the top of the page, alongside the other require statements
+      var changelog = require('changelog')
 
-      add link to changelog on home page
+      ...
 
+        var htmlOptions = {
+          transforms: {
+            html: html.transforms,
+            docs: docs(),
+            api: api(),
+            changelog: changelog.transforms() // Add the changelog transforms
+          }
+        }
+
+      ...
+
+      ...
+
+      return Promise.resolve(obj)
+        .then(template())
+        .then(changelog()) // Add this line to the build pipeline, this includes the changelog functionality.
+        .then(version())
+        .map(html(htmlOptions))
+        .map(html.stringify())
+
+      ...
+
+    @sheet
+      Once the changelog has been installed and added to the build script, the
+      next step is to create the changelog page
+
+
+
+  @topic Adding the changelog page
+    @sheet
+      First, create a link on the home page to the changelog at the bottom of the api section:
+
+    @bold: content/pages/index.um
+    @@codeblock um
+      @a .hx-btn.hx-action: Changelog
+        @attr href: changelog.html
+
+    @sheet
+      Then create the page with content:
+
+    @bold: content/pages/changelog.um
+    @@codeblock um
+      @inline ../shared/shared.um
+
+      @titlebar
+
+      @topSection
+        @breadcrumb
+          @item /: Home
+          \# Add the crumbtrail link for the changelog
+          @item /changelog.html: Changelog
+        @title Changelog
+        @description: An api for making tea and coffee using Javascript
+
+      @contentSection
+        @topic Changes
+          \# define the entity to place the changelog inside.
+          @changelog.wrapper
+            @process
+              \# Inline the pages with api content that you wish to use
+              @inline index.um
+
+              \# If there is only one api, it will be rendered in a more readable manner using this option
+              @renderSingleItemInRoot
+
+            @version 1.0.0
+              \# Descriptions can be added to each version but are not required
+              @description: Added the initial version of the tea function.
+
+            @version 2.0.0
+            @version 3.0.0
+
+        \# Add a key to the page, illustrating what each of the icons means
+        @topic Key
+          @changelog.key
+
+    @sheet
+      This will process all the @(@version) entities found in index.um and generate
+      a versioned changelog, along with a key illustrating what each of the icons means.
 
 
 @bottomSection

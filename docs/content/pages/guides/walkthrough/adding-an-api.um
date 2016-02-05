@@ -17,7 +17,7 @@
 
 
 @contentSection
-  @topic Adding the api
+  @topic Installing the dependency
     @sheet
       The first step to add the api is to install the dependency:
 
@@ -56,8 +56,9 @@
         ...// Make tea
       }
 
+  @topic Adding the basic api
     @sheet
-      Then add the documentation for the tea function as a topic below the 'About' section:
+      The next step is to add the documentation for the tea function as a topic below the 'About' section:
 
     @@codeblock um
       @topic About
@@ -77,59 +78,175 @@
 
 
 
-    @section Adding versioning to the api
-      @sheet
-        It is a realtively simple process that allows an incrementally versioned api to be created.
+  @topic Adding versioning to the api
+    @sheet
+      It is a realtively simple process that allows an incrementally versioned api to be created.
 
-        The first step is to install the quantum-version dependency and add the relevant build scripts:
+      The first step is to install the quantum-version dependency and add the relevant build scripts:
 
-      @codeblock bash
-        npm install --save quantum-version
+    @codeblock bash
+      npm install --save quantum-version
 
-      @sheet
-        Then add the script to build/build.js to include template in the build process:
+    @sheet
+      Then add the script to build/build.js to include template in the build process:
 
-      @bold: build/build.js
-      @codeblock js
-        // Add this to the top of the page, alongside the other require statements
-        var version = require('version')
+    @bold: build/build.js
+    @codeblock js
+      // Add this to the top of the page, alongside the other require statements
+      var version = require('version')
 
-        ...
+      ...
 
-        return Promise.resolve(obj)
-          .then(template())
-          .then(version()) // Add this line to the build pipeline, this includes the version functionality.
-          .map(html(htmlOptions))
-          .map(html.stringify())
+      return Promise.resolve(obj)
+        .then(template())
+        .then(version()) // Add this line to the build pipeline, this includes the version functionality.
+        .map(html(htmlOptions))
+        .map(html.stringify())
 
-        ...
+      ...
 
-      @sheet
-        Versions can then be defined in the content. For this example, we'll add
-        versioning to the api by adding the 'coffee' function, as well as making
-        some changes to the 'tea' function.
+    @sheet
+      Versions can then be defined in the content. For this example, we'll add
+      versioning to the api by adding the 'coffee' function, as well as making
+      some changes to the 'tea' function.
 
-        Start by adding a @(@versionList) to the top of the file:
+      Start by adding a @(@versionList) to the top of the file:
 
-      @bold: content/pages/index.um
-      @@codeblock um
-        @versionList
-          @version 1.0.0
-          @version 2.0.0
-          @version 3.0.0
+    @bold: content/pages/index.um
+    @@codeblock um
+      @versionList
+        @version 1.0.0
+        @version 2.0.0
+        @version 3.0.0
 
-      @sheet
-        The versions that will be used should be defined before adding the versioning
-        otherwise quantum-version will not version any content. For example, if you
-        were to add content for version 1.1.0, "@(@version 1.1.0)" should be added to
-        the version list.
+    @sheet
+      The versions that will be used should be defined before adding the versioning
+      otherwise quantum-version will not version any content. For example, if you
+      were to add content for version 1.1.0, "@(@version 1.1.0)" should be added to
+      the version list.
 
-        Now we've set up the file ready for 3 versions, we'll add some versioned content.
+      Now we've set up the file ready for 3 versions, we'll add some versioned content.
 
-      @bold: content/pages/index.um
-      @@codeblock um
+    @bold: content/pages/index.um
+    @@codeblock um
+      @topic Api
+        \# Define version 1.0.0
+        @version 1.0.0
+          @api
+            @function tea
+              @added: Added the tea function in this version
+              @description: A function for making cups of tea
+              @param? options [Object]: The options to use when making a cup of tea
+                @property sugars [Number]: The number of sugars to add
+                  @default: 0
+                @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
+                  @default: 'skimmed'
+
+        \# Define version 2.0.0
+        @version 2.0.0
+          @api
+            @function tea
+              @param? options [Object]
+                @property sugars [Number]
+                @property type [String]: The type of teabag to use, can be 'english-breakfast', 'earl-grey' or 'green'
+                  @default: 'english-breakfast'
+
+            @function coffee
+              @description: A function for making cups of coffee
+              @param? options [Object]: The options to use when making a cup of coffee
+                @property sugars [Number]: The number of sugars to add
+                  @default: 0
+                @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
+                  @default: 'skimmed'
+
+        \# Define version 3.0.0
+        @version 3.0.0
+          @api
+            @function coffee
+              @param? options [Object]
+                @property type [String]: The type of teabag to use, can be 'capuccino', 'americano' or 'latte'
+                  @default: 'americano'
+                  @added: Added the type option to the coffee function
+
+    @sheet
+      This provides us wth a versioned api. To switch between versions, the
+      following needs to be added to the titlebar template, alongside the title:
+
+    @bold: content/shared/shared.um
+    @@codeblock um
+      @div .hx-titlebar-title: BeverageInc.
+      \# New content
+      @div .hx-section
+      @versionSelector: @versionList
+
+    @sheet
+      A version dropdown will now be available on the right hand side of the titlebar.
+      Navigating to '/' will show the latest version, with each version available under
+      '/x.0.0/'.
+
+  @topic Result
+    @sheet
+      At the end of this section, the home page and build structure should look like this:
+
+    @bold: build/build.js
+    @codeblock js
+      var path = require('path')
+      var html = require('quantum-html')
+      var docs = require('quantum-docs')
+      var hub = require('quantum-hub')
+      var api = require('quantum-api')
+      var template = require('quantum-template')
+      var version = require('quantum-version')
+      var Promise = require('bluebird') // Promise Polyfill
+
+      function pipeline () {
+        var htmlOptions = {
+          transforms: {
+            html: html.transforms,
+            docs: docs(),
+            api: api()
+          }
+        }
+
+        // returns a function that compiles a page out to html
+        return function (obj) {
+          return Promise.resolve(obj)
+            .then(template())
+            .then(version())
+            .map(html(htmlOptions))
+            .map(html.stringify())
+        }
+      }
+
+      hub.client.watch({
+        pipeline: pipeline,
+        port: 5555,
+        config: {
+          pages: 'content/pages/**/*.um',
+          base: 'content/pages'
+        },
+        resourceDir: path.join(__dirname, '..', 'content', 'resources')
+      })
+
+
+    @bold: content/pages/index.um
+    @@codeblock um
+      @inline ../shared/shared.um
+
+      @titlebar
+
+      @topSection
+        @breadcrumb
+          @item /: Home
+        @title Making Tea and Coffee
+        @description: An api for making tea and coffee using Javascript
+
+      @contentSection
+        @topic About
+          @sheet
+            This api has broken the digital wall and provides the functionality to make real tea and coffee using Javascript.
+
         @topic Api
-          \# Define version 1.0.0
           @version 1.0.0
             @api
               @function tea
@@ -141,7 +258,6 @@
                   @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
                     @default: 'skimmed'
 
-          \# Define version 2.0.0
           @version 2.0.0
             @api
               @function tea
@@ -158,7 +274,6 @@
                   @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
                     @default: 'skimmed'
 
-          \# Define version 3.0.0
           @version 3.0.0
             @api
               @function coffee
@@ -166,120 +281,6 @@
                   @property type [String]: The type of teabag to use, can be 'capuccino', 'americano' or 'latte'
                     @default: 'americano'
                     @added: Added the type option to the coffee function
-
-      @sheet
-        This provides us wth a versioned api. To switch between versions, the
-        following needs to be added to the titlebar template, alongside the title:
-
-      @bold: content/shared/shared.um
-      @@codeblock um
-        @div .hx-titlebar-title: BeverageInc.
-        \# New content
-        @div .hx-section
-        @versionSelector: @versionList
-
-      @sheet
-        A version dropdown will now be available on the right hand side of the titlebar.
-        Navigating to '/' will show the latest version, with each version available under
-        '/x.0.0/'.
-
-    @section Versioned Api
-      @sheet
-        At the end of this section, the home page and build structure should look like this:
-
-      @bold: build/build.js
-      @codeblock js
-        var path = require('path')
-        var html = require('quantum-html')
-        var docs = require('quantum-docs')
-        var hub = require('quantum-hub')
-        var api = require('quantum-api')
-        var template = require('quantum-template')
-        var version = require('quantum-version')
-        var Promise = require('bluebird') // Promise Polyfill
-
-        function pipeline () {
-          var htmlOptions = {
-            transforms: {
-              html: html.transforms,
-              docs: docs(),
-              api: api()
-            }
-          }
-
-          // returns a function that compiles a page out to html
-          return function (obj) {
-            return Promise.resolve(obj)
-              .then(template())
-              .then(version())
-              .map(html(htmlOptions))
-              .map(html.stringify())
-          }
-        }
-
-        hub.client.watch({
-          pipeline: pipeline,
-          port: 5555,
-          config: {
-            pages: 'content/pages/**/*.um',
-            base: 'content/pages'
-          },
-          resourceDir: path.join(__dirname, '..', 'content', 'resources')
-        })
-
-
-      @bold: content/pages/index.um
-      @@codeblock um
-        @inline ../shared/shared.um
-
-        @titlebar
-
-        @topSection
-          @breadcrumb
-            @item /: Home
-          @title Making Tea and Coffee
-          @description: An api for making tea and coffee using Javascript
-
-        @contentSection
-          @topic About
-            @sheet
-              This api has broken the digital wall and provides the functionality to make real tea and coffee using Javascript.
-
-          @topic Api
-            @version 1.0.0
-              @api
-                @function tea
-                  @added: Added the tea function in this version
-                  @description: A function for making cups of tea
-                  @param? options [Object]: The options to use when making a cup of tea
-                    @property sugars [Number]: The number of sugars to add
-                      @default: 0
-                    @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
-                      @default: 'skimmed'
-
-            @version 2.0.0
-              @api
-                @function tea
-                  @param? options [Object]
-                    @property sugars [Number]
-                    @property type [String]: The type of teabag to use, can be 'english-breakfast', 'earl-grey' or 'green'
-                      @default: 'english-breakfast'
-
-                @function coffee
-                  @description: A function for making cups of coffee
-                  @param? options [Object]: The options to use when making a cup of coffee
-                    @property sugars [Number]: The number of sugars to add
-                      @default: 0
-                    @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
-                      @default: 'skimmed'
-
-            @version 3.0.0
-              @api
-                @function coffee
-                  @param? options [Object]
-                    @property type [String]: The type of teabag to use, can be 'capuccino', 'americano' or 'latte'
-                      @default: 'americano'
-                      @added: Added the type option to the coffee function
 
 
 @bottomSection
