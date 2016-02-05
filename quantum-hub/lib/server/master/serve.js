@@ -62,9 +62,7 @@ function endsWith(string, searchString) {
 
 // serves content from storage
 module.exports = function (storage, opts) {
-  var options = merge({
-    builderVersion: '0.0.0'
-  }, opts)
+  var options = merge({}, opts)
 
   var supportedFileTypes = [
     '.html',
@@ -95,8 +93,6 @@ module.exports = function (storage, opts) {
         if (details) {
           var revision = details.revision
           var builderVersion = details.builderVersion
-
-          var builderVersion = options.builderVersion
           var filename = isDir ? adjustedPath + 'index.html' : adjustedPath
           storage.getStaticFile(projectId, revision, builderVersion, filename)
             .then(function (content) {

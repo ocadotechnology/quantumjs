@@ -59,9 +59,7 @@ function Server (manager, storage, opts) {
     contentRouter.use('/resources', express.static(options.resourceDir, { maxAge: 31557600 }))
   }
 
-  contentRouter.use(serve(storage, {
-    builderVersion: options.builderVersion
-  }))
+  contentRouter.use(serve(storage, {}))
 
   app.use('/', contentRouter)
 
