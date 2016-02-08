@@ -28,8 +28,7 @@ var merge = require('merge')
 var BuildLogger = require('../misc/build-logger')
 var Server = require('./server')
 var Storage = require('./storage')
-var cachingStorageEngine = require('../storage-engine/caching-storage-engine')
-var dataRefresher = require('./data-refresher')
+var layeredStorageEngine = require('../storage-engine/layered')
 
 function Manager (opts) {
   console.log('master started')
@@ -39,21 +38,19 @@ function Manager (opts) {
     setupApp: undefined,
     builderVersion: '0.0.0',
     resourceDir: undefined,
-    entityCacheTimeout: 60 * 60 * 1000, // cache entity values for 1 hour (by default)
-    entityRefreshInterval: 60 * 1000, // replace cached values every minute (by default)
     port: 3030,
-    ssl: undefined
+    ssl: undefined,
+    storageEngine: undefined,
+    cacheStorageEngine: undefined
   }, opts)
 
   this.options = options
 
-  var storageEngine = cachingStorageEngine(options.storageEngine, options.cacheStorageEngine, options.entityCacheTimeout)
+  var storageEngine = layeredStorageEngine(options.cacheStorageEngine, options.storageEngine)
 
   this.storage = new Storage(storageEngine, {
     builderVersion: options.builderVersion
   })
-
-  dataRefresher(this.storage, options.entityRefreshInterval)
 
   var server = new Server(this, this.storage, {
     authenticationMiddleware: options.authenticationMiddleware,

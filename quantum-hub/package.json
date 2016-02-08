@@ -42,6 +42,8 @@
     "quantum-js": "^1.0.0",
     "quantum-watch": "^1.0.0",
     "request": "^2.67.0",
+    "request-promise": "^2.0.0",
+    "retry": "^0.9.0",
     "streamifier": "^0.1.1",
     "sublevel": "^2.4.0",
     "uuid": "^2.0.1",

@@ -20,6 +20,8 @@ A storage engine simply has to export a function that returns an object with the
         putBlob: function (kind, id, data) {}
         /* get something from storage */
         getBlob: function (kind, id) {}
+        /* deletes a blob from storage */
+        deleteBlob: function (kind, id) {}
         /* put something to storage */
         put: function (kind, id, data) {}
         /* get something from storage */

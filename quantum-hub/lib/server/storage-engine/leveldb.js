@@ -17,7 +17,6 @@ var cluster = require('cluster')
 var levelup = require('levelup')
 var sublevel = require('level-sublevel')
 var Promise = require('bluebird')
-var stream = require('stream')
 var fs = Promise.promisifyAll(require('fs-extra'))
 
 module.exports = function (options) {
@@ -67,6 +66,10 @@ module.exports = function (options) {
             throw err
           }
         })
+    },
+    /* delete something from storage */
+    delete: function (kind, id) {
+      return blobdb.delAsync(kind + ':' + id)
     },
 
     /* put something to storage */

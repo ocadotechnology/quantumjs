@@ -17,7 +17,6 @@
 var cluster = require('cluster')
 var Promise = require('bluebird')
 var gcloud = require('gcloud')
-var stream = require('stream')
 var streamifier = require('streamifier')
 var fs = Promise.promisifyAll(require('fs-extra'))
 var path = require('path')
@@ -83,6 +82,24 @@ module.exports = function (options) {
               })
             } else {
               resolve(undefined)
+            }
+          }
+        })
+      })
+    },
+    deleteBlob: function (kind, id) {
+      return new Promise(function (resolve, reject) {
+        var file = bucket.file(kind + '/' + id)
+        return file.exists(function (err, exists) {
+          if (err) {
+            reject(err)
+          } else {
+            if (exists) {
+              file.delete(function (err, content) {
+                err ? reject(err) : resolve()
+              })
+            } else {
+              resolve()
             }
           }
         })

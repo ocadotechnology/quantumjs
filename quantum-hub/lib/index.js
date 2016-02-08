@@ -22,4 +22,7 @@ exports.cli = require('./client/cli')
 
 exports.server = require('./server')
 exports.server.leveldbStorageEngine = require('./server/storage-engine/leveldb')
+exports.server.externalCacheStorageEngine = require('./server/storage-engine/external-cache')
 exports.server.googleStorageEngine = require('./server/storage-engine/google')
+
+exports.externalCache = require('./external-cache')
