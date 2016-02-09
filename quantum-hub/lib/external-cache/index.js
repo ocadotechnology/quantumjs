@@ -23,13 +23,13 @@ var levelDbStorageEngine = require('../server/storage-engine/leveldb')
 module.exports = function (opts) {
   var options = merge({
     port: 3040,
-    storageEngine: undefined // the local storage engine used for the cache
+    storageEngine: undefined, // the local storage engine used for the cache
     events: undefined
   }, opts)
 
   if (options.storageEngine === undefined) throw new Error('options.storageEngine should not be undefined')
 
-  function emit(type, msg) {
+  function emit (type, msg) {
     if (events) {
       events.emit(type, msg)
     }

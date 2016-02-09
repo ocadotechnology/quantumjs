@@ -49,7 +49,7 @@ module.exports = function (options) {
     /* read a blob from storage and dump it on the local disk */
     blobToDisk: function (kind, id, filename) {
       return blobdb.getAsync(kind + ':' + id, {valueEncoding: 'binary'}).then(function (buffer) {
-        return fs.outputFile(filename, buffer)
+        return fs.outputFileAsync(filename, buffer)
       })
     },
     /* put something to storage */
@@ -68,7 +68,7 @@ module.exports = function (options) {
         })
     },
     /* delete something from storage */
-    delete: function (kind, id) {
+    deleteBlob: function (kind, id) {
       return blobdb.delAsync(kind + ':' + id)
     },
 

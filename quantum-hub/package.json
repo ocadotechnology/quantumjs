@@ -7,7 +7,7 @@
     "example": "example"
   },
   "scripts": {
-    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test/**/*.spec.js"
   },
   "author": "James Smyth <james.smyth@ocado.com>",
   "repository": {
