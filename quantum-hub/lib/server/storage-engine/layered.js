@@ -169,8 +169,15 @@ module.exports = function (cacheStorageEngine, persistentStorageEngine) {
     /* get all of a kind from storage */
     getAll: function (kind, options) {
       return cacheStorageEngine.getAll(kind)
-        .catch(function () {
-          return persistentStorageEngine.getAll(kind)
+        .then(function (data) {
+          console.log(data)
+          if (data === undefined || data.length === 0) {
+            return persistentStorageEngine.getAll(kind)
+          } else {
+            return data
+          }
+        }, function (data) {
+          return persistentStorageEngine.getAll(kind, id)
         })
     }
   }

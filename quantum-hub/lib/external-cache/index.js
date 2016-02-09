@@ -30,8 +30,8 @@ module.exports = function (opts) {
   if (options.storageEngine === undefined) throw new Error('options.storageEngine should not be undefined')
 
   function emit (type, msg) {
-    if (events) {
-      events.emit(type, msg)
+    if (options.events) {
+      options.events.emit(type, msg)
     }
   }
 
@@ -48,23 +48,37 @@ module.exports = function (opts) {
   }
 
   app.put('/blob/:kind/:key', function (req, res) {
+    emit('request', {url: req.path})
     var kind = req.params.kind
     var key = req.params.key
-
+    console.log('implement put blob')
+    jsonRespond('put-blob', res, options.storageEngine.putBlobStream(kind, key, req))
   })
 
   app.get('/blob/:kind/:key', function (req, res) {
+    emit('request', {url: req.path})
     var kind = req.params.kind
     var key = req.params.key
-
+    options.storageEngine.getBlob(kind, key)
+      .then(function (blob) {
+        res.end(blob)
+      })
+      .catch(function () {
+        res.status(500).json({
+          error: err.stack
+        })
+      })
   })
 
   app.delete('/blob/:kind/:key', function (req, res) {
+    emit('request', {url: req.path})
     var kind = req.params.kind
     var key = req.params.key
+    console.log('implement delete blob')
   })
 
   app.put('/entity/:kind/:key', bodyParser.json(), function (req, res) {
+    emit('request', {url: req.path})
     var kind = req.params.kind
     var key = req.params.key
     var value = req.body
@@ -72,18 +86,21 @@ module.exports = function (opts) {
   })
 
   app.get('/entity/:kind/:key', bodyParser.json(), function (req, res) {
+    emit('request', {url: req.path})
     var kind = req.params.kind
     var key = req.params.key
     jsonRespond('get-entity', res, options.storageEngine.get(kind, key))
   })
 
   app.delete('/entity/:kind/:key', bodyParser.json(), function (req, res) {
+    emit('request', {url: req.path})
     var kind = req.params.kind
     var key = req.params.key
     jsonRespond('delete-entity', res, options.storageEngine.delete(kind, key))
   })
 
   app.get('/entity/:kind', bodyParser.json(), function (req, res) {
+    emit('request', {url: req.path})
     var kind = req.params.kind
     jsonRespond('get-entities', res, options.storageEngine.getAll(kind))
   })

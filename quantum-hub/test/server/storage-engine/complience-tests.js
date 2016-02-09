@@ -168,26 +168,3 @@ module.exports = function (storageEngine, tempDirectory) {
   })
 
 }
-
-// module.exports = function () {
-//       return {
-//         /* write a blob to storage */
-//         putBlobStream: function (kind, id, stream) {}
-//         /* read a blob from storage and dump it on the local disk */
-//         blobToDisk: function (kind, id, filename) {}
-//         /* put something to storage */
-//         putBlob: function (kind, id, data) {}
-//         /* get something from storage */
-//         getBlob: function (kind, id) {}
-//         /* deletes a blob from storage */
-//         deleteBlob: function (kind, id) {}
-//         /* put something to storage */
-//         put: function (kind, id, data) {}
-//         /* get something from storage */
-//         get: function (kind, id) {}
-//         /* delete something from storage */
-//         delete: function (kind, id) {}
-//         /* get all of a kind from storage */
-//         getAll: function (kind) {}
-//       }
-//     }

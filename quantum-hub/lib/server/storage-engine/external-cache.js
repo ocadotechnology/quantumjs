@@ -14,6 +14,7 @@
 
 */
 
+var merge = require('merge')
 var cluster = require('cluster')
 var Promise = require('bluebird')
 var request = require('request-promise')
@@ -27,11 +28,22 @@ module.exports = function (opts) {
     port: 3040
   }, opts)
 
+  function makeUrl(type, kind, id) {
+    if (id) {
+      return 'http://' + options.host + ':' + options.port + '/' + type + '/' + encodeURIComponent(kind) + '/' + encodeURIComponent(id)
+    } else {
+      return 'http://' + options.host + ':' + options.port + '/' + type + '/' + encodeURIComponent(kind)
+    }
+  }
+
   return {
     /* write a blob to storage */
     putBlobStream: function (kind, id, stream) {
       return new Promise(function (req, res) {
-        var outStream = request.put('http://' + options.host + ':' + options.port + '/blob/' + kind + '/' + id)
+        var outStream = request.put({
+            url: makeUrl('blob', kind, id),
+            method: 'PUT'
+        })
         stream.pipe(outStream)
         outStream.on('end', function () {
           resolve()
@@ -45,7 +57,10 @@ module.exports = function (opts) {
     blobToDisk: function (kind, id, filename) {
       return new Promise(function (req, res) {
         var outStream = fs.createOutputStream(filename)
-        request('http://' + options.host + ':' + options.port + '/blob/' + kind + '/' + id).pipe(outStream)
+        request({
+            url: makeUrl('blob', kind, id),
+            method: 'GET'
+        }).pipe(outStream)
         outStream.on('end', function () {
           resolve()
         })
@@ -57,7 +72,7 @@ module.exports = function (opts) {
     /* put something to storage */
     putBlob: function (kind, id, data) {
       return request({
-        url: 'http://' + options.host + ':' + options.port + '/blob/' + kind + '/' + id,
+        url: makeUrl('blob', kind, id),
         method: 'PUT',
         body: data
       })
@@ -65,14 +80,16 @@ module.exports = function (opts) {
     /* get something to storage */
     getBlob: function (kind, id) {
       return request({
-        url: 'http://' + options.host + ':' + options.port + '/blob/' + kind + '/' + id,
+        url: makeUrl('blob', kind, id),
         method: 'GET'
+      }).then(function(res){
+        return res === "" ? undefined : res
       })
     },
     /* deletes a blob */
     deleteBlob: function (kind, id) {
       return request({
-        url: 'http://' + options.host + ':' + options.port + '/blob/' + kind + '/' + id,
+        url: makeUrl('blob', kind, id),
         method: 'DELETE',
         json: true
       })
@@ -81,7 +98,7 @@ module.exports = function (opts) {
     /* put something to storage */
     put: function (kind, id, data) {
       return request({
-        url: 'http://' + options.host + ':' + options.port + '/entity/' + kind + '/' + id,
+        url: makeUrl('entity', kind, id),
         method: 'PUT',
         json: data
       })
@@ -89,7 +106,7 @@ module.exports = function (opts) {
     /* get something to storage */
     get: function (kind, id) {
       return request({
-        url: 'http://' + options.host + ':' + options.port + '/entity/' + kind + '/' + id,
+        url: makeUrl('entity', kind, id),
         method: 'GET',
         json: true
       })
@@ -97,7 +114,7 @@ module.exports = function (opts) {
     /* delete something from storage */
     delete: function (kind, id) {
       return request({
-        url: 'http://' + options.host + ':' + options.port + '/entity/' + kind + '/' + id,
+        url: makeUrl('entity', kind, id),
         method: 'DELETE',
         json: true
       })
@@ -105,7 +122,7 @@ module.exports = function (opts) {
     /* get all of a kind from storage */
     getAll: function (kind) {
       return request({
-        url: 'http://' + options.host + ':' + options.port + '/entity/' + kind,
+        url: makeUrl('entity', kind),
         method: 'GET',
         json: true
       })
