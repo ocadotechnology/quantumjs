@@ -15,13 +15,84 @@
 
 
 @contentSection
-  @topic Creating flow diagrams
+  @topic Installing the dependency
+    @sheet
+      The first step is to install the quantum-diagram dependency and add the relevant build scripts:
+
+    @codeblock bash
+      npm install --save quantum-diagram
+
+    @sheet
+      Then add the script to build/build.js to include template in the build process:
+
+    @bold: build/build.js
+    @codeblock js
+      // Add this to the top of the page, alongside the other require statements
+      var diagram = require('diagram')
+
+      ...
+
+        var htmlOptions = {
+          transforms: {
+            html: html.transforms,
+            docs: docs(),
+            api: api(),
+            changelog: changelog.transforms(),
+            diagram: diagram() // Add the diagram transforms
+          }
+        }
+
+      ...
+
+    @sheet
+      Once quantum-diagram has been installed and added to the build script, the
+      next step is to create the flow diagram page
+
+
+  @topic Adding the flow diagram page
     @sheet
       This part of the walkthrough follows the process of defining a diagram
       using the @code(um)[@diagram] entity. The final diagram will display the
       system behind our fictitious "rest api for ordering hot drinks".
 
-      We begin with a simple diagram containing just one thing - the api request that starts the process.
+      The first step is to create a new page for the flow diagram:
+
+    @bold: content/pages/flow-diagram.um
+    @@codeblock um
+      @inline ../shared/shared.um
+
+      @titlebar
+
+      @topSection
+        @breadcrumb
+          @item /: Home
+          # Add the crumbtrail link for the flow diagram
+          @item /flow-diagram.html: Flow Diagram
+        @title Flow Diagram
+        @description: A diagram showing the flow of the beverage api.
+
+      @contentSection
+
+    @sheet
+      Then we add a link to the flow diagram page on the home page after the changelog button:
+
+    @bold: content/pages/index.um
+    @@codeblock um
+      ...
+
+      @a .hx-btn.hx-action: Changelog
+        @attr href: changelog.html
+
+      @a .hx-btn.hx-action: Flow Diagram
+        @attr href: flow-diagram.html
+
+
+  @topic Creating the flow diagram
+    @sheet
+      We now have somewhere to start making a diagram.
+
+      We'll walk through each of the steps for creating a diagram to show what's
+      going on. First, we create our user:
 
     @diagram
       @item user [User]
@@ -204,9 +275,138 @@
         @link coffee-add-milk -> coffee-add-sugar
         @link coffee-add-sugar -> return-beverage
 
+    @sheet
+      This makes the tea and coffee related steps into groups to add clarity to the diagram.
+
   @topic Link Styles
     @sheet
-      TODO
+      For this example, selecting the type, adding milk and adding sugar are all
+      optional steps. We can use different link styles to indicate this fact.
+
+      Below is a list of all the link styles that can be used:
+
+      @@codeblock um
+        -   # A line linking two items
+        ->  # A line with an arrow pointing to the item on the right
+        <-  # A line with an arrow pointing to the item on the left
+        <-> # A line wth arrows on both ends
+
+      In addition, all the above links can be made into dashed lines using two dashes
+      instead of one, e.g. @code(um)[-->] instead of @code(um)[->]
+
+      For this example, we'll use dashed lines to indicate optional steps:
+
+    @diagram
+      @item user [User]
+
+      @group Make Tea
+        @item tea [tea(options)]
+        @item tea-select-type [Select Type]
+        @item tea-add-milk [Add Milk]
+        @item tea-add-sugar [Add Sugar]
+
+      @group Make Coffee
+        @item coffee [coffee(options)]
+        @item coffee-select-type [Select Type]
+        @item coffee-add-milk [Add Milk]
+        @item coffee-add-sugar [Add Sugar]
+
+      @item return-beverage [Return Beverage]
+
+      @link user -> tea
+      @link user -> coffee
+
+      @link tea --> tea-select-type
+      @link tea-select-type --> tea-add-milk
+      @link tea-add-milk --> tea-add-sugar
+      @link tea-add-sugar -> return-beverage
+
+      @link coffee --> coffee-select-type
+      @link coffee-select-type --> coffee-add-milk
+      @link coffee-add-milk --> coffee-add-sugar
+      @link coffee-add-sugar -> return-beverage
+
+    @@codeblock um
+      @diagram
+        @item user [User]
+
+        @group Make Tea
+          @item tea [tea(options)]
+          @item tea-select-type [Select Type]
+          @item tea-add-milk [Add Milk]
+          @item tea-add-sugar [Add Sugar]
+
+        @group Make Coffee
+          @item coffee [coffee(options)]
+          @item coffee-select-type [Select Type]
+          @item coffee-add-milk [Add Milk]
+          @item coffee-add-sugar [Add Sugar]
+
+        @item return-beverage [Return Beverage]
+
+        @link user -> tea
+        @link user -> coffee
+
+        @link tea --> tea-select-type
+        @link tea-select-type --> tea-add-milk
+        @link tea-add-milk --> tea-add-sugar
+        @link tea-add-sugar -> return-beverage
+
+        @link coffee --> coffee-select-type
+        @link coffee-select-type --> coffee-add-milk
+        @link coffee-add-milk --> coffee-add-sugar
+        @link coffee-add-sugar -> return-beverage
+
+  @topic Flow Diagram page
+    @sheet
+      Once you've completed this step of the walkthrough, the flow diagram page
+      should look like this:
+
+    @bold: content/pages/flow-diagram.um
+    @@codeblock um
+      @inline ../shared/shared.um
+
+      @titlebar
+
+      @topSection
+        @breadcrumb
+          @item /: Home
+          # Add the crumbtrail link for the flow diagram
+          @item /flow-diagram.html: Flow Diagram
+        @title Flow Diagram
+        @description: A diagram showing the flow of the beverage api.
+
+      @contentSection
+        @diagram
+          @item user [User]
+
+          @group Make Tea
+            @item tea [tea(options)]
+            @item tea-select-type [Select Type]
+            @item tea-add-milk [Add Milk]
+            @item tea-add-sugar [Add Sugar]
+
+          @group Make Coffee
+            @item coffee [coffee(options)]
+            @item coffee-select-type [Select Type]
+            @item coffee-add-milk [Add Milk]
+            @item coffee-add-sugar [Add Sugar]
+
+          @item return-beverage [Return Beverage]
+
+          @link user -> tea
+          @link user -> coffee
+
+          @link tea --> tea-select-type
+          @link tea-select-type --> tea-add-milk
+          @link tea-add-milk --> tea-add-sugar
+          @link tea-add-sugar -> return-beverage
+
+          @link coffee --> coffee-select-type
+          @link coffee-select-type --> coffee-add-milk
+          @link coffee-add-milk --> coffee-add-sugar
+          @link coffee-add-sugar -> return-beverage
+
 
 @bottomSection
   @paginationButtons
