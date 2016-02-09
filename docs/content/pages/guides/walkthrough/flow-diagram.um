@@ -11,7 +11,7 @@
     @item /guides/walkthrough/: Walkthrough
     @item /guides/walkthrough/flow-diagram/: Flow Diagram
   @title Flow Diagram
-  @description
+  @description: This section covers the use of quantum-diagram for creating a flow diagram showing the process for the fictitious beverage api.
 
 
 @contentSection
