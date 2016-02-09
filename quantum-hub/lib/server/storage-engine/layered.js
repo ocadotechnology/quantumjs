@@ -170,6 +170,10 @@ module.exports = function (cacheStorageEngine, persistentStorageEngine) {
     getAll: function (kind, options) {
       return cacheStorageEngine.getAll(kind)
         .then(function (data) {
+          //XXX: this needs to store the values in the cache, but getAll doesn't
+          // give access to the keys at the moment - that needs changing so that
+          // put can be called for each entry found so that the next getAll call
+          // to the cache succeeds
           console.log(data)
           if (data === undefined || data.length === 0) {
             return persistentStorageEngine.getAll(kind)
