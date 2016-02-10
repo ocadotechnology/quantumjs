@@ -21,6 +21,7 @@ exports.client = require('./client')
 exports.cli = require('./client/cli')
 
 exports.server = require('./server')
+exports.server.layeredStorageEngine = require('./server/storage-engine/layered')
 exports.server.leveldbStorageEngine = require('./server/storage-engine/leveldb')
 exports.server.externalCacheStorageEngine = require('./server/storage-engine/external-cache')
 exports.server.googleStorageEngine = require('./server/storage-engine/google')

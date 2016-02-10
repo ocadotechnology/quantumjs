@@ -28,7 +28,6 @@ var merge = require('merge')
 var BuildLogger = require('../misc/build-logger')
 var Server = require('./server')
 var Storage = require('./storage')
-var layeredStorageEngine = require('../storage-engine/layered')
 
 function Manager (opts) {
   console.log('master started')
@@ -40,15 +39,12 @@ function Manager (opts) {
     resourceDir: undefined,
     port: 3030,
     ssl: undefined,
-    storageEngine: undefined,
-    cacheStorageEngine: undefined
+    storageEngine: undefined
   }, opts)
 
   this.options = options
 
-  var storageEngine = layeredStorageEngine(options.cacheStorageEngine, options.storageEngine)
-
-  this.storage = new Storage(storageEngine, {
+  this.storage = new Storage(options.storageEngine, {
     builderVersion: options.builderVersion
   })
 
