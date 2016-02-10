@@ -26,7 +26,8 @@ function start (opts) {
     pipeline: undefined,
     includeServerCommands: true,
     version: undefined,
-    ca: undefined
+    ca: undefined,
+    htmlTransforms: undefined
   }, opts)
 
   // notify the user if they are behind the times. packageName should be supplied for this feature to work.
@@ -137,6 +138,18 @@ function start (opts) {
           })
       })
   }
+
+  program
+    .command('entities')
+    .description('lists out the entities that can be used in pages')
+    .action(function () {
+      Object.keys(options.htmlTransforms).forEach(function (namespace) {
+        console.log(chalk.yellow(namespace))
+        Object.keys(options.htmlTransforms[namespace]).forEach(function (entity) {
+          console.log(chalk.cyan('  @' + entity) + chalk.gray(' (@' + namespace + '.' + entity  + ')'))
+        })
+      })
+    })
 
   program
     .command('help', {isDefault: true})
