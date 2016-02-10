@@ -33,6 +33,7 @@ module.exports = function (opts) {
   function emit (type, msg) {
     if (options.events) {
       options.events.emit(type, msg)
+      options.events.emit("all", {type: type, msg: msg})
     }
   }
 
