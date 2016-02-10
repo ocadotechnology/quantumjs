@@ -17,6 +17,7 @@
 
 var Promise = require('bluebird')
 var cluster = require('cluster')
+var retry = require('retry')
 
 module.exports = function (cacheStorageEngine, persistentStorageEngine) {
   if (!cluster.isMaster) return
@@ -187,7 +188,7 @@ module.exports = function (cacheStorageEngine, persistentStorageEngine) {
             return data
           }
         }, function (err) {
-          return persistentStorageEngine.getAll(kind, id)
+          return persistentStorageEngine.getAll(kind)
         })
     }
   }
