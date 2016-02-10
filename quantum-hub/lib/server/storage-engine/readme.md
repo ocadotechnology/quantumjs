@@ -28,7 +28,7 @@ A storage engine simply has to export a function that returns an object with the
         get: function (kind, id) {}
         /* delete something from storage */
         delete: function (kind, id) {}
-        /* get all of a kind from storage */
+        /* get all of a kind from storage as {key, value} objects */
         getAll: function (kind) {}
       }
     }

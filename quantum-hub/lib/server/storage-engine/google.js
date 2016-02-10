@@ -139,6 +139,7 @@ module.exports = function (options) {
     getAll: function (kind) {
       return dataset.runQueryAsync(dataset.createQuery(kind))
         .map(function (entity) {
+          // XXX: make {key, value} objects here
           return JSON.parse(entity.data.data)
         })
     }

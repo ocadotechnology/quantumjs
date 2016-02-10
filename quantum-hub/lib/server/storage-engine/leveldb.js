@@ -95,13 +95,16 @@ module.exports = function (options) {
     getAll: function (kind) {
       return new Promise(function (resolve, reject) {
         var parts = []
+        var keyStart = kind.length + 1
         jsondb.createReadStream({
           gte: kind + ':' + '\x00',
           lte: kind + ':' + '\xFF',
-          keys: false,
           valueEncoding: 'json'
         }).on('data', function (data) {
-          parts.push(data)
+          parts.push({
+            key: data.key.slice(keyStart),
+            value: data.value
+          })
         }).on('end', function () {
           resolve(parts)
         }).on('error', function (err) {

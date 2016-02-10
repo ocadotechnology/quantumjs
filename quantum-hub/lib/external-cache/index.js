@@ -18,6 +18,7 @@
 var merge = require('merge')
 var express = require('express')
 var bodyParser = require('body-parser')
+var Promise = require('bluebird')
 var levelDbStorageEngine = require('../server/storage-engine/leveldb')
 
 module.exports = function (opts) {
@@ -51,7 +52,6 @@ module.exports = function (opts) {
     emit('request', {url: req.path})
     var kind = req.params.kind
     var key = req.params.key
-    console.log('implement put blob')
     jsonRespond('put-blob', res, options.storageEngine.putBlobStream(kind, key, req))
   })
 
@@ -74,7 +74,7 @@ module.exports = function (opts) {
     emit('request', {url: req.path})
     var kind = req.params.kind
     var key = req.params.key
-    console.log('implement delete blob')
+    jsonRespond('delete-blob', res, options.storageEngine.deleteBlob(kind, key))
   })
 
   app.put('/entity/:kind/:key', bodyParser.json(), function (req, res) {
@@ -105,8 +105,19 @@ module.exports = function (opts) {
     jsonRespond('get-entities', res, options.storageEngine.getAll(kind))
   })
 
-  app.listen(options.port, function () {
-    console.log('server started on port ' + options.port)
+  return new Promise(function (resolve, reject) {
+    var server = app.listen(options.port, function () {
+      emit('server-started', {port: options.port})
+      resolve({
+        stop: function () {
+          return new Promise(function (resolve, reject) {
+            server.close(function () {
+              resolve()
+            })
+          })
+        }
+      })
+    })
   })
 
 }

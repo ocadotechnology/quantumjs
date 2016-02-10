@@ -28,7 +28,7 @@ module.exports = function (opts) {
     port: 3040
   }, opts)
 
-  function makeUrl(type, kind, id) {
+  function makeUrl (type, kind, id) {
     if (id) {
       return 'http://' + options.host + ':' + options.port + '/' + type + '/' + encodeURIComponent(kind) + '/' + encodeURIComponent(id)
     } else {
@@ -39,10 +39,10 @@ module.exports = function (opts) {
   return {
     /* write a blob to storage */
     putBlobStream: function (kind, id, stream) {
-      return new Promise(function (req, res) {
+      return new Promise(function (resolve, reject) {
         var outStream = request.put({
-            url: makeUrl('blob', kind, id),
-            method: 'PUT'
+          url: makeUrl('blob', kind, id),
+          method: 'PUT'
         })
         stream.pipe(outStream)
         outStream.on('end', function () {
@@ -55,18 +55,12 @@ module.exports = function (opts) {
     },
     /* read a blob from storage and dump it on the local disk */
     blobToDisk: function (kind, id, filename) {
-      return new Promise(function (req, res) {
-        var outStream = fs.createOutputStream(filename)
-        request({
-            url: makeUrl('blob', kind, id),
-            method: 'GET'
-        }).pipe(outStream)
-        outStream.on('end', function () {
-          resolve()
-        })
-        outStream.on('error', function (err) {
-          reject(err)
-        })
+      return request({
+        url: makeUrl('blob', kind, id),
+        method: 'GET',
+        encoding: null
+      }).then(function (blob) {
+        return fs.outputFileAsync(filename, blob)
       })
     },
     /* put something to storage */
@@ -81,9 +75,10 @@ module.exports = function (opts) {
     getBlob: function (kind, id) {
       return request({
         url: makeUrl('blob', kind, id),
-        method: 'GET'
-      }).then(function(res){
-        return res === "" ? undefined : res
+        method: 'GET',
+        encoding: null
+      }).then(function (res) {
+        return res.length === 0 ? undefined : res
       })
     },
     /* deletes a blob */
