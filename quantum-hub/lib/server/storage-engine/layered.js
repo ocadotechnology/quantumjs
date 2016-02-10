@@ -172,21 +172,21 @@ module.exports = function (cacheStorageEngine, persistentStorageEngine) {
         .then(function (data) {
           if (data === undefined || data.length === 0) {
             return persistentStorageEngine.getAll(kind)
-              .then(function (trueData) {
-                if (trueData === undefined || trueData.length === 0) {
-                  return Promise.all(trueData.map(function (entry) {
-                    return cacheStorageEngine.put(kind, entry.key, entry.value)
-                  })).then(function () {
-                    return trueData
-                  })
-                } else {
-                  return trueData
-                }
+              .then(function (entities) {
+                return Promise.all(entities.map(function(e) {
+                  return cacheStorageEngine.put(kind, e.key, e.value)
+                })).then(function () {
+                  return entities
+                }).catch (function (err) {
+                  // doesn't really matter if this fails - just carry on without putting to the cache
+                  console.log(err)
+                  return entities
+                })
               })
           } else {
             return data
           }
-        }, function (data) {
+        }, function (err) {
           return persistentStorageEngine.getAll(kind, id)
         })
     }
