@@ -11,43 +11,111 @@
     @item /guides/walkthrough/: Walkthrough
     @item /guides/walkthrough/flow-diagram/: Flow Diagram
   @title Flow Diagram
-  @description
+  @description: This section covers the use of quantum-diagram for creating a flow diagram showing the process for the fictitious beverage api.
 
 
 @contentSection
-  @topic Creating flow diagrams
+  @topic Installing the dependency
+    @sheet
+      The first step is to install the quantum-diagram dependency and add the relevant build scripts:
 
-    @notice TODO [warning]
-      Change this so that it is docuementing the process of making tea/coffee
+    @codeblock bash
+      npm install --save quantum-diagram
 
+    @sheet
+      Then add the script to build/build.js to include template in the build process:
+
+    @bold: build/build.js
+    @codeblock js
+      // Add this to the top of the page, alongside the other require statements
+      var diagram = require('diagram')
+
+      ...
+
+        var htmlOptions = {
+          transforms: {
+            html: html.transforms,
+            docs: docs(),
+            api: api(),
+            changelog: changelog.transforms(),
+            diagram: diagram() // Add the diagram transforms
+          }
+        }
+
+      ...
+
+    @sheet
+      Once quantum-diagram has been installed and added to the build script, the
+      next step is to create the flow diagram page
+
+
+  @topic Adding the flow diagram page
     @sheet
       This part of the walkthrough follows the process of defining a diagram
       using the @code(um)[@diagram] entity. The final diagram will display the
       system behind our fictitious "rest api for ordering hot drinks".
 
-      We begin with a simple diagram containing just one thing - one of our users.
+      The first step is to create a new page for the flow diagram:
 
-    @diagram
-      @item user User
-
+    @bold: content/pages/flow-diagram.um
     @@codeblock um
-      @diagram
-        @item user User
+      @inline ../shared/shared.um
+
+      @titlebar
+
+      @topSection
+        @breadcrumb
+          @item /: Home
+          # Add the crumbtrail link for the flow diagram
+          @item /flow-diagram.html: Flow Diagram
+        @title Flow Diagram
+        @description: A diagram showing the flow of the beverage api.
+
+      @contentSection
 
     @sheet
-      This user can interact with our rest api. So lets add that as another item.
+      Then we add a link to the flow diagram page on the home page after the changelog button:
+
+    @bold: content/pages/index.um
+    @@codeblock um
+      ...
+
+      @a .hx-btn.hx-action: Changelog
+        @attr href: changelog.html
+
+      @a .hx-btn.hx-action: Flow Diagram
+        @attr href: flow-diagram.html
+
+
+  @topic Creating the flow diagram
+    @sheet
+      We now have somewhere to start making a diagram.
+
+      We'll walk through each of the steps for creating a diagram to show what's
+      going on. First, we create our user:
 
     @diagram
-      @item user User
-      @item rest-api [Rest Api Service]
+      @item user [User]
 
     @@codeblock um
       @diagram
-        @item user User
-        @item rest-api [Rest Api Service]
+        @item user [User]
 
-    @notice Note [info]
-      Note that here, the @code(um)[@item] entity takes two parameters - an id and a visible name. The words "@code(um)[Rest Api]" are surrounded by square brackets so that together they are treated as the second parameter. Without the square brackets the text "@code(um)[rest-api Rest Api]" would be treated as 3 separate parameters.
+    @sheet
+      This user either makes a request to the tea or the coffee function so we add those as well
+
+    @diagram
+      @item user [User]
+
+      @item tea [tea(options)]
+      @item coffee [coffee(options)]
+
+    @@codeblock um
+      @diagram
+        @item user [User]
+
+        @item tea [tea(options)]
+        @item coffee [coffee(options)]
 
   @topic Linking Items
 
@@ -55,61 +123,88 @@
       Now we want to define a link between these items, to indicate that the user makes requests to the rest api:
 
     @diagram
-      @item user User
-      @item rest-api [Rest Api Service]
-      @link user -> rest-api
+      @item user [User]
+
+      @item tea [tea(options)]
+      @item coffee [coffee(options)]
+
+      @link user -> tea
+      @link user -> coffee
 
     @@codeblock um
       @diagram
-        @item user User
-        @item rest-api [Rest Api Service]
+        @item user [User]
 
-        @link user -> rest-api
+        @item tea [tea(options)]
+        @item coffee [coffee(options)]
+
+        @link user -> tea
+        @link user -> coffee
 
     @sheet
-      But there is more to the imaginary rest api than meets the eye, of course. Lets add in some more components that describe how the system works in more detail:
+      But there is more to the imaginary api than meets the eye, of course. Lets add in some more components that describe how the system works in more detail:
 
     @diagram
-      @item user User
-      @item load-balancer [Load Balancer]
-      @item rest-api-1 [Rest Api Service]
-      @item rest-api-2 [Rest Api Service]
-      @item rest-api-3 [Rest Api Service]
-      @item redis [Redis]: Cache for performance
-      @item database [BeverageDB]: Persistence for orders
+      @item user [User]
 
-      @link user -> load-balancer
-      @link load-balancer -> rest-api-1
-      @link load-balancer -> rest-api-2
-      @link load-balancer -> rest-api-3
+      @item tea [tea(options)]
+      @item tea-select-type [Select Type]
+      @item tea-add-milk [Add Milk]
+      @item tea-add-sugar [Add Sugar]
 
-      @link rest-api-1 -> redis
-      @link rest-api-2 -> redis
-      @link rest-api-3 -> redis
+      @item coffee [coffee(options)]
+      @item coffee-select-type [Select Type]
+      @item coffee-add-milk [Add Milk]
+      @item coffee-add-sugar [Add Sugar]
 
-      @link redis -> database
+      @item return-beverage [Return Beverage]
+
+      @link user -> tea
+      @link user -> coffee
+
+      @link tea -> tea-select-type
+      @link tea-select-type -> tea-add-milk
+      @link tea-add-milk -> tea-add-sugar
+      @link tea-add-sugar -> return-beverage
+
+      @link coffee -> coffee-select-type
+      @link coffee-select-type -> coffee-add-milk
+      @link coffee-add-milk -> coffee-add-sugar
+      @link coffee-add-sugar -> return-beverage
 
 
     @@codeblock um
       @diagram
-        @item user User
-        @item load-balancer [Load Balancer]
-        @item rest-api-1 [Rest Api Service]
-        @item rest-api-2 [Rest Api Service]
-        @item rest-api-3 [Rest Api Service]
-        @item redis [Redis]: Cache for performance
-        @item database [BeverageDB]: Persistence for orders
+        @item user [User]
 
-        @link user -> load-balancer
-        @link load-balancer -> rest-api-1
-        @link load-balancer -> rest-api-2
-        @link load-balancer -> rest-api-3
+        @item tea [tea(options)]
+        @item tea-select-type [Select Type]
+        @item tea-add-milk [Add Milk]
+        @item tea-add-sugar [Add Sugar]
 
-        @link rest-api-1 -> redis
-        @link rest-api-2 -> redis
-        @link rest-api-3 -> redis
+        @item coffee [coffee(options)]
+        @item coffee-select-type [Select Type]
+        @item coffee-add-milk [Add Milk]
+        @item coffee-add-sugar [Add Sugar]
 
-        @link redis -> database
+        @item return-beverage [Return Beverage]
+
+        @link user -> tea
+        @link user -> coffee
+
+        @link tea -> tea-select-type
+        @link tea-select-type -> tea-add-milk
+        @link tea-add-milk -> tea-add-sugar
+        @link tea-add-sugar -> return-beverage
+
+        @link coffee -> coffee-select-type
+        @link coffee-select-type -> coffee-add-milk
+        @link coffee-add-milk -> coffee-add-sugar
+        @link coffee-add-sugar -> return-beverage
+
+
+    @notice Note [info]
+      Note that here, the @code(um)[@item] entity takes two parameters - an id and a visible name. The words "@code(um)[Api Request]" are surrounded by square brackets so that together they are treated as the second parameter. Without the square brackets the text "@code(um)[request Api Request]" would be treated as 3 separate parameters.
 
     @sheet
       It looks like there is a lot more going on here, but really it is more of the same - defining items and links between those items.
@@ -117,56 +212,201 @@
   @topic Creating Groups
 
     @sheet
-      What if we want to indicate where some of the components are running? The @code(um)[@group] entity groups together items, and draws a rectangle around them:
+      What if we want to indicate that selecting the type, adding milk and adding sugar is part of the tea/coffee function? The @code(um)[@group] entity groups together items, and draws a rectangle around them:
 
     @diagram
-      @item user User
+      @item user [User]
 
-      @group Cloud Provider X
-        @item load-balancer [Load Balancer]
-        @item rest-api-1 [Rest Api Service]
-        @item rest-api-2 [Rest Api Service]
-        @item rest-api-3 [Rest Api Service]
-        @item redis [Redis]: Cache for performance
-        @item database [BeverageDB]: Persistence for orders
+      @group Make Tea
+        @item tea [tea(options)]
+        @item tea-select-type [Select Type]
+        @item tea-add-milk [Add Milk]
+        @item tea-add-sugar [Add Sugar]
 
-      @link user -> load-balancer
-      @link load-balancer -> rest-api-1
-      @link load-balancer -> rest-api-2
-      @link load-balancer -> rest-api-3
+      @group Make Coffee
+        @item coffee [coffee(options)]
+        @item coffee-select-type [Select Type]
+        @item coffee-add-milk [Add Milk]
+        @item coffee-add-sugar [Add Sugar]
 
-      @link rest-api-1 -> redis
-      @link rest-api-2 -> redis
-      @link rest-api-3 -> redis
+      @item return-beverage [Return Beverage]
 
-      @link redis -> database
+      @link user -> tea
+      @link user -> coffee
 
+      @link tea -> tea-select-type
+      @link tea-select-type -> tea-add-milk
+      @link tea-add-milk -> tea-add-sugar
+      @link tea-add-sugar -> return-beverage
+
+      @link coffee -> coffee-select-type
+      @link coffee-select-type -> coffee-add-milk
+      @link coffee-add-milk -> coffee-add-sugar
+      @link coffee-add-sugar -> return-beverage
 
     @@codeblock um
       @diagram
-        @item user User
+        @item user [User]
 
-        @group Cloud
-          @item load-balancer [Load Balancer]
-          @item rest-api-1 [Rest Api Service]
-          @item rest-api-2 [Rest Api Service]
-          @item rest-api-3 [Rest Api Service]
-          @item redis [Redis]: Cache for performance
-          @item database [BeverageDB]: Persistence for orders
+        @group Make Tea
+          @item tea [tea(options)]
+          @item tea-select-type [Select Type]
+          @item tea-add-milk [Add Milk]
+          @item tea-add-sugar [Add Sugar]
 
-        @link user -> load-balancer
-        @link load-balancer -> rest-api-1
-        @link load-balancer -> rest-api-2
-        @link load-balancer -> rest-api-3
+        @group Make Coffee
+          @item coffee [coffee(options)]
+          @item coffee-select-type [Select Type]
+          @item coffee-add-milk [Add Milk]
+          @item coffee-add-sugar [Add Sugar]
 
-        @link rest-api-1 -> redis
-        @link rest-api-2 -> redis
-        @link rest-api-3 -> redis
+        @item return-beverage [Return Beverage]
 
-        @link redis -> database
+        @link user -> tea
+        @link user -> coffee
 
+        @link tea -> tea-select-type
+        @link tea-select-type -> tea-add-milk
+        @link tea-add-milk -> tea-add-sugar
+        @link tea-add-sugar -> return-beverage
+
+        @link coffee -> coffee-select-type
+        @link coffee-select-type -> coffee-add-milk
+        @link coffee-add-milk -> coffee-add-sugar
+        @link coffee-add-sugar -> return-beverage
+
+    @sheet
+      This makes the tea and coffee related steps into groups to add clarity to the diagram.
 
   @topic Link Styles
+    @sheet
+      For this example, selecting the type, adding milk and adding sugar are all
+      optional steps. We can use different link styles to indicate this fact.
+
+      Below is a list of all the link styles that can be used:
+
+      @@codeblock um
+        -   # A line linking two items
+        ->  # A line with an arrow pointing to the item on the right
+        <-  # A line with an arrow pointing to the item on the left
+        <-> # A line wth arrows on both ends
+
+      In addition, all the above links can be made into dashed lines using two dashes
+      instead of one, e.g. @code(um)[-->] instead of @code(um)[->]
+
+      For this example, we'll use dashed lines to indicate optional steps:
+
+    @diagram
+      @item user [User]
+
+      @group Make Tea
+        @item tea [tea(options)]
+        @item tea-select-type [Select Type]
+        @item tea-add-milk [Add Milk]
+        @item tea-add-sugar [Add Sugar]
+
+      @group Make Coffee
+        @item coffee [coffee(options)]
+        @item coffee-select-type [Select Type]
+        @item coffee-add-milk [Add Milk]
+        @item coffee-add-sugar [Add Sugar]
+
+      @item return-beverage [Return Beverage]
+
+      @link user -> tea
+      @link user -> coffee
+
+      @link tea --> tea-select-type
+      @link tea-select-type --> tea-add-milk
+      @link tea-add-milk --> tea-add-sugar
+      @link tea-add-sugar -> return-beverage
+
+      @link coffee --> coffee-select-type
+      @link coffee-select-type --> coffee-add-milk
+      @link coffee-add-milk --> coffee-add-sugar
+      @link coffee-add-sugar -> return-beverage
+
+    @@codeblock um
+      @diagram
+        @item user [User]
+
+        @group Make Tea
+          @item tea [tea(options)]
+          @item tea-select-type [Select Type]
+          @item tea-add-milk [Add Milk]
+          @item tea-add-sugar [Add Sugar]
+
+        @group Make Coffee
+          @item coffee [coffee(options)]
+          @item coffee-select-type [Select Type]
+          @item coffee-add-milk [Add Milk]
+          @item coffee-add-sugar [Add Sugar]
+
+        @item return-beverage [Return Beverage]
+
+        @link user -> tea
+        @link user -> coffee
+
+        @link tea --> tea-select-type
+        @link tea-select-type --> tea-add-milk
+        @link tea-add-milk --> tea-add-sugar
+        @link tea-add-sugar -> return-beverage
+
+        @link coffee --> coffee-select-type
+        @link coffee-select-type --> coffee-add-milk
+        @link coffee-add-milk --> coffee-add-sugar
+        @link coffee-add-sugar -> return-beverage
+
+  @topic Flow Diagram page
+    @sheet
+      Once you've completed this step of the walkthrough, the flow diagram page
+      should look like this:
+
+    @bold: content/pages/flow-diagram.um
+    @@codeblock um
+      @inline ../shared/shared.um
+
+      @titlebar
+
+      @topSection
+        @breadcrumb
+          @item /: Home
+          # Add the crumbtrail link for the flow diagram
+          @item /flow-diagram.html: Flow Diagram
+        @title Flow Diagram
+        @description: A diagram showing the flow of the beverage api.
+
+      @contentSection
+        @diagram
+          @item user [User]
+
+          @group Make Tea
+            @item tea [tea(options)]
+            @item tea-select-type [Select Type]
+            @item tea-add-milk [Add Milk]
+            @item tea-add-sugar [Add Sugar]
+
+          @group Make Coffee
+            @item coffee [coffee(options)]
+            @item coffee-select-type [Select Type]
+            @item coffee-add-milk [Add Milk]
+            @item coffee-add-sugar [Add Sugar]
+
+          @item return-beverage [Return Beverage]
+
+          @link user -> tea
+          @link user -> coffee
+
+          @link tea --> tea-select-type
+          @link tea-select-type --> tea-add-milk
+          @link tea-add-milk --> tea-add-sugar
+          @link tea-add-sugar -> return-beverage
+
+          @link coffee --> coffee-select-type
+          @link coffee-select-type --> coffee-add-milk
+          @link coffee-add-milk --> coffee-add-sugar
+          @link coffee-add-sugar -> return-beverage
+
 
 @bottomSection
   @paginationButtons

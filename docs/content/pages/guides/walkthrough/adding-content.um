@@ -17,125 +17,126 @@
 
 
 @contentSection
-  @topic Adding content to the site
-    @section Install and build Hexagon.js
-      @sheet
-        In this section, we use @hyperlink(https://hexagonjs.io)[Hexagon.js] as it
-        provides a good framework for building content.
+  @topic Install and build Hexagon.js
+    @sheet
+      In this section, we use @hyperlink(https://hexagonjs.io)[Hexagon.js] as it
+      provides a good framework for building content.
 
-        Hexagon.js is available as a node module which can be installed using:
+      Hexagon.js is available as a node module which can be installed using:
 
-      @code bash
-        npm install --save hexagon-js
+    @code bash
+      npm install --save hexagon-js
 
-      @sheet
-        A build script can then be created:
+    @sheet
+      A build script can then be created:
 
-      @bold: build/hexagon.js
-      @codeblock js
-        var hexagon = require('hexagon-js')
+    @bold: build/hexagon.js
+    @codeblock js
+      var hexagon = require('hexagon-js')
 
-        hexagon.light.build({
-          dest: 'content/resources/hexagon-js'
-        })
+      hexagon.light.build({
+        dest: 'content/resources/hexagon-js'
+      })
 
-      @sheet
-        This can then be run using the following command to create a build
-        of hexagon in the resources folder:
+    @sheet
+      This can then be run using the following command to create a build
+      of hexagon in the resources folder:
 
-      @codeblock bash
-        node build/hexagon.js
+    @codeblock bash
+      node build/hexagon.js
 
-      @sheet
-        This will need to be run whenever the hexagon build config is changed
-        or a new version of hexagon is installed.
+    @sheet
+      This will need to be run whenever the hexagon build config is changed
+      or a new version of hexagon is installed.
 
-    @section Creating the titlebar template
-      @sheet
-        Before adding content to the page, it's best to define common templates
-        to use for the pages.
+  @topic Creating the titlebar template
+    @sheet
+      Before adding content to the page, it's best to define common templates
+      to use for the pages.
 
-        The first step for using templates is installing @code(um)[quantum-template]:
+      The first step for using templates is installing @code(um)[quantum-template]:
 
-      @codeblock bash
-        npm install --save quantum-template
+    @codeblock bash
+      npm install --save quantum-template
 
-      @sheet
-        Then add the script to build/build.js to include template in the build process:
+    @sheet
+      Then add the script to build/build.js to include template in the build process:
 
-      @codeblock js
-        // Add this to the top of the page, alongside the other require statements
-        var template = require('template')
+    @codeblock js
+      // Add this to the top of the page, alongside the other require statements
+      var template = require('template')
 
-        ...
+      ...
 
-        return Promise.resolve(obj)
-          .then(template()) // Add this line to the build pipeline, this includes the template functionality.
-          .map(html(htmlOptions))
-          .map(html.stringify())
+      return Promise.resolve(obj)
+        .then(template()) // Add this line to the build pipeline, this includes the template functionality.
+        .map(html(htmlOptions))
+        .map(html.stringify())
 
-        ...
+      ...
 
-      @sheet
-        Templates can then be created using @(@define).
+    @sheet
+      Templates can then be created using @(@define).
 
-        In this walkthrough, we only need one template for the titlebar:
+      In this walkthrough, we only need one template for the titlebar:
 
-      @bold: content/shared/shared.um
-      @@codeblock um
-        \# Include the Hexagon library on all pages that include this file.
-        @stylesheet [/resources/hexagon-js/hexagon.css]
-        @script [/resources/hexagon-js/hexagon.js]
+    @bold: content/shared/shared.um
+    @@codeblock um
+      \# Include the Hexagon library on all pages that include this file.
+      @stylesheet [/resources/hexagon-js/hexagon.css]
+      @script [/resources/hexagon-js/hexagon.js]
 
-        \# Define the @titlebar entity
-        @define titlebar
-          \# Apply the 'hx-heading-fixed' class to the body
-          @bodyClass hx-heading-fixed
-          \# Add a div to the page with the hx-heading class
-          @div .hx-heading
-            @div .hx-titlebar
-              @div .hx-titlebar-container
-                @div .hx-titlebar-header
-                  @a .hx-titlebar-icon
-                    @attr href: /
-                    \# Add the site logo
-                    @image /resources/coffee.png
-                  \# Add the header text
-                  @div .hx-titlebar-title: BeverageInc.
+      \# Define the @titlebar entity
+      @define titlebar
+        \# Apply the 'hx-heading-fixed' class to the body
+        @bodyClass hx-heading-fixed
+        \# Add a div to the page with the hx-heading class
+        @div .hx-heading
+          @div .hx-titlebar
+            @div .hx-titlebar-container
+              @div .hx-titlebar-header
+                @a .hx-titlebar-icon
+                  @attr href: /
+                  \# Add the site logo
+                  @image /resources/coffee.png
+                \# Add the header text
+                @div .hx-titlebar-title: BeverageInc.
 
-      @sheet
-        The template uses the following site logo, which should be copied to the site:
+    @sheet
+      The template uses the following site logo, which should be copied to the site:
 
-      @bold: content/resources/coffee.png
+    @bold: content/resources/coffee.png
 
-      @image /resources/coffee.png
+    @image /resources/coffee.png
 
 
-    @section Creating a home page
-      @sheet
-        The next step is to create the home page for the site using the template you just created
+  @topic Creating a home page
+    @sheet
+      The next step is to create the home page for the site using the template you just created
 
-      @bold: content/pages/index.um
-      @@codeblock um
-        \# Include the shared file
-        @inline ../shared/shared.um
+    @bold: content/pages/index.um
+    @@codeblock um
+      \# Include the shared file
+      @inline ../shared/shared.um
 
-        \# Add the titlebar from the template created in the previous step
-        @titlebar
+      \# Add the titlebar from the template created in the previous step
+      @titlebar
 
-        @topSection
-          @breadcrumb
-            @item /: Home
-          @title Making Tea and Coffee
-          @description: An api for making tea and coffee using Javascript
+      @topSection
+        @breadcrumb
+          @item /: Home
+        @title Making Tea and Coffee
+        @description: An api for making tea and coffee using Javascript
 
-        @contentSection
-          @topic About
-            @sheet
-              This api has broken the digital wall and provides the functionality to make real tea and coffee using Javascript.
+      @contentSection
+        @topic About
+          @sheet
+            This api has broken the digital wall and provides the functionality to make real tea and coffee using Javascript.
 
-      @sheet
-        Content can be added easily in this way by adding more pages and folders as required.
+      @bottomSection
+
+    @sheet
+      Content can be added easily in this way by adding more pages and folders as required.
 
 @bottomSection
   @paginationButtons
