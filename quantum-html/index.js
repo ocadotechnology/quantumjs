@@ -318,11 +318,24 @@ function exportAssets (targetDir, assetObjs) {
   }))
 }
 
+// renames name.html to name/index.html and leaves index.html as it is
+function htmlRenamer = function () {
+  return function (obj) {
+    var filenameWithoutExtension = path.basename(obj.filename).replace('.html', '')
+    var root = path.dirname(obj.filename)
+    return {
+      filename: filenameWithoutExtension === 'index' ? obj.filename : path.join(root, filenameWithoutExtension, 'index.html'),
+      content: obj.content
+    }
+  }
+}
+
 module.exports.transforms = transforms
 module.exports.prepareTransforms = prepareTransforms
 module.exports.stringify = stringify
 module.exports.exportAssets = exportAssets
 module.exports.paragraphTransform = paragraphTransform
+module.exports.htmlRenamer = htmlRenamer
 
 module.exports.assets = {
   'quantum-html-code-highlight.css': __dirname + '/client/code-highlight.css',
