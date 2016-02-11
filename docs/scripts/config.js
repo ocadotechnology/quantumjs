@@ -42,7 +42,7 @@ function pipeline () {
       .then(version())
       .map(html({ transforms: htmlTransforms }))
       .map(html.stringify(htmlOptions))
-      .map(hub.utils.htmlRenamer)
+      .map(html.htmlRenamer())
   }
 }
 

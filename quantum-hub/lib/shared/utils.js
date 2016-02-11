@@ -3,7 +3,9 @@ var chalk = require('chalk')
 var ProgressBar = require('progress')
 
 // renames name.html to name/index.html and leaves index.html as it is
+//XXX: remove when releasing 1.0.0
 exports.htmlRenamer = function (obj) {
+  console.warn('hub.utils.htmlRenamer is deprecated; use html.htmlRenamer() instead')
   var filenameWithoutExtension = path.basename(obj.filename).replace('.html', '')
   var root = path.dirname(obj.filename)
   return {

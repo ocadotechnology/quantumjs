@@ -319,7 +319,7 @@ function exportAssets (targetDir, assetObjs) {
 }
 
 // renames name.html to name/index.html and leaves index.html as it is
-function htmlRenamer = function () {
+function htmlRenamer () {
   return function (obj) {
     var filenameWithoutExtension = path.basename(obj.filename).replace('.html', '')
     var root = path.dirname(obj.filename)
