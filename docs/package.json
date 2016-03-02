@@ -14,14 +14,14 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "bluebird": "^3.1.1",
-    "fs-extra": "^0.26.3",
-    "quantum-api": "^1.0.0",
-    "quantum-changelog": "^1.0.0",
-    "quantum-html": "^1.0.0",
-    "quantum-template": "^1.0.0",
-    "quantum-version": "^1.0.0",
-    "quantum-docs": "^0.1.0",
-    "quantum-hub": "^0.1.0"
+    "fs-extra": "^0.26.5",
+    "quantum-api": "^0.9.0",
+    "quantum-changelog": "^0.9.0",
+    "quantum-docs": "^0.9.0",
+    "quantum-html": "^0.9.0",
+    "quantum-hub": "^0.9.0",
+    "quantum-template": "^0.9.0",
+    "quantum-version": "^0.9.0"
   },
   "private": true
 }

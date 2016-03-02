@@ -1,0 +1,20 @@
+@inline ../../shared/shared.um
+
+@titlebar
+@author Charlie Frater
+@author James Smyth
+@date 12/01/2016
+ 
+@topSection
+  @breadcrumb
+    @item /: Home
+    @item /guides/: Guides
+    @item /guides/tutorials/: Tutorials
+    @item /guides/tutorials/writing-technical-documentation/: Writing Technical Documentation
+  @title Writing Technical Documentation
+  @description
+    This tutorial will guide you through use of some of the quantum modules for writing technical documentation
+
+@contentSection
+  @siteSidebar
+  @inline ../../content/tutorials/writing-technical-documentation.um

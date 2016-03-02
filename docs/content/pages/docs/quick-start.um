@@ -1,0 +1,18 @@
+@inline ../../shared/shared.um
+
+@titlebar
+
+@topSection
+  @breadcrumb
+    @item /: Home
+    @item /docs/: Docs
+    @item /docs/quick-start/: Quick Start
+  @title Quick Start
+  @description
+    This page will guide you through creating your first page
+
+@contentSection
+  @siteSidebar
+  @inline ../../content/quick-start.um
+
+@footer

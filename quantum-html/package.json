@@ -29,7 +29,7 @@
     "fs-extra": "^0.26.4",
     "highlight.js": "^8.6.0",
     "merge": "^1.2.0",
-    "quantum-dom": "^1.0.0",
+    "quantum-dom": "^0.9.0",
     "quantum-js": "^1.0.0"
   },
   "devDependencies": {

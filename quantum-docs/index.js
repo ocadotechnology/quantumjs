@@ -118,22 +118,55 @@ transforms.versionSelector = function (entity, page, transforms) {
   }
 }
 
-transforms.tableOfContents = function (entity, page, transforms) {
-  var tableOfContents = page.create('div').class('qm-docs-table-of-contents')
+transforms.sidebar = function (entity, page, transforms) {
+  page.body.classed('qm-docs-sidebar-page', true)
+  return page.create('div').class('qm-docs-sidebar')
+    .add(entity.transform(transforms))
+}
 
-  entity.selectAll('topic').forEach(function (topic) {
-    tableOfContents.add(
-      page.create('div').class('qm-docs-table-of-contents-topic').add(
-        page.create('a').attr('href', '#' + spinalCase(topic.ps())).text(topic.ps())))
-
-    topic.selectAll('section').forEach(function (section) {
-      tableOfContents.add(
-        page.create('div').class('qm-docs-table-of-contents-section').add(
-          page.create('a').attr('href', '#' + spinalCase(section.ps())).text(section.ps())))
+function createTableOfContentsPageLinks (entity, page, path) {
+  return entity.selectAll('topic', {recursive: true}).map(function (topic) {
+    var sections = topic.selectAll('section').map(function (section) {
+      return page.create('div').class('qm-docs-table-of-contents-section')
+        .add(page.create('a').attr('href', path + '#' + spinalCase(section.ps())).text(section.ps()))
     })
-  })
 
-  page.body.append(tableOfContents)
+    return page.create('div').class('qm-docs-table-of-contents-topic')
+      .add(page.create('a').attr('href', path + '#' + spinalCase(topic.ps())).text(topic.ps()))
+      .add(sections)
+  })
+}
+
+function createTableOfContentsGroup (entity, page) {
+  var pages = entity.selectAll('page')
+
+  if (pages.length > 0) {
+    return pages.map(function (p) {
+      return page.create('div').class('qm-docs-table-of-contents-page')
+        .add(page.create('div').class('qm-docs-table-of-contents-page-title').text(p.ps()))
+        .add(createTableOfContentsPageLinks(p.select('content'), page, p.select('url').ps()))
+    })
+  } else {
+    return createTableOfContentsPageLinks(entity, page, '')
+  }
+}
+
+transforms.tableOfContents = function (entity, page, transforms) {
+  var toc = page.create('div').class('qm-docs-table-of-contents')
+
+  var groups = entity.selectAll('group')
+
+  if (groups.length > 0) {
+    toc.add(groups.map(function (g) {
+      return page.create('div').class('qm-docs-table-of-contents-group')
+        .add(page.create('div').class('qm-docs-table-of-contents-group-title').text(g.ps()))
+        .add(createTableOfContentsGroup(g, page))
+    }))
+  } else {
+    return createTableOfContentsGroup(entity, page)
+  }
+
+  return toc
 }
 
 transforms.topSection = function (entity, page, transforms) {
@@ -166,9 +199,11 @@ function breadcrumb (entity, page, transforms) {
 transforms.breadcrumb = breadcrumb
 
 transforms.contentSection = function (entity, page, transforms) {
-  return page.create('div').class('qm-docs-content-section')
-    .add(page.create('div').class('qm-docs-centered')
-      .add(entity.transform(transforms)))
+  return page.create('div').class('qm-docs-content-section-container')
+    .add(entity.filter('sidebar').transform(transforms))
+    .add(page.create('div').class('qm-docs-content-section')
+      .add(page.create('div').class('qm-docs-centered')
+        .add(entity.filter(function (entity) {return entity.type !== 'sidebar'}).transform(transforms))))
 }
 
 transforms.bottomSection = function (entity, page, transforms) {
@@ -196,6 +231,7 @@ function assetify (trans) {
   Object.keys(trans).forEach(function (k) {
     newTransforms[k] = function (entity, page, transforms) {
       page.asset('quantum-docs.css', __dirname + '/client/quantum-docs.css')
+      page.asset('quantum-docs.js', __dirname + '/client/quantum-docs.js')
       return trans[k](entity, page, transforms)
     }
   })
@@ -206,6 +242,24 @@ module.exports = function (options) {
   return assetify(transforms)
 }
 
+module.exports.populateTableOfContents = function (opts) {
+  return function (obj) {
+    var toc = quantum.select(obj.content).select('tableOfContents', {recursive: true})
+    var topics = quantum.select(obj.content).selectAll('topic', {recursive: true})
+
+    topics.forEach(function (topic) {
+      var top = quantum.create('topic').ps(topic.ps())
+      var sections = topic.selectAll('section').forEach(function (section) {
+        top.add(quantum.create('section').ps(section.ps()))
+      })
+      toc.content.push(top)
+    })
+
+    return obj
+  }
+}
+
 module.exports.assets = {
-  'quantum-docs.css': __dirname + '/client/quantum-docs.css'
+  'quantum-docs.css': __dirname + '/client/quantum-docs.css',
+  'quantum-docs.js': __dirname + '/client/quantum-docs.js'
 }

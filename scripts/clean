@@ -11,6 +11,7 @@ rm -rf quantum-diagram/node_modules
 rm -rf quantum-docs/node_modules
 rm -rf quantum-version/node_modules
 rm -rf quantum-watch/node_modules
+rm -rf quantum-template/node_modules
 rm -rf quantum-hub/node_modules
 rm -rf docs/node_modules
 rm -rf docs/target

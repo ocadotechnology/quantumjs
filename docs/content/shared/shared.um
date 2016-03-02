@@ -17,5 +17,39 @@
           @div .hx-section
           @versionSelector: @versionList
 
+@define siteSidebar
+  @sidebar
+    @tableOfContents
+      @group Basic Topics
+        @page [Quick Start]
+          @url /docs/quick-start/
+          @content: @inline ../content/quick-start.um
+        @page [Core Concepts]
+          @url /docs/core-concepts/
+          @content: @inline ../content/core-concepts.um
+
+      @group Advanced Topics
+        @page [Creating Pipeline Transforms]
+          @url /docs/pipeline-transforms/
+          @content: @inline ../content/pipeline-transforms.um
+        @page [Creating Entity Transforms]
+          @url /docs/entity-transforms/
+          @content: @inline ../content/entity-transforms.um
+
+      @group Tutorials
+        @page [Writing technical documentation]
+          @url /tutorials/writing-technical-documentation/
+          @content: @inline ../content/tutorials/writing-technical-documentation.um
+        @page [Creating a blog]
+          @url /tutorials/creating-a-blog/
+          @content: @inline ../content/tutorials/creating-a-blog.um
+
+      @group Api Docs
+        @page [quantum-js]
+          @url /api/quantum-js/
+          @content: @inline ../content/quick-start.um
+
+
+
 @define footer
   @div .footer

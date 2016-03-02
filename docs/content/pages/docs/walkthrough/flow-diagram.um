@@ -1,0 +1,35 @@
+@inline ../../../shared/shared.um
+
+@titlebar
+@author James Smyth
+@date 12/01/2016
+
+@topSection
+  @breadcrumb
+    @item /: Home
+    @item /guides/: Guides
+    @item /guides/walkthrough/: Walkthrough
+    @item /guides/walkthrough/flow-diagram/: Flow Diagram
+  @title Flow Diagram
+  @description: This section covers the use of quantum-diagram for creating a flow diagram showing the process for the fictitious beverage api.
+
+
+@contentSection
+  @sidebar
+    @tableOfContents
+      @page [Setting Up] [../setting-up]: @inline setting-up.um
+      @page [Adding Content] [../adding-content]: @inline adding-content.um
+      @page [Adding an Api] [../adding-an-api]: @inline adding-an-api.um
+      @page [Adding a Changelog] [../adding-a-changelog]: @inline adding-a-changelog.um
+      @page [Flow Diagrams] [../flow-diagram]: @inline flow-diagram-content.um
+      @page [Custom Transforms] [../custom-transforms]: @inline custom-transforms.um
+
+  @inline ../../../content/flow-diagram.um
+
+
+@bottomSection
+  @paginationButtons
+    @previous /guides/walkthrough/adding-a-changelog: Adding a Changelog
+    @next /guides/walkthrough/custom-transforms: Adding a Custom Tranform
+
+@footer

@@ -2,59 +2,71 @@
 
 # This script is useful for developing locally - it will npm link all the modules
 
+npm install
 pushd quantum-js
 sudo npm link
 popd
 
+npm install
 pushd quantum-dom
 sudo npm link
 popd
 
 pushd quantum-template
+npm install
 npm link quantum-js
 sudo npm link
 popd
 
 pushd quantum-html
+npm install
 npm link quantum-js quantum-dom
 sudo npm link
 popd
 
 pushd quantum-api
+npm install
 npm link quantum-js quantum-html
 sudo npm link
 popd
 
 pushd quantum-changelog
+npm install
 npm link quantum-js quantum-html
 sudo npm link
 popd
 
 pushd quantum-diagram
+npm install
 npm link quantum-js
 sudo npm link
 popd
 
 pushd quantum-docs
+npm install
 npm link quantum-js quantum-html
 sudo npm link
 popd
 
 pushd quantum-version
+npm install
 npm link quantum-js
 sudo npm link
 popd
 
 pushd quantum-watch
+npm install
 npm link quantum-js
 sudo npm link
 popd
 
 pushd quantum-hub
+npm install
 npm link quantum-js quantum-watch
 sudo npm link
 popd
 
 pushd docs
+npm install
 npm link quantum-hub quantum-html quantum-template quantum-api quantum-changelog quantum-diagram quantum-docs quantum-version
 popd

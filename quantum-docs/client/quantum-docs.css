@@ -2,6 +2,7 @@
 .qm-docs-centered {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 15px;
 }
 
 .qm-docs-topic {
@@ -76,20 +77,57 @@ p:last-child {
   margin: 0.15em;
 }
 
-.qm-docs-table-of-contents {
+/* Sidebar */
+
+.qm-docs-sidebar-page .qm-docs-content-section-container {
+  position: relative;
+  background: #E6E6E6;
+}
+
+.qm-docs-sidebar-page .qm-docs-content-section {
+  margin-left: 350px;
+}
+
+.qm-docs-sidebar {
   position: fixed;
-  padding: 1.5em;
-  top: 46px;
-  right: 0;
+  top: 46px; /* hexagon-header height */
+  overflow: auto;
+  max-height: calc(100% - 46px);
+}
+
+
+.qm-docs-sidebar.qm-docs-sidebar-at-top {
+  position: absolute;
+  top: 0;
+}
+
+.qm-docs-sidebar.qm-docs-sidebar-at-bottom {
+  position: absolute;
   bottom: 0;
+  top: initial;
+}
+
+/* Table of contents */
+
+.qm-docs-table-of-contents {
+  padding: 1.5em;
   font-weight: bold;
-  background: #F3F3F3;
-  box-shadow: inset 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
-  border-left: solid 1px #DEDEDE;
+  height: calc(100% - 2em);
+}
+
+.qm-docs-table-of-contents-group-title {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-weight: normal;
+  border-bottom: solid 1px #D0CECE;
+  padding-bottom: 0.5em;
+  text-transform: uppercase;
+  color: #4C4C4C;
 }
 
 .qm-docs-table-of-contents-topic {
-  padding: 0.25em;
+  padding-left: 1em;
 }
 
 .qm-docs-table-of-contents-section {
