@@ -1,18 +1,16 @@
-.codeblock {
+.qm-html-codeblock {
   padding: 1em;
   margin: 0.5em 0;
-  border: solid 1px #F0F0F0;
-  color: #3D3D3D;
   overflow: auto;
-  background: white;
-  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+  background: whitesmoke;
+  border-radius: 3px;
 }
 
-.codeblock > pre {
+.qm-html-codeblock > pre {
   margin: 0;
 }
 
-.code {
+.qm-html-code {
   font-family: monospace;
   font-size: 14px;
 }

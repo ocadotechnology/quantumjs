@@ -40,7 +40,7 @@ function pipeline () {
       .then(template({ variables: templateVariables }))
       .then(changelog())
       .then(version())
-      .then(docs.populateTableOfContents())
+      .map(docs.populateTableOfContents())
       .map(html({ transforms: htmlTransforms }))
       .map(html.stringify(htmlOptions))
       .map(html.htmlRenamer())

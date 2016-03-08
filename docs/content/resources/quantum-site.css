@@ -19,7 +19,7 @@
 body, html {
   margin: 0;
   padding: 0;
-  background: #1B1B1B;
+  background: white;
 }
 
 .header {
@@ -133,20 +133,11 @@ body, html {
   padding: 1em 1em;
   background: #252525;
   color: white;
-/*  flex: 0;*/
-}
-/*
-body {
-  display: flex;
-  flex-direction: column;
 }
 
-.qm-docs-content-section {
-  flex-grow: 1;
-}*/
 
 .qm-docs-top-section {
-  background: #CC447B !important;
+  background: #CC5209 !important;
 }
 .qm-docs-summary-header {
   color: #774A8A !important;

@@ -1,0 +1,29 @@
+@inline ../../../shared/shared.um
+
+@versionList
+  @version 1.0.0
+
+@titlebar
+
+@topSection
+  @title Quantum Diagram
+  @description
+
+  @breadcrumb
+    @item /: Home
+    @item /modules/: Modules
+    @item /modules/quantum-diagram/: Quantum Diagram
+
+@contentSection
+  @siteSidebars
+  
+  @topic About
+    TODO
+
+  @topic Example
+    TODO
+
+  @topic Api
+    TODO
+
+@footer

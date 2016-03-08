@@ -1,8 +1,8 @@
 
 .qm-docs-centered {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 0 15px;
 }
 
 .qm-docs-topic {
@@ -12,17 +12,23 @@
 .qm-docs-topic-header {
   font-size: 32px;
   font-weight: 100;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
   position: relative;
   top: 50px;
+
+  color: #E67636;
+}
+
+h1 {
+  color: #E67636;
 }
 
 .qm-docs-topic-body {
-  margin-left: 1em;
+
 }
 
 .qm-docs-section {
-  margin-bottom: 1em;
+  margin-bottom: 3em;
 }
 
 .qm-docs-section-header {
@@ -35,7 +41,7 @@
 }
 
 .qm-docs-section-body {
-  margin-left: 1em;
+  margin-top: 1em;
 }
 
 .qm-docs-subsection {
@@ -81,11 +87,6 @@ p:last-child {
 
 .qm-docs-sidebar-page .qm-docs-content-section-container {
   position: relative;
-  background: #E6E6E6;
-}
-
-.qm-docs-sidebar-page .qm-docs-content-section {
-  margin-left: 350px;
 }
 
 .qm-docs-sidebar {
@@ -93,8 +94,17 @@ p:last-child {
   top: 46px; /* hexagon-header height */
   overflow: auto;
   max-height: calc(100% - 46px);
+  max-width: 100%;
+  margin: 40px;
 }
 
+.qm-docs-sidebar-left {
+  right: calc(50% + 400px);
+}
+
+.qm-docs-sidebar-right {
+  left: calc(50% + 400px);
+}
 
 .qm-docs-sidebar.qm-docs-sidebar-at-top {
   position: absolute;
@@ -110,30 +120,23 @@ p:last-child {
 /* Table of contents */
 
 .qm-docs-table-of-contents {
-  padding: 1.5em;
-  font-weight: bold;
-  height: calc(100% - 2em);
+
 }
 
-.qm-docs-table-of-contents-group-title {
-  text-align: center;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  font-weight: normal;
-  border-bottom: solid 1px #D0CECE;
-  padding-bottom: 0.5em;
-  text-transform: uppercase;
-  color: #4C4C4C;
+.qm-docs-table-of-contents-topic-container {
+  /*margin-bottom: 0.5em;*/
 }
 
 .qm-docs-table-of-contents-topic {
-  padding-left: 1em;
+  /*display: block;*/
+  color: #525252;
+  font-weight: bold;
 }
 
 .qm-docs-table-of-contents-section {
-  padding: 0;
-  margin-left: 1em;
-  font-weight: normal;
+  /*margin-left: 1em;*/
+  /*display: block;*/
+  color: #525252;
 }
 
 .qm-docs-anchor {
@@ -260,11 +263,7 @@ p:last-child {
 }
 
 .qm-docs-sheet {
-  padding: 1em;
-  background: white;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
-  border: solid 1px #F0F0F0;
-  margin: 0.5em 0;
+  margin: 1em 0;
 }
 
 .qm-docs-error-message {
@@ -284,6 +283,15 @@ p:last-child {
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 
+.qm-docs-top-section-banner {
+  padding: 20px 0;
+}
+
+.qm-docs-top-section-centered {
+  width: 1400px;
+  margin: 0 auto;
+}
+
 .hx-heading + .qm-docs-top-section {
   margin-top: 46px;
 }
@@ -293,7 +301,6 @@ p:last-child {
 }
 
 .qm-docs-content-section {
-  background: #F5F5F5;
   padding: 1px;
   padding-top: 30px;
   padding-bottom: 30px;
@@ -303,7 +310,6 @@ p:last-child {
   font-size: 48px;
   font-weight: 100;
   margin-top: 0.25em;
-  padding: 0 8px;
 }
 
 .qm-docs-breadcrumb {
@@ -335,7 +341,7 @@ p:last-child {
 .qm-docs-top-section-description {
   opacity: 0.8;
   font-size: 16px;
-  padding: 1em 8px;
+  padding: 1em 0;
 }
 
 
@@ -376,4 +382,54 @@ p:last-child {
 
 .qm-docs-related-button-title {
   font-size: 18px;
+}
+
+
+
+
+/* Nagivation menu */
+
+.qm-docs-navication-menu {
+  padding: 1em;
+  border-radius: 2px;
+  background: whitesmoke;
+}
+
+.qm-docs-navication-menu-section-title {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #525252;
+}
+
+.qm-docs-navication-menu-section-body {
+  margin: 1em 0;
+}
+
+a.qm-docs-navication-menu-page {
+  display: block;
+  color: #E67636;
+  margin-left: 6px;
+}
+
+
+
+/* Notices */
+
+/* XXX: add the hexagon type context classes here */
+
+.qm-docs-notice {
+    margin: 1em 0;
+}
+
+.qm-docs-notice-header {
+  background: #CC5209;
+  color: white;
+  padding: 0.5em 0.75em;
+  border-radius: 3px 3px 0 0;
+}
+
+.qm-docs-notice-body {
+  padding: 0.75em;
+  background: #FFE0CE;
+  border-radius: 0 0 3px 3px;
 }

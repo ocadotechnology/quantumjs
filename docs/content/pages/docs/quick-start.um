@@ -12,7 +12,46 @@
     This page will guide you through creating your first page
 
 @contentSection
-  @siteSidebar
-  @inline ../../content/quick-start.um
+  @siteSidebars
+  
+  @topic Hello World example
+
+    @section Create a new project and install with npm
+      @codeblock bash
+        mkdir quantum-example
+        cd quantum-example
+
+        npm init
+        npm install --save-dev quantum-js
+        npm install --save-dev quantum-html
+
+    @section Create a simple build script and a source file
+
+      @sheet
+        In the newly created quantum-example folder create two files @italic[build.js] and @italic[index.um]. Then copy the following snippets into them:
+
+      @bold: build.js
+      @codeblock js
+          var quantum = require('quantum-js')
+          var html = require('quantum-html')
+
+          quantum.read('index.um')              // load and parse a source file
+            .map(html())                        // transform the ast to virtual dom
+            .map(html.stringify())              // render the virtual dom to html
+            .map(quantum.write('target'))       // write the result to target/index.html
+
+      @bold: index.um
+      @@codeblock um
+        @h1: First Page
+        @div: Hello World!
+
+    @section Run the build script
+      @codeblock bash
+        node build.js
+
+    @section Check the output
+      @sheet
+        A file should have been created in the @italic[target] folder called @italic[index.html]. Try opening it in a browser to see what has been generated.
+
 
 @footer

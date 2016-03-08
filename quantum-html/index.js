@@ -187,14 +187,14 @@ function highlightCode (language, code) {
 
 transforms.codeblock = function (entity, page, transform) {
   page.asset('quantum-html-code-highlight.css', __dirname + '/client/code-highlight.css')
-  return page.create('div').class('codeblock language-' + entity.ps())
+  return page.create('div').class('qm-html-codeblock language-' + entity.ps())
     .add(page.create('pre').text(highlightCode(entity.ps(), entity.cs()), true))
 }
 
 transforms.code = function (entity, page, transform) {
   page.asset('quantum-html-code-highlight.css', __dirname + '/client/code-highlight.css')
   return page.create('code')
-    .class('code language-' + entity.ps())
+    .class('qm-html-code language-' + entity.ps())
     .text(highlightCode(entity.ps(), entity.cs()), true)
 }
 

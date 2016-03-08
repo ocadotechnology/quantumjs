@@ -4,7 +4,7 @@ var should = chai.should()
 var quantum = require('quantum-js')
 var path = require('path')
 
-// reads and exectures in a suite defined in um (as it is easier to write test cases in um)
+// reads and executes in a suite defined in quantm markup 
 function testSuite (filename) {
   quantum.read(path.join('test/', filename)).then(function (obj) {
     var suite = quantum.select(obj[0].content)

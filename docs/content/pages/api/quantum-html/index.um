@@ -1,0 +1,56 @@
+@inline ../../../shared/shared.um
+
+@versionList
+  @version 1.0.0
+
+@titlebar
+
+@topSection
+  @title Quantum Html
+  @description
+    This page describes how the html ast to virual dom transform works, and
+    shows how individual entity transforms can be passed into the html transform.
+
+    It also lists out the inbuilt html entity transforms.
+  @breadcrumb
+    @item /: Home
+    @item /modules/: Modules
+    @item /modules/quantum-html/: Quantum Html
+
+@contentSection
+  @siteSidebars
+
+  @topic About
+    @sheet
+      This module is used to transform parsed quantum AST objects to virtual
+      dom content and then converting to html.
+
+      The two conversion functions are provided separately to allow additional
+      transforms to be performed between the virtual dom and stringified stage,
+      giving flexibility to convert to formats other than pure html.
+
+  @topic Example
+
+    @p: Build script
+    @codeblock js
+      var quantum = require('quantum-js')
+      var html    = require('quantum-html')
+
+      quantum.read('source.um')
+        .map(html())
+        .map(html.stringify())
+        .map(quantum.write('target'))
+
+    @p: Example markup
+    @@codeblock um
+      @h1: My Page
+      @p: Hello World!
+
+    @p: Example result
+    @sheet:
+      @h1: My Page
+      @p: Hello World!
+
+    @inline api.um
+
+@footer

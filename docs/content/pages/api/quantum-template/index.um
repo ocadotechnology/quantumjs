@@ -1,0 +1,247 @@
+@inline ../../../shared/shared.um
+
+@versionList
+  @version 1.0.0
+
+@titlebar
+
+@topSection
+  @title Quantum Template
+  @description
+
+  @breadcrumb
+    @item /: Home
+    @item /modules/: Modules
+    @item /modules/template/: Quantum Template
+
+@contentSection
+  @siteSidebars
+  @topic About
+    @sheet
+      This module adds the ability to create templates using @code(um)[@define] which can then be re-used
+      as entities throughout. Variables can also be defined in the template options which are then
+      accessible using @code(um)[{{mustache-style}}] brackets.
+
+  @topic Example
+
+    @p: When using templates, this module should normally be the first stage of the transform process:
+    @@codeblock js
+      var quantum = require('quantum-js')
+      var template = require('quantum-template')
+      var html = require('quantum-html')
+
+      var templateOptions = {
+        variables: {
+          exampleList: [1, 2, 3],
+          exampleObject: {name: 'Bob', age: 25},
+          // define any variables here
+        }
+      }
+
+      quantum.read('index.um')
+        .map(template(templateOptions))
+        .map(html(htmlTransforms))
+        .map(html.stringify())
+        .map(quantum.write('target'))
+
+    @p: Example markup
+    @@codeblock um
+      @define exampleTemplate
+        @div
+          @h4: {{ps}}
+          {{cs}}
+
+      @exampleTemplate Title
+        Content
+
+      @for num in exampleList
+        @exampleTemplate Title {{num}}
+          Content {{num}}
+
+      @for key value in exampleObject
+        @exampleTemplate Title {{key}}
+          Content {{value}}
+
+      @hr
+      @div: Nested Variable
+      @div: {{exampleObject.name}}
+
+    @p: Example result
+    @sheet
+      @define exampleTemplate
+        @div
+          @h4: {{ps}}
+          {{cs}}
+
+      @exampleTemplate Title
+        Content
+
+      @for num in exampleList
+        @exampleTemplate Title {{num}}
+          Content {{num}}
+
+      @for key value in examples.exampleObject
+        @exampleTemplate Title {{key}}
+          Content {{value}}
+
+      @hr
+      @div: Nested Variable
+      @div: {{examples.exampleObject.name}}
+
+  @topic Api
+    @api
+      @function api
+        @description:
+          @p: This is the function returned from @code[require('quantum-template')]
+        @param? options [Object]
+          @property variables [Object]
+            @description:
+              @p: An object containing all the variables for use in the template.
+              @p: These can be single values or an array of values which can then be used in @(@for) loops.
+              @p: Values defined in this object are accessible by their key value.
+              @p: For instance, if you define:
+              @codeblock js
+                {
+                  variables: {
+                    object: {
+                      property1: [1,2,3],
+                      property2: 4
+                    }
+                  }
+                }
+              @p: You can access @code(um)[{{object}}], @code(um)[{{object.property1}}] and @code(um)[{{object.property2}}] in your markup:
+              @@codeblock um
+                @div: {{object}}
+                @div: {{object.property1}}
+                @div: {{object.property2}}
+
+              @sheet
+                @div: {{example}}
+                @div: {{example.property1}}
+                @div: {{example.property2}}
+
+      @entity define
+        @params entityType
+        @description
+          @p: An entity for defining a template.
+          @p: When defining an entity, there are two elements that can be used, {{ps}} and {{cs}}:
+          @@codeblock um
+            @define exampleTemplate
+              @div
+                @h2: {{ps}}
+                {{cs}}
+
+
+            @entity Title
+              Content
+          @p: The {{ps}} is the parameter string of the entity, in this case 'Title'
+          @p: The {{cs}} is the content string of the entity, in this case 'Content'
+
+      @entity for
+        @params val in values
+        @description
+          @p: An entity for creating for loops on array values passed into the template options.
+          @p: Example List is defined in the variables passed in to the template options:
+          @codeblock js
+            // Excerpt from full example at top of page
+            var templateOptions = {
+              variables: {
+                exampleList: [1, 2, 3],
+                exampleObject: {name: 'Bob', age: 25},
+                // define any variables here
+              }
+            }
+
+            quantum.read('index.um')
+              .map(template(templateOptions))
+
+          @p: This can then be used in a for loop as follows:
+          @@codeblock um
+            @for val in exampleList
+              @div: Value: {{val}}
+          @sheet
+            @for val in examples.exampleList
+              @div: Value: {{val}}
+
+          @p: It is also possible to nest loops:
+          @@codeblock um
+            @for a in exampleList
+              @for b in exampleList
+                @div: {{a}}: {{b}}
+          @sheet
+            @for a in examples.exampleList
+              @for b in examples.exampleList
+                @div: {{a}}: {{b}}
+
+
+      @entity for
+        @params key val in values
+        @description
+          @p: An entity for creating for loops within a template
+          @p: Example List is defined in the variables passed in to the template options:
+          @codeblock js
+            // Excerpt from full example at top of page
+            var templateOptions = {
+              variables: {
+                exampleList: [1, 2, 3],
+                exampleObject: {name: 'Bob', age: 25},
+                // define any variables here
+              }
+            }
+
+            quantum.read('index.um')
+              .map(template(templateOptions))
+
+          @p: This can then be used in a for loop as follows:
+          @@codeblock um
+            @for key val in exampleObject
+              @div: {{key}}: {{val}}
+
+          @sheet
+            @for key val in examples.exampleObject
+              @div: {{key}}: {{val}}
+
+          @p: It is also possible to nest loops:
+          @@codeblock um
+            @for key1 val1 in exampleObject
+              @for key2 val2 in exampleObject
+                @div
+                  @p: {{key1}}: {{val1}}
+                  @p: {{key2}}: {{val2}}
+                @hr
+
+          @sheet
+            @for key1 val1 in examples.exampleObject
+              @for key2 val2 in examples.exampleObject
+                @div
+                  @p: {{key1}}: {{val1}}
+                  @p: {{key2}}: {{val2}}
+                @hr
+
+      @entity if
+        @params value
+        @description
+          @p: An entity for adding content only when a variable exists
+          @p: If the variable is defined in the template options and has a value, the content from the if statement will be added to the page:
+          @p: The below brackets have been replaced with (()) instead of {{}} as otherwise they get templated out
+          @@codeblock um
+            @if exampleObject.name
+              @div: {{exampleObject.name}}
+              @div: {{exampleObject.age}}
+
+          @sheet
+            @if examples.exampleObject.name
+              @div: {{examples.exampleObject.name}}
+              @div: {{examples.exampleObject.age}}
+
+      @entity ifnot
+        @params value
+        @description
+          @p: An entity for adding content only when a variable does not exist
+          @p: If the variable is not defined in the template options or has no value, the content from the if statement will be added to the page:
+          @@codeblock um
+            @ifnot exampleObject.name
+              @div: {{exampleObject.name}}
+              @div: {{exampleObject.age}}
+
+          @p: In the above example, exampleObject.name exists so the content would not be added.

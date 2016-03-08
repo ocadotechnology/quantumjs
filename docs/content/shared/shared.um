@@ -17,39 +17,34 @@
           @div .hx-section
           @versionSelector: @versionList
 
-@define siteSidebar
-  @sidebar
-    @tableOfContents
-      @group Basic Topics
-        @page [Quick Start]
-          @url /docs/quick-start/
-          @content: @inline ../content/quick-start.um
-        @page [Core Concepts]
-          @url /docs/core-concepts/
-          @content: @inline ../content/core-concepts.um
+@define siteSidebars
+  @sidebar left
+    @navigationMenu
+      @section Basic Topics
+        @page /docs/quick-start/: Quick Start
+        @page /docs/core-concepts/: Core Concepts
 
-      @group Advanced Topics
-        @page [Creating Pipeline Transforms]
-          @url /docs/pipeline-transforms/
-          @content: @inline ../content/pipeline-transforms.um
-        @page [Creating Entity Transforms]
-          @url /docs/entity-transforms/
-          @content: @inline ../content/entity-transforms.um
+      @section Advanced Topics
+        @page /docs/pipeline-transforms/: Creating Pipeline Transforms
+        @page /docs/entity-transforms/: Creating Entity Transforms
 
-      @group Tutorials
-        @page [Writing technical documentation]
-          @url /tutorials/writing-technical-documentation/
-          @content: @inline ../content/tutorials/writing-technical-documentation.um
-        @page [Creating a blog]
-          @url /tutorials/creating-a-blog/
-          @content: @inline ../content/tutorials/creating-a-blog.um
+      @section Tutorials
+        @page /tutorials/writing-technical-documentation/: Writing technical documentation
+        @page /tutorials/creating-a-blog/: Creating a blog
 
-      @group Api Docs
-        @page [quantum-js]
-          @url /api/quantum-js/
-          @content: @inline ../content/quick-start.um
+      @section Api Docs
+        @page /api/quantum-js/: Quantum JS
+        @page /api/quantum-dom/: Quantum DOM
+        @page /api/quantum-html/: Quantum Html
+        @page /api/quantum-docs/: Quantum Docs
+        @page /api/quantum-api/: Quantum Api
+        @page /api/quantum-changelog/: Quantum Changelog
+        @page /api/quantum-template/: Quantum Template
+        @page /api/quantum-diagram/: Quantum Diagram
+        @page /api/quantum-version/: Quantum Version
 
-
+      @section Services
+        @page /api/quantum-hub/: Quantum Hub
 
 @define footer
   @div .footer
