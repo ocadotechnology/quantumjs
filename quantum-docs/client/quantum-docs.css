@@ -437,7 +437,7 @@ a.qm-docs-navication-menu-page {
 }
 
 .qm-docs-notice-header {
-  background: #CC5209;
+  background: #E6992D;
   color: white;
   padding: 0.5em 0.75em;
   border-radius: 3px 3px 0 0;
@@ -445,6 +445,6 @@ a.qm-docs-navication-menu-page {
 
 .qm-docs-notice-body {
   padding: 0.75em;
-  background: #FFE0CE;
+  background: #FFF0E7;
   border-radius: 0 0 3px 3px;
 }
