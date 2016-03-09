@@ -14,14 +14,18 @@ var transforms = {}
 transforms.topic = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-topic')
     .add(page.create('div').class('qm-docs-anchor').id(spinalCase(entity.ps()))
-      .add(page.create('div').class('qm-docs-topic-header').text(entity.ps())))
+      .add(page.create('div').class('qm-docs-topic-header')
+        .add(page.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(entity.ps())))
+        .text(entity.ps())))
     .add(page.create('div').class('qm-docs-topic-body').add(paragraphTransform(entity, page, transforms)))
 }
 
 transforms.section = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-section')
     .add(page.create('div').class('qm-docs-anchor').id(spinalCase(entity.ps()))
-      .add(page.create('div').class('qm-docs-section-header').text(entity.ps())))
+      .add(page.create('div').class('qm-docs-section-header')
+        .add(page.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(entity.ps())))
+        .text(entity.ps())))
     .add(page.create('div').class('qm-docs-section-body').add(paragraphTransform(entity, page, transforms)))
 }
 
