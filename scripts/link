@@ -60,6 +60,12 @@ npm link quantum-js
 sudo npm link
 popd
 
+pushd quantum-cli
+npm link quantum-js quantum-watch
+npm install
+sudo npm link
+popd
+
 pushd quantum-hub
 npm install
 npm link quantum-js quantum-watch

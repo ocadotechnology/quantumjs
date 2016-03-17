@@ -1,7 +1,7 @@
 var exportAssets = require('./export-assets')
 var config = require('./config')
-var hub = require('quantum-hub')
+var cli = require('quantum-cli')
 
 exportAssets().then(function () {
-  return hub.client.build(config)
+  return cli.client.build(config)
 })
