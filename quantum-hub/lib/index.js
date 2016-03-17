@@ -14,16 +14,12 @@
 
 */
 
-exports.utils = require('./shared/utils')
+// Storage engines the services can be configured with
+exports.layeredStorageEngine = require('./storage-engine/layered')
+exports.leveldbStorageEngine = require('./storage-engine/leveldb')
+exports.externalCacheStorageEngine = require('./storage-engine/external-cache')
+exports.googleStorageEngine = require('./storage-engine/google')
 
-exports.client = require('./client')
-
-exports.cli = require('./client/cli')
-
+// Expose the services
 exports.server = require('./server')
-exports.server.layeredStorageEngine = require('./server/storage-engine/layered')
-exports.server.leveldbStorageEngine = require('./server/storage-engine/leveldb')
-exports.server.externalCacheStorageEngine = require('./server/storage-engine/external-cache')
-exports.server.googleStorageEngine = require('./server/storage-engine/google')
-
 exports.externalCache = require('./external-cache')

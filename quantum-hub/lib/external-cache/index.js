@@ -19,7 +19,6 @@ var merge = require('merge')
 var express = require('express')
 var bodyParser = require('body-parser')
 var Promise = require('bluebird')
-var levelDbStorageEngine = require('../server/storage-engine/leveldb')
 
 module.exports = function (opts) {
   var options = merge({
@@ -33,7 +32,7 @@ module.exports = function (opts) {
   function emit (type, msg) {
     if (options.events) {
       options.events.emit(type, msg)
-      options.events.emit("all", {type: type, msg: msg})
+      options.events.emit('all', {type: type, msg: msg})
     }
   }
 

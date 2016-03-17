@@ -90,8 +90,8 @@ function watch (globString, options, renderer, initialDone) {
     function build (filenames) {
       // only rebuild those that match the original glob
       return Promise.all(filenames.filter(function (filename) {
-        if (path.isAbsolute(filename)) {
-          return minimatch(path.relative(process.cwd(), filename), globString)
+        if (path.isAbsolute(filename) && !path.isAbsolute(globString)) {
+          return minimatch(path.relative(options.dir || process.cwd(), filename), globString)
         } else {
           return minimatch(filename, globString)
         }

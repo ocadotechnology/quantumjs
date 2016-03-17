@@ -1,6 +1,6 @@
-var externalCacheStorageEngine = require('../../../lib/server/storage-engine/external-cache')
-var leveldbStorageEngine = require('../../../lib/server/storage-engine/leveldb')
-var externalCache = require('../../../lib/external-cache')
+var externalCacheStorageEngine = require('../../lib/storage-engine/external-cache')
+var leveldbStorageEngine = require('../../lib/storage-engine/leveldb')
+var externalCache = require('../../lib/external-cache')
 var complienceTests = require('./complience-tests')
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs-extra'))
@@ -9,11 +9,15 @@ describe('external cache storage engine', function () {
   var server = undefined
 
   before(function () {
-    return externalCache({
-      storageEngine: leveldbStorageEngine('target/external-cache-testleveldb')
-    }).then(function (s) {
-      server = s
-    })
+    return fs.mkdirsAsync('target')
+      .then(function () {
+        return externalCache({
+          storageEngine: leveldbStorageEngine('target/external-cache-testleveldb')
+        })
+      })
+      .then(function (s) {
+        server = s
+      })
   })
 
   after(function () {

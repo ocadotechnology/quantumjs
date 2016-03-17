@@ -54,7 +54,7 @@ function redirectTrailingSlash (req, res) {
   res.end(msg)
 }
 
-function endsWith(string, searchString) {
+function endsWith (string, searchString) {
   var position = string.length - searchString.length
   var i = string.indexOf(searchString, position)
   return i !== -1 && i === position
@@ -89,7 +89,7 @@ module.exports = function (storage, opts) {
       var projectId = parts[0] === 'docs' ? parts[1] : 'root'
       var adjustedPath = parts[0] === 'docs' ? parts.slice(2).join('/') : resolvedPath
 
-      storage.getActiveBuild(projectId).then(function (details) {
+      storage.getActiveRevision(projectId).then(function (details) {
         if (details) {
           var revision = details.revision
           var builderVersion = details.builderVersion
@@ -100,7 +100,7 @@ module.exports = function (storage, opts) {
                 res.status(200).type(mime.lookup(filename)).send(content)
               } else {
                 console.log("couldn't find " + [projectId, revision, builderVersion, filename].join('/') + ', serving 404 page')
-                storage.getActiveBuild('root').then(function (rootDetails) {
+                storage.getActiveRevision('root').then(function (rootDetails) {
                   console.log(rootDetails)
                   return storage.getStaticFile('root', rootDetails.revision, rootDetails.builderVersion, '404/index.html')
                     .then(function (content) {

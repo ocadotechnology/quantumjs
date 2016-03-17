@@ -49,4 +49,3 @@ A library for building docs locally and publishing to the central hub.
 ### Server (rest api + static file server)
 
 A server that can be used as a central hub for documentation.
-

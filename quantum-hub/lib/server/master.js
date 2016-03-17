@@ -25,7 +25,7 @@ var globby = require('globby')
 var fs = Promise.promisifyAll(require('fs-extra'))
 var merge = require('merge')
 
-var BuildLogger = require('../misc/build-logger')
+var BuildLogger = require('./build-logger')
 var Server = require('./server')
 var Storage = require('./storage')
 
@@ -102,7 +102,7 @@ function buildSite (buildId, projectId, revision, sourceDir, buildDir) {
       if (msg.buildId === buildId && msg.type === 'build-finished') {
         console.log('build ' + buildId + ' finished')
         console.log('storing build log for ' + buildId)
-        resolve({buildLog: msg.buildLog})
+        resolve({buildLog: msg.buildLog, quantumJson: msg.quantumJson})
         worker.removeListener('message', handler)
       }
     }
@@ -113,7 +113,9 @@ function buildSite (buildId, projectId, revision, sourceDir, buildDir) {
   })
 }
 
-function publish (storage, projectId, buildDir, revision, builderVersion) {
+function publish (storage, projectId, quantumJson, buildDir, revision, builderVersion) {
+  // XXX
+  console.log('store quantumJson')
   return globby(path.join(buildDir, '**', '*'), {nodir: true})
     .then(function (paths) {
       return Promise.all(paths)
@@ -146,7 +148,7 @@ Manager.prototype = {
 
     buildLogger.info('starting build')
     buildLogger.info('copying archive to disk')
-    return this.storage.siteArchiveToDisk(projectId, revision, archiveFilename)
+    return this.storage.revisionSourceArchiveToDisk(projectId, revision, archiveFilename)
       .then(function () {
         buildLogger.info('extracting archive')
         return extractArchive(archiveFilename, sourceDir)
@@ -157,10 +159,8 @@ Manager.prototype = {
       })
       .then(function (res) {
         buildLogger.import(res.buildLog)
-      })
-      .then(function () {
         buildLogger.info('publishing the pages')
-        return publish(self.storage, projectId, buildDir, revision, self.options.builderVersion)
+        return publish(self.storage, projectId, res.quantumJson, buildDir, revision, self.options.builderVersion)
       })
       .then(function () {
         buildLogger.info('cleaning up the build directory')
@@ -176,8 +176,10 @@ Manager.prototype = {
         throw err
       })
       .then(function () {
-        buildLogger.info('storing build log')
-        return self.storage.putBuildLog(buildId, buildLogger.toJson())
+        return {
+          buildId: buildId,
+          buildLog: buildLogger.toJson()
+        }
       })
   }
 }

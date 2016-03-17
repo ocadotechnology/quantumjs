@@ -15,9 +15,8 @@
 */
 
 var cluster = require('cluster')
-var utils = require('../../shared/utils')
-var compiler = require('../../shared/compiler')
-var BuildLogger = require('../misc/build-logger')
+var cli = require('quantum-cli')
+var BuildLogger = require('./build-logger')
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs-extra'))
 var path = require('path')
@@ -48,7 +47,9 @@ function Worker (options) {
     var buildLogger = new BuildLogger(msg.buildId)
 
     fs.readJsonAsync(path.join(msg.sourceDir, 'quantum.json')).then(function (config) {
-      var build = compiler.build({
+      console.log(msg)
+
+      var build = cli.compiler.build({
         dir: msg.sourceDir,
         dest: msg.buildDir,
         resourceDir: undefined,
@@ -56,12 +57,13 @@ function Worker (options) {
         config: config,
         isLocal: false // we are building for the server
       })
-      utils.verboseLogger(build.events)
+      cli.utils.verboseLogger(build.events)
       buildLoggerLogger(buildLogger, build.events)
 
       return build.promise.then(function () {
         process.send({
           type: 'build-finished',
+          quantumJson: config,
           buildId: msg.buildId,
           projectId: msg.projectId,
           outputDir: msg.buildDir,

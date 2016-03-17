@@ -19,7 +19,6 @@
     "quantum-changelog": "^0.9.0",
     "quantum-docs": "^0.9.0",
     "quantum-html": "^0.9.0",
-    "quantum-hub": "^0.9.0",
     "quantum-template": "^0.9.0",
     "quantum-version": "^0.9.0"
   },
