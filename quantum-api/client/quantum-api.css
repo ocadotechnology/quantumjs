@@ -160,7 +160,7 @@
 }
 
 .qm-api-tag-added {
-  background: #92BF17;
+  background: #98b313;
 }
 
 .qm-api-tag-updated {
@@ -226,35 +226,35 @@
 }
 
 .qm-api-object {
-  border-color: #92BF17;
+  border-color: #98b313;
 }
 
 .qm-api-object > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #92BF17;
+  background-color: #98b313;
 }
 
 .qm-api-method {
-  border-color: #92BF17;
+  border-color: #98b313;
 }
 
 .qm-api-method > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #92BF17;
+  background-color: #98b313;
 }
 
 .qm-api-function {
-  border-color: #92BF17;
+  border-color: #98b313;
 }
 
 .qm-api-function > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #92BF17;
+  background-color: #98b313;
 }
 
 .qm-api-constructor {
-  border-color: #92BF17;
+  border-color: #98b313;
 }
 
 .qm-api-constructor > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #92BF17;
+  background-color: #98b313;
 }
 
 .qm-api-property {
@@ -294,11 +294,11 @@
 }
 
 .qm-api-extraclass {
-  border-color: #92BF17;
+  border-color: #98b313;
 }
 
 .qm-api-extraclass > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #92BF17;
+  background-color: #98b313;
 }
 
 .qm-api-childclass {}
