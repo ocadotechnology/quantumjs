@@ -1,3 +1,5 @@
+var Promise = require('bluebird')
+
 var html = require('quantum-html')
 var api = require('quantum-api')
 var version = require('quantum-version')
@@ -5,9 +7,7 @@ var template = require('quantum-template')
 var changelog = require('quantum-changelog')
 var diagram = require('quantum-diagram')
 var docs = require('quantum-docs')
-var hub = require('quantum-hub')
-var Promise = require('bluebird')
-var quantumSite = require('../transforms/transforms')
+var quantumSite = require('./transforms/transforms')
 
 function pipeline () {
   var htmlOptions = {
@@ -49,9 +49,7 @@ function pipeline () {
 
 module.exports = {
   pipeline: pipeline,
-  config: {
-    pages: 'content/pages/**/*.um',
-    base: 'content/pages'
-  },
+  pages: 'content/pages/**/*.um',
+  base: 'content/pages',
   resourceDir: 'content/resources'
 }

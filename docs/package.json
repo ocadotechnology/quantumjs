@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node scripts/watch.js",
-    "build": "node scripts/build.js",
+    "export-assets": "node scripts/export-assets",
+    "start": "npm run export-assets && quantum watch",
+    "build": "npm run export-assets && quantum build",
     "prepare-release": "node scripts/prepare-release.js",
     "upload": "gcloud preview app deploy target/app.yaml --project causal-galaxy-939 --version 4 --promote",
     "release": "npm run build && npm run prepare-release && npm run upload"

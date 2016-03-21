@@ -17,6 +17,9 @@
   "bugs": {
     "url": "https://github.com/ocadotechnology/quantumjs/issues"
   },
+  "bin": {
+    "quantum": "./bin/quantum"
+  },
   "homepage": "https://quantum.hexagonjs.io",
   "license": "APACHE-2.0",
   "dependencies": {
