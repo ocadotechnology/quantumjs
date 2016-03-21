@@ -20,7 +20,6 @@ var Promise = require('bluebird')
 var express = require('express')
 var crypto = require('crypto')
 var bodyParser = require('body-parser')
-var path = require('path')
 var merge = require('merge')
 var _ = require('lodash')
 
@@ -32,7 +31,7 @@ function createKey () {
   })
 }
 
-module.exports = function (manager, storage, opts) {
+module.exports = function (buildProject, storage, opts) {
   var options = merge({
     builderVersion: undefined,
     authenticationMiddleware: undefined,
@@ -44,43 +43,24 @@ module.exports = function (manager, storage, opts) {
     console.log(id, data)
   }
 
-  function secretAuthenticationMiddleware (storage, options) {
-    return function (req, res, next) {
-      var key = req.query.key
-      var projectId = req.query.projectId
-
-      if (key && projectId) {
-        storage.isValidKeyForProject(projectId, key).then(function (ok) {
-          if(ok) {
-            emit('key_valid_for_project', {severity: 'INFO', message: 'Valid key provided for project', projectId: projectId})
-            next()
-          } else {
-            emit('key_not_valid_for_project', {severity: 'WARN', message: 'User error: invalid key provided for project', projectId: projectId})
-            res.status(401).json({error: 'key provided is not valid'})
-          }
-        }).catch(function (err) {
-          emit('key_validation_failed', {severity: 'ERROR', message: 'Key validation failed', projectId: projectId, err: err})
-          res.status(500).json({error: 'Key validation failed'})
-        })
-      } else {
-        if (options.authenticationMiddleware) {
-          options.authenticationMiddleware(req, res, next)
-        } else {
-          next()
-        }
-      }
-    }
-  }
-
   var router = express.Router()
+  var userAuthRouter = express.Router()
+  var bareRouter = express.Router()
 
-  router.use(secretAuthenticationMiddleware(storage, {
-    authenticationMiddleware: options.authenticationMiddleware
-  }))
+  router.use(userAuthRouter)
+  router.use(bareRouter)
+
+  if (options.authenticationMiddleware) {
+    userAuthRouter.use(options.authenticationMiddleware)
+  }
 
   var jsonParser = bodyParser.json()
 
-  router.post('/projects', jsonParser, function (req, res) {
+  userAuthRouter.get('/builder-version', function () {
+    res.status(200).json({version: options.builderVersion})
+  })
+
+  userAuthRouter.post('/projects', jsonParser, function (req, res) {
     options.getUserId(req).then(function (userId) {
       var projectId = req.body.projectId
       var isPublic = req.body.public !== undefined ? req.body.public : true
@@ -121,7 +101,7 @@ module.exports = function (manager, storage, opts) {
     })
   })
 
-  router.get('/projects', function (req, res) {
+  userAuthRouter.get('/projects', function (req, res) {
     options.getUserId(req).then(function (userId) {
       storage.getProjects().then(function (projects) {
         emit('rest_get_projects_sucess', { severity: 'INFO', message: 'Get projects success', userId: userId})
@@ -144,7 +124,7 @@ module.exports = function (manager, storage, opts) {
     })
   })
 
-  router.get('/projects/:id', function (req, res) {
+  userAuthRouter.get('/projects/:id', function (req, res) {
     var projectId = req.params.id
     options.getUserId(req).then(function (userId) {
       storage.getProject(projectId).then(function (project) {
@@ -164,7 +144,7 @@ module.exports = function (manager, storage, opts) {
     })
   })
 
-  router.post('/projects/:id/create-key', function (req, res) {
+  userAuthRouter.post('/projects/:id/create-key', function (req, res) {
     var projectId = req.params.id
     options.getUserId(req).then(function (userId) {
       storage.getProject(projectId).then(function (project) {
@@ -180,7 +160,7 @@ module.exports = function (manager, storage, opts) {
                 res.status(500).json({error: 'Unable to update project. The database may be unreachable.'})
               })
             }).catch(function (err) {
-              emit('rest_create_project_key_generate_failure', { severity: 'ERROR', message: 'No user supplied', error: err, projectId: projectId, userId: userId})
+              emit('rest_create_project_key_generate_failure', { severity: 'ERROR', message: 'Unable to generate a key', error: err, projectId: projectId, userId: userId})
               res.status(500).json({error: 'Unable to generate a key'})
             })
           } else {
@@ -201,7 +181,7 @@ module.exports = function (manager, storage, opts) {
     })
   })
 
-  router.delete('/projects/:id/keys/:key', function (req, res) {
+  userAuthRouter.delete('/projects/:id/keys/:key', function (req, res) {
     var projectId = req.params.id
     var key = req.params.key
     options.getUserId(req).then(function (userId) {
@@ -239,7 +219,7 @@ module.exports = function (manager, storage, opts) {
     })
   })
 
-  router.post('/projects/:id/add-user', jsonParser, function (req, res) {
+  userAuthRouter.post('/projects/:id/add-user', jsonParser, function (req, res) {
     var projectId = req.params.id
     var newUserId = req.body.userId
     options.getUserId(req).then(function (userId) {
@@ -282,7 +262,7 @@ module.exports = function (manager, storage, opts) {
     })
   })
 
-  router.delete('/projects/:id/users/:user', function (req, res) {
+  userAuthRouter.delete('/projects/:id/users/:user', function (req, res) {
     var projectId = req.params.id
     var userIdToBeRemoved = req.params.user
     options.getUserId(req).then(function (userId) {
@@ -320,7 +300,7 @@ module.exports = function (manager, storage, opts) {
     })
   })
 
-  router.put('/projects/:id/public', jsonParser, function (req, res) {
+  userAuthRouter.put('/projects/:id/public', jsonParser, function (req, res) {
     var projectId = req.params.id
     var public = req.body.public
     options.getUserId(req).then(function (userId) {
@@ -363,7 +343,7 @@ module.exports = function (manager, storage, opts) {
     })
   })
 
-  router.get('/user', function (req, res) {
+  userAuthRouter.get('/user', function (req, res) {
     options.getUserId(req).then(function (userId) {
       storage.getUser(userId).then(function (user) {
         res.status(200).json(user || {keys: []})
@@ -377,135 +357,154 @@ module.exports = function (manager, storage, opts) {
     })
   })
 
-  //
-  // router.post('/projects/:id', function (req, res) {
-  //   var projectId = req.params.id
-  //
-  //   storage.getLatestRevision(projectId).then(function (revisionDetails) {
-  //     var revision = revisionDetails === undefined ? 1 : Number(revisionDetails.latestRevision) + 1
-  //     storage.putRevisionSourceArchiveStream(projectId, revision, req)
-  //       .then(function () {
-  //         return storage.putLatestRevision(projectId, {
-  //           projectId: projectId,
-  //           latestRevision: revision,
-  //           datestamp: Date.now()
-  //         })
-  //       })
-  //       .then(function () {
-  //         return storage.putRevisionDetails(projectId, revision, {
-  //           projectId: projectId,
-  //           revision: revision,
-  //           datestamp: Date.now()
-  //         })
-  //       })
-  //       .then(function () {
-  //         console.log('finished receiving snapshot publish for ' + projectId)
-  //         res.status(200).json({revision: revision}).end()
-  //       })
-  //       .catch(function (err) {
-  //         console.error('failed to store snapshot publish for ' + projectId)
-  //         console.error(err)
-  //         res.status(500).json({error: err.toString()})
-  //         throw err
-  //       })
-  //   })
-  // })
-  //
-  // function maybeBuildRevision (projectId, revision) {
-  //   return storage.getBuildInfo(projectId, revision).then(function (details) {
-  //     if (details === undefined) {
-  //       console.log('building revision ' + revision + ' for ' + projectId + ' to revision ')
-  //       var start = Date.now()
-  //       return manager.buildRevision(projectId, revision).then(function (res) {
-  //         return storage.putBuildInfo(projectId, revision, {
-  //           projectId: projectId,
-  //           revision: revision,
-  //           builderVersion: options.builderVersion,
-  //           buildStartTime: start,
-  //           buildFinishTime: Date.now(),
-  //           buildId: res.buildId,
-  //           buildLog: res.buildLog,
-  //           quantumJson: quantumJson
-  //         }).then(function () {
-  //           return res.quantumJson
-  //         })
-  //       })
-  //     } else {
-  //       console.log('not building revision ' + revision + ' for ' + projectId + ' - it has already been built')
-  //       return details.quantumJson
-  //     }
-  //   })
-  // }
-  //
-  // router.put('/projects/:id', jsonParser, function (req, res) {
-  //   var projectId = req.params.id
-  //   var revision = Number(req.body.revision.active)
-  //
-  //   console.log('got set revision request for ' + projectId + ' to set the revision to ' + revision)
-  //
-  //   return storage.getLatestRevision(projectId).then(function (latest) {
-  //     if (revision <= latest.latestRevision) {
-  //       return maybeBuildRevision(projectId, revision)
-  //         .then(function (quantumJson) {
-  //           console.log('set revision request for ' + projectId + ' to revision ' + revision)
-  //           return storage.putActiveRevision(projectId, {
-  //             projectId: projectId,
-  //             revision: revision,
-  //             builderVersion: options.builderVersion,
-  //             quantumJson: quantumJson
-  //           })
-  //         })
-  //         .then(function () {
-  //           res.status(200).end()
-  //         })
-  //         .catch(function (err) {
-  //           console.error(err)
-  //           if (err.response && err.response.body) console.log(err.response.body)
-  //           res.status(500).json({error: err.toString()})
-  //           throw err
-  //         })
-  //     } else {
-  //       var err = 'Revision "' + revision + '" does not exist for project "' + projectId + '". The latest revision available is "' + latest.latestRevision + '".'
-  //       console.error(err)
-  //       res.status(400).json({
-  //         error: err.toString()
-  //       })
-  //     }
-  //   })
-  // })
-  //
-  // router.get('/builds/:id', function (req, res) {
-  //   var id = req.params.id
-  //   storage.getBuildInfo(id)
-  //     .then(function (details) {
-  //       if (details) {
-  //         res.json(details)
-  //       } else {
-  //         res.status(404).json({error: 'Build with id ' + id + ' not found'})
-  //       }
-  //     })
-  //     .catch(function (err) {
-  //       console.error(err)
-  //       res.status(500).json({error: err.toString()})
-  //     })
-  // })
-  //
-  // router.get('/revision/:projectId/:revision', function (req, res) {
-  //   var id = req.params.projectId
-  //   var revision = req.params.revision
-  //   storage.getRevisionDetails(id, revision)
-  //     .then(function (details) {
-  //       if (details) {
-  //         res.json(details)
-  //       } else {
-  //         res.status(404).json({error: 'Build with id ' + id + ' not found'})
-  //       }
-  //     })
-  //     .catch(function (err) {
-  //       console.error(err)
-  //       res.status(500).json({error: err.toString()})
-  //     })
-  // })
+  userAuthRouter.post('/user/create-key', function (req, res) {
+    options.getUserId(req).then(function (userId) {
+      storage.getUser(userId).then(function (u) {
+        var user = u || {keys: []}
+        createKey().then(function (key) {
+          user.keys.push(key)
+          storage.putUser(userId, user).then(function () {
+            emit('rest_create_user_key_success', { severity: 'INFO', message: 'Created user key', userId: userId})
+            res.status(200).json({key: key})
+          }).catch(function (err) {
+            emit('rest_create_user_key_failure', { severity: 'ERROR', message: 'Unable to update user. The database may be unreachable.', error: err, userId: userId})
+            res.status(500).json({error: 'Unable to update user. The database may be unreachable.'})
+          })
+        }).catch(function (err) {
+          emit('rest_create_user_key_generate_failure', { severity: 'ERROR', message: 'Unable to generate a key', error: err, userId: userId})
+          res.status(500).json({error: 'Unable to generate a key'})
+        })
+      }).catch(function (err) {
+        emit('rest_create_user_key_failure', { severity: 'ERROR', message: 'Unable to check user details. The database may be unreachable.', error: err, userId: userId})
+        res.status(500).json({ error: 'Unable to check user details. The database may be unreachable.' })
+      })
+    }).catch(function (err) {
+      emit('rest_create_user_key_error_unknown_user', { severity: 'ERROR', message: 'Unable to determine user', error: err })
+      res.status(500).json({error: 'Unable to determine user'})
+    })
+  })
+
+  userAuthRouter.delete('/user/keys/:key', function (req, res) {
+    var projectId = req.params.id
+    var key = req.params.key
+    options.getUserId(req).then(function (userId) {
+      storage.getUser(userId).then(function (user) {
+        if (user) {
+          if (user.keys.indexOf(key) !== -1) {
+            user.keys = user.keys.filter(function (k) { return k !== key })
+            storage.putUser(userId, user).then(function () {
+              emit('rest_delete_user_key_success', { severity: 'INFO', message: 'Deleted user key', userId: userId})
+              res.status(200).json({success: true})
+            }).catch(function (err) {
+              emit('rest_delete_user_key_failure', { severity: 'ERROR', message: 'Unable to update user. The database may be unreachable.', error: err, userId: userId})
+              res.status(500).json({error: 'Unable to update user. The database may be unreachable.'})
+            })
+          } else {
+            emit('rest_delete_user_key_failure', { severity: 'WARN', message: 'User error: key does not exist', userId: userId})
+            res.status(400).json({error: 'The key "' + key + '" does not exist, and so can not be deleted'})
+          }
+        } else {
+          emit('rest_delete_user_key_failure_no_user', { severity: 'WARN', message: 'User error: key does not exist', userId: userId})
+          res.status(400).json({error: 'The key "' + key + '" does not exist, and so can not be deleted'})
+        }
+      }).catch(function (err) {
+        emit('rest_delete_user_key_failure', { severity: 'ERROR', message: 'Unable to check user details. The database may be unreachable.', error: err, userId: userId})
+        res.status(500).json({ error: 'Unable to check user details. The database may be unreachable.' })
+      })
+    }).catch(function (err) {
+      emit('rest_delete_user_key_error_unknown_user', { severity: 'ERROR', message: 'Unable to determine user', error: err })
+      res.status(500).json({error: 'Unable to determine user'})
+    })
+  })
+
+
+  function buildProjectRequest(projectId, loggingName, req, res) {
+    return buildProject(projectId).then(function (buildResult) {
+      storage.getProject(projectId).then(function (project) {
+        project.quantumJson = buildResult.quantumJson
+        project.buildId = buildResult.buildId
+        project.buildLog = buildResult.buildLog
+        project.builderVersion = options.builderVersion
+        storage.putProject(projectId, project).then(function () {
+          emit('rest_' + loggingName + '_success', { severity: 'INFO', message: 'Built project' })
+          res.status(200).json({success: true})
+        }).catch(function (err) {
+          emit('rest_' + loggingName + '_put_project_error', { severity: 'ERROR', message: 'Unable to store the project details. The database may be unreachable.', error: err })
+          res.status(500).json({error: 'Unable to store the project details. The database may be unreachable.'})
+        })
+      }).catch(function (err) {
+        emit('rest_' + loggingName + '_get_project_error', { severity: 'ERROR', message: 'Unable to get the project details. The database may be unreachable.', error: err })
+        res.status(500).json({error: 'Unable to get the project details. The database may be unreachable.'})
+      })
+    })
+    .catch(function (err) {
+      emit('rest_' + loggingName + '_build_failed', { severity: 'ERROR', message: 'Unable to build the project.', error: err })
+      res.status(500).json({error: 'Unable to build the project.'})
+    })
+  }
+
+  bareRouter.post('/projects/:id', function (req, res) {
+    var projectId = req.params.id
+    var key = req.query.key
+
+    if(key) {
+      storage.getProject(projectId).then(function (project) {
+        if(project){
+          storage.isValidKeyForProject(projectId, key).then(function (ok) {
+            if(ok) {
+              storage.putArchiveStream(projectId, req).then(function () {
+                buildProjectRequest(projectId, 'publish_project', req, res)
+              })
+              .catch(function (err) {
+                emit('rest_publish_project_stream_archive_failed', { severity: 'ERROR', message: 'Unable to store the project archive. The database may be unreachable.', error: err })
+                res.status(500).json({error: 'Unable to store the project archive. The database may be unreachable.'})
+              })
+            } else {
+              emit('rest_publish_project_key_not_valid_for_project', {severity: 'WARN', message: 'User error: invalid key provided for project', projectId: projectId})
+              res.status(401).json({error: 'Key provided is not valid'})
+            }
+          }).catch(function (err) {
+            emit('rest_publish_project_key_validation_failed', {severity: 'ERROR', message: 'Key validation failed', projectId: projectId, error: err})
+            res.status(500).json({error: 'Key validation failed'})
+          })
+        } else {
+          emit('rest_publish_project_no_such_project', { severity: 'WARN', message: 'Project does not exist', projectId: projectId, userId: userId})
+          res.status(400).json({error: 'Project does not exist'})
+        }
+      }).catch(function (err) {
+        emit('rest_publish_project_get_project_error', { severity: 'ERROR', message: 'Unable to get the project details. The database may be unreachable.', error: err })
+        res.status(500).json({error: 'Unable to get the project details. The database may be unreachable.'})
+      })
+    } else {
+      emit('rest_publish_project_no_key', { severity: 'ERROR', message: 'No key provided in the query params', error: err })
+      res.status(400).json({error: 'No key provided in the query params'})
+    }
+  })
+
+  userAuthRouter.post('/projects/:id/rebuild', function (req, res) {
+    var projectId = req.params.id
+    options.getUserId(req).then(function (userId) {
+      storage.getProject(projectId).then(function (project) {
+        if(project) {
+          if (project.users.indexOf(userId) !== -1) {
+            buildProjectRequest(projectId, 'rebuild_project', req, res)
+          } else {
+            emit('rest_rebuild_project_unauthorized', { severity: 'WARN', message: 'Unable to rebuild poject - you are not a member of this project', projectId: projectId, userId: userId})
+            res.status(403).json({error: 'Unable to rebuild poject - you are not a member of this project'})
+          }
+        } else {
+          emit('rest_rebuild_project_no_such_project', { severity: 'WARN', message: 'Project does not exist', projectId: projectId, userId: userId})
+          res.status(400).json({error: 'Project does not exist'})
+        }
+      }).catch(function (err) {
+        emit('rest_rebuild_project_get_project_error', { severity: 'ERROR', message: 'Unable to get the project details. The database may be unreachable.', error: err })
+        res.status(500).json({error: 'Unable to get the project details. The database may be unreachable.'})
+      })
+    }).catch(function (err) {
+      emit('rest_rebuild_project_error_unknown_user', { severity: 'ERROR', message: 'Unable to determine user', error: err })
+      res.status(500).json({error: 'Unable to determine user'})
+    })
+  })
 
   return router
 }

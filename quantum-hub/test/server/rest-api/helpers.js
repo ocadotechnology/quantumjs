@@ -59,7 +59,7 @@ function createProject (app, projectId, public) {
   })
 }
 
-function createKey (app, projectId) {
+function createProjectKey (app, projectId) {
   return new Promise(function (resolve, reject) {
     request(app)
       .post('/projects/' + projectId + '/create-key')
@@ -70,7 +70,29 @@ function createKey (app, projectId) {
   })
 }
 
-function deleteKey (app, projectId, key) {
+function deleteUserKey (app, key) {
+  return new Promise(function (resolve, reject) {
+    request(app)
+      .delete('/user/keys/' + key)
+      .set('Accept', 'application/json')
+      .end(function (err, res) {
+        err ? reject(err) : resolve()
+      })
+  })
+}
+
+function createUserKey (app) {
+  return new Promise(function (resolve, reject) {
+    request(app)
+      .post('/user/create-key')
+      .set('Accept', 'application/json')
+      .end(function (err, res) {
+        err ? reject(err) : resolve(res.body.key)
+      })
+  })
+}
+
+function deleteProjectKey (app, projectId, key) {
   return new Promise(function (resolve, reject) {
     request(app)
       .delete('/projects/' + projectId + '/keys/' + key)
@@ -118,7 +140,7 @@ function setProjectPublicity (app, projectId, public) {
 
 function createProjectWithKey(app, projectId) {
   return createProject(app, projectId).then(function (key){
-    return createKey(app, projectId)
+    return createProjectKey(app, projectId)
   })
 }
 
@@ -133,14 +155,28 @@ function getProject(app, projectId) {
   })
 }
 
+function getUser(app, projectId) {
+  return new Promise(function (resolve, reject) {
+    request(app)
+      .get('/user')
+      .set('Accept', 'application/json')
+      .end(function (err, res) {
+        err ? reject(err) : resolve(res.body)
+      })
+  })
+}
+
 module.exports = {
   getApp: getApp,
   createProject: createProject,
-  createKey: createKey,
-  deleteKey: deleteKey,
+  createProjectKey: createProjectKey,
+  deleteProjectKey: deleteProjectKey,
   addUser: addUser,
   deleteUser: deleteUser,
   createProjectWithKey: createProjectWithKey,
   getProject: getProject,
-  failingStorageEngine: failingStorageEngine
+  failingStorageEngine: failingStorageEngine,
+  deleteUserKey: deleteUserKey,
+  createUserKey: createUserKey,
+  getUser: getUser
 }

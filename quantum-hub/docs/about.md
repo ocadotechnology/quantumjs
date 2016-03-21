@@ -34,13 +34,13 @@ Docs can be updated to be built with the latest builderVersion (this builds the 
 
 ## User management
 
-The current user can be retrieved
+*The current user can be retrieved*
   GET /api/user
 
-User can create keys
+*User can create keys*
   POST /api/user/new-key
 
-User can revoke keys
+*User can revoke keys*
   DELETE /api/user/keys/:keyId
 
 ## File serving

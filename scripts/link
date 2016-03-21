@@ -2,13 +2,14 @@
 
 # This script is useful for developing locally - it will npm link all the modules
 
-npm install
 pushd quantum-js
+npm install
 sudo npm link
 popd
 
-npm install
+
 pushd quantum-dom
+npm install
 sudo npm link
 popd
 
