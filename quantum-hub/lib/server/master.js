@@ -19,7 +19,7 @@ var cluster = require('cluster')
 var os = require('os')
 var path = require('path')
 var Promise = require('bluebird')
-var zip = Promise.promisify(require('extract-zip'))
+var unzip = Promise.promisify(require('extract-zip'))
 var uuid = require('uuid')
 var globby = require('globby')
 var fs = Promise.promisifyAll(require('fs-extra'))
@@ -85,23 +85,24 @@ function randomWorker () {
   return cluster.workers[key]
 }
 
-function extractArchive (archiveFilename, target) {
-  return zip(archiveFilename, {dir: target})
+function extractArchive (buildLogger, archiveFilename, target) {
+  buildLogger.info('Extracting archive ' + archiveFilename)
+  return unzip(archiveFilename, {dir: target})
     .then(function () {
-      console.log('finished extracting')
+      buildLogger.info('Finished extracting archive ' + archiveFilename)
       return target
     })
 }
 
-function buildSite (buildId, projectId, revision, sourceDir, buildDir) {
+function buildSite (buildId, projectId, sourceDir, buildDir) {
   return new Promise(function (resolve, reject) {
     var worker = randomWorker()
-    console.log('build ' + buildId + ' sent to worker started')
-    worker.send({ type: 'build', buildId: buildId, projectId: projectId, revision: revision, sourceDir: sourceDir, buildDir: buildDir })
+    console.log('Build ' + buildId + ' sent to worker started')
+    worker.send({ type: 'build', buildId: buildId, projectId: projectId, sourceDir: sourceDir, buildDir: buildDir })
     var handler = function (msg) {
       if (msg.buildId === buildId && msg.type === 'build-finished') {
-        console.log('build ' + buildId + ' finished')
-        console.log('storing build log for ' + buildId)
+        console.log('Build ' + buildId + ' finished')
+        console.log('Storing build log for ' + buildId)
         resolve({buildLog: msg.buildLog, quantumJson: msg.quantumJson})
         worker.removeListener('message', handler)
       }
@@ -113,9 +114,7 @@ function buildSite (buildId, projectId, revision, sourceDir, buildDir) {
   })
 }
 
-function publish (storage, projectId, quantumJson, buildDir, revision, builderVersion) {
-  // XXX
-  console.log('store quantumJson')
+function storeBuild (storage, buildId, projectId, buildDir) {
   return globby(path.join(buildDir, '**', '*'), {nodir: true})
     .then(function (paths) {
       return Promise.all(paths)
@@ -123,8 +122,8 @@ function publish (storage, projectId, quantumJson, buildDir, revision, builderVe
           return fs.readFileAsync(filename)
             .then(function (data) {
               var shortenedFilename = path.relative(buildDir, filename)
-              console.log('Storing ' + projectId + '/' + revision + '/' + builderVersion + '/' + shortenedFilename)
-              return storage.putStaticFile(projectId, revision, builderVersion, shortenedFilename, data)
+              console.log('Storing ' + projectId + '/' + buildId + '/' + shortenedFilename)
+              return storage.putStaticFile(projectId, buildId, shortenedFilename, data)
             })
         }, {concurrency: 5})
     })
@@ -136,50 +135,48 @@ function cleanUp (buildId) {
 
 Manager.prototype = {
   // kicks off a new build for a project
-  buildRevision: function (projectId, revision) {
-    var self = this
+  buildProject: function (projectId) {
+    var storage = this.storage
 
     var buildId = uuid.v4()
     var archiveFilename = path.join('target', buildId, 'package.zip')
     var sourceDir = path.join('target', buildId, 'source')
-    var buildDir = path.join('target', buildId, 'build')
+    var tempDestDir = path.join('target', buildId, 'build')
 
     var buildLogger = new BuildLogger(buildId)
 
-    buildLogger.info('starting build')
-    buildLogger.info('copying archive to disk')
-    return this.storage.revisionSourceArchiveToDisk(projectId, revision, archiveFilename)
+    buildLogger.info('Starting build')
+    buildLogger.info('Copying archive to disk')
+    return this.storage.revisionSourceArchiveToDisk(projectId, archiveFilename)
       .then(function () {
-        buildLogger.info('extracting archive')
-        return extractArchive(archiveFilename, sourceDir)
+        return extractArchive(buildLogger, archiveFilename, sourceDir)
       })
       .then(function () {
-        buildLogger.info('building pages')
-        return buildSite(buildId, projectId, revision, sourceDir, buildDir)
+        buildLogger.info('Building site')
+        return buildSite(buildId, projectId, sourceDir, tempDestDir)
       })
       .then(function (res) {
         buildLogger.import(res.buildLog)
-        buildLogger.info('publishing the pages')
-        return publish(self.storage, projectId, res.quantumJson, buildDir, revision, self.options.builderVersion)
-      })
-      .then(function () {
-        buildLogger.info('cleaning up the build directory')
-        return cleanUp(buildId)
-      })
-      .then(function () {
-        buildLogger.info('finished build')
+        buildLogger.info('Storing the build')
+        return storeBuild(storage, buildId, projectId, tempDestDir)
+          .then(function () {
+            buildLogger.info('Cleaning up the build directory')
+            return cleanUp(buildId)
+          })
+          .then(function () {
+            buildLogger.info('Finished build')
+            return {
+              quantumJson: res.quantumJson,
+              buildLog: res.buildLog,
+              buildId: buildId
+            }
+          })
       })
       .catch(function (err) {
         buildLogger.error(err)
-        buildLogger.info('something went wrong. cleaning up.')
+        buildLogger.info('Something went wrong. cleaning up.')
         cleanUp(buildId)
         throw err
-      })
-      .then(function () {
-        return {
-          buildId: buildId,
-          buildLog: buildLogger.toJson()
-        }
       })
   }
 }
