@@ -37,12 +37,18 @@ function logBuildEvents (eventEmitter, options) {
   }
 }
 
-// XXX: fix to handle flat options
+function checkOptions (options, requirements) {
+  requirements.forEach(function (r) {
+    if (!options.hasOwnProperty(r)) {
+      return Promise.reject(new Error('Missing option "' + r + '"'))
+    }
+  })
+}
+
 // initialises a new project
 function init (options) {
-  if (options.dir === undefined) {
-    return Promise.reject(new Error('Missing option "dir" - this should be set to the directory you wish to initialise a new project in'))
-  }
+  var optionCheckResult = checkOptions(options, ['dir'])
+  if (optionCheckResult) return optionCheckResult
 
   var quantumJsonFilename = path.join(options.dir, 'quantum.json')
 
@@ -64,7 +70,6 @@ function init (options) {
     return fs.outputJsonAsync(quantumJsonFilename, {
       name: suggestedProjectId,
       description: '<description of project>',
-      category: [],
       pages: '**/*.um',
       files: '**/*.um',
       base: '.'
@@ -72,111 +77,46 @@ function init (options) {
   })
 }
 
-// XXX: fix to handle flat options
 // posts the project to the central server
 function publish (options) {
-  if (options.dir === undefined) {
-    return Promise.reject(new Error('Missing option "dir" - this should be set to the directory you wish to publish'))
-  }
+  var optionCheckResult = checkOptions(options, ['dir', 'host', 'key', 'projectId', 'files'])
+  if (optionCheckResult) return optionCheckResult
 
-  if (options.hubname === undefined) {
-    return Promise.reject(new Error('Missing option "hubname" - this should be set to one of the projects registered in your .quantumrc'))
-  }
+  return globby(options.files || [], {cwd: options.dir, nodir: true})
+    .then(function (files) {
+      return ['quantum.json'].concat(files)
+    })
+    .then(function (files) {
+      return new Promise(function (resolve, reject) {
+        var zipfile = new yazl.ZipFile()
 
-  var quantumJsonFilename = path.join(options.dir, 'quantum.json')
-  var quantumrcFilename = path.join(options.dir, '.quantumrc')
-  return Promise.all([
-    fs.readJsonAsync(quantumJsonFilename),
-    fs.readJsonAsync(quantumrcFilename)
-  ]).spread(function (project, rc) {
-    return globby(project.files || [], {cwd: options.dir, nodir: true})
-      .then(function (files) {
-        return ['quantum.json'].concat(files)
-      })
-      .then(function (files) {
-        return new Promise(function (resolve, reject) {
-          var zipfile = new yazl.ZipFile()
-
-          files.forEach(function (filename) {
-            zipfile.addFile(path.join(options.dir, filename), filename)
-          })
-
-          var projectRcDetails = rc[project.projectId][options.hubname]
-
-          zipfile.outputStream.pipe(request.post({
-            url: projectRcDetails.url + '/api/v1/projects/' + project.projectId + '?key=' + projectRcDetails.secret + '&projectId=' + project.projectId,
-            agentOptions: {
-              ca: options.ca
-            }
-          }, function (err, res, body) {
-            if (err) {
-              reject(err)
-            } else {
-              if (res.statusCode === 200) {
-                resolve(JSON.parse(body).revision)
-              } else {
-                try {
-                  reject(JSON.parse(body).error)
-                } catch (err) {
-                  reject(body)
-                }
-              }
-
-            }
-          }))
-
-          zipfile.end()
+        files.forEach(function (filename) {
+          zipfile.addFile(path.join(options.dir, filename), filename)
         })
 
-      })
-  })
-
-}
-
-// XXX: fix to handle flat options
-// changes the live revision on the server
-function setRevision (options) {
-  if (options.dir === undefined) {
-    return Promise.reject(new Error('Missing option "dir" - this should be set to the directory you wish to initialise a new project in'))
-  }
-
-  if (options.hubname === undefined) {
-    return Promise.reject(new Error('Missing option "hubname" - this should be set to one of the projects registered in your .quantumrc'))
-  }
-
-  if (options.revision === undefined) {
-    return Promise.reject(new Error('Missing option "revision" - this should be set to the revision you wish to update to'))
-  }
-
-  var quantumJsonFilename = path.join(options.dir, 'quantum.json')
-  var quantumrcFilename = path.join(options.dir, '.quantumrc')
-  return Promise.all([
-    fs.readJsonAsync(quantumJsonFilename),
-    fs.readJsonAsync(quantumrcFilename)
-  ]).spread(function (project, rc) {
-    var projectRcDetails = rc[project.projectId][options.hubname]
-
-    return new Promise(function (resolve, reject) {
-      request({
-        url: projectRcDetails.url + '/api/v1/projects/' + project.projectId + '/revision?key=' + projectRcDetails.secret + '&projectId=' + project.projectId,
-        method: 'POST',
-        json: true,
-        body: {revision: options.revision},
-        agentOptions: {
-          ca: options.ca
-        }
-      }, function (err, res, body) {
-        if (res.statusCode === 200) {
-          resolve()
-        } else {
-          reject(body.error || body)
-        }
-
+        zipfile.outputStream.pipe(request.post({
+          url: options.host + '/api/v1/projects/' + options.projectId + '?key=' + options.key,
+          agentOptions: {
+            ca: options.ca
+          }
+        }, function (err, res, body) {
+          if (err) {
+            reject(err)
+          } else {
+            if (res.statusCode === 200) {
+              resolve(JSON.parse(body))
+            } else {
+              try {
+                reject(JSON.parse(body).error)
+              } catch (err) {
+                reject(body)
+              }
+            }
+          }
+        }))
+        zipfile.end()
       })
     })
-
-  })
-
 }
 
 function startServer (options) {
@@ -259,7 +199,6 @@ function watch (opts) {
 module.exports = {
   init: init,
   publish: publish,
-  setRevision: setRevision,
   build: build,
   watch: watch
 }

@@ -21,9 +21,26 @@ var path = require('path')
 
 var client = require('./client')
 
+function fileExists (filePath) {
+  try {
+    return fs.statSync(filePath).isFile()
+  } catch (err) {
+    return false
+  }
+}
+
+function checkConfigExists () {
+  if (!fileExists('quantum.json')) {
+    console.log(chalk.red('Error: ') + chalk.yellow('quantum.json') + ' not found in the current directory')
+    return false
+  } else {
+    return true
+  }
+}
+
 module.exports = function (opts) {
   var options = merge({
-    pipeline: undefined, // a function that can build a page. must be supplied for
+    pipeline: undefined, // a function that can build a page.
     resourceDir: undefined, // resources that the cli will copy to the target directory
     htmlTransforms: undefined, // include to enable the `entities` command (optional but recommended for hub setups)
     includeServerCommands: false, // whether or not to enable the init, publish and set-revision commands
@@ -43,23 +60,21 @@ module.exports = function (opts) {
     .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
     .option('-c, --build-concurrency', 'How many pages to build in parallel')
     .action(function (cliOptions) {
-      var projectDir = process.cwd()
-      var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(projectDir, cliOptions.output)
+      if (!checkConfigExists()) return
 
-      // XXX: if configured via the options (for a hub, use the quantum.json file for loading in config, otherwise use quantum.config.js)
+      var cwd = process.cwd()
+      var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(cwd, cliOptions.output)
 
-      var config = require(path.relative(__dirname, path.join(projectDir, 'quantum.config.js')))
-      var pipeline = options.pipeline || config.pipeline
-      var resourceDir = options.resourceDir || config.resourceDir
-      var pages = cliOptions.pages || config.pages || '**/*.um' // XXX: or get from quantum.json
-      var base = cliOptions.base || config.base || '.' // XXX: or get from quantum.json
-      var buildConcurrency = cliOptions.buildConcurrency || config.buildConcurrency || 1
-      var customPipelineConfig = config.customPipelineConfig || {} // XXX: pass in quantum.json if being used
+      var quantumJson = require(path.relative(__dirname, path.join(cwd, 'quantum.json')))
+      var pages = quantumJson.pages || '**/*.um'
+      var base = quantumJson.base || '.'
+      var buildConcurrency = cliOptions.buildConcurrency || quantumJson.buildConcurrency || 1
+      var customPipelineConfig = quantumJson
 
       client.build({
-        dir: projectDir,
-        pipeline: pipeline,
-        resourceDir: resourceDir,
+        dir: cwd,
+        pipeline: options.pipeline,
+        resourceDir: options.resourceDir,
         pages: pages,
         base: base,
         dest: destDir,
@@ -80,25 +95,24 @@ module.exports = function (opts) {
     .option('-q, --quiet', 'Only log errors', false)
     .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
     .option('-c, --build-concurrency', 'How many pages to build in parallel')
-    .option('-p, --port [port]', 'The port to run the web server on', 4000)
+    .option('-p, --port [port]', 'The port to run the web server on')
     .action(function (cliOptions) {
-      var projectDir = process.cwd()
-      var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(projectDir, cliOptions.output)
+      if (!checkConfigExists()) return
 
-      // XXX: if configured via the options (for a hub, use the quantum.json file for loading in config, otherwise use quantum.config.js)
+      var cwd = process.cwd()
+      var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(cwd, cliOptions.output)
 
-      var config = require(path.relative(__dirname, path.join(projectDir, 'quantum.config.js')))
-      var pipeline = options.pipeline || config.pipeline
-      var resourceDir = options.resourceDir || config.resourceDir
-      var pages = cliOptions.pages || config.pages || '**/*.um' // XXX: or get from quantum.json
-      var base = cliOptions.base || config.base || '.' // XXX: or get from quantum.json
-      var buildConcurrency = cliOptions.buildConcurrency || config.buildConcurrency || 1
-      var customPipelineConfig = config.customPipelineConfig || {} // XXX: pass in quantum.json if being used
+      var quantumJson = require(path.relative(__dirname, path.join(cwd, 'quantum.json')))
+      var pages = quantumJson.pages || '**/*.um'
+      var base = quantumJson.base || '.'
+      var buildConcurrency = cliOptions.buildConcurrency || quantumJson.buildConcurrency || 1
+      var customPipelineConfig = quantumJson
+      var port = cliOptions.port || quantumJson.buildConcurrency || 4000
 
       client.watch({
-        dir: projectDir,
-        pipeline: pipeline,
-        resourceDir: resourceDir,
+        dir: cwd,
+        pipeline: options.pipeline,
+        resourceDir: options.resourceDir,
         pages: pages,
         base: base,
         dest: destDir,
@@ -107,31 +121,36 @@ module.exports = function (opts) {
         buildConcurrency: buildConcurrency,
         quiet: cliOptions.quiet,
         progress: cliOptions.progress,
-        port: cliOptions.port
+        port: port
       })
     })
 
   program
     .command('init')
     .description('initialises a new project in the current directory')
-    .action(function (dir) {
+    .action(function () {
       client.init({
         dir: process.cwd()
       }).then(function () {
-        console.log('Project initialised. quantum.json file created.')
+        console.log('Project initialised. Template quantum.json file created.')
       }).catch(function (err) {
         console.error(chalk.red(err.stack))
       })
     })
 
   program
-    .command('publish [hubname]')
+    .command('publish')
+    .option('-k, --key [key]', 'The publish key to use')
+    .option('-h, --host [host]', 'The hub to publish to')
     .description('publishes the project')
     .action(function (hubname, cliOptions) {
+      if (!checkConfigExists()) return
+
       client.publish({
         dir: process.cwd(),
-        hubname: hubname,
-        ca: options.ca
+        ca: options.ca,
+        host: cliOptions.host,
+        key: cliOptions.key
       }).catch(function (err) {
         console.error(chalk.red(err.stack))
       })
@@ -141,17 +160,18 @@ module.exports = function (opts) {
     .command('entities')
     .description('lists out the entities that can be used in pages')
     .action(function () {
-      var projectDir = process.cwd()
-      var config = require(path.relative(__dirname, path.join(projectDir, 'quantum.config.js')))
+      var htmlTransforms = options.htmlTransforms
 
-      var htmlTransforms = options.htmlTransforms || config.htmlTransforms
-
-      Object.keys(htmlTransforms).forEach(function (namespace) {
-        console.log(chalk.yellow(namespace))
-        Object.keys(htmlTransforms[namespace]).forEach(function (entity) {
-          console.log(chalk.cyan('  @' + entity) + chalk.gray(' (@' + namespace + '.' + entity + ')'))
+      if (htmlTransforms) {
+        Object.keys(htmlTransforms).forEach(function (namespace) {
+          console.log(chalk.yellow(namespace))
+          Object.keys(htmlTransforms[namespace]).forEach(function (entity) {
+            console.log(chalk.cyan('  @' + entity) + chalk.gray(' (@' + namespace + '.' + entity + ')'))
+          })
         })
-      })
+      } else {
+        console.log(chalk.yellow('htmlEntites has not been exported in the quantum.config.js'))
+      }
     })
 
   program
