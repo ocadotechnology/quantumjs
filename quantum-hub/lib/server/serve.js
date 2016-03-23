@@ -74,6 +74,25 @@ module.exports = function (storage, opts) {
     '.json'
   ]
 
+  function serveRoot404(req, res, next) {
+    return storage.getProject('root').then(function (rootProject) {
+      if(rootProject.buildId) {
+        return storage.getStaticFile('root', rootProject.buildId, '404/index.html')
+          .then(function (content) {
+            if (content) {
+              res.status(404).type('text/html').send(content)
+            } else {
+              console.error("couldn't find " + ['root', rootProject.buildId, '404/index.html'].join('/'))
+              next()
+            }
+          })
+      } else {
+        console.error("couldn't find buildId for the root project, this probably means that the root project has not yet been published")
+        next()
+      }
+    })
+  }
+
   router.use(function (req, res, next) {
     var resolvedPath = req.path.slice(1)
 
@@ -89,31 +108,23 @@ module.exports = function (storage, opts) {
       var projectId = parts[0] === 'docs' ? parts[1] : 'root'
       var adjustedPath = parts[0] === 'docs' ? parts.slice(2).join('/') : resolvedPath
 
-      storage.getActiveRevision(projectId).then(function (details) {
-        if (details) {
-          var revision = details.revision
-          var builderVersion = details.builderVersion
-          var filename = isDir ? adjustedPath + 'index.html' : adjustedPath
-          storage.getStaticFile(projectId, revision, builderVersion, filename)
-            .then(function (content) {
-              if (content) {
-                res.status(200).type(mime.lookup(filename)).send(content)
-              } else {
-                console.log("couldn't find " + [projectId, revision, builderVersion, filename].join('/') + ', serving 404 page')
-                storage.getActiveRevision('root').then(function (rootDetails) {
-                  console.log(rootDetails)
-                  return storage.getStaticFile('root', rootDetails.revision, rootDetails.builderVersion, '404/index.html')
-                    .then(function (content) {
-                      if (content) {
-                        res.status(404).type('text/html').send(content)
-                      } else {
-                        console.error("couldn't find " + ['root', rootDetails.revision, rootDetails.builderVersion, '404/index.html'].join('/'))
-                        next()
-                      }
-                    })
-                })
-              }
-            })
+      storage.getProject(projectId).then(function (project) {
+        if (project) {
+          var buildId = project.buildId
+          if (buildId) {
+            var filename = isDir ? adjustedPath + 'index.html' : adjustedPath
+            storage.getStaticFile(projectId, buildId, filename)
+              .then(function (content) {
+                if (content) {
+                  res.status(200).type(mime.lookup(filename)).send(content)
+                } else {
+                  console.log("couldn't find " + [projectId, buildId, filename].join('/') + ', serving 404 page')
+                  serveRoot404(req, res, next)
+                }
+              })
+            } else {
+              serveRoot404(req, res, next)
+            }
         } else {
           console.log('couldnt get active build details for project ' + projectId)
           next()

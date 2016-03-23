@@ -18,6 +18,7 @@ var program = require('commander')
 var chalk = require('chalk')
 var merge = require('merge')
 var path = require('path')
+var fs = require('fs')
 
 var client = require('./client')
 
@@ -84,7 +85,7 @@ module.exports = function (opts) {
         quiet: cliOptions.quiet,
         progress: cliOptions.progress
       }).catch(function (err) {
-        console.error(chalk.red(err.stack))
+        console.error(chalk.red(err.stack || err))
       })
     })
 
@@ -134,7 +135,7 @@ module.exports = function (opts) {
       }).then(function () {
         console.log('Project initialised. Template quantum.json file created.')
       }).catch(function (err) {
-        console.error(chalk.red(err.stack))
+        console.error(chalk.red(err.stack || err))
       })
     })
 
@@ -143,16 +144,21 @@ module.exports = function (opts) {
     .option('-k, --key [key]', 'The publish key to use')
     .option('-h, --host [host]', 'The hub to publish to')
     .description('publishes the project')
-    .action(function (hubname, cliOptions) {
+    .action(function (cliOptions) {
       if (!checkConfigExists()) return
+      var cwd = process.cwd()
+      var quantumJson = require(path.relative(__dirname, path.join(cwd, 'quantum.json')))
 
       client.publish({
-        dir: process.cwd(),
+        dir: cwd,
         ca: options.ca,
         host: cliOptions.host,
-        key: cliOptions.key
+        key: cliOptions.key,
+        projectId: quantumJson.projectId,
+        files: quantumJson.files,
+        pages: quantumJson.pages
       }).catch(function (err) {
-        console.error(chalk.red(err.stack))
+        console.error(chalk.red(err.stack || err))
       })
     })
 

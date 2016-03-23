@@ -34,7 +34,9 @@ function Server (manager, storage, opts) {
     resourceDir: undefined,
     port: 3030,
     redirectorPort: 3020,
-    ssl: undefined
+    ssl: undefined,
+    setupApp: undefined,
+    getUserId: undefined
   }, opts)
 
   var app = express()
@@ -43,9 +45,14 @@ function Server (manager, storage, opts) {
     options.setupApp(app)
   }
 
-  app.use('/api/v1/', api(manager, storage, {
+  function buildProject(projectId) {
+    return manager.buildProject(projectId)
+  }
+
+  app.use('/api/v1/', api(buildProject, storage, {
     builderVersion: options.builderVersion,
-    authenticationMiddleware: options.authenticationMiddleware
+    authenticationMiddleware: options.authenticationMiddleware,
+    getUserId: options.getUserId
   }))
 
   var contentRouter = express.Router()

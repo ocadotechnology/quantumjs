@@ -16,6 +16,8 @@
 
 */
 
+var Promise = require('bluebird')
+
 module.exports = function (engine, options) {
   return {
     /* Project data */
@@ -75,13 +77,13 @@ module.exports = function (engine, options) {
     isValidKeyForProject: function (projectId, key) {
       var storage = this
       return storage.getProject(projectId).then(function (project) {
-        if (project.projectKeys.indexOf(key) !== -1) {
+        if (project.keys.indexOf(key) !== -1) {
           return true
         } else {
           return Promise.all(project.users.map(storage.getUser))
-            .map(function (users) {
+            .then(function (users) {
               return users.some(function (user) {
-                return user.keys.indexOf(key) !== -1
+                return user && user.keys.indexOf(key) !== -1
               })
             })
         }

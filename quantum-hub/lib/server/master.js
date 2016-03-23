@@ -39,7 +39,8 @@ function Manager (opts) {
     resourceDir: undefined,
     port: 3030,
     ssl: undefined,
-    storageEngine: undefined
+    storageEngine: undefined,
+    getUserId: undefined
   }, opts)
 
   this.options = options
@@ -54,7 +55,8 @@ function Manager (opts) {
     resourceDir: options.resourceDir,
     setupApp: options.setupApp,
     ssl: options.ssl,
-    port: options.port
+    port: options.port,
+    getUserId: options.getUserId
   })
 
   cluster.on('fork', function (worker) {
@@ -137,7 +139,7 @@ Manager.prototype = {
   // kicks off a new build for a project
   buildProject: function (projectId) {
     var storage = this.storage
-
+    
     var buildId = uuid.v4()
     var archiveFilename = path.join('target', buildId, 'package.zip')
     var sourceDir = path.join('target', buildId, 'source')
@@ -147,7 +149,7 @@ Manager.prototype = {
 
     buildLogger.info('Starting build')
     buildLogger.info('Copying archive to disk')
-    return this.storage.revisionSourceArchiveToDisk(projectId, archiveFilename)
+    return storage.archiveStreamToDisk(projectId, archiveFilename)
       .then(function () {
         return extractArchive(buildLogger, archiveFilename, sourceDir)
       })

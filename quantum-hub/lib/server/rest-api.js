@@ -41,6 +41,7 @@ module.exports = function (buildProject, storage, opts) {
   function emit (id, data) {
     // XXX: do something with this
     console.log(id, data)
+    if (data.error) console.error(data.error.stack)
   }
 
   var router = express.Router()
@@ -104,9 +105,9 @@ module.exports = function (buildProject, storage, opts) {
   userAuthRouter.get('/projects', function (req, res) {
     options.getUserId(req).then(function (userId) {
       storage.getProjects().then(function (projects) {
-        emit('rest_get_projects_sucess', { severity: 'INFO', message: 'Get projects success', userId: userId})
+        emit('rest_get_projects_success', { severity: 'INFO', message: 'Get projects success', userId: userId})
         res.status(200).json(projects.filter(function(project){
-          return project.public || (project.users.indexOf(userId) !== -1)
+          return project.public || (project.users && (project.users.indexOf(userId) !== -1))
         }).map(function (project) {
           if (project.users.indexOf(userId) === -1) {
             return _.omit(project, 'keys')

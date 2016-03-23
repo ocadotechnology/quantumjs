@@ -38,11 +38,13 @@ function logBuildEvents (eventEmitter, options) {
 }
 
 function checkOptions (options, requirements) {
-  requirements.forEach(function (r) {
-    if (!options.hasOwnProperty(r)) {
+  var rs = Object.keys(requirements)
+  for (var i=0; i<rs.length; i++) {
+    var r = requirements[rs[i]]
+    if (!options[r]) {
       return Promise.reject(new Error('Missing option "' + r + '"'))
     }
-  })
+  }
 }
 
 // initialises a new project
