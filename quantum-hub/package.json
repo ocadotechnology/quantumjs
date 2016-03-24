@@ -1,6 +1,6 @@
 {
   "name": "quantum-hub",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "A service for hosting quantum sites",
   "main": "lib/index.js",
   "directories": {

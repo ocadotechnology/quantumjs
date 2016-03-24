@@ -48,8 +48,8 @@ module.exports = function (buildProject, storage, opts) {
   var userAuthRouter = express.Router()
   var bareRouter = express.Router()
 
-  router.use(userAuthRouter)
   router.use(bareRouter)
+  router.use(userAuthRouter)
 
   if (options.authenticationMiddleware) {
     userAuthRouter.use(options.authenticationMiddleware)
