@@ -39,8 +39,8 @@ module.exports = function (options) {
             .then(function () {
               resolve()
             }).catch(function (err) {
-            reject(err)
-          })
+              reject(err)
+            })
         }).on('error', function (err) {
           reject(err)
         })

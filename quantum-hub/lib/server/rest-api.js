@@ -67,7 +67,7 @@ module.exports = function (buildProject, storage, opts) {
       var isPublic = req.body.public !== undefined ? req.body.public : true
 
       if (projectId) {
-        storage.getProject(projectId).then(function (details) {
+        return storage.getProject(projectId).then(function (details) {
           if (details) {
             emit('rest_create_project_error_failure', { severity: 'WARN', message: 'User error: Project already exists.', projectId: projectId, userId: userId})
             res.status(409).json({error: "Project with id '" + projectId + "' already exists"})
@@ -104,7 +104,7 @@ module.exports = function (buildProject, storage, opts) {
 
   userAuthRouter.get('/projects', function (req, res) {
     options.getUserId(req).then(function (userId) {
-      storage.getProjects().then(function (projects) {
+      return storage.getProjects().then(function (projects) {
         emit('rest_get_projects_success', { severity: 'INFO', message: 'Get projects success', userId: userId})
         res.status(200).json(projects.filter(function(project){
           return project.public || (project.users && (project.users.indexOf(userId) !== -1))
@@ -128,7 +128,7 @@ module.exports = function (buildProject, storage, opts) {
   userAuthRouter.get('/projects/:id', function (req, res) {
     var projectId = req.params.id
     options.getUserId(req).then(function (userId) {
-      storage.getProject(projectId).then(function (project) {
+      return storage.getProject(projectId).then(function (project) {
         emit('rest_get_project_success', { severity: 'INFO', message: 'Get project', projectId: projectId, userId: userId})
         if (project.users.indexOf(userId) === -1) {
           res.status(200).json(_.omit(project, 'keys'))
@@ -148,12 +148,12 @@ module.exports = function (buildProject, storage, opts) {
   userAuthRouter.post('/projects/:id/create-key', function (req, res) {
     var projectId = req.params.id
     options.getUserId(req).then(function (userId) {
-      storage.getProject(projectId).then(function (project) {
+      return storage.getProject(projectId).then(function (project) {
         if (project) {
           if (project.users.indexOf(userId) !== -1) {
             createKey().then(function (key) {
               project.keys.push(key)
-              storage.putProject(projectId, project).then(function () {
+              return storage.putProject(projectId, project).then(function () {
                 emit('rest_create_project_key_success', { severity: 'INFO', message: 'Created project key', projectId: projectId, userId: userId})
                 res.status(200).json({key: key})
               }).catch(function (err) {
@@ -186,12 +186,12 @@ module.exports = function (buildProject, storage, opts) {
     var projectId = req.params.id
     var key = req.params.key
     options.getUserId(req).then(function (userId) {
-      storage.getProject(projectId).then(function (project) {
+      return storage.getProject(projectId).then(function (project) {
         if (project) {
           if (project.users.indexOf(userId) !== -1) {
             if (project.keys.indexOf(key) !== -1) {
               project.keys = project.keys.filter(function (k) { return k !== key })
-              storage.putProject(projectId, project).then(function () {
+              return storage.putProject(projectId, project).then(function () {
                 emit('rest_delete_project_key_success', { severity: 'INFO', message: 'Deleted project key', projectId: projectId, userId: userId})
                 res.status(200).json({success: true})
               }).catch(function (err) {
@@ -224,13 +224,13 @@ module.exports = function (buildProject, storage, opts) {
     var projectId = req.params.id
     var newUserId = req.body.userId
     options.getUserId(req).then(function (userId) {
-      storage.getProject(projectId).then(function (project) {
+      return storage.getProject(projectId).then(function (project) {
         if (project) {
           if (project.users.indexOf(userId) !== -1) {
             if (newUserId) {
               if (project.users.indexOf(newUserId) === -1) {
                 project.users.push(newUserId)
-                storage.putProject(projectId, project).then(function () {
+                return storage.putProject(projectId, project).then(function () {
                   emit('rest_add_project_user_success', { severity: 'INFO', message: 'Added project user', projectId: projectId, userId: userId, newUserId: newUserId})
                   res.status(200).json({success: true})
                 }).catch(function (err) {
@@ -267,12 +267,12 @@ module.exports = function (buildProject, storage, opts) {
     var projectId = req.params.id
     var userIdToBeRemoved = req.params.user
     options.getUserId(req).then(function (userId) {
-      storage.getProject(projectId).then(function (project) {
+      return storage.getProject(projectId).then(function (project) {
         if (project) {
           if (project.users.indexOf(userId) !== -1) {
             if (project.users.indexOf(userIdToBeRemoved) !== -1) {
               project.users = project.users.filter(function (id) { return id !== userIdToBeRemoved })
-              storage.putProject(projectId, project).then(function () {
+              return storage.putProject(projectId, project).then(function () {
                 emit('rest_delete_project_user_success', { severity: 'INFO', message: 'Deleted project user', projectId: projectId, userId: userId, userIdToBeRemoved: userIdToBeRemoved})
                 res.status(200).json({success: true})
               }).catch(function (err) {
@@ -305,13 +305,13 @@ module.exports = function (buildProject, storage, opts) {
     var projectId = req.params.id
     var public = req.body.public
     options.getUserId(req).then(function (userId) {
-      storage.getProject(projectId).then(function (project) {
+      return storage.getProject(projectId).then(function (project) {
         if (project) {
           if (project.users.indexOf(userId) !== -1) {
             if (public !== undefined) {
               if (project.public !== public) {
                 project.public = public
-                storage.putProject(projectId, project).then(function () {
+                return storage.putProject(projectId, project).then(function () {
                   emit('rest_set_project_publicity_success', { severity: 'INFO', message: 'Set project publicity', projectId: projectId, userId: userId, public: public})
                   res.status(200).json({success: true})
                 }).catch(function (err) {
@@ -346,7 +346,7 @@ module.exports = function (buildProject, storage, opts) {
 
   userAuthRouter.get('/user', function (req, res) {
     options.getUserId(req).then(function (userId) {
-      storage.getUser(userId).then(function (user) {
+      return storage.getUser(userId).then(function (user) {
         res.status(200).json(user || {keys: []})
       }).catch(function (err) {
         emit('rest_get_user_failure', { severity: 'ERROR', message: 'Unable to get user. The database may be unreachable.', error: err})
@@ -360,9 +360,9 @@ module.exports = function (buildProject, storage, opts) {
 
   userAuthRouter.post('/user/create-key', function (req, res) {
     options.getUserId(req).then(function (userId) {
-      storage.getUser(userId).then(function (u) {
+      return storage.getUser(userId).then(function (u) {
         var user = u || {keys: []}
-        createKey().then(function (key) {
+        return createKey().then(function (key) {
           user.keys.push(key)
           storage.putUser(userId, user).then(function () {
             emit('rest_create_user_key_success', { severity: 'INFO', message: 'Created user key', userId: userId})
@@ -389,11 +389,11 @@ module.exports = function (buildProject, storage, opts) {
     var projectId = req.params.id
     var key = req.params.key
     options.getUserId(req).then(function (userId) {
-      storage.getUser(userId).then(function (user) {
+      return storage.getUser(userId).then(function (user) {
         if (user) {
           if (user.keys.indexOf(key) !== -1) {
             user.keys = user.keys.filter(function (k) { return k !== key })
-            storage.putUser(userId, user).then(function () {
+            return storage.putUser(userId, user).then(function () {
               emit('rest_delete_user_key_success', { severity: 'INFO', message: 'Deleted user key', userId: userId})
               res.status(200).json({success: true})
             }).catch(function (err) {
@@ -421,12 +421,12 @@ module.exports = function (buildProject, storage, opts) {
 
   function buildProjectRequest(projectId, loggingName, req, res) {
     return buildProject(projectId).then(function (buildResult) {
-      storage.getProject(projectId).then(function (project) {
+      return storage.getProject(projectId).then(function (project) {
         project.quantumJson = buildResult.quantumJson
         project.buildId = buildResult.buildId
         project.buildLog = buildResult.buildLog
         project.builderVersion = options.builderVersion
-        storage.putProject(projectId, project).then(function () {
+        return storage.putProject(projectId, project).then(function () {
           emit('rest_' + loggingName + '_success', { severity: 'INFO', message: 'Built project' })
           res.status(200).json({success: true})
         }).catch(function (err) {
@@ -451,10 +451,10 @@ module.exports = function (buildProject, storage, opts) {
     if(key) {
       storage.getProject(projectId).then(function (project) {
         if(project){
-          storage.isValidKeyForProject(projectId, key).then(function (ok) {
+          return storage.isValidKeyForProject(projectId, key).then(function (ok) {
             if(ok) {
               storage.putArchiveStream(projectId, req).then(function () {
-                buildProjectRequest(projectId, 'publish_project', req, res)
+                return buildProjectRequest(projectId, 'publish_project', req, res)
               })
               .catch(function (err) {
                 emit('rest_publish_project_stream_archive_failed', { severity: 'ERROR', message: 'Unable to store the project archive. The database may be unreachable.', error: err })
@@ -469,7 +469,7 @@ module.exports = function (buildProject, storage, opts) {
             res.status(500).json({error: 'Key validation failed'})
           })
         } else {
-          emit('rest_publish_project_no_such_project', { severity: 'WARN', message: 'Project does not exist', projectId: projectId, userId: userId})
+          emit('rest_publish_project_no_such_project', { severity: 'WARN', message: 'Project does not exist', projectId: projectId})
           res.status(400).json({error: 'Project does not exist'})
         }
       }).catch(function (err) {

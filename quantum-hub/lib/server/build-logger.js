@@ -32,10 +32,10 @@ BuildLogger.prototype = {
     this.log.push({type: 'error', message: obj})
   },
   import: function (logJson) {
-    this.log = this.log.concat(JSON.parse(logJson))
+    this.log = this.log.concat(logJson)
   },
   export: function () {
-    return JSON.stringify(this.log)
+    return this.log.slice()
   },
   toJson: function () {
     return JSON.stringify({

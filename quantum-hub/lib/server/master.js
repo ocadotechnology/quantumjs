@@ -141,7 +141,7 @@ Manager.prototype = {
     var storage = this.storage
     
     var buildId = uuid.v4()
-    var archiveFilename = path.join('target', buildId, 'package.zip')
+    var archiveFilename = path.join('target', buildId, 'source.zip')
     var sourceDir = path.join('target', buildId, 'source')
     var tempDestDir = path.join('target', buildId, 'build')
 
