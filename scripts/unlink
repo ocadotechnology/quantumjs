@@ -26,7 +26,7 @@ npm unlink quantum-js quantum-html
 sudo npm unlink
 popd
 
-pushd quantum-changelog quantum-html
+pushd quantum-changelog
 npm unlink quantum-js
 sudo npm unlink
 popd

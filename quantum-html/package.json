@@ -1,6 +1,6 @@
 {
   "name": "quantum-html",
-  "version": "0.9.3",
+  "version": "0.10.0",
   "description": "quantum to virtual dom transform + some common element renderers",
   "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
@@ -29,7 +29,7 @@
     "fs-extra": "^0.26.4",
     "highlight.js": "^8.6.0",
     "merge": "^1.2.0",
-    "quantum-dom": "^0.9.0",
+    "quantum-dom": "^0.10.0",
     "quantum-js": "^1.0.0"
   },
   "devDependencies": {

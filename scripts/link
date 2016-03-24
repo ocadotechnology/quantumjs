@@ -27,13 +27,13 @@ popd
 
 pushd quantum-api
 npm install
-npm link quantum-js quantum-html
+npm link quantum-js
 sudo npm link
 popd
 
 pushd quantum-changelog
 npm install
-npm link quantum-js quantum-html
+npm link quantum-js
 sudo npm link
 popd
 

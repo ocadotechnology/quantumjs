@@ -1,6 +1,6 @@
 {
   "name": "quantum-template",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Basic templating (ast -> ast) transform for quantum.js",
   "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
