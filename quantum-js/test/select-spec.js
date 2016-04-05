@@ -26,51 +26,37 @@ describe('select', function () {
 
   it('should be able to select items by tag', function () {
     var parsed = parse(source2)
-    select(parsed).select('tag').should.eql(select({
-      type: 'tag',
-      params: [],
-      content: [
-        {
-          type: 'tag2',
-          params: [],
-          content: []
-        }
-      ]
-    }))
+    select(parsed).select('tag').type.should.equal('tag')
+    select(parsed).select('tag').params.should.eql([])
+    select(parsed).select('tag').content.should.eql([
+      {
+        type: 'tag2',
+        params: [],
+        content: []
+      }
+    ])
   })
 
   it('should be able to select items by tag with required equal to true (and no error should be thrown)', function () {
     var parsed = parse(source2)
-    select(parsed).select('tag', {required: true}).should.eql(select({
-      type: 'tag',
-      params: [],
-      content: [
-        {
-          type: 'tag2',
-          params: [],
-          content: []
-        }
-      ]
-    }))
+    select(parsed).select('tag', {required: true}).type.should.equal('tag')
+    select(parsed).select('tag', {required: true}).params.should.eql([])
+    select(parsed).select('tag', {required: true}).content.should.eql([
+      {
+        type: 'tag2',
+        params: [],
+        content: []
+      }
+    ])
   })
 
   it('should selectAll correctly', function () {
     var source = '@tag\n  @button a\n  @button b\n  @button c\n  @notbutton d'
     var parsed = parse(source)
     select(parsed).select('tag').selectAll('button').should.eql([
-      select({
-        type: 'button',
-        params: ['a'],
-        content: []
-      }), select({
-        type: 'button',
-        params: ['b'],
-        content: []
-      }), select({
-        type: 'button',
-        params: ['c'],
-        content: []
-      })
+      select(parsed).selectAll('button', {recursive: true})[0],
+      select(parsed).selectAll('button', {recursive: true})[1],
+      select(parsed).selectAll('button', {recursive: true})[2]
     ])
   })
 
