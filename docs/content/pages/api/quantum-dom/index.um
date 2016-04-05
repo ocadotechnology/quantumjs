@@ -9,11 +9,6 @@
   @title Quantum DOM
   @description
 
-  @breadcrumb
-    @item /: Home
-    @item /modules/: Modules
-    @item /modules/quantum-dom/: Quantum DOM
-
 @contentSection
   @siteSidebars
   @topic About

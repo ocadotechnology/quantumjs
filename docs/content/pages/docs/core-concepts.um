@@ -3,10 +3,6 @@
 @titlebar
 
 @topSection
-  @breadcrumb
-    @item /: Home
-    @item /docs/: Docs
-    @item /docs/core-concepts/: Core Concepts
   @title Core Concepts
   @description
     This page explains some of the concepts used in quantumjs, including the pipeline, pipeline transforms and entity html transforms.
@@ -63,18 +59,27 @@
 
       \# The hash character can be escaped with \#
 
+  @topic The AST (abstract syntax tree)
+    @sheet
+      Parsing is the process of turning the markup text into objects that can be
+      more easily manulipated. The quantum markup language is designed to be easy
+      to work with once parsed.
 
+      This is what the above markup looks like when parsed into AST.
 
+      @codeblock json
+        @inline output.json
+
+      @notice [Note]
+        There are some helper apis for working with the parsed AST. See the @hyperlink(/api/quantum-js/#selection-api)[quantum-js] module docs for more information.
 
   @topic The Pipeline
     @sheet
-      One standout feature the quantum has is the way in which it turns markup into
-      html. It uses a chain of functions to first parse the markup, then apply
-      various transforms to get the output in the right format before turning it into
-      html. This might sound a bit abstract, and it might not be clear at first why this
-      is useful, but it turns out that taking this approach allows multiple useful features
-      to be added on top of the basic markup language (versioning, automatic table of contents
-      generation, templating logic and more).
+      One key feature that quantum has is the way in which it turns markup into
+      html. It uses a chain of functions to apply various transforms to get the output
+      in the right format before turning it into html. Taking this approach allows
+      multiple useful features to be added on top of the basic markup language
+      (versioning, automatic table of contents generation, templating logic and more).
 
     @label
       A typical pipeline for turning quantum markup into html
@@ -95,15 +100,6 @@
         @link html -> write
 
 
-  @topic The AST
-    @sheet
-      Parsing is the process of turning the markup text into objects that can be
-      more easily manulipated by computer programs.
-
-      The quantum markup language is designed to be easy to work with once parsed.
-
-
-      TODO: describe what the ast is (show a small snippet of um and the associated ast)
 
   @topic Pipeline Transforms
     @sheet

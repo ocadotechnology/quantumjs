@@ -9,11 +9,6 @@
   @title Quantum Hub
   @description
 
-  @breadcrumb
-    @item /: Home
-    @item /modules/: Modules
-    @item /modules/quantum-hub/: Quantum Hub
-
 @contentSection
   @siteSidebars
   @topic About

@@ -9,11 +9,6 @@
   @title Quantum Watch
   @description
 
-  @breadcrumb
-    @item /: Home
-    @item /modules/: Modules
-    @item /modules/quantum-watch/: Quantum Watch
-
 @contentSection
   @siteSidebars
   @topic About

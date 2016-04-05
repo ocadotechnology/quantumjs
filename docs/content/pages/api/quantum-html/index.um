@@ -12,10 +12,6 @@
     shows how individual entity transforms can be passed into the html transform.
 
     It also lists out the inbuilt html entity transforms.
-  @breadcrumb
-    @item /: Home
-    @item /modules/: Modules
-    @item /modules/quantum-html/: Quantum Html
 
 @contentSection
   @siteSidebars

@@ -9,14 +9,9 @@
   @title Quantum Changelog
   @description
 
-  @breadcrumb
-    @item /: Home
-    @item /modules/: Modules
-    @item /modules/quantum-changelog/: Quantum Changelog
-
 @contentSection
   @siteSidebars
-  
+
   @notice TODO [warning]
     @p: Add Page description to topSection
 

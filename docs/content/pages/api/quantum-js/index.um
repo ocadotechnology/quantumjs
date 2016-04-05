@@ -6,54 +6,113 @@
 @titlebar
 
 @topSection
-  @title Quantum JS
-  @description
-
-  @breadcrumb
-    @item /: Home
-    @item /modules/: Modules
-    @item /modules/quantum-js/: Quantum JS
+  @title quantum-js
+  @description: The parser, a selection and builder api for quantum markup and AST.
 
 @contentSection
   @siteSidebars
   @topic About
     @sheet
-      The core quantum module (quantum-js) consists of the parser, a selection
-      api and a builder api.
+      The core quantum module (quantum-js) consists of a parser for the markup
+      language, a selection api for working with the parsed AST (abstract syntax
+      tree) and a builder api for programmatically building AST.
 
-      The read function is the most useful - used for reading markup files and
-      parsing them. It returns promise which yields an object holding the
-      filename and parsed content.
+  @topic Parsing
+    First we will explore how to parse a quantum markup file (which usually has the .um
+    extension).
 
-      The result of parsing a file is normally passed through the html
-      transforms in order to build a web page.
+    Here is some example markup:
 
-      See the @hyperlink(/modules/quantum-html/)[Quantum Html] module for an
-      example.
+    @subsection example.um
+      @@codeblock um
+        \# comments start with a hash
 
-  @topic Example
-    @p: Quantum can be accessed by requiring the quantum-js module.
+        \# basic structure of an entity
+        @type parameters: Content
+
+        \# Entities can contain multiple lines of text content:
+        @person parameter1 parameter2
+          Name: Alejandro
+          Age: 32
+
+        \# And can also have nested entites
+        @person parameter1 parameter2
+          @name: Alejandro
+          @age: 32
+
+        \# Content may be mixed between entities and text
+        @button
+          @icon fa fa-add
+          Click Me!
+
+        \# Entites can also use a more compact single line syntax (when written like this they are called inline entites):
+        @type(parameters)[Content]
+
+        \# Inline entites may be placed in the middle of text
+        This line has an @bold[inline] entity
+
+        \# The above button example could also be written like this
+        @button: @icon(fa fa-add) Click Me!
+
+        \# Parameters with spaces should be wrapped in [...]
+        @person parameter1 [parameter2 with spaces]
+
+        \# escaping the @ sign is done by wrapping it (and optionally surrounding text) in @(...)
+        @(your.name@ocado.com)
+
+        \# nested content may be completely escaped by starting an entity with @@
+        @@codeblock um
+          \# this content is treated as text. No entites are parsed when in @@ mode
+          @person
+            @name: Alejandro
+            @age: 32
+
+        \# The hash character can be escaped with \#
+
+    We can parse this markup into an easier-to-work-with object form using the read
+    function:
+
     @codeblock js
       var quantum = require('quantum-js')
 
-    @p: You can then access the various methods:
-    @codeblock js
-      // Parsing and reading files
-      quantum.parse('<string>')   // parses a string, returning the result as an object
-      quantum.read('index.um')    // reads the file, parses the contents, and returns the result as a promise
+      quantum.read.single('example.um').then(function (parsed) {
+        // parsed = {filename, content}
+      })
 
-    @p: The selection api allows the selection and manipulation of quantum entities:
-    @codeblock js
-      // Selection Api
-      var selection = quantum.select(entity)
-      selection.ps()                      // extract the parameter string from an entity
-      selection.cs()                      // extract the content string from an entity
-      selection.select('banana')          // selects the banana entity from the currently selected entity
-      selection.selectAll('kiwi')         // selects all the kiwi entities from the currently selected entity (returns an array)
-      selection.select('lemon').params[2] // gets the second parameter from the lemon entity in the selection
+    @code(js)[quantum.read] will return a promise that yields an object
+    with a filename and content properties. The content property contains the parsed
+    AST.
 
-    @p: The builder api allows the creation of quantum entities. Once build is called, entities are converted into a selection.
+    The parsed object looks something like this:
+
+    @codeblock json
+      @inline output.json
+
+  @topic Selection Api
+    The selection api allows the selection and manipulation of quantum entities:
+
     @codeblock js
+      var quantum = require('quantum-js')
+
+      quantum.read.single('example.um').then(function (parsed) {
+        var entity = parsed.content
+
+        var selection = quantum.select(entity)
+        selection.ps()                      // extract the parameter string from an entity
+        selection.cs()                      // extract the content string from an entity
+        selection.select('banana')          // selects the banana entity from the currently selected entity
+        selection.selectAll('kiwi')         // selects all the kiwi entities from the currently selected entity (returns an array)
+        selection.select('lemon').params[2] // gets the second parameter from the lemon entity in the selection
+      })
+
+
+  @topic Builder Api
+    The builder api allows the creation of quantum AST. Once build is called,
+    entities are converted into a selection.
+
+    @codeblock js
+      var quantum = require('quantum-js')
+
       // Builder Api
       var entity = quantum.create('ice-cream')
         .add(quantum.create('description').add('Ice cream of the week'))
@@ -62,139 +121,16 @@
         .add(quantum.create('flavor').ps('vanilla'))
         .build()
 
-    @p: The above code using the builder api would generate the equivalent of the following:
+    The above code using the builder api would generate the equivalent of the following:
+
     @@codeblock um
       @ice-cream
         @description: Ice cream of the week
         @flavor choc chip
         @flavor mint
-        @flavot vanilla
+        @flavor vanilla
 
   @topic Api
-    @api
-      @function parse
-        @param input [String]
-          @description:
-            @p: A string containing markup to parse. Ie something that looks like this:
-            @codeblock um
-              @inline ../the-markup.um [text]
-
-        @returns Object
-          @description
-            @p: The parsed ast. Looks something like this:
-            @codeblock json
-              @inline ../the-markup.json [text]
-
-      @function read
-        @param glob [String]: A filename or glob string which matches files to load.
-        @param? options [Object]
-          @property inlineEntityType [String]
-            @description: The entity type to use for inlining other files. The default is "inline".
-            @default inline
-          @property inline [Boolean]
-            @description: When inline mode is on, the inlineEntityType (@code(um)[@inline] by default) will be replaced with the content of the specified files.
-            @default true
-          @property loader [Function]
-            @description: A function for loading a file as a string.
-            @param filename [String]: The file/resource to load.
-            @returns [Promise[String]]: A promise that yields the parsed object.
-          @property base [String]
-            @description: The base of the glob path that should be ignored when writing to the target.
-        @returns [Promise[Object]]
-          @description
-            @p: A promise that yields the parsed ast wrapped in an object that looks like this:
-            @codeblock js
-              {
-                filename: 'path/to/source.um',
-                content: '<ast>'
-              }
-
-      @function write
-        @description: Creates a function that can write {filename, content} objects to disk.
-        @param targetDir [String]: The directory to write to.
-        @returns Function
-          @description: A function that can write {filename, content} objects to disk.
-          @param object [Object]
-            @property filename [String]
-              @description: The filename to write to (relative to the output directory)
-            @property content [String]
-              @description: The content to write to the file.
-          @returns [Promise]
-            @description: A promise that resolves when the file has been written, or rejects if there is an error.
-
-      @function select
-        @description: A helper api for extracting values from parsed ast. Pass in parsed ast, and use the methods on Selection to make working with the ast easier.
-        @param entity [Object]
-          @description: An entity object to select.
-        @returns Selection
-
-      @function create
-        @description: Creates a new entity builder with the type given.
-        @param type [String]
-        @returns Builder
-
-
-      @prototype Selection
-        @description: For extracting values from parsed ast.
-
-        @method clone
-        @method cs
-        @method empty
-        @method entityContent
-        @method filter
-        @method has
-        @method hasContent
-        @method json
-        @method nonEmpty
-        @method param
-        @method ps
-        @method replaceContent
-        @method replaceParams
-        @method select
-        @method selectAll
-        @method textContent
-        @method transform
-
-      @prototype Builder
-        @description
-          For building up ast programmatically.
-
-          @codeblock js
-            var entity = quantum.create('ice-cream')
-              .add(quantum.create('description').add('Ice cream of the week'))
-              .add(quantum.create('flavor').ps('choc chip'))
-              .add(quantum.create('flavor').ps('mint'))
-              .add(quantum.create('flavor').ps('vanilla'))
-              .build()
-
-        @prototype parameters
-          @description: Sets the param property of the entity using an array of strings.
-          @param params [Array[String]]: The value to set the param property to.
-          @returns Builder: This Builder
-
-        @method ps
-          @description: Sets the param property of the entity using a space delimited string.
-          @param params [String]: The value to set the param property to - the string will be split on spaces.
-          @returns Builder: This Builder
-
-        @method add
-          @description: Adds some text content to this entity.
-          @param text [String]: The text content to add.
-          @returns Builder: This Builder
-
-        @method add
-          @description: Adds an entity object to the content of this entity.
-          @param entity [Object]: The entity to add.
-          @returns Builder: This Builder
-
-        @method add
-          @description: Adds a builder to the content of the entity - it will be built automatically when the build method is called.
-          @param builder [Builder]: The builder to add.
-          @returns Builder: This Builder
-
-        @method build
-          @description: Builds the entity as a plain object.
-          @returns Object
-            @description: The built entity object
+    @inline api.um
 
 @footer

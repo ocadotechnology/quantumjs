@@ -9,11 +9,6 @@
   @title Quantum Version
   @description
 
-  @breadcrumb
-    @item /: Home
-    @item /modules/: Modules
-    @item /modules/version/: Quantum Version
-
 @contentSection
   @siteSidebars
   @topic About

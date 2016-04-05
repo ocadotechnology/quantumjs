@@ -6,10 +6,6 @@
 @date 12/01/2016
 
 @topSection
-  @breadcrumb
-    @item /: Home
-    @item /tutorials/: Tutorials
-    @item /guides/tutorials/writing-technical-documentation/: Writing Technical Documentation
   @title Writing Technical Documentation
   @description
     This tutorial will guide you through use of some of the quantum modules for writing technical documentation

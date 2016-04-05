@@ -4,18 +4,8 @@
 @stylesheet [/resources/quantum-site.css]
 
 @define titlebar
-  @bodyClass hx-heading-fixed
-
-  @div .hx-heading
-    @div .hx-titlebar
-      @div .hx-titlebar-container
-        @div .hx-titlebar-header
-          @a .hx-titlebar-icon
-            @attr href: /
-            @image /resources/logo.svg
-          @div .hx-titlebar-title: QuantumJS
-          @div .hx-section
-          @versionSelector: @versionList
+  @header
+    @title QuantumJS
 
 @define siteSidebars
   @sidebar left
@@ -29,8 +19,8 @@
         @page /docs/entity-transforms/: Creating Entity Transforms
 
       @section Tutorials
-        @page /tutorials/writing-technical-documentation/: Writing technical documentation
-        @page /tutorials/creating-a-blog/: Creating a blog
+        @page /tutorials/writing-technical-documentation/: Writing Technical Documentation
+        @page /tutorials/creating-a-blog/: Creating a Blog
 
       @section Api Docs
         @page /api/quantum-js/: Quantum JS

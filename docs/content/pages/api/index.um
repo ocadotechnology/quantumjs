@@ -3,9 +3,6 @@
 @titlebar
 
 @topSection
-  @breadcrumb
-    @item /: Home
-    @item /modules/: Modules
   @title Modules
   @description
 

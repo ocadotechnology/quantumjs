@@ -1,25 +1,10 @@
-/* XXX: should really be made into a hexagon theme */
-
-.hx-titlebar-title {
-  color: #484748;
-  padding-left: 0;
-}
-
-.hx-titlebar {
-  background: #FFFFFF;
-}
-
-.hx-titlebar-icon {
-  background: #FFFFFF;
-}
-
-
 /* start of main styles */
 
 body, html {
   margin: 0;
   padding: 0;
   background: white;
+  font-size: 16px;
 }
 
 .header {
@@ -136,9 +121,6 @@ body, html {
 }
 
 
-.qm-docs-top-section {
-  background: #CC5209 !important;
-}
 .qm-docs-summary-header {
   color: #774A8A !important;
 }

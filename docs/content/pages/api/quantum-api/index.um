@@ -9,11 +9,6 @@
   @title Quantum Api
   @description
 
-  @breadcrumb
-    @item /: Docs
-    @item /modules: Modules
-    @item /modules/quantum-api/: Quantum Api
-
 @contentSection
   @siteSidebars
   @topic About

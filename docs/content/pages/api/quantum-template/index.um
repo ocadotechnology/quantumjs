@@ -9,10 +9,6 @@
   @title Quantum Template
   @description
 
-  @breadcrumb
-    @item /: Home
-    @item /modules/: Modules
-    @item /modules/template/: Quantum Template
 
 @contentSection
   @siteSidebars
