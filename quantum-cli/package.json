@@ -1,6 +1,6 @@
 {
   "name": "quantum-cli",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "A command line tool for building docs locally and publishing to a hub",
   "main": "lib/index.js",
   "directories": {
