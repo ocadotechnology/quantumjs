@@ -39,7 +39,7 @@ function logBuildEvents (eventEmitter, options) {
 
 function checkOptions (options, requirements) {
   var rs = Object.keys(requirements)
-  for (var i=0; i<rs.length; i++) {
+  for (var i = 0; i < rs.length; i++) {
     var r = requirements[rs[i]]
     if (!options[r]) {
       return Promise.reject(new Error('Missing option "' + r + '"'))
