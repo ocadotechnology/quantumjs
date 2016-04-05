@@ -39,6 +39,11 @@ function checkConfigExists () {
   }
 }
 
+function exitInError (err) {
+  console.error(chalk.red(err.stack || err))
+  process.exit(1)
+}
+
 module.exports = function (opts) {
   var options = merge({
     pipeline: undefined, // a function that can build a page.
@@ -84,9 +89,7 @@ module.exports = function (opts) {
         buildConcurrency: buildConcurrency,
         quiet: cliOptions.quiet,
         progress: cliOptions.progress
-      }).catch(function (err) {
-        console.error(chalk.red(err.stack || err))
-      })
+      }).catch(exitInError)
     })
 
   program
@@ -134,9 +137,7 @@ module.exports = function (opts) {
         dir: process.cwd()
       }).then(function () {
         console.log('Project initialised. Template quantum.json file created.')
-      }).catch(function (err) {
-        console.error(chalk.red(err.stack || err))
-      })
+      }).catch(exitInError)
     })
 
   program
@@ -157,9 +158,7 @@ module.exports = function (opts) {
         projectId: quantumJson.projectId,
         files: quantumJson.files,
         pages: quantumJson.pages
-      }).catch(function (err) {
-        console.error(chalk.red(err.stack || err))
-      })
+      }).catch(exitInError)
     })
 
   program
