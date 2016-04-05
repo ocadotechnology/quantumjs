@@ -1,6 +1,6 @@
 {
   "name": "quantum-template",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Basic templating (ast -> ast) transform for quantum.js",
   "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
@@ -23,7 +23,7 @@
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
   "dependencies": {
-    "quantum-js": "^1.0.0"
+    "quantum-js": "^1.2.0"
   },
   "devDependencies": {
     "istanbul": "^0.4.0",
