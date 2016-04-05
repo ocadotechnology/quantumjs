@@ -244,13 +244,11 @@ module.exports.wrapper = function (options) {
     return quantum.read.single(options.templateFilename)
       .then(function (template) {
         var newContent = template.content.content
-        var contentEntity = quantum.select(template.content).select('content', {recursive: true}).original
-        var content = contentEntity.content
-        obj.content.content.forEach(function (c) {
-          content.push(c)
-        })
-        obj.content.content = newContent
-        contentEntity.type = 'div' // XXX: hack
+        var contentEntity = quantum.select(template.content).select('content', {recursive: true})
+        var position = contentEntity.parent.content.indexOf(contentEntity.original)
+        var parentContent = contentEntity.parent.original.content
+        parentContent.splice.apply(parentContent, [position, 1].concat(obj.content.content))
+        obj.content = template.content
         return obj
       })
   }
