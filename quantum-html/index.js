@@ -179,7 +179,7 @@ hljs.registerLanguage('um', umsyntax)
 
 function highlightCode (language, code) {
   if (language) {
-    return hljs.highlight(language, code).value
+    return hljs.highlight(language, code, true).value
   } else {
     return hljs.highlightAuto(code).value
   }

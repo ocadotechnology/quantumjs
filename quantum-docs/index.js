@@ -15,8 +15,8 @@ transforms.topic = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-topic')
     .add(page.create('div').class('qm-docs-anchor').id(spinalCase(entity.ps()))
       .add(page.create('div').class('qm-docs-topic-header')
-        .add(page.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(entity.ps())))
-        .text(entity.ps())))
+        .text(entity.ps())
+        .add(page.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(entity.ps())))))
     .add(page.create('div').class('qm-docs-topic-body').add(paragraphTransform(entity, page, transforms)))
 }
 
@@ -24,8 +24,8 @@ transforms.section = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-section')
     .add(page.create('div').class('qm-docs-anchor').id(spinalCase(entity.ps()))
       .add(page.create('div').class('qm-docs-section-header')
-        .add(page.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(entity.ps())))
-        .text(entity.ps())))
+        .text(entity.ps())
+        .add(page.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(entity.ps())))))
     .add(page.create('div').class('qm-docs-section-body').add(paragraphTransform(entity, page, transforms)))
 }
 
@@ -38,7 +38,7 @@ transforms.subsection = function (entity, page, transforms) {
 transforms.notice = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-notice ' + toContextClass(entity.params[1]))
     .add(page.create('div').class('qm-docs-notice-header').text(entity.params[0] || ''))
-    .add(page.create('div').class('qm-docs-notice-body').add(entity.transform(transforms)))
+    .add(page.create('div').class('qm-docs-notice-body').add(paragraphTransform(entity, page, transforms)))
 }
 
 transforms.list = function (entity, page, transforms) {
@@ -47,7 +47,7 @@ transforms.list = function (entity, page, transforms) {
     .add(page.all(entity.selectAll('item').map(function (e) {
       return page.create('li')
         .add(ordered ? undefined : page.create('i').class('fa fa-li ' + (e.ps() || 'qm-docs-list-bullet fa-circle')))
-        .add(e.transform(transforms))
+        .add(paragraphTransform(e, page, transforms))
     })))
 }
 
@@ -133,7 +133,7 @@ transforms.tableOfContents = function (entity, page, transforms) {
 
   var tocContainer = page.create('ul').class('qm-docs-table-of-contents-container')
 
-  if (entity.ps() ) {
+  if (entity.ps()) {
     toc.add(page.create('h1').text(entity.ps()))
   }
   toc.add(tocContainer)
@@ -170,6 +170,12 @@ transforms.navigationMenu = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-navication-menu').add(sections)
 }
 
+transforms.header = function (entity, page, transforms) {
+  return page.create('div').class('qm-docs-header')
+    .add(page.create('div').class('qm-docs-centered')
+      .add(page.create('div').class('qm-docs-header-title').text(entity.select('title').ps())))
+}
+
 transforms.topSection = function (entity, page, transforms) {
   var pageTitle = entity.select('title').ps()
   if (pageTitle.length) {
@@ -186,6 +192,8 @@ transforms.topSection = function (entity, page, transforms) {
 }
 
 function breadcrumb (entity, page, transforms) {
+  if (entity.selectAll('item').length === 0) return undefined
+
   var element = page.create('div').class('qm-docs-breadcrumb')
   var container = page.create('div').class('qm-docs-top-section-centered qm-docs-breadcrumb-padding')
 
