@@ -66,7 +66,7 @@ module.exports = function (opts) {
     .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
     .option('-c, --build-concurrency', 'How many pages to build in parallel')
     .action(function (cliOptions) {
-      if (!checkConfigExists()) return
+      if (!checkConfigExists()) return process.exit(2)
 
       var cwd = process.cwd()
       var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(cwd, cliOptions.output)
@@ -101,7 +101,7 @@ module.exports = function (opts) {
     .option('-c, --build-concurrency', 'How many pages to build in parallel')
     .option('-p, --port [port]', 'The port to run the web server on')
     .action(function (cliOptions) {
-      if (!checkConfigExists()) return
+      if (!checkConfigExists()) return process.exit(2)
 
       var cwd = process.cwd()
       var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(cwd, cliOptions.output)
@@ -126,7 +126,7 @@ module.exports = function (opts) {
         quiet: cliOptions.quiet,
         progress: cliOptions.progress,
         port: port
-      })
+      }).catch(exitInError)
     })
 
   program
@@ -146,7 +146,7 @@ module.exports = function (opts) {
     .option('-h, --host [host]', 'The hub to publish to')
     .description('publishes the project')
     .action(function (cliOptions) {
-      if (!checkConfigExists()) return
+      if (!checkConfigExists()) return process.exit(2)
       var cwd = process.cwd()
       var quantumJson = require(path.relative(__dirname, path.join(cwd, 'quantum.json')))
 

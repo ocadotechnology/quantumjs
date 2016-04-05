@@ -39,6 +39,11 @@ function checkConfigExists () {
   }
 }
 
+function exitInError (err) {
+  console.error(chalk.red(err.stack || err))
+  process.exit(1)
+}
+
 module.exports = function () {
   program
     .version(require('../package.json').version)
@@ -55,7 +60,7 @@ module.exports = function () {
     .option('-q, --quiet', 'Only log errors', false)
     .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
     .action(function (cliOptions) {
-      if (!checkConfigExists()) return
+      if (!checkConfigExists()) return process.exit(2)
 
       var projectDir = process.cwd()
       var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(projectDir, cliOptions.output)
@@ -65,6 +70,7 @@ module.exports = function () {
 
       if (!config.pipeline) {
         console.log(chalk.red('Error: ') + chalk.yellow('pipeline') + ' not found in config')
+        process.exit(2)
         return
       }
 
@@ -87,9 +93,7 @@ module.exports = function () {
         buildConcurrency: buildConcurrency,
         quiet: cliOptions.quiet,
         progress: cliOptions.progress
-      }).catch(function (err) {
-        console.error(chalk.red(err.stack))
-      })
+      }).catch(exitInError)
     })
 
   program
@@ -104,7 +108,7 @@ module.exports = function () {
     .option('-r, --resources [resourcesDir]', 'The resources directory')
     .option('-p, --port [port]', 'The port to run the web server on')
     .action(function (cliOptions) {
-      if (!checkConfigExists()) return
+      if (!checkConfigExists()) return process.exit(2)
 
       var projectDir = process.cwd()
       var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(projectDir, cliOptions.output)
@@ -138,14 +142,14 @@ module.exports = function () {
         quiet: cliOptions.quiet,
         progress: cliOptions.progress,
         port: port
-      })
+      }).catch(exitInError)
     })
 
   program
     .command('entities')
     .description('lists out the entities that can be used in pages')
     .action(function () {
-      if (!checkConfigExists()) return
+      if (!checkConfigExists()) return process.exit(2)
 
       var projectDir = process.cwd()
       var config = require(path.relative(__dirname, path.join(projectDir, 'quantum.config.js')))
