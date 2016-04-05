@@ -29,11 +29,12 @@ function looksLikeAnEntity (d) {
 }
 
 // A small selection api for making building renderers easier
-function Selection (type, params, content, original) {
+function Selection (type, params, content, original, parent) {
   this.type = type
   this.params = params
   this.content = content
   this.original = original
+  this.parent = parent
 }
 
 Selection.prototype.select = function (type, options) {
@@ -43,16 +44,22 @@ Selection.prototype.select = function (type, options) {
 // options.required: Boolean (default: false) (throws an error if the type is required and is not there)
 // options.recursive: Boolean (default: false) (search recursively for the type specified)
 Selection.prototype.selectAll = function (type, options) {
+  var parent = this
+  var res = undefined
   if (Array.isArray(type)) {
     var types = type
-    var res = this.content.filter(function (d) { return types.indexOf(d.type) > -1 }).map(select)
+    res = this.content.filter(function (d) { return types.indexOf(d.type) > -1 }).map(function (obj) {
+      return select(obj, parent)
+    })
   } else {
-    var res = this.content.filter(function (d) { return d.type === type }).map(select)
+    res = this.content.filter(function (d) { return d.type === type }).map(function (obj) {
+      return select(obj, parent)
+    })
   }
 
   if (options && options.recursive) {
     this.content.forEach(function (r) {
-      res = res.concat(select(r).selectAll(type, options))
+      res = res.concat(select(r, parent).selectAll(type, options))
     })
   }
 
@@ -116,7 +123,10 @@ Selection.prototype.hasContent = function () {
 
 // transforms the content to some other form - depends entirely on the transform function - returns a promise
 Selection.prototype.transform = function (transform) {
-  return select.Promise.all(this.content.map(maybeSelect).map(transform))
+  var parent = this
+  return select.Promise.all(this.content.map(function (obj) {
+    return maybeSelect(obj, parent)
+  }).map(transform))
 }
 
 Selection.prototype.filter = function (f) {
@@ -134,7 +144,7 @@ Selection.prototype.filter = function (f) {
 }
 
 Selection.prototype.clone = function () {
-  return select(merge(true, this))
+  return select(merge(true, this), this.parent)
 }
 
 Selection.prototype.has = function (type, options) {
@@ -207,18 +217,18 @@ Selection.prototype.removeAll = function (type) {
   }
 }
 
-function select (item) {
+function select (item, parent) {
   if (item) {
     var params = item.params !== undefined ? item.params : []
     var content = item.content !== undefined ? item.content : []
-    return new Selection(item.type, params, content, item)
+    return new Selection(item.type, params, content, item, parent)
   } else {
     return new Selection(undefined, [], [], undefined)
   }
 }
 
-function maybeSelect (item) {
-  return looksLikeAnEntity(item) ? select(item) : item
+function maybeSelect (item, parent) {
+  return looksLikeAnEntity(item) ? select(item, parent) : item
 }
 
 // allows swapping out the promise implementation (if wanted)
