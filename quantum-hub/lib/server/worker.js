@@ -46,16 +46,21 @@ function Worker (options) {
     console.log('New build started', msg)
     var buildLogger = new BuildLogger(msg.buildId)
 
-    fs.readJsonAsync(path.join(msg.sourceDir, 'quantum.json')).then(function (config) {
-      console.log(msg)
+    fs.readJsonAsync(path.join(msg.sourceDir, 'quantum.json')).then(function (quantumJson) {
+      var pages = quantumJson.pages || '**/*.um'
+      var base = quantumJson.base || '.'
+      var customPipelineConfig = quantumJson
 
       var build = cli.compiler.build({
         dir: msg.sourceDir,
         dest: msg.buildDir,
         resourceDir: undefined,
         pipeline: options.pipeline,
-        config: config,
-        isLocal: false // we are building for the server
+        config: quantumJson,
+        isLocal: false, // we are building for the server
+        pages: pages,
+        base: base,
+        customPipelineConfig: customPipelineConfig
       })
       cli.utils.verboseLogger(build.events)
       buildLoggerLogger(buildLogger, build.events)
@@ -63,7 +68,7 @@ function Worker (options) {
       return build.promise.then(function () {
         process.send({
           type: 'build-finished',
-          quantumJson: config,
+          quantumJson: quantumJson,
           buildId: msg.buildId,
           projectId: msg.projectId,
           outputDir: msg.buildDir,
