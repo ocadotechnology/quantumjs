@@ -347,7 +347,8 @@ module.exports = function (buildProject, storage, opts) {
   userAuthRouter.get('/user', function (req, res) {
     options.getUserId(req).then(function (userId) {
       return storage.getUser(userId).then(function (user) {
-        res.status(200).json(user || {keys: []})
+        user.userId = userId
+        res.status(200).json(user || {keys: [], userId: userId})
       }).catch(function (err) {
         emit('rest_get_user_failure', { severity: 'ERROR', message: 'Unable to get user. The database may be unreachable.', error: err})
         res.status(500).json({ error: 'Unable to get user. The database may be unreachable.' })
