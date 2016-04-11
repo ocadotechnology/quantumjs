@@ -51,6 +51,30 @@ module.exports = function (cacheStorageEngine, persistentStorageEngine) {
     })
   }
 
+  // The first getAll must be done against the persistentStorageEngine to
+  // ensure that everything is in sync - this holds the flags for each kind
+  // that state wheter that has been done yet
+  const doneInitialFetchAll = {}
+
+  function getAllFromPersistentStorage(kind) {
+    return persistentStorageEngine.getAll(kind)
+      .then(function (entities) {
+        return Promise.all(entities.map(function(e) {
+          return cacheStorageEngine.put(kind, e.key, e.value)
+        })).then(function () {
+          doneInitialFetchAll[kind] = true
+          return entities
+        }).catch (function (err) {
+          // if we fail when putting to the cache, it becomes invalid, so
+          // set this flag to cause a fresh fetch from the persistent store
+          // next time
+          doneInitialFetchAll[kind] = false
+          console.log(err)
+          return entities
+        })
+      })
+  }
+
   return {
     /* write a blob to storage */
     putBlobStream: function (kind, id, stream) {
@@ -169,21 +193,14 @@ module.exports = function (cacheStorageEngine, persistentStorageEngine) {
     },
     /* get all of a kind from storage */
     getAll: function (kind, options) {
+      if (!doneInitialFetchAll[kind]) {
+        return getAllFromPersistentStorage(kind)
+      }
+
       return cacheStorageEngine.getAll(kind)
         .then(function (data) {
           if (data === undefined || data.length === 0) {
-            return persistentStorageEngine.getAll(kind)
-              .then(function (entities) {
-                return Promise.all(entities.map(function(e) {
-                  return cacheStorageEngine.put(kind, e.key, e.value)
-                })).then(function () {
-                  return entities
-                }).catch (function (err) {
-                  // doesn't really matter if this fails - just carry on without putting to the cache
-                  console.log(err)
-                  return entities
-                })
-              })
+            return getAllFromPersistentStorage(kind)
           } else {
             return data
           }
