@@ -96,7 +96,10 @@ p:last-child {
   max-height: calc(100% - 42px);
   max-width: 100%;
   margin: 40px;
-  background: whitesmoke;
+  background: #F9F9F9;
+  color: #6B6B6B;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+  border-radius: 1px;
 }
 
 .qm-docs-sidebar-left {
