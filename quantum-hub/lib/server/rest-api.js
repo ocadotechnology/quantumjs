@@ -102,6 +102,16 @@ module.exports = function (buildProject, storage, opts) {
     })
   })
 
+  function sanitizeProject(project, userId) {
+    var isMember = project.users.indexOf(userId) !== -1
+    project.isMember = isMember
+    if (isMember) {
+      return project
+    } else {
+      return _.omit(project, 'keys')
+    }
+  }
+
   userAuthRouter.get('/projects', function (req, res) {
     options.getUserId(req).then(function (userId) {
       return storage.getProjects().then(function (projects) {
@@ -109,11 +119,7 @@ module.exports = function (buildProject, storage, opts) {
         res.status(200).json(projects.filter(function(project){
           return project.public || (project.users && (project.users.indexOf(userId) !== -1))
         }).map(function (project) {
-          if (project.users.indexOf(userId) === -1) {
-            return _.omit(project, 'keys')
-          } else {
-            return project
-          }
+          return sanitizeProject(project, userId)
         }))
       }).catch(function (err) {
         emit('rest_get_projects_failure', { severity: 'ERROR', message: 'Unable to get projects. The database may be unreachable.', error: err})
@@ -130,11 +136,7 @@ module.exports = function (buildProject, storage, opts) {
     options.getUserId(req).then(function (userId) {
       return storage.getProject(projectId).then(function (project) {
         emit('rest_get_project_success', { severity: 'INFO', message: 'Get project', projectId: projectId, userId: userId})
-        if (project.users.indexOf(userId) === -1) {
-          res.status(200).json(_.omit(project, 'keys'))
-        } else {
-          res.status(200).json(project)
-        }
+        res.status(200).json(sanitizeProject(project, userId))
       }).catch(function (err) {
         emit('rest_get_project_failure', { severity: 'ERROR', message: 'Unable to get project. The database may be unreachable.', error: err, projectId: projectId, userId: userId})
         res.status(500).json({ error: 'Unable to get project. The database may be unreachable.' })
@@ -347,7 +349,7 @@ module.exports = function (buildProject, storage, opts) {
   userAuthRouter.get('/user', function (req, res) {
     options.getUserId(req).then(function (userId) {
       return storage.getUser(userId).then(function (user) {
-        user.userId = userId
+        if (user) user.userId = userId
         res.status(200).json(user || {keys: [], userId: userId})
       }).catch(function (err) {
         emit('rest_get_user_failure', { severity: 'ERROR', message: 'Unable to get user. The database may be unreachable.', error: err})

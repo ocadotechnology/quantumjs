@@ -46,6 +46,7 @@ describe('GET /projects', function () {
           if (err) throw err
           res.body.should.eql([
             {
+              isMember: true,
               keys: [],
               projectId: 'project1',
               public: true,
@@ -53,6 +54,7 @@ describe('GET /projects', function () {
               users: ['bob']
             },
             {
+              isMember: false,
               // keys: [], // should not exist as bob is not a member of this project
               projectId: 'project2',
               public: true,
@@ -82,6 +84,7 @@ describe('GET /projects', function () {
           if (err) throw err
           res.body.should.eql([
             {
+              isMember: true,
               keys: [],
               projectId: 'project1',
               public: false,

@@ -11,7 +11,7 @@ describe('GET /user', function () {
       .expect(200)
       .end(function (err, res) {
         if (err) throw err
-        res.body.should.eql({keys: []})
+        res.body.should.eql({keys: [], userId: 'bob'})
         done()
       })
   })

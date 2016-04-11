@@ -39,6 +39,7 @@ describe('POST /projects', function () {
         .end(function (err, res) {
           if (err) throw err
           res.body.should.eql([{
+            isMember: true,
             keys: [],
             projectId: 'my-project',
             public: true,
@@ -101,6 +102,7 @@ describe('POST /projects', function () {
         .end(function (err, res) {
           if (err) throw err
           res.body.should.eql([{
+            isMember: true,
             keys: [],
             projectId: 'my-project',
             public: true,

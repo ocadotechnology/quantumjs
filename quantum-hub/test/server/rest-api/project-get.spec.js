@@ -16,6 +16,7 @@ describe('GET /projects/<id>', function () {
         .end(function (err, res) {
           if (err) throw err
           res.body.should.eql({
+            isMember: true,
             keys: [],
             projectId: 'project1',
             public: true,
@@ -42,6 +43,7 @@ describe('GET /projects/<id>', function () {
         .end(function (err, res) {
           if (err) throw err
           res.body.should.eql({
+            isMember: false,
             projectId: 'project1',
             public: true,
             quantumJson: {},
