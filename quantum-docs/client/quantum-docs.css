@@ -91,9 +91,9 @@ p:last-child {
 
 .qm-docs-sidebar {
   position: fixed;
-  top: 46px; /* hexagon-header height */
+  top: 42px; /* hexagon-header height */
   overflow: auto;
-  max-height: calc(100% - 46px);
+  max-height: calc(100% - 42px);
   max-width: 100%;
   margin: 40px;
   background: whitesmoke;
@@ -308,7 +308,7 @@ p:last-child {
 }
 
 .hx-heading + .qm-docs-top-section {
-  margin-top: 46px;
+  margin-top: 42px;
 }
 
 .hx-heading + .qm-docs-content-section {
@@ -451,10 +451,13 @@ a.qm-docs-navication-menu-page {
 
 .qm-docs-header {
   position: fixed;
-  height: 46px;
   background: #2EADA8;
   width: 100%;
   z-index: 1000;
+}
+
+.qm-docs-header-wrapper {
+  display: flex;
 }
 
 .qm-docs-header-title {
@@ -462,15 +465,31 @@ a.qm-docs-navication-menu-page {
   line-height: 42px;
   font-size: 24px;
   font-weight: 100;
+  flex-grow: 1;
+}
+
+.qm-docs-header-link {
+  border-bottom: solid 3px rgba(255, 255, 255, 0.5);
+  color: white;
+  line-height: 39px;
+  background: rgba(255,255,255,0.1);
+  padding: 0 1em;
+  margin: 0 0.25em;
+  cursor: pointer;
+}
+
+.qm-docs-header-link:hover {
+  border-color: white;
+  text-decoration: none;
 }
 
 
 .qm-docs-header + .qm-docs-content-section-container {
-  padding-top: 46px;
+  padding-top: 42px;
 }
 
 .qm-docs-header + .qm-docs-top-section {
-  padding-top: 46px;
+  padding-top: 42px;
 }
 
 

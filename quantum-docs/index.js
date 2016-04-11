@@ -173,7 +173,15 @@ transforms.navigationMenu = function (entity, page, transforms) {
 transforms.header = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-header')
     .add(page.create('div').class('qm-docs-centered')
-      .add(page.create('div').class('qm-docs-header-title').text(entity.select('title').ps())))
+      .add(page.create('div').class('qm-docs-header-wrapper')
+        .add(page.create('div').class('qm-docs-header-title').text(entity.select('title').ps()))
+        .add(entity.selectAll('link').map(function (e) {
+          return page.create('a')
+            .class('qm-docs-header-link')
+            .attr('href', e.ps())
+            .text(e.cs())
+        }))
+      ))
 }
 
 transforms.topSection = function (entity, page, transforms) {
