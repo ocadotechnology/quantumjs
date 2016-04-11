@@ -85,7 +85,7 @@ function diagram (entity, page, transform) {
 
   var svg = page.create('svg').class('qm-diagram-svg')
     .attr('width', Math.ceil(gr.width))
-    .attr('height', Math.ceil(gr.height))
+    .attr('viewBox', '0 0 ' + Math.ceil(gr.width) + ' ' + Math.ceil(gr.height))
     .add(page.create('defs')
       .add(markerEnd)
       .add(markerStart))
