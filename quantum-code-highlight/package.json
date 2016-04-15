@@ -23,7 +23,7 @@
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
   "dependencies": {
-    "highlight.js": "^8.6.0",
+    "highlight.js": "^9.3.0",
     "quantum-js": "^1.0.0"
   },
   "devDependencies": {
