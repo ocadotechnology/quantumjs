@@ -4,29 +4,42 @@ var quantum = require('quantum-js')
 var fontCharWidth = 9.5
 var padding = 12
 var textHeight = 35
+var labelTextHeight = 24
 
 function path (points, close) {
   return 'M' + points.map(function (d) { return d[0] + ',' + d[1]}).join(',') + (close ? 'z' : '')
 }
 
 function diagram (entity, page, transform) {
+  function createRect (layout, cls, radius) {
+    return page.create('rect')
+      .class(cls)
+      .attr('x', layout.x - layout.width / 2)
+      .attr('y', layout.y - layout.height / 2)
+      .attr('width', layout.width)
+      .attr('height', layout.height)
+      .attr('rx', radius)
+  }
+
+  var showDescriptions = !quantum.select(entity).has('hideDescriptions')
+
   // Create a new directed graph
   var g = new dagre.graphlib.Graph({compound: true})
 
-  var gr = {rankdir: 'TB'}
+  var gr = {
+    rankdir: 'TB'
+  }
 
-  // Set an object for the graph label
   g.setGraph(gr)
 
-  // Default to assigning a new object as a label for each new edge.
-  g.setDefaultEdgeLabel(function () { return {}; })
+  g.setDefaultEdgeLabel(function () { return {} })
 
   function handleGroup (groupEntity, groupName, parent) {
     if (groupName) g.setNode(groupName, {label: groupName, group: true})
     if (parent) g.setParent(groupName, parent)
 
     quantum.select(groupEntity).selectAll('item').forEach(function (item, i) {
-      var rows = item.textContent().content
+      var rows = showDescriptions ? item.textContent().content : []
 
       var maxWidth = item.params[1].length
 
@@ -57,7 +70,13 @@ function diagram (entity, page, transform) {
   var edges = {}
 
   quantum.select(entity).selectAll('link').forEach(function (link) {
-    g.setEdge(link.params[0], link.params[2])
+    var labelText = link.cs()
+    g.setEdge(link.params[0], link.params[2], {
+      label: labelText,
+      height: labelText.length > 0 ? labelTextHeight : 0,
+      width: labelText.length * fontCharWidth + padding,
+      labelpos: 'c'
+    })
     edges[link.params[0] + ':' + link.params[2]] = link
   })
 
@@ -71,6 +90,7 @@ function diagram (entity, page, transform) {
     .attr('refX', 4)
     .attr('refY', 2)
     .add(page.create('path')
+      .class('qm-diagram-arrow')
       .attr('d', 'M0,0 V4 L4,2 Z'))
 
   var markerStart = page.create('marker')
@@ -81,6 +101,7 @@ function diagram (entity, page, transform) {
     .attr('refX', 0)
     .attr('refY', 2)
     .add(page.create('path')
+      .class('qm-diagram-arrow')
       .attr('d', 'M0,2 L4,4 L4,0 Z'))
 
   var svg = page.create('svg').class('qm-diagram-svg')
@@ -94,19 +115,7 @@ function diagram (entity, page, transform) {
     var layout = g.node(v)
 
     if (layout.group) {
-      var points = [
-        [layout.x - layout.width / 2, layout.y - layout.height / 2],
-        [layout.x + layout.width / 2, layout.y - layout.height / 2],
-        [layout.x + layout.width / 2, layout.y + layout.height / 2],
-        [layout.x - layout.width / 2, layout.y + layout.height / 2],
-        [layout.x - layout.width / 2, layout.y - layout.height / 2]
-      ]
-
-      var rect = page.create('path')
-        .class('qm-diagram-group')
-        .attr('d', path(points, true))
-
-      svg.add(rect)
+      svg.add(createRect(layout, 'qm-diagram-group', 1))
 
       var text = page.create('text')
         .class('qm-diagram-text qm-group-label')
@@ -117,19 +126,7 @@ function diagram (entity, page, transform) {
       svg.add(text)
 
     } else {
-      var points = [
-        [layout.x - layout.width / 2, layout.y - layout.height / 2],
-        [layout.x + layout.width / 2, layout.y - layout.height / 2],
-        [layout.x + layout.width / 2, layout.y + layout.height / 2],
-        [layout.x - layout.width / 2, layout.y + layout.height / 2],
-        [layout.x - layout.width / 2, layout.y - layout.height / 2]
-      ]
-
-      var rect = page.create('path')
-        .class('qm-diagram-rectangle')
-        .attr('d', path(points, true))
-
-      svg.add(rect)
+      svg.add(createRect(layout, 'qm-diagram-rectangle', 1))
 
       var text = page.create('text')
         .class('qm-diagram-text')
@@ -164,7 +161,9 @@ function diagram (entity, page, transform) {
   })
 
   g.edges().forEach(function (e) {
-    var points = g.edge(e).points.map(function (point) {
+    var layout = g.edge(e)
+
+    var points = layout.points.map(function (point) {
       return [point.x, point.y]
     })
 
@@ -173,6 +172,14 @@ function diagram (entity, page, transform) {
     var line = page.create('path')
       .class('qm-diagram-path')
       .attr('d', path(points))
+
+    var labelRect = createRect(layout, 'qm-diagram-edge-label-rect', 5)
+
+    var label = page.create('text')
+      .class('qm-diagram-edge-label-text')
+      .attr('x', layout.x)
+      .attr('y', layout.y - layout.height / 2 + textHeight / 2)
+      .text(layout.label)
 
     if (join[0] === '<') {
       line.attr('marker-start', 'url(#arrow-start)')
@@ -186,7 +193,10 @@ function diagram (entity, page, transform) {
       line.attr('marker-end', 'url(#arrow-end)')
     }
 
-    svg.add(line)
+    svg
+      .add(line)
+      .add(labelRect)
+      .add(label)
   })
 
   page.asset('quantum-diagram.css', __dirname + '/client/quantum-diagram.css')

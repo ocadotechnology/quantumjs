@@ -9,10 +9,9 @@
 }
 
 .qm-diagram-rectangle,
-.qm-diagram-path,
-.qm-diagram-group {
+.qm-diagram-path {
   fill: none;
-  stroke: #303846;
+  stroke: #000000;
   stroke-linecap: round;
   stroke-width: 1px;
   stroke-linejoin: bevel;
@@ -20,7 +19,7 @@
 
 .qm-diagram-path {
   stroke-width: 2px;
-  stroke: #535353;
+  stroke: #000000;
 }
 
 .qm-diagram-path-dashed {
@@ -32,7 +31,7 @@
 }
 
 .qm-diagram-group {
-  fill: rgba(0, 160, 222, 0.05);
+  fill: rgba(109, 111, 111, 0.05);
 }
 
 .qm-diagram-divider {
@@ -40,7 +39,12 @@
   stroke-width: 1px;
 }
 
+.qm-diagram-edge-label-rect {
+  fill: rgb(232, 232, 232);
+}
+
 .qm-diagram-text,
+.qm-diagram-edge-label-text,
 .qm-diagram-row-text {
   text-anchor: middle;
   dominant-baseline: middle;
@@ -49,12 +53,20 @@
   font-size: 16px;
 }
 
+.qm-diagram-edge-label-text {
+  dominant-baseline: inherit;
+}
+
 .qm-diagram-text {
   font-weight: bold;
 }
 
 .qm-group-label {
   text-anchor: start;
+}
+
+.qm-diagram-arrow {
+  fill: #000000;
 }
 
 /*XXX: replace this with local copies (remove and use monospace by default?)*/

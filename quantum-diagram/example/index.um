@@ -9,10 +9,10 @@
     @item redis [Redis]: Cache for performance
     @item cassandra [BeverageDB]: Persistence for orders
 
-  @link user -> load-balancer
-  @link load-balancer -> rest-api-1
-  @link load-balancer -> rest-api-2
-  @link load-balancer -> rest-api-3
+  @link user -> load-balancer: HTTP
+  @link load-balancer -> rest-api-1: Link 1 that is really really long
+  @link load-balancer -> rest-api-2: Link 2
+  @link load-balancer -> rest-api-3: Link 3
 
   @link rest-api-1 -> redis
   @link rest-api-2 -> redis
