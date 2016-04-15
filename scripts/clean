@@ -5,6 +5,7 @@
 rm -rf quantum-js/node_modules
 rm -rf quantum-dom/node_modules
 rm -rf quantum-html/node_modules
+rm -rf quantum-code-highlight/node_modules
 rm -rf quantum-api/node_modules
 rm -rf quantum-changelog/node_modules
 rm -rf quantum-diagram/node_modules

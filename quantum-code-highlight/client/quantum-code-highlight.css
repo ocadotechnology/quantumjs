@@ -1,4 +1,4 @@
-.qm-html-codeblock {
+.quantum-code-highlight-codeblock {
   padding: 1em;
   margin: 0.5em 0;
   overflow: auto;
@@ -6,11 +6,11 @@
   border-radius: 3px;
 }
 
-.qm-html-codeblock > pre {
+.quantum-code-highlight-codeblock > pre {
   margin: 0;
 }
 
-.qm-html-code {
+.quantum-code-highlight-code {
   font-family: monospace;
   font-size: 14px;
   padding: 0.2em 0.4em;

@@ -1,9 +1,6 @@
 var dom = require('quantum-dom')
 var quantum = require('quantum-js')
-var hljs = require('highlight.js')
-var umsyntax = require('./um-syntax.js')
 var unique = require('array-unique')
-var coffeescript = require('coffee-script')
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs-extra'))
 var path = require('path')
@@ -166,36 +163,8 @@ transforms.js = function (entity, page, transforms) {
   page.body.add(page.create('script').text(entity.cs(), true), true)
 }
 
-transforms.coffee = function (entity, page, transforms) {
-  page.body.add(page.create('script').text(coffeescript.compile(entity.cs()), true), true)
-}
-
 transforms.css = function (entity, page, transforms) {
   page.head.add(page.create('style').text(entity.cs(), true), true)
-}
-
-// XXX: try and get um registered in hljs
-hljs.registerLanguage('um', umsyntax)
-
-function highlightCode (language, code) {
-  if (language) {
-    return hljs.highlight(language, code, true).value
-  } else {
-    return hljs.highlightAuto(code).value
-  }
-}
-
-transforms.codeblock = function (entity, page, transform) {
-  page.asset('quantum-html-code-highlight.css', __dirname + '/client/code-highlight.css')
-  return page.create('div').class('qm-html-codeblock language-' + entity.ps())
-    .add(page.create('pre').text(highlightCode(entity.ps(), entity.cs()), true))
-}
-
-transforms.code = function (entity, page, transform) {
-  page.asset('quantum-html-code-highlight.css', __dirname + '/client/code-highlight.css')
-  return page.create('code')
-    .class('qm-html-code language-' + entity.ps())
-    .text(highlightCode(entity.ps(), entity.cs()), true)
 }
 
 // flattens out namespaced renderers into a single object
@@ -215,7 +184,7 @@ function prepareTransforms (transforms, namespace, target) {
 }
 
 function paragraphTransform (entity, page, transform) {
-  page.asset('quantum-html-paragraph.css', __dirname + '/client/html-paragraph.css')
+  page.asset('quantum-html.css', __dirname + '/client/quantum-html.css')
 
   var paragraphs = []
   var currentParagraph = undefined
@@ -338,6 +307,5 @@ module.exports.paragraphTransform = paragraphTransform
 module.exports.htmlRenamer = htmlRenamer
 
 module.exports.assets = {
-  'quantum-html-code-highlight.css': __dirname + '/client/code-highlight.css',
-  'quantum-html-paragraph.css': __dirname + '/client/html-paragraph.css'
+  'quantum-html.css': __dirname + '/client/quantum-html.css'
 }

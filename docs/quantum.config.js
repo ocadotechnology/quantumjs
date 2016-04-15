@@ -6,6 +6,7 @@ var version = require('quantum-version')
 var template = require('quantum-template')
 var changelog = require('quantum-changelog')
 var diagram = require('quantum-diagram')
+var codeHighlight = require('quantum-code-highlight')
 var docs = require('quantum-docs')
 var quantumSite = require('./transforms/transforms')
 
@@ -21,6 +22,7 @@ function pipeline () {
     changelog: changelog.transforms(),
     diagram: diagram(),
     docs: docs(),
+    highlight: codeHighlight(),
     site: quantumSite
   }
 
