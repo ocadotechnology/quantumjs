@@ -70,9 +70,11 @@ function diagram (entity, page, transform) {
   var edges = {}
 
   quantum.select(entity).selectAll('link').forEach(function (link) {
-    var labelText = link.cs()
+    var labelText = link.has('description') ? link.select('description').cs() : link.cs()
+    var color = link.has('color') ? link.select('color').ps() : '#000000'
     g.setEdge(link.params[0], link.params[2], {
       label: labelText,
+      color: color,
       height: labelText.length > 0 ? labelTextHeight : 0,
       width: labelText.length * fontCharWidth + padding,
       labelpos: 'c'
@@ -82,34 +84,12 @@ function diagram (entity, page, transform) {
 
   dagre.layout(g)
 
-  var markerEnd = page.create('marker')
-    .attr('id', 'arrow-end')
-    .attr('orient', 'auto')
-    .attr('markerWidth', 4)
-    .attr('markerHeight', 4)
-    .attr('refX', 4)
-    .attr('refY', 2)
-    .add(page.create('path')
-      .class('qm-diagram-arrow')
-      .attr('d', 'M0,0 V4 L4,2 Z'))
-
-  var markerStart = page.create('marker')
-    .attr('id', 'arrow-start')
-    .attr('orient', 'auto')
-    .attr('markerWidth', 4)
-    .attr('markerHeight', 4)
-    .attr('refX', 0)
-    .attr('refY', 2)
-    .add(page.create('path')
-      .class('qm-diagram-arrow')
-      .attr('d', 'M0,2 L4,4 L4,0 Z'))
+  var defs = page.create('defs')
 
   var svg = page.create('svg').class('qm-diagram-svg')
     .attr('width', Math.ceil(gr.width))
     .attr('viewBox', '0 0 ' + Math.ceil(gr.width) + ' ' + Math.ceil(gr.height))
-    .add(page.create('defs')
-      .add(markerEnd)
-      .add(markerStart))
+    .add(defs)
 
   g.nodes().forEach(function (v) {
     var layout = g.node(v)
@@ -163,6 +143,36 @@ function diagram (entity, page, transform) {
   g.edges().forEach(function (e) {
     var layout = g.edge(e)
 
+    var colorId = page.nextId()
+
+    var markerEnd = page.create('marker')
+      .attr('id', 'arrow-end-' + colorId)
+      .attr('orient', 'auto')
+      .attr('markerWidth', 4)
+      .attr('markerHeight', 4)
+      .attr('refX', 4)
+      .attr('refY', 2)
+      .add(page.create('path')
+        .attr('fill', layout.color)
+        .attr('d', 'M0,0 V4 L4,2 Z'))
+        .class('qm-diagram-arrow')
+
+    var markerStart = page.create('marker')
+      .attr('id', 'arrow-start-' + colorId)
+      .attr('orient', 'auto')
+      .attr('markerWidth', 4)
+      .attr('markerHeight', 4)
+      .attr('refX', 0)
+      .attr('refY', 2)
+      .add(page.create('path')
+        .attr('fill', layout.color)
+        .attr('d', 'M0,2 L4,4 L4,0 Z'))
+        .class('qm-diagram-arrow')
+
+    defs
+      .add(markerEnd)
+      .add(markerStart)
+
     var points = layout.points.map(function (point) {
       return [point.x, point.y]
     })
@@ -172,6 +182,7 @@ function diagram (entity, page, transform) {
     var line = page.create('path')
       .class('qm-diagram-path')
       .attr('d', path(points))
+      .attr('stroke', layout.color)
 
     var labelRect = createRect(layout, 'qm-diagram-edge-label-rect', 5)
 
@@ -182,7 +193,7 @@ function diagram (entity, page, transform) {
       .text(layout.label)
 
     if (join[0] === '<') {
-      line.attr('marker-start', 'url(#arrow-start)')
+      line.attr('marker-start', 'url(#arrow-start-' + colorId + ')')
     }
 
     if (join.indexOf('--') > -1) {
@@ -190,7 +201,7 @@ function diagram (entity, page, transform) {
     }
 
     if (join[join.length - 1] === '>') {
-      line.attr('marker-end', 'url(#arrow-end)')
+      line.attr('marker-end', 'url(#arrow-end-' + colorId + ')')
     }
 
     svg
