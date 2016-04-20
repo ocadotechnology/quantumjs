@@ -12,12 +12,21 @@
 @contentSection
   @siteSidebars
   @topic About
-    TODO
+    Quantum Hub is a server which can host multiple quantum based sites. It makes
+    it easy to publish content to a central server.
 
-  @topic Example
-    TODO
+    Quantum Hub stores the source for each site, so that updates to the look and
+    feel of all the hosted sites can be updated in unison. This makes it ideal
+    in an organisation where multiple teams manage their own sites, yet should
+    mantain a consistent look and feel across teams.
 
-  @topic Api
-    TODO
+    Quantum Hub is a node application which can be run anywhere. It can use multiple
+    differnent backing databases to store the content uploaded to it. Currently
+    there are bindings for LevelDB, Google Datastore and Google Cloud Storage.
+    Adding bindings for new databases is reasonably easy.
+
+  @topic Running the Hub
+
+  @topic Running multiple instances of the Hub with a shared cache
 
 @footer

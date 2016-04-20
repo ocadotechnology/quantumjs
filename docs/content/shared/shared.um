@@ -12,9 +12,12 @@
     @navigationMenu
       @section Basic Topics
         @page /docs/quick-start/: Quick Start
-        @page /docs/core-concepts/: Core Concepts
+        @page /docs/cli/: Using the CLI
+        @page /docs/api/: Using the API
+        @page /docs/quantum-vs-markdown: Quantum vs Markdown
 
       @section Advanced Topics
+        @page /docs/core-concepts/: Core Concepts
         @page /docs/pipeline-transforms/: Creating Pipeline Transforms
         @page /docs/entity-transforms/: Creating Entity Transforms
 
@@ -22,16 +25,23 @@
         @page /tutorials/writing-technical-documentation/: Writing Technical Documentation
         @page /tutorials/creating-a-blog/: Creating a Blog
 
-      @section Api Docs
-        @page /api/quantum-js/: Quantum JS
-        @page /api/quantum-dom/: Quantum DOM
-        @page /api/quantum-html/: Quantum Html
-        @page /api/quantum-docs/: Quantum Docs
-        @page /api/quantum-api/: Quantum Api
-        @page /api/quantum-changelog/: Quantum Changelog
-        @page /api/quantum-template/: Quantum Template
-        @page /api/quantum-diagram/: Quantum Diagram
-        @page /api/quantum-version/: Quantum Version
+      @section Module Docs
+        @page /api/quantum-js/: quantum-js
+        @page /api/quantum-dom/: quantum-dom
+        @page /api/quantum-watch/: quantum-watch
+        @page /api/quantum-cli/: quantum-cli
+
+        @page /api/quantum-html/: quantum-html
+        @page /api/quantum-code-highlight/: quantum-code-highlight
+        @page /api/quantum-docs/: quantum-docs
+        @page /api/quantum-api/: quantum-api
+        @page /api/quantum-changelog/: quantum-changelog
+        @page /api/quantum-template/: quantum-template
+        @page /api/quantum-diagram/: quantum-diagram
+        @page /api/quantum-version/: quantum-version
+
+      @section Prebuilt Pipelines
+        @page /api/quantum-pipeline-standard/: quantum-pipeline-standard
 
       @section Services
         @page /api/quantum-hub/: Quantum Hub

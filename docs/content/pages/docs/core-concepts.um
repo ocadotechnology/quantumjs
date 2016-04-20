@@ -5,13 +5,18 @@
 @topSection
   @title Core Concepts
   @description
-    This page explains some of the concepts used in quantumjs, including the pipeline, pipeline transforms and entity html transforms.
+    This page explains some of the concepts used in quantumjs, including the pipeline,
+    pipeline transforms and entity html transforms.
 
 @contentSection
   @siteSidebars
   @topic The Markup Language
-    @sheet
-      Content is written using the quantum markup language. Here is an overview of the language:
+
+    @codeblock jsx
+      const example = <div className="it works"></div>
+
+    Content is written using the quantum markup language. Here is an overview
+    of the language:
 
     @@codeblock um
 
@@ -60,26 +65,28 @@
       \# The hash character can be escaped with \#
 
   @topic The AST (abstract syntax tree)
-    @sheet
-      Parsing is the process of turning the markup text into objects that can be
-      more easily manulipated. The quantum markup language is designed to be easy
-      to work with once parsed.
 
-      This is what the above markup looks like when parsed into AST.
+    Parsing is the process of turning the markup text into objects that can be
+    more easily manulipated. The quantum markup language is designed to be easy
+    to work with once parsed.
 
-      @codeblock json
-        @inline output.json
+    This is what the above markup looks like when parsed into AST.
 
-      @notice [Note]
-        There are some helper apis for working with the parsed AST. See the @hyperlink(/api/quantum-js/#selection-api)[quantum-js] module docs for more information.
+    @codeblock json
+      @inline output.json
+
+    @notice [Note]
+      There are some helper apis for working with the parsed AST. See
+      the @hyperlink(/api/quantum-js/#selection-api)[quantum-js] module docs
+      for more information.
 
   @topic The Pipeline
-    @sheet
-      One key feature that quantum has is the way in which it turns markup into
-      html. It uses a chain of functions to apply various transforms to get the output
-      in the right format before turning it into html. Taking this approach allows
-      multiple useful features to be added on top of the basic markup language
-      (versioning, automatic table of contents generation, templating logic and more).
+
+    One key feature that quantum has is the way in which it turns markup into
+    html. It uses a chain of functions to apply various transforms to get the output
+    in the right format before turning it into html. Taking this approach allows
+    multiple useful features to be added on top of the basic markup language
+    (versioning, automatic table of contents generation, templating logic and more).
 
     @label
       A typical pipeline for turning quantum markup into html
@@ -87,31 +94,94 @@
     @sheet
       @diagram
         @item markup [Read index.um]
-        @item parsed [Parsed AST]
-        @item virtual-dom [Virtual DOM]
         @item custom-transforms [Custom Transforms]
-        @item html [HTML]
+        @item html-to-dom [HTML]
+        @item html [HTML Stringify]
         @item write [Write index.html]
 
-        @link markup -> parsed
-        @link parsed --> custom-transforms
-        @link custom-transforms --> virtual-dom
-        @link virtual-dom -> html
-        @link html -> write
+        @link markup --> custom-transforms: Quantum AST
+        @link custom-transforms --> html-to-dom: Quantum AST
+        @link html-to-dom -> html: Quantum Virtual Dom
+        @link html -> write: HTML String
 
 
 
   @topic Pipeline Transforms
-    @sheet
-      TODO: Describe what a pipeline transform is: just a function that transforms something to something else (normally ast -> ast)
+
+    A @bold[pipeline transform] lets you @bold[mess with the parsed AST] of an
+    entire page before it is rendered out to HTML. A pipeline transform is
+    simply a function.
+
+    Here is a pipeline transform that does absolutely nothing:
+
+    @codeblock js
+      function identityTransform (obj) {
+        return {
+          filename: obj.filename,
+          content: obj.content
+        }
+      }
+
+    A @bold[pipeline transform] is a function that takes an object of the form
+    @code(js)[{filename, content}] that returns an object also of the form
+    @code(js)[{filename, content}].
+
+    @code(js)[filename] is the name of the file that was read, @code(js)[content] is
+    the parsed AST.
+
+    @notice More details
+      See the @hyperlink(tutorials/custom-transforms)[Custom transforms] tutorial
+      for how to create and use your own pipline transforms.
 
   @topic Entities
-    @sheet
-      TODO: Describe what an entity is (or is this well enough covered by the markup section above?)
+
+    An entity looks like this in markup:
+
+    @@codeblock um
+      @type parameters: Content
+
+    The @code(um)[@] denotes the start of a new entity.
+
+    When parsed it looks like this:
+
+    @@codeblock js
+      {
+        type: 'type',
+        params: ['parameters'],
+        content: ['Content']
+      }
 
   @topic Entity Transforms
-    @sheet
-      TODO: Describe whan an entity transform is (entity -> virtual dom)
+
+    @bold[Entity transforms] convert an entity from AST to virtual dom. An entity
+    transform is just a function.
+
+    Here's an example entity transform:
+
+    @codeblock js
+      function notice (entity, page) {
+        return page.create('div').class('notice')
+          .add(page.create('div').class('notice-header').text(entity.ps()))
+          .add(page.create('div').class('notice-body').add(entity.cs()))
+      }
+
+    This would convert the following markup:
+
+    @@codeblock um
+      @notice Warning: There is something you should know
+
+    into
+
+    @@codeblock html
+      <div class="notice">
+        <div class="notice-header">Warning</div>
+        <div class="notice-body">There is something you should know</div>
+      </div>
+
+
+    @notice More details
+      See the @hyperlink(tutorials/custom-transforms)[Custom transforms] tutorial
+      for how to create and use your own entity transforms.
 
 
 @bottomSection

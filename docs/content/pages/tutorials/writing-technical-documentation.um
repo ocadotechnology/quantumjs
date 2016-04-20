@@ -8,7 +8,8 @@
 @topSection
   @title Writing Technical Documentation
   @description
-    This tutorial will guide you through use of some of the quantum modules for writing technical documentation
+    This tutorial will guide you through use of some of the quantum modules for
+    writing technical documentation
 
 @contentSection
   @siteSidebars
@@ -18,116 +19,92 @@
   @topic Setting Up
 
     @section About
-      @sheet
-        In this tutorial we are going to cover the process of documenting a ficticous hot drink delivery service.
+      In this tutorial we will document a fictitious hot drink delivery service.
 
-        This will include:
-          @list
-            @item: Setting up a project with @bold[quantum-hub]
-            @item: Writing some general documentation using the @bold[quantum-docs] module
-            @item: Documenting a javascript client library for the service with the @bold[quantum-api] and @bold[quantum-version] modules
-            @item: Documenting the tea/coffee making process with the @bold[quantum-diagram] module
-            @item: Writing custom transforms for the @bold[quantum-html] module
+      This will include:
+      @list
+        @item: Setting up a project with @bold[quantum-hub]
+        @item: Writing some general documentation using the @bold[quantum-docs] module
+        @item: Documenting a javascript client library for the service with the @bold[quantum-api] and @bold[quantum-version] modules
+        @item: Documenting the tea/coffee making process with the @bold[quantum-diagram] module
+        @item: Writing custom transforms for the @bold[quantum-html] module
 
-        The content is designed as an example use case for the quantum library and the finished
-        project is available as a git repository @hyperlink(#)[here].
+      The finished tutorial is available as a git repository @hyperlink(#)[here].
 
     @section Installing the dependencies
-      @sheet
-        The first step is to create a package.json in a new directory and then install all the modules as dependencies.
+      First, let's create a package.json in a new directory and then install some
+      the dependencies we'll need.
 
-        The directory we'll use for this example will be called 'my-project':
+      The directory we'll use for this example will be called 'my-project':
 
       @codeblock bash
-        mkdir my-project # creates the my-project directory
+        mkdir my-project # creates project directory
         cd my-project    # change to the my-project directory
         npm init         # initialize npm and create a package.json
 
-      @sheet
-        Now that the project has been initialized, the dependencies need to be installed. For now we will install just
-        a few of the quantum modules available:
+      Now the project has been initialized, the dependencies need to be installed.
+      For now we will install just a few of the quantum modules available:
 
       @codeblock bash
-        npm install --save quantum-hub
-        npm install --save quantum-html
-        npm install --save quantum-docs
+        npm install -g quantum-cli
+        npm install --save quantum-html quantum-docs
 
-      @sheet
-        The Quantum library makes extensive use of Promises, as does this walkthrough. Until Node / V8 have
-        full support for all the features of promises, @hyperlink(https://www.npmjs.com/package/bluebird)[bluebird] can
-        be used as a full-featured replacement.
+      Quantum makes extensive use of Promises, as does this walkthrough. For this
+      tutorial we are going to use @hyperlink(https://www.npmjs.com/package/bluebird)[bluebird] as
+      our bluebird implementation.
 
-        It can be installed using the following command:
+      It can be installed using the following command:
 
       @codeblock bash
         npm install --save bluebird
 
-      @sheet
-        This can then be included in the script with
-
-      @codeblock js
-        var Promise = require('bluebird')
-
 
     @section Preparing the site structure
-      @sheet
-        The directory structure for quantum is highly flexible - you can choose how you lay out your files.
-        For this tutorial we are going to show an example folder structure that works well in most cases.
 
-        To prepare our example structure, run the following commands from inside 'my-project':
+      The directory structure for quantum is flexible - you can choose how you
+      lay out your files. For this tutorial we are going to show an example
+      folder structure that works well in most cases.
+
+      To prepare our example structure, we can make a few directories inside
+      @code(bash)[my-project]:
 
       @@codeblock bash
-        mkdir build
-        mkdir content
-        mkdir content/pages
-        mkdir content/shared
-        mkdir content/resources
+        mkdir pages shared resources
 
-      @sheet
-        This should leave you with a structure as follows:
+      This should leave you with a structure as follows:
 
       @@codeblock bash
         - my-project
-        | - build         # The build scripts and any code related to running quantum.
-        | - content       # All the site content.
-          | - pages       # The pages for the site. This will be the site root.
-          | - shared      # Quantum content that is shared across multiple pages, such as templates or a common file.
-          | - resources   # Any client-side JS/CSS.
+        | - pages         # The pages for the site. This will be the site root.
+        | - shared        # Quantum content that is shared across multiple pages, such as templates or a common file.
+        | - resources     # Any client-side JS/CSS.
         | - node_modules  # generated by npm install. See 'Installing the dependencies'
         | - package.json  # generated by npm init. See 'Installing the dependencies'
 
-      @sheet
-        Now lets move onto setting up the build pipeline. This is a script that will build our site.
-
     @section Creating a build script
-      @sheet
-        We are going to use the quantum-hub module for building our site - this module simplifies
-        setting up things like watching the source for changes, and runs a web server that reloads
-        automatically when files are saved.
+      We are going to use the quantum-hub module for building our site - this
+      module simplifies setting up things like watching the source for changes,
+      and runs a web server that reloads automatically when files are saved.
 
-        @notice Note [info]
-          If quantum-hub doesn't quite fit your needs, there are some lower level modules available called @code(bash)[quantum-js] and @code(bash)[ quantum-watch] as an alternative way of setting up a build script.
+      The first step is to create the config file in the build folder called
+      quantum.config.js:
 
-      @sheet
-        The first step is to create the build script file in the build folder called build.js:
-
-      @subsection build/build.js
+      @subsection quantum.config.js
         @codeblock js
           var path = require('path')
           var html = require('quantum-html')
           var docs = require('quantum-docs')
-          var hub = require('quantum-hub')
           var Promise = require('bluebird')
 
-          function pipeline () {
-            var htmlOptions = {
-              transforms: {
-                html: html.transforms,
-                docs: docs()
-              }
+          var htmlOptions = {
+            transforms: {
+              html: html.transforms,
+              docs: docs()
             }
+          }
 
-            // returns a function that compiles a page out to html
+          // returns a function that compiles a page out to html
+          function pipeline () {
             return function (obj) {
               return Promise.resolve(obj)
                 .then(html(htmlOptions))
@@ -135,51 +112,54 @@
             }
           }
 
-          hub.client.watch({
+          module.exports = {
             pipeline: pipeline,
-            config: {
-              pages: 'content/pages/**/*.um',
-              base: 'content/pages'
-            },
-            resourceDir: path.join(__dirname, '..', 'content', 'resources')
-          })
+            pages: 'pages/**/*.um',
+            base: 'pages',
+            resourceDir: 'resources'
+          }
 
 
     @section Create some test content
-      @sheet
-        Next, we can check that everything has been set up correctly. To do this, we need some example content. Create
-        a file called index.um in the content/pages folder:
 
-      @subsection content/pages/index.um
+      Next, we can check that everything has been set up correctly. To do this,
+      we need some example content. Create a file called index.um in the pages
+      folder:
+
+      @subsection pages/index.um
         @@codeblock um
           @h1: Example page
           @p: Omgasdfghjkl, it actually worked!
 
     @section Build the site
-      @sheet
-        Now run the build script:
+
+      Now run the build script:
 
       @codeblock bash
-        node build/build.js
+        quantum watch
 
-      @sheet
-        If all has gone well you should see something logged out to the console to indicate that the page was built
-        and a web server was started. Visit @hyperlink(http://localhost:8000)[localhost:8000] in your browser to see
-        the site that has been built
+      If all has gone well you should see something logged out to the console to
+      indicate that the page was built and a web server was started.
+      Visit @hyperlink(http://localhost:8000)[localhost:8000] in your browser to
+      see the site that has been built
 
       @notice Note [info]
-        If you get an error, check back through the tutorial for steps that were accidently skipped, or miscopied code snippets.
+        If you get an error, check back through the tutorial for steps that were
+        accidently skipped, or miscopied code snippets.
 
-        If you believe you have done everything correctly, then you can seek help on the issue tracker in github for this project.
+        If you believe you have done everything correctly, then you can seek help
+        on the issue tracker in github for this project.
 
     @section Install and build Hexagon.js
-      @sheet
-        In this section, we use @hyperlink(https://hexagonjs.io)[Hexagon.js] as it
-        provides a good framework for building content.
+      @notice TODO
+        Improve this section - use the build in dest?
 
-        Hexagon.js is available as a node module which can be installed using:
+      Next, we can install @hyperlink(https://hexagonjs.io)[Hexagon.js]. We are
+      going to use it mainly for its stylesheet.
 
-      @code bash
+      Hexagon.js is available as a node module which can be installed using:
+
+      @codeblock bash
         npm install --save hexagon-js
 
       @sheet
@@ -190,7 +170,7 @@
         var hexagon = require('hexagon-js')
 
         hexagon.light.build({
-          dest: 'content/resources/hexagon-js'
+          dest: 'resources/hexagon-js'
         })
 
       @sheet
@@ -236,7 +216,7 @@
 
         In this walkthrough, we only need one template for the titlebar:
 
-      @bold: content/shared/shared.um
+      @bold: shared/shared.um
       @@codeblock um
         \# Include the Hexagon library on all pages that include this file.
         @stylesheet [/resources/hexagon-js/hexagon.css]
@@ -261,7 +241,7 @@
       @sheet
         The template uses the following site logo, which should be copied to the site:
 
-      @bold: content/resources/coffee.png
+      @bold: resources/coffee.png
 
       @image /resources/coffee.png
 
@@ -270,7 +250,7 @@
       @sheet
         The next step is to create the home page for the site using the template you just created
 
-      @bold: content/pages/index.um
+      @bold: pages/index.um
       @@codeblock um
         \# Include the shared file
         @inline ../shared/shared.um
@@ -390,7 +370,7 @@
 
         Start by adding a @(@versionList) to the top of the file:
 
-      @bold: content/pages/index.um
+      @bold: pages/index.um
       @@codeblock um
         @versionList
           @version 1.0.0
@@ -405,7 +385,7 @@
 
         Now we've set up the file ready for 3 versions, we'll add some versioned content.
 
-      @bold: content/pages/index.um
+      @bold: pages/index.um
       @@codeblock um
         @topic Api
           \# Define version 1.0.0
@@ -450,7 +430,7 @@
         This provides us wth a versioned api. To switch between versions, the
         following needs to be added to the titlebar template, alongside the title:
 
-      @bold: content/shared/shared.um
+      @bold: shared/shared.um
       @@codeblock um
         @div .hx-titlebar-title: BeverageInc.
         \# New content
@@ -500,14 +480,14 @@
           pipeline: pipeline,
           port: 5555,
           config: {
-            pages: 'content/pages/**/*.um',
-            base: 'content/pages'
+            pages: 'pages/**/*.um',
+            base: 'pages'
           },
           resourceDir: path.join(__dirname, '..', 'content', 'resources')
         })
 
 
-      @bold: content/pages/index.um
+      @bold: pages/index.um
       @@codeblock um
         @inline ../shared/shared.um
 
@@ -616,7 +596,7 @@
       @sheet
         First, create a link on the home page to the changelog at the bottom of the api section:
 
-      @bold: content/pages/index.um
+      @bold: pages/index.um
       @@codeblock um
         @a .hx-btn.hx-action: Changelog
           @attr href: changelog.html
@@ -624,7 +604,7 @@
       @sheet
         Then create the page with content:
 
-      @bold: content/pages/changelog.um
+      @bold: pages/changelog.um
       @@codeblock um
         @inline ../shared/shared.um
 
@@ -708,7 +688,7 @@
 
         The first step is to create a new page for the flow diagram:
 
-      @bold: content/pages/flow-diagram.um
+      @bold: pages/flow-diagram.um
       @@codeblock um
         ...
 
@@ -727,7 +707,7 @@
       @sheet
         Then we add a link to the flow diagram page on the home page after the changelog button:
 
-      @bold: content/pages/index.um
+      @bold: pages/index.um
       @@codeblock um
         ...
 
@@ -1013,7 +993,7 @@
         Once you've completed this step of the walkthrough, the flow diagram page
         should look like this:
 
-      @bold: content/pages/flow-diagram.um
+      @bold: pages/flow-diagram.um
       @@codeblock um
         ...
 
