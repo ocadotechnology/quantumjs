@@ -64,7 +64,10 @@ transforms.strikethrough = function (entity, page, transforms) {
 }
 
 transforms.image = function (entity, page, transforms) {
-  return page.create('img').attr('src', entity.ps()).attr('alt', entity.cs())
+  return page.create('img')
+    .attr('src', entity.ps())
+    .attr('alt', entity.cs())
+    .attr('title', entity.cs())
 }
 
 transforms.summary = function (entity, page, transforms) {
@@ -181,7 +184,7 @@ transforms.header = function (entity, page, transforms) {
             .attr('href', e.ps())
             .text(e.cs())
         }))
-      ))
+    ))
 }
 
 transforms.topSection = function (entity, page, transforms) {
@@ -241,6 +244,26 @@ transforms.relatedButtons = function (entity, page, transforms) {
   return page.create('div').class('qm-docs-related-buttons')
     .add(buttons)
 
+}
+
+transforms.table = function (entity, page, transforms) {
+  function toRow (rowEntity) {
+    var isHeader = rowEntity.type === 'header'
+
+    var cells = Promise.all(rowEntity.selectAll('cell').map(function (cellEntity) {
+      return paragraphTransform(cellEntity, page, transforms)
+    })).then(function (cells) {
+      return cells.map(function (cell) {
+        return page.create(isHeader ? 'th' : 'td').add(cell)
+      })
+    })
+
+    return page.create('tr').add(cells)
+  }
+
+  return Promise.all(entity.selectAll(['header', 'row']).map(toRow)).then(function (rows) {
+    return page.create('table').class('qm-docs-table').add(rows)
+  })
 }
 
 function assetify (trans) {

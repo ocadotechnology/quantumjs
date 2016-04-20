@@ -498,6 +498,50 @@ a.qm-docs-navication-menu-page {
   padding-top: 42px;
 }
 
+.qm-docs-table {
+  border-spacing: 0;
+}
+
+.qm-docs-table th, .qm-docs-table td {
+  border: solid 1px #DEDEDE;
+  border-right: none;
+  border-bottom: none;
+  padding: 0.5em;
+}
+
+.qm-docs-table th {
+  background: #F7F7F7;
+}
+
+.qm-docs-table tr td:last-child,
+.qm-docs-table tr th:last-child {
+  border-right: solid 1px #DEDEDE;
+}
+
+.qm-docs-table tr:last-child td,
+.qm-docs-table tr:last-child th {
+  border-bottom: solid 1px #DEDEDE;
+}
+
+.qm-docs-table tr:first-child th:first-child,
+.qm-docs-table tr:first-child td:first-child {
+  border-top-left-radius: 0.2em;
+}
+
+.qm-docs-table tr:first-child th:last-child,
+.qm-docs-table tr:first-child td:last-child {
+  border-top-right-radius: 0.2em;
+}
+
+.qm-docs-table tr:last-child th:first-child,
+.qm-docs-table tr:last-child td:first-child {
+  border-bottom-left-radius: 0.2em;
+}
+
+.qm-docs-table tr:last-child th:last-child,
+.qm-docs-table tr:last-child td:last-child {
+  border-bottom-right-radius: 0.2em;
+}
 
 @media (max-width: 900px) {
   .qm-docs-centered {
