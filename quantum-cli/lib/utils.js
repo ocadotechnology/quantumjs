@@ -1,6 +1,8 @@
 var path = require('path')
 var chalk = require('chalk')
 var ProgressBar = require('progress')
+var Promise = require('bluebird')
+var globby = require('globby')
 
 exports.progressBarLogger = function (eventEmitter) {
   var bar = undefined

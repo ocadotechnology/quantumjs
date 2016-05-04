@@ -6,13 +6,14 @@ var merge = require('merge')
 var quantum = require('quantum-js')
 var quantumWatch = require('quantum-watch')
 
+var utils = require('./utils')
+
 // resolves the options against the defaults
 function resolveOptions (options) {
   return merge({
     dir: process.cwd(),
     pipeline: undefined,
-    pages: '**/*.um',
-    base: '.',
+    pages: { files: ['**/*.um'], base: ''},
     dest: path.join(process.cwd(), 'target'),
     isLocal: false,
     customPipelineConfig: {},
@@ -20,43 +21,33 @@ function resolveOptions (options) {
   }, options)
 }
 
-// builds the pages supplied as {filename, content} objects and logs to an event emitter
-function buildPages (objs, eventEmitter, options) {
+// one-off build for the docs in the directory specified
+function build (opts) {
+  var options = resolveOptions(opts)
+  var eventEmitter = new EventEmitter
   var compile = options.pipeline(options.customPipelineConfig, { isLocal: options.isLocal })
 
   eventEmitter.emit('start', {})
 
-  var filenames = objs.map(function (obj) { return obj.filename })
-  eventEmitter.emit('pagesstart', {filenames: filenames})
-
-  return Promise.all(objs)
-    .map(function (obj) {
-      eventEmitter.emit('pagestart', { filename: obj.filename })
-      return compile(obj)
-        .then(function (res) {
-          return Array.isArray(res) ? res : [res]
+  var promise = utils.resolveFiles(options.pages, options)
+    .then(function (sourceObjs) {
+      console.log(sourceObjs)
+      var filenames = sourceObjs.map(function (obj) { return obj.resolved })
+      eventEmitter.emit('pagesstart', {filenames: filenames})
+      return sourceObjs
+    })
+    .map(function (sourceObj) {
+      eventEmitter.emit('pagestart', { filename: sourceObj.resolved })
+      return quantum.read.single(sourceObj.src, { base: sourceObj.base })
+        .then(compile)
+        .then(function () {
+          eventEmitter.emit('pagefinish', { filename: sourceObj.resolved, outputCount: pages.length })
+          return sourceObj.resolved
         })
-        .map(quantum.write(options.dest))
-        .then(function (pages) {
-          eventEmitter.emit('pagefinish', { filename: obj.filename, outputCount: pages.length })
-          return obj.filename
-        })
-    }, {concurrency: options.buildConcurrency})
+    }, options.buildConcurrency)
     .then(function (filenames) {
       eventEmitter.emit('pagesfinish', { filenames: filenames })
       eventEmitter.emit('finish', {})
-    })
-}
-
-// one-off build for the docs in the directory specified
-function build (opts) {
-  var options = resolveOptions(opts)
-
-  var eventEmitter = new EventEmitter
-
-  var promise = quantum.read(path.join(options.dir, options.pages), {base: options.base ? path.join(options.dir, options.base) : options.dir})
-    .then(function (objs) {
-      return buildPages(objs, eventEmitter, options)
     })
 
   return {
@@ -68,18 +59,18 @@ function build (opts) {
 // build, then watch for changes in the directory specified and rebuild on change
 function watch (opts) {
   var options = resolveOptions(opts)
-
   var watchEventEmitter = new EventEmitter
+  var compile = options.pipeline(options.customPipelineConfig, { isLocal: options.isLocal })
 
   var quantumWatchOptions = {
     base: options.base ? path.join(options.dir, options.base) : options.dir,
     dir: options.dir
   }
 
-  var promise = quantumWatch(path.join(options.dir, options.pages), quantumWatchOptions, function (objs) {
+  var promise = quantumWatch(path.join(options.dir, options.pages), quantumWatchOptions, function (obj) {
     var eventEmitter = new EventEmitter
     watchEventEmitter.emit('start', { events: eventEmitter })
-    return buildPages(objs, eventEmitter, options)
+    return compile(obj)
   }).then(function (build) {
     return build()
   })

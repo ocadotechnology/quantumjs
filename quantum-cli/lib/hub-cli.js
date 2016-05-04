@@ -68,12 +68,15 @@ module.exports = function (opts) {
     .action(function (cliOptions) {
       if (!checkConfigExists()) return process.exit(2)
 
-      var cwd = process.cwd()
-      var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(cwd, cliOptions.output)
-
       var quantumJson = require(path.relative(__dirname, path.join(cwd, 'quantum.json')))
-      var pages = quantumJson.pages || '**/*.um'
-      var base = quantumJson.base || '.'
+
+      var cwd = process.cwd()
+      var dest = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(cwd, cliOptions.output)
+
+      var pages = quantumJson.pages || { files: ['**/*.um'], base: ''}
+      var resources = quantumJson.resources || { files: ['**/*', '!**/*.um'], base: ''}
+      var buildConcurrency = cliOptions.buildConcurrency || config.buildConcurrency || 1
+
       var buildConcurrency = cliOptions.buildConcurrency || quantumJson.buildConcurrency || 1
       var customPipelineConfig = quantumJson
 
@@ -82,8 +85,8 @@ module.exports = function (opts) {
         pipeline: options.pipeline,
         resourceDir: options.resourceDir,
         pages: pages,
-        base: base,
-        dest: destDir,
+        resources: resources,
+        dest: dest,
         isLocal: true,
         customPipelineConfig: customPipelineConfig,
         buildConcurrency: buildConcurrency,
@@ -103,15 +106,16 @@ module.exports = function (opts) {
     .action(function (cliOptions) {
       if (!checkConfigExists()) return process.exit(2)
 
+      var quantumJson = require(path.relative(__dirname, path.join(cwd, 'quantum.json')))
+
       var cwd = process.cwd()
       var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(cwd, cliOptions.output)
 
-      var quantumJson = require(path.relative(__dirname, path.join(cwd, 'quantum.json')))
-      var pages = quantumJson.pages || '**/*.um'
-      var base = quantumJson.base || '.'
+      var pages = quantumJson.pages || { files: ['**/*.um'], base: ''}
+      var resources = quantumJson.resources || { files: ['**/*', '!**/*.um'], base: ''}
       var buildConcurrency = cliOptions.buildConcurrency || quantumJson.buildConcurrency || 1
+      var port = cliOptions.port || quantumJson.port || 4000
       var customPipelineConfig = quantumJson
-      var port = cliOptions.port || quantumJson.buildConcurrency || 4000
 
       client.watch({
         dir: cwd,
@@ -156,8 +160,7 @@ module.exports = function (opts) {
         host: cliOptions.host,
         key: cliOptions.key,
         projectId: quantumJson.projectId,
-        files: quantumJson.files,
-        pages: quantumJson.pages
+        files: quantumJson.files
       }).catch(exitInError)
     })
 

@@ -1,5 +1,7 @@
-var watch = require('..')
+// var watch = require('..')
+//
+// watch('**/*.um', {base: 'whatever'}, function(objs) {
+//   console.log(objs)
+// })
 
-watch('**/*.um', {base: 'whatever'}, function(objs) {
-  console.log(objs)
-})
+var resolveFiles = require('../resolve-files')

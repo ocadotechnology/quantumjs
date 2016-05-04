@@ -53,17 +53,14 @@ module.exports = function () {
     .command('build')
     .description('builds the project')
     .option('-o, --output [output]', 'The directory to output to', 'target')
-    .option('-p, --pages [pages]', 'A glob which matches the pages to build')
-    .option('-b, --base [base]', 'The directory to treat as the root of the site')
     .option('-c, --build-concurrency [buildConcurrency]', 'How many pages to build in parallel')
-    .option('-r, --resources [resourcesDir]', 'The resources directory')
     .option('-q, --quiet', 'Only log errors', false)
     .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
     .action(function (cliOptions) {
       if (!checkConfigExists()) return process.exit(2)
 
       var projectDir = process.cwd()
-      var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(projectDir, cliOptions.output)
+      var dest = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(projectDir, cliOptions.output)
       var configFilename = path.relative(__dirname, path.join(projectDir, 'quantum.config.js'))
 
       var config = require(configFilename)
@@ -74,20 +71,16 @@ module.exports = function () {
         return
       }
 
-      var pipeline = config.pipeline
-
-      var resourceDir = cliOptions.resourcesDir || config.resourceDir
-      var pages = cliOptions.pages || config.pages || '**/*.um'
-      var base = cliOptions.base || config.base || '.'
+      var pages = config.pages || { files: ['**/*.um'], base: ''}
+      var resources = config.resources || { files: ['**/*', '!**/*.um'], base: ''}
       var buildConcurrency = cliOptions.buildConcurrency || config.buildConcurrency || 1
 
       client.build({
         dir: projectDir,
-        pipeline: pipeline,
-        resourceDir: resourceDir,
+        pipeline: config.pipeline,
         pages: pages,
-        base: base,
-        dest: destDir,
+        resources: resources,
+        dest: dest,
         isLocal: true,
         customPipelineConfig: undefined,
         buildConcurrency: buildConcurrency,
@@ -100,18 +93,15 @@ module.exports = function () {
     .command('watch')
     .description('watches the docs project and starts a server locally')
     .option('-o, --output [output]', 'The directory to output to', 'target')
+    .option('-c, --build-concurrency [buildConcurrency]', 'How many pages to build in parallel')
     .option('-q, --quiet', 'Only log errors', false)
     .option('-s, --progress', 'Use progressbars instead of detailed logging', false)
-    .option('-p, --pages [pages]', 'A glob which matches the pages to build')
-    .option('-b, --base [base]', 'The directory to treat as the root of the site')
-    .option('-c, --build-concurrency [buildConcurrency]', 'How many pages to build in parallel')
-    .option('-r, --resources [resourcesDir]', 'The resources directory')
     .option('-p, --port [port]', 'The port to run the web server on')
     .action(function (cliOptions) {
       if (!checkConfigExists()) return process.exit(2)
 
       var projectDir = process.cwd()
-      var destDir = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(projectDir, cliOptions.output)
+      var dest = path.isAbsolute(cliOptions.output) ? cliOptions.output : path.join(projectDir, cliOptions.output)
       var configFilename = path.relative(__dirname, path.join(projectDir, 'quantum.config.js'))
 
       var config = require(configFilename)
@@ -121,23 +111,19 @@ module.exports = function () {
         return
       }
 
-      var pipeline = config.pipeline
-
-      var resourceDir = cliOptions.resources || config.resourceDir
-      var pages = cliOptions.pages || config.pages || '**/*.um'
-      var base = cliOptions.base || config.base || '.'
+      var pages = config.pages || { files: ['**/*.um'], base: ''}
+      var resources = config.resources || { files: ['**/*', '!**/*.um'], base: '', watch: true}
       var buildConcurrency = cliOptions.buildConcurrency || config.buildConcurrency || 1
       var port = cliOptions.port || config.port || 4000
 
       client.watch({
         dir: projectDir,
-        pipeline: pipeline,
-        resourceDir: resourceDir,
+        pipeline: config.pipeline,
         pages: pages,
-        base: base,
-        dest: destDir,
+        resources: resources,
+        dest: dest,
         isLocal: true,
-        customPipelineConfig: {},
+        customPipelineConfig: undefined,
         buildConcurrency: buildConcurrency,
         quiet: cliOptions.quiet,
         progress: cliOptions.progress,

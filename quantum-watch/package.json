@@ -17,15 +17,22 @@
   "homepage": "https://quantum.hexagonjs.io",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
   "dependencies": {
     "bluebird": "^2.10.2",
+    "chokidar": "^1.4.3",
     "debounce": "^1.0.0",
     "gaze": "^0.5.2",
     "glob": "^5.0.15",
+    "globby": "^4.0.0",
     "merge": "^1.2.0",
     "minimatch": "^3.0.0",
     "quantum-js": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.4.5"
   }
 }

@@ -1,5 +1,4 @@
 var Promise = require('bluebird')
-var glob = Promise.promisify(require('glob'))
 var gaze = require('gaze')
 var quantum = require('quantum-js')
 var merge = require('merge')
@@ -8,33 +7,45 @@ var minimatch = require('minimatch')
 var EventEmitter = require('events').EventEmitter
 var path = require('path')
 var debounce = require('debounce')
+var resolveFiles = require('./resolve-files')
 
-function createWatcher (globString, customLoader) {
-  return new Promise(function (resolve, reject) {
-    gaze(globString, function (watcher) {
-      var loader = new WatcherLoader(globString, Promise.promisifyAll(this), customLoader)
+function createWatcher (globPatterns, customLoader) {
+  console.log(globPatterns)
+  var watcher = resolveFiles.watch(globPatterns, {dest: 'target'})
 
-      this.on('changed', function (filename) {
-        loader.emit('change', loader.getAffectedFiles(filename))
-      })
-
-      this.on('added', function (filename) {
-        loader.emit('change', loader.getAffectedFiles(filename))
-      })
-
-      resolve(loader)
-    })
+  watcher.events.on('change', function (filename) {
+    loader.emit('change', loader.getAffectedFiles(filename))
   })
+
+  return watcher.promise
+
+// return new Promise(function (resolve, reject) {
+//   gaze(globString, function (watcher) {
+//     var loader = new WatcherLoader(globPatterns, Promise.promisifyAll(this), customLoader)
+//
+//     this.on('changed', function (filename) {
+//       loader.emit('change', loader.getAffectedFiles(filename))
+//     })
+//
+//     this.on('added', function (filename) {
+//       loader.emit('change', loader.getAffectedFiles(filename))
+//     })
+//
+//     // XXX: handle removed case
+//
+//     resolve(loader)
+//   })
+// })
 }
 
-function WatcherLoader (globString, watcher, loader) {
+function WatcherLoader (globPatterns, watcher, loader) {
   EventEmitter.call(this)
 
   this.fileLoader = loader || function (filename, inlineParent) {
       return fs.readFileAsync(filename, 'utf-8')
   }
 
-  this.globString = globString
+  this.globPatterns = globPatterns
   this.watcher = watcher
   this.links = {}
   this.watching = {}
@@ -81,30 +92,33 @@ WatcherLoader.prototype = merge(new EventEmitter, {
   }
 })
 
-function watch (globString, options, renderer, initialDone) {
+function watch (globPatterns, options, renderer) {
   var opts = merge({}, options)
 
-  return createWatcher(globString, opts.loader).then(function (loader) {
-    opts.loader = function (filename, inlineParent) { return loader.loader(filename, inlineParent) }
+  return createWatcher(globPatterns, opts.loader).then(function (loader) {
+    opts.loader = function (filename, inlineParent) {
+      return loader.loader(filename, inlineParent)
+    }
 
-    function build (filenames) {
+    function matchesGlob (fileObj) {
+      console.log('check if glob matches:', fileObj)
+      if (path.isAbsolute(filename) && !path.isAbsolute(globString)) {
+        return minimatch(path.relative(options.dir || process.cwd(), filename), globString)
+      } else {
+        return minimatch(filename, globString)
+      }
+    }
+
+    function build (fileObjs) {
       // only rebuild those that match the original glob
-      return Promise.all(filenames.filter(function (filename) {
-        if (path.isAbsolute(filename) && !path.isAbsolute(globString)) {
-          return minimatch(path.relative(options.dir || process.cwd(), filename), globString)
-        } else {
-          return minimatch(filename, globString)
-        }
-      })).map(function (filename) {
-        return quantum.read.single(filename, opts)
-      })
+      return Promise.all(fileObjs)
+        .filter(matchesGlob)
+        .map(function (filename) {
+          return quantum.read.single(filename, opts).then(renderer)
+        })
         .then(function (objs) {
           return loader.updateWatches().then(function () { return objs })
-        }).then(function (objs) {
-        if (objs.length > 0) {
-          return renderer(objs)
-        }
-      })
+        })
     }
 
     var debouncedBuild = debounce(build, 5)
@@ -113,7 +127,7 @@ function watch (globString, options, renderer, initialDone) {
 
     // return a function that allows manual triggering of a full build
     return function () {
-      return glob(globString).then(build)
+      return resolveFiles(globPatterns).then(build)
     }
   })
 

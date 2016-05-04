@@ -23,6 +23,7 @@ var request = require('request')
 var requestAsync = Promise.promisify(request)
 var merge = require('merge')
 var liveserver = require('live-server')
+var watch = require('quantum-watch')
 
 var compiler = require('./compiler')
 var utils = require('./utils')
@@ -72,9 +73,20 @@ function init (options) {
     return fs.outputJsonAsync(quantumJsonFilename, {
       name: suggestedProjectId,
       description: '<description of project>',
-      pages: '**/*.um',
-      files: '**/*.um',
-      base: '.'
+      pages: {
+        files: ['**/*.um'],
+        base: ''
+      },
+      resources: {
+        resources: ['**/*', '!**/*.um'],
+        base: '',
+        watch: true
+      },
+      files: [
+        '**/*',
+        '!node_modules/**/*',
+        '!target/**/*'
+      ]
     })
   })
 }
@@ -131,7 +143,7 @@ function startServer (options) {
   })
 }
 
-function copyResources (options) {
+function copyResourcesDir (options) {
   if (options.resourceDir) {
     return fs.copyAsync(options.resourceDir, path.join(options.dest, 'resources'))
   } else {
@@ -139,13 +151,24 @@ function copyResources (options) {
   }
 }
 
+function copyResources (options) {
+  return watch.resolveFiles(options.resources, options).map(function (obj) {
+    return fs.copy(obj.src, obj.dest)
+  })
+}
+
+function watchResources (options) {
+  console.log('TODO: watch resources')
+}
+
 /* Builds the microsite locally */
 function build (opts) {
   var options = merge({
     dir: process.cwd(),
     pipeline: undefined,
-    pages: '**/*.um',
-    base: '.',
+    resourceDir: undefined,
+    pages: [{files: ['**/*.um'], base: '' }],
+    resources: [{files: ['**/*', '!node_modules/**/*', '!target/**/*'], base: '' }],
     dest: path.join(process.cwd(), 'target'),
     isLocal: true,
     customPipelineConfig: {},
@@ -157,9 +180,13 @@ function build (opts) {
   var buildResult = compiler.build(options)
   logBuildEvents(buildResult.events, options)
 
-  return buildResult.promise.then(function () {
-    return copyResources(options)
-  })
+  return buildResult.promise
+    .then(function () {
+      return copyResources(options)
+    })
+    .then(function () {
+      return copyResourcesDir(options)
+    })
 }
 
 /* Builds and watches the microsite locally */
@@ -168,8 +195,8 @@ function watch (opts) {
     dir: process.cwd(),
     pipeline: undefined,
     resourceDir: undefined,
-    pages: '**/*.um',
-    base: '.',
+    pages: [{files: ['**/*.um'], base: '' }],
+    resources: [{files: ['**/*', '!node_modules/**/*', '!target/**/*'], base: '', watch: true }],
     dest: path.join(process.cwd(), 'target'),
     isLocal: true,
     customPipelineConfig: {},
@@ -185,9 +212,14 @@ function watch (opts) {
     logBuildEvents(evt.events, options)
   })
 
+  watchResources(options)
+
   return watchResult.promise
     .then(function () {
       return copyResources(options)
+    })
+    .then(function () {
+      return copyResourcesDir(options)
     })
     .then(function () {
       startServer({

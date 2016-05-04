@@ -1,0 +1,7 @@
+- watch multiple (or single) globs, each with their own base directory
+- watch quantum files
+  - emit an event when a file is changed (with parsed content)
+  - watch non-quantum inlined files for changed
+  - handle files being deleted
+- watch normal files
+  - emit an event when a file is changed (without content)
