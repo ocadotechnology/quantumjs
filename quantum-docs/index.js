@@ -46,7 +46,7 @@ transforms.list = function (entity, page, transforms) {
   return page.create(ordered ? 'ol' : 'ul').class(ordered ? 'qm-docs-list' : 'qm-docs-list fa-ul')
     .add(page.all(entity.selectAll('item').map(function (e) {
       return page.create('li')
-        .add(ordered ? undefined : page.create('i').class('fa fa-li ' + (e.ps() || 'qm-docs-list-bullet fa-circle')))
+        .add(ordered ? undefined : e.ps() ? page.create('i').class('fa fa-li ' + e.ps()) : undefined)
         .add(paragraphTransform(e, page, transforms))
     })))
 }
