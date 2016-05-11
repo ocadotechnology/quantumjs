@@ -1,6 +1,6 @@
 {
   "name": "quantum-docs",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "description": "quantum.js html transfoms for writing documentation style web pages",
   "license": "Apache-2.0",
   "author": "James Smyth <james.smyth@ocado.com>",
