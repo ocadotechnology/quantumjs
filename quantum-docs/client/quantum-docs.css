@@ -1,4 +1,9 @@
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 .qm-docs-centered {
   max-width: 800px;
   margin: 0 auto;
@@ -87,6 +92,10 @@ p:last-child {
 
 .qm-docs-sidebar-page .qm-docs-content-section-container {
   position: relative;
+}
+
+.qm-docs-content-section-container {
+  flex: 1;
 }
 
 .qm-docs-sidebar {
