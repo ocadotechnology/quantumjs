@@ -14,7 +14,6 @@
 */
 
 module.exports = {
-  hubCli: require('./hub-cli'),
   cli: require('./standard-cli'),
   client: require('./client'),
   compiler: require('./compiler'),
