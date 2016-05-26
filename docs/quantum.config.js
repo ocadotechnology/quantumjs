@@ -51,27 +51,10 @@ function pipeline () {
 
 module.exports = {
   pipeline: pipeline,
-  pages: [{
-    files: 'content/pages/**/*.um',
-    base: 'content/pages'
-  }],
-  resources: [
-    {
-      files: 'node_modules/hexagon-js/dist/hexagon-light/**/*',
-      base: 'node_modules/hexagon-js/dist/hexagon-light',
-      target: 'hexagon-js',
-      watch: false
-    }
-  ]
+  pages: 'content/pages/**/*.um',
+  resources: {
+    files: 'node_modules/hexagon-js/dist/hexagon-light/**/*',
+    target: 'hexagon-js',
+    watch: false
+  }
 }
-
-// should be possible to shorten to, and still have the same output:
-// module.exports = {
-//   pipeline: pipeline,
-//   pages: 'content/pages/**/*.um',
-//   resources: {
-//     files: 'node_modules/hexagon-js/dist/hexagon-light/**/*',
-//     target: 'hexagon-js',
-//     watch: false
-//   }
-// }

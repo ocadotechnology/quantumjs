@@ -21,13 +21,9 @@
   },
   "dependencies": {
     "bluebird": "^2.10.2",
-    "chokidar": "^1.4.3",
-    "debounce": "^1.0.0",
-    "gaze": "^0.5.2",
-    "glob": "^5.0.15",
+    "chokidar": "^1.5.0",
+    "flatten": "^1.0.2",
     "globby": "^4.0.0",
-    "merge": "^1.2.0",
-    "minimatch": "^3.0.0",
     "quantum-js": "^1.0.0"
   },
   "devDependencies": {

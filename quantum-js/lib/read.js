@@ -24,7 +24,7 @@ var parse = require('./parse')
 var globBase = require('glob-base')
 var flatten = require('flatten')
 
-function defaultLoader (filename) {
+function defaultLoader (filename, parentFilename) {
   return fs.readFileAsync(filename, 'utf-8')
 }
 
@@ -72,7 +72,7 @@ function parseFile (filename, doParse, options, parentFile) {
         throw new Error('quantum: ' + filename + ': ' + e)
       })
   } else {
-    return options.loader(filename).then(function (input) {
+    return options.loader(filename, parentFile).then(function (input) {
       return { content: input.split('\n') }
     })
   }
