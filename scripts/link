@@ -72,12 +72,6 @@ npm install
 npm link
 popd
 
-pushd quantum-hub
-npm link quantum-cli
-npm install
-npm link
-popd
-
 pushd docs
 npm link quantum-cli quantum-html quantum-template quantum-api quantum-changelog quantum-diagram quantum-docs quantum-version quantum-code-highlight
 npm install
