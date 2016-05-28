@@ -22,5 +22,6 @@ module.exports = {
   write: require('./write'),
   create: require('./create'),
   json: require('./json'),
-  stringify: require('./stringify')
+  stringify: require('./stringify'),
+  watch: require('./watch')
 }

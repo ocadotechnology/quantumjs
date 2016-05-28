@@ -1,13 +1,31 @@
-var Promise = require('bluebird')
+/*
+     ____                    __                      _
+    / __ \__  ______ _____  / /___  ______ ___      (_)____
+   / / / / / / / __ `/ __ \/ __/ / / / __ `__ \    / / ___/
+  / /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / /   / (__  )
+  \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
+                                              /___/
+
+  Watch
+  =====
+
+  Watches files for changes, triggering change events when inlined files are changed.
+
+*/
+
 var path = require('path')
-var globby = require('globby')
 var EventEmitter = require('events')
 var util = require('util')
+
+var Promise = require('bluebird')
+var globby = require('globby')
 var chokidar = require('chokidar')
 var flatten = require('flatten')
-var quantum = require('quantum-js')
 var fs = Promise.promisifyAll(require('fs-extra'))
 
+var read = require('./read')
+
+/* Watches some glob specs for changes */
 function Watcher (specs, options) {
   var self = this
   EventEmitter.call(this)
@@ -18,7 +36,7 @@ function Watcher (specs, options) {
   }
 
   this._promise = Promise.all(specs)
-    .filter(function (spec) { return spec.watch })
+    .filter(function (spec) { return spec && spec.watch })
     .map(function (spec) { return specToWatcherObj(self, spec, self._options) })
     .then(function (watchers) { self._watchers = watchers })
 }
@@ -76,6 +94,23 @@ function fileToObj (file, spec, dest) {
   }
 }
 
+function isString (str) {
+  return typeof str === 'string' || str instanceof String
+}
+
+/* Checks the specs passed in look like a valid specs list */
+function validateSpecs (specs) {
+  return validateSpec(specs) || (Array.isArray(specs) && specs.every(validateSpec))
+}
+
+/* Checks the spec passed in look like a valid spec */
+function validateSpec (spec) {
+  return spec !== undefined && (
+  isString(spec) ||
+  isString(spec.files) ||
+  (Array.isArray(spec.files) && spec.files.every(isString)))
+}
+
 /* Makes sure the list argument is of the right shape */
 function normaliseSpecList (specs) {
   var arrayedSpecs = Array.isArray(specs) ? specs : [specs]
@@ -85,7 +120,7 @@ function normaliseSpecList (specs) {
 
 /* Makes sure a single object in the list argument is of the right shape */
 function toObjectSpecDescription (item) {
-  if (typeof item === 'string') {
+  if (isString(item)) {
     return {
       files: [item],
       base: inferBase(item),
@@ -109,6 +144,7 @@ function inferBase (globString) {
 
 /* Resolves a list of specs into a list of file-objects */
 function resolve (specs, opts) {
+  if (!validateSpecs(specs)) return Promise.reject(new Error('invalid specs argument'))
   var options = opts || {}
   var dir = options.dir || '.'
   var dest = options.dest || 'target'
@@ -123,6 +159,7 @@ function resolve (specs, opts) {
 
 /* Returns a promise that yields a Watcher for the specs provided */
 function watcher (specs, options) {
+  if (!validateSpecs(specs)) return Promise.reject(new Error('invalid specs argument'))
   var w = new Watcher(normaliseSpecList(specs), options || {})
   return w._promise.then(function () { return w })
 }
@@ -133,6 +170,7 @@ function defaultLoader (filename, parentFilename) {
 
 // watches quantum files and follows inline links
 function watch (specs, options, handler) {
+  if (!validateSpecs(specs)) return Promise.reject(new Error('invalid specs argument'))
   var normalisedSpecs = normaliseSpecList(specs)
   var events = new EventEmitter
 
@@ -175,36 +213,24 @@ function watch (specs, options, handler) {
     }
   }
 
-  function catchErrors (f) {
-    return function () {
-      var args = arguments
-      var self = this
-      try {
-        return f.apply(self, args)
-      } catch (err) {
-        events.emit('error', err)
-      }
-    }
-  }
-
   var inlinedWatcher = chokidar.watch([], {cwd: dir})
-  inlinedWatcher.on('change', catchErrors(function (filename) {
+  inlinedWatcher.on('change', function (filename) {
     Promise.all(Array.from(getSourceFileObjs(filename)).map(function (fileObj) {
       return handleFile(fileObj, {rootCause: 'change', cause: 'change'})
     })).then(function () {
       events.emit('change', filename)
-    })
-  }))
+    }).catch(handleFileFailure)
+  })
 
-  inlinedWatcher.on('unlink', catchErrors(function (filename) {
+  inlinedWatcher.on('unlink', function (filename) {
     var files = Array.from(getSourceFileObjs(filename))
     unlinkFile(filename)
     Promise.all(files.map(function (fileObj) {
       return handleFile(fileObj, {rootCause: 'delete', cause: 'change'})
     })).then(function () {
       events.emit('delete', filename)
-    })
-  }))
+    }).catch(handleFileFailure)
+  })
 
   function watchFile (filename) {
     inlinedWatcher.add(filename)
@@ -225,11 +251,15 @@ function watch (specs, options, handler) {
 
   function handleFile (fileObj, watchTriggered) {
     fileObjs[fileObj.src] = fileObj
-    return quantum.read.single(fileObj.src, {loader: linkingLoader})
+    return read.single(fileObj.src, {loader: linkingLoader})
       .then(function (parsedObj) {
         parsedObj.file = fileObj
         return handler(parsedObj, watchTriggered)
       })
+  }
+
+  function handleFileFailure (err) {
+    events.emit('error', err)
   }
 
   function build () {
@@ -241,24 +271,24 @@ function watch (specs, options, handler) {
 
   var w = new Watcher(normalisedSpecs, opts)
 
-  w.on('add', catchErrors(function (fileObj) {
+  w.on('add', function (fileObj) {
     return handleFile(fileObj, {rootCause: 'add', cause: 'add'})
       .then(function () {
         events.emit('add', fileObj.src)
-      })
-  }))
+      }).catch(handleFileFailure)
+  })
 
-  w.on('change', catchErrors(function (fileObj) {
+  w.on('change', function (fileObj) {
     return handleFile(fileObj, {rootCause: 'change', cause: 'change'})
       .then(function () {
         events.emit('change', fileObj.src)
-      })
-  }))
+      }).catch(handleFileFailure)
+  })
 
-  w.on('remove', catchErrors(function (fileObj) {
+  w.on('remove', function (fileObj) {
     unlinkFile(fileObj.src)
     events.emit('delete', fileObj.src)
-  }))
+  })
 
   return w._promise.then(function () { return {build: build, events: events} })
 }

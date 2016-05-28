@@ -1,7 +1,10 @@
-var watch = require('..')
+var watch = require('..').watch
 var should = require('chai').should()
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs-extra'))
+var chokidar = require('chokidar')
+var EventEmitter = require('events')
+var util = require('util')
 
 describe('resolve', function () {
   before(function () {
@@ -153,6 +156,23 @@ describe('resolve', function () {
       files.should.eql(expectedList1)
     })
   })
+
+  it('should yield an error when an invalid spec is passed in', function (done) {
+    watch.resolve({
+      files: {},
+      base: 'target/test/watch-change-inline-test',
+      watch: true
+    }, {dest: 'target2'}).catch(function (err) {
+      done()
+    })
+  })
+
+  it('should yield an error when an invalid spec is passed in 2', function (done) {
+    watch.resolve({}, {dest: 'target2'}).catch(function (err) {
+      done()
+    })
+  })
+
 })
 
 describe('watcher', function () {
@@ -431,6 +451,56 @@ describe('watcher', function () {
       })
     })
   })
+
+  it('should yield an error when an invalid spec is passed in', function (done) {
+    watch.watcher({
+      files: {},
+      base: 'target/test/watch-change-inline-test',
+      watch: true
+    }, {dest: 'target2'}).catch(function (err) {
+      done()
+    })
+  })
+
+  it('should yield an error when an invalid spec is passed in 2', function (done) {
+    watch.watcher({}, {dest: 'target2'}).catch(function (err) {
+      done()
+    })
+  })
+
+  describe('chokidar error tests', function () {
+    var cwatch = chokidar.watch
+
+    function FakeChokidarWatch () {
+      EventEmitter.call(this)
+    }
+    util.inherits(FakeChokidarWatch, EventEmitter)
+    var fcw = new FakeChokidarWatch()
+
+    before(function () {
+      chokidar.watch = function (files, options) {
+        return fcw
+      }
+    })
+
+    after(function () {
+      chokidar.watch = cwatch
+    })
+
+    it('should yield an error when chokidar emits an error', function (done) {
+      var err = new Error('some error')
+
+      watch.watcher(['target/**.um'], {dest: 'target2'}).catch(function (err) {
+        err.should.equal(err)
+        done()
+      })
+
+      // This timeout is needed to make sure the promise in watch.watcher is evaluated
+      // before this gets called
+      setTimeout(function () {fcw.emit('error', err) }, 0)
+    })
+  })
+
 })
 
 describe('watch', function () {
@@ -465,6 +535,39 @@ describe('watch', function () {
     watch(specs, options, handler).then(function (res) {
       res.build().then(function () {
         fs.writeFileAsync('target/test/watch-change-inline-test/inlined.um', 'Content 3')
+      })
+    })
+  })
+
+  it('should watch with the default options', function (done) {
+    var specs = {
+      files: 'target/test/watch-change-inline-default-test/index.um',
+      base: 'target/test/watch-change-inline-default-test',
+      watch: true
+    }
+
+    var handler = function (parsed, details) {
+      if (details.cause === 'change') {
+        parsed.should.eql({
+          filename: 'target/test/watch-change-inline-default-test/index.um',
+          file: {
+            src: 'target/test/watch-change-inline-default-test/index.um',
+            resolved: 'index.um',
+            base: 'target/test/watch-change-inline-default-test',
+            dest: 'target/index.um',
+            watch: true
+          },
+          content: {
+            content: ['Content 1', 'Content 3']
+          }
+        })
+        done()
+      }
+    }
+
+    watch(specs, undefined, handler).then(function (res) {
+      res.build().then(function () {
+        fs.writeFileAsync('target/test/watch-change-inline-default-test/inlined.um', 'Content 3')
       })
     })
   })
@@ -611,11 +714,18 @@ describe('watch', function () {
   })
 
   it('should not error when the middle file in a chain is deleted, and the leaf is changed', function (done) {
-    var specs = {
-      files: 'target/test/watch-change-middle-delete-inline-test/index*.um',
-      base: 'target/test/watch-change-middle-delete-inline-test',
-      watch: true
-    }
+    var specs = [
+      {
+        files: 'target/test/watch-change-middle-delete-inline-test/index.um',
+        base: 'target/test/watch-change-middle-delete-inline-test',
+        watch: true
+      },
+      {
+        files: 'target/test/watch-change-middle-delete-inline-test/inlined-2.um',
+        base: 'target/test/watch-change-middle-delete-inline-test',
+        watch: true
+      }
+    ]
 
     var options = {dest: 'target2'}
 
@@ -680,4 +790,52 @@ describe('watch', function () {
       })
     })
   })
+
+  it('should yield an error when an invalid spec is passed in', function (done) {
+    watch({
+      files: {},
+      base: 'target/test/watch-change-inline-test',
+      watch: true
+    }, {dest: 'target2'}, function () {}).catch(function (err) {
+      done()
+    })
+  })
+
+  it('should yield an error when an invalid spec is passed in 2', function (done) {
+    watch({}, {dest: 'target2'}, function () {}).catch(function (err) {
+      done()
+    })
+  })
+
+  it('should emit an error when the the file handler returns an error', function (done) {
+    var specs = {
+      files: 'target/test/watch-change-error-test/index.um',
+      base: 'target/test/watch-change-error-test',
+      watch: true
+    }
+
+    var options = {dest: 'target2'}
+
+    var error = new Error('some error')
+
+    var handler = function (parsed, details) {
+      if (details.cause === 'change') {
+        return Promise.reject(error)
+      } else {
+        return Promise.resolve()
+      }
+    }
+
+    watch(specs, options, handler).then(function (res) {
+      res.events.on('error', function (err) {
+        err.should.equal(error)
+        done()
+      })
+
+      res.build().then(function () {
+        fs.writeFileAsync('target/test/watch-change-error-test/inlined.um', 'Content 3')
+      })
+    })
+  })
+
 })
