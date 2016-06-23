@@ -1,6 +1,8 @@
 var chai = require('chai')
 var should = chai.should()
-var parse = require('../lib').parse
+
+var quantum = require('..')
+var parse = quantum.parse
 var tokenize = parse.tokenize
 var ast = parse.ast
 

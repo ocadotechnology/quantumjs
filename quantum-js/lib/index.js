@@ -16,12 +16,15 @@
 */
 
 module.exports = {
+  File: require('./file'),
+  Page: require('./page'),
   parse: require('./parse'),
-  select: require('./select'),
-  read: require('./read'),
-  write: require('./write'),
-  create: require('./create'),
-  json: require('./json'),
   stringify: require('./stringify'),
-  watch: require('./watch')
+  read: require('./read'),
+  select: require('./select'),
+  json: require('./json'),
+  fileOptions: require('./file-options'),
+  watch: require('./watch'),
+  cli: require('./cli'),
+  clone: require('./clone')
 }

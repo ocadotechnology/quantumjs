@@ -18,12 +18,13 @@ var EventEmitter = require('events')
 var util = require('util')
 
 var Promise = require('bluebird')
-var globby = require('globby')
 var chokidar = require('chokidar')
 var flatten = require('flatten')
 var fs = Promise.promisifyAll(require('fs-extra'))
 
 var read = require('./read')
+var Page = require('./page')
+var fileOptions = require('./file-options')
 
 /* Watches some glob specs for changes */
 function Watcher (specs, options) {
@@ -53,9 +54,9 @@ function specToWatcherObj (watcherInstance, spec, options) {
         })
       })
       .on('error', function (err) { reject(err) })
-      .on('add', function (path) { watcherInstance.emit('add', fileToObj(path, spec, dest))})
-      .on('change', function (path) { watcherInstance.emit('change', fileToObj(path, spec, dest))})
-      .on('unlink', function (path) { watcherInstance.emit('remove', fileToObj(path, spec, dest))})
+      .on('add', function (path) { watcherInstance.emit('add', fileOptions.createFileUsingSpec(path, spec, dest))})
+      .on('change', function (path) { watcherInstance.emit('change', fileOptions.createFileUsingSpec(path, spec, dest))})
+      .on('unlink', function (path) { watcherInstance.emit('remove', fileOptions.createFileUsingSpec(path, spec, dest))})
   })
 }
 
@@ -68,99 +69,27 @@ Watcher.prototype.stop = function () {
 }
 Watcher.prototype.files = function () {
   var dest = this._options.dest
-  return flatten(this._watchers.map(function (watcher) {
+  return Promise.all(this._watchers.map(function (watcher) {
     var watched = watcher.watcher.getWatched()
     var spec = watcher.spec
-    return flatten(Object.keys(watched).map(function (directory) {
+    return Promise.all(flatten(Object.keys(watched).map(function (directory) {
       return watched[directory].map(function (file) {
-        return fileToObj(path.join(directory, file), spec, dest)
+        return path.join(directory, file)
       })
-    }))
-  }))
-}
-
-/* Converts a filename (and spec) to an object with relevant details copied over from the spec */
-function fileToObj (file, spec, dest) {
-  var base = spec.base
-  var watch = spec.watch
-  var destForObj = spec.dest ? path.join(dest, spec.dest) : dest
-  var resolved = path.relative(base, file)
-  return {
-    src: file,
-    resolved: resolved,
-    base: base,
-    dest: path.join(destForObj, resolved),
-    watch: watch === undefined ? true : watch
-  }
-}
-
-function isString (str) {
-  return typeof str === 'string' || str instanceof String
-}
-
-/* Checks the specs passed in look like a valid specs list */
-function validateSpecs (specs) {
-  return validateSpec(specs) || (Array.isArray(specs) && specs.every(validateSpec))
-}
-
-/* Checks the spec passed in look like a valid spec */
-function validateSpec (spec) {
-  return spec !== undefined && (
-  isString(spec) ||
-  isString(spec.files) ||
-  (Array.isArray(spec.files) && spec.files.every(isString)))
-}
-
-/* Makes sure the list argument is of the right shape */
-function normaliseSpecList (specs) {
-  var arrayedSpecs = Array.isArray(specs) ? specs : [specs]
-  var objectifiedSpecs = arrayedSpecs.map(toObjectSpecDescription)
-  return objectifiedSpecs
-}
-
-/* Makes sure a single object in the list argument is of the right shape */
-function toObjectSpecDescription (item) {
-  if (isString(item)) {
-    return {
-      files: [item],
-      base: inferBase(item),
-      watch: true
-    }
-  } else {
-    return {
-      files: Array.isArray(item.files) ? item.files : [item.files],
-      base: item.base,
-      watch: item.watch,
-      dest: item.dest
-    }
-  }
-}
-
-/* Infers a sensible base directory for a glob string */
-function inferBase (globString) {
-  var end = globString.indexOf('*')
-  return globString.slice(0, end - 1)
-}
-
-/* Resolves a list of specs into a list of file-objects */
-function resolve (specs, opts) {
-  if (!validateSpecs(specs)) return Promise.reject(new Error('invalid specs argument'))
-  var options = opts || {}
-  var dir = options.dir || '.'
-  var dest = options.dest || 'target'
-  return Promise.all(normaliseSpecList(specs))
-    .map(function (spec) {
-      return Promise.resolve(globby(spec.files, {cwd: dir, nodir: true}))
-        .map(function (file) {
-          return fileToObj(file, spec, dest)
-        })
-    }).then(flatten)
+    }))).filter(function (filename) {
+      return fs.lstatAsync(filename).then(function (stat) {
+        return !stat.isDirectory()
+      })
+    }).map(function (filename) {
+      return fileOptions.createFileUsingSpec(filename, spec, dest)
+    })
+  })).then(flatten)
 }
 
 /* Returns a promise that yields a Watcher for the specs provided */
 function watcher (specs, options) {
-  if (!validateSpecs(specs)) return Promise.reject(new Error('invalid specs argument'))
-  var w = new Watcher(normaliseSpecList(specs), options || {})
+  if (!fileOptions.validate(specs)) return Promise.reject(new Error('invalid specs argument'))
+  var w = new Watcher(fileOptions.normalize(specs), options || {})
   return w._promise.then(function () { return w })
 }
 
@@ -170,15 +99,15 @@ function defaultLoader (filename, parentFilename) {
 
 // watches quantum files and follows inline links
 function watch (specs, options, handler) {
-  if (!validateSpecs(specs)) return Promise.reject(new Error('invalid specs argument'))
-  var normalisedSpecs = normaliseSpecList(specs)
+  if (!fileOptions.validate(specs)) return Promise.reject(new Error('invalid specs argument'))
+  var normalisedSpecs = fileOptions.normalize(specs)
   var events = new EventEmitter
 
   // Option resolving
   var opts = options || {}
   var dir = opts.dir || '.'
   var loader = opts.loader || defaultLoader
-  var buildConcurrency = opts.buildConcurrency || 1
+  var buildConcurrency = opts.concurrency || 1
 
   // State that is maintained by watching for file changes
   var fileObjs = {}
@@ -249,13 +178,23 @@ function watch (specs, options, handler) {
     return results
   }
 
-  function handleFile (fileObj, watchTriggered) {
-    fileObjs[fileObj.src] = fileObj
-    return read.single(fileObj.src, {loader: linkingLoader})
-      .then(function (parsedObj) {
-        parsedObj.file = fileObj
-        return handler(parsedObj, watchTriggered)
+  function workHandler (work) {
+    fileObjs[work.file.src] = work.file
+    return read(work.file.src, {loader: linkingLoader})
+      .then(function (content) {
+        var page = new Page({file: work.file, content: content})
+        return handler(page, work.cause)
       })
+      .then(function (res) {work.resolve(res)})
+      .catch(function (err) {work.reject(err)})
+  }
+
+  var workQueue = new WorkQueue(workHandler, {})
+
+  function handleFile (file, cause) {
+    return new Promise(function (resolve, reject) {
+      workQueue.add({file: file, cause: cause, resolve: resolve, reject: reject})
+    })
   }
 
   function handleFileFailure (err) {
@@ -293,6 +232,33 @@ function watch (specs, options, handler) {
   return w._promise.then(function () { return {build: build, events: events} })
 }
 
+function WorkQueue (handler, options) {
+  this.concurrency = options.concurrency || 1
+  this.handler = handler
+  this.queue = []
+  this.activeWorkerCount = 0
+}
+
+WorkQueue.prototype = {
+  add: function (work) {
+    this.queue.push(work)
+
+    // check if we can start up another concurrent piece or work
+    if (this.activeWorkerCount < this.concurrency) {
+      var self = this
+      function process () {
+        if (self.queue.length > 0) {
+          var work = self.queue.pop()
+          self.handler(work).then(process)
+        } else {
+          self.activeWorkerCount--
+        }
+      }
+      this.activeWorkerCount++
+      process()
+    }
+  }
+}
+
 module.exports = watch
-module.exports.resolve = resolve
 module.exports.watcher = watcher

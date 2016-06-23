@@ -15,6 +15,76 @@ affected by a file change to be rebuilt.
 
 ### Api
 
+    # core api
+    quantum.build(config: Object): Promise
+    quantum.watch(config: Object): Watcher
+
+    Watcher::stop() - stops the watching
+
+    # formatting files
+    quantum.stringify(ast: <AST>, options: <format-options>): String
+    quantum.format(markup: String, options: <format-options>): String
+
+    # low level stuff
+    quantum.parse(input: String, options: Object): <AST>
+    quantum.read(filename: String, options: Object): Promise[<AST>]
+    quantum.clone(ast: <AST>): <AST>
+
+
+### Selection Api
+
+    quantum.select(<entity>): Selection
+    quantum.select(selection: Selection): Selection
+
+    quantum.select.isEntity(Any): Boolean
+    quantum.select.isText(Any): Boolean
+
+    Selection::entity(): <entity>
+    Selection::type(): String
+    Selection::param(i: Int): String
+    Selection::params(): Array[String]
+    Selection::content(): Array[<entity>]
+    Selection::has(type, options): Boolean
+    Selection::hasParams(): Boolean
+    Selection::hasContent(): Boolean
+    Selection::isEmpty(): Boolean
+    Selection::parent(): Selection
+    Selection::ps(): String
+    Selection::cs(): String
+
+    // selection filtering
+    Selection::select(type, {recursive: Boolean, required: Boolean}): Selection
+    Selection::selectAll(type, {recursive: Boolean, required: Boolean}): Array[Selection]
+    Selection::filter(predicate: Function): Selection
+    Selection::filter(type: String): Selection
+    Selection::filter(types: Array[String]): Selection
+
+    // transforms
+    Selection::transform(renderer: Function): Any
+
+    // mutations (can't be performed on a filtered selection)
+    Selection::type(type: String): Selection
+    Selection::params(params: Array[String]): Selection
+    Selection::param(i: Int, param: String): Selection
+    Selection::content(content: Array[<entity>]): Selection
+    Selection::ps(paramString): Selection
+    Selection::cs(contentString: String): Selection
+    Selection::remove(type: String or Array[String], {recursive: Boolean}): <entity> or undefined or Array[<entity>]
+    Selection::removeAll(type: String or Array[String], {recursive: Boolean}): Array[<entity>] or Array[Array[<entity>]]
+    Selection::add(<entity>): Selection
+    Selection::add(text: String): Selection
+    Selection::append(<entity>): Selection (selection of new element)
+    Selection::addParam(param: String): Selection
+
+### Built in pipeline transforms
+
+    quantum.json(page: Page, options: Object): String
+
+
+
+
+
+
 ```
 var watch = require('quantum-watch')
 

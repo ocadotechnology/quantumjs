@@ -10,15 +10,15 @@
   Json
   ====
 
-  Transform that converts the ast into a json string
+  A Page transform that converts a quantum page to a json page
 
 */
 
 module.exports = function () {
-  return function (obj) {
-    return {
-      filename: obj.filename.replace('.um', '.json'),
-      content: JSON.stringify(obj, null, 2)
-    }
+  return function (page) {
+    return page.clone({
+      file: page.file.withExtension('.json'),
+      content: JSON.stringify(page.content, null, 2)
+    })
   }
 }

@@ -21,8 +21,8 @@ var path = require('path')
 var fs = Promise.promisifyAll(require('fs'))
 var glob = Promise.promisify(require('glob'))
 var parse = require('./parse')
-var globBase = require('glob-base')
-var flatten = require('flatten')
+var Page = require('./page')
+var File = require('./file')
 
 function defaultLoader (filename, parentFilename) {
   return fs.readFileAsync(filename, 'utf-8')
@@ -84,7 +84,7 @@ function parseFiles (globString, doParse, options, parentFile) {
   })
 }
 
-function readSingle (filename, options) {
+function read (filename, options) {
   var options = merge({
     inlineEntityType: 'inline',
     inline: true,
@@ -96,50 +96,21 @@ function readSingle (filename, options) {
 
   if (options.inline) {
     return parseFile(filename, true, options)
-      .then(function (res) {
-        return {
-          filename: relativeFilename,
-          content: res
-        }
-      })
   } else {
-    return options.loader(filename, undefined)
-      .then(parse)
-      .then(function (res) {
-        return {
-          filename: relativeFilename,
-          content: res
-        }
-      })
+    return options.loader(filename, undefined).then(parse)
   }
 }
 
-module.exports = function (globString, options) {
-  var base = undefined
+module.exports = read
 
-  var globDetails = globBase(globString)
-  if (globDetails.isGlob) {
-    base = globDetails.base
-  }
-
-  var options = merge({
-    base: base
-  }, options)
-
-  return enhancePromise(glob(globString).map(function (filename) {
-    return readSingle(filename, options)
-  }))
-}
-
-// turns map into a flatmap
-function enhancePromise (promise) {
-  var oldMap = promise.map
-  promise.map = function (f) {
-    return enhancePromise(oldMap.call(promise, f).then(flatten))
-  }
-  return promise
-}
-
-module.exports.single = function (filename, options) {
-  return readSingle(filename, options)
+module.exports.page = function (filename, options) {
+  return read(filename, options).then(function (content) {
+    return new Page({
+      file: new File({
+        src: filename,
+        dest: filename
+      }),
+      content: content
+    })
+  })
 }

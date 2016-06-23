@@ -1,4 +1,3 @@
-var watch = require('..').watch
 var should = require('chai').should()
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs-extra'))
@@ -6,202 +5,40 @@ var chokidar = require('chokidar')
 var EventEmitter = require('events')
 var util = require('util')
 
-describe('resolve', function () {
-  before(function () {
-    return fs.removeAsync('target/test').then(function () {
-      return fs.copyAsync('test/files', 'target/test')
-    })
-  })
-
-  var expectedList1 = [
-    {
-      src: 'target/test/files1/a.um',
-      resolved: 'a.um',
-      base: 'target/test/files1',
-      dest: 'target/a.um',
-      watch: true
-    },
-    {
-      src: 'target/test/files1/b.um',
-      resolved: 'b.um',
-      base: 'target/test/files1',
-      dest: 'target/b.um',
-      watch: true
-    },
-    {
-      src: 'target/test/files1/c/d.um',
-      resolved: 'c/d.um',
-      base: 'target/test/files1',
-      dest: 'target/c/d.um',
-      watch: true
-    }
-  ]
-
-  var expectedList2 = [
-    {
-      src: 'target/test/files2/e.um',
-      resolved: 'e.um',
-      base: 'target/test/files2',
-      dest: 'target/e.um',
-      watch: true
-    }
-  ]
-
-  var expectedList3 = [
-    {
-      src: 'target/test/files2/e.um',
-      resolved: 'e.um',
-      base: 'target/test/files2',
-      dest: 'target/e.um',
-      watch: true
-    },
-    {
-      src: 'target/test/files2/z.um',
-      resolved: 'z.um',
-      base: 'target/test/files2',
-      dest: 'target/z.um',
-      watch: true
-    }
-  ]
-
-  var expectedList = expectedList1.concat(expectedList2)
-
-  it('full options (with negative query)', function () {
-    var list = [
-      {
-        files: 'target/test/files1/**/*',
-        base: 'target/test/files1'
-      },
-      {
-        files: ['target/test/files2/**/*', '!**/z.um'],
-        base: 'target/test/files2'
-      }
-    ]
-
-    var options = {
-      dir: '.',
-      dest: 'target'
-    }
-
-    return watch.resolve(list, options).then(function (files) {
-      files.should.eql(expectedList)
-    })
-  })
-
-  it('single object', function () {
-    var list = {
-      files: 'target/test/files1/**/*',
-      base: 'target/test/files1'
-    }
-
-    var options = {
-      dir: '.',
-      dest: 'target'
-    }
-
-    return watch.resolve(list, options).then(function (files) {
-      files.should.eql(expectedList1)
-    })
-  })
-
-  it('single object (using default options)', function () {
-    var list = {
-      files: 'target/test/files1/**/*',
-      base: 'target/test/files1'
-    }
-
-    return watch.resolve(list).then(function (files) {
-      files.should.eql(expectedList1)
-    })
-  })
-
-  it('single object with array files list', function () {
-    var list = {
-      files: ['target/test/files1/**/*'],
-      base: 'target/test/files1'
-    }
-
-    var options = {
-      dir: '.',
-      dest: 'target'
-    }
-
-    return watch.resolve(list, options).then(function (files) {
-      files.should.eql(expectedList1)
-    })
-  })
-
-  it('array of globs', function () {
-    var list = ['target/test/files1/**/*', 'target/test/files2/**/*']
-
-    var options = {
-      dir: '.',
-      dest: 'target'
-    }
-
-    return watch.resolve(list, options).then(function (files) {
-      files.should.eql(expectedList1.concat(expectedList3))
-    })
-  })
-
-  it('single glob', function () {
-    var list = 'target/test/files1/**/*'
-
-    var options = {
-      dir: '.',
-      dest: 'target'
-    }
-
-    return watch.resolve(list, options).then(function (files) {
-      files.should.eql(expectedList1)
-    })
-  })
-
-  it('should yield an error when an invalid spec is passed in', function (done) {
-    watch.resolve({
-      files: {},
-      base: 'target/test/watch-change-inline-test',
-      watch: true
-    }, {dest: 'target2'}).catch(function (err) {
-      done()
-    })
-  })
-
-  it('should yield an error when an invalid spec is passed in 2', function (done) {
-    watch.resolve({}, {dest: 'target2'}).catch(function (err) {
-      done()
-    })
-  })
-
-})
+var quantum = require('..')
+var watch = quantum.watch
+var File = quantum.File
 
 describe('watcher', function () {
   it('should watch the right files for change', function () {
     return watch.watcher('target/test/watch-test/*').then(function (watcher) {
-      watcher.files().should.eql([
-        {
-          'base': 'target/test/watch-test',
-          'dest': 'target/index.css',
-          'resolved': 'index.css',
-          'src': 'target/test/watch-test/index.css',
-          'watch': true
-        },
-        {
-          'base': 'target/test/watch-test',
-          'dest': 'target/index.um',
-          'resolved': 'index.um',
-          'src': 'target/test/watch-test/index.um',
-          'watch': true
-        },
-        {
-          'base': 'target/test/watch-test',
-          'dest': 'target/index1.um',
-          'resolved': 'index1.um',
-          'src': 'target/test/watch-test/index1.um',
-          'watch': true
-        }
-      ])
-      watcher.stop()
+      watcher.files().then(function (files) {
+        files.should.eql([
+          new File({
+            'base': 'target/test/watch-test',
+            'dest': 'target/index.css',
+            'resolved': 'index.css',
+            'src': 'target/test/watch-test/index.css',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test/watch-test',
+            'dest': 'target/index.um',
+            'resolved': 'index.um',
+            'src': 'target/test/watch-test/index.um',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test/watch-test',
+            'dest': 'target/index1.um',
+            'resolved': 'index1.um',
+            'src': 'target/test/watch-test/index1.um',
+            'watch': true
+          })
+        ])
+
+        watcher.stop()
+      })
     })
   })
 
@@ -211,16 +48,18 @@ describe('watcher', function () {
       base: 'target/test/watch-test',
       watch: true
     }, {dest: 'target2'}).then(function (watcher) {
-      watcher.files().should.eql([
-        {
-          'base': 'target/test/watch-test',
-          'dest': 'target2/index.css',
-          'resolved': 'index.css',
-          'src': 'target/test/watch-test/index.css',
-          'watch': true
-        }
-      ])
-      watcher.stop()
+      return watcher.files().then(function (files) {
+        files.should.eql([
+          new File({
+            'base': 'target/test/watch-test',
+            'dest': 'target2/index.css',
+            'resolved': 'index.css',
+            'src': 'target/test/watch-test/index.css',
+            'watch': true
+          })
+        ])
+        watcher.stop()
+      })
     })
   })
 
@@ -231,52 +70,56 @@ describe('watcher', function () {
       watch: true,
       dest: 'subtarget'
     }, {dest: 'target2'}).then(function (watcher) {
-      watcher.files().should.eql([
-        {
-          'base': 'target/test/watch-test',
-          'dest': 'target2/subtarget/index.css',
-          'resolved': 'index.css',
-          'src': 'target/test/watch-test/index.css',
-          'watch': true
-        }
-      ])
-      watcher.stop()
+      return watcher.files().then(function (files) {
+        files.should.eql([
+          new File({
+            'base': 'target/test/watch-test',
+            'dest': 'target2/subtarget/index.css',
+            'resolved': 'index.css',
+            'src': 'target/test/watch-test/index.css',
+            'watch': true
+          })
+        ])
+        watcher.stop()
+      })
     })
   })
 
   it('should watch the right files for change (multiple simple specs)', function () {
     return watch.watcher(['target/test/files1/*.um', 'target/test/files2/*.um'], {dest: 'target2'}).then(function (watcher) {
-      watcher.files().should.eql([
-        {
-          'base': 'target/test/files1',
-          'dest': 'target2/a.um',
-          'resolved': 'a.um',
-          'src': 'target/test/files1/a.um',
-          'watch': true
-        },
-        {
-          'base': 'target/test/files1',
-          'dest': 'target2/b.um',
-          'resolved': 'b.um',
-          'src': 'target/test/files1/b.um',
-          'watch': true
-        },
-        {
-          'base': 'target/test/files2',
-          'dest': 'target2/e.um',
-          'resolved': 'e.um',
-          'src': 'target/test/files2/e.um',
-          'watch': true
-        },
-        {
-          'base': 'target/test/files2',
-          'dest': 'target2/z.um',
-          'resolved': 'z.um',
-          'src': 'target/test/files2/z.um',
-          'watch': true
-        }
-      ])
-      watcher.stop()
+      return watcher.files().then(function (files) {
+        files.should.eql([
+          new File({
+            'base': 'target/test/files1',
+            'dest': 'target2/a.um',
+            'resolved': 'a.um',
+            'src': 'target/test/files1/a.um',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test/files1',
+            'dest': 'target2/b.um',
+            'resolved': 'b.um',
+            'src': 'target/test/files1/b.um',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test/files2',
+            'dest': 'target2/e.um',
+            'resolved': 'e.um',
+            'src': 'target/test/files2/e.um',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test/files2',
+            'dest': 'target2/z.um',
+            'resolved': 'z.um',
+            'src': 'target/test/files2/z.um',
+            'watch': true
+          })
+        ])
+        watcher.stop()
+      })
     })
   })
 
@@ -290,37 +133,39 @@ describe('watcher', function () {
       base: 'target/test',
       watch: true
     }], {dest: 'target2'}).then(function (watcher) {
-      watcher.files().should.eql([
-        {
-          'base': 'target/test/files1',
-          'dest': 'target2/a.um',
-          'resolved': 'a.um',
-          'src': 'target/test/files1/a.um',
-          'watch': true
-        },
-        {
-          'base': 'target/test/files1',
-          'dest': 'target2/b.um',
-          'resolved': 'b.um',
-          'src': 'target/test/files1/b.um',
-          'watch': true
-        },
-        {
-          'base': 'target/test',
-          'dest': 'target2/files2/e.um',
-          'resolved': 'files2/e.um',
-          'src': 'target/test/files2/e.um',
-          'watch': true
-        },
-        {
-          'base': 'target/test',
-          'dest': 'target2/files2/z.um',
-          'resolved': 'files2/z.um',
-          'src': 'target/test/files2/z.um',
-          'watch': true
-        }
-      ])
-      watcher.stop()
+      return watcher.files().then(function (files) {
+        return files.should.eql([
+          new File({
+            'base': 'target/test/files1',
+            'dest': 'target2/a.um',
+            'resolved': 'a.um',
+            'src': 'target/test/files1/a.um',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test/files1',
+            'dest': 'target2/b.um',
+            'resolved': 'b.um',
+            'src': 'target/test/files1/b.um',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test',
+            'dest': 'target2/files2/e.um',
+            'resolved': 'files2/e.um',
+            'src': 'target/test/files2/e.um',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test',
+            'dest': 'target2/files2/z.um',
+            'resolved': 'files2/z.um',
+            'src': 'target/test/files2/z.um',
+            'watch': true
+          })
+        ])
+        watcher.stop()
+      })
     })
   })
 
@@ -334,23 +179,26 @@ describe('watcher', function () {
       base: 'target/test',
       watch: true
     }], {dest: 'target2'}).then(function (watcher) {
-      watcher.files().should.eql([
-        {
-          'base': 'target/test/files1',
-          'dest': 'target2/a.um',
-          'resolved': 'a.um',
-          'src': 'target/test/files1/a.um',
-          'watch': true
-        },
-        {
-          'base': 'target/test',
-          'dest': 'target2/files2/e.um',
-          'resolved': 'files2/e.um',
-          'src': 'target/test/files2/e.um',
-          'watch': true
-        }
-      ])
-      watcher.stop()
+      return watcher.files().then(function (files) {
+        files.should.eql([
+          new File({
+            'base': 'target/test/files1',
+            'dest': 'target2/a.um',
+            'resolved': 'a.um',
+            'src': 'target/test/files1/a.um',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test',
+            'dest': 'target2/files2/e.um',
+            'resolved': 'files2/e.um',
+            'src': 'target/test/files2/e.um',
+            'watch': true
+          })
+        ])
+        watcher.stop()
+      })
+
     })
   })
 
@@ -364,23 +212,25 @@ describe('watcher', function () {
       base: 'target/test',
       watch: false
     }], {dest: 'target2'}).then(function (watcher) {
-      watcher.files().should.eql([
-        {
-          'base': 'target/test/files1',
-          'dest': 'target2/a.um',
-          'resolved': 'a.um',
-          'src': 'target/test/files1/a.um',
-          'watch': true
-        },
-        {
-          'base': 'target/test/files1',
-          'dest': 'target2/b.um',
-          'resolved': 'b.um',
-          'src': 'target/test/files1/b.um',
-          'watch': true
-        }
-      ])
-      watcher.stop()
+      return watcher.files().then(function (files) {
+        files.should.eql([
+          new File({
+            'base': 'target/test/files1',
+            'dest': 'target2/a.um',
+            'resolved': 'a.um',
+            'src': 'target/test/files1/a.um',
+            'watch': true
+          }),
+          new File({
+            'base': 'target/test/files1',
+            'dest': 'target2/b.um',
+            'resolved': 'b.um',
+            'src': 'target/test/files1/b.um',
+            'watch': true
+          })
+        ])
+        watcher.stop()
+      })
     })
   })
 
@@ -391,13 +241,13 @@ describe('watcher', function () {
       watch: true
     }, {dest: 'target2'}).then(function (watcher) {
       watcher.on('add', function (obj) {
-        obj.should.eql({
+        obj.should.eql(new File({
           src: 'target/test/watch-change-test/subdir/index.add',
           resolved: 'subdir/index.add',
           base: 'target/test/watch-change-test',
           dest: 'target2/subdir/index.add',
           watch: true
-        })
+        }))
         watcher.stop()
         done()
       })
@@ -413,13 +263,13 @@ describe('watcher', function () {
       watch: true
     }, {dest: 'target2'}).then(function (watcher) {
       watcher.on('change', function (obj) {
-        obj.should.eql({
+        obj.should.eql(new File({
           src: 'target/test/watch-change-test/index.um',
           resolved: 'index.um',
           base: 'target/test/watch-change-test',
           dest: 'target2/index.um',
           watch: true
-        })
+        }))
         watcher.stop()
         done()
       })
@@ -436,13 +286,13 @@ describe('watcher', function () {
         watch: true
       }, {dest: 'target2'}).then(function (watcher) {
         watcher.on('remove', function (obj) {
-          obj.should.eql({
+          obj.should.eql(new File({
             src: 'target/test/watch-change-test/subdir/index.remove',
             resolved: 'subdir/index.remove',
             base: 'target/test/watch-change-test',
             dest: 'target2/subdir/index.remove',
             watch: true
-          })
+          }))
           watcher.stop()
           done()
         })
@@ -516,14 +366,13 @@ describe('watch', function () {
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql({
-          filename: 'target/test/watch-change-inline-test/index.um',
-          file: {
+          file: new File({
             src: 'target/test/watch-change-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-inline-test',
             dest: 'target2/index.um',
             watch: true
-          },
+          }),
           content: {
             content: ['Content 1', 'Content 3']
           }
@@ -549,14 +398,13 @@ describe('watch', function () {
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql({
-          filename: 'target/test/watch-change-inline-default-test/index.um',
-          file: {
+          file: new File({
             src: 'target/test/watch-change-inline-default-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-inline-default-test',
             dest: 'target/index.um',
             watch: true
-          },
+          }),
           content: {
             content: ['Content 1', 'Content 3']
           }
@@ -584,14 +432,13 @@ describe('watch', function () {
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql({
-          filename: 'target/test/watch-change-deep-inline-test/index.um',
-          file: {
+          file: new File({
             src: 'target/test/watch-change-deep-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-deep-inline-test',
             dest: 'target2/index.um',
             watch: true
-          },
+          }),
           content: {
             content: ['Content 1', 'Content 3']
           }
@@ -619,14 +466,13 @@ describe('watch', function () {
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql({
-          filename: 'target/test/watch-change-base-inline-test/index.um',
-          file: {
+          file: new File({
             src: 'target/test/watch-change-base-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-base-inline-test',
             dest: 'target2/index.um',
             watch: true
-          },
+          }),
           content: {
             content: ['Content 0', 'Content 2']
           }
@@ -654,14 +500,13 @@ describe('watch', function () {
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql({
-          filename: 'target/test/watch-change-remove-inline-test/index.um',
-          file: {
+          file: new File({
             src: 'target/test/watch-change-remove-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-remove-inline-test',
             dest: 'target2/index.um',
             watch: true
-          },
+          }),
           content: {
             content: ['Content 1']
           }
@@ -768,14 +613,13 @@ describe('watch', function () {
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql({
-          filename: 'target/test/watch-change-non-quantum-inline-test/index.um',
-          file: {
+          file: new File({
             src: 'target/test/watch-change-non-quantum-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-non-quantum-inline-test',
             dest: 'target2/index.um',
             watch: true
-          },
+          }),
           content: {
             content: ['Content 1', 'Content 3']
           }

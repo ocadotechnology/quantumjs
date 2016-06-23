@@ -6,16 +6,16 @@
   \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
                                               /___/
 
-  CLI
+  Clone
   ===
 
-  This file exposes the public api for quantum-cli.
+  A function for cloning ast.
 
 */
 
-module.exports = {
-  cli: require('./standard-cli'),
-  client: require('./client'),
-  compiler: require('./compiler'),
-  utils: require('./utils')
+var merge = require('merge')
+
+// XXX: we know the shape of the ast, so this can be optimised
+module.exports = function (ast) {
+  return merge(true, ast)
 }
