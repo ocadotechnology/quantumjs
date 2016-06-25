@@ -8,6 +8,7 @@ var util = require('util')
 var quantum = require('..')
 var watch = quantum.watch
 var File = quantum.File
+var Page = quantum.Page
 
 describe('watcher', function () {
   it('should watch the right files for change', function () {
@@ -365,7 +366,7 @@ describe('watch', function () {
 
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
-        parsed.should.eql({
+        parsed.should.eql(new Page({
           file: new File({
             src: 'target/test/watch-change-inline-test/index.um',
             resolved: 'index.um',
@@ -375,8 +376,9 @@ describe('watch', function () {
           }),
           content: {
             content: ['Content 1', 'Content 3']
-          }
-        })
+          },
+          meta: {}
+        }))
         done()
       }
     }
@@ -397,7 +399,7 @@ describe('watch', function () {
 
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
-        parsed.should.eql({
+        parsed.should.eql(new Page({
           file: new File({
             src: 'target/test/watch-change-inline-default-test/index.um',
             resolved: 'index.um',
@@ -407,8 +409,9 @@ describe('watch', function () {
           }),
           content: {
             content: ['Content 1', 'Content 3']
-          }
-        })
+          },
+          meta: {}
+        }))
         done()
       }
     }
@@ -431,7 +434,7 @@ describe('watch', function () {
 
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
-        parsed.should.eql({
+        parsed.should.eql(new Page({
           file: new File({
             src: 'target/test/watch-change-deep-inline-test/index.um',
             resolved: 'index.um',
@@ -441,8 +444,9 @@ describe('watch', function () {
           }),
           content: {
             content: ['Content 1', 'Content 3']
-          }
-        })
+          },
+          meta: {}
+        }))
         done()
       }
     }
@@ -465,7 +469,7 @@ describe('watch', function () {
 
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
-        parsed.should.eql({
+        parsed.should.eql(new Page({
           file: new File({
             src: 'target/test/watch-change-base-inline-test/index.um',
             resolved: 'index.um',
@@ -475,8 +479,9 @@ describe('watch', function () {
           }),
           content: {
             content: ['Content 0', 'Content 2']
-          }
-        })
+          },
+          meta: {}
+        }))
         done()
       }
     }
@@ -499,7 +504,7 @@ describe('watch', function () {
 
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
-        parsed.should.eql({
+        parsed.should.eql(new Page({
           file: new File({
             src: 'target/test/watch-change-remove-inline-test/index.um',
             resolved: 'index.um',
@@ -509,8 +514,9 @@ describe('watch', function () {
           }),
           content: {
             content: ['Content 1']
-          }
-        })
+          },
+          meta: {}
+        }))
         done()
       }
     }
@@ -612,7 +618,7 @@ describe('watch', function () {
 
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
-        parsed.should.eql({
+        parsed.should.eql(new Page({
           file: new File({
             src: 'target/test/watch-change-non-quantum-inline-test/index.um',
             resolved: 'index.um',
@@ -622,8 +628,9 @@ describe('watch', function () {
           }),
           content: {
             content: ['Content 1', 'Content 3']
-          }
-        })
+          },
+          meta: {}
+        }))
         done()
       }
     }

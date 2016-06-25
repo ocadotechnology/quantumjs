@@ -1,4 +1,3 @@
 var chai = require('chai')
-var dom = require('quantum-dom')
-var html = require('..')
+var codeHighlight = require('..')
 var should = chai.should()

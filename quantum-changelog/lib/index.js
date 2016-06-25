@@ -364,15 +364,11 @@ function processAll (content, options) {
 module.exports = function (opts) {
   var options = merge.recursive(require('./config.js'), opts)
 
-  var transform = function (obj) {
-    return {
-      filename: obj.filename,
-      content: processAll(obj.content, options)
-    }
+  return function (page) {
+    return page.clone({
+      content: processAll(page.content, options)
+    })
   }
-
-  return transform
-
 }
 
 module.exports.transforms = require('./html-transforms')

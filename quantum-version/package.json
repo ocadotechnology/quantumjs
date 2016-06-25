@@ -22,12 +22,6 @@
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
-  "config": {
-    "blanket": {
-      "data-cover-never": "node_modules",
-      "pattern": "index.js"
-    }
-  },
   "dependencies": {
     "chalk": "^1.1.1",
     "merge": "^1.2.0",

@@ -1,0 +1,41 @@
+#! /bin/bash
+
+pushd quantum-js
+npm test
+popd
+
+pushd quantum-dom
+npm test
+popd
+
+pushd quantum-html
+npm test
+popd
+
+pushd quantum-code-highlight
+npm test
+popd
+
+pushd quantum-api
+npm test
+popd
+
+pushd quantum-changelog
+npm test
+popd
+
+pushd quantum-diagram
+npm test
+popd
+
+pushd quantum-docs
+npm test
+popd
+
+pushd quantum-version
+npm test
+popd
+
+pushd quantum-template
+npm test
+popd

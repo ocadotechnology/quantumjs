@@ -17,6 +17,7 @@ var quantum = require('quantum-js') // needed for its selection api
 var path = require('path') // required for the default filename renamer
 var merge = require('merge')
 var chalk = require('chalk')
+var Page = quantum.Page
 
 function getEntityType (type) {
   return type ? type.replace('?', '') : undefined
@@ -24,7 +25,7 @@ function getEntityType (type) {
 
 // NOTE: this function may mutate content1 - pass in a cloned copy if you don't want to mutate the original
 function mergeContent (content1, content2, options) {
-  // it isn't possible to reliably merge text - so we just return the new content, and
+  // it isn't possible to merge text - so we just return the new content, and
   // ignore the previous content if that is the case
   if (content2.some(function (e) { return typeof (e) === 'string' && e !== '' })) {
     return content2
@@ -32,27 +33,30 @@ function mergeContent (content1, content2, options) {
     var c1Map = {}
 
     content1.forEach(function (e1) {
-      c1Map[options.entityMatchLookup(e1)] = e1
+      var matchLookup = options.entityMatchLookup(e1)
+      if (matchLookup) {
+        c1Map[matchLookup] = e1
+      }
     })
 
     content2.forEach(function (e2) {
-      var e1 = c1Map[options.entityMatchLookup(e2)]
-      var e1s = quantum.select(e1)
-      var e2s = quantum.select(e2)
+      var matchLookup = options.entityMatchLookup(e2)
+      var e1 = matchLookup ? c1Map[matchLookup] : undefined
 
       var entityType = getEntityType(e2.type)
       var isTaggable = (options.taggable.indexOf(entityType) > -1)
 
       if (!!e1) {
+        var e1s = quantum.select(e1)
         if (e1.content && e2.content) {
           if (options.unmergeable.indexOf(entityType) > -1) {
-            e1s.replaceContent(e2.content)
+            e1s.content(e2.content)
           } else {
-            e1s.replaceContent(mergeContent(e1.content, e2.content, options))
+            e1s.content(mergeContent(e1.content, e2.content, options))
           }
 
           var e1sCanBeUpdated = !e1s.has('removed') && !e1s.has('deprecated')
-          var e2sCanBeUpdated = !e2s.has('removed') && !e2s.has('deprecated')
+          var e2sCanBeUpdated = quantum.select.isEntity(e2) && !quantum.select(e2).has('removed') && !quantum.select(e2).has('deprecated')
 
           if (isTaggable && e1sCanBeUpdated && e2sCanBeUpdated) {
             e1.content.push({ type: 'updated', params: [], content: [] })
@@ -91,7 +95,7 @@ function getRemovableTags (tags) {
 function removeTags (entity, tags) {
   if (Array.isArray(entity.content)) {
     function tagFilter (e) {
-      var entityIsRemoved = quantum.select(e).has('removed')
+      var entityIsRemoved = quantum.select.isEntity(e) && quantum.select(e).has('removed')
       var removeTag = tags.indexOf(e.type) > -1
       return !entityIsRemoved && !removeTag
     }
@@ -126,28 +130,37 @@ function removeVersions (entity) {
 }
 
 function defaultEntityMatchLookup (entity) {
-  entity = quantum.select(entity)
-  var name = entity.ps()
-  var params = entity.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
-  return entity.type + ': ' + name + '(' + params.join(', ') + ')'
+  if (quantum.select.isEntity(entity)) {
+    var selection = quantum.select(entity)
+    var name = selection.ps()
+    var params = selection.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
+    return entity.type + ': ' + name + '(' + params.join(', ') + ')'
+  } else {
+    return undefined
+  }
 }
 
+// XXX: when node 0.12 support is dropped, this can go
 function endsWith (string, searchString) {
   var position = string.length - searchString.length
   var i = string.indexOf(searchString, position)
   return i !== -1 && i === position
 }
 
-function defaultFilenameModifier (filename, version) {
-  if (endsWith(filename, 'index.um')) {
-    return filename.replace('index.um', version) + '/' + 'index.um'
+function defaultFilenameModifier (file, version) {
+  if (endsWith(file.dest, 'index.um')) {
+    return file.clone({
+      dest: file.dest.replace('index.um', version) + '/' + 'index.um'
+    })
   } else {
-    return filename.replace('.um', '') + '/' + version + '.um'
+    return file.clone({
+      dest: file.dest.replace('.um', '') + '/' + version + '.um'
+    })
   }
 }
 
-function versionTransform (obj, options) {
-  var content = quantum.select(obj.content)
+function versionTransform (page, options) {
+  var content = quantum.select(page.content)
   var fullVersionList = options.versions || []
 
   if (content.has('versionList', {recursive: true})) {
@@ -164,9 +177,8 @@ function versionTransform (obj, options) {
       }
 
       // remove the list of versions - they will be repopulated by the populateVersionList function
-      inputList.original.content = []
+      inputList.content([])
     }
-
   }
 
   var targetVersions = options.targetVersions || fullVersionList
@@ -175,6 +187,7 @@ function versionTransform (obj, options) {
   // Check if there are actual versions in the object, if there arent then no versioning is required.
   if (actualVersions.length > 0) {
     if (fullVersionList.length === 0) {
+      // XXX: should not log from within a transform - make a mechanism for returning errors and warnings for a page
       console.error(
         chalk.yellow('\n\nquantum-version Warning: processing content with no version list defined\n') +
         '  A file was processed and @version entities found but no @versionList was\n' +
@@ -197,16 +210,16 @@ function versionTransform (obj, options) {
 
       if (version !== undefined) {
         if (base === undefined) {
-          base = {content: version.content}
+          base = {content: version.content()}
         } else {
-          base = {content: mergeContent(removeTags(quantum.select(base).clone(), removableTags).content, version.content, options)}
+          base = {content: mergeContent(removeTags(quantum.clone(base), removableTags).content, version.content(), options)}
         }
       } else {
-        base = removeTags(quantum.select(base).clone(), removableTags)
+        base = removeTags(quantum.clone(base), removableTags)
       }
 
       // replace the versioned parts for the @version entities
-      var source = {content: content.clone().content}
+      var source = quantum.clone(content.entity()) // {content: }
 
       // insert the versioned content just before the first version entity
       // this searches recursively until it finds the right one
@@ -214,7 +227,7 @@ function versionTransform (obj, options) {
         if (Array.isArray(entity.content)) {
           var index = -1
           entity.content.forEach(function (v, i) {
-            if (v.type === 'version' && v.params && v.params[0] === actualVersions[0].params[0]) {
+            if (v.type === 'version' && v.params && v.params[0] === actualVersions[0].param(0)) {
               index = i
             }
           })
@@ -238,19 +251,22 @@ function versionTransform (obj, options) {
       // XXX [OPTIMISATION]: this can be done with fewer clones when versions are missing from the targetVersions list
       // build the new result with new filename and add the result to the results list
       if (targetVersions.indexOf(v) > -1) {
-        results.push({
-          filename: options.filenameModifier(obj.filename, v),
+        results.push(page.clone({
+          file: options.filenameModifier(page.file, v),
           content: source,
-          version: v
-        })
+          meta: {
+            version: v
+          }
+        }))
 
         // optionally output the latest version without the filename modification
         if (options.outputLatest && v === fullVersionList[fullVersionList.length - 1]) {
-          results.push({
-            filename: obj.filename,
-            content: quantum.select(source).clone(),
-            version: v
-          })
+          results.push(page.clone({
+            content: quantum.clone(source),
+            meta: {
+              version: v
+            }
+          }))
         }
       }
 
@@ -261,7 +277,7 @@ function versionTransform (obj, options) {
     // return an array for consistent return type - without this
     // the user would have to check if the return type is an array
     // which wouldn't be nice to use
-    return [obj]
+    return [page]
   }
 }
 
@@ -314,7 +330,7 @@ module.exports = function (opts) {
     }
   }, opts)
 
-  return function (obj) {
-    return versionTransform(obj, options)
+  return function (page) {
+    return versionTransform(page, options)
   }
 }

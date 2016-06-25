@@ -1,23 +1,18 @@
-chai     = require('chai')
-dom      = require('quantum-dom')
-html     = require('..')
-should   = chai.should()
+var chai = require('chai')
+var dom = require('quantum-dom')
+var html = require('..')
+var should = chai.should()
+var quantum = require('quantum-js')
+var Page = quantum.Page
+var File = quantum.File
 
-describe('element', function() {
-
-  // promised friendly version of 'it'
-  var pit = function(desc, f) {
-    it(desc, function(done){
-      f().then(function(){
-        done()
-      }).done(null, done)
-    })
-  }
-
-  pit('basic div should get generated properly', function(){
-
-    var obj = {
-      filename: 'filename.um',
+describe('element', function () {
+  it('basic div should get generated properly', function () {
+    var page = new Page({
+      file: new File({
+        src: 'filename.um',
+        dest: 'filename.um'
+      }),
       content: {
         content: [{
           type: 'div',
@@ -25,21 +20,23 @@ describe('element', function() {
           content: []
         }]
       }
-    }
+    })
 
-    return html()(obj)
-      .then(function(res){
-        res.filename.should.equal('filename.um')
-        res.content.body.content[0].type.should.equal('div')
-        res.content.body.content.length.should.equal(1)
+    return html()(page)
+      .then(function (page) {
+        page.file.dest.should.equal('filename.um')
+        page.content.body.content[0].type.should.equal('div')
+        page.content.body.content.length.should.equal(1)
       })
   })
 
-  describe('shorthand:', function() {
-    pit('single class', function(){
-
-      var obj = {
-        filename: 'filename.um',
+  describe('shorthand:', function () {
+    it('single class', function () {
+      var page = new Page({
+        file: new File({
+          src: 'filename.um',
+          dest: 'filename.um'
+        }),
         content: {
           content: [{
             type: 'div',
@@ -47,22 +44,24 @@ describe('element', function() {
             content: []
           }]
         }
-      }
+      })
 
-      return html()(obj)
-        .then(function(res){
-          res.filename.should.equal('filename.um')
-          res.content.body.content[0].type.should.equal('div')
-          res.content.body.content[0].attrs['class'].should.equal('strawberry')
-          res.content.body.content.length.should.equal(1)
+      return html()(page)
+        .then(function (page) {
+          page.file.dest.should.equal('filename.um')
+          page.content.body.content[0].type.should.equal('div')
+          page.content.body.content[0].attrs['class'].should.equal('strawberry')
+          page.content.body.content.length.should.equal(1)
         })
+
     })
 
-
-    pit('multiple of the same class should be coalsed', function(){
-
-      var obj = {
-        filename: 'filename.um',
+    it('multiple of the same class should be coalesced', function () {
+      var page = new Page({
+        file: new File({
+          src: 'filename.um',
+          dest: 'filename.um'
+        }),
         content: {
           content: [{
             type: 'div',
@@ -70,21 +69,24 @@ describe('element', function() {
             content: []
           }]
         }
-      }
+      })
 
-      return html()(obj)
-        .then(function(res){
-          res.filename.should.equal('filename.um')
-          res.content.body.content[0].type.should.equal('div')
-          res.content.body.content[0].attrs['class'].should.equal('strawberry')
-          res.content.body.content.length.should.equal(1)
+      return html()(page)
+        .then(function (page) {
+          page.file.dest.should.equal('filename.um')
+          page.content.body.content[0].type.should.equal('div')
+          page.content.body.content[0].attrs['class'].should.equal('strawberry')
+          page.content.body.content.length.should.equal(1)
         })
+
     })
 
-    pit('multiple classes', function(){
-
-      var obj = {
-        filename: 'filename.um',
+    it('multiple classes', function () {
+      var page = new Page({
+        file: new File({
+          src: 'filename.um',
+          dest: 'filename.um'
+        }),
         content: {
           content: [{
             type: 'div',
@@ -92,21 +94,24 @@ describe('element', function() {
             content: []
           }]
         }
-      }
+      })
 
-      return html()(obj)
-        .then(function(res){
-          res.filename.should.equal('filename.um')
-          res.content.body.content[0].type.should.equal('div')
-          res.content.body.content[0].attrs['class'].should.equal('strawberry banana')
-          res.content.body.content.length.should.equal(1)
+      return html()(page)
+        .then(function (page) {
+          page.file.dest.should.equal('filename.um')
+          page.content.body.content[0].type.should.equal('div')
+          page.content.body.content[0].attrs['class'].should.equal('strawberry banana')
+          page.content.body.content.length.should.equal(1)
         })
+
     })
 
-    pit('id', function(){
-
-      var obj = {
-        filename: 'filename.um',
+    it('id', function () {
+      var page = new Page({
+        file: new File({
+          src: 'filename.um',
+          dest: 'filename.um'
+        }),
         content: {
           content: [{
             type: 'div',
@@ -114,21 +119,23 @@ describe('element', function() {
             content: []
           }]
         }
-      }
+      })
 
-      return html()(obj)
-        .then(function(res){
-          res.filename.should.equal('filename.um')
-          res.content.body.content[0].type.should.equal('div')
-          res.content.body.content[0].attrs['id'].should.equal('strawberry')
-          res.content.body.content.length.should.equal(1)
+      return html()(page)
+        .then(function (page) {
+          page.file.dest.should.equal('filename.um')
+          page.content.body.content[0].type.should.equal('div')
+          page.content.body.content[0].attrs['id'].should.equal('strawberry')
+          page.content.body.content.length.should.equal(1)
         })
     })
 
-    pit('mixed classes and id', function(){
-
-      var obj = {
-        filename: 'filename.um',
+    it('mixed classes and id', function () {
+      var page = new Page({
+        file: new File({
+          src: 'filename.um',
+          dest: 'filename.um'
+        }),
         content: {
           content: [{
             type: 'div',
@@ -136,19 +143,18 @@ describe('element', function() {
             content: []
           }]
         }
-      }
+      })
 
-      return html()(obj)
-        .then(function(res){
-          res.filename.should.equal('filename.um')
-          res.content.body.content[0].type.should.equal('div')
-          res.content.body.content[0].attrs['id'].should.equal('strawberry')
-          res.content.body.content[0].attrs['class'].should.equal('banana')
-          res.content.body.content.length.should.equal(1)
+      return html()(page)
+        .then(function (page) {
+          page.file.dest.should.equal('filename.um')
+          page.content.body.content[0].type.should.equal('div')
+          page.content.body.content[0].attrs['id'].should.equal('strawberry')
+          page.content.body.content[0].attrs['class'].should.equal('banana')
+          page.content.body.content.length.should.equal(1)
         })
+
     })
   })
-
-
 
 })

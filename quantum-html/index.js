@@ -46,12 +46,12 @@ var types = [
 
 var transforms = {}
 
-function entityToElement (type, entity, page, parsePs) {
-  var element = page.create(type, entity.has('uid') ? entity.select('uid').ps() : undefined)
-  var classId = entity.ps()
+function entityToElement (type, selection, page, parsePs) {
+  var element = page.create(type, selection.has('uid') ? selection.select('uid').ps() : undefined)
+  var classId = selection.ps()
 
-  if (entity.has('id')) {
-    element.id(entity.select('id').ps())
+  if (selection.has('id')) {
+    element.id(selection.select('id').ps())
   } else if (parsePs) {
     var match = classId.match(/#[^\.#]+/)
     if (match) {
@@ -62,8 +62,8 @@ function entityToElement (type, entity, page, parsePs) {
     }
   }
 
-  if (entity.has('class')) {
-    element.class(entity.select('class').ps())
+  if (selection.has('class')) {
+    element.class(selection.select('class').ps())
   } else if (parsePs) {
     var match = classId.match(/(\.[^\.#]+)/g)
     if (match) {
@@ -77,17 +77,17 @@ function entityToElement (type, entity, page, parsePs) {
     }
   }
 
-  entity.selectAll('attr').forEach(function (attr) {
+  selection.selectAll('attr').forEach(function (attr) {
     element.attr(attr.ps(), attr.cs())
   })
   return element
 }
 
-function setupElement (type, entity, page, transform, parsePs) {
-  var element = entityToElement(type, entity, page, parsePs)
-  return entity
-    .filter(function (entity) {
-      return entity.type != 'id' && entity.type != 'class' && entity.type != 'attr'
+function setupElement (type, selection, page, transform, parsePs) {
+  var element = entityToElement(type, selection, page, parsePs)
+  return selection
+    .filter(function (selection) {
+      return !quantum.select.isSelection(selection) || (selection.type() !== 'id' && selection.type() !== 'class' && selection.type() !== 'attr')
     })
     .transform(transform)
     .then(function (elements) {
@@ -100,53 +100,53 @@ function setupElement (type, entity, page, transform, parsePs) {
 
 // define the common element types as entity transforms
 types.forEach(function (type) {
-  transforms[type] = function (entity, page, transform) {
-    return setupElement(type, entity, page, transform, true)
+  transforms[type] = function (selection, page, transform) {
+    return setupElement(type, selection, page, transform, true)
   }
 })
 
-transforms.bodyClass = function (entity, page, transform) {
-  page.body.class(page.body.class() + ' ' + entity.ps())
+transforms.bodyClass = function (selection, page, transform) {
+  page.body.class(page.body.class() + ' ' + selection.ps())
   return
 }
 
-transforms.classed = function (entity, page, transform) {
-  var element = page.get(entity.params[0])
+transforms.classed = function (selection, page, transform) {
+  var element = page.get(selection.param(0))
   if (element) {
-    element.classed(entity.params[1], entity.params[2])
+    element.classed(selection.param(1), selection.param(2))
   }
   return
 }
 
-transforms.title = function (entity, page, transform) {
+transforms.title = function (selection, page, transform) {
   page.remove('title')
-  page.head.add(page.create('title', 'title').text(entity.ps()))
+  page.head.add(page.create('title', 'title').text(selection.ps()))
 }
 
-transforms.head = function (entity, page, transform) {
-  return entity.transform(transform)
+transforms.head = function (selection, page, transform) {
+  return selection.transform(transform)
     .then(function (elements) {
       page.head.add(elements.filter(function (d) {return d}))
     })
     .then(function () { return undefined })
 }
 
-transforms.html = function (entity, page, transform) {
-  return page.textNode(entity.cs(), undefined, {escape: false})
+transforms.html = function (selection, page, transform) {
+  return page.textNode(selection.cs(), undefined, {escape: false})
 }
 
-transforms.script = function (entity, page, transform) {
-  page.body.add(page.script(entity.ps()), true)
+transforms.script = function (selection, page, transform) {
+  page.body.add(page.script(selection.ps()), true)
 }
 
-transforms.stylesheet = function (entity, page, transform) {
-  page.head.add(page.stylesheet(entity.ps()))
+transforms.stylesheet = function (selection, page, transform) {
+  page.head.add(page.stylesheet(selection.ps()))
 }
 
-transforms.hyperlink = function (entity, page, transform) {
-  return setupElement('a', entity, page, transform, false)
+transforms.hyperlink = function (selection, page, transform) {
+  return setupElement('a', selection, page, transform, false)
     .then(function (element) {
-      return element.attr('href', entity.ps())
+      return element.attr('href', selection.ps())
     })
 }
 
@@ -159,12 +159,12 @@ function randomId () {
   return res.join('')
 }
 
-transforms.js = function (entity, page, transforms) {
-  page.body.add(page.create('script').text(entity.cs(), true), true)
+transforms.js = function (selection, page, transforms) {
+  page.body.add(page.create('script').text(selection.cs(), true), true)
 }
 
-transforms.css = function (entity, page, transforms) {
-  page.head.add(page.create('style').text(entity.cs(), true), true)
+transforms.css = function (selection, page, transforms) {
+  page.head.add(page.create('style').text(selection.cs(), true), true)
 }
 
 // flattens out namespaced renderers into a single object
@@ -183,13 +183,13 @@ function prepareTransforms (transforms, namespace, target) {
   return target
 }
 
-function paragraphTransform (entity, page, transform) {
+function paragraphTransform (selection, page, transform) {
   page.asset('quantum-html.css', __dirname + '/client/quantum-html.css')
 
   var paragraphs = []
   var currentParagraph = undefined
 
-  entity.content.forEach(function (e) {
+  selection.content().forEach(function (e) {
     if (e === '') {
       if (currentParagraph) {
         paragraphs.push(currentParagraph)
@@ -221,45 +221,48 @@ function paragraphTransform (entity, page, transform) {
 // function makes that api a bit more fluid.
 module.exports = function (opts) {
   var options = merge({
-    transforms: transforms
+    transforms: transforms,
+    transformer: function (selection, defaultTransformer) {
+      return defaultTransformer(selection)
+    }
   }, opts)
 
   // holds all transforms with namespace variants and non namespace variants
   var transformMap = prepareTransforms(options.transforms)
 
   // the actual transform function that turns parsed content into html content
-  return function (obj) {
+  return function (qpage) {
     // create a new page to populate
     var page = dom().addCommonMetaTags()
 
     // the default transform just makes a text node
-    function defaultTransform (entity) {
-      return page.textNode(quantum.select.isEntity(entity) ? entity.cs() : entity)
+    function defaultTransform (selection) {
+      return page.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection)
     }
 
-    // renders an entity by looking at its type and selecting the transform from the list
-    function transformEntity (entity) {
-      if (entity.type in transformMap) {
-        return transformMap[entity.type](entity, page, transformEntity)
+    // renders an selection by looking at its type and selecting the transform from the list
+    function transformEntity (selection) {
+      var type = quantum.select.isSelection(selection) ? selection.type() : undefined
+      if (type in transformMap) {
+        return transformMap[type](selection, page, transformer)
       } else {
-        return defaultTransform(entity)
+        return defaultTransform(selection)
       }
     }
 
+    function transformer (selection) {
+      return options.transformer(selection, transformEntity)
+    }
+
     // select and transform the content, then returns the page object
-    return quantum.select(obj.content).transform(transformEntity)
+    return quantum.select(qpage.content).transform(transformer)
       .then(function (elements) {
         page.body.add(elements.filter(function (d) { return d }))
-        return {
-          filename: obj.filename,
+        return qpage.clone({
           content: page
-        }
+        })
       })
   }
-}
-
-function rename (filename) {
-  return filename.replace('.um', '.html')
 }
 
 function stringify (opts) {
@@ -268,13 +271,17 @@ function stringify (opts) {
     assetPath: undefined
   }, opts)
 
-  return function (obj) {
+  return function (page) {
     return Promise.props({
-      filename: rename(obj.filename),
-      content: obj.content.stringify({
+      file: page.file.clone({
+        dest: page.file.dest.replace('.um', '.html')
+      }),
+      content: page.content.stringify({
         embedAssets: options.embedAssets,
         assetPath: options.assetPath
       })
+    }).then(function (changes) {
+      return page.clone(changes)
     })
   }
 }
@@ -289,13 +296,14 @@ function exportAssets (targetDir, assetObjs) {
 
 // renames name.html to name/index.html and leaves index.html as it is
 function htmlRenamer () {
-  return function (obj) {
-    var filenameWithoutExtension = path.basename(obj.filename).replace('.html', '')
-    var root = path.dirname(obj.filename)
-    return {
-      filename: filenameWithoutExtension === 'index' ? obj.filename : path.join(root, filenameWithoutExtension, 'index.html'),
-      content: obj.content
-    }
+  return function (page) {
+    var filenameWithoutExtension = path.basename(page.file.dest).replace('.html', '')
+    var root = path.dirname(page.file.dest)
+    return page.clone({
+      file: page.file.clone({
+        dest: filenameWithoutExtension === 'index' ? page.file.dest : path.join(root, filenameWithoutExtension, 'index.html')
+      })
+    })
   }
 }
 

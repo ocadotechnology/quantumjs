@@ -1,3 +1,19 @@
+/*
+     ____                    __                      _
+    / __ \__  ______ _____  / /___  ______ ___      (_)____
+   / / / / / / / __ `/ __ \/ __/ / / / __ `__ \    / / ___/
+  / /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / /   / (__  )
+  \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
+                                              /___/
+
+  File
+  ====
+
+  Stores information about where a file / page came from and where it is going
+  to be written to.
+
+*/
+
 function File (options) {
   this.src = options.src
   this.resolved = options.resolved

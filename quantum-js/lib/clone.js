@@ -15,7 +15,7 @@
 
 var merge = require('merge')
 
-// XXX: we know the shape of the ast, so this can be optimised
+// OPTIM: we know the shape of the ast, so this can be optimised
 module.exports = function (ast) {
   return merge(true, ast)
 }

@@ -174,7 +174,7 @@ function digestDefinitions (parsed) {
   var defsList = quantum.select(parsed).selectAll('define', {recursive: true})
   var definitions = {}
   defsList.forEach(function (def) {
-    definitions[def.ps()] = def
+    definitions[def.ps()] = def.entity()
   })
   return definitions
 }
@@ -228,20 +228,19 @@ function applyDefinitions (parsed, definitions) {
 module.exports = function (options) {
   var variables = prepareVariables(options ? options.variables : {})
 
-  return function (obj) {
-    var definitions = digestDefinitions(obj.content)
+  return function (page) {
+    var definitions = digestDefinitions(page.content)
 
-    return {
-      filename: obj.filename,
-      content: applyVariables(applyDefinitions(obj.content, definitions), variables)
-    }
+    return page.clone({
+      content: applyVariables(applyDefinitions(page.content, definitions), variables)
+    })
   }
 }
 
 // insert the page title by wrapping the passed in object
 module.exports.wrapper = function (options) {
   return function (obj) {
-    return quantum.read.single(options.templateFilename)
+    return quantum.read(options.templateFilename)
       .then(function (template) {
         var newContent = template.content.content
         var contentEntity = quantum.select(template.content).select('content', {recursive: true})

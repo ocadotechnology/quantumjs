@@ -88,7 +88,8 @@ Watcher.prototype.files = function () {
 
 /* Returns a promise that yields a Watcher for the specs provided */
 function watcher (specs, options) {
-  if (!fileOptions.validate(specs)) return Promise.reject(new Error('invalid specs argument'))
+  var err = fileOptions.validate(specs)
+  if (err) return Promise.reject(err)
   var w = new Watcher(fileOptions.normalize(specs), options || {})
   return w._promise.then(function () { return w })
 }
@@ -99,7 +100,8 @@ function defaultLoader (filename, parentFilename) {
 
 // watches quantum files and follows inline links
 function watch (specs, options, handler) {
-  if (!fileOptions.validate(specs)) return Promise.reject(new Error('invalid specs argument'))
+  var err = fileOptions.validate(specs)
+  if (err) return Promise.reject(err)
   var normalisedSpecs = fileOptions.normalize(specs)
   var events = new EventEmitter
 

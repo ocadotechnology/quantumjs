@@ -42,15 +42,31 @@ function createFileUsingSpec (src, spec, dest) {
 
 /* Checks a spec or array of specs looks correct (has all the correct properties etc) */
 function validate (specs) {
-  return validateSpec(specs) || (Array.isArray(specs) && specs.every(validateSpec))
+  if (Array.isArray(specs)) {
+    return specs.map(validateSpec).filter(function (d) { return d !== undefined})[0]
+  } else {
+    return validateSpec(specs)
+  }
 }
 
 /* Checks the spec passed in look like a valid spec */
 function validateSpec (spec) {
-  return spec !== undefined && (
-  isString(spec) ||
-  isString(spec.files) ||
-  (Array.isArray(spec.files) && spec.files.every(isString)))
+  if (spec === undefined) return new Error('spec cannot be undefined')
+
+  var isSimpleSpec = isString(spec) || isString(spec.files)
+  var isArraySpec = (Array.isArray(spec.files) && spec.files.every(isString))
+
+  if (isArraySpec) {
+    if (spec.base === undefined) {
+      return new Error('spec.base cannot be undefined if spec.files is an array')
+    }
+  } else {
+    if (!isSimpleSpec) {
+      return new Error('spec.files cannot be undefined property')
+    }
+  }
+
+  return undefined
 }
 
 /* Expands short spec definitions into full definitions */
@@ -87,7 +103,8 @@ function inferBase (globString) {
 
 /* Resolves a list of specs into a list of file-objects */
 function resolve (specs, opts) {
-  if (!validate(specs)) return Promise.reject(new Error('invalid specs argument'))
+  var err = validate(specs)
+  if (err) return Promise.reject(err)
   var options = opts || {}
   var dir = options.dir || '.'
   var dest = options.dest || 'target'

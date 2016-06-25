@@ -1,5 +1,5 @@
-exports.sellingPoint = function (entity, page, transform) {
-  return page.create('div').class('selling-point')
-    .add(page.create('div').class('selling-point-title').text(entity.ps()))
-    .add(page.create('div').class('selling-point-text').add(entity.transform(transform)))
+exports.sellingPoint = function (selection, dom, transform) {
+  return dom.create('div').class('selling-point')
+    .add(dom.create('div').class('selling-point-title').text(selection.ps()))
+    .add(dom.create('div').class('selling-point-text').add(selection.transform(transform)))
 }

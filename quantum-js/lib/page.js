@@ -25,16 +25,16 @@ var merge = require('merge')
 
 function Page (options) {
   this.file = options.file
-  this.content = options.content
-  this.meta = {}
+  this.content = options.content || []
+  this.meta = options.meta || {}
 }
 
 Page.prototype = {
   clone: function (changes) {
     return new Page({
-      file: changes.file !== undefined ? changes.file : this.file,
-      content: changes.content !== undefined ? changes.content : this.content,
-      meta: changes.meta !== undefined ? merge.recursive(this.meta, changes.meta) : this.meta
+      file: changes && changes.file !== undefined ? changes.file : this.file,
+      content: changes && changes.content !== undefined ? changes.content : this.content,
+      meta: changes && changes.meta !== undefined ? merge.recursive(this.meta, changes.meta) : this.meta
     })
   }
 }

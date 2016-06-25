@@ -10,7 +10,7 @@ function path (points, close) {
   return 'M' + points.map(function (d) { return d[0] + ',' + d[1]}).join(',') + (close ? 'z' : '')
 }
 
-function diagram (entity, page, transform) {
+function diagram (selection, page, transform) {
   function createRect (layout, cls, radius) {
     return page.create('rect')
       .class(cls)
@@ -21,7 +21,7 @@ function diagram (entity, page, transform) {
       .attr('rx', radius)
   }
 
-  var showDescriptions = !quantum.select(entity).has('hideDescriptions')
+  var showDescriptions = !selection.has('hideDescriptions')
 
   // Create a new directed graph
   var g = new dagre.graphlib.Graph({compound: true})
@@ -34,21 +34,21 @@ function diagram (entity, page, transform) {
 
   g.setDefaultEdgeLabel(function () { return {} })
 
-  function handleGroup (groupEntity, groupName, parent) {
+  function handleGroup (groupSelection, groupName, parent) {
     if (groupName) g.setNode(groupName, {label: groupName, group: true})
     if (parent) g.setParent(groupName, parent)
 
-    quantum.select(groupEntity).selectAll('item').forEach(function (item, i) {
-      var rows = showDescriptions ? item.textContent().content : []
+    groupSelection.selectAll('item').forEach(function (item, i) {
+      var rows = showDescriptions ? item.filter(quantum.select.isText).content() : []
 
-      var maxWidth = item.params[1].length
+      var maxWidth = item.param(1).length
 
       rows.forEach(function (row) {
         maxWidth = Math.max(row.length, maxWidth)
       })
 
-      g.setNode(item.params[0], {
-        label: item.params[1],
+      g.setNode(item.param(0), {
+        label: item.param(1),
         details: {
           rows: rows
         },
@@ -56,30 +56,30 @@ function diagram (entity, page, transform) {
         width: maxWidth * fontCharWidth + padding * 2
       })
 
-      if (groupName) g.setParent(item.params[0], groupName)
+      if (groupName) g.setParent(item.param(0), groupName)
 
     })
 
-    groupEntity.selectAll('group').forEach(function (group) {
+    groupSelection.selectAll('group').forEach(function (group) {
       handleGroup(group, group.ps(), groupName)
     })
   }
 
-  handleGroup(entity)
+  handleGroup(selection)
 
   var edges = {}
 
-  quantum.select(entity).selectAll('link').forEach(function (link) {
+  selection.selectAll('link').forEach(function (link) {
     var labelText = link.has('description') ? link.select('description').cs() : link.cs()
     var color = link.has('color') ? link.select('color').ps() : '#000000'
-    g.setEdge(link.params[0], link.params[2], {
+    g.setEdge(link.param(0), link.param(2), {
       label: labelText,
       color: color,
       height: labelText.length > 0 ? labelTextHeight : 0,
       width: labelText.length * fontCharWidth + padding,
       labelpos: 'c'
     })
-    edges[link.params[0] + ':' + link.params[2]] = link
+    edges[link.param(0) + ':' + link.param(2)] = link
   })
 
   dagre.layout(g)
@@ -155,7 +155,7 @@ function diagram (entity, page, transform) {
       .add(page.create('path')
         .attr('fill', layout.color)
         .attr('d', 'M0,0 V4 L4,2 Z'))
-        .class('qm-diagram-arrow')
+      .class('qm-diagram-arrow')
 
     var markerStart = page.create('marker')
       .attr('id', 'arrow-start-' + colorId)
@@ -167,7 +167,7 @@ function diagram (entity, page, transform) {
       .add(page.create('path')
         .attr('fill', layout.color)
         .attr('d', 'M0,2 L4,4 L4,0 Z'))
-        .class('qm-diagram-arrow')
+      .class('qm-diagram-arrow')
 
     defs
       .add(markerEnd)

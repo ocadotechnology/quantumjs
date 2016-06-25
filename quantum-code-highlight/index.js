@@ -1,4 +1,3 @@
-var quantum = require('quantum-js')
 var hljs = require('highlight.js')
 var quantumSyntax = require('./quantum-syntax.js')
 
@@ -13,17 +12,17 @@ function highlightCode (language, code) {
   }
 }
 
-function codeblock (entity, page, transform) {
+function codeblock (selection, page, transform) {
   page.asset('quantum-code-highlight.css', __dirname + '/client/quantum-code-highlight.css')
-  return page.create('div').class('quantum-code-highlight-codeblock language-' + entity.ps())
-    .add(page.create('pre').text(highlightCode(entity.ps(), entity.cs()), true))
+  return page.create('div').class('quantum-code-highlight-codeblock language-' + selection.ps())
+    .add(page.create('pre').text(highlightCode(selection.ps(), selection.cs()), true))
 }
 
-function code (entity, page, transform) {
+function code (selection, page, transform) {
   page.asset('quantum-code-highlight.css', __dirname + '/client/quantum-code-highlight.css')
   return page.create('code')
-    .class('quantum-code-highlight-code language-' + entity.ps())
-    .text(highlightCode(entity.ps(), entity.cs()), true)
+    .class('quantum-code-highlight-code language-' + selection.ps())
+    .text(highlightCode(selection.ps(), selection.cs()), true)
 }
 
 module.exports = function (options) {
