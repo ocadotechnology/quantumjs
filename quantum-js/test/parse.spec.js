@@ -96,7 +96,7 @@ describe('parse', function () {
     })
 
     it('inline should handle escaped brackets in content', function () {
-      tokenize('@fruits[apple kiwi cherry @fruits[apple kiwi cherry\\]]').should.eql([
+      tokenize('@fruits[apple kiwi cherry @fruits\\[apple kiwi cherry\\]]').should.eql([
         { type: 'TYPE', value: 'fruits'},
         { type: 'START_INLINE_CONTENT'},
         { type: 'CONTENT', value: 'apple kiwi cherry @fruits[apple kiwi cherry]'},
@@ -357,6 +357,35 @@ describe('parse', function () {
         { type: 'CONTENT', value: '@two'},
         { type: 'DEDENT', value: 2 },
         { type: 'TYPE', value: 'three' },
+      ])
+    })
+
+    it('it should emit the right tokens for parsing nested square brackets', function () {
+      tokenize('@thing[[1, 2, 3]]').should.eql([
+        { type: 'TYPE', value: 'thing'},
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: '[1, 2, 3]'},
+        { type: 'END_INLINE_CONTENT' }
+      ])
+    })
+
+    it('it should escape within inline content correctly ([)', function () {
+      tokenize('@thing[\\[1, 2, 3] bob').should.eql([
+        { type: 'TYPE', value: 'thing'},
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: '[1, 2, 3'},
+        { type: 'END_INLINE_CONTENT' },
+        { type: 'CONTENT', value: ' bob'}
+      ])
+    })
+
+    it('it should escape within inline content correctly (])', function () {
+      tokenize('@thing[\\]1, 2, 3] bob').should.eql([
+        { type: 'TYPE', value: 'thing'},
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: ']1, 2, 3'},
+        { type: 'END_INLINE_CONTENT' },
+        { type: 'CONTENT', value: ' bob'}
       ])
     })
 
@@ -1330,7 +1359,7 @@ describe('parse', function () {
 
     it('escaping should work for nested closing square brackets', function () {
       var expected, source
-      source = '@thing[[1, 2, 3\\]]'
+      source = '@thing[\\[1, 2, 3\\]]'
       expected = {
         content: [
           {
@@ -1339,6 +1368,18 @@ describe('parse', function () {
             content: ['[1, 2, 3]']
           }
         ]
+      }
+      chai.expect(parse(source)).to.eql(expected)
+    })
+
+    it('should parse nested square brackets correctly for inline content', function () {
+      var source = '@thing[[1, 2, 3]]'
+      var expected = {
+        content: [{
+          type: 'thing',
+          params: [],
+          content: ['[1, 2, 3]']
+        }]
       }
       chai.expect(parse(source)).to.eql(expected)
     })

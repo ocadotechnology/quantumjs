@@ -36,6 +36,7 @@ function tokenize (str) {
   var state = CONTENT
   var start = 0
   var consumingSameLineContent = false
+  var escapedInlineCounter = 0
   var escapedParamCounter = 0
   var consumingEscapedParams = false
   var consumingUnparsed = false // true when in an @@ block
@@ -52,7 +53,12 @@ function tokenize (str) {
     var v = str.substring(start, pos)
     if (v.length > 0) {
       if (escaped) {
-        v = v.replace(escaped, escaped[1])
+        var es
+        var l = escaped.length
+        for (var i = 0; i < l; i++) {
+          es = escaped[i]
+          v = v.replace(es, es[1])
+        }
       }
       tokens.push({type: type, value: v})
     }
@@ -245,11 +251,17 @@ function tokenize (str) {
       }
 
     } else if (state === INLINE_CONTENT) {
-      if (s === ']') {
-        consumeIfNonEmpty('CONTENT', CONTENT, '\\]')
-        emit('END_INLINE_CONTENT')
-      } else if (s === '\\' && str[pos + 1] === ']') {
+      if (s === '\\' && (str[pos + 1] === '[' || str[pos + 1] === ']')) {
         pos++
+      } else if (s === '[') {
+        escapedInlineCounter++
+      } else if (s === ']') {
+        if (escapedInlineCounter === 0) {
+          consumeIfNonEmpty('CONTENT', CONTENT, ['\\]', '\\['])
+          emit('END_INLINE_CONTENT')
+        } else {
+          escapedInlineCounter--
+        }
       } else if (s === '\n') err('unexpected newline')
     }
 
