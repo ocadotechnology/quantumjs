@@ -42,13 +42,20 @@ transforms.notice = function (entity, page, transforms) {
 }
 
 transforms.list = function (entity, page, transforms) {
-  var ordered = entity.ps() === 'ordered'
-  return page.create(ordered ? 'ol' : 'ul').class(ordered ? 'qm-docs-list' : 'qm-docs-list fa-ul')
-    .add(page.all(entity.selectAll('item').map(function (e) {
-      return page.create('li')
-        .add(ordered ? undefined : e.ps() ? page.create('i').class('fa fa-li ' + e.ps()) : undefined)
-        .add(paragraphTransform(e, page, transforms))
-    })))
+  const listType = entity.ps()
+  const listElement = listType === 'ordered' ? 'ol' : 'ul'
+  const listClass = 'qm-docs-list' + (listType === 'ordered' ? '' : ' fa-ul')
+  const listIconGenerator = (iconClass) => {
+    if (listType !== 'ordered') {
+      return page.create('i').class(listType === 'custom' ? iconClass : 'fa fa-li fa-circle qm-docs-list-bullet ' + iconClass)
+    }
+  }
+
+  return page.create(listElement).class(listClass)
+    .add(page.all(entity.selectAll('item')
+      .map((e) => page.create('li')
+        .add(listIconGenerator(e.ps()))
+        .add(paragraphTransform(e, page, transforms)))))
 }
 
 transforms.bold = function (entity, page, transforms) {
