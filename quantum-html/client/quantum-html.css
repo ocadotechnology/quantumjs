@@ -1,8 +1,8 @@
-
 .qm-html-paragraph {
   margin: 1em 0;
 }
 
+i.fa + .qm-html-paragraph,
 .qm-html-paragraph:first-child {
   margin-top: 0;
 }
