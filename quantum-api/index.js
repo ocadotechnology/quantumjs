@@ -156,17 +156,19 @@ module.exports = function (opts) {
       var removedE = []
 
       entity.content.forEach(function (e) {
-        e = quantum.select(e)
-        if (e.has('removed')) {
-          removedE.push(e)
-        } else if (e.has('deprecated')) {
-          deprecatedE.push(e)
-        } else if (e.has('updated')) {
-          updatedE.push(e)
-        } else if (e.has('added')) {
-          addedE.push(e)
-        } else {
-          existingE.push(e)
+        if (e.content) {
+          e = quantum.select(e)
+          if (e.has('removed')) {
+            removedE.push(e)
+          } else if (e.has('deprecated')) {
+            deprecatedE.push(e)
+          } else if (e.has('updated')) {
+            updatedE.push(e)
+          } else if (e.has('added')) {
+            addedE.push(e)
+          } else {
+            existingE.push(e)
+          }
         }
       })
 
@@ -362,7 +364,7 @@ module.exports = function (opts) {
       var sortedEntity = organiseEntity(entity.filter('group'))
       return page.create('div').class('qm-api-group-container')
         .add(page.all(sortedEntity.selectAll('group').map(function (e) {
-          var groupedEntity = organiseEntity(e.filter(function (e) { return e.type && e.type !== 'description' }))
+          var groupedEntity = organiseEntity(e.filter(function (e) { return e.type !== 'description' }))
 
           return page.create('div').class('qm-api-group')
             .add(page.create('h2').text(e.ps()))
