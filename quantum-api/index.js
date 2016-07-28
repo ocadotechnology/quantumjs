@@ -156,19 +156,17 @@ module.exports = function (opts) {
       var removedE = []
 
       entity.content.forEach(function (e) {
-        if (e.content) {
-          e = quantum.select(e)
-          if (e.has('removed')) {
-            removedE.push(e)
-          } else if (e.has('deprecated')) {
-            deprecatedE.push(e)
-          } else if (e.has('updated')) {
-            updatedE.push(e)
-          } else if (e.has('added')) {
-            addedE.push(e)
-          } else {
-            existingE.push(e)
-          }
+        var sel = quantum.select(e)
+        if (sel.has('removed')) {
+          removedE.push(e)
+        } else if (sel.has('deprecated')) {
+          deprecatedE.push(e)
+        } else if (sel.has('updated')) {
+          updatedE.push(e)
+        } else if (sel.has('added')) {
+          addedE.push(e)
+        } else if (e.params) {
+          existingE.push(e)
         }
       })
 
