@@ -15,6 +15,7 @@
 
 var quantum = require('quantum-js')
 var merge = require('merge')
+var path = require('path')
 
 module.exports = function (opts) {
   var defaultOptions = {
@@ -40,7 +41,7 @@ module.exports = function (opts) {
   }
 
   var options = merge.recursive(defaultOptions, opts)
-  var tagNames = Object.keys(options.tags).sort(function (a, b) {return options.tags[a].order - options.tags[b]})
+  var tagNames = Object.keys(options.tags).sort(function (a, b) { return options.tags[a].order - options.tags[b] })
 
   function matchBrackets (container, string, page) {
     container = typeLookup(container, string.slice(0, string.indexOf('[')), page)
@@ -146,43 +147,45 @@ module.exports = function (opts) {
     else if (a.params[0] > b.params[0]) return 1
   }
 
-  function organiseEntity (entity) {
-    var addedE = []
-    var updatedE = []
-    var existingE = []
-    var deprecatedE = []
-    var removedE = []
+  function organiseEntity (entity, opts) {
+    if ((!options || !options.noSort) && (!opts || !opts.noSort)) {
+      var addedE = []
+      var updatedE = []
+      var existingE = []
+      var deprecatedE = []
+      var removedE = []
 
-    entity.content.forEach(function (e) {
-      var e = quantum.select(e)
-      if (e.has('removed')) {
-        removedE.push(e)
-      } else if (e.has('deprecated')) {
-        deprecatedE.push(e)
-      } else if (e.has('updated')) {
-        updatedE.push(e)
-      } else if (e.has('added')) {
-        addedE.push(e)
-      } else {
-        existingE.push(e)
-      }
-    })
+      entity.content.forEach(function (e) {
+        var sel = quantum.select(e)
+        if (sel.has('removed')) {
+          removedE.push(e)
+        } else if (sel.has('deprecated')) {
+          deprecatedE.push(e)
+        } else if (sel.has('updated')) {
+          updatedE.push(e)
+        } else if (sel.has('added')) {
+          addedE.push(e)
+        } else if (e.params) {
+          existingE.push(e)
+        }
+      })
 
-    addedE = addedE.sort(sortEntities)
-    updatedE = updatedE.sort(sortEntities)
-    existingE = existingE.sort(sortEntities)
-    deprecatedE = deprecatedE.sort(sortEntities)
-    removedE = removedE.sort(sortEntities)
+      addedE = addedE.sort(sortEntities)
+      updatedE = updatedE.sort(sortEntities)
+      existingE = existingE.sort(sortEntities)
+      deprecatedE = deprecatedE.sort(sortEntities)
+      removedE = removedE.sort(sortEntities)
 
-    entity.content = addedE.concat(
-      updatedE.concat(
-        existingE.concat(
-          deprecatedE.concat(
-            removedE
+      entity.content = addedE.concat(
+        updatedE.concat(
+          existingE.concat(
+            deprecatedE.concat(
+              removedE
+            )
           )
         )
       )
-    )
+    }
     return entity
   }
 
@@ -190,8 +193,7 @@ module.exports = function (opts) {
   function createItemGroup (type, title, options) {
     return function (entity, page, transforms) {
       if (entity.has(type)) {
-        var entity = entity.filter(type)
-        if (!options || !options.noSort) entity = organiseEntity(entity)
+        entity = organiseEntity(entity.filter(type), options)
         return page.create('div').class('qm-api-' + type + '-group')
           .add(page.create('h2').text(title))
           .add(entity.transform(transforms))
@@ -288,7 +290,6 @@ module.exports = function (opts) {
       .add(page.create('span').class('qm-api-property-type').add(createType(entity.params[1], page)))
 
     return createHeader('property', details, entity, page, transforms)
-
   }
 
   function prototypeHeader (entity, page, transforms) {
@@ -309,7 +310,6 @@ module.exports = function (opts) {
     }
 
     return createHeader('prototype', details, entity, page, transforms)
-
   }
 
   // creates a header for entity type items
@@ -320,7 +320,6 @@ module.exports = function (opts) {
       .add(page.create('span').class('qm-api-entity-content').text(entity.select('params').cs()))
 
     return createHeader('entity', details, entity, page, transforms)
-
   }
 
   // creates a header for type items
@@ -363,11 +362,13 @@ module.exports = function (opts) {
       var sortedEntity = organiseEntity(entity.filter('group'))
       return page.create('div').class('qm-api-group-container')
         .add(page.all(sortedEntity.selectAll('group').map(function (e) {
+          var groupedEntity = organiseEntity(e.filter(function (e) { return e.type !== 'description' }))
+
           return page.create('div').class('qm-api-group')
             .add(page.create('h2').text(e.ps()))
             .add(page.create('div').class('qm-api-group-content')
               .add(description(e, page, transforms))
-              .add(e.filter(function (e) {return e.type !== 'description'}).transform(transforms)))
+              .add(groupedEntity.transform(transforms)))
         })))
     }
   }
@@ -438,15 +439,15 @@ module.exports = function (opts) {
 
   var createEntityLike = createItemBuilder({
     header: [ entityHeader ],
-    content: [ description, extras, groups, entities ],
+    content: [ description, extras, groups, entities ]
   })
 
   /* transforms */
 
   function api (entity, page, transforms) {
     page
-      .asset('quantum-api.css', __dirname + '/client/quantum-api.css')
-      .asset('quantum-api.js', __dirname + '/client/quantum-api.js')
+      .asset('quantum-api.css', path.join(__dirname, '/client/quantum-api.css'))
+      .asset('quantum-api.js', path.join(__dirname, '/client/quantum-api.js'))
     return createApiLike('qm-api')(entity, page, transforms)
   }
 
@@ -472,6 +473,6 @@ module.exports = function (opts) {
 }
 
 module.exports.assets = {
-  'quantum-api.css': __dirname + '/client/quantum-api.css',
-  'quantum-api.js': __dirname + '/client/quantum-api.js'
+  'quantum-api.css': path.join(__dirname, '/client/quantum-api.css'),
+  'quantum-api.js': path.join(__dirname, '/client/quantum-api.js')
 }
