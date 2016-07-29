@@ -147,8 +147,8 @@ module.exports = function (opts) {
     else if (a.params[0] > b.params[0]) return 1
   }
 
-  function organiseEntity (entity) {
-    if (!options || !options.noSort) {
+  function organiseEntity (entity, opts) {
+    if ((!options || !options.noSort) && (!opts || !opts.noSort)) {
       var addedE = []
       var updatedE = []
       var existingE = []
@@ -193,7 +193,7 @@ module.exports = function (opts) {
   function createItemGroup (type, title, options) {
     return function (entity, page, transforms) {
       if (entity.has(type)) {
-        entity = organiseEntity(entity.filter(type))
+        entity = organiseEntity(entity.filter(type), options)
         return page.create('div').class('qm-api-' + type + '-group')
           .add(page.create('h2').text(title))
           .add(entity.transform(transforms))
