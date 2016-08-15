@@ -3,12 +3,17 @@ var quantum = require('quantum-js')
 function replacer (variables, str) {
   var res = str
   variables.forEach(function (v) {
-    if (typeof (v.value) === 'object') {
-      var val = JSON.stringify(v.value)
+    if (v.key === 'content') {
+      if (res.indexOf('{{' + v.key + '}}') > -1)
+        res = v.value
     } else {
-      var val = v.value
+      if (typeof (v.value) === 'object') {
+        var val = JSON.stringify(v.value)
+      } else {
+        var val = v.value
+      }
+      res = res.replace('{{' + v.key + '}}', val)
     }
-    res = res.replace('{{' + v.key + '}}', val)
   })
   return res
 }
@@ -190,7 +195,8 @@ function applyDefinitions (parsed, definitions) {
     // XXX: add sub-entities name.ps, name.cs, age.ps, age.cs, etc
     var variables = [
       {key: 'ps', value: selection.ps()},
-      {key: 'cs', value: selection.cs()}
+      {key: 'cs', value: selection.cs()},
+      {key: 'content', value: selection.content}
     ]
 
     return template({type: '', ps: [], content: definitions[parsed.type].content}, variables).content
