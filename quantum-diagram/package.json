@@ -1,6 +1,6 @@
 {
   "name": "quantum-diagram",
-  "version": "0.11.1",
+  "version": "2.0.0",
   "description": "Quantum html entities for building simple diagrams",
   "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "dagre": "0.7.4",
-    "quantum-js": "^1.0.0"
+    "quantum-js": "^2.0.0",
+    "quantum-dom": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^2.3.0",

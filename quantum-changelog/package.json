@@ -1,6 +1,6 @@
 {
   "name": "quantum-changelog",
-  "version": "0.10.0",
+  "version": "2.0.0",
   "description": "changelog for quantum",
   "author": "Charlie Frater <charlie.frater@ocado.com>",
   "contributors": [
@@ -27,7 +27,8 @@
     "clone": "^1.0.2",
     "flatten": "0.0.1",
     "merge": "^1.2.0",
-    "quantum-js": "^1.0.0"
+    "quantum-js": "^2.0.0",
+    "quantum-dom": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^2.3.0",

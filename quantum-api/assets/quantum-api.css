@@ -46,7 +46,7 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  background: white;
+  background: #f4f4f4;
 }
 
 .qm-api-collapsible-toggle {

@@ -1,44 +1,59 @@
 @inline ../shared/shared.um
 
-@titlebar
-
 @title QuantumJS
 
 @div .header
   @img .logo: @attr src: /resources/logo.svg
   @div .title: QuantumJS
-  @div .tagline: A static site generator with a focus on extensibility and speed.
+  @div .tagline: A node.js static site generator with a focus on extensibility and speed.
 
-@div .color-band
-  @div .content
-    @div .install-link-stip
-      @div .spacer
+# @div .color-band
+#   @div .content
+#     @div .install-link-stip
+#       @div .spacer
+#       @div .spacer.github-icon-container
+#         @hyperlink [https://github.com/ocadotechnology/quantumjs]
+#           @img .github-icon
+#             @attr src: /resources/github-mark.svg
 
-      @pre .install
-        npm install quantum-js quantum-html --save-dev
+@div .content
+  @h2: Converts markup to html
+  @group
+    @@codeblock um
+      @div: Welcome to the site, sign in below
+      @signIn
 
-      @div .spacer.github-icon-container
-        @hyperlink [https://github.com/ocadotechnology/quantumjs]
-          @img .github-icon
-            @attr src: /resources/github-mark.svg
 
-    @sellingPoint Simple
-      @div: Comes with an @bold[easy-to-pickup markup language].
-      @div: Markup goes in, html comes out.
+    @i .fa.fa-arrow-right
+      @attr style: padding: 1em; # hack
 
-    @sellingPoint Speedy
-      @bold[Sub 10ms] page compile times.
+    @@codeblock html
+      <div>Welcome to the site, sign in below</div>
+      <div class="sign-in">
+        <input class="username-input" placeholder="Username"></input>
+        <input class="password-input" placeholder="Password"></input>
+        <button class="sign-in-button">Sign in</button>
+      </div>
 
-    @sellingPoint No complicated folder structures
-      @div: @bold[You] choose how to structure your project.
+  @h2: Define your own ways to convert markup into html
+  @@codeblock js
+    const dom = require('quantum-dom')
 
-    @sellingPoint Extensible
-      @div: Define @bold[custom pipelines] for building your site.
-      @div: Plug @bold[custom transforms] into your pipeline to extend the capabilities for your own needs.
+    exports.signIn = function (selection) {
+      return dom.create('div').class('sign-in')
+        .add(dom.create('input').class('username-input'))
+        .add(dom.create('input').class('password-input'))
+        .add(dom.create('button').class('sign-in-button').text('Sign in'))
+    }
 
-    @sellingPoint Great for technical documentation
-      @div: Writing technical documentation?
-      @div: QuantumJS particularly excels in this area with features such as @bold[versioned content], @bold[api docs], and automatic @bold[changelog generation].
+  @h2: Features
+  @list
+    @item: Explicit, easy to learn markup language for building web pages
+    @item: Built with customisability in mind
+    @item: Uses node.js - full access to npm when writing custom transforms
+    @item: Prebuilt transforms for writing technical documentation
+    @item: Auto browser page refresh when files are changed
+    @item: Fast - can build a 2000 page site in x seconds
 
 @bottomSection
 

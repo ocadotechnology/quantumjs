@@ -20,6 +20,7 @@
   stroke-width: 2px;
   stroke-linecap: round;
   stroke-linejoin: bevel;
+  fill: none;
 }
 
 .qm-diagram-path-dashed {

@@ -8,7 +8,7 @@ var File = quantum.File
 
 // reads and executes in a suite defined in quantm markup
 function testSuite (filename) {
-  quantum.read(path.join('test', filename)).then(function (parsed) {
+  quantum.read(path.join(__dirname, filename)).then(function (parsed) {
     var suite = quantum.select(parsed)
     describe('test suite: ' + filename, function () {
       suite.selectAll('spec').forEach(function (spec) {
@@ -25,7 +25,7 @@ function testSuite (filename) {
           })
 
           var expected = spec.select('expected')
-          var output = expected.selectAll('output').map(function (output) {
+          var outputs = expected.selectAll('output').map(function (output) {
             // console.log(output.select('content').content())
             var outputFilename = output.select('filename').ps()
             var outputContent = {content: output.select('content').content()}
@@ -51,7 +51,7 @@ function testSuite (filename) {
             outputLatest: false
           }
 
-          version(options)(input).should.eql(output)
+          version(options)(input).should.eql(outputs)
         })
       })
     })

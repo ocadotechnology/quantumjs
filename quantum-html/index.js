@@ -1,12 +1,16 @@
-var dom = require('quantum-dom')
-var quantum = require('quantum-js')
-var unique = require('array-unique')
-var Promise = require('bluebird')
-var fs = Promise.promisifyAll(require('fs-extra'))
-var path = require('path')
-var merge = require('merge')
+'use strict'
 
-var types = [
+const path = require('path')
+
+const unique = require('array-unique')
+const Promise = require('bluebird')
+const fs = Promise.promisifyAll(require('fs-extra'))
+const merge = require('merge')
+
+const quantum = require('quantum-js')
+const dom = require('quantum-dom')
+
+const types = [
   'a',
   'b',
   'br',
@@ -41,39 +45,33 @@ var types = [
   'thead',
   'tr',
   'ul',
-  'vr'
+  'vr',
+  'meta'
 ]
 
-var transforms = {}
+const transforms = {}
 
-function entityToElement (type, selection, page, parsePs) {
-  var element = page.create(type, selection.has('uid') ? selection.select('uid').ps() : undefined)
-  var classId = selection.ps()
+function entityToElement (type, selection, parsePs) {
+  const element = dom.create(type)
+  const classId = selection.ps()
 
   if (selection.has('id')) {
     element.id(selection.select('id').ps())
   } else if (parsePs) {
-    var match = classId.match(/#[^\.#]+/)
+    const match = classId.match(/#[^\.#]+/)
     if (match) {
-      var id = match.map(function (d) {
-        return d.substring(1)
-      })[0]
-      if (id) element.id(id)
+      const id = match.map(d => d.substring(1))[0]
+      element.id(id)
     }
   }
 
   if (selection.has('class')) {
     element.class(selection.select('class').ps())
   } else if (parsePs) {
-    var match = classId.match(/(\.[^\.#]+)/g)
+    const match = classId.match(/(\.[^\.#]+)/g)
     if (match) {
-      var clasz = unique(match.map(function (d) {
-        return d.substring(1)
-      })).join(' ')
-
-      if (clasz) {
-        element.class(clasz)
-      }
+      const cls = unique(match.map(d => d.substring(1))).join(' ')
+      element.class(cls)
     }
   }
 
@@ -83,95 +81,69 @@ function entityToElement (type, selection, page, parsePs) {
   return element
 }
 
-function setupElement (type, selection, page, transform, parsePs) {
-  var element = entityToElement(type, selection, page, parsePs)
+function setupElement (type, selection, transform, parsePs) {
+  var element = entityToElement(type, selection, parsePs)
   return selection
-    .filter(function (selection) {
-      return !quantum.select.isSelection(selection) || (selection.type() !== 'id' && selection.type() !== 'class' && selection.type() !== 'attr')
+    .filter((selection) => {
+      return selection.type !== 'id' && selection.type !== 'class' && selection.type !== 'attr'
     })
     .transform(transform)
-    .then(function (elements) {
-      element.add(elements.filter(function (d) {return d}))
-    })
-    .then(function () {
-      return element
-    })
+    .then(elements => element.add(elements.filter(d => d)))
+    .then(() => element)
 }
 
 // define the common element types as entity transforms
-types.forEach(function (type) {
-  transforms[type] = function (selection, page, transform) {
-    return setupElement(type, selection, page, transform, true)
+types.forEach((type) => {
+  transforms[type] = function (selection, transform) {
+    return setupElement(type, selection, transform, true)
   }
 })
 
-transforms.bodyClass = function (selection, page, transform) {
-  page.body.class(page.body.class() + ' ' + selection.ps())
-  return
+transforms.bodyClassed = function (selection, transform) {
+  return dom.bodyClassed(selection.ps(), selection.cs() !== 'false')
 }
 
-transforms.classed = function (selection, page, transform) {
-  var element = page.get(selection.param(0))
-  if (element) {
-    element.classed(selection.param(1), selection.param(2))
-  }
-  return
+transforms.title = function (selection, transform) {
+  return dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
 }
 
-transforms.title = function (selection, page, transform) {
-  page.remove('title')
-  page.head.add(page.create('title', 'title').text(selection.ps()))
-}
-
-transforms.head = function (selection, page, transform) {
+transforms.head = function (selection, transform) {
   return selection.transform(transform)
-    .then(function (elements) {
-      page.head.add(elements.filter(function (d) {return d}))
-    })
-    .then(function () { return undefined })
+    .then(elements => dom.arrayNode(elements.filter(d => d).map(e => dom.head(e))))
 }
 
-transforms.html = function (selection, page, transform) {
-  return page.textNode(selection.cs(), undefined, {escape: false})
+transforms.html = function (selection, transform) {
+  return dom.textNode(selection.cs(), {escape: false})
 }
 
-transforms.script = function (selection, page, transform) {
-  page.body.add(page.script(selection.ps()), true)
+transforms.script = function (selection, transform) {
+  return dom.create('script').attr('src', selection.ps())
 }
 
-transforms.stylesheet = function (selection, page, transform) {
-  page.head.add(page.stylesheet(selection.ps()))
+transforms.stylesheet = function (selection, transform) {
+  return dom.head(dom.create('link')
+    .attr('href', selection.ps())
+    .attr('rel', 'stylesheet'))
 }
 
-transforms.hyperlink = function (selection, page, transform) {
-  return setupElement('a', selection, page, transform, false)
-    .then(function (element) {
-      return element.attr('href', selection.ps())
-    })
+transforms.hyperlink = function (selection, transform) {
+  return setupElement('a', selection, transform, false)
+    .then((element) => element.attr('href', selection.ps()))
 }
 
-function randomId () {
-  var res = new Array(32)
-  var alphabet = 'ABCDEF0123456789'
-  for (var i = 0; i < 32; i++) {
-    res[i] = alphabet[Math.floor(Math.random() * 16)]
-  }
-  return res.join('')
+transforms.js = function (selection, transforms) {
+  return dom.create('script').text(selection.cs(), {escape: false})
 }
 
-transforms.js = function (selection, page, transforms) {
-  page.body.add(page.create('script').text(selection.cs(), true), true)
-}
-
-transforms.css = function (selection, page, transforms) {
-  page.head.add(page.create('style').text(selection.cs(), true), true)
+transforms.css = function (selection, transforms) {
+  return dom.head(dom.create('style').text(selection.cs(), {escape: false}))
 }
 
 // flattens out namespaced renderers into a single object
 function prepareTransforms (transforms, namespace, target) {
   namespace = namespace || ''
   target = target || {}
-  for (d in transforms) {
+  for (var d in transforms) {
     if (typeof (transforms[d]) == 'function') {
       target[namespace + d] = transforms[d]
       target[d] = transforms[d]
@@ -183,13 +155,14 @@ function prepareTransforms (transforms, namespace, target) {
   return target
 }
 
-function paragraphTransform (selection, page, transform) {
-  page.asset('quantum-html.css', __dirname + '/client/quantum-html.css')
+function paragraphTransform (selection, transform) {
+  const paragraphs = [
+    dom.asset({url: '/assets/quantum-html.css', file: __dirname + '/assets/quantum-html.css', shared: true})
+  ]
 
-  var paragraphs = []
-  var currentParagraph = undefined
+  let currentParagraph = undefined
 
-  selection.content().forEach(function (e) {
+  selection.content().forEach((e) => {
     if (e === '') {
       if (currentParagraph) {
         paragraphs.push(currentParagraph)
@@ -197,13 +170,13 @@ function paragraphTransform (selection, page, transform) {
       }
     } else {
       if (!currentParagraph) {
-        currentParagraph = page.create('div').class('qm-html-paragraph')
+        currentParagraph = dom.create('div').class('qm-html-paragraph')
       }
 
       if (quantum.select.isEntity(e)) {
-        currentParagraph = currentParagraph.add(transform(quantum.select(e))).add(page.textNode(' '))
+        currentParagraph = currentParagraph.add(transform(quantum.select(e))).add(dom.textNode(' '))
       } else {
-        currentParagraph = currentParagraph.add(page.textNode(e + ' '))
+        currentParagraph = currentParagraph.add(dom.textNode(e + ' '))
       }
     }
   })
@@ -213,7 +186,9 @@ function paragraphTransform (selection, page, transform) {
     currentParagraph = undefined
   }
 
-  return page.all(paragraphs)
+  const result = dom.all(paragraphs)
+
+  return result.then ? result.then(dom.arrayNode) : dom.arrayNode(result)
 }
 
 // returns the transform function that converts parsed um source to virtual dom.
@@ -231,20 +206,17 @@ module.exports = function (opts) {
   var transformMap = prepareTransforms(options.transforms)
 
   // the actual transform function that turns parsed content into html content
-  return function (qpage) {
-    // create a new page to populate
-    var page = dom().addCommonMetaTags()
-
+  return function (page) {
     // the default transform just makes a text node
     function defaultTransform (selection) {
-      return page.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection)
+      return quantum.select.isSelection(selection) ? selection.cs() : selection
     }
 
     // renders an selection by looking at its type and selecting the transform from the list
     function transformEntity (selection) {
       var type = quantum.select.isSelection(selection) ? selection.type() : undefined
       if (type in transformMap) {
-        return transformMap[type](selection, page, transformer)
+        return transformMap[type](selection, transformer)
       } else {
         return defaultTransform(selection)
       }
@@ -255,14 +227,25 @@ module.exports = function (opts) {
     }
 
     // select and transform the content, then returns the page object
-    return quantum.select(qpage.content).transform(transformer)
+    return quantum.select(page.content)
+      .transform(transformer)
       .then(function (elements) {
-        page.body.add(elements.filter(function (d) { return d }))
-        return qpage.clone({
-          content: page
+        return page.clone({
+          content: new HTMLPage(elements)
         })
       })
   }
+}
+
+function HTMLPage (elements) {
+  this.elements = elements
+}
+
+HTMLPage.prototype.stringify = function (options) {
+  return dom.stringify(this.elements, {
+    embedAssets: options ? options.embedAssets : true,
+    assetPath: options ? options.assetPath : undefined
+  })
 }
 
 function stringify (opts) {
@@ -273,25 +256,12 @@ function stringify (opts) {
 
   return function (page) {
     return Promise.props({
-      file: page.file.clone({
-        dest: page.file.dest.replace('.um', '.html')
-      }),
-      content: page.content.stringify({
-        embedAssets: options.embedAssets,
-        assetPath: options.assetPath
-      })
+      file: page.file.withExtension('.html'),
+      content: page.content.stringify(options).then(x => x.html)
     }).then(function (changes) {
       return page.clone(changes)
     })
   }
-}
-
-function exportAssets (targetDir, assetObjs) {
-  return Promise.all(assetObjs.map(function (obj) {
-    return Promise.all(Object.keys(obj).map(function (key) {
-      return fs.copyAsync(obj[key], path.join(targetDir, key))
-    }))
-  }))
 }
 
 // renames name.html to name/index.html and leaves index.html as it is
@@ -307,13 +277,9 @@ function htmlRenamer () {
   }
 }
 
+module.exports.HTMLPage = HTMLPage
 module.exports.transforms = transforms
 module.exports.prepareTransforms = prepareTransforms
 module.exports.stringify = stringify
-module.exports.exportAssets = exportAssets
 module.exports.paragraphTransform = paragraphTransform
 module.exports.htmlRenamer = htmlRenamer
-
-module.exports.assets = {
-  'quantum-html.css': __dirname + '/client/quantum-html.css'
-}

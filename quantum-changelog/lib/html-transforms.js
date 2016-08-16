@@ -1,86 +1,83 @@
-var select = require('quantum-js').select
-var Promise = require('bluebird')
-var flatten = require('flatten')
-var merge = require('merge')
+const select = require('quantum-js').select
+const Promise = require('bluebird')
+const flatten = require('flatten')
+const merge = require('merge')
+const dom = require('quantum-dom')
+const defaultConfig = require('./config.js')
 
 module.exports = function (opts) {
-  var options = merge.recursive(require('./config.js'), opts)
+  const options = merge.recursive(defaultConfig, opts)
 
-  function issue (entity, page, transforms) {
-    return page.create('a')
+  function issue (entity, transforms) {
+    return dom.create('a')
       .attr('href', options.issueUrl + entity.ps())
       .text('#' + entity.ps())
   }
 
-  function entry (entity, page, transforms) {
-    var type = options.tags[entity.type]
-    var icon = page.create('i').class(type.iconClass + ' ' + (type.textClass || 'qm-changelog-text-' + entity.type))
+  function entry (entity, transforms) {
+    const type = options.tags[entity.type()]
+    const icon = dom.create('i').class(type.iconClass + ' ' + (type.textClass || 'qm-changelog-text-' + entity.type()))
 
-    if (entity.ps().length > 0) {
-      var heading = page.create('div').class('qm-changelog-entry-head').add(entity.ps())
-    }
+    const heading = entity.ps().length > 0 ? dom.create('div').class('qm-changelog-entry-head').add(entity.ps()) : undefined
 
-    if (entity.has('description')) {
-      if (entity.select('description').content.length) {
-        var description = page.create('div').class('qm-changelog-entry-description').add(entity.select('description').transform(transforms))
-      }
-    }
+    const hasDescription = entity.has('description') && entity.select('description').content.length
+    const description = hasDescription ? dom.create('div').class('qm-changelog-entry-description').add(entity.select('description').transform(transforms)) : undefined
 
-    if (!!options.issueUrl && entity.has('issue')) {
-      var elem = (heading ? heading : description)
+    if (options.issueUrl && entity.has('issue')) {
+      let elem = (heading ? heading : description)
 
       entity.selectAll('issue').forEach(function (issueEntity, index) {
         elem = elem
           .add(index > 0 ? ', ' : ': ')
-          .add(issue(issueEntity, page, transforms))
+          .add(issue(issueEntity, transforms))
       })
     }
 
     if (entity.has('extra')) {
-      var extra = page.create('div').class('qm-changelog-entry-extra').add(entity.select('extra').transform(transforms))
+      var extra = dom.create('div').class('qm-changelog-entry-extra').add(entity.select('extra').transform(transforms))
     }
 
     if (description || extra) {
-      var body = page.create('div').class('qm-changelog-entry-body')
+      var body = dom.create('div').class('qm-changelog-entry-body')
         .add(description)
         .add(extra)
     }
 
-    return page.create('div').class('qm-changelog-entry')
-      .add(page.create('div').class('qm-changelog-entry-icon')
+    return dom.create('div').class('qm-changelog-entry')
+      .add(dom.create('div').class('qm-changelog-entry-icon')
         .add(icon))
-      .add(page.create('div').class('qm-changelog-entry-content')
+      .add(dom.create('div').class('qm-changelog-entry-content')
         .add(heading)
         .add(body))
   }
 
-  function label (page, tagName, tag, count) {
-    return page.create('div').class('qm-changelog-label ' + (tag.tagClass || 'qm-changelog-background-' + tagName))
-      .add(page.create('i').class(tag.iconClass))
-      .add(page.create('span').text(count))
+  function label (tagName, tag, count) {
+    return dom.create('div').class('qm-changelog-label ' + (tag.tagClass || 'qm-changelog-background-' + tagName))
+      .add(dom.create('i').class(tag.iconClass))
+      .add(dom.create('span').text(count))
   }
 
-  function createCollapsible (page, header, content) {
-    return page.create('div').class('qm-changelog-collapsible')
-      .add(page.create('div').class('qm-changelog-collapsible-heading')
-        .add(page.create('div').class('qm-changelog-collapsible-toggle')
-          .add(page.create('i').class('qm-changelog-chevron-icon')))
-        .add(page.create('div').class('qm-changelog-collapsible-head')
+  function createCollapsible (header, content) {
+    return dom.create('div').class('qm-changelog-collapsible')
+      .add(dom.create('div').class('qm-changelog-collapsible-heading')
+        .add(dom.create('div').class('qm-changelog-collapsible-toggle')
+          .add(dom.create('i').class('qm-changelog-chevron-icon')))
+        .add(dom.create('div').class('qm-changelog-collapsible-head')
           .add(header)))
-      .add(page.create('div').class('qm-changelog-collapsible-content')
+      .add(dom.create('div').class('qm-changelog-collapsible-content')
         .add(content))
   }
 
-  function item (entity, page, transforms, singleItemMode) {
-    var id = page.nextId()
+  function item (entity, transforms, singleItemMode) {
+    var id = dom.randomId()
     var tags = Object.keys(options.tags).sort(function (a, b) {
       return order = options.tags[a].order - options.tags[b].order
     })
 
-    var title = page.create('div').class('qm-changelog-item-title')
+    var title = dom.create('div').class('qm-changelog-item-title')
 
     if (entity.has('link')) {
-      title = title.add(page.create('a').class('qm-changelog-item-link')
+      title = title.add(dom.create('a').class('qm-changelog-item-link')
         .attr('href', entity.select('link').ps())
         .add(entity.ps()))
     } else {
@@ -89,106 +86,104 @@ module.exports = function (opts) {
 
     var unprocessedEntries = entity.selectAll(tags)
 
-    var entries = page.create('div').class('qm-changelog-item-entries')
+    var entries = dom.create('div').class('qm-changelog-item-entries')
 
     unprocessedEntries.forEach(function (entryEntity) {
-      entries = entries.add(entry(select(entryEntity), page, transforms))
+      entries = entries.add(entry(select(entryEntity), transforms))
     })
 
     if (entity.has('description')) {
-      var description = page.create('div').class('qm-changelog-item-description').add(entity.select('description').transform(transforms))
+      var description = dom.create('div').class('qm-changelog-item-description').add(entity.select('description').transform(transforms))
     }
 
     if (entity.has('extra')) {
-      var extra = page.create('div').class('qm-changelog-item-extra').add(entity.select('extra').transform(transforms))
+      var extra = dom.create('div').class('qm-changelog-item-extra').add(entity.select('extra').transform(transforms))
     }
 
     if (singleItemMode) {
-      return page.create('div').class('qm-changelog-single-item')
+      return dom.create('div').class('qm-changelog-single-item')
         .add(description)
         .add(entries)
         .add(extra)
     } else {
-      var labels = page.create('div').class('qm-changelog-item-labels')
+      var labels = dom.create('div').class('qm-changelog-item-labels')
       tags.forEach(function (tagName) {
         var count = unprocessedEntries.reduce(function (total, e) { return e.type == tagName ? total + 1 : total }, 0)
         if (count > 0) {
-          labels = labels.add(label(page, tagName, options.tags[tagName], count))
+          labels = labels.add(label(tagName, options.tags[tagName], count))
         }
       })
 
-      var header = page.create('div').class('qm-changelog-item-head')
+      var header = dom.create('div').class('qm-changelog-item-head')
         .add(title)
         .add(labels)
-      var content = page.create('div').class('qm-changelog-item-body')
+      var content = dom.create('div').class('qm-changelog-item-body')
         .add(description)
         .add(entries)
         .add(extra)
 
-      return page.create('div').class('qm-changelog-item').add(createCollapsible(page, header, content))
+      return dom.create('div').class('qm-changelog-item').add(createCollapsible(header, content))
     }
   }
 
-  function changelog (entity, page, transforms) {
+  function changelog (entity, transforms) {
     var singleItem = entity.selectAll('item').length === 1
     var itemArr = entity.selectAll('item')
     var items = Promise.all(itemArr.map(function (itemEntity) {
-      return item(itemEntity, page, transforms, singleItem && itemEntity.has('renderSingleItemInRoot'))
+      return item(itemEntity, transforms, singleItem && itemEntity.has('renderSingleItemInRoot'))
     }))
 
     if (entity.has('description')) {
-      var description = page.create('div').class('qm-changelog-description').add(entity.select('description').transform(transforms))
+      var description = dom.create('div').class('qm-changelog-description').add(entity.select('description').transform(transforms))
     }
 
     if (entity.has('link')) {
       var link = entity.select('link')
-      var title = page.create('a').class('qm-changelog-link').attr('href', link.ps()).text(entity.ps())
+      var title = dom.create('a').class('qm-changelog-link').attr('href', link.ps()).text(entity.ps())
     } else if (entity.has('milestone')) {
       var milestone = entity.select('milestone')
-      title = page.create('a').class('qm-changelog-link').attr('href', options.milestoneUrl + milestone.ps()).text(entity.ps())
+      title = dom.create('a').class('qm-changelog-link').attr('href', options.milestoneUrl + milestone.ps()).text(entity.ps())
     } else {
       var title = entity.ps()
     }
 
     if (entity.has('extra')) {
-      var extra = page.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
+      var extra = dom.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
     }
 
     // Only add a changelog if there is content to display
     if (itemArr.length > 0 || description || extra) {
-      page
-        .asset('quantum-changelog.css', __dirname + '/client/quantum-changelog.css')
-        .asset('quantum-changelog.js', __dirname + '/client/quantum-changelog.js')
-
-      return page.create('div').class('qm-changelog')
-        .add(page.create('div').class('qm-changelog-head').add(title))
-        .add(page.create('div').class('qm-changelog-body')
+      return dom.create('div').class('qm-changelog')
+        .add(dom.asset({url: '/assets/quantum-changelog.css', file: __dirname + '/../assets/quantum-changelog.css'}))
+        .add(dom.asset({url: '/assets/quantum-changelog.js', file: __dirname + '/../assets/quantum-changelog.js'}))
+        .add(dom.create('div').class('qm-changelog-head').add(title))
+        .add(dom.create('div').class('qm-changelog-body')
           .add(description)
           .add(items)
           .add(extra))
     }
   }
 
-  function wrapper (entity, page, transforms) {
-    return page.create('div').class('qm-changelog-wrapper')
+  function wrapper (entity, transforms) {
+    return dom.create('div').class('qm-changelog-wrapper')
       .add(entity.transform(transforms))
   }
 
-  function keyItem (page, name, tag) {
-    return page.create('div').class('qm-changelog-key-item')
-      .add(page.create('div').class('qm-changelog-key-item-icon')
-        .add(page.create('i').class(tag.iconClass + ' ' + (tag.textClass || 'qm-changelog-text-' + name))))
-      .add(page.create('div').class('qm-changelog-key-item-text')
+  function keyItem (name, tag) {
+    return dom.create('div').class('qm-changelog-key-item')
+      .add(dom.create('div').class('qm-changelog-key-item-icon')
+        .add(dom.create('i').class(tag.iconClass + ' ' + (tag.textClass || 'qm-changelog-text-' + name))))
+      .add(dom.create('div').class('qm-changelog-key-item-text')
         .add(tag.keyText))
   }
 
-  function key (entity, page, transforms) {
-    var keys = page.create('div').class('qm-changelog-keys')
+  function key (entity, transforms) {
+    var keys = dom.create('div').class('qm-changelog-keys')
 
     Object.keys(options.tags).map(function (tag) {
-      keys = keys.add(keyItem(page, tag, options.tags[tag]))
+      keys = keys.add(keyItem(dom, tag, options.tags[tag]))
     })
-    return page.create('div').class('qm-changelog-key')
+    return dom.create('div').class('qm-changelog-key')
       .add(keys)
   }
 

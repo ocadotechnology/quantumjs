@@ -10,10 +10,13 @@
 @contentSection
   @siteSidebars
 
-  @topic Support
+  @topic Before we start
     Firstly it is worth noting that Markdown is simple, ubiquitous and integrated
     into many systems. This is a big pro - if Markdown is sufficient for your needs
     then no need to look any further.
+
+    If you are still interested to find out when and where you might want to use
+    quantum over markdown, read on!
 
   @topic Customising
     @bold[Markdown] has a fixed way of rendering the markup to HTML (although
@@ -21,6 +24,7 @@
 
     @bold[Quantum] is build with customisability in mind - every part of the rendering
     process can be customised. New renderers are easy to define and override in quantum.
+    In quantum @italic[you] choose how your markup gets converted into HTML.
 
     This highlights difference in opinion between the two markup languages - in Quantum
     everything is tagged with a type (and these types are can be anything), and each type
@@ -85,7 +89,7 @@
     rendered HTML page. It's kind of its thing.
 
     @bold[Quantum] has a similar focus, but also tries to ensure that working with
-    the parsed content is easy. Having taggged entities makes this possible but
+    the parsed content is easy. Having tagged entities makes this possible but
     does add some verbosity to the source. Compare the following two:
 
     @@codeblock md
@@ -96,18 +100,24 @@
 
 
     @@codeblock um
-      @topic My first blog
-        @section Where to start
-          Blah blah @italic[blah]
+      @h1: My first blog
+
+      @h2: Where to start
+      Blah blah @italic[blah]
 
     @bold[Markdown] uses symbols to keep the markup from interfering with the
     readability of the source.
 
     @bold[Quantum] uses more explicit @italic[names] for things, which adds flexibilty
-    at the expense of some readability.
+    and explicitness at the expense of some readability.
 
 
   @topic Templating
+
+    @italic[Things like, injecting variables when building your site so that it uses different config when vs in production ]
+    @italic[If statements, loops, defining common blocks of markup for reuse elsewhere, etc]
+
+    @br
 
     @bold[Markdown] doesn't support templating out of the box.
 

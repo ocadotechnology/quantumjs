@@ -117,7 +117,6 @@ function populateVersionList (entity, versions, currentVersion) {
       populateVersionList(e, versions, currentVersion)
     })
   }
-  return entity
 }
 
 // de-version the source (remove all @version entities)
@@ -140,15 +139,8 @@ function defaultEntityMatchLookup (entity) {
   }
 }
 
-// XXX: when node 0.12 support is dropped, this can go
-function endsWith (string, searchString) {
-  var position = string.length - searchString.length
-  var i = string.indexOf(searchString, position)
-  return i !== -1 && i === position
-}
-
 function defaultFilenameModifier (file, version) {
-  if (endsWith(file.dest, 'index.um')) {
+  if (file.dest.endsWith('index.um')) {
     return file.clone({
       dest: file.dest.replace('index.um', version) + '/' + 'index.um'
     })
@@ -187,13 +179,11 @@ function versionTransform (page, options) {
   // Check if there are actual versions in the object, if there arent then no versioning is required.
   if (actualVersions.length > 0) {
     if (fullVersionList.length === 0) {
-      // XXX: should not log from within a transform - make a mechanism for returning errors and warnings for a page
-      console.error(
-        chalk.yellow('\n\nquantum-version Warning: processing content with no version list defined\n') +
-        '  A file was processed and @version entities found but no @versionList was\n' +
-        '  found and options.versions was not defined.\n' +
-        '  Please define a ' + chalk.yellow('@versionList') + ' or pass in ' + chalk.yellow('options.versions') + '\n'
-      )
+      page.warning({
+        module: 'quantum-version',
+        problem: 'No versions available for quantum-version to use: options.versions is not defined and no @versionsList was found in this file',
+        resolution: 'Either define a @versionList or pass in options.versions to quantum-version'
+      })
     }
 
     var versionsMap = {}

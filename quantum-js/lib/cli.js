@@ -77,9 +77,9 @@ QuantumJS (${version})
   `)
 }
 
-function buildPage (sourcePage, pipeline, logger) {
+function buildPage (sourcePage, pipeline, config, logger) {
   var start = Date.now()
-  return pipeline(sourcePage)
+  return pipeline(sourcePage, config)
     .then(function (pages) {
       return Array.isArray(pages) ? pages : [pages]
     })
@@ -116,10 +116,10 @@ function copyResources (config, options, logger) {
 function build (config) {
   var logger = config.logger
   var options = {concurrency: config.concurrency || 1, dest: config.dest}
-  var pipeline = config.pipeline(config)
+  var pipeline = config.pipeline
 
   return copyResources(config, options, logger).then(function () {
-    logger({type: 'header', message: 'Building Site'})
+    logger({type: 'header', message: 'Building Pages'})
     return fileOptions.resolve(config.pages, options).map(function (file) {
       return read(file.src)
         .then(function (content) {
@@ -127,7 +127,7 @@ function build (config) {
             file: file,
             content: content
           })
-          return buildPage(page, pipeline, logger)
+          return buildPage(page, pipeline, config, logger)
         })
     }, {concurrency: options.concurrency})
   }).then(function () {
@@ -149,7 +149,7 @@ function startServer (options) {
 function watch (config) {
   var logger = config.logger
   var options = {concurrency: config.concurrency || 1, dest: config.dest || 'target', port: config.port || 8080}
-  var pipeline = config.pipeline(config)
+  var pipeline = config.pipeline
 
   logger({type: 'header', message: 'Starting Server'})
   logger({type: 'message', message: 'http://0.0.0.0:' + options.port})
@@ -158,7 +158,7 @@ function watch (config) {
   copyResources(config, options, logger).then(function () {
     logger({type: 'header', message: 'Building Site'})
     qwatch(config.pages, options, function (page) {
-      return buildPage(page, pipeline, logger)
+      return buildPage(page, pipeline, config, logger)
     })
 
     qwatch.watcher(config.resources, options).then(function (watcher) {
@@ -203,13 +203,27 @@ function defaultLogger (evt) {
     console.log(evt.message)
   } else if (evt.type === 'build-page') {
     console.log(evt.sourcePage.file.src + chalk.magenta(' [' + evt.timeTaken + ' ms]'))
+    evt.sourcePage.warnings.forEach(warning => {
+      console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
+    })
+    evt.sourcePage.errors.forEach(error => {
+      console.log(chalk.red('  [error] ') + chalk.cyan(error.module) + ': ' + chalk.yellow(error.problem) + '.  ' + error.resolution)
+    })
     evt.destPages.forEach(function (page) {
       console.log(chalk.green('  + ' + page.file.dest))
+      page.warnings.forEach(warning => {
+        console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
+      })
+      page.errors.forEach(error => {
+        console.log(chalk.red('  [error] ') + chalk.cyan(error.module) + ': ' + chalk.yellow(error.problem) + '.  ' + error.resolution)
+      })
     })
   } else if (evt.type === 'copy-resource') {
     console.log(evt.file.src + chalk.magenta(' [' + evt.timeTaken + ' ms]' + chalk.gray(' -> ' + evt.file.dest)))
   } else if (evt.type === 'error') {
     console.error(evt.error.stack || evt.error)
+  } else if (evt.type === 'end') {
+    // console.log('Rendered ' + count + ' pages')
   }
 }
 

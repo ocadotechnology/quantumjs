@@ -16,6 +16,11 @@ describe('select', function () {
     select({type: 'tag', params: [], content: []}).should.be.an.instanceof(select.Selection)
   })
 
+  it('isSelection should work', function () {
+    select.isSelection(new select.Selection()).should.equal(true)
+    select.isSelection({}).should.equal(false)
+  })
+
   it('should flatten', function () {
     select(select({type: 'tag', params: [], content: []})).should.be.an.instanceof(select.Selection)
   })

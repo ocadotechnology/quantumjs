@@ -1,6 +1,6 @@
 {
   "name": "quantum-api",
-  "version": "0.10.0",
+  "version": "2.0.0",
   "description": "quantum entity to virtual dom transforms for writing api docs",
   "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
@@ -20,11 +20,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd --delay -R spec test"
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
   "dependencies": {
     "merge": "^1.2.0",
-    "quantum-js": "^1.0.0"
+    "quantum-js": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^2.3.0",

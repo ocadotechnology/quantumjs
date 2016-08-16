@@ -1,11 +1,17 @@
 
 @todo Code
-
-  - See if there is a way to fix the watch module
   - Check that all the tests pass
+  - allow inline links that are absolute to the project root (configurable) (nicer than @inline(../../../../shared/header.um) for example)
+  - turn inline globs into an array (to allow negative globbing)
+  - add a docs property to every transform function with documentation so that the cli can display help
+  - write tests for the core module (100%)
+  - fix the bugs with the parser
+  - allow newlines in inline content (join with no space/space?)
+  - make the html output nicely indented
 
 @todo Docs
 
+  - Simplify / make consise the docs where possible
   - Footer
   - Tutorials
   - Document diagram module
@@ -13,8 +19,13 @@
   - Clarify the docs for the tranforms
   - Core Concepts docs
   - Customising docs
-    - Pipeline transform (idea: estimated read time (in minutes) calculator)
+    - Page transform (idea: estimated read time (in minutes) calculator)
     - Entity tranforms (idea: creating entites for writing a blog)
   - Document how to optimise pages by not emedding assets
   - The Footer on the /docs page should appear at the bottom of the page
   - Favicon
+
+@todo Ideas
+  - expose the html transformer that takes an entity and produces virtual dom so
+    that a caching layer can be added for this - could significantly speed up
+    incremental/versioned builds

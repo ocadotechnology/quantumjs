@@ -1,6 +1,6 @@
 {
   "name": "quantum-dom",
-  "version": "0.10.0",
+  "version": "2.0.0",
   "description": "A virtual dom builder",
   "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
@@ -29,13 +29,12 @@
     }
   },
   "dependencies": {
-    "bluebird": "^2.9.30",
-    "chai-as-promised": "^5.2.0",
-    "merge": "^1.2.0"
+    "bluebird": "^2.9.30"
   },
   "devDependencies": {
     "chai": "^2.3.0",
     "istanbul": "^0.4.0",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "chai-as-promised": "^5.2.0"
   }
 }

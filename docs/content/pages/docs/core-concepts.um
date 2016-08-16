@@ -12,9 +12,6 @@
   @siteSidebars
   @topic The Markup Language
 
-    @codeblock jsx
-      const example = <div className="it works"></div>
-
     Content is written using the quantum markup language. Here is an overview
     of the language:
 
@@ -40,7 +37,8 @@
         @icon fa fa-add
         Click Me!
 
-      \# Entites can also use a more compact single line syntax (when written like this they are called inline entites):
+      \# Entites can also use a more compact single line syntax (when
+      \# written like this they are called inline entites):
       @type(parameters)[Content]
 
       \# Inline entites may be placed in the middle of text
@@ -52,7 +50,8 @@
       \# Parameters with spaces should be wrapped in [...]
       @person parameter1 [parameter2 with spaces]
 
-      \# escaping the @ sign is done by wrapping it (and optionally surrounding text) in @(...)
+      \# escaping the @ sign is done by wrapping it (and optionally
+      \# surrounding text) in @(...)
       @(your.name@ocado.com)
 
       \# nested content may be completely escaped by starting an entity with @@

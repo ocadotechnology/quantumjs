@@ -3,6 +3,8 @@
 @script [/resources/hexagon-js/hexagon.js]
 @stylesheet [/resources/quantum-site.css]
 
+@stylesheet [https://fonts.googleapis.com/css?family=Roboto:400,100|Roboto+Slab:400,700]
+
 @define titlebar
   @header
     @title QuantumJS
@@ -47,4 +49,5 @@
         @page /api/quantum-hub/: Quantum Hub
 
 @define footer
-  @div .footer
+  @bottomSection
+    @div .footer

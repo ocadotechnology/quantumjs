@@ -1,6 +1,6 @@
 {
   "name": "quantum-docs",
-  "version": "0.11.3",
+  "version": "2.0.0",
   "description": "quantum.js html transfoms for writing documentation style web pages",
   "license": "Apache-2.0",
   "author": "James Smyth <james.smyth@ocado.com>",
@@ -20,8 +20,9 @@
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
   "dependencies": {
-    "quantum-js": "^1.0.0",
-    "quantum-html": "^0.10.0"
+    "quantum-js": "^2.0.0",
+    "quantum-html": "^2.0.0",
+    "quantum-dom": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^2.3.0",

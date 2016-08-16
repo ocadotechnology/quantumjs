@@ -1,3 +1,4 @@
+'use strict'
 /*
 
      ____                    __                      _
@@ -15,43 +16,12 @@
 
 */
 
-var Promise = require('bluebird')
-var fs = Promise.promisifyAll(require('fs'))
-var merge = require('merge')
+const Promise = require('bluebird')
+const fs = Promise.promisifyAll(require('fs'))
 
-// utility for creating ids
-var uidCounter = 0
-function nextId () {
-  uidCounter++
-  return 'id' + uidCounter
-}
+// -------- Utils --------
 
-// an abstract representation of a dom node
-function Element (page, type, uid) {
-  this.page = page
-  this.parent = undefined
-  this.uid = uid
-  this.type = type
-  this.attrs = {}
-  this.content = []
-  this.endContent = []
-}
-
-function elementyPromise (promise) {
-  promise.add = function (el, end) {
-    return elementyPromise(promise.then(function (p) {
-      return p.add(el, end)
-    }))
-  }
-  promise.append = function (el, end) {
-    return elementyPromise(promise.then(function (p) {
-      return p.append(el, end)
-    }))
-  }
-  return promise
-}
-
-var entityMap = {
+const entityMap = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
@@ -60,20 +30,48 @@ var entityMap = {
   '/': '&#x2F;'
 }
 
+// html entity encoding
 function escapeHTML (text) {
-  return String(text).replace(/[&<>"'\/]/g, function (s) {return entityMap[s]})
+  return String(text).replace(/[&<>"'\/]/g, (s) => entityMap[s])
 }
 
-// sets the unique id (if you need to refer to the element in the future)
-Element.prototype.uuid = function (id) {
-  if (arguments.length === 0) {
-    return this.uid
-  } else {
-    delete this.page.elements[this.uid]
-    this.uid = id
-    this.page.elements[this.uid] = this
-    return this
+// creates a random id
+function randomId () {
+  const res = new Array(32)
+  const alphabet = 'ABCDEF0123456789'
+  for (let i = 0; i < 32; i++) {
+    res[i] = alphabet[Math.floor(Math.random() * 16)]
   }
+  return res.join('')
+}
+
+// like Promise.all - but if no Promise in arr then the result will be an Array
+function all (arr) {
+  return arr.some(x => x.then) ? Promise.all(arr) : arr
+}
+
+function isString (x) {
+  return typeof (x) === 'string' || x instanceof String
+}
+
+// -------- Prototypes --------
+
+// an abstract representation of a dom node
+function Element (type) {
+  this.type = type
+  this.attrs = {}
+  this.content = []
+  this.endContent = []
+}
+
+function elementyPromise (promise) {
+  promise.add = function (el, end) {
+    return elementyPromise(promise.then(p => p.add(el, end)))
+  }
+  promise.append = function (el, end) {
+    return elementyPromise(promise.then(p => p.append(el, end)))
+  }
+  return promise
 }
 
 // sets an attribute for the element
@@ -104,29 +102,29 @@ Element.prototype['class'] = function (cls) {
   }
 }
 
-// sets the id for this element
+// adds / removes a class for this element
 Element.prototype.classed = function (cls, add) {
-  var parts = cls.split(' ')
+  const parts = cls.split(' ')
 
   if (parts.length > 1) {
-    var self = this
     if (arguments.length > 1) {
-      parts.forEach(function (c) { return self.classed(c, add) })
+      parts.forEach(c => this.classed(c, add))
       return this
     } else {
-      return parts.every(function (c) { return self.classed(c) })
+      return parts.every(c => this.classed(c))
     }
   }
 
-  var hasClass = this.class().split(' ').indexOf(cls) !== -1
+  const hasClass = this.class().split(' ').indexOf(cls) !== -1
   if (arguments.length > 1) {
     if (add) {
       if (!hasClass) {
-        this.class(this.class() + ' ' + cls)
+        const hasNoClasses = this.class() === ''
+        this.class(hasNoClasses ? cls : this.class() + ' ' + cls)
       }
     } else {
       if (hasClass) {
-        var newClass = this.class().split(' ').filter(function (c) { return c !== cls }).join(' ')
+        const newClass = this.class().split(' ').filter(c => c !== cls).join(' ')
         this.class(newClass)
       }
     }
@@ -136,63 +134,28 @@ Element.prototype.classed = function (cls, add) {
   }
 }
 
-// adds an element to this element, and returns this element
-Element.prototype.add = function (element, addToEnd) {
-  if (element === undefined) {
-    return this
-  }
-  if (element && element.then) {
-    var self = this
-    return elementyPromise(element.then(function (el) {
-      return self.add(el, addToEnd)
-    }))
-  }
-  element.parent = this
-  if (Array.isArray(element)) {
-    var self = this
-    element.forEach(function (el) {
-      if (el !== undefined) {
-        if (addToEnd) {
-          self.endContent.push(el)
-        } else {
-          self.content.push(el)
-        }
-      }
-    })
-  } else {
-    if (addToEnd) {
-      this.endContent.push(element)
-    } else {
-      this.content.push(element)
-    }
-  }
-  return this
-}
-
 // adds an element to this element and returns the added element
-Element.prototype.append = function (element, addToEnd) {
+Element.prototype.append = function (element, options) {
   if (element === undefined) {
     return this
   }
   if (element && element.then) {
-    var self = this
-    return elementyPromise(element.then(function (el) {
-      return self.append(el, addToEnd)
-    }))
+    return elementyPromise(element.then(el => this.append(el, options)))
   }
-  element.parent = this
+  const addToEnd = options ? options.addToEnd === true : false
   if (Array.isArray(element)) {
-    var self = this
-    element.forEach(function (el) {
+    element.forEach(el => {
       if (el !== undefined) {
+        if (el instanceof Element) el.parent = this
         if (addToEnd) {
-          self.endContent.push(el)
+          this.endContent.push(el)
         } else {
-          self.content.push(el)
+          this.content.push(el)
         }
       }
     })
   } else {
+    if (element instanceof Element) element.parent = this
     if (addToEnd) {
       this.endContent.push(element)
     } else {
@@ -202,208 +165,220 @@ Element.prototype.append = function (element, addToEnd) {
   return element
 }
 
+// adds an element to this element, and returns this element
+Element.prototype.add = function (element, options) {
+  const res = this.append(element, options)
+  return res.then ? elementyPromise(res.then(r => this)) : this
+}
+
 // adds text to the content of the element
-Element.prototype.text = function (text, dontEscape) {
+Element.prototype.text = function (text, options) {
   if (text !== undefined) {
-    this.content.push(dontEscape ? text : escapeHTML(text))
+    const escape = (options && options.escape !== false) || options === undefined
+    this.content.push(escape ? escapeHTML(text) : text)
   }
   return this
 }
 
+// removes a child from this element
 Element.prototype.removeChild = function (element) {
-  var index = this.content.indexOf(element)
+  const index = this.content.indexOf(element)
   if (index > -1) {
     this.content.splice(index, 1)
-    delete this.page.elements[element.uid]
   }
   return index > -1
 }
 
-// removes the element from its parent
+// removes this element from its parent
 Element.prototype.remove = function () {
   if (this.parent) {
-    return this.parent.removeChild(this)
-  } else {
-    delete this.page.elements[this.uid]
-    return true
+    this.parent.removeChild(this)
   }
 }
 
 // turns the element into an html string
 Element.prototype.stringify = function () {
-  var self = this
-
-  var attributes = Object.keys(this.attrs).map(function (k) {
-    return k + '="' + self.attrs[k] + '"'
-  }).join(' ')
-
-  if (attributes.length > 0) {
-    attributes = ' ' + attributes
-  }
-
-  var content = this.content.map(function (d) {
-    return d.stringify ? d.stringify() : d
-  }).join('')
-
-  var endContent = this.endContent.map(function (d) {
-    return d.stringify ? d.stringify() : d
-  }).join('')
-
-  return '<' + this.type + attributes + '>' + content + endContent + '</' + this.type + '>'
+  const attributes = Object.keys(this.attrs).map(k => k + '="' + this.attrs[k] + '"').join(' ')
+  const content = this.content.map(d => d.stringify ? d.stringify() : (isString(d) ? d : '')).join('')
+  const endContent = this.endContent.map(d => d.stringify ? d.stringify() : (isString(d) ? d : '')).join('')
+  return '<' + this.type + (attributes.length > 0 ? ' ' + attributes : '') + '>' + content + endContent + '</' + this.type + '>'
 }
 
-function TextElement (page, text, uid) {
-  this.page = page
-  this.parent = undefined
-  this.uid = uid
+function TextNode (text) {
   this.text = text
 }
 
-// turns the element into an html string
-TextElement.prototype.stringify = function () {
+TextNode.prototype.stringify = function () {
   return this.text
 }
 
-// sets the unique id (if you need to refer to the element in the future)
-TextElement.prototype.uuid = function (id) {
-  if (arguments.length === 0) {
-    return this.uid
-  } else {
-    delete this.page.elements[this.uid]
-    this.uid = id
-    this.page.elements[this.uid] = this
-    return this
-  }
+function Asset (url, filename, shared) {
+  this.url = url
+  this.filename = filename
+  this.shared = shared
 }
 
-// factory for elements, and a manager for retrieving elements by uid
-function Page () {
-  this.elements = {}
-  this.html = this.create('html', 'html')
-  this.head = this.html.append(this.create('head', 'head'))
-  this.body = this.html.append(this.create('body', 'body'))
-  this.assets = {}
+function HeadInjectWrapper (element, options) {
+  this.element = element
+  this.options = options
 }
 
-// create an element
-Page.prototype.create = function (type, uid) {
-  if (uid === undefined) {
-    uid = nextId()
-  }
-  var element = new Element(this, type, uid)
-  this.elements[uid] = element
-  return element
+function PageModifier (options) {
+  this.options = options
 }
 
-// create an element
-Page.prototype.textNode = function (text, uid, options) {
-  if (uid === undefined) {
-    uid = nextId()
-  }
-  var escape = (options && options.escape !== false) || options === undefined
-  var element = new TextElement(this, (escape ? escapeHTML(text) : text), uid)
-  this.elements[uid] = element
-  return element
+function ArrayNode (array) {
+  this.array = array
 }
 
-// get an element by its uid
-Page.prototype.get = function (uid) {
-  return this.elements[uid]
+ArrayNode.prototype.stringify = function () {
+  return this.array.map(e => e.stringify ? e.stringify() : (isString(e) ? e : '')).join('')
 }
 
-// removes an element using the element itself, or by uid
-Page.prototype.remove = function (element) {
-  if (!(element instanceof Element)) {
-    element = this.get(element)
-  }
-
-  if (element) {
-    if (element.parent !== undefined) {
-      element.parent.removeChild(element)
-    } else {
-      delete this.elements[element.uid]
-    }
-  }
-
-  return this
-}
-
-function endsWith (string, searchString) {
-  var position = string.length - searchString.length
-  var i = string.indexOf(searchString, position)
-  return i !== -1 && i === position
-}
-
-Page.prototype.stringify = function (opts) {
-  var options = merge({
-    embedAssets: true,
-    assetPath: undefined
-  }, opts)
-
-  var page = this
-  return Promise.all(Object.keys(page.assets).map(function (k) {
-    if (options.embedAssets) {
-      if (page.assets[k]) {
-        return fs.readFileAsync(page.assets[k], 'utf-8').then(function (content) {
-          if (endsWith(k, '.js')) {
-            page.body.add(page.create('script').text(content, true), true)
-          } else if (endsWith(k, '.css')) {
-            page.head.add(page.create('style').text(content, true), true)
-          }
-        })
+// extracts 'elements' of a particular type from the tree of elements (for
+// extracting HeadInjectWrapper and Asset 'elements')
+function extractByType (elements, Type) {
+  function inner (elements, res) {
+    elements.forEach(e => {
+      if (e instanceof Type) {
+        res.push(e)
+      } else if (e instanceof Element) {
+        inner(e.content, res)
+        inner(e.endContent, res)
+      } else if (e instanceof ArrayNode) {
+        inner(e.array, res)
       }
-    } else {
-      if (endsWith(k, '.js')) {
-        page.body.add(page.script(options.assetPath + '/' + k), true)
-      } else if (endsWith(k, '.css')) {
-        page.head.add(page.stylesheet(options.assetPath + '/' + k), true)
-      }
-    }
-  })).then(function () {
-    return '<!DOCTYPE html>\n' + page.html.stringify()
+    })
+  }
+
+  const res = []
+  inner(elements, res)
+  return res
+}
+
+// -------- Factories --------
+
+// creates an element of the type given
+function create (type) {
+  return new Element(type)
+}
+
+function arrayNode (array) {
+  return new ArrayNode(array)
+}
+
+// creates an element of the type given
+function textNode (text, options) {
+  return new TextNode(options && options.escape === false ? text : escapeHTML(text))
+}
+
+// creates an element of the type given
+function bodyClassed (cls, classed) {
+  return new PageModifier({
+    type: 'body-classed',
+    class: cls,
+    classed: classed
   })
 }
 
-// adds an asset to the page
-Page.prototype.asset = function (resourceFilename, filename) {
-  if (arguments.length > 1) {
-    this.assets[resourceFilename] = filename
-    return this
-  } else {
-    return this.assets[resourceFilename]
-  }
+// injects an element into the head element when the page is created
+function head (element, options) {
+  return new HeadInjectWrapper(element, options || {})
 }
 
-// utilities / shorthand for certain elements
-
-Page.prototype.script = function (src, uid) {
-  return this.create('script', uid)
-    .attr('src', src)
+// adds an asset to the page - the user can choose to embed or not when stringifying
+function asset (options) {
+  return new Asset(options.url || '', options.file || '', options.shared === true)
 }
 
-Page.prototype.stylesheet = function (src, uid) {
-  return this.create('link', uid)
-    .attr('rel', 'stylesheet')
-    .attr('type', 'text/css')
-    .attr('href', src)
+// renders the element given to html
+function stringify (elements, options) {
+  const embedAssets = options ? options.embedAssets !== false : true
+  const assetPath = options ? options.assetPath || '' : ''
+
+  const headElementWrappers = extractByType(elements, HeadInjectWrapper)
+  const modifiers = extractByType(elements, PageModifier)
+
+  const latestById = {}
+  headElementWrappers.forEach(w => {
+    if (w.options.id) {
+      latestById[w.options.id] = w
+    }
+  })
+
+  const bodyClassesMap = {}
+  modifiers
+    .filter(m => m.options.type === 'body-classed')
+    .forEach(m => {
+      bodyClassesMap[m.options.class] = m.options.classed
+    })
+
+  const bodyClass = Object.keys(bodyClassesMap)
+    .filter(c => bodyClassesMap[c])
+    .join(' ')
+
+  const headElements = headElementWrappers
+    .filter(w => w.options.id ? w === latestById[w.options.id] : true)
+    .map(w => w.element)
+    .map(e => e.stringify ? e.stringify() : (isString(e) ? e : ''))
+    .join('')
+
+  const bodyElements = elements
+    .map(e => e.stringify ? e.stringify() : (isString(e) ? e : ''))
+    .join('')
+
+  const assets = extractByType(elements, Asset)
+
+  // XXX: add an option for choosing where the assets live
+
+  // only keep unique assets
+  const uniqueAssetsMap = {}
+  assets.forEach(asset => {
+    uniqueAssetsMap[asset.url] = asset
+  })
+  const uniqueAssets = Object.keys(uniqueAssetsMap).map(k => uniqueAssetsMap[k])
+
+  const stylesheets = Promise.all(uniqueAssets.filter(a => a.url.endsWith('.css')).map(s => {
+
+    if (embedAssets) {
+      // XXX: make this loader configurable so that assets can be cached
+      return fs.readFileAsync(s.filename, 'utf-8').then(content => '<style>' + content + '</style>')
+    } else {
+      return '<link rel="stylesheet" href="' + assetPath + s.url + '"></link>'
+    }
+  }))
+
+  const scripts = Promise.all(uniqueAssets.filter(a => a.url.endsWith('.js')).map(s => {
+    if (embedAssets) {
+      // XXX: make this loader configurable so that assets can be cached
+      return fs.readFileAsync(s.filename, 'utf-8').then(content => '<script>' + content + '</script>')
+    } else {
+      return '<script src="' + assetPath + s.url + '"></script>'
+    }
+  }))
+
+  return Promise.all([stylesheets, scripts])
+    .spread((stylesheets, scripts) => {
+      const head = '<head>' + headElements + stylesheets.join('') + '</head>'
+      const openBodyTag = bodyClass ? '<body class="' + bodyClass + '">' : '<body>'
+      const body = openBodyTag + bodyElements + scripts.join('') + '</body>'
+      const html = '<!DOCTYPE html>\n' + '<html>' + head + body + '</html>'
+      return {
+        // XXX: add the list of assets for copying reources
+        html: html
+      }
+    })
 }
 
-Page.prototype.addCommonMetaTags = function () {
-  this.head.append(this.create('meta').attr('charset', 'UTF-8'))
-  this.head.append(this.create('meta').attr('name', 'viewport').attr('content', 'width=device-width, initial-scale=1'))
-  return this
-}
-
-// like Promise.all - but if no entry in the array is a promise
-// then the result remains as an array
-Page.prototype.all = function (arr) {
-  return arr.some(function (x) { return !!x.then }) ? Promise.all(arr) : arr
-}
-
-Page.prototype.nextId = function () {
-  return nextId()
-}
-
-module.exports = function () {
-  return new Page()
+module.exports = {
+  create: create,
+  arrayNode: arrayNode,
+  textNode: textNode,
+  bodyClassed: bodyClassed,
+  asset: asset,
+  head: head,
+  stringify: stringify,
+  all: all,
+  randomId: randomId,
+  escapeHTML: escapeHTML
 }

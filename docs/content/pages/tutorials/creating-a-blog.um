@@ -1,0 +1,99 @@
+@inline ../../shared/shared.um
+
+@titlebar
+@author James Smyth
+@date 13/05/2016
+
+@topSection
+  @title Writing Technical Documentation
+  @description
+    Example of defining transforms for writing a blog
+
+@contentSection
+  @siteSidebars
+
+  @topic Introduction
+    Quantum makes it easy to define how content is rendered using @italic[transforms].
+    There are a couple of modules that already have transforms defined, which
+    should cover many cases, however you may wish to define your own transforms
+    that convert quantum into html. This tutorial explores what a transform is,
+    and how to define your own.
+
+  @topic Entity transforms vs Pipeline transform
+    An @bold[entity transform] is a transform that converts an entity into a
+    piece of html.
+
+    A @bold[pipeline transform] is a transform that takes an entire page and
+    reshapes it in some way.
+
+    Entity transforms do the conversion from quantum objects into html, whereas
+    pipeline transfomrs act on the quantum objects before they are converted into
+    html.
+
+  @topic Structure of a blog
+    A blog is typically structured into posts, so it would make sense to have an
+    entity for defining a post. Posts consist of content, tags, authors and maybe
+    a date for when they were written. So perhaps we want our post entity to look
+    like this:
+
+    @@codeblock um
+      @post Title
+        @author joe.bloggs
+        @date 05/12/2061
+        @tags tag1 tag2 tag3
+        @content
+          \# post content goes here
+
+  @topic Defining an entity transform
+
+    To contert something that looks like this into html, we need to define a
+    transforms function:
+
+    @@codeblock js
+      function post (entity, page, transforms) {
+        return page.create('div').class('post')
+          .add(page.create('post-title').text(entity.ps()))
+          .add(page.create('post-content').add(entity.select('content').transform(transforms)))
+      }
+
+    This function takes an entity, and returns some virtual dom which represents
+    that entity. This is all we have to do to get quantum rendering new entity types.
+
+    All that is left now is to tell quantum to use this function. To do this
+    we need to export the function:
+
+    @subsection blog-transforms.js
+      @codeblock js
+        exports.post = function (entity, page, transforms) {
+          return page.create('div').class('post')
+            .add(page.create('post-title').text(entity.ps()))
+            .add(page.create('post-content').add(entity.select('content').transform(transforms)))
+        }
+
+    Now we can include the transforms file as we would with any other html
+    transforms:
+
+    @subsection quantum.config.js
+      @codeblock js
+        var html = require('quantum-html')
+        var blog = require('./blog-transforms')
+
+        function pipeline () {
+          var htmlTransforms = {
+            html: html.transforms,
+            blog: blog
+          }
+
+          // returns a function that compiles a page out to html
+          return function (obj) {
+            return Promise.resolve(obj)
+              .map(html({ transforms: htmlTransforms }))
+              .map(html.stringify(htmlOptions))
+              .map(html.htmlRenamer())
+          }
+        }
+
+        module.exports = {
+          pipeline: pipeline,
+          files: '**/*.um'
+        }

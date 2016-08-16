@@ -88,7 +88,7 @@ function normalizeSpec (item) {
     var files = Array.isArray(item.files) ? item.files : [item.files]
     return {
       files: files,
-      base: (files.length === 1 && !item.base) ? inferBase(files[0]) : item.base,
+      base: item.base ? item.base : inferBase(item.files), // in the 'else' situation item.files must be a string since it passed the validation check
       watch: item.watch,
       dest: item.dest
     }

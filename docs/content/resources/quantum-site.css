@@ -5,31 +5,45 @@ body, html {
   padding: 0;
   background: white;
   font-size: 16px;
+
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto Slab', serif;
 }
 
 .header {
-  margin-top: 46px;
   padding: 1em 1em;
-  background: #F5F5F5;
   text-align: center;
+  background: #f8f8f8;
+
+  background: -webkit-linear-gradient(135deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), -webkit-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), #CC447B;
+  background: -moz-linear-gradient(-45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), -moz-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), #CC447B;
+  background: linear-gradient(-45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), #CC447B;
+  -webkit-background-size: 200em 200em;
+  background-size: 200em 200em;
 }
 
 .logo {
   width: 20%;
   height: auto;
+  opacity: 0.6;
 }
 
 .title {
   font-size: 5vw;
   font-weight: 100;
-  color: #7C4CAA;
+  color: white;
   position: relative;
   top: -0.25em;
 }
 
 .tagline {
+  color: white;
   font-size: 24px;
   padding-bottom: 1em;
+  font-family: 'Roboto Slab', serif;
 }
 
 .color-band {
@@ -67,6 +81,7 @@ body, html {
 .github-icon {
   opacity: 0.5;
   margin-right: 2em;
+  cursor: pointer;
 }
 
 .github-icon:hover {
@@ -133,4 +148,24 @@ body, html {
 }
 .qm-docs-pagination-button:focus {
   outline: solid 2px #CC447B !important;
+}
+
+
+.qm-docs-topic-header {
+  font-size: 24px !important;
+  color: #d15687 !important;
+  font-family: 'Roboto Slab', serif !important;
+}
+
+.qm-docs-subsection-header,
+.qm-docs-section-header {
+  font-family: 'Roboto Slab', serif !important;
+}
+
+.qm-docs-header {
+  background: #d15687 !important;
+}
+
+.qm-docs-navication-menu-page {
+  color: #d15687 !important;
 }

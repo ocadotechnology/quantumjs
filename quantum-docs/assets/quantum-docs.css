@@ -104,11 +104,14 @@ p:last-child {
   overflow: auto;
   max-height: calc(100% - 42px);
   max-width: 100%;
-  margin: 40px;
-  background: #F9F9F9;
-  color: #6B6B6B;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
-  border-radius: 1px;
+  display: flex;
+}
+
+.qm-docs-navication-menu-wrapper {
+  background: whitesmoke;
+  border-radius: 4px;
+  margin: 15px 30px;
+  overflow: auto;
 }
 
 .qm-docs-sidebar-left {

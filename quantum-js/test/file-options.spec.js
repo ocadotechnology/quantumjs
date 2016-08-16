@@ -1,5 +1,7 @@
 var files = require('..').fileOptions
-var should = require('chai').should()
+var chai = require('chai')
+var should = chai.should()
+var expect = chai.expect
 var Promise = require('bluebird')
 var fs = Promise.promisifyAll(require('fs-extra'))
 var util = require('util')
@@ -169,6 +171,24 @@ describe('resolve', function () {
   it('should yield an error when an invalid spec is passed in 2', function (done) {
     files.resolve({}, {dest: 'target2'}).catch(function (err) {
       done()
+    })
+  })
+
+  describe('validate', () => {
+    it('should return an error for an undefined spec', () => {
+      files.validate(undefined).should.eql(new Error('spec cannot be undefined'))
+    })
+
+    it('should return an error if an object spec is passed in with no files property', () => {
+      files.validate({}).should.eql(new Error('spec.files cannot be undefined property'))
+    })
+
+    it('should return an error if an object in an array spec is passed in with no files property', () => {
+      files.validate([{}]).should.eql(new Error('spec.files cannot be undefined property'))
+    })
+
+    it('should return an error if no base property is set for an object with an array of files', () => {
+      files.validate({files: []}).should.eql(new Error('spec.files cannot be undefined property'))
     })
   })
 

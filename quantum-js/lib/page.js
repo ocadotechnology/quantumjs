@@ -27,6 +27,8 @@ function Page (options) {
   this.file = options.file
   this.content = options.content || []
   this.meta = options.meta || {}
+  this.warnings = options.warnings || []
+  this.errors = options.errors || []
 }
 
 Page.prototype = {
@@ -34,8 +36,16 @@ Page.prototype = {
     return new Page({
       file: changes && changes.file !== undefined ? changes.file : this.file,
       content: changes && changes.content !== undefined ? changes.content : this.content,
-      meta: changes && changes.meta !== undefined ? merge.recursive(this.meta, changes.meta) : this.meta
+      meta: changes && changes.meta !== undefined ? merge.recursive({}, this.meta, changes.meta) : this.meta,
+      warnings: changes && changes.warnings !== undefined ? changes.warnings : this.warnings,
+      errors: changes && changes.errors !== undefined ? changes.errors : this.errors
     })
+  },
+  warning: function (warning) {
+    this.warnings.push(warning)
+  },
+  error: function (errors) {
+    this.errors.push(error)
   }
 }
 

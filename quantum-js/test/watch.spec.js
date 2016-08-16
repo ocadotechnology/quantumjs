@@ -538,11 +538,15 @@ describe('watch', function () {
     var options = {dest: 'target2'}
 
     var errors = []
+    var complete = false
 
     var handler = function (parsed, details) {
       if (details.cause === 'change') {
         errors.should.eql([]) // expect there to be no errors
-        done()
+        if (!complete) {
+          complete = true
+          done()
+        }
       }
     }
 

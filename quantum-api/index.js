@@ -13,12 +13,14 @@
 
 */
 
-var quantum = require('quantum-js')
-var merge = require('merge')
+const quantum = require('quantum-js')
+const dom = require('quantum-dom')
+const merge = require('merge')
 
 module.exports = function (opts) {
-  var defaultOptions = {
+  const defaultOptions = {
     typeLinks: {},
+    // XXX: change to array, ditch order property
     tags: {
       added: {
         tagText: 'added', // The text to display on tags
@@ -39,25 +41,25 @@ module.exports = function (opts) {
     }
   }
 
-  var options = merge.recursive(defaultOptions, opts)
-  var tagNames = Object.keys(options.tags).sort(function (a, b) {return options.tags[a].order - options.tags[b].order })
+  const options = merge.recursive(defaultOptions, opts)
+  const tagNames = Object.keys(options.tags).sort(function (a, b) {return options.tags[a].order - options.tags[b].order })
 
   /* Adds links for parameterised types (eg. Promise[Array[String]]) */
-  function addParameterisedTypeLinks (container, typeString, page) {
-    addSingleTypeLink(container, typeString.slice(0, typeString.indexOf('[')), page)
-    var innerTypeString = typeString.slice(typeString.indexOf('[') + 1, typeString.lastIndexOf(']'))
+  function addParameterisedTypeLinks (container, typeString) {
+    addSingleTypeLink(container, typeString.slice(0, typeString.indexOf('[')))
+    const innerTypeString = typeString.slice(typeString.indexOf('[') + 1, typeString.lastIndexOf(']'))
     container.add('[')
-    addTypeLink(container, innerTypeString, page)
+    addTypeLink(container, innerTypeString)
     container.add(']')
     return container
   }
 
   /* Adds types (with links to documentation for the type if possible) to an element */
-  function addSingleTypeLink (container, typeString, page) {
-    var types = typeString.split('/')
+  function addSingleTypeLink (container, typeString) {
+    const types = typeString.split('/')
     types.forEach(function (type, index) {
       if (type in options.typeLinks) {
-        container.add(page.create('a').class('qm-api-type-link').attr('href', options.typeLinks[type]).text(type))
+        container.add(dom.create('a').class('qm-api-type-link').attr('href', options.typeLinks[type]).text(type))
       } else {
         container.add(type)
       }
@@ -68,27 +70,27 @@ module.exports = function (opts) {
   }
 
   /* Adds types to a string (eg. Array[String]), taking care of parameterised types `Array[T]`, or single types `String` */
-  function addTypeLink (container, typeString, page) {
+  function addTypeLink (container, typeString) {
     if (typeString.indexOf('[') > -1) {
-      addParameterisedTypeLinks(container, typeString, page)
+      addParameterisedTypeLinks(container, typeString)
     } else {
-      addSingleTypeLink(container, typeString, page)
+      addSingleTypeLink(container, typeString)
     }
   }
 
-  // creates a span containing one or more / separated types (complete with links for known types)
-  function createType (typeString, page) {
+  /* Creates a span containing one or more / separated types (complete with links for known types) */
+  function createType (typeString) {
     if (typeString !== undefined && typeString !== '') {
-      var container = page.create('span')
-      addTypeLink(container, typeString, page)
+      const container = dom.create('span')
+      addTypeLink(container, typeString)
       return container
     }
   }
 
   function createTagClasses (selection) {
-    var childUpdated = !selection.has(tagNames) && selection.has(tagNames, {recursive: true})
+    const childUpdated = !selection.has(tagNames) && selection.has(tagNames, {recursive: true})
 
-    var tags = []
+    const tags = []
     if (selection.has('added')) tags.push('added')
     if (selection.has('deprecated')) tags.push('deprecated')
     if (selection.has('removed')) tags.push('removed')
@@ -97,35 +99,35 @@ module.exports = function (opts) {
     return tags
   }
 
-  function createTags (selection, page) {
-    var tags = page.create('span').class('qm-api-header-tags')
+  function createTags (selection) {
+    const tags = dom.create('span').class('qm-api-header-tags')
 
     createTagClasses(selection).forEach(function (name) {
-      tags.add(page.create('span').class('qm-api-tag qm-api-tag-' + name).text(options.tags[name].tagText))
+      tags.add(dom.create('span').class('qm-api-tag qm-api-tag-' + name).text(options.tags[name].tagText))
     })
 
     return tags
   }
 
-  // general template for headers (handles the tags automatically, just provide the details span)
-  function createHeader (type, details, selection, page, transforms) {
-    var tagClasses = createTagClasses(selection).map(function (name) { return 'qm-api-' + name }).join(' ')
+  // General template for headers (handles the tags automatically, just provide the details span)
+  function createHeader (type, details, selection, transforms) {
+    const tagClasses = createTagClasses(selection).map(function (name) { return 'qm-api-' + name }).join(' ')
 
-    return page.create('div').class('qm-api-item-header qm-api-' + type + '-header')
+    return dom.create('div').class('qm-api-item-header qm-api-' + type + '-header')
       .add(details.class('qm-api-header-details' + (tagClasses ? ' ' + tagClasses : '')))
-      .add(createTags(selection, page))
+      .add(createTags(selection))
   }
 
   function createNotice (type, title) {
-    return function (selection, page, transforms) {
+    return (selection, transforms) => {
       if (selection.has(type)) {
-        var notice = selection.select(type)
+        const notice = selection.select(type)
         notice.removeAll('issue')
 
         if (notice.hasContent()) {
-          return page.create('div').class('qm-api-notice qm-api-notice-' + type)
-            .add(page.create('div').class('qm-api-notice-header').text(title))
-            .add(page.create('div').class('qm-api-notice-body')
+          return dom.create('div').class('qm-api-notice qm-api-notice-' + type)
+            .add(dom.create('div').class('qm-api-notice-header').text(title))
+            .add(dom.create('div').class('qm-api-notice-body')
               .add(notice.transform(transforms))
           )
         }
@@ -139,38 +141,38 @@ module.exports = function (opts) {
   }
 
   function organisedEntity (selection) {
-    var added = []
-    var updated = []
-    var existing = []
-    var deprecated = []
-    var removed = []
+    const added = []
+    const updated = []
+    const existing = []
+    const deprecated = []
+    const removed = []
 
-    selection.content().forEach(function (e) {
-      if (quantum.select.isEntity(e)) {
-        var e = quantum.select(e)
-        if (e.has('removed')) {
-          removed.push(e)
-        } else if (e.has('deprecated')) {
-          deprecated.push(e)
-        } else if (e.has('updated')) {
-          updated.push(e)
-        } else if (e.has('added')) {
-          added.push(e)
+    selection.content().forEach(entity => {
+      if (quantum.select.isEntity(entity)) {
+        const selection = quantum.select(entity)
+        if (selection.has('removed')) {
+          removed.push(selection)
+        } else if (selection.has('deprecated')) {
+          deprecated.push(selection)
+        } else if (selection.has('updated')) {
+          updated.push(selection)
+        } else if (selection.has('added')) {
+          added.push(selection)
         } else {
-          existing.push(e)
+          existing.push(selection)
         }
       } else {
-        // console.log(e)
+        console.log(e)
       }
     })
 
-    var sortedAdded = added.sort(sortEntities)
-    var sortedUpdated = updated.sort(sortEntities)
-    var sortedExisting = existing.sort(sortEntities)
-    var sortedDeprecated = deprecated.sort(sortEntities)
-    var sortedRemoved = removed.sort(sortEntities)
+    const sortedAdded = added.sort(sortEntities)
+    const sortedUpdated = updated.sort(sortEntities)
+    const sortedExisting = existing.sort(sortEntities)
+    const sortedDeprecated = deprecated.sort(sortEntities)
+    const sortedRemoved = removed.sort(sortEntities)
 
-    var newContent = sortedAdded.concat(
+    const newContent = sortedAdded.concat(
       sortedUpdated.concat(
         sortedExisting.concat(
           sortedDeprecated.concat(
@@ -189,65 +191,67 @@ module.exports = function (opts) {
 
   // creates a group of items (like all the methods on a prototype, or all the properties on an object)
   function createItemGroup (type, title, options) {
-    return function (selection, page, transforms) {
-      var hasType = Array.isArray(type) ? type.every(function (t) { return selection.has(t) }) : selection.has(type)
+    return function (selection, transforms) {
+      const hasType = Array.isArray(type) ? type.every(t => selection.has(t)) : selection.has(type)
+
       if (hasType) {
-        var filtered = selection.filter(type)
-        if (!options || !options.noSort) filtered = organisedEntity(filtered)
-        var firstType = Array.isArray(type) ? type[0] : type
-        return page.create('div').class('qm-api-' + firstType + '-group')
-          .add(page.create('h2').text(title))
+        const filtered = (!options || !options.noSort) ? organisedEntity(selection.filter(type)) : selection.filter(type)
+        const firstType = Array.isArray(type) ? type[0] : type
+
+        return dom.create('div').class('qm-api-' + firstType + '-group')
+          .add(dom.create('h2').text(title))
           .add(filtered.transform(transforms))
       }
     }
   }
 
   // creates a qm collapsible
-  function createCollapsible (page, clas, header, content) {
-    return page.create('div').class('qm-api-collapsible qm-api-item ' + clas)
-      .add(page.create('div').class('qm-api-collapsible-heading')
-        .add(page.create('div').class('qm-api-collapsible-toggle')
-          .add(page.create('i').class('qm-api-chevron-icon')))
-        .add(page.create('div').class('qm-api-collapsible-head')
+  function createCollapsible (clas, header, content) {
+    return dom.create('div').class('qm-api-collapsible qm-api-item ' + clas)
+      .add(dom.create('div').class('qm-api-collapsible-heading')
+        .add(dom.create('div').class('qm-api-collapsible-toggle')
+          .add(dom.create('i').class('qm-api-chevron-icon')))
+        .add(dom.create('div').class('qm-api-collapsible-head')
           .add(header)))
-      .add(page.create('div').class('qm-api-collapsible-content')
+      .add(dom.create('div').class('qm-api-collapsible-content')
         .add(content))
   }
 
   function createItemBuilder (opts) {
     return function (clas) {
-      var standard = [deprecated, removed]
+      const standard = [deprecated, removed]
 
-      return function (selection, page, transforms) {
+      return function (selection, transforms) {
         // render as something else if the type parameter matches
         // (eg @property bob [Function] should be rendered as a function)
-        var others = opts.renderAsOther || {}
-        var otherKeys = Object.keys(others)
-        for (var i = 0; i < otherKeys.length; i++) {
-          var name = otherKeys[i]
+        const others = opts.renderAsOther || {}
+        const otherKeys = Object.keys(others)
+        for (let i = 0; i < otherKeys.length; i++) {
+          const name = otherKeys[i]
           if (selection.param(1) === name || (selection.param(1) === undefined && selection.param(0) === name)) {
-            return others[name](clas)(selection, page, transforms)
+            return others[name](clas)(selection, transforms)
           }
         }
 
-        var content = page.create('div').class('qm-api-item-content')
+        const content = dom.create('div').class('qm-api-item-content')
 
         standard.concat(opts.content).forEach(function (builder) {
-          content.add(builder(selection, page, transforms))
+          content.add(builder(selection, transforms))
         })
 
         if (opts.header) {
           // XXX: do optional check
 
-          var extraHeaderClasses = (selection.type()[selection.type().length - 1] === '?') ? ' qm-api-optional' : ''
-          var header = page.create('div').class('qm-api-item-head' + extraHeaderClasses)
+          const extraHeaderClasses = (selection.type()[selection.type().length - 1] === '?') ? ' qm-api-optional' : ''
+          const header = dom.create('div').class('qm-api-item-head' + extraHeaderClasses)
 
           opts.header.forEach(function (builder) {
-            header.add(builder(selection, page, transforms))
+            header.add(builder(selection, transforms))
           })
 
-          var extraClasses = selection.isEmpty() ? ' qm-api-item-no-description' : ''
-          return createCollapsible(page, clas + extraClasses, header, content)
+          const extraClasses = selection.isEmpty() ? ' qm-api-item-no-description' : ''
+
+          return createCollapsible(clas + extraClasses, header, content)
         } else {
           return content
         }
@@ -258,200 +262,186 @@ module.exports = function (opts) {
   /* header building blocks */
 
   // creates a header for function type items
-  function functionHeader (selection, page, transforms) {
-    var name = page.create('span').class('qm-api-function-name').text(selection.type() === 'constructor' ? 'constructor' : selection.param(0))
+  function functionHeader (selection, transforms) {
+    const name = dom.create('span').class('qm-api-function-name').text(selection.type() === 'constructor' ? 'constructor' : selection.param(0))
 
-    var params = selection.selectAll(['param', 'param?']).map(function (param) {
-      var isOptional = param.type()[param.type().length - 1] === '?'
-      return page.create('span').class(isOptional ? 'qm-api-function-param qm-api-optional' : 'qm-api-function-param')
-        .add(page.create('span').class('qm-api-function-param-name').text(param.param(0)))
-        .add(page.create('span').class('qm-api-function-param-type').add(createType(param.param(1), page)))
+    const params = selection.selectAll(['param', 'param?']).map(function (param) {
+      const isOptional = param.type()[param.type().length - 1] === '?'
+      return dom.create('span').class(isOptional ? 'qm-api-function-param qm-api-optional' : 'qm-api-function-param')
+        .add(dom.create('span').class('qm-api-function-param-name').text(param.param(0)))
+        .add(dom.create('span').class('qm-api-function-param-type').add(createType(param.param(1))))
     })
 
-    var returnsSelection = selection.selectAll('returns').filter(function (sel) {
-      return !sel.has('removed')
-    })[0]
+    const returnsSelection = selection
+      .selectAll('returns')
+      .filter(sel => !sel.has('removed'))[0]
 
     if (returnsSelection) {
-      var returns = page.create('span').class('qm-api-function-returns').add(createType(returnsSelection.ps(), page))
+      var retns = dom.create('span').class('qm-api-function-returns').add(createType(returnsSelection.ps()))
     }
 
-    var details = page.create('span')
+    const details = dom.create('span')
       .add(name)
-      .add(page.create('span').class('qm-api-function-params').add(params))
-      .add(returns)
+      .add(dom.create('span').class('qm-api-function-params').add(params))
+      .add(retns)
 
-    return createHeader('function', details, selection, page, transforms)
+    return createHeader('function', details, selection, transforms)
   }
 
   // creates a header for property type items
-  function propertyHeader (selection, page, transforms) {
-    var details = page.create('span')
-      .add(page.create('span').class('qm-api-property-name').text(selection.param(0) || ''))
-      .add(page.create('span').class('qm-api-property-type').add(createType(selection.param(1), page)))
+  function propertyHeader (selection, transforms) {
+    const details = dom.create('span')
+      .add(dom.create('span').class('qm-api-property-name').text(selection.param(0) || ''))
+      .add(dom.create('span').class('qm-api-property-type').add(createType(selection.param(1))))
 
-    return createHeader('property', details, selection, page, transforms)
+    return createHeader('property', details, selection, transforms)
   }
 
-  function prototypeHeader (selection, page, transforms) {
-    var details = page.create('span')
-      .add(page.create('span').class('qm-api-prototype-name').text(selection.param(0) || ''))
+  function prototypeHeader (selection, transforms) {
+    let details = dom.create('span')
+      .add(dom.create('span').class('qm-api-prototype-name').text(selection.param(0) || ''))
 
-    var extendsEntities = selection.selectAll('extends')
+    const extendsEntities = selection.selectAll('extends')
 
     if (extendsEntities.length > 0) {
-      details = details.add(page.create('span').class('qm-api-prototype-extends').text('extends'))
+      details = details.add(dom.create('span').class('qm-api-prototype-extends').text('extends'))
 
       extendsEntities.forEach(function (ent) {
-        var extender = page.create('span')
+        const extender = dom.create('span')
           .class('qm-api-prototype-extends-type')
-          .add(createType(ent.ps(), page))
+          .add(createType(ent.ps()))
         details = details.add(extender)
       })
     }
 
-    return createHeader('prototype', details, selection, page, transforms)
-  }
-
-  // creates a header for entity type items
-  function entityHeader (selection, page, transforms) {
-    var details = page.create('span')
-      .add(page.create('span').class('qm-api-entity-name').text('@' + selection.param(0) || ''))
-      .add(page.create('span').class('qm-api-entity-params').text(selection.select('params').ps()))
-      .add(page.create('span').class('qm-api-entity-content').text(selection.select('params').cs()))
-
-    return createHeader('entity', details, selection, page, transforms)
-
+    return createHeader('prototype', details, selection, transforms)
   }
 
   // creates a header for type items
-  function typeHeader (selection, page, transforms) {
-    var details = page.create('span')
-      .add(page.create('span').class('qm-api-type-name').add(createType(selection.param(0), page)))
+  function typeHeader (selection, transforms) {
+    var details = dom.create('span')
+      .add(dom.create('span').class('qm-api-type-name').add(createType(selection.param(0))))
 
-    return createHeader('type', details, selection, page, transforms)
+    return createHeader('type', details, selection, transforms)
   }
 
   /* content building blocks */
 
-  function description (selection, page, transforms) {
+  function description (selection, transforms) {
     if (selection.has('description')) {
-      return page.create('div').class('qm-api-description').add(selection.select('description').transform(transforms))
+      return dom.create('div')
+        .class('qm-api-description')
+        .add(selection.select('description').transform(transforms))
     } else {
-      return page.create('div').class('qm-api-description').text(selection.cs().trim())
+      return dom.create('div')
+        .class('qm-api-description')
+        .text(selection.cs().trim())
     }
   }
 
-  function extras (selection, page, transforms) {
-    return page.create('div').class('qm-api-extras').add(
-      page.all(selection.selectAll('extra').map(function (e) {
-        return page.create('div').class('qm-api-extra')
+  function extras (selection, transforms) {
+    return dom.create('div').class('qm-api-extras').add(
+      dom.all(selection.selectAll('extra').map(function (e) {
+        return dom.create('div').class('qm-api-extra')
           .add(e.transform(transforms))
       })))
   }
 
-  function defaultValue (selection, page, transforms) {
+  function defaultValue (selection, transforms) {
     if (selection.has('default')) {
-      return page.create('div').class('qm-api-default')
-        .add(page.create('span').class('qm-api-default-key').text('Default: '))
-        .add(page.create('span').class('qm-api-default-value').add(selection.select('default').ps().trim()))
+      return dom.create('div').class('qm-api-default')
+        .add(dom.create('span').class('qm-api-default-key').text('Default: '))
+        .add(dom.create('span').class('qm-api-default-value').add(selection.select('default').ps().trim()))
         .add(selection.select('default').transform(transforms))
     }
   }
 
-  function groups (selection, page, transforms) {
+  function groups (selection, transforms) {
     if (selection.has('group')) {
-      var sortedEntity = organisedEntity(selection.filter('group'))
-      return page.create('div').class('qm-api-group-container')
-        .add(page.all(sortedEntity.selectAll('group').map(function (e) {
-          return page.create('div').class('qm-api-group')
-            .add(page.create('h2').text(e.ps()))
-            .add(page.create('div').class('qm-api-group-content')
-              .add(description(e, page, transforms))
-              .add(e.filter(function (e) {return e.type() !== 'description'}).transform(transforms)))
+      const sortedEntity = organisedEntity(selection.filter('group'))
+      return dom.create('div').class('qm-api-group-container')
+        .add(dom.all(sortedEntity.selectAll('group').map((e) => {
+          return dom.create('div').class('qm-api-group')
+            .add(dom.create('h2').text(e.ps()))
+            .add(dom.create('div').class('qm-api-group-content')
+              .add(description(e, transforms))
+              .add(e.filter(ent => ent.type() !== 'description').transform(transforms)))
         })))
     }
   }
 
-  var deprecated = createNotice('deprecated', 'Deprecated')
-  var removed = createNotice('removed', 'Removed')
+  const deprecated = createNotice('deprecated', 'Deprecated')
+  const removed = createNotice('removed', 'Removed')
 
-  var prototypes = createItemGroup('prototype', 'Prototypes')
-  var constructors = createItemGroup('constructor', 'Constructors')
-  var objects = createItemGroup('object', 'Objects')
-  var params = createItemGroup(['param', 'param?'], 'Arguments', {noSort: true})
-  var properties = createItemGroup(['property', 'property?'], 'Properties')
-  var methods = createItemGroup('method', 'Methods')
-  var events = createItemGroup('event', 'Events')
-  var functions = createItemGroup('function', 'Functions')
-  var returns = createItemGroup('returns', 'Returns')
-  var classes = createItemGroup('class', 'Classes')
-  var extraClasses = createItemGroup('extraclass', 'Extra Classes')
-  var childClasses = createItemGroup('childclass', 'Child Classes')
-  var entities = createItemGroup('entity', 'Entities')
+  const prototypes = createItemGroup('prototype', 'Prototypes')
+  const constructors = createItemGroup('constructor', 'Constructors')
+  const objects = createItemGroup('object', 'Objects')
+  const params = createItemGroup(['param', 'param?'], 'Arguments', {noSort: true})
+  const properties = createItemGroup(['property', 'property?'], 'Properties')
+  const methods = createItemGroup('method', 'Methods')
+  const events = createItemGroup('event', 'Events')
+  const functions = createItemGroup('function', 'Functions')
+  const returns = createItemGroup('returns', 'Returns')
+  const classes = createItemGroup('class', 'Classes')
+  const extraClasses = createItemGroup('extraclass', 'Extra Classes')
+  const childClasses = createItemGroup('childclass', 'Child Classes')
 
   /* item builders */
 
-  var createApiLike = createItemBuilder({
-    content: [ description, extras, groups, properties, prototypes, objects, functions, classes, entities ]
+  const createApiLike = createItemBuilder({
+    content: [ description, extras, groups, properties, prototypes, objects, functions, classes ]
   })
 
-  var createGroupLike = createItemBuilder({
-    content: [ groups, params, properties, prototypes, objects, functions, methods, classes, events, entities ]
+  const createGroupLike = createItemBuilder({
+    content: [ groups, params, properties, prototypes, objects, functions, methods, classes, events ]
   })
 
-  var createConstructorLike = createItemBuilder({
+  const createConstructorLike = createItemBuilder({
     header: [ functionHeader ],
     content: [ description, extras, params ]
   })
 
-  var createFunctionLike = createItemBuilder({
+  const createFunctionLike = createItemBuilder({
     header: [ functionHeader ],
     content: [ description, extras, defaultValue, params, groups, events, returns ]
   })
 
-  var createObjectLike = createItemBuilder({
+  const createObjectLike = createItemBuilder({
     header: [ propertyHeader ],
     content: [ description, extras, defaultValue, groups, properties, prototypes, functions, methods ]
   })
 
-  var createPropertyLike = createItemBuilder({
+  const createPropertyLike = createItemBuilder({
     header: [ propertyHeader ],
     content: [ description, extras, defaultValue ],
     renderAsOther: { 'Function': createFunctionLike, 'Object': createObjectLike }
   })
 
-  var createClassLike = createItemBuilder({
+  const createClassLike = createItemBuilder({
     header: [ typeHeader ],
     content: [ description, extras, groups, classes, extraClasses, childClasses ]
   })
 
-  var createTypeLike = createItemBuilder({
+  const createTypeLike = createItemBuilder({
     header: [ typeHeader ],
     content: [ description, extras ],
     renderAsOther: { 'Function': createFunctionLike, 'Object': createObjectLike }
   })
 
-  var createPrototypeLike = createItemBuilder({
+  const createPrototypeLike = createItemBuilder({
     header: [ prototypeHeader ],
     content: [ description, extras, defaultValue, constructors, groups, properties, events, methods, functions ]
   })
 
-  var createEntityLike = createItemBuilder({
-    header: [ entityHeader ],
-    content: [ description, extras, groups, entities ],
-  })
-
   /* transforms */
 
-  function api (selection, page, transforms) {
-    page
-      .asset('quantum-api.css', __dirname + '/client/quantum-api.css')
-      .asset('quantum-api.js', __dirname + '/client/quantum-api.js')
-    return createApiLike('qm-api')(selection, page, transforms)
+  function api (selection, transforms) {
+    return createApiLike('qm-api')(selection, transforms)
+      .add(dom.asset({url: '/assets/quantum-api.css', file: __dirname + '/assets/quantum-api.css' }))
+      .add(dom.asset({url: '/assets/quantum-api.js', file: __dirname + '/assets/quantum-api.js'}))
   }
 
-  return {
+  return Object.freeze({
     'api': api,
     'group': createGroupLike('qm-api-group'),
     'prototype': createPrototypeLike('qm-api-prototype'),
@@ -467,12 +457,6 @@ module.exports = function (opts) {
     'returns': createTypeLike('qm-api-returns'),
     'class': createClassLike('qm-api-class'),
     'extraclass': createClassLike('qm-api-extraclass'),
-    'childclass': createClassLike('qm-api-childclass'),
-    'entity': createEntityLike('qm-api-entity')
-  }
-}
-
-module.exports.assets = {
-  'quantum-api.css': __dirname + '/client/quantum-api.css',
-  'quantum-api.js': __dirname + '/client/quantum-api.js'
+    'childclass': createClassLike('qm-api-childclass')
+  })
 }

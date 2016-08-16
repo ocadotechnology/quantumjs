@@ -200,4 +200,53 @@ describe('read', function () {
     return read(filename, {inline: false}).should.eventually.eql(expected)
 
   })
+
+  it('read.page should work', function () {
+    var expected = new quantum.Page({
+      file: new quantum.File({
+        src: filename,
+        dest: filename
+      }),
+      content: {
+        'content': [
+          {
+            'type': 'test',
+            'params': [],
+            'content': [
+              {
+                'type': 'button',
+                'params': [],
+                'content': ['Hello World']
+              }, {
+                'type': 'inlinedContent',
+                'params': [],
+                'content': [
+                  {
+                    'type': 'button',
+                    'params': [],
+                    'content': ['Hello 2']
+                  }, {
+                    'type': 'last',
+                    'params': ['end', 'of', 'the', 'chain'],
+                    'content': ['Some content']
+                  }
+                ]
+              }, {
+                'type': 'altinline',
+                'params': ['source2.um'],
+                'content': []
+              }, {
+                'type': 'button',
+                'params': [],
+                'content': ['Hello World 2']
+              }
+            ]
+          }
+        ]
+      }
+    })
+
+    return read.page(filename).should.eventually.eql(expected)
+
+  })
 })
