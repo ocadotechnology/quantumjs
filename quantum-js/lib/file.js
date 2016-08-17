@@ -29,7 +29,7 @@ File.prototype = {
       dest: this.dest.replace('.um', extension)
     })
   },
-  /* returns a new File with the specified properties changed */
+  /* Returns a new File with the specified properties changed */
   clone: function (changes) {
     return new File({
       src: changes && changes.src !== undefined ? changes.src : this.src,

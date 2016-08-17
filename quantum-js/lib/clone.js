@@ -13,7 +13,7 @@
 
 */
 
-var merge = require('merge')
+const merge = require('merge')
 
 // OPTIM: we know the shape of the ast, so this can be optimised
 module.exports = function (ast) {

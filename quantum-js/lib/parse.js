@@ -233,6 +233,7 @@ function tokenize (str) {
           consumeIfNonEmpty('CONTENT', CONTENT)
           emit('END_SAME_LINE_CONTENT')
           consumingSameLineContent = false
+          consumingUnparsed = false
         } else {
           consume('CONTENT', CONTENT)
         }
@@ -259,10 +260,26 @@ function tokenize (str) {
         if (escapedInlineCounter === 0) {
           consumeIfNonEmpty('CONTENT', CONTENT, ['\\]', '\\['])
           emit('END_INLINE_CONTENT')
+
+          if (str[pos + 1] === '\n') {
+            var currentIndent = indent[indent.length - 1]
+            var nextLineIsIndented = true
+            for (var i = 0; i <= currentIndent; i++) {
+              if (str[pos + 2 + i] !== ' ') {
+                nextLineIsIndented = false
+              }
+            }
+            if (!nextLineIsIndented) {
+              pos += currentIndent + 1
+              start += currentIndent + 1
+            }
+          }
         } else {
           escapedInlineCounter--
         }
-      } else if (s === '\n') err('unexpected newline')
+      } else if (s === '\n') {
+        consume('CONTENT', INLINE_CONTENT)
+      }
     }
 
     if (s === '\n') {
@@ -324,7 +341,6 @@ function splitParams (params) {
     }
   }
 
-  // TODO: deal with groups, eg. [one two three] four
   return res
 }
 
@@ -350,6 +366,14 @@ function ast (tokens) {
   var prevWasType = false
   var nextParamsAreEscaped = false
   var emptyLines = []
+  var handlingInlineContent = false // true when between an START_INLINE_CONTENT and END_INLINE_CONTENT
+  /*
+    notCreatedInlineContent
+    This istrue when the inline content entry has not yet been created in the parsed
+    content (which is done for the first content encountered between START_INLINE_CONTENT
+    and END_INLINE_CONTENT)
+  */
+  var notCreatedInlineContent = true
 
   while(i < l) {
     token = tokens[i]
@@ -389,12 +413,21 @@ function ast (tokens) {
 
         prevWasType = false
 
-        var ex = ''
-        for (var k = 0; k < extraIndent; k++) {
-          ex += ' '
+        if (handlingInlineContent) {
+          if (notCreatedInlineContent) {
+            current.content.push(token.value)
+            notCreatedInlineContent = false
+          } else {
+            current.content[current.content.length - 1] += ' ' + token.value
+          }
+        } else {
+          var ex = ''
+          for (var k = 0; k < extraIndent; k++) {
+            ex += ' '
+          }
+          current.content.push(ex + token.value)
         }
 
-        current.content.push(ex + token.value)
       }
     } else if (token.type == 'EMPTY_CONTENT') {
       emptyLines.push(token.value)
@@ -414,10 +447,13 @@ function ast (tokens) {
       }
       prevWasType = true
     } else if (token.type === 'START_INLINE_CONTENT') {
+      handlingInlineContent = true
+      notCreatedInlineContent = true
       lineStackSize++
       stack.push(current)
       current = active
     } else if (token.type === 'END_INLINE_CONTENT') {
+      handlingInlineContent = false
       active = current
       current = stack.pop()
       lineStackSize--

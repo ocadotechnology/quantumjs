@@ -271,6 +271,24 @@ describe('parse', function () {
       ])
     })
 
+    it('should inline followed by a newline', function () {
+      tokenize('@container\n  @fruits: @ripe[banana]\n    @veg: parsnip').should.eql([
+        { type: 'TYPE', value: 'container'},
+        { type: 'INDENT', value: 2},
+        { type: 'TYPE', value: 'fruits'},
+        { type: 'START_SAME_LINE_CONTENT' },
+        { type: 'TYPE', value: 'ripe'},
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'banana'},
+        { type: 'END_INLINE_CONTENT' },
+        { type: 'END_SAME_LINE_CONTENT' },
+        { type: 'INDENT', value: 2},
+        { type: 'TYPE', value: 'veg' },
+        { type: 'START_SAME_LINE_CONTENT' },
+        { type: 'CONTENT', value: 'parsnip'}
+      ])
+    })
+
     it('should handle empty lines correctly', function () {
       tokenize('@fruits ripe\n\n  @banana\n  \n  @lychee').should.eql([
         { type: 'TYPE', value: 'fruits'},
@@ -356,7 +374,37 @@ describe('parse', function () {
         { type: 'INDENT', value: 2 },
         { type: 'CONTENT', value: '@two'},
         { type: 'DEDENT', value: 2 },
-        { type: 'TYPE', value: 'three' },
+        { type: 'TYPE', value: 'three' }
+      ])
+    })
+
+    it('should handle a multiline @@ block followed by a single line one', function () {
+      tokenize('@@codeblock js\n  function () { return 0 }\n@@codeblock js: function () { return 0 }\n').should.eql([
+        { type: 'TYPE', value: 'codeblock'},
+        { type: 'PARAMS', value: 'js'},
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: 'function () { return 0 }'},
+        { type: 'DEDENT', value: 2 },
+        { type: 'TYPE', value: 'codeblock'},
+        { type: 'PARAMS', value: 'js'},
+        { type: 'START_SAME_LINE_CONTENT'},
+        { type: 'CONTENT', value: 'function () { return 0 }'},
+        { type: 'END_SAME_LINE_CONTENT'},
+      ])
+    })
+
+    it('should handle multiple single line @@ blocks', function () {
+      tokenize('@@codeblock js: function () { return 0 }\n@@codeblock js: function () { return 0 }\n').should.eql([
+        { type: 'TYPE', value: 'codeblock'},
+        { type: 'PARAMS', value: 'js'},
+        { type: 'START_SAME_LINE_CONTENT'},
+        { type: 'CONTENT', value: 'function () { return 0 }'},
+        { type: 'END_SAME_LINE_CONTENT'},
+        { type: 'TYPE', value: 'codeblock'},
+        { type: 'PARAMS', value: 'js'},
+        { type: 'START_SAME_LINE_CONTENT'},
+        { type: 'CONTENT', value: 'function () { return 0 }'},
+        { type: 'END_SAME_LINE_CONTENT'},
       ])
     })
 
@@ -386,6 +434,41 @@ describe('parse', function () {
         { type: 'CONTENT', value: ']1, 2, 3'},
         { type: 'END_INLINE_CONTENT' },
         { type: 'CONTENT', value: ' bob'}
+      ])
+    })
+
+    it('newlines should be allowed in inline content', function () {
+      tokenize('@thing[very\nlong\ncontent]').should.eql([
+        { type: 'TYPE', value: 'thing'},
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'very'},
+        { type: 'CONTENT', value: 'long'},
+        { type: 'CONTENT', value: 'content'},
+        { type: 'END_INLINE_CONTENT' }
+      ])
+    })
+
+    it('should handle newlines after inline content correctly', function () {
+      tokenize('Some @thing[content]\nSome more content').should.eql([
+        { type: 'CONTENT', value: 'Some '},
+        { type: 'TYPE', value: 'thing'},
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'content'},
+        { type: 'END_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'Some more content'}
+      ])
+    })
+
+    it('should handle newlines after inline content correctly', function () {
+      tokenize('@container\n  Some @thing[content]\n  Some more content').should.eql([
+        { type: 'TYPE', value: 'container'},
+        { type: 'INDENT', value: 2},
+        { type: 'CONTENT', value: 'Some '},
+        { type: 'TYPE', value: 'thing'},
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'content'},
+        { type: 'END_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'Some more content'}
       ])
     })
 
@@ -437,7 +520,19 @@ describe('parse', function () {
         params: ['kiwi', 'lemon'],
         content: []
       }]))
+    })
 
+    it('escaped params should work', function () {
+      tokens = [
+        { type: 'TYPE', value: 'fruits'},
+        { type: 'PARAMS', value: '[one two three] four'}
+      ]
+
+      ast(tokens).should.eql(selection([{
+        type: 'fruits',
+        params: ['one two three', 'four'],
+        content: []
+      }]))
     })
 
     it('basic indented entities', function () {
@@ -742,6 +837,25 @@ describe('parse', function () {
               content: []
             }
           ]
+        }
+      ]))
+    })
+
+    it('newlines should be allowed in inline content', function () {
+      var tokens = [
+        { type: 'TYPE', value: 'thing'},
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'very'},
+        { type: 'CONTENT', value: 'long'},
+        { type: 'CONTENT', value: 'content'},
+        { type: 'END_INLINE_CONTENT' }
+      ]
+
+      ast(tokens).should.eql(selection([
+        {
+          type: 'thing',
+          params: [],
+          content: ['very long content']
         }
       ]))
     })
@@ -1466,6 +1580,16 @@ describe('parse', function () {
       }
 
       chai.expect(parse(source)).to.eql(expected)
+    })
+
+    it('newlines should be allowed in inline content', function () {
+      parse('@thing[very\nlong\ncontent]').should.eql(selection([
+        {
+          type: 'thing',
+          params: [],
+          content: ['very long content']
+        }
+      ]))
     })
 
   })
