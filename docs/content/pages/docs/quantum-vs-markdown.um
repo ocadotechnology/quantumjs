@@ -140,9 +140,10 @@
           @subsection Markdown
             @codeblock md: Some **bold** text
           @subsection Quantum
-            @@codeblock um
-              Some @bold[bold] text
-        @cell: Some @bold[bold] text
+            @@codeblock um: Some @bold[bold] text
+
+        @cell
+          Some @bold[bold] text
 
       @row
         @cell: Italic Text

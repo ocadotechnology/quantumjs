@@ -7,6 +7,7 @@
 
 @topSection
   @title quantum-js
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description: The parser, a selection and builder api for quantum markup and AST.
 
 @contentSection
@@ -92,12 +93,12 @@
     The selection api allows the selection and manipulation of quantum entities:
 
     @codeblock js
-      var quantum = require('quantum-js')
+      const quantum = require('quantum-js')
 
-      quantum.read.single('example.um').then(function (parsed) {
-        var entity = parsed.content
+      quantum.read('example.um').then((parsed) => {
+        const entity = parsed.content
 
-        var selection = quantum.select(entity)
+        const selection = quantum.select(entity)
         selection.ps()                      // extract the parameter string from an entity
         selection.cs()                      // extract the content string from an entity
         selection.select('banana')          // selects the banana entity from the currently selected entity
@@ -107,6 +108,9 @@
 
 
   @topic Builder Api
+    @notice Docs Wrong
+      This documentation is out of date
+
     The builder api allows the creation of quantum AST. Once build is called,
     entities are converted into a selection.
 

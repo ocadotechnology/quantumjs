@@ -174,9 +174,12 @@ function paragraphTransform (selection, transform) {
       }
 
       if (quantum.select.isEntity(e)) {
-        currentParagraph = currentParagraph.add(transform(quantum.select(e))).add(dom.textNode(' '))
+        currentParagraph = currentParagraph
+          .add(transform(quantum.select(e)))
+          .add(dom.textNode(' '))
       } else {
-        currentParagraph = currentParagraph.add(dom.textNode(e + ' '))
+        currentParagraph = currentParagraph
+          .add(dom.textNode(e + ' '))
       }
     }
   })

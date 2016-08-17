@@ -7,6 +7,7 @@
 
 @topSection
   @title Quantum Diagram
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
 
 @contentSection

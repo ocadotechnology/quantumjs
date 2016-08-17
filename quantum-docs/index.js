@@ -214,11 +214,13 @@ transforms.header = function (selection, transforms) {
 transforms.topSection = function (selection, transforms) {
   const pageTitle = selection.select('title').ps()
   dom.title = pageTitle
+  const sourceLink = selection.has('source') ? selection.select('source').ps() : undefined
 
   return dom.create('div').class('qm-docs-top-section')
     .add(stylesheetAsset)
     .add(breadcrumb(selection.select('breadcrumb'), transforms))
     .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
+      .add(sourceLink ? dom.create('a').class('qm-docs-top-section-source').attr('href', sourceLink).text(selection.select('source').cs()) : undefined)
       .add(dom.create('div').class('qm-docs-top-section-title').text(pageTitle))
       .add(dom.create('div').class('qm-docs-top-section-description')
         .add(paragraphTransform(selection.select('description'), transforms))))
@@ -278,11 +280,11 @@ transforms.relatedButtons = function (selection, transforms) {
 
 transforms.table = function (selection, transforms) {
   function toRow (rowEntity) {
-    const isHeader = rowEntity.type === 'header'
+    const isHeader = rowEntity.type() === 'header'
 
-    const cells = dom.all(rowEntity.selectAll('cell'))
+    const cells = dom.all(rowEntity.selectAll('cell')
       .map(cellEntity => paragraphTransform(cellEntity, transforms))
-      .map(cell => dom.create(isHeader ? 'th' : 'td').add(cell))
+      .map(cell => dom.create(isHeader ? 'th' : 'td').add(cell)))
 
     return dom.create('tr').add(cells)
   }
@@ -310,14 +312,14 @@ module.exports = function (options) {
 
 module.exports.populateTableOfContents = function (opts) {
   return function (obj) {
-    var toc = quantum.select(obj.content).select('tableOfContents', {recursive: true})
-    var topics = quantum.select(obj.content).selectAll('topic', {recursive: true})
+    const toc = quantum.select(obj.content).select('tableOfContents', {recursive: true})
+    const topics = quantum.select(obj.content).selectAll('topic', {recursive: true})
 
-    topics.forEach(function (topic) {
+    topics.forEach((topic) => {
       toc.add({
         type: 'topic',
         params: topic.params().slice(0),
-        content: topic.selectAll('section').map(function (section) {
+        content: topic.selectAll('section').map((section) => {
           return {
             type: 'section',
             params: section.params().slice(0),

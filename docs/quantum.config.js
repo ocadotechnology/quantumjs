@@ -36,6 +36,17 @@ const templateVariables = {
 }
 
 function pipeline (page) {
+  const templateVariables = {
+    examples: {
+      exampleList: [1, 2, 3],
+      exampleObject: {
+        name: 'Dave',
+        age: 25
+      }
+    },
+    filename: page.file.src
+  }
+
   return Promise.resolve(page)
     .then(template({ variables: templateVariables }))
     .then(changelog())

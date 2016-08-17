@@ -5,9 +5,8 @@
   - turn inline globs into an array (to allow negative globbing)
   - add a docs property to every transform function with documentation so that the cli can display help
   - write tests for the core module (100%)
-  - fix the bugs with the parser
-  - allow newlines in inline content (join with no space/space?)
-  - make the html output nicely indented
+  - make the html output nicely indented (option)
+  - following a inline entity with a newline should not create a newline in the content - problem in the paragraph renderer?
 
 @todo Docs
 

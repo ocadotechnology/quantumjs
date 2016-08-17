@@ -7,17 +7,111 @@
 
 @topSection
   @title Quantum DOM
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
+    A minimal virtual dom library used by quantum for building html pages.
 
 @contentSection
+
   @siteSidebars
   @topic About
-    TODO
+    The Quantum DOM library is primarily used when defining custom @bold[entity
+    transform]. It is used for creating @hyperlink(https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)[dom]
+    elements (for example a @code(html)[<div>] or a @code(html)[<span>], or any other dom element).
 
-  @topic Example
-    TODO
+    When a page is rendered with quantum, a virtual dom page is built up as the
+    source file for the page is processed. Once done, the virtual dom is rendererd
+    out to a HTML string and written to a file. This two phase process allows each
+    entity transform to be a @hyperlink(https://en.wikipedia.org/wiki/Pure_function)[pure function],
+    which makes each entity transform easy to understand, and has nice properties
+    that make caching easier (and thus faster page builds).
+
+    A quantum entity transform might look something like this:
+
+    @@codeblock js
+      const dom = require('quantum-dom')
+
+      // creates a sign in block for the @signIn entity
+      function signIn (selection) {
+        return dom.create('div').class('sign-in')
+          .add(dom.create('input').class('username-input'))
+          .add(dom.create('input').class('password-input'))
+          .add(dom.create('button').class('sign-in-button').text('Sign in'))
+      }
+
+    The above would render out any instances of @code(um)[@signIn] in the page
+    as the following html block:
+
+    @@codeblock html
+      <div class="sign-in">
+        <input class="username-input"></input>
+        <input class="password-input"></input>
+        <button class="sign-in-button">Sign in</button>
+      </div>
+
+    Entity transforms often make use of the passed in selection (that wraps the
+    @code(um)[@signIn] entity), but this transform is rather simple, and needs no
+    information from the entity. See the tutorial on @hyperlink(/tutorials/creating-a-blog/)[creating a blog]
+    for how to create more advanced entity transforms.
+
+  @topic Examples
+    The api allows creation of detached elements. Detached elements can be
+    added to another as children to create small chuncks of dom. Here are some
+    examples of how to use the api:
+
+    @@codeblock js
+      const dom = require('quantum-dom')
+
+      // Creates a <div></div> element
+      dom.create('div')
+
+      // Creates a <div id="my-id"></div> element
+      dom.create('div').id('my-id')
+
+      // Creates a <a href="/link/to/somewhere">Link</a> element
+      dom.create('a').attr('href', '/link-to-somewhere').text('Link')
+
+      // Creates a <span class="my-class"></span> element
+      dom.create('span').class('my-class')
+
+      // Creates an element that will render out to <h1>My Header</h1>
+      dom.create('h1').text('My Header')
+
+      /*
+        Creates the following dom structure:
+
+        <div class="outer-div">
+          <div class="inner-div"></div>
+        </div>
+      */
+      dom.create('div').class('outer-div')
+        .add(dom.create('div').class('inner-div'))
 
   @topic Api
-    TODO
+    @api dom
+      @function create
+        @description
+          Creates a dom element of the type provided. The type can be any valid
+          dom element type and should be provided lower case. Ie, use @code(js)['div']
+          not @code(js)['DIV']).
+
+          No validation is performed on the type, so custom elements can also be
+          created.
+
+          Example:
+
+          @@codeblock js
+            const myDiv = dom.create('div')
+
+        @param type [String]: The type of element to create
+        @returns Element: A newly constructed Element instance.
+
+
+      @function head
+        @Description
+          Instructs the page
+
+        @param element [Element]
+          @
 
 @footer

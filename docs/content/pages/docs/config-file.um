@@ -44,18 +44,15 @@
         version: "1.2.6"
       }
 
-      function pipeline () {
-        // returns a function that compiles a page out to html
-        return function (obj) {
-          return Promise.resolve(obj)
-            .then(template({ variables: templateVariables }))
-            .then(changelog())
-            .then(version())
-            .map(docs.populateTableOfContents())
-            .map(html({ transforms: htmlTransforms }))
-            .map(html.stringify(htmlStringifyOptions))
-            .map(html.htmlRenamer())
-        }
+      function pipeline (page) {
+        return Promise.resolve(page)
+          .then(template({ variables: templateVariables }))
+          .then(changelog())
+          .then(version())
+          .map(docs.populateTableOfContents())
+          .map(html({ transforms: htmlTransforms }))
+          .map(html.stringify(htmlStringifyOptions))
+          .map(html.htmlRenamer())
       }
 
       module.exports = {

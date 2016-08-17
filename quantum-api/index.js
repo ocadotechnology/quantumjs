@@ -16,6 +16,7 @@
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const merge = require('merge')
+const html = require('quantum-html')
 
 module.exports = function (opts) {
   const defaultOptions = {
@@ -192,7 +193,7 @@ module.exports = function (opts) {
   // creates a group of items (like all the methods on a prototype, or all the properties on an object)
   function createItemGroup (type, title, options) {
     return function (selection, transforms) {
-      const hasType = Array.isArray(type) ? type.every(t => selection.has(t)) : selection.has(type)
+      const hasType = Array.isArray(type) ? type.some(t => selection.has(t)) : selection.has(type)
 
       if (hasType) {
         const filtered = (!options || !options.noSort) ? organisedEntity(selection.filter(type)) : selection.filter(type)
@@ -331,7 +332,7 @@ module.exports = function (opts) {
     if (selection.has('description')) {
       return dom.create('div')
         .class('qm-api-description')
-        .add(selection.select('description').transform(transforms))
+        .add(html.paragraphTransform(selection.select('description'), transforms))
     } else {
       return dom.create('div')
         .class('qm-api-description')
@@ -343,7 +344,7 @@ module.exports = function (opts) {
     return dom.create('div').class('qm-api-extras').add(
       dom.all(selection.selectAll('extra').map(function (e) {
         return dom.create('div').class('qm-api-extra')
-          .add(e.transform(transforms))
+          .add(html.paragraphTransform(e, transforms))
       })))
   }
 

@@ -7,6 +7,7 @@
 
 @topSection
   @title Quantum Html
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     This page describes how the html ast to virual dom transform works, and
     shows how individual entity transforms can be passed into the html transform.
@@ -27,23 +28,22 @@
 
   @topic Example
 
-    @p: Build script
-    @codeblock js
-      var quantum = require('quantum-js')
-      var html    = require('quantum-html')
+    @subsection Build script
+      @codeblock js
+        const quantum = require('quantum-js')
+        const html    = require('quantum-html')
 
-      quantum.read('source.um')
-        .map(html())
-        .map(html.stringify())
-        .map(quantum.write('target'))
+        quantum.read('source.um')
+          .map(html())
+          .map(html.stringify())
+          .map(quantum.write('target'))
 
-    @p: Example markup
-    @@codeblock um
-      @h1: My Page
-      @p: Hello World!
+    @subsection Example markup
+      @@codeblock um
+        @h1: My Page
+        @p: Hello World!
 
-    @p: Example result
-    @sheet:
+    @subsection Example result
       @h1: My Page
       @p: Hello World!
 

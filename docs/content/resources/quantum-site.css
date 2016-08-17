@@ -18,9 +18,9 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   background: #f8f8f8;
 
-  background: -webkit-linear-gradient(135deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), -webkit-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), #CC447B;
-  background: -moz-linear-gradient(-45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), -moz-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), #CC447B;
-  background: linear-gradient(-45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), #CC447B;
+  background: -webkit-linear-gradient(135deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), -webkit-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), #dc6a1e;
+  background: -moz-linear-gradient(-45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), -moz-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), #dc6a1e;
+  background: linear-gradient(-45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.1) 75%), #dc6a1e;
   -webkit-background-size: 200em 200em;
   background-size: 200em 200em;
 }
@@ -47,7 +47,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .color-band {
-  background: #CC447B;
+  background: #dc6a1e;
   color: white;
 }
 
@@ -140,20 +140,20 @@ h1, h2, h3, h4, h5, h6 {
   color: #774A8A !important;
 }
 .qm-docs-summary-link {
-  color: #D44E7D !important;
+  color: #dc6a1e !important;
 }
 .qm-docs-summary-link:hover {
-  background: #D44E7D !important;
+  background: #dc6a1e !important;
   color: white !important;
 }
 .qm-docs-pagination-button:focus {
-  outline: solid 2px #CC447B !important;
+  outline: solid 2px #dc6a1e !important;
 }
 
 
 .qm-docs-topic-header {
   font-size: 24px !important;
-  color: #d15687 !important;
+  color: #dc6a1e !important;
   font-family: 'Roboto Slab', serif !important;
 }
 
@@ -163,9 +163,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .qm-docs-header {
-  background: #d15687 !important;
+  background: #ffffff !important;
+  box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.16);
 }
 
 .qm-docs-navication-menu-page {
-  color: #d15687 !important;
+  color: #dc6a1e !important;
+}
+
+.qm-docs-header-title {
+  color: #dc6a1e !important;
+  font-weight: normal !important;
+}
+
+.qm-html-paragraph {
+  line-height: 1.5em;
 }
