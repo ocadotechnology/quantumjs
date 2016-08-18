@@ -17,6 +17,7 @@ const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const merge = require('merge')
 const html = require('quantum-html')
+const path = require('path')
 
 module.exports = function (opts) {
   const defaultOptions = {
@@ -43,7 +44,7 @@ module.exports = function (opts) {
   }
 
   const options = merge.recursive(defaultOptions, opts)
-  const tagNames = Object.keys(options.tags).sort(function (a, b) {return options.tags[a].order - options.tags[b].order })
+  const tagNames = Object.keys(options.tags).sort((a, b) => options.tags[a].order - options.tags[b].order)
 
   /* Adds links for parameterised types (eg. Promise[Array[String]]) */
   function addParameterisedTypeLinks (container, typeString) {
@@ -152,18 +153,18 @@ module.exports = function (opts) {
       if (quantum.select.isEntity(entity)) {
         const selection = quantum.select(entity)
         if (selection.has('removed')) {
-          removed.push(selection)
+          removed.push(entity)
         } else if (selection.has('deprecated')) {
-          deprecated.push(selection)
+          deprecated.push(entity)
         } else if (selection.has('updated')) {
-          updated.push(selection)
+          updated.push(entity)
         } else if (selection.has('added')) {
-          added.push(selection)
+          added.push(entity)
         } else {
-          existing.push(selection)
+          existing.push(entity)
         }
       } else {
-        console.log(e)
+        console.log(entity)
       }
     })
 
@@ -173,15 +174,11 @@ module.exports = function (opts) {
     const sortedDeprecated = deprecated.sort(sortEntities)
     const sortedRemoved = removed.sort(sortEntities)
 
-    const newContent = sortedAdded.concat(
-      sortedUpdated.concat(
-        sortedExisting.concat(
-          sortedDeprecated.concat(
-            sortedRemoved
-          )
-        )
-      )
-    )
+    const newContent = sortedAdded
+      .concat(sortedUpdated)
+      .concat(sortedExisting)
+      .concat(sortedDeprecated)
+      .concat(sortedRemoved)
 
     return quantum.select({
       type: selection.type(),
@@ -329,13 +326,14 @@ module.exports = function (opts) {
   /* content building blocks */
 
   function description (selection, transforms) {
+    const descriptionClass = 'qm-api-description'
     if (selection.has('description')) {
       return dom.create('div')
-        .class('qm-api-description')
+        .class(descriptionClass)
         .add(html.paragraphTransform(selection.select('description'), transforms))
     } else {
       return dom.create('div')
-        .class('qm-api-description')
+        .class(descriptionClass)
         .text(selection.cs().trim())
     }
   }
@@ -438,8 +436,14 @@ module.exports = function (opts) {
 
   function api (selection, transforms) {
     return createApiLike('qm-api')(selection, transforms)
-      .add(dom.asset({url: '/assets/quantum-api.css', file: __dirname + '/assets/quantum-api.css' }))
-      .add(dom.asset({url: '/assets/quantum-api.js', file: __dirname + '/assets/quantum-api.js'}))
+      .add(dom.asset({
+        url: '/assets/quantum-api.css',
+        file: path.join(__dirname, 'assets/quantum-api.css')
+      }))
+      .add(dom.asset({
+        url: '/assets/quantum-api.js',
+        file: path.join(__dirname, '/assets/quantum-api.js')
+      }))
   }
 
   return Object.freeze({

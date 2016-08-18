@@ -4,7 +4,6 @@ const path = require('path')
 
 const unique = require('array-unique')
 const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs-extra'))
 const merge = require('merge')
 
 const quantum = require('quantum-js')
@@ -30,6 +29,7 @@ const types = [
   'label',
   'li',
   'link',
+  'meta',
   'ol',
   'option',
   'p',
@@ -45,8 +45,7 @@ const types = [
   'thead',
   'tr',
   'ul',
-  'vr',
-  'meta'
+  'vr'
 ]
 
 const transforms = {}
@@ -81,12 +80,16 @@ function entityToElement (type, selection, parsePs) {
   return element
 }
 
+const attributeEntities = [
+  'attr',
+  'class',
+  'id'
+]
+
 function setupElement (type, selection, transform, parsePs) {
   var element = entityToElement(type, selection, parsePs)
   return selection
-    .filter((selection) => {
-      return selection.type !== 'id' && selection.type !== 'class' && selection.type !== 'attr'
-    })
+    .filter((selection) => attributeEntities.indexOf(selection.type) === -1)
     .transform(transform)
     .then(elements => element.add(elements.filter(d => d)))
     .then(() => element)
@@ -144,7 +147,7 @@ function prepareTransforms (transforms, namespace, target) {
   namespace = namespace || ''
   target = target || {}
   for (var d in transforms) {
-    if (typeof (transforms[d]) == 'function') {
+    if (typeof (transforms[d]) === 'function') {
       target[namespace + d] = transforms[d]
       target[d] = transforms[d]
     } else {
@@ -157,10 +160,14 @@ function prepareTransforms (transforms, namespace, target) {
 
 function paragraphTransform (selection, transform) {
   const paragraphs = [
-    dom.asset({url: '/assets/quantum-html.css', file: __dirname + '/assets/quantum-html.css', shared: true})
+    dom.asset({
+      url: '/assets/quantum-html.css',
+      file: path.join(__dirname, 'assets/quantum-html.css'),
+      shared: true
+    })
   ]
 
-  let currentParagraph = undefined
+  let currentParagraph
 
   selection.content().forEach((e) => {
     if (e === '') {
