@@ -1,9 +1,9 @@
 const chai = require('chai')
 const should = chai.should()
-const docs = require('..')
+const changelog = require('..')
 
-describe('docs', () => {
+describe('changelog', () => {
   it('should be a function', () => {
-    docs.should.be.a.function
+    changelog.should.be.a.function
   })
 })

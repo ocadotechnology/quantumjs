@@ -21,7 +21,7 @@ describe('quantum-code-highlight', () => {
         .class('quantum-code-highlight-code language-js')
         .text('<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">x</span>) </span>{ <span class="hljs-keyword">return</span> x * x }', {escape: false})
         .add(dom.asset({
-          name: '/assets/quantum-code-highlight.css',
+          url: '/assets/quantum-code-highlight.css',
           file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
           shared: true
         }))
@@ -40,7 +40,7 @@ describe('quantum-code-highlight', () => {
         .class('quantum-code-highlight-code')
         .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false})
         .add(dom.asset({
-          name: '/assets/quantum-code-highlight.css',
+          url: '/assets/quantum-code-highlight.css',
           file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
           shared: true
         }))
@@ -60,7 +60,7 @@ describe('quantum-code-highlight', () => {
         .add(dom.create('pre')
           .text('<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">x</span>) </span>{ <span class="hljs-keyword">return</span> x * x }', {escape: false}))
         .add(dom.asset({
-          name: '/assets/quantum-code-highlight.css',
+          url: '/assets/quantum-code-highlight.css',
           file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
           shared: true
         }))
@@ -80,7 +80,7 @@ describe('quantum-code-highlight', () => {
         .add(dom.create('pre')
           .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false}))
         .add(dom.asset({
-          name: '/assets/quantum-code-highlight.css',
+          url: '/assets/quantum-code-highlight.css',
           file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
           shared: true
         }))
