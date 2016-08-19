@@ -186,7 +186,7 @@ Element.prototype.removeChild = function (element) {
 }
 
 // removes this element from its parent
-Element.prototype.remove = () => {
+Element.prototype.remove = function () {
   if (this.parent) {
     this.parent.removeChild(this)
   }
