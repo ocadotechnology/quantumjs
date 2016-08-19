@@ -4,7 +4,7 @@ const merge = require('merge')
 const dom = require('quantum-dom')
 const defaultConfig = require('./config.js')
 const path = require('path')
-const html = require('html')
+const html = require('quantum-html')
 
 module.exports = function (opts) {
   const options = merge.recursive(defaultConfig, opts)
@@ -12,24 +12,30 @@ module.exports = function (opts) {
   const entityIfExists = (entity, selector, transformer) => {
     if (entity.has(selector)) {
       const selection = entity.select(selector)
-      if (selection.content.length || selection.params.length) {
+      if (selection.content().length || selection.params().length) {
         return transformer(entity.select(selector))
       }
     }
   }
 
-  const paragraphEntity = (newEntityClass, transforms) => (selection) =>
-    dom.create('div')
-      .class(newEntityClass)
-      .add(html.paragraphTransform(selection, transforms))
+  const paragraphEntity = (newEntityClass, transforms) => {
+    return (selection) => {
+      return dom.create('div')
+        .class(newEntityClass)
+        .add(html.paragraphTransform(selection, transforms))
+    }
+  }
 
   const defaultUrlLookup = (selection) => selection.ps()
-  const linkEntity = (newEntityClass, text, urlLookup) => (selection) => {
-    urlLookup = urlLookup || defaultUrlLookup
-    return dom.create('div')
-      .class(newEntityClass)
-      .attr('href', urlLookup(selection))
-      .add(text)
+
+  const linkEntity = (newEntityClass, text, urlLookup) => {
+    return (selection) => {
+      urlLookup = urlLookup || defaultUrlLookup
+      return dom.create('div')
+        .class(newEntityClass)
+        .attr('href', urlLookup(selection))
+        .add(text)
+    }
   }
 
   function issue (entity, transforms) {
