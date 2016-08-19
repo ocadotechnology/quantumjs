@@ -6,7 +6,6 @@ const dom = require('quantum-dom')
 const path = require('path')
 
 describe('transforms', () => {
-
   function transformEntity () {
     function defaultTransform (selection) {
       return dom.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection)

@@ -84,7 +84,7 @@ function tokenize (str) {
     }
   }
 
-  var err = function (msg) {
+  var err = (msg) => {
     var start = str.lastIndexOf('\n', pos - 1)
     start = str.lastIndexOf('\n', start - 1)
     start = str.lastIndexOf('\n', start - 1)
@@ -106,8 +106,7 @@ function tokenize (str) {
       msg: msg,
       pos: pos,
       message: 'Error at line ' + row + ', col ' + col + ': ' + msg,
-      toString: function () {
-        return this.message + '\n' + this.context
+      toString: () => this.message + '\n' + this.context
       }
     }
   }

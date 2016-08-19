@@ -6,7 +6,7 @@ const defaultConfig = require('./config.js')
 const path = require('path')
 const html = require('quantum-html')
 
-module.exports = function (opts) {
+module.exports = (opts) => {
   const options = merge.recursive(defaultConfig, opts)
 
   const entityIfExists = (entity, selector, transformer) => {
@@ -55,7 +55,7 @@ module.exports = function (opts) {
     if (options.issueUrl && entity.has('issue')) {
       let elem = heading || description
 
-      entity.selectAll('issue').forEach(function (issueEntity, index) {
+      entity.selectAll('issue').forEach((issueEntity, index) => {
         elem = elem
           .add(index > 0 ? ', ' : ': ')
           .add(issue(issueEntity, transforms))
@@ -107,7 +107,7 @@ module.exports = function (opts) {
 
     let entries = dom.create('div').class('qm-changelog-item-entries')
 
-    unprocessedEntries.forEach(function (entryEntity) {
+    unprocessedEntries.forEach((entryEntity) => {
       entries = entries.add(entry(select(entryEntity), transforms))
     })
 
@@ -121,8 +121,8 @@ module.exports = function (opts) {
         .add(extra)
     } else {
       var labels = dom.create('div').class('qm-changelog-item-labels')
-      tags.forEach(function (tagName) {
-        var count = unprocessedEntries.reduce(function (total, e) { return e.type === tagName ? total + 1 : total }, 0)
+      tags.forEach((tagName) => {
+        var count = unprocessedEntries.reduce((total, e) => e.type === tagName ? total + 1 : total, 0)
         if (count > 0) {
           labels = labels.add(label(tagName, options.tags[tagName], count))
         }
@@ -144,7 +144,7 @@ module.exports = function (opts) {
   function changelog (entity, transforms) {
     var singleItem = entity.selectAll('item').length === 1
     var itemArr = entity.selectAll('item')
-    var items = Promise.all(itemArr.map(function (itemEntity) {
+    var items = Promise.all(itemArr.map((itemEntity) => {
       return item(itemEntity, transforms, singleItem && itemEntity.has('renderSingleItemInRoot'))
     }))
 
@@ -193,7 +193,7 @@ module.exports = function (opts) {
   function key (entity, transforms) {
     var keys = dom.create('div').class('qm-changelog-keys')
 
-    Object.keys(options.tags).map(function (tag) {
+    Object.keys(options.tags).map((tag) => {
       keys = keys.add(keyItem(dom, tag, options.tags[tag]))
     })
     return dom.create('div').class('qm-changelog-key')

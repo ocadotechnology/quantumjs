@@ -2,11 +2,12 @@ var quantum = require('quantum-js')
 
 function replacer (variables, str) {
   var res = str
-  variables.forEach(function (v) {
+  variables.forEach((v) => {
+    let val
     if (typeof (v.value) === 'object') {
-      var val = JSON.stringify(v.value)
+      val = JSON.stringify(v.value)
     } else {
-      var val = v.value
+      val = v.value
     }
     res = res.replace('{{' + v.key + '}}', val)
   })
@@ -16,7 +17,7 @@ function replacer (variables, str) {
 function processEntity (entity, dictionary, content) {
   var res = content.slice(0)
   if (entity && entity.content) {
-    entity.content.forEach(function (child) {
+    entity.content.forEach((child) => {
       var r = template(child, dictionary)
       if (Array.isArray(r)) {
         res = res.concat(r)
@@ -34,7 +35,7 @@ function template (entity, variables) {
     return replacer(variables, entity)
   } else {
     var content = []
-
+    let variableName, variable
     if (entity.type === 'for') {
       if (entity.params.length < 3) {
         throw new Error('for loop has wrong arguments: for ' + entity.params.join(' '))
@@ -44,19 +45,19 @@ function template (entity, variables) {
         key: entity.params[0],
         value: undefined
       }
+
+      let source
       if (entity.params[1] !== 'in') {
         var variable2 = {
           key: entity.params[1],
           value: undefined
         }
-        var source = entity.params[3]
+        source = entity.params[3]
       } else {
-        var source = entity.params[2]
+        source = entity.params[2]
       }
 
-      var items = variables.filter(function (key) {
-        return key.key == source
-      })[0]
+      var items = variables.filter((key) => key.key === source)[0]
 
       if (items) {
         items = items.value
@@ -65,18 +66,17 @@ function template (entity, variables) {
       if (Array.isArray(items)) {
         variables.push(variable1)
 
-        items.forEach(function (value) {
+        items.forEach((value) => {
           variable1.value = value
           content = processEntity(entity, variables, content)
         })
 
         variables.pop()
-
       } else if (items !== undefined) {
         variables.push(variable1)
         variables.push(variable2)
 
-        Object.keys(items).forEach(function (key) {
+        Object.keys(items).forEach((key) => {
           variable1.value = key
           variable2.value = items[key]
           content = processEntity(entity, variables, content)
@@ -87,40 +87,31 @@ function template (entity, variables) {
       }
 
       return content
-
-    } else if (entity.type == 'if') {
-      var variableName = entity.params[0]
-      var variable = variables.filter(function (key) {
-        return key.key == variableName
-      })[0]
+    } else if (entity.type === 'if') {
+      variableName = entity.params[0]
+      variable = variables.filter((key) => key.key === variableName)[0]
 
       if (variable && variable.value) {
         content = processEntity(entity, variables, content)
       }
 
       return content
-
-    } else if (entity.type == 'ifnot') {
-      var variableName = entity.params[0]
-      var variable = variables.filter(function (key) {
-        return key.key == variableName
-      })[0]
+    } else if (entity.type === 'ifnot') {
+      variableName = entity.params[0]
+      variable = variables.filter((key) => key.key === variableName)[0]
 
       if (!variable || !variable.value) {
         content = processEntity(entity, variables, content)
       }
 
       return content
-
     } else {
       content = processEntity(entity, variables, content)
 
       if (entity.type || entity.params) {
         return {
           type: entity.type,
-          params: entity.params.map(function (str) {
-            return replacer(variables, str)
-          }),
+          params: entity.params.map((str) => replacer(variables, str)),
           content: content
         }
       } else {
@@ -134,12 +125,10 @@ function template (entity, variables) {
 
 function prepareVariables (variables, prefix) {
   var keys = []
-
-  var prefix = prefix || ''
-
   var vars = variables || {}
+  prefix = prefix || ''
 
-  Object.keys(vars).forEach(function (key) {
+  Object.keys(vars).forEach((key) => {
     var value = vars[key]
     if (value !== null && typeof (value) === 'object' && !Array.isArray(value)) {
       keys.push({
@@ -149,7 +138,7 @@ function prepareVariables (variables, prefix) {
       keys = keys.concat(prepareVariables(value, prefix + key + '.'))
     } else {
       if (Array.isArray(value)) {
-        value.forEach(function (v, i) {
+        value.forEach((v, i) => {
           keys.push({
             key: prefix + key + '[' + i + ']',
             value: v
@@ -173,7 +162,7 @@ function applyVariables (parsed, variables) {
 function digestDefinitions (parsed) {
   var defsList = quantum.select(parsed).selectAll('define', {recursive: true})
   var definitions = {}
-  defsList.forEach(function (def) {
+  defsList.forEach((def) => {
     definitions[def.ps()] = def.entity()
   })
   return definitions
@@ -195,9 +184,10 @@ function applyDefinitions (parsed, definitions) {
 
     return template({type: '', ps: [], content: definitions[parsed.type].content}, variables).content
   } else {
+    let content
     if (Array.isArray(parsed.content)) {
-      var content = []
-      parsed.content.forEach(function (c) {
+      content = []
+      parsed.content.forEach((c) => {
         var res = applyDefinitions(c, definitions)
         if (res !== undefined) {
           if (Array.isArray(res)) {
@@ -208,7 +198,7 @@ function applyDefinitions (parsed, definitions) {
         }
       })
     } else {
-      var content = parsed.content
+      content = parsed.content
     }
 
     if (parsed.type || parsed.params) {
@@ -225,10 +215,10 @@ function applyDefinitions (parsed, definitions) {
   }
 }
 
-module.exports = function (options) {
+module.exports = (options) => {
   var variables = prepareVariables(options ? options.variables : {})
 
-  return function (page) {
+  return (page) => {
     var definitions = digestDefinitions(page.content)
 
     return page.clone({
@@ -238,11 +228,10 @@ module.exports = function (options) {
 }
 
 // insert the page title by wrapping the passed in object
-module.exports.wrapper = function (options) {
-  return function (obj) {
+module.exports.wrapper = (options) => {
+  return (obj) => {
     return quantum.read(options.templateFilename)
-      .then(function (template) {
-        var newContent = template.content.content
+      .then((template) => {
         var contentEntity = quantum.select(template.content).select('content', {recursive: true})
         var position = contentEntity.parent.content.indexOf(contentEntity.original)
         var parentContent = contentEntity.parent.original.content

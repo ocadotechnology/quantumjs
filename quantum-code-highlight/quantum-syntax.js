@@ -1,4 +1,4 @@
-module.exports = function (hljs) {
+module.exports = (hljs) => {
   var INLINE_CONTENT = {
     className: 'subst',
     begin: '\\[', end: '\\]',
@@ -21,7 +21,7 @@ module.exports = function (hljs) {
       {
         className: 'keyword',
         variants: [
-          { begin: '@', end: ':|$', excludeEnd: true}
+          { begin: '@', end: ':|$', excludeEnd: true }
         ],
         contains: [
           PARAMS,

@@ -35,9 +35,9 @@ function flatten (arrays) {
 function inline (parsed, currentDir, options, parentFile) {
   var promises = []
 
-  parsed.content.forEach(function (entity, i) {
+  parsed.content.forEach((entity, i) => {
     if (entity.type === options.inlineEntityType) {
-      var doParse = undefined
+      var doParse
 
       if (!doParse && entity.params.length > 1 && entity.params[1] === 'parse') {
         doParse = true
@@ -49,8 +49,8 @@ function inline (parsed, currentDir, options, parentFile) {
 
       var filename = path.join(currentDir, entity.params[0])
       var promise = parseFiles(filename, doParse, options, parentFile)
-        .then(function (res) {
-          var newContent = flatten(res.map(function (d) { return d.content }))
+        .then((res) => {
+          var newContent = flatten(res.map((d) => d.content))
           return parsed.content.splice.apply(parsed.content, [i, 1].concat(newContent))
         })
       promises.push(promise)
@@ -59,39 +59,38 @@ function inline (parsed, currentDir, options, parentFile) {
     }
   })
 
-  return Promise.all(promises).then(function () { return parsed })
+  return Promise.all(promises).then(() => parsed)
 }
 
 function parseFile (filename, doParse, options, parentFile) {
   if (doParse || doParse === undefined && path.extname(filename) === '.um') {
     var currentDir = path.dirname(filename)
     return options.loader(filename, parentFile)
-      .then(function (input) { return parse(input, options) })
-      .then(function (parsed) { return inline(parsed, currentDir, options, filename) })
-      .catch(function (e) {
+      .then((input) => parse(input, options))
+      .then((parsed) => inline(parsed, currentDir, options, filename))
+      .catch((e) => {
         throw new Error('quantum: ' + filename + ': ' + e)
       })
   } else {
-    return options.loader(filename, parentFile).then(function (input) {
-      return { content: input.split('\n') }
-    })
+    return options.loader(filename, parentFile).then((input) => ({
+      content: input.split('\n')
+    }))
   }
 }
 
 function parseFiles (globString, doParse, options, parentFile) {
-  return glob(globString).map(function (filename) {
-    return parseFile(filename, doParse, options, parentFile)
-  })
+  return glob(globString).map((filename) => parseFile(filename, doParse, options, parentFile))
 }
 
 function read (filename, options) {
-  var options = merge({
+  options = merge({
     inlineEntityType: 'inline',
     inline: true,
     loader: defaultLoader,
     base: undefined
   }, options)
 
+  // TODO: Unused var?
   var relativeFilename = options.base ? path.relative(options.base, filename) : filename
 
   if (options.inline) {
@@ -103,8 +102,8 @@ function read (filename, options) {
 
 module.exports = read
 
-module.exports.page = function (filename, options) {
-  return read(filename, options).then(function (content) {
+module.exports.page = (filename, options) => {
+  return read(filename, options).then((content) => {
     return new Page({
       file: new File({
         src: filename,

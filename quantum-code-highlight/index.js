@@ -1,6 +1,7 @@
 const hljs = require('highlight.js')
 const dom = require('quantum-dom')
 const quantumSyntax = require('./quantum-syntax.js')
+const path = require('path')
 
 // TODO: try and get quantum registered in hljs
 hljs.registerLanguage('um', quantumSyntax)
@@ -15,7 +16,7 @@ function highlightCode (language, code) {
 
 const stylesheetAsset = dom.asset({
   url: '/assets/quantum-code-highlight.css',
-  file: __dirname + '/assets/quantum-code-highlight.css',
+  file: path.join(__dirname, '/assets/quantum-code-highlight.css'),
   shared: true
 })
 
@@ -35,9 +36,7 @@ function code (selection, transform) {
     .add(stylesheetAsset)
 }
 
-module.exports = function (options) {
-  return {
-    codeblock: codeblock,
-    code: code
-  }
-}
+module.exports = (options) => ({
+  codeblock: codeblock,
+  code: code
+})

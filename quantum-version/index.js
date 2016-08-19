@@ -14,10 +14,7 @@
 */
 
 var quantum = require('quantum-js') // needed for its selection api
-var path = require('path') // required for the default filename renamer
 var merge = require('merge')
-var chalk = require('chalk')
-var Page = quantum.Page
 
 function getEntityType (type) {
   return type ? type.replace('?', '') : undefined
@@ -27,26 +24,26 @@ function getEntityType (type) {
 function mergeContent (content1, content2, options) {
   // it isn't possible to merge text - so we just return the new content, and
   // ignore the previous content if that is the case
-  if (content2.some(function (e) { return typeof (e) === 'string' && e !== '' })) {
+  if (content2.some((e) => typeof (e) === 'string' && e !== '')) {
     return content2
   } else { // otherwise, we perform the per entity merging
     var c1Map = {}
 
-    content1.forEach(function (e1) {
+    content1.forEach((e1) => {
       var matchLookup = options.entityMatchLookup(e1)
       if (matchLookup) {
         c1Map[matchLookup] = e1
       }
     })
 
-    content2.forEach(function (e2) {
+    content2.forEach((e2) => {
       var matchLookup = options.entityMatchLookup(e2)
       var e1 = matchLookup ? c1Map[matchLookup] : undefined
 
       var entityType = getEntityType(e2.type)
       var isTaggable = (options.taggable.indexOf(entityType) > -1)
 
-      if (!!e1) {
+      if (e1) {
         var e1s = quantum.select(e1)
         if (e1.content && e2.content) {
           if (options.unmergeable.indexOf(entityType) > -1) {
@@ -68,7 +65,7 @@ function mergeContent (content1, content2, options) {
         if (isTaggable) {
           e2.content.push({ type: 'added', params: [], content: [] })
         } else if (options.indexable.indexOf(entityType) > -1) {
-          e2.content.forEach(function (e) {
+          e2.content.forEach((e) => {
             var subIsTaggable = options.taggable.indexOf(getEntityType(e.type)) > -1
             if (e && subIsTaggable) {
               e.content.push({ type: 'added', params: [], content: [] })
@@ -84,9 +81,7 @@ function mergeContent (content1, content2, options) {
 }
 
 function getRemovableTags (tags) {
-  return Object.keys(tags).filter(function (tag) {
-    return !tags[tag].retain
-  })
+  return Object.keys(tags).filter((tag) => !tags[tag].retain)
 }
 
 // filters versions for added, updated and removed flags
@@ -94,13 +89,13 @@ function getRemovableTags (tags) {
 // removed: removes item from content
 function removeTags (entity, tags) {
   if (Array.isArray(entity.content)) {
-    function tagFilter (e) {
+    const tagFilter = (e) => {
       var entityIsRemoved = quantum.select.isEntity(e) && quantum.select(e).has('removed')
       var removeTag = tags.indexOf(e.type) > -1
       return !entityIsRemoved && !removeTag
     }
     entity.content = entity.content.filter(tagFilter)
-    entity.content.forEach(function (e) {removeTags(e, tags)})
+    entity.content.forEach((e) => removeTags(e, tags))
   }
   return entity
 }
@@ -109,11 +104,11 @@ function removeTags (entity, tags) {
 function populateVersionList (entity, versions, currentVersion) {
   if (entity.type === 'versionList') {
     entity.content.push({type: 'current', params: [currentVersion], content: []})
-    versions.forEach(function (v) {
+    versions.forEach((v) => {
       entity.content.push({type: 'version', params: [v], content: []})
     })
   } else if (Array.isArray(entity.content)) {
-    entity.content.forEach(function (e) {
+    entity.content.forEach((e) => {
       populateVersionList(e, versions, currentVersion)
     })
   }
@@ -123,7 +118,7 @@ function populateVersionList (entity, versions, currentVersion) {
 // this removes the @version entities recursively
 function removeVersions (entity) {
   if (Array.isArray(entity.content) && entity.type !== 'versionList') {
-    entity.content = entity.content.filter(function (e) { return e.type !== 'version' })
+    entity.content = entity.content.filter((e) => e.type !== 'version')
     entity.content.forEach(removeVersions)
   }
 }
@@ -132,7 +127,7 @@ function defaultEntityMatchLookup (entity) {
   if (quantum.select.isEntity(entity)) {
     var selection = quantum.select(entity)
     var name = selection.ps()
-    var params = selection.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
+    var params = selection.selectAll(['param', 'param?']).map((param) => param.ps())
     return entity.type + ': ' + name + '(' + params.join(', ') + ')'
   } else {
     return undefined
@@ -156,14 +151,12 @@ function versionTransform (page, options) {
   var fullVersionList = options.versions || []
 
   if (content.has('versionList', {recursive: true})) {
-    var inputList = content.selectAll('versionList', {recursive: true}).filter(function (versionList) {
+    var inputList = content.selectAll('versionList', {recursive: true}).filter((versionList) => {
       return versionList.selectAll('version').length > 0
     })[0]
 
     if (inputList) {
-      var inputVersionList = inputList.selectAll('version').map(function (v) {
-        return v.ps()
-      })
+      var inputVersionList = inputList.selectAll('version').map((v) => v.ps())
       if (inputVersionList.length > 0) {
         fullVersionList = inputVersionList
       }
@@ -187,15 +180,15 @@ function versionTransform (page, options) {
     }
 
     var versionsMap = {}
-    actualVersions.forEach(function (version) {
+    actualVersions.forEach((version) => {
       versionsMap[version.ps()] = version
     })
-    var base = undefined
+    var base
     var results = []
 
     var removableTags = getRemovableTags(options.tags)
 
-    fullVersionList.forEach(function (v) {
+    fullVersionList.forEach((v) => {
       var version = versionsMap[v]
 
       if (version !== undefined) {
@@ -216,7 +209,7 @@ function versionTransform (page, options) {
       function insertVersionedContent (entity) {
         if (Array.isArray(entity.content)) {
           var index = -1
-          entity.content.forEach(function (v, i) {
+          entity.content.forEach((v, i) => {
             if (v.type === 'version' && v.params && v.params[0] === actualVersions[0].param(0)) {
               index = i
             }
@@ -259,7 +252,6 @@ function versionTransform (page, options) {
           }))
         }
       }
-
     })
 
     return results
@@ -273,7 +265,7 @@ function versionTransform (page, options) {
 
 // returns a function that expands a quantum ast containing `version`
 // entities into multiple ast's - one for each version
-module.exports = function (opts) {
+module.exports = (opts) => {
   var options = merge.recursive({
     versions: undefined,
     targetVersions: undefined, // Target array of versions
@@ -320,7 +312,5 @@ module.exports = function (opts) {
     }
   }, opts)
 
-  return function (page) {
-    return versionTransform(page, options)
-  }
+  return (page) => versionTransform(page, options)
 }

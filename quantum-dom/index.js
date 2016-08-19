@@ -65,17 +65,13 @@ function Element (type) {
 }
 
 function elementyPromise (promise) {
-  promise.add = function (el, end) {
-    return elementyPromise(promise.then(p => p.add(el, end)))
-  }
-  promise.append = function (el, end) {
-    return elementyPromise(promise.then(p => p.append(el, end)))
-  }
+  promise.add = (el, end) => elementyPromise(promise.then(p => p.add(el, end)))
+  promise.append = (el, end) => elementyPromise(promise.then(p => p.append(el, end)))
   return promise
 }
 
 // sets an attribute for the element
-Element.prototype.attr = function (name, value) {
+Element.prototype.attr = (name, value) => {
   if (arguments.length === 1) {
     return this.attrs[name]
   } else {
@@ -85,7 +81,7 @@ Element.prototype.attr = function (name, value) {
 }
 
 // sets the id for this element
-Element.prototype.id = function (id) {
+Element.prototype.id = (id) => {
   if (arguments.length === 0) {
     return this.attr('id')
   } else {
@@ -94,7 +90,7 @@ Element.prototype.id = function (id) {
 }
 
 // sets the class attribute for this element
-Element.prototype['class'] = function (cls) {
+Element.prototype['class'] = (cls) => {
   if (arguments.length === 0) {
     return this.attr('class') || ''
   } else {
@@ -103,7 +99,7 @@ Element.prototype['class'] = function (cls) {
 }
 
 // adds / removes a class for this element
-Element.prototype.classed = function (cls, add) {
+Element.prototype.classed = (cls, add) => {
   const parts = cls.split(' ')
 
   if (parts.length > 1) {
@@ -135,7 +131,7 @@ Element.prototype.classed = function (cls, add) {
 }
 
 // adds an element to this element and returns the added element
-Element.prototype.append = function (element, options) {
+Element.prototype.append = (element, options) => {
   if (element === undefined) {
     return this
   }
@@ -166,13 +162,13 @@ Element.prototype.append = function (element, options) {
 }
 
 // adds an element to this element, and returns this element
-Element.prototype.add = function (element, options) {
+Element.prototype.add = (element, options) => {
   const res = this.append(element, options)
   return res.then ? elementyPromise(res.then(r => this)) : this
 }
 
 // adds text to the content of the element
-Element.prototype.text = function (text, options) {
+Element.prototype.text = (text, options) => {
   if (text !== undefined) {
     const escape = (options && options.escape !== false) || options === undefined
     this.content.push(escape ? escapeHTML(text) : text)
@@ -181,7 +177,7 @@ Element.prototype.text = function (text, options) {
 }
 
 // removes a child from this element
-Element.prototype.removeChild = function (element) {
+Element.prototype.removeChild = (element) => {
   const index = this.content.indexOf(element)
   if (index > -1) {
     this.content.splice(index, 1)
@@ -190,14 +186,14 @@ Element.prototype.removeChild = function (element) {
 }
 
 // removes this element from its parent
-Element.prototype.remove = function () {
+Element.prototype.remove = () => {
   if (this.parent) {
     this.parent.removeChild(this)
   }
 }
 
 // turns the element into an html string
-Element.prototype.stringify = function () {
+Element.prototype.stringify = () => {
   const attributes = Object.keys(this.attrs).map(k => k + '="' + this.attrs[k] + '"').join(' ')
   const content = this.content.map(d => d.stringify ? d.stringify() : (isString(d) ? d : '')).join('')
   const endContent = this.endContent.map(d => d.stringify ? d.stringify() : (isString(d) ? d : '')).join('')
@@ -208,9 +204,7 @@ function TextNode (text) {
   this.text = text
 }
 
-TextNode.prototype.stringify = function () {
-  return this.text
-}
+TextNode.prototype.stringify = () => this.text
 
 function Asset (url, filename, shared) {
   this.url = url
@@ -231,7 +225,7 @@ function ArrayNode (array) {
   this.array = array
 }
 
-ArrayNode.prototype.stringify = function () {
+ArrayNode.prototype.stringify = () => {
   return this.array.map(e => e.stringify ? e.stringify() : (isString(e) ? e : '')).join('')
 }
 
@@ -239,7 +233,7 @@ ArrayNode.prototype.stringify = function () {
 // extracting HeadInjectWrapper and Asset 'elements')
 function extractByType (elements, Type) {
   function inner (elements, res) {
-    elements.forEach(e => {
+    elements.forEach((e) => {
       if (e instanceof Type) {
         res.push(e)
       } else if (e instanceof Element) {
@@ -339,7 +333,6 @@ function stringify (elements, options) {
   const uniqueAssets = Object.keys(uniqueAssetsMap).map(k => uniqueAssetsMap[k])
 
   const stylesheets = Promise.all(uniqueAssets.filter(a => a.url.endsWith('.css')).map(s => {
-
     if (embedAssets) {
       // XXX: make this loader configurable so that assets can be cached
       return fs.readFileAsync(s.filename, 'utf-8').then(content => '<style>' + content + '</style>')

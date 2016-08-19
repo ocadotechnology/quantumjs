@@ -14,8 +14,8 @@
 
 */
 
-module.exports = function () {
-  return function (page) {
+module.exports = () => {
+  return (page) => {
     return page.clone({
       file: page.file.withExtension('.json'),
       content: JSON.stringify(page.content, null, 2)

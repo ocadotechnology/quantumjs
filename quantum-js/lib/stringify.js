@@ -24,9 +24,7 @@ function entityToString (entity, indent) {
     if (sameLineContent) {
       return indent + '@' + entity.type + params + ': ' + entity.content[0]
     } else if (entity.content.length >= 1) {
-      return indent + '@' + entity.type + params + '\n' + entity.content.map(function (e) {
-        return entityToString(e, indent + '  ')
-      }).join('\n')
+      return indent + '@' + entity.type + params + '\n' + entity.content.map((e) => entityToString(e, indent + '  ')).join('\n')
     } else {
       return indent + '@' + entity.type + params
     }
@@ -35,8 +33,6 @@ function entityToString (entity, indent) {
   }
 }
 
-module.exports = function (ast, options) {
-  return ast.content.map(function (entity) {
-    return entityToString(entity, '')
-  }).join('\n') + '\n'
+module.exports = (ast, options) => {
+  return ast.content.map((entity) => entityToString(entity, '')).join('\n') + '\n'
 }

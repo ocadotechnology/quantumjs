@@ -40,10 +40,10 @@ function checkNotFiltered (selection) {
 }
 
 Selection.prototype = {
-  entity: function () {
+  entity: () => {
     return this._entity
   },
-  type: function (type) {
+  type: (type) => {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.type = type
@@ -52,7 +52,7 @@ Selection.prototype = {
       return this._entity.type
     }
   },
-  param: function (i, param) {
+  param: (i, param) => {
     if (arguments.length > 1) {
       checkNotFiltered(this)
       this._entity.params[i] = param
@@ -61,7 +61,7 @@ Selection.prototype = {
       return this._entity.params[i]
     }
   },
-  params: function (params) {
+  params: (params) => {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.params = params
@@ -70,12 +70,12 @@ Selection.prototype = {
       return this._entity.params
     }
   },
-  addParam: function (param) {
+  addParam: (param) => {
     checkNotFiltered(this)
     this._entity.params.push(param)
     return this
   },
-  content: function (content) {
+  content: (content) => {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.content = content
@@ -84,17 +84,17 @@ Selection.prototype = {
       return this._entity.content
     }
   },
-  add: function (content) {
+  add: (content) => {
     checkNotFiltered(this)
     this._entity.content.push(content)
     return this
   },
-  append: function (content) {
+  append: (content) => {
     checkNotFiltered(this)
     this._entity.content.push(content)
     return select(content, this)
   },
-  ps: function (ps) {
+  ps: (ps) => {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.params = ps.split(' ')
@@ -103,7 +103,7 @@ Selection.prototype = {
       return this._entity.params.join(' ')
     }
   },
-  cs: function (cs) {
+  cs: (cs) => {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.content = cs.split('\n')
@@ -113,56 +113,54 @@ Selection.prototype = {
       return this._entity.content.filter(isText).join('\n')
     }
   },
-  has: function (type, options) {
+  has: (type, options) => {
     if (options && options.recursive) {
       var parent = this
       // OPTIM: benchmark and test against not using some
       // OPTIM: don't use recursion here - try and do the loop in place
-      return this._entity.content.some(function (d) { return d.type == type }) || this._entity.content.some(function (child) {
+      return this._entity.content.some((d) => d.type === type) || this._entity.content.some((child) => {
         return isEntity(child) && select(child, parent).has(type, options)
       })
     } else {
       // OPTIM: benchmark and test against not using some
-      return this._entity.content.some(function (child) { return child.type == type })
+      return this._entity.content.some((child) => child.type == type)
     }
   },
-  hasParams: function () {
+  hasParams: () => {
     return this._entity.params.length > 0
   },
-  hasContent: function () {
+  hasContent: () => {
     return this._entity.content.length > 0
   },
-  isEmpty: function () {
+  isEmpty: () => {
     // OPTIM: remove the use of some (and perhaps trim?)
-    return !this._entity.content.some(function (d) {
+    return !this._entity.content.some((d) => {
       return isEntity(d) || d.trim() !== ''
     })
   },
-  parent: function () {
+  parent: () => {
     return this._parent
   },
-  select: function (type, options) {
+  select: (type, options) => {
     return this.selectAll(type, options)[0] || emptySelection()
   },
-  selectAll: function (type, options) {
+  selectAll: (type, options) => {
     var parent = this
-    var res = undefined
+    var res
     if (Array.isArray(type)) {
       var types = type
       // OPTIM: do this without the filter and map
-      res = this._entity.content.filter(function (d) { return types.indexOf(d.type) > -1 }).map(function (child) {
-        return select(child, parent)
-      })
+      res = this._entity.content.filter((d) => types.indexOf(d.type) > -1 )
+        .map((child) => select(child, parent))
     } else {
       // OPTIM: do this without the filter and map
-      res = this._entity.content.filter(function (d) { return d.type === type }).map(function (child) {
-        return select(child, parent)
-      })
+      res = this._entity.content.filter((d) => d.type === type)
+        .map((child) => select(child, parent))
     }
 
     if (options && options.recursive) {
       // OPTIM: do this without the forEach and the recursion
-      this._entity.content.filter(isEntity).forEach(function (child) {
+      this._entity.content.filter(isEntity).forEach((child) {
         res = res.concat(select(child, parent).selectAll(type, options))
       })
     }
@@ -173,15 +171,11 @@ Selection.prototype = {
 
     return res
   },
-  filter: function (f) {
+  filter: (f) => {
     if (Array.isArray(f)) {
-      return this.filter(function (entity) {
-        return f.indexOf(entity.type) > -1
-      })
+      return this.filter((entity) => f.indexOf(entity.type) > -1)
     } else if (isText(f)) {
-      return this.filter(function (entity) {
-        return entity.type === f
-      })
+      return this.filter((entity) => entity.type === f)
     } else {
       var filteredEntity = {
         type: this._entity.type,
@@ -191,13 +185,11 @@ Selection.prototype = {
       return new Selection(filteredEntity, this._parent, true)
     }
   },
-  remove: function (type, options) {
+  remove: (type, options) => {
     if (Array.isArray(type)) {
       var self = this
       // OPTIM: remove the use of map
-      return type.map(function (t) {
-        return self.remove(t, options)
-      })
+      return type.map((t) => self.remove(t, options))
     } else {
       var i = 0
       var content = this._entity.content
@@ -223,13 +215,11 @@ Selection.prototype = {
       }
     }
   },
-  removeAll: function (type, options) {
+  removeAll: (type, options) => {
     if (Array.isArray(type)) {
       var self = this
       // OPTIM: remove the use of map
-      return type.map(function (t) {
-        return self.removeAll(t, options)
-      })
+      return type.map((t) => self.removeAll(t, options))
     } else {
       var result = []
       var i = 0
@@ -249,7 +239,7 @@ Selection.prototype = {
         while(i < content.length) {
           var child = content[i]
           if (isEntity(child)) {
-            select(child).removeAll(type, options).forEach(function (removed) {
+            select(child).removeAll(type, options).forEach((removed) => {
               result.push(removed)
             })
           }
@@ -260,9 +250,9 @@ Selection.prototype = {
       return result
     }
   },
-  transform: function (transformer) {
+  transform: (transformer) => {
     var parent = this
-    return select.Promise.all(this._entity.content.map(function (child) {
+    return select.Promise.all(this._entity.content.map((child) => {
       return transformer(isEntity(child) ? select(child, parent) : child)
     }))
   }

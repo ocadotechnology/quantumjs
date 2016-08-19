@@ -1,9 +1,19 @@
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const paragraphTransform = require('quantum-html').paragraphTransform
+const path = require('path')
 
-const stylesheetAsset = dom.asset({url: '/assets/quantum-docs.css', file: __dirname + '/assets/quantum-docs.css', shared: true})
-const scriptAsset = dom.asset({url: '/assets/quantum-docs.js', file: __dirname + '/assets/quantum-docs.js', shared: true})
+const stylesheetAsset = dom.asset({
+  url: '/assets/quantum-docs.css',
+  file: path.join(__dirname, '/assets/quantum-docs.css'),
+  shared: true
+})
+
+const scriptAsset = dom.asset({
+  url: '/assets/quantum-docs.js',
+  file: path.join(__dirname, '/assets/quantum-docs.js'),
+  shared: true
+})
 
 function toContextClass (context) {
   return context ? 'qm-docs-' + context : ''
@@ -13,9 +23,9 @@ function spinalCase (string) {
   return string.toLowerCase().split(' ').join('-')
 }
 
-var transforms = {}
+const transforms = {}
 
-transforms.topic = function (selection, transforms) {
+transforms.topic = (selection, transforms) => {
   return dom.create('div')
     .class('qm-docs-topic')
     .add(stylesheetAsset)
@@ -26,7 +36,7 @@ transforms.topic = function (selection, transforms) {
     .add(dom.create('div').class('qm-docs-topic-body').add(paragraphTransform(selection, transforms)))
 }
 
-transforms.section = function (selection, transforms) {
+transforms.section = (selection, transforms) => {
   return dom.create('div')
     .class('qm-docs-section')
     .add(stylesheetAsset)
@@ -37,7 +47,7 @@ transforms.section = function (selection, transforms) {
     .add(dom.create('div').class('qm-docs-section-body').add(paragraphTransform(selection, transforms)))
 }
 
-transforms.subsection = function (selection, transforms) {
+transforms.subsection = (selection, transforms) => {
   return dom.create('div')
     .class('qm-docs-subsection')
     .add(stylesheetAsset)
@@ -45,7 +55,7 @@ transforms.subsection = function (selection, transforms) {
     .add(dom.create('div').class('qm-docs-subsection-body').add(paragraphTransform(selection, transforms)))
 }
 
-transforms.notice = function (selection, transforms) {
+transforms.notice = (selection, transforms) => {
   return dom.create('div')
     .class('qm-docs-notice ' + toContextClass(selection.param(1)))
     .add(stylesheetAsset)
@@ -53,7 +63,7 @@ transforms.notice = function (selection, transforms) {
     .add(dom.create('div').class('qm-docs-notice-body').add(paragraphTransform(selection, transforms)))
 }
 
-transforms.list = function (selection, transforms) {
+transforms.list = (selection, transforms) => {
   const ordered = selection.ps() === 'ordered'
   return dom.create(ordered ? 'ol' : 'ul')
     .class('qm-docs-list')
@@ -64,26 +74,26 @@ transforms.list = function (selection, transforms) {
     })))
 }
 
-transforms.bold = function (selection, transforms) {
+transforms.bold = (selection, transforms) => {
   return dom.create('b').add(selection.transform(transforms))
 }
 
-transforms.italic = function (selection, transforms) {
+transforms.italic = (selection, transforms) => {
   return dom.create('i').add(selection.transform(transforms))
 }
 
-transforms.strikethrough = function (selection, transforms) {
+transforms.strikethrough = (selection, transforms) => {
   return dom.create('del').add(selection.transform(transforms))
 }
 
-transforms.image = function (selection, transforms) {
+transforms.image = (selection, transforms) => {
   return dom.create('img')
     .attr('src', selection.ps())
     .attr('alt', selection.cs())
     .attr('title', selection.cs())
 }
 
-transforms.summary = function (selection, transforms) {
+transforms.summary = (selection, transforms) => {
   const element = dom.create('div')
     .class('qm-docs-summary')
     .add(stylesheetAsset)
@@ -101,14 +111,14 @@ transforms.summary = function (selection, transforms) {
   return element
 }
 
-transforms.group = function (selection, transforms) {
+transforms.group = (selection, transforms) => {
   return dom.create('div')
     .add(stylesheetAsset)
     .class('qm-docs-group')
     .add(selection.transform(transforms))
 }
 
-transforms.versionSelector = function (selection, transforms) {
+transforms.versionSelector = (selection, transforms) => {
   const current = selection.select('versionList').select('current').ps()
   const versions = selection.select('versionList').selectAll('version').map(e => e.ps())
 
@@ -116,7 +126,7 @@ transforms.versionSelector = function (selection, transforms) {
     const id = dom.nextId()
 
     // XXX: make this configurable (it should be a function with no external dependencies that can run in browsers)
-    const redirectorFunction = function (url, current, version) {
+    const redirectorFunction = (url, current, version) => {
       if (hx.endsWith(url, current + '/')) {
         return '../' + version + '/'
       } else {
@@ -126,7 +136,7 @@ transforms.versionSelector = function (selection, transforms) {
 
     const script = [
       'var redirectorFunction = ' + redirectorFunction.toString() + ';',
-      'new hx.Menu("#' + id + '", {items: ' + JSON.stringify(versions) + ', renderer: function(e, v) {hx.select(e).append("a").attr("href", redirectorFunction(window.location.pathname, "' + current + '", v)).text(v)}})',
+      'new hx.Menu("#' + id + '", {items: ' + JSON.stringify(versions) + ', renderer: function(e, v) {hx.select(e).append("a").attr("href", redirectorFunction(window.location.pathname, "' + current + '", v)).text(v)}})'
     ].join('\n')
 
     return dom.create('button')
@@ -139,7 +149,7 @@ transforms.versionSelector = function (selection, transforms) {
   }
 }
 
-transforms.sidebar = function (selection, transforms) {
+transforms.sidebar = (selection, transforms) => {
   return dom.create('div')
     .add(stylesheetAsset)
     .add(scriptAsset)
@@ -148,7 +158,7 @@ transforms.sidebar = function (selection, transforms) {
     .add(dom.bodyClassed('qm-docs-sidebar-page', true))
 }
 
-transforms.tableOfContents = function (selection, transforms) {
+transforms.tableOfContents = (selection, transforms) => {
   const toc = dom.create('div')
     .class('qm-docs-table-of-contents')
     .add(stylesheetAsset)
@@ -160,8 +170,8 @@ transforms.tableOfContents = function (selection, transforms) {
   }
   toc.add(tocContainer)
 
-  selection.selectAll('topic', {recursive: true}).forEach(function (topic) {
-    const sections = topic.selectAll('section').map(function (section) {
+  selection.selectAll('topic', {recursive: true}).forEach((topic) => {
+    const sections = topic.selectAll('section').map((section) => {
       return dom.create('li').add(dom.create('a')
         .class('qm-docs-table-of-contents-section')
         .attr('href', '#' + spinalCase(section.ps()))
@@ -176,9 +186,9 @@ transforms.tableOfContents = function (selection, transforms) {
   return toc
 }
 
-transforms.navigationMenu = function (selection, transforms) {
-  const sections = selection.selectAll('section').map(function (sectionEntity) {
-    const pages = sectionEntity.selectAll('page').map(function (pageEntity) {
+transforms.navigationMenu = (selection, transforms) => {
+  const sections = selection.selectAll('section').map((sectionEntity) => {
+    const pages = sectionEntity.selectAll('page').map((pageEntity) => {
       return dom.create('a').class('qm-docs-navication-menu-page')
         .attr('href', pageEntity.ps())
         .text(pageEntity.cs())
@@ -196,7 +206,7 @@ transforms.navigationMenu = function (selection, transforms) {
       dom.create('div').class('qm-docs-navication-menu').add(sections))
 }
 
-transforms.header = function (selection, transforms) {
+transforms.header = (selection, transforms) => {
   return dom.create('div').class('qm-docs-header')
     .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-centered')
@@ -211,7 +221,27 @@ transforms.header = function (selection, transforms) {
     ))
 }
 
-transforms.topSection = function (selection, transforms) {
+transforms.breadcrumb = (selection, transforms) => {
+  if (selection.selectAll('item').length === 0) return undefined
+
+  const element = dom.create('div')
+    .class('qm-docs-breadcrumb')
+    .add(stylesheetAsset)
+
+  const container = dom.create('div')
+    .class('qm-docs-top-section-centered qm-docs-breadcrumb-padding')
+
+  selection.selectAll('item').forEach((item, i) => {
+    if (i > 0) container.add(dom.create('i').class('fa fa-angle-right qm-docs-breadcrumb-arrow-icon'))
+    container.add(dom.create('a').attr('href', item.ps()).class('qm-docs-breadcrumb-section').text(item.cs()))
+  })
+
+  return element.add(container)
+}
+
+const breadcrumb = transforms.breadcrumb
+
+transforms.topSection = (selection, transforms) => {
   const pageTitle = selection.select('title').ps()
   dom.title = pageTitle
   const sourceLink = selection.has('source') ? selection.select('source').ps() : undefined
@@ -226,27 +256,7 @@ transforms.topSection = function (selection, transforms) {
         .add(paragraphTransform(selection.select('description'), transforms))))
 }
 
-function breadcrumb (selection, transforms) {
-  if (selection.selectAll('item').length === 0) return undefined
-
-  const element = dom.create('div')
-    .class('qm-docs-breadcrumb')
-    .add(stylesheetAsset)
-
-  const container = dom.create('div')
-    .class('qm-docs-top-section-centered qm-docs-breadcrumb-padding')
-
-  selection.selectAll('item').forEach(function (item, i) {
-    if (i > 0) container.add(dom.create('i').class('fa fa-angle-right qm-docs-breadcrumb-arrow-icon'))
-    container.add(dom.create('a').attr('href', item.ps()).class('qm-docs-breadcrumb-section').text(item.cs()))
-  })
-
-  return element.add(container)
-}
-
-transforms.breadcrumb = breadcrumb
-
-transforms.contentSection = function (selection, transforms) {
+transforms.contentSection = (selection, transforms) => {
   return dom.create('div').class('qm-docs-content-section-container')
     .add(stylesheetAsset)
     // .add(selection.filter('sidebar').transform(transforms))
@@ -255,14 +265,14 @@ transforms.contentSection = function (selection, transforms) {
         .add(selection.transform(transforms))))
 }
 
-transforms.bottomSection = function (selection, transforms) {
+transforms.bottomSection = (selection, transforms) => {
   return dom.create('div').class('qm-docs-bottom-section')
     .add(stylesheetAsset)
     .add(selection.transform(transforms))
 }
 
-transforms.relatedButtons = function (selection, transforms) {
-  var buttons = selection.selectAll('button').map((e) => {
+transforms.relatedButtons = (selection, transforms) => {
+  const buttons = selection.selectAll('button').map((e) => {
     return dom.create('a')
       .attr('href', e.ps())
       .class('qm-docs-related-button')
@@ -275,10 +285,9 @@ transforms.relatedButtons = function (selection, transforms) {
     .class('qm-docs-related-buttons')
     .add(stylesheetAsset)
     .add(buttons)
-
 }
 
-transforms.table = function (selection, transforms) {
+transforms.table = (selection, transforms) => {
   function toRow (rowEntity) {
     const isHeader = rowEntity.type() === 'header'
 
@@ -306,12 +315,12 @@ transforms.table = function (selection, transforms) {
   }
 }
 
-module.exports = function (options) {
+module.exports = (options) => {
   return transforms
 }
 
-module.exports.populateTableOfContents = function (opts) {
-  return function (obj) {
+module.exports.populateTableOfContents = (opts) => {
+  return (obj) => {
     const toc = quantum.select(obj.content).select('tableOfContents', {recursive: true})
     const topics = quantum.select(obj.content).selectAll('topic', {recursive: true})
 

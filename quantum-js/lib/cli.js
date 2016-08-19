@@ -13,17 +13,17 @@
 
 */
 
-var chalk = require('chalk')
-var path = require('path')
-var Promise = require('bluebird')
-var fs = Promise.promisifyAll(require('fs-extra'))
-var liveserver = require('live-server')
+const chalk = require('chalk')
+const path = require('path')
+const Promise = require('bluebird')
+const fs = Promise.promisifyAll(require('fs-extra'))
+const liveserver = require('live-server')
 
-var qwatch = require('./watch')
-var read = require('./read')
-var Page = require('./page')
-var fileOptions = require('./file-options')
-var version = require('../package.json').version
+const qwatch = require('./watch')
+const read = require('./read')
+const Page = require('./page')
+const fileOptions = require('./file-options')
+const version = require('../package.json').version
 
 function help () {
   console.log(`
@@ -80,27 +80,19 @@ QuantumJS (${version})
 function buildPage (sourcePage, pipeline, config, logger) {
   var start = Date.now()
   return pipeline(sourcePage, config)
-    .then(function (pages) {
-      return Array.isArray(pages) ? pages : [pages]
-    })
-    .map(function (page) {
-      return fs.outputFileAsync(page.file.dest, page.content).then(function () {
-        return page
-      })
-    })
-    .then(function (destPages) {
+    .then((pages) => Array.isArray(pages) ? pages : [pages])
+    .map((page) => fs.outputFileAsync(page.file.dest, page.content).then(() => page))
+    .then((destPages) => {
       var timeTaken = Date.now() - start
       logger({type: 'build-page', timeTaken: timeTaken, sourcePage: sourcePage, destPages: destPages})
       return destPages
     })
-    .catch(function (err) {
-      logger({type: 'error', error: err})
-    })
+    .catch((err) => logger({type: 'error', error: err}))
 }
 
 function copyResource (file, logger) {
   var start = Date.now()
-  return fs.copyAsync(file.src, file.dest).then(function () {
+  return fs.copyAsync(file.src, file.dest).then(() => {
     var timeTaken = Date.now() - start
     return logger({type: 'copy-resource', file: file, timeTaken: timeTaken})
   })
@@ -108,9 +100,8 @@ function copyResource (file, logger) {
 
 function copyResources (config, options, logger) {
   logger({type: 'header', message: 'Copying Resources'})
-  return fileOptions.resolve(config.resources, options).map(function (file) {
-    return copyResource(file, logger)
-  }, {concurrency: options.concurrency})
+  return fileOptions.resolve(config.resources, options)
+    .map((file) => copyResource(file, logger), {concurrency: options.concurrency})
 }
 
 function build (config) {
@@ -118,11 +109,11 @@ function build (config) {
   var options = {concurrency: config.concurrency || 1, dest: config.dest}
   var pipeline = config.pipeline
 
-  return copyResources(config, options, logger).then(function () {
+  return copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Pages'})
-    return fileOptions.resolve(config.pages, options).map(function (file) {
+    return fileOptions.resolve(config.pages, options).map((file) => {
       return read(file.src)
-        .then(function (content) {
+        .then((content) => {
           var page = new Page({
             file: file,
             content: content
@@ -130,9 +121,7 @@ function build (config) {
           return buildPage(page, pipeline, config, logger)
         })
     }, {concurrency: options.concurrency})
-  }).then(function () {
-    logger({type: 'end'})
-  })
+  }).then(() => logger({type: 'end'}))
 }
 
 function startServer (options) {
@@ -155,16 +144,12 @@ function watch (config) {
   logger({type: 'message', message: 'http://0.0.0.0:' + options.port})
   startServer(options)
 
-  copyResources(config, options, logger).then(function () {
+  copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Site'})
-    qwatch(config.pages, options, function (page) {
-      return buildPage(page, pipeline, config, logger)
-    })
+    qwatch(config.pages, options, (page) => buildPage(page, pipeline, config, logger))
 
-    qwatch.watcher(config.resources, options).then(function (watcher) {
-      watcher.on('change', function (file) {
-        return copyResource(file, logger)
-      })
+    qwatch.watcher(config.resources, options).then((watcher) => {
+      watcher.on('change', (file) => copyResource(file, logger))
     })
   })
 }
@@ -173,9 +158,9 @@ function list (config) {
   var htmlTransforms = config.htmlTransforms
 
   if (htmlTransforms) {
-    Object.keys(htmlTransforms).forEach(function (namespace) {
+    Object.keys(htmlTransforms).forEach((namespace) => {
       console.log(chalk.yellow(namespace))
-      Object.keys(htmlTransforms[namespace]).forEach(function (entity) {
+      Object.keys(htmlTransforms[namespace]).forEach((entity) => {
         console.log(chalk.cyan('  @' + entity) + chalk.gray(' (@' + namespace + '.' + entity + ')'))
       })
     })
@@ -206,15 +191,15 @@ function defaultLogger (evt) {
     evt.sourcePage.warnings.forEach(warning => {
       console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
     })
-    evt.sourcePage.errors.forEach(error => {
+    evt.sourcePage.errors.forEach((error) => {
       console.log(chalk.red('  [error] ') + chalk.cyan(error.module) + ': ' + chalk.yellow(error.problem) + '.  ' + error.resolution)
     })
-    evt.destPages.forEach(function (page) {
+    evt.destPages.forEach((page) => {
       console.log(chalk.green('  + ' + page.file.dest))
-      page.warnings.forEach(warning => {
+      page.warnings.forEach((warning) => {
         console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
       })
-      page.errors.forEach(error => {
+      page.errors.forEach((error) => {
         console.log(chalk.red('  [error] ') + chalk.cyan(error.module) + ': ' + chalk.yellow(error.problem) + '.  ' + error.resolution)
       })
     })
@@ -228,10 +213,10 @@ function defaultLogger (evt) {
 }
 
 function cli () {
-  var silent = process.argv.find(arg => arg === '--silent' || arg === '-s') !== undefined
-  var command = process.argv.find(arg => arg === 'build' || arg === 'watch' || arg === 'list')
+  var silent = process.argv.find((arg) => arg === '--silent' || arg === '-s') !== undefined
+  var command = process.argv.find((arg) => arg === 'build' || arg === 'watch' || arg === 'list')
 
-  var customConfigFile = process.argv.find(arg => arg.startsWith('--config='))
+  var customConfigFile = process.argv.find((arg) => arg.startsWith('--config='))
   var configFile = customConfigFile ? customConfigFile.slice(9) : 'quantum.config.js'
 
   if (command) {
