@@ -357,10 +357,10 @@ module.exports = (opts) => {
   return (page) => page.clone({ content: processAll(page.content, options) })
 }
 
-merge(module.exports, {
-  transforms: require('./html-transforms'),
-  assets: {
-    'quantum-changelog.css': path.join(__dirname, '/client/quantum-changelog.css'),
-    'quantum-changelog.js': path.join(__dirname, '/client/quantum-changelog.js')
-  }
-})
+module.exports.transforms = require('./html-transforms')
+
+module.exports.assets = {
+  'quantum-changelog.css': path.join(__dirname, '/client/quantum-changelog.css'),
+  'quantum-changelog.js': path.join(__dirname, '/client/quantum-changelog.js')
+}
+

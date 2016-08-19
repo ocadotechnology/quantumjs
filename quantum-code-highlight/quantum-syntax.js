@@ -1,4 +1,4 @@
-module.exports = (hljs) => {
+module.exports = function (hljs) {
   var INLINE_CONTENT = {
     className: 'subst',
     begin: '\\[', end: '\\]',

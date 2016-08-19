@@ -62,10 +62,10 @@ function specToWatcherObj (watcherInstance, spec, options) {
 
 util.inherits(Watcher, EventEmitter)
 
-Watcher.prototype.stop = () => {
+Watcher.prototype.stop = function () {
   this._watchers.forEach((watcher) => watcher.watcher.close())
 }
-Watcher.prototype.files = () => {
+Watcher.prototype.files = function () {
   var dest = this._options.dest
   return Promise.all(this._watchers.map((watcher) => {
     var watched = watcher.watcher.getWatched()
@@ -233,7 +233,7 @@ function WorkQueue (handler, options) {
 }
 
 WorkQueue.prototype = {
-  add: (work) => {
+  add: function (work) {
     this.queue.push(work)
 
     // check if we can start up another concurrent piece or work

@@ -31,7 +31,7 @@ npm link
 popd
 
 pushd quantum-api
-npm link quantum-js quantum-dom
+npm link quantum-js quantum-html
 npm install
 npm link
 popd

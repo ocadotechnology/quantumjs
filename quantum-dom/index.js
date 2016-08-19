@@ -71,7 +71,7 @@ function elementyPromise (promise) {
 }
 
 // sets an attribute for the element
-Element.prototype.attr = (name, value) => {
+Element.prototype.attr = function (name, value) {
   if (arguments.length === 1) {
     return this.attrs[name]
   } else {
@@ -81,7 +81,7 @@ Element.prototype.attr = (name, value) => {
 }
 
 // sets the id for this element
-Element.prototype.id = (id) => {
+Element.prototype.id = function (id) {
   if (arguments.length === 0) {
     return this.attr('id')
   } else {
@@ -90,7 +90,7 @@ Element.prototype.id = (id) => {
 }
 
 // sets the class attribute for this element
-Element.prototype['class'] = (cls) => {
+Element.prototype['class'] = function (cls) {
   if (arguments.length === 0) {
     return this.attr('class') || ''
   } else {
@@ -99,7 +99,7 @@ Element.prototype['class'] = (cls) => {
 }
 
 // adds / removes a class for this element
-Element.prototype.classed = (cls, add) => {
+Element.prototype.classed = function (cls, add) {
   const parts = cls.split(' ')
 
   if (parts.length > 1) {
@@ -131,7 +131,7 @@ Element.prototype.classed = (cls, add) => {
 }
 
 // adds an element to this element and returns the added element
-Element.prototype.append = (element, options) => {
+Element.prototype.append = function (element, options) {
   if (element === undefined) {
     return this
   }
@@ -162,13 +162,13 @@ Element.prototype.append = (element, options) => {
 }
 
 // adds an element to this element, and returns this element
-Element.prototype.add = (element, options) => {
+Element.prototype.add = function (element, options) {
   const res = this.append(element, options)
   return res.then ? elementyPromise(res.then(r => this)) : this
 }
 
 // adds text to the content of the element
-Element.prototype.text = (text, options) => {
+Element.prototype.text = function (text, options) {
   if (text !== undefined) {
     const escape = (options && options.escape !== false) || options === undefined
     this.content.push(escape ? escapeHTML(text) : text)
@@ -177,7 +177,7 @@ Element.prototype.text = (text, options) => {
 }
 
 // removes a child from this element
-Element.prototype.removeChild = (element) => {
+Element.prototype.removeChild = function (element) {
   const index = this.content.indexOf(element)
   if (index > -1) {
     this.content.splice(index, 1)
@@ -193,7 +193,7 @@ Element.prototype.remove = () => {
 }
 
 // turns the element into an html string
-Element.prototype.stringify = () => {
+Element.prototype.stringify = function () {
   const attributes = Object.keys(this.attrs).map(k => k + '="' + this.attrs[k] + '"').join(' ')
   const content = this.content.map(d => d.stringify ? d.stringify() : (isString(d) ? d : '')).join('')
   const endContent = this.endContent.map(d => d.stringify ? d.stringify() : (isString(d) ? d : '')).join('')
@@ -204,7 +204,9 @@ function TextNode (text) {
   this.text = text
 }
 
-TextNode.prototype.stringify = () => this.text
+TextNode.prototype.stringify = function () {
+  return this.text
+}
 
 function Asset (url, filename, shared) {
   this.url = url
@@ -225,7 +227,7 @@ function ArrayNode (array) {
   this.array = array
 }
 
-ArrayNode.prototype.stringify = () => {
+ArrayNode.prototype.stringify = function () {
   return this.array.map(e => e.stringify ? e.stringify() : (isString(e) ? e : '')).join('')
 }
 

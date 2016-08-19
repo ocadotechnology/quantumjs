@@ -3,8 +3,10 @@ const should = chai.should()
 
 const dom = require('quantum-dom')
 const api = require('..')
+const path = require('path')
 
 const quantum = require('quantum-js')
+const html = require('quantum-html')
 const Page = quantum.Page
 const File = quantum.File
 
@@ -64,8 +66,13 @@ describe('function', () => {
               .add(dom.create('span').class('qm-api-header-tags'))))))
       .add(dom.create('div').class('qm-api-collapsible-content')
         .add(dom.create('div').class('qm-api-item-content')
-          .add(dom.create('div').class('qm-api-extras'))
-          .add(dom.create('div').class('qm-api-description').text('Description'))))
+          .add(dom.create('div').class('qm-api-description')
+            .add(dom.arrayNode([
+              dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../../quantum-html/assets/quantum-html.css'), shared: true}),
+              dom.create('div').class('qm-html-paragraph')
+                .add(dom.textNode('Description '))
+            ])))
+          .add(dom.create('div').class('qm-api-extras'))))
 
     transformer(selection).should.eql(expected)
   })

@@ -32,7 +32,7 @@ function Page (options) {
 }
 
 Page.prototype = {
-  clone: (changes) => {
+  clone: function (changes) {
     return new Page({
       file: changes && changes.file !== undefined ? changes.file : this.file,
       content: changes && changes.content !== undefined ? changes.content : this.content,
@@ -41,10 +41,10 @@ Page.prototype = {
       errors: changes && changes.errors !== undefined ? changes.errors : this.errors
     })
   },
-  warning: (warning) => {
+  warning: function (warning) {
     this.warnings.push(warning)
   },
-  error: (errors) => {
+  error: function (errors) {
     this.errors.push(errors)
   }
 }

@@ -16,7 +16,7 @@ function highlightCode (language, code) {
 
 const stylesheetAsset = dom.asset({
   url: '/assets/quantum-code-highlight.css',
-  file: path.join(__dirname, '/assets/quantum-code-highlight.css'),
+  file: path.join(__dirname, 'assets/quantum-code-highlight.css'),
   shared: true
 })
 

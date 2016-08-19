@@ -453,7 +453,7 @@ describe('transforms', () => {
 
       return html.paragraphTransform(selection, transformEntity()).should.eql(
         dom.arrayNode([
-          dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../client/quantum-html.css'), shared: true})
+          dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true})
         ])
       )
     })
@@ -477,7 +477,7 @@ describe('transforms', () => {
       return html.paragraphTransform(selection, transformEntity()).then(res => {
         res.should.eql(
           dom.arrayNode([
-            dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../client/quantum-html.css'), shared: true}),
+            dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true}),
             dom.create('div').class('qm-html-paragraph')
               .add(dom.textNode('some text '))
               .add(dom.textNode('some more text '))

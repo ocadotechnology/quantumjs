@@ -87,7 +87,7 @@ const attributeEntities = [
 function setupElement (type, selection, transform, parsePs) {
   var element = entityToElement(type, selection, parsePs)
   return selection
-    .filter((entity) => attributeEntities.indexOf(entity.type === -1))
+    .filter((entity) => attributeEntities.indexOf(entity.type) === -1)
     .transform(transform)
     .then((elements) => element.add(elements.filter(d => d)))
     .then(() => element)
@@ -226,7 +226,7 @@ function HTMLPage (elements) {
   this.elements = elements
 }
 
-HTMLPage.prototype.stringify = (options) => {
+HTMLPage.prototype.stringify = function (options) {
   return dom.stringify(this.elements, {
     embedAssets: options ? options.embedAssets : true,
     assetPath: options ? options.assetPath : undefined
@@ -261,11 +261,9 @@ function htmlRenamer () {
   }
 }
 
-merge(module.exports, {
-  HTMLPage,
-  transforms,
-  prepareTransforms,
-  stringify,
-  paragraphTransform,
-  htmlRenamer
-})
+module.exports.HTMLPage = HTMLPage
+module.exports.transforms = transforms
+module.exports.prepareTransforms = prepareTransforms
+module.exports.stringify = stringify
+module.exports.paragraphTransform = paragraphTransform
+module.exports.htmlRenamer = htmlRenamer

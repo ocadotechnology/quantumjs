@@ -24,13 +24,13 @@ function File (options) {
 
 File.prototype = {
   /* Changes the extension of the dest property - returns a new File */
-  withExtension: (extension) => {
+  withExtension: function (extension) {
     return this.clone({
       dest: this.dest.replace('.um', extension)
     })
   },
   /* Returns a new File with the specified properties changed */
-  clone: (changes) => {
+  clone: function (changes) {
     return new File({
       src: changes && changes.src !== undefined ? changes.src : this.src,
       resolved: changes && changes.resolved !== undefined ? changes.resolved : this.resolved,

@@ -40,10 +40,10 @@ function checkNotFiltered (selection) {
 }
 
 Selection.prototype = {
-  entity: () => {
+  entity: function () {
     return this._entity
   },
-  type: (type) => {
+  type: function (type) {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.type = type
@@ -52,7 +52,7 @@ Selection.prototype = {
       return this._entity.type
     }
   },
-  param: (i, param) => {
+  param: function (i, param) {
     if (arguments.length > 1) {
       checkNotFiltered(this)
       this._entity.params[i] = param
@@ -61,7 +61,7 @@ Selection.prototype = {
       return this._entity.params[i]
     }
   },
-  params: (params) => {
+  params: function (params) {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.params = params
@@ -70,12 +70,12 @@ Selection.prototype = {
       return this._entity.params
     }
   },
-  addParam: (param) => {
+  addParam: function (param) {
     checkNotFiltered(this)
     this._entity.params.push(param)
     return this
   },
-  content: (content) => {
+  content: function (content) {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.content = content
@@ -84,17 +84,17 @@ Selection.prototype = {
       return this._entity.content
     }
   },
-  add: (content) => {
+  add: function (content) {
     checkNotFiltered(this)
     this._entity.content.push(content)
     return this
   },
-  append: (content) => {
+  append: function (content) {
     checkNotFiltered(this)
     this._entity.content.push(content)
     return select(content, this)
   },
-  ps: (ps) => {
+  ps: function (ps) {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.params = ps.split(' ')
@@ -103,7 +103,7 @@ Selection.prototype = {
       return this._entity.params.join(' ')
     }
   },
-  cs: (cs) => {
+  cs: function (cs) {
     if (arguments.length > 0) {
       checkNotFiltered(this)
       this._entity.content = cs.split('\n')
@@ -113,7 +113,7 @@ Selection.prototype = {
       return this._entity.content.filter(isText).join('\n')
     }
   },
-  has: (type, options) => {
+  has: function (type, options) {
     if (options && options.recursive) {
       var parent = this
       // OPTIM: benchmark and test against not using some
@@ -126,25 +126,25 @@ Selection.prototype = {
       return this._entity.content.some((child) => child.type === type)
     }
   },
-  hasParams: () => {
+  hasParams: function () {
     return this._entity.params.length > 0
   },
-  hasContent: () => {
+  hasContent: function () {
     return this._entity.content.length > 0
   },
-  isEmpty: () => {
+  isEmpty: function () {
     // OPTIM: remove the use of some (and perhaps trim?)
     return !this._entity.content.some((d) => {
       return isEntity(d) || d.trim() !== ''
     })
   },
-  parent: () => {
+  parent: function () {
     return this._parent
   },
-  select: (type, options) => {
+  select: function (type, options) {
     return this.selectAll(type, options)[0] || emptySelection()
   },
-  selectAll: (type, options) => {
+  selectAll: function (type, options) {
     var parent = this
     var res
     if (Array.isArray(type)) {
@@ -171,7 +171,7 @@ Selection.prototype = {
 
     return res
   },
-  filter: (f) => {
+  filter: function (f) {
     if (Array.isArray(f)) {
       return this.filter((entity) => f.indexOf(entity.type) > -1)
     } else if (isText(f)) {
@@ -185,7 +185,7 @@ Selection.prototype = {
       return new Selection(filteredEntity, this._parent, true)
     }
   },
-  remove: (type, options) => {
+  remove: function (type, options) {
     if (Array.isArray(type)) {
       var self = this
       // OPTIM: remove the use of map
@@ -215,7 +215,7 @@ Selection.prototype = {
       }
     }
   },
-  removeAll: (type, options) => {
+  removeAll: function (type, options) {
     if (Array.isArray(type)) {
       var self = this
       // OPTIM: remove the use of map
@@ -250,7 +250,7 @@ Selection.prototype = {
       return result
     }
   },
-  transform: (transformer) => {
+  transform: function (transformer) {
     var parent = this
     return select.Promise.all(this._entity.content.map((child) => {
       return transformer(isEntity(child) ? select(child, parent) : child)
