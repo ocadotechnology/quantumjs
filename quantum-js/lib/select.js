@@ -251,9 +251,8 @@ Selection.prototype = {
     }
   },
   transform: function (transformer) {
-    var parent = this
     return select.Promise.all(this._entity.content.map((child) => {
-      return transformer(isEntity(child) ? select(child, parent) : child)
+      return transformer(isEntity(child) ? select(child, this) : child)
     }))
   }
 }
@@ -268,8 +267,7 @@ function select (entity, parent) {
   } else if (entity instanceof Selection) {
     return entity
   } else {
-    console.log(entity)
-    throw new Error("Something that doesn't look like an entity was selected: " + entity)
+    throw new Error("Something that doesn't look like an entity was selected")
   }
 }
 

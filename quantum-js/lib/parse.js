@@ -85,20 +85,32 @@ function tokenize (str) {
     }
   }
 
-  var err = (msg) => {
+  function err (msg) {
     var start = str.lastIndexOf('\n', pos - 1)
     start = str.lastIndexOf('\n', start - 1)
     start = str.lastIndexOf('\n', start - 1)
 
-    var errorLineEnd = str.indexOf('\n', pos)
+    const nextNewline = str.indexOf('\n', pos)
+    const errorLineEnd = nextNewline === -1 ? pos : nextNewline
 
     var end = str.indexOf('\n', errorLineEnd + 1)
-    end = str.indexOf('\n', end + 1)
-    end = str.indexOf('\n', end + 1)
+    if (end === -1) {
+      end = str.length - 1
+    } else {
+      end = str.indexOf('\n', end + 1)
+      if (end === -1) {
+        end = str.length - 1
+      } else {
+        end = str.indexOf('\n', end + 1)
+        if (end === -1) {
+          end = str.length - 1
+        }
+      }
+    }
 
-    var indentSpaces = (new Array(col)).join(' ')
+    const indentSpaces = (new Array(col)).join(' ')
 
-    throw new Error({
+    throw {
       type: 'quantum-parse',
       context: str.substring(start, errorLineEnd) + '\n' + indentSpaces + '^^^^^^^^\n' + str.substring(errorLineEnd + 1, end),
       fullText: str,
@@ -106,9 +118,11 @@ function tokenize (str) {
       col: col,
       msg: msg,
       pos: pos,
-      message: 'Error at line ' + row + ', col ' + col + ': ' + msg,
-      toString: () => this.message + '\n' + this.context
-    })
+      message: 'Syntax error at line ' + row + ', col ' + col + ': ' + msg,
+      toString: function () {
+        return this.message + '\n' + this.context
+      }
+    }
   }
 
   while (pos < str.length) {

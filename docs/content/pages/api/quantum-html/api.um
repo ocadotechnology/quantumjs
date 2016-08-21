@@ -1,54 +1,26 @@
 @define element-renderer
-  @entity {{ps}}
-    @params
-    @description: Adds a @code(html)[<{{ps}}>] element
-    @entity id
-      @description: Sets the id attribute property to a value
-      @params: value
-    @entity class
-      @description: Sets the class attribute property to a value
-      @params: value
-    @entity attr
-      @description: Sets an attribute property to a value
-      @params name: value
+    @object @{{ps}}
+      @description
+        Adds a @code(html)[<{{ps}}>] element
+
+        @@codeblock um
+          @{{ps}}
+      @group
+        @property @id
+          @description: Sets the id attribute property to a value
+          @params: value
+        @property @class
+          @description: Sets the class attribute property to a value
+          @params: value
+        @property @attr
+          @description: Sets an attribute property to a value
+          @params name: value
 
 @version 1.0.0
   @topic Entities
     @api quantum-html-entites
-      @group Other entites
-        @entity html
-          @params: html
-          @description: Adds some html directly to the page
 
-        @entity css
-          @params: css
-          @description: Adds some styles to be applied to the page (added to the head)
-
-        @entity js
-          @params: javascript
-          @description: Adds some javascript to be executed on the page (added at the end of the body)
-
-        @entity code
-          @params language: code
-          @description: Shows some inline syntax highlighted code
-
-        @entity codeblock
-          @params language: code
-          @description: Shows some syntax highlighted code in a block
-
-        @entity script
-          @params link
-          @description: Adds a link to a javascript file
-
-        @entity stylesheet
-          @params link
-          @description: Adds a link to a css file
-
-        @entity hyperlink
-          @params link: content
-          @description: Adds a @code(html)[<a>] element, with the href set to the link specified in the parameters
-
-      @group Basic HTML elements
+      @group Standard HTML elements
         @element-renderer a
         @element-renderer b
         @element-renderer br
@@ -70,6 +42,7 @@
         @element-renderer link
         @element-renderer ol
         @element-renderer option
+        @element-renderer meta
         @element-renderer p
         @element-renderer pre
         @element-renderer select
@@ -85,24 +58,62 @@
         @element-renderer ul
         @element-renderer vr
 
+      @group Other entites
+        @object html
+          @params: html
+          @description
+            Adds some html directly to the page
+
+        @object css
+          @params: css
+          @description
+            Adds some styles to be applied to the page (added to the head)
+
+        @object js
+          @params: javascript
+          @description
+            Adds some javascript to be executed on the page (added at the end of the body)
+
+        @object script
+          @params link
+          @description
+            Adds a link to a javascript file
+
+        @object stylesheet
+          @params link
+          @description
+            Adds a link to a css file
+
+        @object hyperlink
+          @params link: content
+          @description
+            Adds a @code(html)[<a>] element, with the href set to the link
+            specified in the parameters
+
+        @object title
+          @params title
+          @description
+            Sets the page title (adds a <title)
+
   @topic Api
     @api quantum-html
       @function html
         @description
-          @p: A function that returns a function for taking AST objects and transforming them into virtual dom
-          @p: This is the function returned from @code[require('quantum-html')]
+          A function that returns a function for taking AST objects and transforming
+          them into virtual dom. This is the function returned from @code[require('quantum-html')]
 
         @param? options [Object]
           @property transforms [Object]
             @description
-              @p: An object containing the html transforms to use.
-              @p: The key used in the options object will be used as the namespace for the entity transforms.
-              @p: This means that in the markup you can create a div using @(@div) or @(html.div) when using the default settings.
-              @p: If the options object was passed in as this:
-              @codeblock js
-                var html = require('quantum-html')
+              An object containing the html transforms to use. The key used in the
+              options object will be used as the namespace for the entity transforms.
+              This means that in the markup you can create a div using @(@div) or
+              @(html.div) when using the default settings. If the options object was passed in as this:
 
-                var htmlOptions = {
+              @codeblock js
+                const html = require('quantum-html')
+
+                const htmlOptions = {
                   transforms: {
                     bob: html.transforms
                   }
@@ -114,8 +125,10 @@
                   .then(quantum.write('target'))
 
 
-              @p: Then you could create a div with @(@bob.div) instead.
-              @p: Namespaces allow you to remove ambiguity when multiple modules use the same entity names, and the type of entity you mean is not clear.
+              Then you could create a div with @(@bob.div) instead.
+
+              Namespaces allow you to remove ambiguity when multiple modules use
+              the same entity names, and the type of entity you mean is not clear.
 
             @default
               @codeblock js
@@ -138,8 +151,8 @@
 
       @function html.stringify
         @description
-          @p: A function that returns a function for converting transformed virtual dom content to html
-          @p: This function is accessible through @code[require('quantum-html').stringify]
+          A function that returns a function for converting transformed virtual dom
+          content to html This function is accessible through @code[require('quantum-html').stringify]
         @param? options [Object]
           @property embedAssets [Boolean]
             @description
@@ -154,7 +167,10 @@
               absolute path.
             @default undefined
         @returns Function
-          @description: A function that renders the virtual dom content (created using @code[api(options)]) to html that can then be written to file
+          @description
+            A function that renders the virtual dom content (created using
+            @code[api(options)]) to html that can then be written to file
+
           @param file [Object]: The AST object with transformed content to convert to HTML
           @returns [Promise[Object]]: A promise that yields an object containing the output filename and stringified content
             @property filename: The name for the file
@@ -162,8 +178,8 @@
 
       @function html.exportAssets
         @description
-          @p: Exports assets from quantum html transform modules to a given directory.
-          @p: This function is accessible through @code[require('quantum-html').exportAssets]
+          Exports assets from quantum html transform modules to a given directory.
+          This function is accessible through @code[require('quantum-html').exportAssets]
 
         @param targetDir [String]
           @description: The directory to dump the assets into
@@ -173,9 +189,9 @@
 
           @extra
             @codeblock js
-              var html = require('quantum-html')
-              var api = require('quantum-api')
-              var diagram = require('quantum-diagram')
+              const html = require('quantum-html')
+              const api = require('quantum-api')
+              const diagram = require('quantum-diagram')
 
               html.exportAssets('target/assets', [
                 html.assets,

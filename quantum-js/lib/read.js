@@ -15,14 +15,14 @@
 
 */
 
-var Promise = require('bluebird')
-var merge = require('merge')
-var path = require('path')
-var fs = Promise.promisifyAll(require('fs'))
-var glob = Promise.promisify(require('glob'))
-var parse = require('./parse')
-var Page = require('./page')
-var File = require('./file')
+const Promise = require('bluebird')
+const merge = require('merge')
+const path = require('path')
+const fs = Promise.promisifyAll(require('fs'))
+const glob = Promise.promisify(require('glob'))
+const parse = require('./parse')
+const Page = require('./page')
+const File = require('./file')
 
 function defaultLoader (filename, parentFilename) {
   return fs.readFileAsync(filename, 'utf-8')
@@ -33,11 +33,11 @@ function flatten (arrays) {
 }
 
 function inline (parsed, currentDir, options, parentFile) {
-  var promises = []
+  const promises = []
 
   parsed.content.forEach((entity, i) => {
     if (entity.type === options.inlineEntityType) {
-      var doParse
+      let doParse = undefined
 
       if (!doParse && entity.params.length > 1 && entity.params[1] === 'parse') {
         doParse = true
@@ -47,8 +47,8 @@ function inline (parsed, currentDir, options, parentFile) {
         doParse = false
       }
 
-      var filename = path.join(currentDir, entity.params[0])
-      var promise = parseFiles(filename, doParse, options, parentFile)
+      const filename = path.join(currentDir, entity.params[0])
+      const promise = parseFiles(filename, doParse, options, parentFile)
         .then((res) => {
           var newContent = flatten(res.map((d) => d.content))
           return parsed.content.splice.apply(parsed.content, [i, 1].concat(newContent))
@@ -69,11 +69,17 @@ function parseFile (filename, doParse, options, parentFile) {
       .then((input) => parse(input, options))
       .then((parsed) => inline(parsed, currentDir, options, filename))
       .catch((e) => {
-        throw new Error('quantum: ' + filename + ': ' + e)
+        if (e.type === 'quantum-parse') {
+          throw merge(e, {
+            filename: e.filename || filename
+          })
+        } else {
+          throw new Error('quantum: ' + filename + ': ' + e)
+        }
       })
   } else {
     return options.loader(filename, parentFile).then((input) => ({
-      content: input.split('\n')
+        content: input.split('\n')
     }))
   }
 }
@@ -82,16 +88,13 @@ function parseFiles (globString, doParse, options, parentFile) {
   return glob(globString).map((filename) => parseFile(filename, doParse, options, parentFile))
 }
 
-function read (filename, options) {
-  options = merge({
+function read (filename, opts) {
+  const options = merge({
     inlineEntityType: 'inline',
     inline: true,
     loader: defaultLoader,
     base: undefined
-  }, options)
-
-  // TODO: Unused var?
-  var relativeFilename = options.base ? path.relative(options.base, filename) : filename
+  }, opts)
 
   if (options.inline) {
     return parseFile(filename, true, options)

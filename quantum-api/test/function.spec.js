@@ -1,5 +1,7 @@
 const chai = require('chai')
 const should = chai.should()
+const chaiAsPromised = require('chai-as-promised')
+chai.use(chaiAsPromised)
 
 const dom = require('quantum-dom')
 const api = require('..')
@@ -67,11 +69,11 @@ describe('function', () => {
       .add(dom.create('div').class('qm-api-collapsible-content')
         .add(dom.create('div').class('qm-api-item-content')
           .add(dom.create('div').class('qm-api-description')
-            .add(dom.arrayNode([
+            .add([
               dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../../quantum-html/assets/quantum-html.css'), shared: true}),
               dom.create('div').class('qm-html-paragraph')
                 .add(dom.textNode('Description '))
-            ])))
+            ]))
           .add(dom.create('div').class('qm-api-extras'))))
 
     transformer(selection).should.eql(expected)

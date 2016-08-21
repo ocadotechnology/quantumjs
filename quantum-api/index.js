@@ -257,7 +257,9 @@ module.exports = (opts) => {
 
   // creates a header for function type items
   function functionHeader (selection, transforms) {
-    const name = dom.create('span').class('qm-api-function-name').text(selection.type() === 'constructor' ? 'constructor' : selection.param(0))
+    const name = dom.create('span')
+      .class('qm-api-function-name')
+      .text(selection.type() === 'constructor' ? 'constructor' : selection.param(0))
 
     const params = selection.selectAll(['param', 'param?']).map((param) => {
       const isOptional = param.type()[param.type().length - 1] === '?'
@@ -354,7 +356,7 @@ module.exports = (opts) => {
 
   function groups (selection, transforms) {
     if (selection.has('group')) {
-      const sortedEntity = organisedEntity(selection.filter('group'))
+      const sortedEntity = selection.filter('group')
       return dom.create('div').class('qm-api-group-container')
         .add(dom.all(sortedEntity.selectAll('group').map((groupSelection) => {
           return dom.create('div').class('qm-api-group')

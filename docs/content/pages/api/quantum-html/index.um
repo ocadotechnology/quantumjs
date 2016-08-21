@@ -9,44 +9,44 @@
   @title Quantum Html
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    This page describes how the html ast to virual dom transform works, and
-    shows how individual entity transforms can be passed into the html transform.
-
-    It also lists out the inbuilt html entity transforms.
+    Transforms for converting quantum ast to html.
 
 @contentSection
   @siteSidebars
 
   @topic About
-    @sheet
-      This module is used to transform parsed quantum AST objects to virtual
-      dom content and then converting to html.
+    This module is used to transform parsed quantum AST objects to virtual
+    dom content and then converting to html.
 
-      The two conversion functions are provided separately to allow additional
-      transforms to be performed between the virtual dom and stringified stage,
-      giving flexibility to convert to formats other than pure html.
+    The two conversion functions are provided separately to allow additional
+    transforms to be performed between the virtual dom and stringified stage,
+    giving flexibility to convert to formats other than pure html.
 
-  @topic Example
+  @topic Config options
 
-    @subsection Build script
+    This is the minimal setup for building pages with quantum-html:
+
+    @subsection quantum.config.js
       @codeblock js
-        const quantum = require('quantum-js')
-        const html    = require('quantum-html')
+        const html = require('quantum-html')
 
-        quantum.read('source.um')
-          .map(html())
-          .map(html.stringify())
-          .map(quantum.write('target'))
+        const htmlTransforms = {
+          html: html.transforms
+        }
 
-    @subsection Example markup
-      @@codeblock um
-        @h1: My Page
-        @p: Hello World!
+        function pipeline (page) {
+          return Promise.resolve(page)
+            .map(html({ transforms: htmlTransforms }))
+            .map(html.stringify(htmlOptions))
+            .map(html.htmlRenamer())
+        }
 
-    @subsection Example result
-      @h1: My Page
-      @p: Hello World!
+        module.exports = {
+          htmlTransforms: htmlTransforms,
+          pipeline: pipeline,
+          pages: '**/*.um'
+        }
+
+    The
 
     @inline api.um
-
-@footer

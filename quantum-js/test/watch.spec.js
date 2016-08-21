@@ -364,7 +364,7 @@ describe('watch', function () {
 
     var options = {dest: 'target2'}
 
-    var handler = function (parsed, details) {
+    var handler = function (err, parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql(new Page({
           file: new File({
@@ -397,7 +397,7 @@ describe('watch', function () {
       watch: true
     }
 
-    var handler = function (parsed, details) {
+    var handler = function (err, parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql(new Page({
           file: new File({
@@ -432,7 +432,7 @@ describe('watch', function () {
 
     var options = {dest: 'target2'}
 
-    var handler = function (parsed, details) {
+    var handler = function (err, parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql(new Page({
           file: new File({
@@ -467,7 +467,7 @@ describe('watch', function () {
 
     var options = {dest: 'target2'}
 
-    var handler = function (parsed, details) {
+    var handler = function (err, parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql(new Page({
           file: new File({
@@ -502,7 +502,7 @@ describe('watch', function () {
 
     var options = {dest: 'target2'}
 
-    var handler = function (parsed, details) {
+    var handler = function (err, parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql(new Page({
           file: new File({
@@ -540,7 +540,7 @@ describe('watch', function () {
     var errors = []
     var complete = false
 
-    var handler = function (parsed, details) {
+    var handler = function (err, parsed, details) {
       if (details.cause === 'change') {
         errors.should.eql([]) // expect there to be no errors
         if (!complete) {
@@ -586,7 +586,7 @@ describe('watch', function () {
 
     var errors = []
 
-    var handler = function (parsed, details) {
+    var handler = function (err, parsed, details) {
       if (details.rootCause === 'change') {
         errors.should.eql([]) // expect there to be no errors
         done()
@@ -620,7 +620,7 @@ describe('watch', function () {
 
     var options = {dest: 'target2'}
 
-    var handler = function (parsed, details) {
+    var handler = function (err, parsed, details) {
       if (details.cause === 'change') {
         parsed.should.eql(new Page({
           file: new File({
@@ -673,7 +673,7 @@ describe('watch', function () {
 
     var error = new Error('some error')
 
-    var handler = function (parsed, details) {
+    var handler = function (err, parsed, details) {
       if (details.cause === 'change') {
         return Promise.reject(error)
       } else {

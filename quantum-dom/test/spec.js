@@ -5,49 +5,49 @@ var dom = require('..')
 var should = chai.should()
 var Promise = require('bluebird')
 
-describe('Element', function () {
-  it('should get the right type', function () {
+describe('Element', () => {
+  it('should get the right type', () => {
     dom.create('div').type.should.equal('div')
   })
 
-  it('should set id correctly', function () {
+  it('should set id correctly', () => {
     dom.create('div').id('lemon').attrs.id.should.equal('lemon')
   })
 
-  it('id get the id correctly', function () {
+  it('id get the id correctly', () => {
     dom.create('div').id('lemon').id().should.equal('lemon')
   })
 
-  it('should set the class correctly', function () {
+  it('should set the class correctly', () => {
     dom.create('div').class('onion').attrs['class'].should.equal('onion')
   })
 
-  it('should get the class correctly', function () {
+  it('should get the class correctly', () => {
     dom.create('div').class('onion').class().should.equal('onion')
   })
 
-  it('should stringify correctly', function () {
+  it('should stringify correctly', () => {
     dom.create('div').stringify().should.equal('<div></div>')
   })
 
-  it('should stringify correctly with an attribute set', function () {
+  it('should stringify correctly with an attribute set', () => {
     dom.create('div').attr('test', 'thing').stringify().should.equal('<div test="thing"></div>')
   })
 
-  it('should stringify correctly with multiple attributes set', function () {
+  it('should stringify correctly with multiple attributes set', () => {
     dom.create('div')
       .attr('test', 'thing')
       .attr('test2', 'thing2')
       .stringify().should.equal('<div test="thing" test2="thing2"></div>')
   })
 
-  it('should stringify content correctly', function () {
+  it('should stringify content correctly', () => {
     dom.create('div').id('outer')
       .add(dom.create('div').id('inner'))
       .stringify().should.equal('<div id="outer"><div id="inner"></div></div>')
   })
 
-  it('should add arrays of content correctly', function () {
+  it('should add arrays of content correctly', () => {
     dom.create('div').id('outer')
       .add([
         dom.create('div').id('inner-1'),
@@ -56,99 +56,90 @@ describe('Element', function () {
       .stringify().should.equal('<div id="outer"><div id="inner-1"></div><div id="inner-2"></div></div>')
   })
 
-  it('should append arrays of content correctly', function () {
-    const elements = [
-      dom.create('div').id('inner-1'),
-      dom.create('div').id('inner-2')
-    ]
-    const div = dom.create('div').id('outer')
-    const res = div.append(elements)
-    res.should.equal(elements)
-    div.stringify().should.equal('<div id="outer"><div id="inner-1"></div><div id="inner-2"></div></div>')
-  })
-
-  it('should stringify text content correctly (escape html by default)', function () {
+  it('should stringify text content correctly (escape html by default)', () => {
     dom.create('div').id('outer')
       .text('<cabbage>')
       .add(dom.create('div').id('inner'))
       .stringify().should.equal('<div id="outer">&lt;cabbage&gt;<div id="inner"></div></div>')
   })
 
-  it("should stringify text content correctly (don't escape html when escape is set to false)", function () {
+  it("should stringify text content correctly (don't escape html when escape is set to false)", () => {
     dom.create('div').id('outer')
       .text('<cabbage>', {escape: false})
       .add(dom.create('div').id('inner'))
       .stringify().should.equal('<div id="outer"><cabbage><div id="inner"></div></div>')
   })
 
-  it('should ignore undefined text arguments', function () {
+  it('should ignore undefined text arguments', () => {
     dom.create('div').text(undefined).content.should.eql([])
   })
 
-  it('should remove an element from a parent correctly', function () {
-    el1 = dom.create('div', 'pineapple')
-    el2 = el1.append(dom.create('div', 'strawberry'))
+  it('should remove an element from a parent correctly', () => {
+    const el1 = dom.create('div', 'pineapple')
+    const el2 = dom.create('div', 'strawberry')
+    el1.add(el2)
 
     el1.removeChild(el2).should.equal(true)
     el1.content.length.should.equal(0)
   })
 
-  it('should return false when trying to remove an element that is not a child from a parent', function () {
-    el1 = dom.create('div', 'pineapple')
+  it('should return false when trying to remove an element that is not a child from a parent', () => {
+    const el1 = dom.create('div', 'pineapple')
     el1.removeChild(dom.create('div', 'strawberry')).should.equal(false)
   })
 
-  it('should remove itself correctly (with parent)', function () {
-    el1 = dom.create('div', 'pineapple')
-    el2 = el1.append(dom.create('div', 'strawberry'))
+  it('should remove itself correctly (with parent)', () => {
+    const el1 = dom.create('div', 'pineapple')
+    const el2 = dom.create('div', 'strawberry')
+    el1.add(el2)
 
     el2.remove()
     el1.content.length.should.equal(0)
   })
 
-  it('should remove itself correctly (with parent)', function () {
-    chai.expect(function () {
+  it('should remove itself correctly (without parent)', () => {
+    chai.expect(() => {
       dom.create('div', 'pineapple').remove()
     }).to.not.throw()
   })
 
-  it('classed should get existance of a single class correctly', function () {
+  it('classed should get existance of a single class correctly', () => {
     const el = dom.create('div')
     el.classed('satsuma').should.equal(false)
     el.class('satsuma').classed('satsuma').should.equal(true)
   })
 
-  it('classed should add a class correctly', function () {
+  it('classed should add a class correctly', () => {
     const el = dom.create('div')
     el.classed('satsuma').should.equal(false)
     el.classed('satsuma', true).classed('satsuma').should.equal(true)
   })
 
-  it('classed should add a class correctly to an existing class attribute', function () {
+  it('classed should add a class correctly to an existing class attribute', () => {
     const el = dom.create('div')
     el.class('banana')
     el.classed('satsuma', true).classed('banana satsuma').should.equal(true)
   })
 
-  it('classed should remove a class correctly', function () {
+  it('classed should remove a class correctly', () => {
     const el = dom.create('div')
     el.class('banana satsuma')
     el.classed('satsuma', false).class().should.equal('banana')
   })
 
-  it('classed should be fine removing a class that doesnt exist', function () {
+  it('classed should be fine removing a class that doesnt exist', () => {
     const el = dom.create('div')
     el.class('banana satsuma')
     el.classed('lemon', false).class().should.equal('banana satsuma')
   })
 
-  it('classed should not add a class twice', function () {
+  it('classed should not add a class twice', () => {
     const el = dom.create('div')
     el.class('banana satsuma')
     el.classed('satsuma', true).class().should.equal('banana satsuma')
   })
 
-  it('classed should get existance of multiple classes correctly', function () {
+  it('classed should get existance of multiple classes correctly', () => {
     const el = dom.create('div').class('satsuma lemon')
     el.classed('satsuma').should.equal(true)
     el.classed('lemon').should.equal(true)
@@ -157,25 +148,21 @@ describe('Element', function () {
     el.classed('satsuma banana lemon').should.equal(false)
   })
 
-  it('classed should add multiple classes correctly', function () {
+  it('classed should add multiple classes correctly', () => {
     const el = dom.create('div').class('satsuma lemon')
     el.classed('satsuma banana lemon', true).class().should.equal('satsuma lemon banana')
   })
 
-  it('classed should remove multiple classes correctly', function () {
+  it('classed should remove multiple classes correctly', () => {
     const el = dom.create('div').class('satsuma lemon')
     el.classed('banana lemon', false).class().should.equal('satsuma')
   })
 
-  it('add should ignore undefined content', function () {
+  it('add should ignore undefined content', () => {
     dom.create('div').add(undefined).content.should.eql([])
   })
 
-  it('append should ignore undefined content', function () {
-    dom.create('div').append(undefined).content.should.eql([])
-  })
-
-  it('should return an Element like Promise when a promise is passed into add', function () {
+  it('should return an Element like Promise when a promise is passed into add', () => {
     dom.create('div')
       .add(Promise.resolve(dom.create('div')))
       .should.be.an.instanceof(Promise)
@@ -184,96 +171,101 @@ describe('Element', function () {
       .add(Promise.resolve(dom.create('div')))
       .add(dom.create('div'))
       .should.be.an.instanceof(Promise)
+  })
+
+  it('should return an Element like Promise when an array node containing a promise is passed into add', () => {
+    dom.create('div')
+      .add([
+        Promise.resolve(dom.create('div')),
+        Promise.resolve(dom.create('span'))
+      ]).should.be.an.instanceof(Promise)
 
     dom.create('div')
-      .add(Promise.resolve(dom.create('div')))
-      .append(dom.create('div'))
-      .should.be.an.instanceof(Promise)
+      .add([
+        dom.create('div'),
+        dom.create('span')
+      ]).should.not.be.an.instanceof(Promise)
+  })
+
+  function delayedPromise (timeout, result) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(result)
+      }, timeout)
+    })
+  }
+
+  it('should construct the right thing when Element like Promises are chained with add and return out of order', () => {
+    return dom.create('div')
+      .add(delayedPromise(5, dom.create('div')))
+      .add(delayedPromise(20, dom.create('span')))
+      .add(delayedPromise(10, dom.create('div')))
+      .then(element => {
+        element.should.eql(dom.create('div')
+          .add(dom.create('div'))
+          .add(dom.create('span'))
+          .add(dom.create('div')))
+      })
 
   })
 
-  it('should return an Element like Promise when a promise is passed into append', function () {
-    dom.create('div')
-      .append(Promise.resolve(dom.create('div')))
-      .should.be.an.instanceof(Promise)
-
-    dom.create('div')
-      .append(Promise.resolve(dom.create('div')))
-      .add(dom.create('div'))
-      .should.be.an.instanceof(Promise)
-
-    dom.create('div')
-      .append(Promise.resolve(dom.create('div')))
-      .append(dom.create('div'))
-      .should.be.an.instanceof(Promise)
+  it('should construct the right thing when Element like Promises are chained with add and return out of order', () => {
+    return dom.create('div')
+      .add([
+        delayedPromise(5, dom.create('div')),
+        delayedPromise(20, dom.create('span')),
+        delayedPromise(10, dom.create('div'))
+      ])
+      .then(element => {
+        element.should.eql(dom.create('div')
+          .add(dom.create('div'))
+          .add(dom.create('span'))
+          .add(dom.create('div')))
+      })
 
   })
 
-  it('should add an element to the end if addToEnd is true', function () {
+  it('should add an element to the end if addToEnd is true', () => {
     dom.create('div')
       .add(dom.create('span'), {addToEnd: true})
       .add(dom.create('div')).stringify()
       .should.equal('<div><div></div><span></span></div>')
   })
 
-  it('should append an element to the end if addToEnd is true', function () {
-    const div = dom.create('div')
-
-    div.append(dom.create('span'), {addToEnd: true})
-    div.append(dom.create('div'))
-    div.stringify().should.equal('<div><div></div><span></span></div>')
-  })
-
-  it('should add elements to the end if addToEnd is true', function () {
+  it('should add elements to the end if addToEnd is true', () => {
     dom.create('div')
       .add([dom.create('span'), dom.create('img'), 'text'], {addToEnd: true})
       .add(dom.create('div')).stringify()
       .should.equal('<div><div></div><span></span><img></img>text</div>')
   })
 
-  it('should append elements to the end if addToEnd is true', function () {
-    const div = dom.create('div')
-
-    div.append([dom.create('span'), dom.create('img'), 'text'], {addToEnd: true})
-    div.append(dom.create('div'))
-    div.stringify().should.equal('<div><div></div><span></span><img></img>text</div>')
-  })
-
-  it('should ignore undefined values in arrays passed to add', function () {
+  it('should ignore undefined values in arrays passed to add', () => {
     dom.create('div')
       .add([dom.create('span'), undefined, dom.create('img')], {addToEnd: true})
       .add([dom.create('div'), undefined]).stringify()
       .should.equal('<div><div></div><span></span><img></img></div>')
   })
 
-  it('should ignore undefined values in arrays passed to append', function () {
-    const div = dom.create('div')
-
-    div.append([dom.create('span'), undefined, dom.create('img')], {addToEnd: true})
-    div.append([dom.create('div'), undefined])
-    div.stringify().should.equal('<div><div></div><span></span><img></img></div>')
-  })
-
 })
 
-describe('dom', function () {
+describe('dom', () => {
   describe('randomId', () => {
-    it('should return a 32 character string', function () {
+    it('should return a 32 character string', () => {
       dom.randomId().should.be.a.string
       dom.randomId().length.should.equal(32)
     })
 
-    it('should not return the same id when called twice', function () {
+    it('should not return the same id when called twice', () => {
       dom.randomId().should.not.equal(dom.randomId())
     })
   })
 
   describe('all', () => {
-    it('should return a promise if one of the entries is a promise', function () {
+    it('should return a promise if one of the entries is a promise', () => {
       dom.all([1, 2, 3, Promise.resolve(4)]).should.be.an.instanceof(Promise)
     })
 
-    it('should return an array if none of the entries are a promise', function () {
+    it('should return an array if none of the entries are a promise', () => {
       dom.all([1, 2, 3, 4]).should.be.an.instanceof(Array)
     })
   })

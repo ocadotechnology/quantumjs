@@ -331,11 +331,10 @@ describe('transforms', () => {
       })
 
       return html.transforms.head(selection, transformEntity()).then((res) => {
-        res.should.eql(
-          dom.arrayNode([
-            dom.head(dom.create('meta').attr('name', 'value')),
-            dom.head(dom.create('meta').attr('name2', 'value2'))
-          ]))
+        res.should.eql([
+          dom.head(dom.create('meta').attr('name', 'value')),
+          dom.head(dom.create('meta').attr('name2', 'value2'))
+        ])
       })
     })
   })
@@ -451,11 +450,9 @@ describe('transforms', () => {
         content: []
       })
 
-      return html.paragraphTransform(selection, transformEntity()).should.eql(
-        dom.arrayNode([
-          dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true})
-        ])
-      )
+      return html.paragraphTransform(selection, transformEntity()).should.eql([
+        dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true})
+      ])
     })
 
     it('split paragraphs on double newlines', () => {
@@ -475,21 +472,19 @@ describe('transforms', () => {
       })
 
       return html.paragraphTransform(selection, transformEntity()).then(res => {
-        res.should.eql(
-          dom.arrayNode([
-            dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true}),
-            dom.create('div').class('qm-html-paragraph')
-              .add(dom.textNode('some text '))
-              .add(dom.textNode('some more text '))
-              .add(dom.create('b').add(dom.textNode('bold text')))
-              .add(dom.textNode(' '))
-              .add(dom.textNode('more text ')),
-            dom.create('div').class('qm-html-paragraph')
-              .add(dom.create('b').add(dom.textNode('new paragraph')))
-              .add(dom.textNode(' '))
-              .add(dom.textNode('new paragraph '))
-          ])
-        )
+        res.should.eql([
+          dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true}),
+          dom.create('div').class('qm-html-paragraph')
+            .add(dom.textNode('some text '))
+            .add(dom.textNode('some more text '))
+            .add(dom.create('b').add(dom.textNode('bold text')))
+            .add(dom.textNode(' '))
+            .add(dom.textNode('more text ')),
+          dom.create('div').class('qm-html-paragraph')
+            .add(dom.create('b').add(dom.textNode('new paragraph')))
+            .add(dom.textNode(' '))
+            .add(dom.textNode('new paragraph '))
+        ])
       })
     })
 

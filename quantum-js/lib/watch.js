@@ -13,18 +13,18 @@
 
 */
 
-var path = require('path')
-var EventEmitter = require('events')
-var util = require('util')
+const path = require('path')
+const EventEmitter = require('events')
+const util = require('util')
 
-var Promise = require('bluebird')
-var chokidar = require('chokidar')
-var flatten = require('flatten')
-var fs = Promise.promisifyAll(require('fs-extra'))
+const Promise = require('bluebird')
+const chokidar = require('chokidar')
+const flatten = require('flatten')
+const fs = Promise.promisifyAll(require('fs-extra'))
 
-var read = require('./read')
-var Page = require('./page')
-var fileOptions = require('./file-options')
+const read = require('./read')
+const Page = require('./page')
+const fileOptions = require('./file-options')
 
 /* Watches some glob specs for changes */
 function Watcher (specs, options) {
@@ -39,7 +39,9 @@ function Watcher (specs, options) {
   this._promise = Promise.all(specs)
     .filter((spec) => spec && spec.watch)
     .map((spec) => specToWatcherObj(self, spec, self._options))
-    .then((watchers) => { self._watchers = watchers })
+    .then((watchers) => {
+      self._watchers = watchers
+    })
 }
 
 /* Takes a spec, and returns a chokidar watcher along with the spec */
@@ -144,16 +146,16 @@ function watch (specs, options, handler) {
   inlinedWatcher.on('change', (filename) => {
     const files = Array.from(getSourceFileObjs(filename))
     Promise.all(files.map((fileObj) => handleFile(fileObj, {rootCause: 'change', cause: 'change'})))
-    .then(() => events.emit('change', filename))
-    .catch(handleFileFailure)
+      .then(() => events.emit('change', filename))
+      .catch(handleFileFailure)
   })
 
   inlinedWatcher.on('unlink', (filename) => {
     var files = Array.from(getSourceFileObjs(filename))
     unlinkFile(filename)
     Promise.all(files.map((fileObj) => handleFile(fileObj, {rootCause: 'delete', cause: 'change'})))
-    .then(() => events.emit('delete', filename))
-    .catch(handleFileFailure)
+      .then(() => events.emit('delete', filename))
+      .catch(handleFileFailure)
   })
 
   function watchFile (filename) {
@@ -177,8 +179,15 @@ function watch (specs, options, handler) {
     fileObjs[work.file.src] = work.file
     return read(work.file.src, {loader: linkingLoader})
       .then((content) => {
-        var page = new Page({file: work.file, content: content})
-        return handler(page, work.cause)
+        const page = new Page({file: work.file, content: content})
+        return handler(undefined, page, work.cause)
+      })
+      .catch((err) => {
+        if (err.type === 'quantum-parse') {
+          return handler(err, new Page({file: work.file, content: undefined}), work.cause)
+        } else {
+          throw err
+        }
       })
       .then((res) => work.resolve(res))
       .catch((err) => work.reject(err))

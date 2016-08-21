@@ -98,12 +98,17 @@ types.forEach((type) => {
   transforms[type] = (selection, transform) => setupElement(type, selection, transform, true)
 })
 
-transforms.bodyClassed = (selection, transform) => dom.bodyClassed(selection.ps(), selection.cs() !== 'false')
-transforms.title = (selection, transform) => dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
+transforms.bodyClassed = (selection, transform) => {
+  dom.bodyClassed(selection.ps(), selection.cs() !== 'false')
+}
+
+transforms.title = (selection, transform) => {
+  dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
+}
 
 transforms.head = (selection, transform) => {
   return selection.transform(transform)
-    .then((elements) => dom.arrayNode(elements.filter(d => d).map(e => dom.head(e))))
+    .then((elements) => elements.filter(d => d).map(e => dom.head(e)))
 }
 
 transforms.html = (selection, transform) => dom.textNode(selection.cs(), {escape: false})
@@ -177,9 +182,7 @@ function paragraphTransform (selection, transform) {
     currentParagraph = undefined
   }
 
-  const result = dom.all(paragraphs)
-
-  return result.then ? result.then(dom.arrayNode) : dom.arrayNode(result)
+  return paragraphs
 }
 
 // returns the transform function that converts parsed um source to virtual dom.
@@ -244,7 +247,7 @@ function stringify (opts) {
       file: page.file.withExtension('.html'),
       content: page.content.stringify(options).then(x => x.html)
     })
-    .then((changes) => page.clone(changes))
+      .then((changes) => page.clone(changes))
   }
 }
 

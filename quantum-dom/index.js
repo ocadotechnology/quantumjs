@@ -65,8 +65,7 @@ function Element (type) {
 }
 
 function elementyPromise (promise) {
-  promise.add = (el, end) => elementyPromise(promise.then(p => p.add(el, end)))
-  promise.append = (el, end) => elementyPromise(promise.then(p => p.append(el, end)))
+  promise.add = (el, options) => elementyPromise(promise.then(p => p.add(el, options)))
   return promise
 }
 
@@ -130,41 +129,34 @@ Element.prototype.classed = function (cls, add) {
   }
 }
 
-// adds an element to this element and returns the added element
-Element.prototype.append = function (element, options) {
+// adds an element to this element, and returns this element
+Element.prototype.add = function (element, options) {
   if (element === undefined) {
     return this
   }
-  if (element && element.then) {
-    return elementyPromise(element.then(el => this.append(el, options)))
+
+  if (element.then) {
+    return elementyPromise(element.then(el => this.add(el, options)))
   }
-  const addToEnd = options ? options.addToEnd === true : false
+
   if (Array.isArray(element)) {
-    element.forEach(el => {
-      if (el !== undefined) {
-        if (el instanceof Element) el.parent = this
-        if (addToEnd) {
-          this.endContent.push(el)
-        } else {
-          this.content.push(el)
-        }
-      }
-    })
+    if (element.some(x => x && x.then)) {
+      return this.add(Promise.all(element), options)
+    } else {
+      element.forEach(el => this.add(el, options))
+    }
   } else {
-    if (element instanceof Element) element.parent = this
-    if (addToEnd) {
+    if (element instanceof Element) {
+      element.parent = this
+    }
+    if (options && options.addToEnd) {
       this.endContent.push(element)
     } else {
       this.content.push(element)
     }
   }
-  return element
-}
 
-// adds an element to this element, and returns this element
-Element.prototype.add = function (element, options) {
-  const res = this.append(element, options)
-  return res.then ? elementyPromise(res.then(r => this)) : this
+  return this
 }
 
 // adds text to the content of the element
@@ -223,14 +215,6 @@ function PageModifier (options) {
   this.options = options
 }
 
-function ArrayNode (array) {
-  this.array = array
-}
-
-ArrayNode.prototype.stringify = function () {
-  return this.array.map(e => e.stringify ? e.stringify() : (isString(e) ? e : '')).join('')
-}
-
 // extracts 'elements' of a particular type from the tree of elements (for
 // extracting HeadInjectWrapper and Asset 'elements')
 function extractByType (elements, Type) {
@@ -241,8 +225,6 @@ function extractByType (elements, Type) {
       } else if (e instanceof Element) {
         inner(e.content, res)
         inner(e.endContent, res)
-      } else if (e instanceof ArrayNode) {
-        inner(e.array, res)
       }
     })
   }
@@ -257,10 +239,6 @@ function extractByType (elements, Type) {
 // creates an element of the type given
 function create (type) {
   return new Element(type)
-}
-
-function arrayNode (array) {
-  return new ArrayNode(array)
 }
 
 // creates an element of the type given
@@ -367,7 +345,6 @@ function stringify (elements, options) {
 
 module.exports = {
   create: create,
-  arrayNode: arrayNode,
   textNode: textNode,
   bodyClassed: bodyClassed,
   asset: asset,
