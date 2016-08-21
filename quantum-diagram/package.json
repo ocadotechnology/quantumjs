@@ -20,8 +20,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
-    "coverage": "./node_modules/mocha/bin/mocha -R html-file-cov"
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
   },
   "config": {
     "blanket": {
@@ -36,6 +35,8 @@
   },
   "devDependencies": {
     "chai": "^2.3.0",
+    "chai-as-promised": "^5.1.0",
+    "istanbul": "^0.4.0",
     "mocha": "^2.2.5"
   }
 }

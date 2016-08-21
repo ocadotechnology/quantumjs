@@ -45,7 +45,7 @@ Page.prototype = {
     this.warnings.push(warning)
   },
   error: function (errors) {
-    this.errors.push(error)
+    this.errors.push(errors)
   }
 }
 

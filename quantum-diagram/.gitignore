@@ -1,3 +1,4 @@
 /node_modules
 /example/target
 /example/node_modules
+/coverage

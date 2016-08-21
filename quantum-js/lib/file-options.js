@@ -29,13 +29,13 @@ function createFileUsingSpec (src, spec, dest) {
   var base = spec.base
   var destForObj = spec.dest ? path.join(dest, spec.dest) : dest
   var resolved = path.relative(base, src)
-  var dest = path.join(destForObj, resolved)
+  var destForFile = path.join(destForObj, resolved)
   var watch = spec.watch === undefined ? true : spec.watch
   return new File({
     src: src,
     resolved: resolved,
     base: base,
-    dest: dest,
+    dest: destForFile,
     watch: watch
   })
 }
@@ -43,7 +43,7 @@ function createFileUsingSpec (src, spec, dest) {
 /* Checks a spec or array of specs looks correct (has all the correct properties etc) */
 function validate (specs) {
   if (Array.isArray(specs)) {
-    return specs.map(validateSpec).filter(function (d) { return d !== undefined})[0]
+    return specs.map(validateSpec).filter((d) => d !== undefined)[0]
   } else {
     return validateSpec(specs)
   }
@@ -109,11 +109,9 @@ function resolve (specs, opts) {
   var dir = options.dir || '.'
   var dest = options.dest || 'target'
   return Promise.all(normalize(specs))
-    .map(function (spec) {
-      return Promise.resolve(globby(spec.files, {cwd: dir, nodir: true}))
-        .map(function (file) {
-          return createFileUsingSpec(file, spec, dest)
-        })
+    .map((spec) => {
+      return Promise.resolve(globby(spec.files, { cwd: dir, nodir: true }))
+        .map((file) => createFileUsingSpec(file, spec, dest))
     }).then(flatten)
 }
 

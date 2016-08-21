@@ -3,13 +3,13 @@
 # This script is useful for developing locally - it will npm link all the modules
 
 pushd quantum-js
-npm link
 npm install
+npm link
 popd
 
 pushd quantum-dom
-npm link
 npm install
+npm link
 popd
 
 pushd quantum-template
@@ -31,13 +31,13 @@ npm link
 popd
 
 pushd quantum-api
-npm link quantum-js quantum-dom
+npm link quantum-js quantum-dom quantum-html
 npm install
 npm link
 popd
 
 pushd quantum-changelog
-npm link quantum-js quantum-dom
+npm link quantum-js quantum-dom quantum-html
 npm install
 npm link
 popd

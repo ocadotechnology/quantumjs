@@ -118,12 +118,12 @@ Selection.prototype = {
       var parent = this
       // OPTIM: benchmark and test against not using some
       // OPTIM: don't use recursion here - try and do the loop in place
-      return this._entity.content.some(function (d) { return d.type == type }) || this._entity.content.some(function (child) {
+      return this._entity.content.some((d) => d.type === type) || this._entity.content.some((child) => {
         return isEntity(child) && select(child, parent).has(type, options)
       })
     } else {
       // OPTIM: benchmark and test against not using some
-      return this._entity.content.some(function (child) { return child.type == type })
+      return this._entity.content.some((child) => child.type === type)
     }
   },
   hasParams: function () {
@@ -134,7 +134,7 @@ Selection.prototype = {
   },
   isEmpty: function () {
     // OPTIM: remove the use of some (and perhaps trim?)
-    return !this._entity.content.some(function (d) {
+    return !this._entity.content.some((d) => {
       return isEntity(d) || d.trim() !== ''
     })
   },
@@ -146,23 +146,21 @@ Selection.prototype = {
   },
   selectAll: function (type, options) {
     var parent = this
-    var res = undefined
+    var res
     if (Array.isArray(type)) {
       var types = type
       // OPTIM: do this without the filter and map
-      res = this._entity.content.filter(function (d) { return types.indexOf(d.type) > -1 }).map(function (child) {
-        return select(child, parent)
-      })
+      res = this._entity.content.filter((d) => types.indexOf(d.type) > -1)
+        .map((child) => select(child, parent))
     } else {
       // OPTIM: do this without the filter and map
-      res = this._entity.content.filter(function (d) { return d.type === type }).map(function (child) {
-        return select(child, parent)
-      })
+      res = this._entity.content.filter((d) => d.type === type)
+        .map((child) => select(child, parent))
     }
 
     if (options && options.recursive) {
       // OPTIM: do this without the forEach and the recursion
-      this._entity.content.filter(isEntity).forEach(function (child) {
+      this._entity.content.filter(isEntity).forEach((child) => {
         res = res.concat(select(child, parent).selectAll(type, options))
       })
     }
@@ -175,13 +173,9 @@ Selection.prototype = {
   },
   filter: function (f) {
     if (Array.isArray(f)) {
-      return this.filter(function (entity) {
-        return f.indexOf(entity.type) > -1
-      })
+      return this.filter((entity) => f.indexOf(entity.type) > -1)
     } else if (isText(f)) {
-      return this.filter(function (entity) {
-        return entity.type === f
-      })
+      return this.filter((entity) => entity.type === f)
     } else {
       var filteredEntity = {
         type: this._entity.type,
@@ -195,13 +189,11 @@ Selection.prototype = {
     if (Array.isArray(type)) {
       var self = this
       // OPTIM: remove the use of map
-      return type.map(function (t) {
-        return self.remove(t, options)
-      })
+      return type.map((t) => self.remove(t, options))
     } else {
       var i = 0
       var content = this._entity.content
-      while(i < content.length) {
+      while (i < content.length) {
         var entity = content[i]
         if (isEntity(entity) && entity.type === type) {
           content.splice(i, 1)
@@ -212,7 +204,7 @@ Selection.prototype = {
 
       if (options && options.recursive) {
         i = 0
-        while(i < content.length) {
+        while (i < content.length) {
           var child = content[i]
           if (isEntity(child)) {
             var removed = select(child).remove(type, options)
@@ -227,14 +219,12 @@ Selection.prototype = {
     if (Array.isArray(type)) {
       var self = this
       // OPTIM: remove the use of map
-      return type.map(function (t) {
-        return self.removeAll(t, options)
-      })
+      return type.map((t) => self.removeAll(t, options))
     } else {
       var result = []
       var i = 0
       var content = this._entity.content
-      while(i < content.length) {
+      while (i < content.length) {
         var entity = content[i]
         if (isEntity(entity) && entity.type === type) {
           content.splice(i, 1)
@@ -246,10 +236,10 @@ Selection.prototype = {
 
       if (options && options.recursive) {
         i = 0
-        while(i < content.length) {
+        while (i < content.length) {
           var child = content[i]
           if (isEntity(child)) {
-            select(child).removeAll(type, options).forEach(function (removed) {
+            select(child).removeAll(type, options).forEach((removed) => {
               result.push(removed)
             })
           }
@@ -262,7 +252,7 @@ Selection.prototype = {
   },
   transform: function (transformer) {
     var parent = this
-    return select.Promise.all(this._entity.content.map(function (child) {
+    return select.Promise.all(this._entity.content.map((child) => {
       return transformer(isEntity(child) ? select(child, parent) : child)
     }))
   }

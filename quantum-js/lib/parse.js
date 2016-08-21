@@ -40,6 +40,7 @@ function tokenize (str) {
   var escapedParamCounter = 0
   var consumingEscapedParams = false
   var consumingUnparsed = false // true when in an @@ block
+  let unparsedIndentStart
 
   var tokens = []
 
@@ -75,7 +76,7 @@ function tokenize (str) {
   }
 
   function shuffleIfNext (character) {
-    if (str[pos + 1] == character) {
+    if (str[pos + 1] === character) {
       pos++
       start++
       return true
@@ -84,7 +85,7 @@ function tokenize (str) {
     }
   }
 
-  var err = function (msg) {
+  var err = (msg) => {
     var start = str.lastIndexOf('\n', pos - 1)
     start = str.lastIndexOf('\n', start - 1)
     start = str.lastIndexOf('\n', start - 1)
@@ -97,7 +98,7 @@ function tokenize (str) {
 
     var indentSpaces = (new Array(col)).join(' ')
 
-    throw {
+    throw new Error({
       type: 'quantum-parse',
       context: str.substring(start, errorLineEnd) + '\n' + indentSpaces + '^^^^^^^^\n' + str.substring(errorLineEnd + 1, end),
       fullText: str,
@@ -106,10 +107,8 @@ function tokenize (str) {
       msg: msg,
       pos: pos,
       message: 'Error at line ' + row + ', col ' + col + ': ' + msg,
-      toString: function () {
-        return this.message + '\n' + this.context
-      }
-    }
+      toString: () => this.message + '\n' + this.context
+    })
   }
 
   while (pos < str.length) {
@@ -117,7 +116,7 @@ function tokenize (str) {
     if (newline) {
       while (newline && pos < str.length) {
         var ind = 0
-        while(str[pos + ind] == ' ' && pos + ind < str.length) {
+        while (str[pos + ind] === ' ' && pos + ind < str.length) {
           ind++
         }
 
@@ -127,12 +126,12 @@ function tokenize (str) {
           pos += ind + 1
           row++
           emit('EMPTY_CONTENT', str.substring(start, pos - 1))
-        } else if (str[pos + ind] != '#') {
+        } else if (str[pos + ind] !== '#') {
           if (ind > indent[indent.length - 1]) {
             emit('INDENT', ind - indent[indent.length - 1])
             indent.push(ind)
           } else if (ind < indent[indent.length - 1]) {
-            while(indent[indent.length - 1] > ind) {
+            while (indent[indent.length - 1] > ind) {
               var prev = indent.pop()
               emit('DEDENT', prev - indent[indent.length - 1])
 
@@ -141,7 +140,7 @@ function tokenize (str) {
               }
             }
 
-            if (indent.length > 0 && (indent[indent.length - 1] != ind)) {
+            if (indent.length > 0 && (indent[indent.length - 1] !== ind)) {
               err('indentation mismatch: this line dedents with an indentation of ' + ind + ' spaces, but an indentation of ' + indent[indent.length - 1] + ' spaces was expected')
             }
           }
@@ -151,9 +150,8 @@ function tokenize (str) {
             pos++
           }
           newline = false
-
         } else {
-          while(str[pos] !== '\n' && pos < str.length) {
+          while (str[pos] !== '\n' && pos < str.length) {
             pos++
           }
           emit('COMMENT', str.substring(start + ind + 1, pos))
@@ -174,9 +172,8 @@ function tokenize (str) {
     if (state === TYPE) {
       if (s === ' ') {
         consume('TYPE', PARAMS)
-        while(shuffleIfNext(' ') && pos < str.length) {}
-      }
-      else if (s === ':') {
+        while (shuffleIfNext(' ') && pos < str.length) {}
+      } else if (s === ':') {
         consume('TYPE', CONTENT)
         shuffleIfNext(' ')
         consumingSameLineContent = true
@@ -193,7 +190,6 @@ function tokenize (str) {
           consumingSameLineContent = false
         }
       }
-
     } else if (state === PARAMS) {
       if (s === '[') {
         escapedParamCounter++
@@ -218,7 +214,6 @@ function tokenize (str) {
           consumingSameLineContent = false
         }
       }
-
     } else if (state === CONTENT) {
       if (s === '@' && !consumingUnparsed) {
         consumeIfNonEmpty('CONTENT', TYPE)
@@ -238,10 +233,9 @@ function tokenize (str) {
           consume('CONTENT', CONTENT)
         }
       }
-
     } else if (state === INLINE_PARAMS) {
       if (s === ')') {
-        if (str[pos + 1] == '[') {
+        if (str[pos + 1] === '[') {
           consume('PARAMS', INLINE_CONTENT)
           emit('START_INLINE_CONTENT')
           start++
@@ -250,7 +244,6 @@ function tokenize (str) {
           consume('PARAMS', CONTENT)
         }
       }
-
     } else if (state === INLINE_CONTENT) {
       if (s === '\\' && (str[pos + 1] === '[' || str[pos + 1] === ']')) {
         pos++
@@ -314,14 +307,14 @@ function splitParams (params) {
   var start = i
   var wasEscaped = false
   while (i < l) {
-    if (params[i] == '[') {
-      if (count == 0) {
+    if (params[i] === '[') {
+      if (count === 0) {
         wasEscaped = true
       }
       count++
-    } else if (params[i] == ']') {
+    } else if (params[i] === ']') {
       count--
-    } else if (params[i] == ' ' && count == 0) {
+    } else if (params[i] === ' ' && count === 0) {
       if (wasEscaped) {
         res.push(params.substring(start + 1, i - 1))
         wasEscaped = false
@@ -375,10 +368,10 @@ function ast (tokens) {
   */
   var notCreatedInlineContent = true
 
-  while(i < l) {
+  while (i < l) {
     token = tokens[i]
-    if (token.type == 'TYPE') {
-      if (token.value == '') {
+    if (token.type === 'TYPE') {
+      if (token.value === '') {
         nextParamsAreEscaped = true
       } else {
         prevWasType = true
@@ -395,16 +388,15 @@ function ast (tokens) {
 
         current.content.push(active)
       }
-
-    } else if (token.type == 'PARAMS') {
+    } else if (token.type === 'PARAMS') {
       if (nextParamsAreEscaped) {
         active.content.push(token.value)
         nextParamsAreEscaped = false
       } else {
         active.params = splitParams(token.value)
       }
-    } else if (token.type == 'CONTENT') {
-      if (token.value == '') {
+    } else if (token.type === 'CONTENT') {
+      if (token.value === '') {
         emptyLines.push(token.value)
       } else {
         while (emptyLines.length) {
@@ -427,9 +419,8 @@ function ast (tokens) {
           }
           current.content.push(ex + token.value)
         }
-
       }
-    } else if (token.type == 'EMPTY_CONTENT') {
+    } else if (token.type === 'EMPTY_CONTENT') {
       emptyLines.push(token.value)
     } else if (token.type === 'START_SAME_LINE_CONTENT') {
       lineStackSize++
@@ -441,7 +432,7 @@ function ast (tokens) {
       active = current
 
       // drop back down the stack until you reach where we were at the start of the line
-      while(lineStackSize) {
+      while (lineStackSize) {
         current = stack.pop()
         lineStackSize--
       }
@@ -468,8 +459,7 @@ function ast (tokens) {
       }
 
       extraIndent = absoluteIndent - currentIndent
-
-    } else if (token.type == 'DEDENT') {
+    } else if (token.type === 'DEDENT') {
       current = stack.pop()
       absoluteIndent -= token.value
       extraIndent = absoluteIndent - currentIndent

@@ -1,12 +1,42 @@
 const select = require('quantum-js').select
 const Promise = require('bluebird')
-const flatten = require('flatten')
 const merge = require('merge')
 const dom = require('quantum-dom')
 const defaultConfig = require('./config.js')
+const path = require('path')
+const html = require('quantum-html')
 
-module.exports = function (opts) {
+module.exports = (opts) => {
   const options = merge.recursive(defaultConfig, opts)
+
+  const entityIfExists = (entity, selector, transformer) => {
+    if (entity.has(selector)) {
+      const selection = entity.select(selector)
+      if (selection.content().length || selection.params().length) {
+        return transformer(entity.select(selector))
+      }
+    }
+  }
+
+  const paragraphEntity = (newEntityClass, transforms) => {
+    return (selection) => {
+      return dom.create('div')
+        .class(newEntityClass)
+        .add(html.paragraphTransform(selection, transforms))
+    }
+  }
+
+  const defaultUrlLookup = (selection) => selection.ps()
+
+  const linkEntity = (newEntityClass, text, urlLookup) => {
+    return (selection) => {
+      urlLookup = urlLookup || defaultUrlLookup
+      return dom.create('div')
+        .class(newEntityClass)
+        .attr('href', urlLookup(selection))
+        .add(text)
+    }
+  }
 
   function issue (entity, transforms) {
     return dom.create('a')
@@ -20,22 +50,19 @@ module.exports = function (opts) {
 
     const heading = entity.ps().length > 0 ? dom.create('div').class('qm-changelog-entry-head').add(entity.ps()) : undefined
 
-    const hasDescription = entity.has('description') && entity.select('description').content.length
-    const description = hasDescription ? dom.create('div').class('qm-changelog-entry-description').add(entity.select('description').transform(transforms)) : undefined
+    const description = entityIfExists(entity, 'description', paragraphEntity('qm-changelog-entry-description', transforms))
 
     if (options.issueUrl && entity.has('issue')) {
-      let elem = (heading ? heading : description)
+      let elem = heading || description
 
-      entity.selectAll('issue').forEach(function (issueEntity, index) {
+      entity.selectAll('issue').forEach((issueEntity, index) => {
         elem = elem
           .add(index > 0 ? ', ' : ': ')
           .add(issue(issueEntity, transforms))
       })
     }
 
-    if (entity.has('extra')) {
-      var extra = dom.create('div').class('qm-changelog-entry-extra').add(entity.select('extra').transform(transforms))
-    }
+    const extra = entityIfExists(entity, 'description', paragraphEntity('qm-changelog-entry-extra', transforms))
 
     if (description || extra) {
       var body = dom.create('div').class('qm-changelog-entry-body')
@@ -69,36 +96,23 @@ module.exports = function (opts) {
   }
 
   function item (entity, transforms, singleItemMode) {
-    var id = dom.randomId()
-    var tags = Object.keys(options.tags).sort(function (a, b) {
-      return order = options.tags[a].order - options.tags[b].order
-    })
+    var tags = Object.keys(options.tags).sort((a, b) => options.tags[a].order - options.tags[b].order)
 
-    var title = dom.create('div').class('qm-changelog-item-title')
+    const link = entityIfExists(entity, 'link', linkEntity('qm-changelog-item-link', entity.ps()))
 
-    if (entity.has('link')) {
-      title = title.add(dom.create('a').class('qm-changelog-item-link')
-        .attr('href', entity.select('link').ps())
-        .add(entity.ps()))
-    } else {
-      title = title.add(entity.ps())
-    }
+    const title = dom.create('div').class('qm-changelog-item-title')
+      .add(link || entity.ps())
 
-    var unprocessedEntries = entity.selectAll(tags)
+    const unprocessedEntries = entity.selectAll(tags)
 
-    var entries = dom.create('div').class('qm-changelog-item-entries')
+    let entries = dom.create('div').class('qm-changelog-item-entries')
 
-    unprocessedEntries.forEach(function (entryEntity) {
+    unprocessedEntries.forEach((entryEntity) => {
       entries = entries.add(entry(select(entryEntity), transforms))
     })
 
-    if (entity.has('description')) {
-      var description = dom.create('div').class('qm-changelog-item-description').add(entity.select('description').transform(transforms))
-    }
-
-    if (entity.has('extra')) {
-      var extra = dom.create('div').class('qm-changelog-item-extra').add(entity.select('extra').transform(transforms))
-    }
+    const description = entityIfExists(entity, 'description', paragraphEntity('qm-changelog-item-description', transforms))
+    const extra = entityIfExists(entity, 'extra', paragraphEntity('qm-changelog-item-extra', transforms))
 
     if (singleItemMode) {
       return dom.create('div').class('qm-changelog-single-item')
@@ -107,8 +121,8 @@ module.exports = function (opts) {
         .add(extra)
     } else {
       var labels = dom.create('div').class('qm-changelog-item-labels')
-      tags.forEach(function (tagName) {
-        var count = unprocessedEntries.reduce(function (total, e) { return e.type == tagName ? total + 1 : total }, 0)
+      tags.forEach((tagName) => {
+        var count = unprocessedEntries.reduce((total, e) => e.type === tagName ? total + 1 : total, 0)
         if (count > 0) {
           labels = labels.add(label(tagName, options.tags[tagName], count))
         }
@@ -117,6 +131,7 @@ module.exports = function (opts) {
       var header = dom.create('div').class('qm-changelog-item-head')
         .add(title)
         .add(labels)
+
       var content = dom.create('div').class('qm-changelog-item-body')
         .add(description)
         .add(entries)
@@ -129,33 +144,31 @@ module.exports = function (opts) {
   function changelog (entity, transforms) {
     var singleItem = entity.selectAll('item').length === 1
     var itemArr = entity.selectAll('item')
-    var items = Promise.all(itemArr.map(function (itemEntity) {
+    var items = Promise.all(itemArr.map((itemEntity) => {
       return item(itemEntity, transforms, singleItem && itemEntity.has('renderSingleItemInRoot'))
     }))
 
-    if (entity.has('description')) {
-      var description = dom.create('div').class('qm-changelog-description').add(entity.select('description').transform(transforms))
-    }
+    const description = entityIfExists(entity, 'description', paragraphEntity('qm-changelog-description', transforms))
+    const extra = entityIfExists(entity, 'extra', paragraphEntity('qm-changelog-extra', transforms))
 
-    if (entity.has('link')) {
-      var link = entity.select('link')
-      var title = dom.create('a').class('qm-changelog-link').attr('href', link.ps()).text(entity.ps())
-    } else if (entity.has('milestone')) {
-      var milestone = entity.select('milestone')
-      title = dom.create('a').class('qm-changelog-link').attr('href', options.milestoneUrl + milestone.ps()).text(entity.ps())
-    } else {
-      var title = entity.ps()
-    }
+    const link = entityIfExists(entity, 'link', linkEntity('qm-changelog-item-link', entity.ps()))
 
-    if (entity.has('extra')) {
-      var extra = dom.create('div').class('qm-changelog-extra').add(entity.select('extra').transform(transforms))
-    }
+    const milestoneUrlLookup = (selection) => options.milestoneUrl + selection.ps()
+    const milestone = entityIfExists(entity, 'milestone', linkEntity('qm-changelog-item-milestone', entity.ps()), milestoneUrlLookup)
+
+    const title = link || milestone || entity.ps()
 
     // Only add a changelog if there is content to display
     if (itemArr.length > 0 || description || extra) {
       return dom.create('div').class('qm-changelog')
-        .add(dom.asset({url: '/assets/quantum-changelog.css', file: __dirname + '/../assets/quantum-changelog.css'}))
-        .add(dom.asset({url: '/assets/quantum-changelog.js', file: __dirname + '/../assets/quantum-changelog.js'}))
+        .add(dom.asset({
+          url: '/assets/quantum-changelog.css',
+          file: path.join(__dirname, '/../assets/quantum-changelog.css')
+        }))
+        .add(dom.asset({
+          url: '/assets/quantum-changelog.js',
+          file: path.join(__dirname, '/../assets/quantum-changelog.js')
+        }))
         .add(dom.create('div').class('qm-changelog-head').add(title))
         .add(dom.create('div').class('qm-changelog-body')
           .add(description)
@@ -180,7 +193,7 @@ module.exports = function (opts) {
   function key (entity, transforms) {
     var keys = dom.create('div').class('qm-changelog-keys')
 
-    Object.keys(options.tags).map(function (tag) {
+    Object.keys(options.tags).map((tag) => {
       keys = keys.add(keyItem(dom, tag, options.tags[tag]))
     })
     return dom.create('div').class('qm-changelog-key')

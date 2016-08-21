@@ -21,7 +21,7 @@ module.exports = function (hljs) {
       {
         className: 'keyword',
         variants: [
-          { begin: '@', end: ':|$', excludeEnd: true}
+          { begin: '@', end: ':|$', excludeEnd: true }
         ],
         contains: [
           PARAMS,

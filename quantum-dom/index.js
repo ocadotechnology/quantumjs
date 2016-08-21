@@ -65,12 +65,8 @@ function Element (type) {
 }
 
 function elementyPromise (promise) {
-  promise.add = function (el, end) {
-    return elementyPromise(promise.then(p => p.add(el, end)))
-  }
-  promise.append = function (el, end) {
-    return elementyPromise(promise.then(p => p.append(el, end)))
-  }
+  promise.add = (el, end) => elementyPromise(promise.then(p => p.add(el, end)))
+  promise.append = (el, end) => elementyPromise(promise.then(p => p.append(el, end)))
   return promise
 }
 
@@ -239,7 +235,7 @@ ArrayNode.prototype.stringify = function () {
 // extracting HeadInjectWrapper and Asset 'elements')
 function extractByType (elements, Type) {
   function inner (elements, res) {
-    elements.forEach(e => {
+    elements.forEach((e) => {
       if (e instanceof Type) {
         res.push(e)
       } else if (e instanceof Element) {
@@ -339,7 +335,6 @@ function stringify (elements, options) {
   const uniqueAssets = Object.keys(uniqueAssetsMap).map(k => uniqueAssetsMap[k])
 
   const stylesheets = Promise.all(uniqueAssets.filter(a => a.url.endsWith('.css')).map(s => {
-
     if (embedAssets) {
       // XXX: make this loader configurable so that assets can be cached
       return fs.readFileAsync(s.filename, 'utf-8').then(content => '<style>' + content + '</style>')

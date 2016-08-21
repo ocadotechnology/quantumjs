@@ -37,52 +37,48 @@ function Watcher (specs, options) {
   }
 
   this._promise = Promise.all(specs)
-    .filter(function (spec) { return spec && spec.watch })
-    .map(function (spec) { return specToWatcherObj(self, spec, self._options) })
-    .then(function (watchers) { self._watchers = watchers })
+    .filter((spec) => spec && spec.watch)
+    .map((spec) => specToWatcherObj(self, spec, self._options))
+    .then((watchers) => { self._watchers = watchers })
 }
 
 /* Takes a spec, and returns a chokidar watcher along with the spec */
 function specToWatcherObj (watcherInstance, spec, options) {
   var dest = options.dest
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     var watcher = chokidar.watch(spec.files, {cwd: options.dir})
-      .on('ready', function () {
+      .on('ready', () => {
         resolve({
           watcher: watcher,
           spec: spec
         })
       })
-      .on('error', function (err) { reject(err) })
-      .on('add', function (path) { watcherInstance.emit('add', fileOptions.createFileUsingSpec(path, spec, dest))})
-      .on('change', function (path) { watcherInstance.emit('change', fileOptions.createFileUsingSpec(path, spec, dest))})
-      .on('unlink', function (path) { watcherInstance.emit('remove', fileOptions.createFileUsingSpec(path, spec, dest))})
+      .on('error', (err) => reject(err))
+      .on('add', (path) => watcherInstance.emit('add', fileOptions.createFileUsingSpec(path, spec, dest)))
+      .on('change', (path) => watcherInstance.emit('change', fileOptions.createFileUsingSpec(path, spec, dest)))
+      .on('unlink', (path) => watcherInstance.emit('remove', fileOptions.createFileUsingSpec(path, spec, dest)))
   })
 }
 
 util.inherits(Watcher, EventEmitter)
 
 Watcher.prototype.stop = function () {
-  this._watchers.forEach(function (watcher) {
-    watcher.watcher.close()
-  })
+  this._watchers.forEach((watcher) => watcher.watcher.close())
 }
 Watcher.prototype.files = function () {
   var dest = this._options.dest
-  return Promise.all(this._watchers.map(function (watcher) {
+  return Promise.all(this._watchers.map((watcher) => {
     var watched = watcher.watcher.getWatched()
     var spec = watcher.spec
-    return Promise.all(flatten(Object.keys(watched).map(function (directory) {
-      return watched[directory].map(function (file) {
+    return Promise.all(flatten(Object.keys(watched).map((directory) => {
+      return watched[directory].map((file) => {
         return path.join(directory, file)
       })
-    }))).filter(function (filename) {
-      return fs.lstatAsync(filename).then(function (stat) {
+    }))).filter((filename) => {
+      return fs.lstatAsync(filename).then((stat) => {
         return !stat.isDirectory()
       })
-    }).map(function (filename) {
-      return fileOptions.createFileUsingSpec(filename, spec, dest)
-    })
+    }).map((filename) => fileOptions.createFileUsingSpec(filename, spec, dest))
   })).then(flatten)
 }
 
@@ -91,7 +87,7 @@ function watcher (specs, options) {
   var err = fileOptions.validate(specs)
   if (err) return Promise.reject(err)
   var w = new Watcher(fileOptions.normalize(specs), options || {})
-  return w._promise.then(function () { return w })
+  return w._promise.then(() => w)
 }
 
 function defaultLoader (filename, parentFilename) {
@@ -103,7 +99,7 @@ function watch (specs, options, handler) {
   var err = fileOptions.validate(specs)
   if (err) return Promise.reject(err)
   var normalisedSpecs = fileOptions.normalize(specs)
-  var events = new EventEmitter
+  var events = new EventEmitter()
 
   // Option resolving
   var opts = options || {}
@@ -118,10 +114,10 @@ function watch (specs, options, handler) {
 
   function linkingLoader (filename, parentFilename) {
     if (parentFilename) {
-      affectedFiles[filename] = affectedFiles[filename] || new Set
+      affectedFiles[filename] = affectedFiles[filename] || new Set()
       affectedFiles[filename].add(parentFilename)
 
-      affectedFilesInverse[parentFilename] = affectedFilesInverse[parentFilename] || new Set
+      affectedFilesInverse[parentFilename] = affectedFilesInverse[parentFilename] || new Set()
       affectedFilesInverse[parentFilename].add(filename)
       watchFile(filename)
     }
@@ -133,7 +129,7 @@ function watch (specs, options, handler) {
 
     // the files that affect the file `filename`
     if (affectedFilesInverse[filename]) {
-      affectedFilesInverse[filename].forEach(function (affectorFilename) {
+      affectedFilesInverse[filename].forEach((affectorFilename) => {
         affectedFiles[affectorFilename].delete(filename)
         if (affectedFiles[affectorFilename].size === 0) {
           delete affectedFiles[affectorFilename]
@@ -145,22 +141,19 @@ function watch (specs, options, handler) {
   }
 
   var inlinedWatcher = chokidar.watch([], {cwd: dir})
-  inlinedWatcher.on('change', function (filename) {
-    Promise.all(Array.from(getSourceFileObjs(filename)).map(function (fileObj) {
-      return handleFile(fileObj, {rootCause: 'change', cause: 'change'})
-    })).then(function () {
-      events.emit('change', filename)
-    }).catch(handleFileFailure)
+  inlinedWatcher.on('change', (filename) => {
+    const files = Array.from(getSourceFileObjs(filename))
+    Promise.all(files.map((fileObj) => handleFile(fileObj, {rootCause: 'change', cause: 'change'})))
+    .then(() => events.emit('change', filename))
+    .catch(handleFileFailure)
   })
 
-  inlinedWatcher.on('unlink', function (filename) {
+  inlinedWatcher.on('unlink', (filename) => {
     var files = Array.from(getSourceFileObjs(filename))
     unlinkFile(filename)
-    Promise.all(files.map(function (fileObj) {
-      return handleFile(fileObj, {rootCause: 'delete', cause: 'change'})
-    })).then(function () {
-      events.emit('delete', filename)
-    }).catch(handleFileFailure)
+    Promise.all(files.map((fileObj) => handleFile(fileObj, {rootCause: 'delete', cause: 'change'})))
+    .then(() => events.emit('delete', filename))
+    .catch(handleFileFailure)
   })
 
   function watchFile (filename) {
@@ -168,9 +161,9 @@ function watch (specs, options, handler) {
   }
 
   function getSourceFileObjs (filename, collectorSet) {
-    var results = collectorSet || new Set
+    var results = collectorSet || new Set()
     if (affectedFiles[filename]) {
-      affectedFiles[filename].forEach(function (affectedFilename) {
+      affectedFiles[filename].forEach((affectedFilename) => {
         if (fileObjs[affectedFilename]) {
           results.add(fileObjs[affectedFilename])
         }
@@ -183,18 +176,18 @@ function watch (specs, options, handler) {
   function workHandler (work) {
     fileObjs[work.file.src] = work.file
     return read(work.file.src, {loader: linkingLoader})
-      .then(function (content) {
+      .then((content) => {
         var page = new Page({file: work.file, content: content})
         return handler(page, work.cause)
       })
-      .then(function (res) {work.resolve(res)})
-      .catch(function (err) {work.reject(err)})
+      .then((res) => work.resolve(res))
+      .catch((err) => work.reject(err))
   }
 
   var workQueue = new WorkQueue(workHandler, {})
 
   function handleFile (file, cause) {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       workQueue.add({file: file, cause: cause, resolve: resolve, reject: reject})
     })
   }
@@ -205,33 +198,31 @@ function watch (specs, options, handler) {
 
   function build () {
     return Promise.all(w.files())
-      .map(function (fileObj) {
+      .map((fileObj) => {
         return handleFile(fileObj, {rootCause: 'build', cause: 'build'})
       }, {concurrency: buildConcurrency})
   }
 
   var w = new Watcher(normalisedSpecs, opts)
 
-  w.on('add', function (fileObj) {
+  w.on('add', (fileObj) => {
     return handleFile(fileObj, {rootCause: 'add', cause: 'add'})
-      .then(function () {
-        events.emit('add', fileObj.src)
-      }).catch(handleFileFailure)
+      .then(() => events.emit('add', fileObj.src))
+      .catch(handleFileFailure)
   })
 
-  w.on('change', function (fileObj) {
+  w.on('change', (fileObj) => {
     return handleFile(fileObj, {rootCause: 'change', cause: 'change'})
-      .then(function () {
-        events.emit('change', fileObj.src)
-      }).catch(handleFileFailure)
+      .then(() => events.emit('change', fileObj.src))
+      .catch(handleFileFailure)
   })
 
-  w.on('remove', function (fileObj) {
+  w.on('remove', (fileObj) => {
     unlinkFile(fileObj.src)
     events.emit('delete', fileObj.src)
   })
 
-  return w._promise.then(function () { return {build: build, events: events} })
+  return w._promise.then(() => ({build: build, events: events}))
 }
 
 function WorkQueue (handler, options) {
@@ -248,7 +239,7 @@ WorkQueue.prototype = {
     // check if we can start up another concurrent piece or work
     if (this.activeWorkerCount < this.concurrency) {
       var self = this
-      function process () {
+      const process = () => {
         if (self.queue.length > 0) {
           var work = self.queue.pop()
           self.handler(work).then(process)
