@@ -25,7 +25,7 @@ describe('Page', () => {
   const content2 = ['some content']
   const meta1 = {}
   const meta2 = { key: { innerKey: 'value'}}
-  const meta3 = { key: { innerKey2: 'value2', }}
+  const meta3 = { key: { innerKey2: 'value2' }}
 
   it('should use the options to set up the properties', () => {
     const page = new Page({
@@ -125,5 +125,4 @@ describe('Page', () => {
       }))
     })
   })
-
 })

@@ -199,7 +199,6 @@ describe('watcher', function () {
         ])
         watcher.stop()
       })
-
     })
   })
 
@@ -348,10 +347,9 @@ describe('watcher', function () {
 
       // This timeout is needed to make sure the promise in watch.watcher is evaluated
       // before this gets called
-      setTimeout(function () {fcw.emit('error', err) }, 0)
+      setTimeout(function () { fcw.emit('error', err) }, 0)
     })
   })
-
 })
 
 describe('watch', function () {
@@ -564,7 +562,6 @@ describe('watch', function () {
         .then(function () {
           fs.removeAsync('target/test/watch-change-base-delete-inline-test/index.um')
         })
-
     })
   })
 
@@ -607,7 +604,6 @@ describe('watch', function () {
         .then(function () {
           fs.removeAsync('target/test/watch-change-middle-delete-inline-test/inlined.um')
         })
-
     })
   })
 
@@ -692,5 +688,4 @@ describe('watch', function () {
       })
     })
   })
-
 })

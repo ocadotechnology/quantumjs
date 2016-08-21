@@ -236,7 +236,6 @@ describe('select', function () {
       select(entity).has('tagD', {}).should.equal(false)
       select(entity).has('tagD', {recursive: false}).should.equal(false)
       select(entity).has('tagD', {recursive: true}).should.equal(false)
-
     })
   })
 
@@ -399,7 +398,7 @@ describe('select', function () {
     it('should throw error when selected required tag that does not exist', function () {
       var entity = {content: [{type: 'tag', params: [], content: [{type: 'tagA', params: [], content: []}]}]}
       var selection = select(entity)
-      expect(function () { selection.select('button', {required: true})}).to.throw()
+      expect(function () { selection.select('button', {required: true}) }).to.throw()
     })
 
     it("should return the empty selection when something is selected that doesn't exist", function () {
@@ -452,7 +451,6 @@ describe('select', function () {
         select(entity).selectAll('tagA', {recursive: true})[1]
       ])
     })
-
   })
 
   describe('Selection::isEmpty', function () {
@@ -579,7 +577,6 @@ describe('select', function () {
 
       select(entity).filter(['four']).content().should.eql([])
     })
-
   })
 
   describe('Selection::add', function () {
@@ -594,7 +591,6 @@ describe('select', function () {
 
       selection.add('text').should.equal(selection)
       entity.content.should.eql(['text'])
-
     })
 
     it('should add entity content', function () {
@@ -613,7 +609,6 @@ describe('select', function () {
         {type: 'type2', params: [], content: []}
       ])
     })
-
   })
 
   describe('Selection::append', function () {
@@ -636,7 +631,6 @@ describe('select', function () {
         {type: 'type2', params: [], content: []}
       ])
     })
-
   })
 
   describe('Selection::addParam', function () {
@@ -656,7 +650,6 @@ describe('select', function () {
       selection.addParam('two').should.equal(selection)
       entity.params.should.eql(['one', 'two'])
     })
-
   })
 
   describe('Selection::remove', function () {
@@ -900,5 +893,4 @@ describe('select', function () {
       })
     })
   })
-
 })

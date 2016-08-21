@@ -35,6 +35,5 @@ describe('json', function () {
         content: []
       }, null, 2)
     }))
-
   })
 })

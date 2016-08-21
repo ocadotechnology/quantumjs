@@ -60,7 +60,7 @@ describe('parse', function () {
     })
 
     it('should throw an error for incomplete param brackets', function () {
-      chai.expect(function () {tokenize('@fruits(apple kiwi cherry')}).to.throw()
+      chai.expect(function () { tokenize('@fruits(apple kiwi cherry') }).to.throw()
     })
 
     it('should detect a type with content (in parenths)', function () {
@@ -115,11 +115,11 @@ describe('parse', function () {
     })
 
     it('should throw an error for incomplete content brackets', function () {
-      chai.expect(function () {tokenize('@fruits[juice')}).to.throw()
+      chai.expect(function () { tokenize('@fruits[juice') }).to.throw()
     })
 
     it('should throw an error for incomplete content brackets', function () {
-      chai.expect(function () {tokenize('@fruits(apple)[juice')}).to.throw()
+      chai.expect(function () { tokenize('@fruits(apple)[juice') }).to.throw()
     })
 
     it('should detect an indent after an entity', function () {
@@ -208,7 +208,7 @@ describe('parse', function () {
     })
 
     it('messed up indentation should throw an error', function () {
-      chai.expect(function () {tokenize('@fruits\n  indent\n    indent\n       alsoindent\n dedent')}).to.throw()
+      chai.expect(function () { tokenize('@fruits\n  indent\n    indent\n       alsoindent\n dedent') }).to.throw()
     })
 
     it('should parse comments correctly', function () {
@@ -297,7 +297,7 @@ describe('parse', function () {
         { type: 'INDENT', value: 2},
         { type: 'TYPE', value: 'banana'},
         { type: 'EMPTY_CONTENT', value: '  '},
-        { type: 'TYPE', value: 'lychee'},
+        { type: 'TYPE', value: 'lychee'}
       ])
     })
 
@@ -389,7 +389,7 @@ describe('parse', function () {
         { type: 'PARAMS', value: 'js'},
         { type: 'START_SAME_LINE_CONTENT'},
         { type: 'CONTENT', value: 'function () { return 0 }'},
-        { type: 'END_SAME_LINE_CONTENT'},
+        { type: 'END_SAME_LINE_CONTENT'}
       ])
     })
 
@@ -404,7 +404,7 @@ describe('parse', function () {
         { type: 'PARAMS', value: 'js'},
         { type: 'START_SAME_LINE_CONTENT'},
         { type: 'CONTENT', value: 'function () { return 0 }'},
-        { type: 'END_SAME_LINE_CONTENT'},
+        { type: 'END_SAME_LINE_CONTENT'}
       ])
     })
 
@@ -471,7 +471,6 @@ describe('parse', function () {
         { type: 'CONTENT', value: 'Some more content'}
       ])
     })
-
   })
 
   describe('ast', function () {
@@ -485,7 +484,6 @@ describe('parse', function () {
         params: [],
         content: []
       }]))
-
     })
 
     it('basic entities one after another', function () {
@@ -506,7 +504,6 @@ describe('parse', function () {
           content: []
         }
       ]))
-
     })
 
     it('basic entity with params', function () {
@@ -551,7 +548,6 @@ describe('parse', function () {
           content: []
         }]
       }]))
-
     })
 
     it('basic indented then dedented entities', function () {
@@ -560,7 +556,7 @@ describe('parse', function () {
         { type: 'INDENT', value: 2},
         { type: 'TYPE', value: 'veg'},
         { type: 'DEDENT', value: 2},
-        { type: 'TYPE', value: 'meat'},
+        { type: 'TYPE', value: 'meat'}
       ]
 
       ast(tokens).should.eql(selection([
@@ -579,7 +575,6 @@ describe('parse', function () {
           content: []
         }
       ]))
-
     })
 
     it('non type indentations should be ignored', function () {
@@ -859,7 +854,6 @@ describe('parse', function () {
         }
       ]))
     })
-
   })
 
   describe('full parse', function () {
@@ -1591,7 +1585,5 @@ describe('parse', function () {
         }
       ]))
     })
-
   })
-
 })

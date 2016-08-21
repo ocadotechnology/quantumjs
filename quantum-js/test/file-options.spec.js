@@ -191,5 +191,4 @@ describe('resolve', function () {
       files.validate({files: []}).should.eql(new Error('spec.files cannot be undefined property'))
     })
   })
-
 })

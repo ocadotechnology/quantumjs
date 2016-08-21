@@ -49,7 +49,6 @@ describe('read', function () {
     }
 
     return read(filename).should.eventually.eql(expected)
-
   })
 
   it('different entity tag kind', function () {
@@ -94,7 +93,6 @@ describe('read', function () {
     }
 
     return read(filename, { inlineEntityType: 'altinline' }).should.eventually.eql(expected)
-
   })
 
   it('should read non um files as content', function () {
@@ -125,7 +123,6 @@ describe('read', function () {
     }
 
     return read(filename).should.eventually.eql(expected)
-
   })
 
   it('should be able to read non um files as um files with parse specified as the second parameter', function () {
@@ -166,7 +163,6 @@ describe('read', function () {
     }
 
     return read(filename).should.eventually.eql(expected)
-
   })
 
   it('should return an error when a file is not found', function () {
@@ -198,7 +194,6 @@ describe('read', function () {
     }
 
     return read(filename, {inline: false}).should.eventually.eql(expected)
-
   })
 
   it('read.page should work', function () {
@@ -247,6 +242,5 @@ describe('read', function () {
     })
 
     return read.page(filename).should.eventually.eql(expected)
-
   })
 })

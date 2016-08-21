@@ -79,7 +79,7 @@ function parseFile (filename, doParse, options, parentFile) {
       })
   } else {
     return options.loader(filename, parentFile).then((input) => ({
-        content: input.split('\n')
+      content: input.split('\n')
     }))
   }
 }
