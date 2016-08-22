@@ -1,3 +1,4 @@
+'use-strict'
 /*
      ____                    __                      _
     / __ \__  ______ _____  / /___  ______ ___      (_)____
@@ -19,7 +20,7 @@ const merge = require('merge')
 const html = require('quantum-html')
 const path = require('path')
 
-module.exports = (opts) => {
+function transforms (opts) {
   const defaultOptions = {
     typeLinks: {},
     // XXX: change to array, ditch order property
@@ -449,7 +450,7 @@ module.exports = (opts) => {
     return createApiLike('qm-api')(selection, transforms)
       .add(dom.asset({
         url: '/assets/quantum-api.css',
-        file: path.join(__dirname, 'assets/quantum-api.css'),
+        file: path.join(__dirname, '../assets/quantum-api.css'),
         shared: true
       }))
       .add(dom.asset({
@@ -478,3 +479,5 @@ module.exports = (opts) => {
     'childclass': createClassLike('qm-api-childclass')
   })
 }
+
+module.exports.transforms = transforms

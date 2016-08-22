@@ -1,13 +1,23 @@
+'use-strict'
+require('chai').should()
 const path = require('path')
-const chai = require('chai')
 const dom = require('quantum-dom')
 const html = require('..')
 const quantum = require('quantum-js')
-
-chai.should()
-
 const Page = quantum.Page
 const File = quantum.File
+
+describe('html', () => {
+  it('should export the correct things', () => {
+    html.should.be.a.function
+    html.transforms.should.be.a.function
+    html.HTMLPage.should.be.a.function
+    html.prepareTransforms.should.be.a.function
+    html.stringify.should.be.a.function
+    html.paragraphTransform.should.be.a.function
+    html.htmlRenamer.should.be.a.function
+  })
+})
 
 describe('element', () => {
   it('basic div should get generated properly', () => {

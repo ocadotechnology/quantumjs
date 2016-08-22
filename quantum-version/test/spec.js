@@ -1,12 +1,17 @@
-const chai = require('chai')
+'use-strict'
+require('chai').should()
+
 const version = require('..')
 const quantum = require('quantum-js')
 const path = require('path')
-
-chai.should()
-
 const Page = quantum.Page
 const File = quantum.File
+
+describe('version', () => {
+  it('should export the correct things', () => {
+    version.should.be.a.function
+  })
+})
 
 // reads and executes in a suite defined in quantm markup
 function testSuite (filename) {

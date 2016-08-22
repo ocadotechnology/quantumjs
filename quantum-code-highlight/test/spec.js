@@ -1,12 +1,16 @@
+'use-strict'
+require('chai').should()
 const path = require('path')
-const chai = require('chai')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
-const codeHighlight = require('..')
-
-chai.should()
+const codeHighlight = require('..').transforms
 
 describe('quantum-code-highlight', () => {
+  it('should export the correct things', () => {
+    require('..').should.be.an.object
+    codeHighlight.should.be.a.function
+  })
+
   it('highlight some inline code', () => {
     const selection = quantum.select({
       type: 'code',

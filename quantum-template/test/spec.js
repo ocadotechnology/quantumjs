@@ -1,10 +1,14 @@
-const chai = require('chai')
+'use-strict'
+const should = require('chai').should()
 const template = require('..')
 const quantum = require('quantum-js')
 
-const should = chai.should()
-
 describe('Template', () => {
+  it('should export the correct things', () => {
+    template.should.be.a.function
+    template.wrapper.should.be.a.function
+  })
+
   function compare (input, source, expected) {
     return quantum.read.page(source)
       .then(template({variables: input}))
