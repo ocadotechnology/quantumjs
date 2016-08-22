@@ -13,12 +13,12 @@
 
 */
 
-var path = require('path')
-var Promise = require('bluebird')
-var globby = require('globby')
-var flatten = require('flatten')
+const path = require('path')
+const Promise = require('bluebird')
+const globby = require('globby')
+const flatten = require('flatten')
 
-var File = require('./file')
+const File = require('./file')
 
 function isString (str) {
   return typeof str === 'string' || str instanceof String
@@ -26,11 +26,11 @@ function isString (str) {
 
 /* Converts a filename (and spec) to an object with relevant details copied over from the spec */
 function createFileUsingSpec (src, spec, dest) {
-  var base = spec.base
-  var destForObj = spec.dest ? path.join(dest, spec.dest) : dest
-  var resolved = path.relative(base, src)
-  var destForFile = path.join(destForObj, resolved)
-  var watch = spec.watch === undefined ? true : spec.watch
+  const base = spec.base
+  const destForObj = spec.dest ? path.join(dest, spec.dest) : dest
+  const resolved = path.relative(base, src)
+  const destForFile = path.join(destForObj, resolved)
+  const watch = spec.watch === undefined ? true : spec.watch
   return new File({
     src: src,
     resolved: resolved,
@@ -51,10 +51,12 @@ function validate (specs) {
 
 /* Checks the spec passed in look like a valid spec */
 function validateSpec (spec) {
-  if (spec === undefined) return new Error('spec cannot be undefined')
+  if (spec === undefined) {
+    return new Error('spec cannot be undefined')
+  }
 
-  var isSimpleSpec = isString(spec) || isString(spec.files)
-  var isArraySpec = (Array.isArray(spec.files) && spec.files.every(isString))
+  const isSimpleSpec = isString(spec) || isString(spec.files)
+  const isArraySpec = (Array.isArray(spec.files) && spec.files.every(isString))
 
   if (isArraySpec) {
     if (spec.base === undefined) {
@@ -71,8 +73,8 @@ function validateSpec (spec) {
 
 /* Expands short spec definitions into full definitions */
 function normalize (specs) {
-  var arrayedSpecs = Array.isArray(specs) ? specs : [specs]
-  var objectifiedSpecs = arrayedSpecs.map(normalizeSpec)
+  const arrayedSpecs = Array.isArray(specs) ? specs : [specs]
+  const objectifiedSpecs = arrayedSpecs.map(normalizeSpec)
   return objectifiedSpecs
 }
 
@@ -85,7 +87,7 @@ function normalizeSpec (item) {
       watch: true
     }
   } else {
-    var files = Array.isArray(item.files) ? item.files : [item.files]
+    const files = Array.isArray(item.files) ? item.files : [item.files]
     return {
       files: files,
       base: item.base ? item.base : inferBase(item.files), // in the 'else' situation item.files must be a string since it passed the validation check
@@ -97,17 +99,19 @@ function normalizeSpec (item) {
 
 /* Infers a sensible base directory for a glob string */
 function inferBase (globString) {
-  var end = globString.indexOf('*')
+  const end = globString.indexOf('*')
   return globString.slice(0, end - 1)
 }
 
 /* Resolves a list of specs into a list of file-objects */
 function resolve (specs, opts) {
-  var err = validate(specs)
-  if (err) return Promise.reject(err)
-  var options = opts || {}
-  var dir = options.dir || '.'
-  var dest = options.dest || 'target'
+  const err = validate(specs)
+  if (err) {
+    return Promise.reject(err)
+  }
+  const options = opts || {}
+  const dir = options.dir || '.'
+  const dest = options.dest || 'target'
   return Promise.all(normalize(specs))
     .map((spec) => {
       return Promise.resolve(globby(spec.files, { cwd: dir, nodir: true }))

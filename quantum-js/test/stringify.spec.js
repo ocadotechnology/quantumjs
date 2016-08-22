@@ -1,10 +1,10 @@
-var Promise = require('bluebird')
-var fs = Promise.promisifyAll(require('fs-extra'))
-var quantum = require('..')
+const Promise = require('bluebird')
+const fs = Promise.promisifyAll(require('fs-extra'))
+const quantum = require('..')
 
-describe('stringify', function () {
-  it('should stringify as expected for the default settings (standard)', function () {
-    return fs.readFileAsync('test/files/stringify/standard.um', 'utf8').then(function (markup) {
+describe('stringify', () => {
+  it('should stringify as expected for the default settings (standard)', () => {
+    return fs.readFileAsync('test/files/stringify/standard.um', 'utf8').then((markup) => {
       quantum.stringify(quantum.parse(markup)).should.equal(markup)
     })
   })

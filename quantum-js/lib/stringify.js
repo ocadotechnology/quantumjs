@@ -13,13 +13,13 @@
 
 */
 
-var select = require('./select')
+const select = require('./select')
 
 function entityToString (entity, indent) {
   if (entity.content) {
-    var sameLineContent = entity.content.length === 1 && select.isText(entity.content[0])
+    const sameLineContent = entity.content.length === 1 && select.isText(entity.content[0])
 
-    var params = entity.params.length > 0 ? ' ' + entity.params.join(' ') : ''
+    const params = entity.params.length > 0 ? ' ' + entity.params.join(' ') : ''
 
     if (sameLineContent) {
       return indent + '@' + entity.type + params + ': ' + entity.content[0]

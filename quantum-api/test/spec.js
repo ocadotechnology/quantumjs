@@ -1,12 +1,7 @@
 const chai = require('chai')
-const should = chai.should()
-
-const html = require('quantum-html')
 const api = require('..')
 
-const quantum = require('quantum-js')
-const Page = quantum.Page
-const File = quantum.File
+chai.should()
 
 describe('api', () => {
   it('should be a function', () => {

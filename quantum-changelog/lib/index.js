@@ -5,7 +5,7 @@ const merge = require('merge')
 const path = require('path')
 
 function getTags (options, ignore) {
-  var tags = Object.keys(options.tags)
+  const tags = Object.keys(options.tags)
   if (ignore && ignore.length) {
     return tags.filter((e) => ignore.indexOf(e) === -1)
   } else {
@@ -22,13 +22,13 @@ function constructKey (parentKey, entity) {
 }
 
 function buildApiMap (apiEntity, options, apiCurrent, parentKey) {
-  var tags = options.taggable.concat(options.indexable || [])
-  var optionalTags = tags.map((tag) => tag + '?')
+  const tags = options.taggable.concat(options.indexable || [])
+  const optionalTags = tags.map((tag) => tag + '?')
   apiEntity.selectAll(tags.concat(optionalTags)).forEach((entity) => {
     if (options.indexable.indexOf(entity.type.replace('?', '')) > -1) {
       buildApiMap(entity, options, apiCurrent, parentKey)
     } else {
-      var key = constructKey(parentKey, entity)
+      const key = constructKey(parentKey, entity)
       apiCurrent[key] = {
         entity: entity,
         parentKey: parentKey
@@ -40,8 +40,10 @@ function buildApiMap (apiEntity, options, apiCurrent, parentKey) {
   })
 
   if (parentKey === '') {
-    var rootCount = 0
-    apiEntity.content.filter((i) => { return getTags(options).indexOf(i.type) > -1 })
+    let rootCount = 0
+    apiEntity.content.filter((i) => {
+      return getTags(options).indexOf(i.type) > -1
+    })
       .forEach((entity) => {
         apiCurrent['_root:' + apiEntity.ps() + ':' + entity.type + (rootCount += 1)] = {
           entity: entity,
@@ -53,7 +55,7 @@ function buildApiMap (apiEntity, options, apiCurrent, parentKey) {
 
 function partMap (separator) {
   return (part, index) => {
-    var res = []
+    const res = []
     if (index > 0) {
       res.push(separator)
     }
@@ -75,7 +77,7 @@ function getPart (part) {
 }
 
 function convertFunction (item, beginSymb, endSymb) {
-  var parts = []
+  const parts = []
   parts.push(convertToParts(item.slice(0, item.indexOf(beginSymb))))
   parts.push(beginSymb)
   parts.push(convertToParts(item.slice(item.indexOf(beginSymb) + 1, item.indexOf(endSymb))))
@@ -92,7 +94,7 @@ function convertToParts (item) {
 }
 
 function splitKey (key, headingSeparator) {
-  var heading = ''
+  let heading = ''
   key.split(/:[^:]*:/).filter((item) => {
     return item && item.length > 0
   }).forEach((item, index) => {
@@ -111,40 +113,38 @@ function splitKey (key, headingSeparator) {
 }
 
 function createEntry (entity, heading) {
-  entity = quantum.select(entity)
-
-  var entry = quantum.create(entity.type)
+  let entry = quantum.create(entity.type)
   if (heading) {
     entry.ps(heading)
   } else if (entity.params && entity.params.length) {
     entry.params = entity.params
   }
 
-  var desc = quantum.create('description')
+  const desc = quantum.create('description')
   desc.content = entity.content.filter((e) => !e.type || (e.type && e.type !== 'issue'))
 
-  entity.selectAll('issue').forEach((i) => {
+  quantum.select(entity).selectAll('issue').forEach((i) => {
     entry = entry.add(i)
   })
   return entry.add(desc)
 }
 
 function createItem (apiName, apiObject, versionName, options) {
-  var tags = getTags(options)
-  var item = quantum.create('item').ps(apiName)
+  const tags = getTags(options)
+  let item = quantum.create('item').ps(apiName)
 
-  for (let key in apiObject.apiContent) {
-    var apiComponent = apiObject.apiContent[key]
+  for (const key in apiObject.apiContent) {
+    const apiComponent = apiObject.apiContent[key]
 
     if (apiComponent.rootEntity) {
-      var entity = apiComponent.entity
+      const entity = apiComponent.entity
       if (entity.type !== undefined) {
         item = item.add(createEntry(entity))
       }
     } else {
       quantum.select(apiComponent.entity).selectAll(tags).forEach((entity) => {
         if (entity.type !== undefined) {
-          var headingSeparator = (key.indexOf('class') === 1 ? ' ' : '.')
+          const headingSeparator = (key.indexOf('class') === 1 ? ' ' : '.')
           item = item.add(createEntry(entity, splitKey(key, headingSeparator)))
         }
       })
@@ -157,7 +157,7 @@ function createItem (apiName, apiObject, versionName, options) {
     } else if (tags.indexOf(b.type) === -1) {
       return 1
     } else {
-      var order = options.tags[a.type].order - options.tags[b.type].order
+      const order = options.tags[a.type].order - options.tags[b.type].order
       if (order === 0) {
         return (a.params.join(' ').toLowerCase() > b.params.join(' ').toLowerCase() ? 1 : -1)
       } else {
@@ -168,10 +168,10 @@ function createItem (apiName, apiObject, versionName, options) {
 
   if (item.content.length) {
     if (!options.dontAddDocsLink) {
-      var docsUrl = options.docsUrlLookup(versionName, apiName)
-    }
-    if (docsUrl) {
-      item = item.add(quantum.create('link').ps(docsUrl.link).add(docsUrl.text))
+      const docsUrl = options.docsUrlLookup(versionName, apiName)
+      if (docsUrl) {
+        item = item.add(quantum.create('link').ps(docsUrl.link).add(docsUrl.text))
+      }
     }
 
     if (options.renderSingleItemInRoot) {
@@ -183,14 +183,14 @@ function createItem (apiName, apiObject, versionName, options) {
 }
 
 function cloneAndRemoveTags (options, version) {
-  var versionClone = clone(version, {circular: false})
+  const versionClone = clone(version, {circular: false})
 
-  for (let apiName in versionClone) {
-    var apiMap = versionClone[apiName].apiContent
-    var apiKeys = Object.keys(apiMap)
-    var isRemovedApi = apiKeys.filter((e) => e.indexOf('_root') > -1 && e.indexOf('removed') > -1).length > 0
+  for (const apiName in versionClone) {
+    const apiMap = versionClone[apiName].apiContent
+    const apiKeys = Object.keys(apiMap)
+    const isRemovedApi = apiKeys.filter((e) => e.indexOf('_root') > -1 && e.indexOf('removed') > -1).length > 0
     apiKeys.forEach((key) => {
-      var entity = quantum.select(apiMap[key].entity)
+      const entity = quantum.select(apiMap[key].entity)
       if (entity.has('removed') || (apiMap[key].rootEntity && entity.type !== 'deprecated') || (isRemovedApi && entity.type === 'deprecated')) {
         delete apiMap[key]
       } else {
@@ -204,22 +204,22 @@ function cloneAndRemoveTags (options, version) {
 
 // processes a single changelog that contains a @process entity. Returns an array of entities
 function process (wrapper, options) {
-  var versionEntities = wrapper.selectAll('version')
-  var versionEntitesMap = {}
-  var actualVersions = versionEntities.map((versionEntity) => {
+  const versionEntities = wrapper.selectAll('version')
+  const versionEntitesMap = {}
+  const actualVersions = versionEntities.map((versionEntity) => {
     versionEntitesMap[versionEntity.ps()] = versionEntity
     return versionEntity.ps()
   })
-  var targetVersionList = options.targetVersions || actualVersions
+  const targetVersionList = options.targetVersions || actualVersions
 
-  var processEntities = wrapper.select('process').selectAll('version', {recursive: true})
+  const processEntities = wrapper.select('process').selectAll('version', {recursive: true})
 
   options.dontAddDocsLink = wrapper.select('process').has('dontAddDocsLink')
   options.renderSingleItemInRoot = wrapper.select('process').has('renderSingleItemInRoot')
 
   wrapper.remove('process')
 
-  var apisGroupedByVersion = {}
+  const apisGroupedByVersion = {}
   processEntities.forEach((version) => {
     apisGroupedByVersion[version.ps()] = apisGroupedByVersion[version.ps()] || []
     if (version.has('api')) {
@@ -228,18 +228,18 @@ function process (wrapper, options) {
   })
 
   // collect the apis up by (version, api) and flatten each of those apis to flat objects
-  var previous
-  var flattenedApiMapByVersion = {}
-  var current = {}
+  let previous = undefined
+  const flattenedApiMapByVersion = {}
+  let current = {}
 
   actualVersions.forEach((versionName) => {
-    var apis = apisGroupedByVersion[versionName] || []
+    const apis = apisGroupedByVersion[versionName] || []
     current = cloneAndRemoveTags(options, current)
 
     flattenedApiMapByVersion[versionName] = current
 
     apis.forEach((api) => {
-      var apiName = api.ps()
+      const apiName = api.ps()
       if (!(apiName in current)) {
         current[apiName] = {
           api: api,
@@ -251,20 +251,20 @@ function process (wrapper, options) {
 
     if (previous) {
       // handle cases where new content is added or content is updated
-      for (let apiName in current) {
+      for (const apiName in current) {
         if (!(apiName in previous)) {
           current[apiName].api.content.push(quantum.create('added').build())
         } else {
-          var currentApiContent = current[apiName].apiContent
-          var previousApiContent = previous[apiName].apiContent
+          const currentApiContent = current[apiName].apiContent
+          const previousApiContent = previous[apiName].apiContent
 
-          var sortedCurrentApiKeys = Object.keys(currentApiContent).sort()
+          const sortedCurrentApiKeys = Object.keys(currentApiContent).sort()
 
-          var currentParent
+          let currentParent = undefined
 
           sortedCurrentApiKeys.forEach((key) => {
-            var currentApiElement = currentApiContent[key]
-            var entity = quantum.select(currentApiElement.entity)
+            const currentApiElement = currentApiContent[key]
+            const entity = quantum.select(currentApiElement.entity)
 
             if (!currentApiElement.rootEntity) {
               // check if the api-element has just been removed in the previous version, or if it does not exist
@@ -279,11 +279,11 @@ function process (wrapper, options) {
                   }
                 }
               } else {
-                var previousApiElement = previousApiContent[key]
+                const previousApiElement = previousApiContent[key]
 
                 if (!entity.has(getTags(options, ['added']))) {
-                  var hasNewDescription = (entity.has('description') && (JSON.stringify(entity.select('description')) !== JSON.stringify(quantum.select(previousApiElement.entity).select('description'))))
-                  var hasNewContentString = (entity.nonEmpty().cs() && (entity.nonEmpty().cs() !== quantum.select(previousApiElement.entity).nonEmpty().cs()))
+                  const hasNewDescription = (entity.has('description') && (JSON.stringify(entity.select('description')) !== JSON.stringify(quantum.select(previousApiElement.entity).select('description'))))
+                  const hasNewContentString = (entity.nonEmpty().cs() && (entity.nonEmpty().cs() !== quantum.select(previousApiElement.entity).nonEmpty().cs()))
                   if (hasNewDescription || hasNewContentString) {
                     entity.content.push(quantum.create('updated').build())
                   }
@@ -301,9 +301,9 @@ function process (wrapper, options) {
   // replace the wrapper content with the calculated changelog
   // using targetVersionList allows us to exclude versions from the output but still process them.
   wrapper.original.content = targetVersionList.map((versionName) => {
-    var changelogEntityBuilder = quantum.create('changelog').ps(versionName)
-    var versionEntity = versionEntitesMap[versionName]
-    var selectedEntity = quantum.select(versionEntity)
+    const changelogEntityBuilder = quantum.create('changelog').ps(versionName)
+    const versionEntity = versionEntitesMap[versionName]
+    const selectedEntity = quantum.select(versionEntity)
 
     if (selectedEntity.has('description')) {
       changelogEntityBuilder.add(selectedEntity.select('description'))
@@ -321,19 +321,20 @@ function process (wrapper, options) {
       changelogEntityBuilder.add(selectedEntity.select('extra'))
     }
 
-    var apiMap = flattenedApiMapByVersion[versionName]
-    for (let apiName in apiMap) {
-      if (apiMap[apiName]) {
-        var item = createItem(apiName, apiMap[apiName], versionName, options)
-      }
+    const apiMap = flattenedApiMapByVersion[versionName]
+    for (const apiName in apiMap) {
+      const item = createItem(apiName, apiMap[apiName], versionName, options)
       if (item.content.filter((e) => e.type !== 'link').length > 0) {
         changelogEntityBuilder.add(item)
       }
     }
 
     // only add if it contains stuff
-    if (changelogEntityBuilder.content.length) return changelogEntityBuilder.build()
-    else undefined
+    if (changelogEntityBuilder.content.length) {
+      return changelogEntityBuilder.build()
+    } else {
+      undefined
+    }
   }).filter((d) => d !== undefined)
 
   if (options.reverseVisibleList) {
@@ -343,7 +344,7 @@ function process (wrapper, options) {
 
 // searches for @changelog entities with @process in them and generates the changelog from the contents of process
 function processAll (content, options) {
-  var changelogs = quantum.select(content)
+  const changelogs = quantum.select(content)
     .selectAll(['wrapper', options.namespace + '.' + 'wrapper'], {recursive: true})
     .filter((changelog) => changelog.has('process'))
 
@@ -353,7 +354,7 @@ function processAll (content, options) {
 }
 
 module.exports = (opts) => {
-  var options = merge.recursive(require('./config.js'), opts)
+  const options = merge.recursive(require('./config.js'), opts)
   return (page) => page.clone({ content: processAll(page.content, options) })
 }
 
@@ -363,4 +364,3 @@ module.exports.assets = {
   'quantum-changelog.css': path.join(__dirname, '/client/quantum-changelog.css'),
   'quantum-changelog.js': path.join(__dirname, '/client/quantum-changelog.js')
 }
-

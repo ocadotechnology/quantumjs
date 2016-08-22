@@ -1,12 +1,12 @@
-var dagre = require('dagre')
-var quantum = require('quantum-js')
-var dom = require('quantum-dom')
+const dagre = require('dagre')
+const quantum = require('quantum-js')
+const dom = require('quantum-dom')
 const path = require('path')
 
-var fontCharWidth = 9.5
-var padding = 12
-var textHeight = 35
-var labelTextHeight = 24
+const fontCharWidth = 9.5
+const padding = 12
+const textHeight = 35
+const labelTextHeight = 24
 
 function svgPath (points, close) {
   return `M${points.map((d) => d[0] + ',' + d[1]).join(',')}${(close ? 'z' : '')}`
@@ -23,27 +23,32 @@ function diagram (selection, transform) {
       .attr('rx', radius)
   }
 
-  var showDescriptions = !selection.has('hideDescriptions')
+  const showDescriptions = !selection.has('hideDescriptions')
 
   // Create a new directed graph
-  var g = new dagre.graphlib.Graph({compound: true})
+  const g = new dagre.graphlib.Graph({compound: true})
 
-  var gr = {
+  const gr = {
     rankdir: 'TB'
   }
 
   g.setGraph(gr)
 
-  g.setDefaultEdgeLabel(() => {})
+  g.setDefaultEdgeLabel(() => {
+  })
 
   function handleGroup (groupSelection, groupName, parent) {
-    if (groupName) g.setNode(groupName, {label: groupName, group: true})
-    if (parent) g.setParent(groupName, parent)
+    if (groupName) {
+      g.setNode(groupName, {label: groupName, group: true})
+    }
+    if (parent) {
+      g.setParent(groupName, parent)
+    }
 
     groupSelection.selectAll('item').forEach((item, i) => {
-      var rows = showDescriptions ? item.filter(quantum.select.isText).content() : []
+      const rows = showDescriptions ? item.filter(quantum.select.isText).content() : []
 
-      var maxWidth = item.param(1).length
+      let maxWidth = item.param(1).length
 
       rows.forEach((row) => {
         maxWidth = Math.max(row.length, maxWidth)
@@ -58,7 +63,9 @@ function diagram (selection, transform) {
         width: maxWidth * fontCharWidth + padding * 2
       })
 
-      if (groupName) g.setParent(item.param(0), groupName)
+      if (groupName) {
+        g.setParent(item.param(0), groupName)
+      }
     })
 
     groupSelection.selectAll('group').forEach((group) => {
@@ -68,11 +75,11 @@ function diagram (selection, transform) {
 
   handleGroup(selection)
 
-  var edges = {}
+  const edges = {}
 
   selection.selectAll('link').forEach((link) => {
-    var labelText = link.has('description') ? link.select('description').cs() : link.cs()
-    var color = link.has('color') ? link.select('color').ps() : '#000000'
+    const labelText = link.has('description') ? link.select('description').cs() : link.cs()
+    const color = link.has('color') ? link.select('color').ps() : '#000000'
     g.setEdge(link.param(0), link.param(2), {
       label: labelText,
       color: color,
@@ -85,15 +92,15 @@ function diagram (selection, transform) {
 
   dagre.layout(g)
 
-  var defs = dom.create('defs')
+  const defs = dom.create('defs')
 
-  var svg = dom.create('svg').class('qm-diagram-svg')
+  const svg = dom.create('svg').class('qm-diagram-svg')
     .attr('width', Math.ceil(gr.width))
     .attr('viewBox', '0 0 ' + Math.ceil(gr.width) + ' ' + Math.ceil(gr.height))
     .add(defs)
 
   g.nodes().forEach((v) => {
-    var layout = g.node(v)
+    const layout = g.node(v)
 
     if (layout.group) {
       svg.add(createRect(layout, 'qm-diagram-group', 1))
@@ -117,18 +124,18 @@ function diagram (selection, transform) {
       svg.add(text)
 
       layout.details.rows.forEach((row, i) => {
-        var linePoints = [
+        const linePoints = [
           [layout.x - layout.width / 2, layout.y - layout.height / 2 + textHeight * (i + 1)],
           [layout.x + layout.width / 2, layout.y - layout.height / 2 + textHeight * (i + 1)]
         ]
 
-        var divider = dom.create('path')
+        const divider = dom.create('path')
           .class('qm-diagram-divider')
           .attr('d', svgPath(linePoints, false))
 
         svg.add(divider)
 
-        var text = dom.create('text')
+        const text = dom.create('text')
           .class('qm-diagram-row-text')
           .attr('x', layout.x)
           .attr('y', layout.y - layout.height / 2 + textHeight / 2 + textHeight * (i + 1))
@@ -140,11 +147,11 @@ function diagram (selection, transform) {
   })
 
   g.edges().forEach((e) => {
-    var layout = g.edge(e)
+    const layout = g.edge(e)
 
-    var colorId = dom.randomId()
+    const colorId = dom.randomId()
 
-    var markerEnd = dom.create('marker')
+    const markerEnd = dom.create('marker')
       .attr('id', 'arrow-end-' + colorId)
       .attr('orient', 'auto')
       .attr('markerWidth', 4)
@@ -156,7 +163,7 @@ function diagram (selection, transform) {
         .attr('d', 'M0,0 V4 L4,2 Z'))
       .class('qm-diagram-arrow')
 
-    var markerStart = dom.create('marker')
+    const markerStart = dom.create('marker')
       .attr('id', 'arrow-start-' + colorId)
       .attr('orient', 'auto')
       .attr('markerWidth', 4)
@@ -172,20 +179,20 @@ function diagram (selection, transform) {
       .add(markerEnd)
       .add(markerStart)
 
-    var points = layout.points.map((point) => {
+    const points = layout.points.map((point) => {
       return [point.x, point.y]
     })
 
-    var join = edges[e.v + ':' + e.w].param(1)
+    const join = edges[e.v + ':' + e.w].param(1)
 
-    var line = dom.create('path')
+    const line = dom.create('path')
       .class('qm-diagram-path')
       .attr('d', svgPath(points))
       .attr('stroke', layout.color)
 
-    var labelRect = createRect(layout, 'qm-diagram-edge-label-rect', 5)
+    const labelRect = createRect(layout, 'qm-diagram-edge-label-rect', 5)
 
-    var label = dom.create('text')
+    const label = dom.create('text')
       .class('qm-diagram-edge-label-text')
       .attr('x', layout.x)
       .attr('y', layout.y - layout.height / 2 + textHeight / 2)
@@ -218,6 +225,8 @@ function diagram (selection, transform) {
     }))
 }
 
-module.exports = (options) => ({
-  diagram: diagram
-})
+module.exports = (options) => {
+  return {
+    diagram: diagram
+  }
+}

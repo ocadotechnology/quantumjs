@@ -2,3 +2,4 @@
 /example/target
 /example/node_modules
 /coverage
+.DS_Store

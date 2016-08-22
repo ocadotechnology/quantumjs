@@ -1,6 +1,7 @@
 const chai = require('chai')
-const should = chai.should()
 const changelog = require('..')
+
+chai.should()
 
 describe('changelog', () => {
   it('should be a function', () => {

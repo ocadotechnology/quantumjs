@@ -1,47 +1,47 @@
-var chai = require('chai')
-var chaiAsPromised = require('chai-as-promised')
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
-var should = chai.should()
+chai.should()
 
-var quantum = require('../lib')
-var read = quantum.read
+const quantum = require('../lib')
+const read = quantum.read
 
-describe('read', function () {
-  var filename = 'test/files/read/source1.um'
+describe('read', () => {
+  const filename = 'test/files/read/source1.um'
 
-  it('should work', function () {
-    var expected = {
-      'content': [
+  it('should work', () => {
+    const expected = {
+      content: [
         {
-          'type': 'test',
-          'params': [],
-          'content': [
+          type: 'test',
+          params: [],
+          content: [
             {
-              'type': 'button',
-              'params': [],
-              'content': ['Hello World']
+              type: 'button',
+              params: [],
+              content: ['Hello World']
             }, {
-              'type': 'inlinedContent',
-              'params': [],
-              'content': [
+              type: 'inlinedContent',
+              params: [],
+              content: [
                 {
-                  'type': 'button',
-                  'params': [],
-                  'content': ['Hello 2']
+                  type: 'button',
+                  params: [],
+                  content: ['Hello 2']
                 }, {
-                  'type': 'last',
-                  'params': ['end', 'of', 'the', 'chain'],
-                  'content': ['Some content']
+                  type: 'last',
+                  params: ['end', 'of', 'the', 'chain'],
+                  content: ['Some content']
                 }
               ]
             }, {
-              'type': 'altinline',
-              'params': ['source2.um'],
-              'content': []
+              type: 'altinline',
+              params: ['source2.um'],
+              content: []
             }, {
-              'type': 'button',
-              'params': [],
-              'content': ['Hello World 2']
+              type: 'button',
+              params: [],
+              content: ['Hello World 2']
             }
           ]
         }
@@ -51,41 +51,41 @@ describe('read', function () {
     return read(filename).should.eventually.eql(expected)
   })
 
-  it('different entity tag kind', function () {
-    var filename = 'test/files/read/source1.um'
+  it('different entity tag kind', () => {
+    const filename = 'test/files/read/source1.um'
 
-    var expected = {
-      'content': [
+    const expected = {
+      content: [
         {
-          'type': 'test',
-          'params': [],
-          'content': [
+          type: 'test',
+          params: [],
+          content: [
             {
-              'type': 'button',
-              'params': [],
-              'content': ['Hello World']
+              type: 'button',
+              params: [],
+              content: ['Hello World']
             }, {
-              'type': 'inline',
-              'params': ['source2.um'],
-              'content': []
+              type: 'inline',
+              params: ['source2.um'],
+              content: []
             }, {
-              'type': 'inlinedContent',
-              'params': [],
-              'content': [
+              type: 'inlinedContent',
+              params: [],
+              content: [
                 {
-                  'type': 'button',
-                  'params': [],
-                  'content': ['Hello 2']
+                  type: 'button',
+                  params: [],
+                  content: ['Hello 2']
                 }, {
-                  'type': 'inline',
-                  'params': ['source3.um'],
-                  'content': []
+                  type: 'inline',
+                  params: ['source3.um'],
+                  content: []
                 }
               ]
             }, {
-              'type': 'button',
-              'params': [],
-              'content': ['Hello World 2']
+              type: 'button',
+              params: [],
+              content: ['Hello World 2']
             }
           ]
         }
@@ -95,27 +95,27 @@ describe('read', function () {
     return read(filename, { inlineEntityType: 'altinline' }).should.eventually.eql(expected)
   })
 
-  it('should read non um files as content', function () {
-    var filename = 'test/files/read/source4.um'
+  it('should read non um files as content', () => {
+    const filename = 'test/files/read/source4.um'
 
-    var expected = {
-      'content': [
+    const expected = {
+      content: [
         {
-          'type': 'test',
-          'params': [],
-          'content': [
+          type: 'test',
+          params: [],
+          content: [
             {
-              'type': 'button',
-              'params': [],
-              'content': ['Hello World']
+              type: 'button',
+              params: [],
+              content: ['Hello World']
             }, 'Expect', 'These', 'Lines', '@inline source6.um', {
-              'type': 'altinline',
-              'params': ['source2.um'],
-              'content': []
+              type: 'altinline',
+              params: ['source2.um'],
+              content: []
             }, {
-              'type': 'button',
-              'params': [],
-              'content': ['Hello World 2']
+              type: 'button',
+              params: [],
+              content: ['Hello World 2']
             }
           ]
         }
@@ -125,37 +125,37 @@ describe('read', function () {
     return read(filename).should.eventually.eql(expected)
   })
 
-  it('should be able to read non um files as um files with parse specified as the second parameter', function () {
-    var filename = 'test/files/read/source7.um'
+  it('should be able to read non um files as um files with parse specified as the second parameter', () => {
+    const filename = 'test/files/read/source7.um'
 
-    var expected = {
-      'content': [
+    const expected = {
+      content: [
         {
-          'type': 'test',
-          'params': [],
-          'content': [
+          type: 'test',
+          params: [],
+          content: [
             {
-              'type': 'button',
-              'params': [],
-              'content': ['Hello World']
+              type: 'button',
+              params: [],
+              content: ['Hello World']
             },
             {
-              'type': 'inlinedContent',
-              'params': [],
-              'content': [
+              type: 'inlinedContent',
+              params: [],
+              content: [
                 {
-                  'type': 'button',
-                  'params': [],
-                  'content': ['Hello 2']
+                  type: 'button',
+                  params: [],
+                  content: ['Hello 2']
                 }
               ]
             },
             '@inlinedContent',
             '  @button: Hello 2',
             {
-              'type': 'button',
-              'params': [],
-              'content': ['Hello World 2']
+              type: 'button',
+              params: [],
+              content: ['Hello World 2']
             }
           ]
         }
@@ -165,14 +165,14 @@ describe('read', function () {
     return read(filename).should.eventually.eql(expected)
   })
 
-  it('should return an error when a file is not found', function () {
+  it('should return an error when a file is not found', () => {
     return read('test/files/read/not-a-source.um').should.be.rejected
   })
 
-  it('should not inline if inline is false', function () {
-    var filename = 'test/files/read/source2.um'
+  it('should not inline if inline is false', () => {
+    const filename = 'test/files/read/source2.um'
 
-    var expected = {
+    const expected = {
       content: [
         {
           type: 'inlinedContent',
@@ -196,44 +196,44 @@ describe('read', function () {
     return read(filename, {inline: false}).should.eventually.eql(expected)
   })
 
-  it('read.page should work', function () {
-    var expected = new quantum.Page({
+  it('read.page should work', () => {
+    const expected = new quantum.Page({
       file: new quantum.File({
         src: filename,
         dest: filename
       }),
       content: {
-        'content': [
+        content: [
           {
-            'type': 'test',
-            'params': [],
-            'content': [
+            type: 'test',
+            params: [],
+            content: [
               {
-                'type': 'button',
-                'params': [],
-                'content': ['Hello World']
+                type: 'button',
+                params: [],
+                content: ['Hello World']
               }, {
-                'type': 'inlinedContent',
-                'params': [],
-                'content': [
+                type: 'inlinedContent',
+                params: [],
+                content: [
                   {
-                    'type': 'button',
-                    'params': [],
-                    'content': ['Hello 2']
+                    type: 'button',
+                    params: [],
+                    content: ['Hello 2']
                   }, {
-                    'type': 'last',
-                    'params': ['end', 'of', 'the', 'chain'],
-                    'content': ['Some content']
+                    type: 'last',
+                    params: ['end', 'of', 'the', 'chain'],
+                    content: ['Some content']
                   }
                 ]
               }, {
-                'type': 'altinline',
-                'params': ['source2.um'],
-                'content': []
+                type: 'altinline',
+                params: ['source2.um'],
+                content: []
               }, {
-                'type': 'button',
-                'params': [],
-                'content': ['Hello World 2']
+                type: 'button',
+                params: [],
+                content: ['Hello World 2']
               }
             ]
           }

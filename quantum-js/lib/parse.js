@@ -19,30 +19,29 @@
 */
 
 // the states the parser can be in
-var COMMENT = 0
-var TYPE = 1
-var CONTENT = 2
-var PARAMS = 3
-var INLINE_PARAMS = 4
-var INLINE_CONTENT = 5
+const TYPE = 0
+const CONTENT = 1
+const PARAMS = 2
+const INLINE_PARAMS = 3
+const INLINE_CONTENT = 4
 
 // turns the input into an array of tokens
 function tokenize (str) {
-  var pos = 0
-  var row = 1
-  var col = 1
-  var newline = true
-  var indent = [0]
-  var state = CONTENT
-  var start = 0
-  var consumingSameLineContent = false
-  var escapedInlineCounter = 0
-  var escapedParamCounter = 0
-  var consumingEscapedParams = false
-  var consumingUnparsed = false // true when in an @@ block
-  let unparsedIndentStart
+  let pos = 0
+  let row = 1
+  let col = 1
+  let newline = true
+  let state = CONTENT
+  let start = 0
+  let consumingSameLineContent = false
+  let escapedInlineCounter = 0
+  let escapedParamCounter = 0
+  let consumingEscapedParams = false
+  let consumingUnparsed = false // true when in an @@ block
+  let unparsedIndentStart = undefined
 
-  var tokens = []
+  const indent = [0]
+  const tokens = []
 
   function consume (type, next) {
     tokens.push({type: type, value: str.substring(start, pos)})
@@ -51,13 +50,12 @@ function tokenize (str) {
   }
 
   function consumeIfNonEmpty (type, next, escaped) {
-    var v = str.substring(start, pos)
+    let v = str.substring(start, pos)
     if (v.length > 0) {
       if (escaped) {
-        var es
-        var l = escaped.length
-        for (var i = 0; i < l; i++) {
-          es = escaped[i]
+        const l = escaped.length
+        for (let i = 0; i < l; i++) {
+          const es = escaped[i]
           v = v.replace(es, es[1])
         }
       }
@@ -86,14 +84,14 @@ function tokenize (str) {
   }
 
   function err (msg) {
-    var start = str.lastIndexOf('\n', pos - 1)
+    let start = str.lastIndexOf('\n', pos - 1)
     start = str.lastIndexOf('\n', start - 1)
     start = str.lastIndexOf('\n', start - 1)
 
     const nextNewline = str.indexOf('\n', pos)
     const errorLineEnd = nextNewline === -1 ? pos : nextNewline
 
-    var end = str.indexOf('\n', errorLineEnd + 1)
+    let end = str.indexOf('\n', errorLineEnd + 1)
     if (end === -1) {
       end = str.length - 1
     } else {
@@ -110,26 +108,25 @@ function tokenize (str) {
 
     const indentSpaces = (new Array(col)).join(' ')
 
-    throw {
-      type: 'quantum-parse',
-      context: str.substring(start, errorLineEnd) + '\n' + indentSpaces + '^^^^^^^^\n' + str.substring(errorLineEnd + 1, end),
-      fullText: str,
-      line: row,
-      col: col,
-      msg: msg,
-      pos: pos,
-      message: 'Syntax error at line ' + row + ', col ' + col + ': ' + msg,
-      toString: function () {
-        return this.message + '\n' + this.context
-      }
-    }
+    const message = 'Syntax error at line ' + row + ', col ' + col + ': ' + msg
+    const context = str.substring(start, errorLineEnd) + '\n' + indentSpaces + '^^^^^^^^\n' + str.substring(errorLineEnd + 1, end)
+    const err = new Error(message + '\n' + context)
+    err.type = 'quantum-parse'
+    err.context = context
+    err.fullText = str
+    err.line = row
+    err.col = col
+    err.msg = msg
+    err.pos = pos
+
+    throw err
   }
 
   while (pos < str.length) {
     // indentation and comment handling.
     if (newline) {
       while (newline && pos < str.length) {
-        var ind = 0
+        let ind = 0
         while (str[pos + ind] === ' ' && pos + ind < str.length) {
           ind++
         }
@@ -146,7 +143,7 @@ function tokenize (str) {
             indent.push(ind)
           } else if (ind < indent[indent.length - 1]) {
             while (indent[indent.length - 1] > ind) {
-              var prev = indent.pop()
+              const prev = indent.pop()
               emit('DEDENT', prev - indent[indent.length - 1])
 
               if (consumingUnparsed && unparsedIndentStart === indent[indent.length - 1]) {
@@ -181,7 +178,7 @@ function tokenize (str) {
       return tokens
     }
 
-    var s = str[pos]
+    const s = str[pos]
 
     if (state === TYPE) {
       if (s === ' ') {
@@ -269,9 +266,9 @@ function tokenize (str) {
           emit('END_INLINE_CONTENT')
 
           if (str[pos + 1] === '\n') {
-            var currentIndent = indent[indent.length - 1]
-            var nextLineIsIndented = true
-            for (var i = 0; i <= currentIndent; i++) {
+            const currentIndent = indent[indent.length - 1]
+            let nextLineIsIndented = true
+            for (let i = 0; i <= currentIndent; i++) {
               if (str[pos + 2 + i] !== ' ') {
                 nextLineIsIndented = false
               }
@@ -300,11 +297,15 @@ function tokenize (str) {
     pos++
   }
 
-  if (state === TYPE) emit('TYPE', str.substring(start, pos))
-  else if (state === PARAMS) emit('PARAMS', str.substring(start, pos))
-  else if (state === INLINE_PARAMS) err('missing closing ) bracket?')
-  else if (state === INLINE_CONTENT) err('missing closing ] bracket?')
-  else if (state === CONTENT) {
+  if (state === TYPE) {
+    emit('TYPE', str.substring(start, pos))
+  } else if (state === PARAMS) {
+    emit('PARAMS', str.substring(start, pos))
+  } else if (state === INLINE_PARAMS) {
+    err('missing closing ) bracket?')
+  } else if (state === INLINE_CONTENT) {
+    err('missing closing ] bracket?')
+  } else if (state === CONTENT) {
     if (start < pos) {
       emit('CONTENT', str.substring(start, pos))
     }
@@ -314,12 +315,12 @@ function tokenize (str) {
 }
 
 function splitParams (params) {
-  var i = 0
-  var l = params.length
-  var count = 0
-  var res = []
-  var start = i
-  var wasEscaped = false
+  let i = 0
+  const l = params.length
+  let count = 0
+  const res = []
+  let start = i
+  let wasEscaped = false
   while (i < l) {
     if (params[i] === '[') {
       if (count === 0) {
@@ -353,34 +354,34 @@ function splitParams (params) {
 
 // turns tokens into abstract syntax tree (json)
 function ast (tokens) {
-  var token = tokens[0]
+  let token = tokens[0]
 
-  var state = {
+  const state = {
     content: []
   }
 
-  var current = state
-  var active = current
-  var stack = []
-  var lineStackSize = 0 // when inline entities are used this gets incremented so that when you
+  let current = state
+  let active = current
+  const stack = []
+  let lineStackSize = 0 // when inline entities are used this gets incremented so that when you
   // go onto a new line we can go back to the correct location in the stack
 
-  var l = tokens.length
-  var i = 0
-  var absoluteIndent = 0
-  var currentIndent = 0
-  var extraIndent = 0
-  var prevWasType = false
-  var nextParamsAreEscaped = false
-  var emptyLines = []
-  var handlingInlineContent = false // true when between an START_INLINE_CONTENT and END_INLINE_CONTENT
+  const l = tokens.length
+  let i = 0
+  let absoluteIndent = 0
+  let currentIndent = 0
+  let extraIndent = 0
+  let prevWasType = false
+  let nextParamsAreEscaped = false
+  const emptyLines = []
+  let handlingInlineContent = false // true when between an START_INLINE_CONTENT and END_INLINE_CONTENT
   /*
     notCreatedInlineContent
     This istrue when the inline content entry has not yet been created in the parsed
     content (which is done for the first content encountered between START_INLINE_CONTENT
     and END_INLINE_CONTENT)
   */
-  var notCreatedInlineContent = true
+  let notCreatedInlineContent = true
 
   while (i < l) {
     token = tokens[i]
@@ -427,8 +428,8 @@ function ast (tokens) {
             current.content[current.content.length - 1] += ' ' + token.value
           }
         } else {
-          var ex = ''
-          for (var k = 0; k < extraIndent; k++) {
+          let ex = ''
+          for (let k = 0; k < extraIndent; k++) {
             ex += ' '
           }
           current.content.push(ex + token.value)

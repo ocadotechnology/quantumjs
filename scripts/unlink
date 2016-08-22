@@ -54,4 +54,3 @@ popd
 pushd docs
 npm unlink quantum-js quantum-html quantum-template quantum-api quantum-changelog quantum-diagram quantum-docs quantum-version quantum-code-highlight
 popd
-

@@ -28,7 +28,7 @@ const fileOptions = require('./file-options')
 
 /* Watches some glob specs for changes */
 function Watcher (specs, options) {
-  var self = this
+  const self = this
   EventEmitter.call(this)
 
   this._options = {
@@ -46,9 +46,9 @@ function Watcher (specs, options) {
 
 /* Takes a spec, and returns a chokidar watcher along with the spec */
 function specToWatcherObj (watcherInstance, spec, options) {
-  var dest = options.dest
+  const dest = options.dest
   return new Promise((resolve, reject) => {
-    var watcher = chokidar.watch(spec.files, {cwd: options.dir})
+    const watcher = chokidar.watch(spec.files, {cwd: options.dir})
       .on('ready', () => {
         resolve({
           watcher: watcher,
@@ -68,10 +68,10 @@ Watcher.prototype.stop = function () {
   this._watchers.forEach((watcher) => watcher.watcher.close())
 }
 Watcher.prototype.files = function () {
-  var dest = this._options.dest
+  const dest = this._options.dest
   return Promise.all(this._watchers.map((watcher) => {
-    var watched = watcher.watcher.getWatched()
-    var spec = watcher.spec
+    const watched = watcher.watcher.getWatched()
+    const spec = watcher.spec
     return Promise.all(flatten(Object.keys(watched).map((directory) => {
       return watched[directory].map((file) => {
         return path.join(directory, file)
@@ -86,9 +86,11 @@ Watcher.prototype.files = function () {
 
 /* Returns a promise that yields a Watcher for the specs provided */
 function watcher (specs, options) {
-  var err = fileOptions.validate(specs)
-  if (err) return Promise.reject(err)
-  var w = new Watcher(fileOptions.normalize(specs), options || {})
+  const err = fileOptions.validate(specs)
+  if (err) {
+    return Promise.reject(err)
+  }
+  const w = new Watcher(fileOptions.normalize(specs), options || {})
   return w._promise.then(() => w)
 }
 
@@ -98,21 +100,23 @@ function defaultLoader (filename, parentFilename) {
 
 // watches quantum files and follows inline links
 function watch (specs, options, handler) {
-  var err = fileOptions.validate(specs)
-  if (err) return Promise.reject(err)
-  var normalisedSpecs = fileOptions.normalize(specs)
-  var events = new EventEmitter()
+  const err = fileOptions.validate(specs)
+  if (err) {
+    return Promise.reject(err)
+  }
+  const normalisedSpecs = fileOptions.normalize(specs)
+  const events = new EventEmitter()
 
   // Option resolving
-  var opts = options || {}
-  var dir = opts.dir || '.'
-  var loader = opts.loader || defaultLoader
-  var buildConcurrency = opts.concurrency || 1
+  const opts = options || {}
+  const dir = opts.dir || '.'
+  const loader = opts.loader || defaultLoader
+  const buildConcurrency = opts.concurrency || 1
 
   // State that is maintained by watching for file changes
-  var fileObjs = {}
-  var affectedFiles = {}
-  var affectedFilesInverse = {}
+  const fileObjs = {}
+  const affectedFiles = {}
+  const affectedFilesInverse = {}
 
   function linkingLoader (filename, parentFilename) {
     if (parentFilename) {
@@ -142,7 +146,7 @@ function watch (specs, options, handler) {
     }
   }
 
-  var inlinedWatcher = chokidar.watch([], {cwd: dir})
+  const inlinedWatcher = chokidar.watch([], {cwd: dir})
   inlinedWatcher.on('change', (filename) => {
     const files = Array.from(getSourceFileObjs(filename))
     Promise.all(files.map((fileObj) => handleFile(fileObj, {rootCause: 'change', cause: 'change'})))
@@ -151,7 +155,7 @@ function watch (specs, options, handler) {
   })
 
   inlinedWatcher.on('unlink', (filename) => {
-    var files = Array.from(getSourceFileObjs(filename))
+    const files = Array.from(getSourceFileObjs(filename))
     unlinkFile(filename)
     Promise.all(files.map((fileObj) => handleFile(fileObj, {rootCause: 'delete', cause: 'change'})))
       .then(() => events.emit('delete', filename))
@@ -163,7 +167,7 @@ function watch (specs, options, handler) {
   }
 
   function getSourceFileObjs (filename, collectorSet) {
-    var results = collectorSet || new Set()
+    const results = collectorSet || new Set()
     if (affectedFiles[filename]) {
       affectedFiles[filename].forEach((affectedFilename) => {
         if (fileObjs[affectedFilename]) {
@@ -193,7 +197,7 @@ function watch (specs, options, handler) {
       .catch((err) => work.reject(err))
   }
 
-  var workQueue = new WorkQueue(workHandler, {})
+  const workQueue = new WorkQueue(workHandler, {})
 
   function handleFile (file, cause) {
     return new Promise((resolve, reject) => {
@@ -212,7 +216,7 @@ function watch (specs, options, handler) {
       }, {concurrency: buildConcurrency})
   }
 
-  var w = new Watcher(normalisedSpecs, opts)
+  const w = new Watcher(normalisedSpecs, opts)
 
   w.on('add', (fileObj) => {
     return handleFile(fileObj, {rootCause: 'add', cause: 'add'})
@@ -247,10 +251,10 @@ WorkQueue.prototype = {
 
     // check if we can start up another concurrent piece or work
     if (this.activeWorkerCount < this.concurrency) {
-      var self = this
+      const self = this
       const process = () => {
         if (self.queue.length > 0) {
-          var work = self.queue.pop()
+          const work = self.queue.pop()
           self.handler(work).then(process)
         } else {
           self.activeWorkerCount--

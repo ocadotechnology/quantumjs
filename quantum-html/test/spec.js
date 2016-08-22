@@ -1,10 +1,13 @@
-var chai = require('chai')
-var dom = require('quantum-dom')
-var html = require('..')
-var should = chai.should()
-var quantum = require('quantum-js')
-var Page = quantum.Page
-var File = quantum.File
+const path = require('path')
+const chai = require('chai')
+const dom = require('quantum-dom')
+const html = require('..')
+const quantum = require('quantum-js')
+
+chai.should()
+
+const Page = quantum.Page
+const File = quantum.File
 
 describe('element', () => {
   it('basic div should get generated properly', () => {
@@ -53,7 +56,6 @@ describe('element', () => {
           page.content.elements[0].attrs['class'].should.equal('strawberry')
           page.content.elements.length.should.equal(1)
         })
-
     })
 
     it('multiple of the same class should be coalesced', () => {
@@ -78,7 +80,6 @@ describe('element', () => {
           page.content.elements[0].attrs['class'].should.equal('strawberry')
           page.content.elements.length.should.equal(1)
         })
-
     })
 
     it('multiple classes', () => {
@@ -103,7 +104,6 @@ describe('element', () => {
           page.content.elements[0].attrs['class'].should.equal('strawberry banana')
           page.content.elements.length.should.equal(1)
         })
-
     })
 
     it('id', () => {
@@ -153,10 +153,8 @@ describe('element', () => {
           page.content.elements[0].attrs['class'].should.equal('banana')
           page.content.elements.length.should.equal(1)
         })
-
     })
   })
-
 })
 
 describe('HTMLPage::stringify', () => {
@@ -188,7 +186,7 @@ describe('HTMLPage::stringify', () => {
 
   it('should stringify a page with an asset element (embed by default)', () => {
     const htmlPage = new html.HTMLPage([
-      dom.asset({url: 'test.css', file: __dirname + '/assets/test.css', shared: true})
+      dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     return htmlPage.stringify()
@@ -216,7 +214,7 @@ describe('HTMLPage::stringify', () => {
 
   it('should stringify a page with an asset element (embedAssets: true)', () => {
     const htmlPage = new html.HTMLPage([
-      dom.asset({url: 'test.css', file: __dirname + '/assets/test.css', shared: true})
+      dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     return htmlPage.stringify({embedAssets: true})
@@ -229,7 +227,7 @@ describe('HTMLPage::stringify', () => {
 
   it('should stringify a page with an asset element (embedAssets: false)', () => {
     const htmlPage = new html.HTMLPage([
-      dom.asset({url: 'test.css', file: __dirname + '/assets/test.css', shared: true})
+      dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     return htmlPage.stringify({embedAssets: false})
@@ -242,7 +240,7 @@ describe('HTMLPage::stringify', () => {
 
   it('assetPath should change the root path for the assets', () => {
     const htmlPage = new html.HTMLPage([
-      dom.asset({url: '/assets/test.css', file: __dirname + '/assets/test.css', shared: true})
+      dom.asset({url: '/assets/test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     return htmlPage.stringify({embedAssets: false, assetPath: '/bob'})
@@ -257,7 +255,7 @@ describe('HTMLPage::stringify', () => {
 describe('stringify', () => {
   it('should stringify a page with an asset element (embedAssets: true)', () => {
     const htmlPage = new html.HTMLPage([
-      dom.asset({url: 'test.css', file: __dirname + '/assets/test.css', shared: true})
+      dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     const page = new Page({
@@ -282,7 +280,7 @@ describe('stringify', () => {
 
   it('should stringify a page with an asset element (embedAssets: false)', () => {
     const htmlPage = new html.HTMLPage([
-      dom.asset({url: 'test.css', file: __dirname + '/assets/test.css', shared: true})
+      dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     const page = new Page({
@@ -307,7 +305,7 @@ describe('stringify', () => {
 
   it('assetPath should change the root path for the assets', () => {
     const htmlPage = new html.HTMLPage([
-      dom.asset({url: '/assets/test.css', file: __dirname + '/assets/test.css', shared: true})
+      dom.asset({url: '/assets/test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     const page = new Page({

@@ -1,19 +1,15 @@
 const chai = require('chai')
-const should = chai.should()
 const chaiAsPromised = require('chai-as-promised')
-chai.use(chaiAsPromised)
-
-const dom = require('quantum-dom')
-const api = require('..')
 const path = require('path')
 
 const quantum = require('quantum-js')
-const html = require('quantum-html')
-const Page = quantum.Page
-const File = quantum.File
+const dom = require('quantum-dom')
+const api = require('..')
+
+chai.should()
+chai.use(chaiAsPromised)
 
 describe('function', () => {
-
   function transformer (selection) {
     return quantum.select.isSelection(selection) ? api()[selection.type()](selection, transformer) : selection
   }
@@ -80,7 +76,6 @@ describe('function', () => {
   })
 
   it('should render a function', () => {
-
     const selection = quantum.select({
       type: 'function',
       params: ['banana'],
@@ -108,7 +103,6 @@ describe('function', () => {
   })
 
   it('should render a function that returns', () => {
-
     const selection = quantum.select({
       type: 'function',
       params: ['lemon'],

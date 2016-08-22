@@ -1,9 +1,12 @@
 'use strict'
 
+const chai = require('chai')
 const html = require('..')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const path = require('path')
+
+chai.should()
 
 describe('transforms', () => {
   function transformEntity () {
@@ -11,7 +14,7 @@ describe('transforms', () => {
       return dom.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection)
     }
     return function transformer (selection) {
-      var type = quantum.select.isSelection(selection) ? selection.type() : undefined
+      const type = quantum.select.isSelection(selection) ? selection.type() : undefined
       if (type in html.transforms) {
         return html.transforms[type](selection, transformer)
       } else {
@@ -133,11 +136,10 @@ describe('transforms', () => {
           res.should.eql(dom.create(type).add(dom.create(type).class('x').add(dom.textNode('content'))))
         })
       })
-
     })
   }
 
-  var elementTypes = [
+  const elementTypes = [
     'a',
     'b',
     'br',
@@ -178,7 +180,7 @@ describe('transforms', () => {
 
   elementTypes.forEach(elementSpec)
 
-  it('bodyClassed should add a class to the body (default to true)', function () {
+  it('bodyClassed should add a class to the body (default to true)', () => {
     const selection = quantum.select({
       type: 'bodyClassed',
       params: ['body-class'],
@@ -189,7 +191,7 @@ describe('transforms', () => {
       .should.eql(dom.bodyClassed('body-class', true))
   })
 
-  it('bodyClassed should add a class to the body', function () {
+  it('bodyClassed should add a class to the body', () => {
     const selection = quantum.select({
       type: 'bodyClassed',
       params: ['body-class'],
@@ -200,7 +202,7 @@ describe('transforms', () => {
       .should.eql(dom.bodyClassed('body-class', true))
   })
 
-  it('bodyClassed should be able to remove a class from the body', function () {
+  it('bodyClassed should be able to remove a class from the body', () => {
     const selection = quantum.select({
       type: 'bodyClassed',
       params: ['body-class'],
@@ -287,7 +289,6 @@ describe('transforms', () => {
         res.should.eql(dom.create('a').attr('href', '').add(dom.create('div').class('x').add(dom.textNode('content'))))
       })
     })
-
   })
 
   describe('title', () => {
@@ -410,11 +411,16 @@ describe('transforms', () => {
   })
 
   describe('prepareTransforms', () => {
-    const f1 = function () {}
-    const f2 = function () {}
-    const f3 = function () {}
-    const f4 = function () {}
-    const f5 = function () {}
+    const f1 = () => {
+    }
+    const f2 = () => {
+    }
+    const f3 = () => {
+    }
+    const f4 = () => {
+    }
+    const f5 = () => {
+    }
 
     html.prepareTransforms({
       html: {
@@ -467,11 +473,11 @@ describe('transforms', () => {
           'more text',
           '',
           {type: 'b', params: [], content: ['new paragraph']},
-          'new paragraph',
+          'new paragraph'
         ]
       })
 
-      return html.paragraphTransform(selection, transformEntity()).then(res => {
+      return Promise.all(html.paragraphTransform(selection, transformEntity())).then(res => {
         res.should.eql([
           dom.asset({url: '/assets/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true}),
           dom.create('div').class('qm-html-paragraph')
@@ -487,7 +493,5 @@ describe('transforms', () => {
         ])
       })
     })
-
   })
-
 })

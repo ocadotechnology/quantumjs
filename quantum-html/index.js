@@ -85,7 +85,7 @@ const attributeEntities = [
 ]
 
 function setupElement (type, selection, transform, parsePs) {
-  var element = entityToElement(type, selection, parsePs)
+  const element = entityToElement(type, selection, parsePs)
   return selection
     .filter((entity) => attributeEntities.indexOf(entity.type) === -1)
     .transform(transform)
@@ -99,11 +99,11 @@ types.forEach((type) => {
 })
 
 transforms.bodyClassed = (selection, transform) => {
-  dom.bodyClassed(selection.ps(), selection.cs() !== 'false')
+  return dom.bodyClassed(selection.ps(), selection.cs() !== 'false')
 }
 
 transforms.title = (selection, transform) => {
-  dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
+  return dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
 }
 
 transforms.head = (selection, transform) => {
@@ -130,18 +130,18 @@ transforms.css = (selection, transforms) => dom.head(dom.create('style').text(se
 
 // flattens out namespaced renderers into a single object
 function prepareTransforms (transforms, namespace, target) {
-  namespace = namespace || ''
-  target = target || {}
-  for (var d in transforms) {
+  const resolvedNamespace = namespace || ''
+  const resolvedTarget = target || {}
+  for (const d in transforms) {
     if (typeof (transforms[d]) === 'function') {
-      target[namespace + d] = transforms[d]
-      target[d] = transforms[d]
+      resolvedTarget[resolvedNamespace + d] = transforms[d]
+      resolvedTarget[d] = transforms[d]
     } else {
-      prepareTransforms(transforms[d], namespace + d + '.', target)
+      prepareTransforms(transforms[d], resolvedNamespace + d + '.', resolvedTarget)
     }
   }
 
-  return target
+  return resolvedTarget
 }
 
 function paragraphTransform (selection, transform) {
@@ -153,7 +153,7 @@ function paragraphTransform (selection, transform) {
     })
   ]
 
-  let currentParagraph
+  let currentParagraph = undefined
 
   selection.content().forEach((e) => {
     if (e === '') {
@@ -189,7 +189,7 @@ function paragraphTransform (selection, transform) {
 // returns a new transform function for the transforms object supplied. this curried
 // function makes that api a bit more fluid.
 module.exports = (opts) => {
-  var options = merge({
+  const options = merge({
     transforms: transforms,
     transformer: (selection, defaultTransformer) => defaultTransformer(selection)
   }, opts)
@@ -237,7 +237,7 @@ HTMLPage.prototype.stringify = function (options) {
 }
 
 function stringify (opts) {
-  var options = merge({
+  const options = merge({
     embedAssets: true,
     assetPath: undefined
   }, opts)

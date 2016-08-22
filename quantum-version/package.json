@@ -20,7 +20,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test && npm run lint",
+    "lint": "eslint index.js test/*.js",
+    "fix-lint-issues": "eslint --fix index.js test/*.js"
   },
   "dependencies": {
     "chalk": "^1.1.1",
@@ -31,6 +33,10 @@
     "chai": "^2.3.0",
     "html-file-cov": "^1.0.0",
     "istanbul": "^0.4.0",
-    "mocha": "^2.3.3"
+    "mocha": "^2.3.3",
+    "eslint": "^3.3.1",
+    "eslint-config-standard": "^6.0.0-beta.3",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0"
   }
 }

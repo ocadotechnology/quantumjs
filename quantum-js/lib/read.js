@@ -50,7 +50,7 @@ function inline (parsed, currentDir, options, parentFile) {
       const filename = path.join(currentDir, entity.params[0])
       const promise = parseFiles(filename, doParse, options, parentFile)
         .then((res) => {
-          var newContent = flatten(res.map((d) => d.content))
+          const newContent = flatten(res.map((d) => d.content))
           return parsed.content.splice.apply(parsed.content, [i, 1].concat(newContent))
         })
       promises.push(promise)
@@ -64,7 +64,7 @@ function inline (parsed, currentDir, options, parentFile) {
 
 function parseFile (filename, doParse, options, parentFile) {
   if (doParse || doParse === undefined && path.extname(filename) === '.um') {
-    var currentDir = path.dirname(filename)
+    const currentDir = path.dirname(filename)
     return options.loader(filename, parentFile)
       .then((input) => parse(input, options))
       .then((parsed) => inline(parsed, currentDir, options, filename))

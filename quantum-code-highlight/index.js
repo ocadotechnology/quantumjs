@@ -36,7 +36,9 @@ function code (selection, transform) {
     .add(stylesheetAsset)
 }
 
-module.exports = (options) => ({
-  codeblock: codeblock,
-  code: code
-})
+module.exports = (options) => {
+  return {
+    codeblock: codeblock,
+    code: code
+  }
+}

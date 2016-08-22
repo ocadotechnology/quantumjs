@@ -13,8 +13,8 @@
 
 */
 
-var quantum = require('quantum-js') // needed for its selection api
-var merge = require('merge')
+const quantum = require('quantum-js') // needed for its selection api
+const merge = require('merge')
 
 function getEntityType (type) {
   return type ? type.replace('?', '') : undefined
@@ -27,24 +27,24 @@ function mergeContent (content1, content2, options) {
   if (content2.some((e) => typeof (e) === 'string' && e !== '')) {
     return content2
   } else { // otherwise, we perform the per entity merging
-    var c1Map = {}
+    const c1Map = {}
 
     content1.forEach((e1) => {
-      var matchLookup = options.entityMatchLookup(e1)
+      const matchLookup = options.entityMatchLookup(e1)
       if (matchLookup) {
         c1Map[matchLookup] = e1
       }
     })
 
     content2.forEach((e2) => {
-      var matchLookup = options.entityMatchLookup(e2)
-      var e1 = matchLookup ? c1Map[matchLookup] : undefined
+      const matchLookup = options.entityMatchLookup(e2)
+      const e1 = matchLookup ? c1Map[matchLookup] : undefined
 
-      var entityType = getEntityType(e2.type)
-      var isTaggable = (options.taggable.indexOf(entityType) > -1)
+      const entityType = getEntityType(e2.type)
+      const isTaggable = (options.taggable.indexOf(entityType) > -1)
 
       if (e1) {
-        var e1s = quantum.select(e1)
+        const e1s = quantum.select(e1)
         if (e1.content && e2.content) {
           if (options.unmergeable.indexOf(entityType) > -1) {
             e1s.content(e2.content)
@@ -52,8 +52,8 @@ function mergeContent (content1, content2, options) {
             e1s.content(mergeContent(e1.content, e2.content, options))
           }
 
-          var e1sCanBeUpdated = !e1s.has('removed') && !e1s.has('deprecated')
-          var e2sCanBeUpdated = quantum.select.isEntity(e2) && !quantum.select(e2).has('removed') && !quantum.select(e2).has('deprecated')
+          const e1sCanBeUpdated = !e1s.has('removed') && !e1s.has('deprecated')
+          const e2sCanBeUpdated = quantum.select.isEntity(e2) && !quantum.select(e2).has('removed') && !quantum.select(e2).has('deprecated')
 
           if (isTaggable && e1sCanBeUpdated && e2sCanBeUpdated) {
             e1.content.push({ type: 'updated', params: [], content: [] })
@@ -66,7 +66,7 @@ function mergeContent (content1, content2, options) {
           e2.content.push({ type: 'added', params: [], content: [] })
         } else if (options.indexable.indexOf(entityType) > -1) {
           e2.content.forEach((e) => {
-            var subIsTaggable = options.taggable.indexOf(getEntityType(e.type)) > -1
+            const subIsTaggable = options.taggable.indexOf(getEntityType(e.type)) > -1
             if (e && subIsTaggable) {
               e.content.push({ type: 'added', params: [], content: [] })
             }
@@ -90,8 +90,8 @@ function getRemovableTags (tags) {
 function removeTags (entity, tags) {
   if (Array.isArray(entity.content)) {
     const tagFilter = (e) => {
-      var entityIsRemoved = quantum.select.isEntity(e) && quantum.select(e).has('removed')
-      var removeTag = tags.indexOf(e.type) > -1
+      const entityIsRemoved = quantum.select.isEntity(e) && quantum.select(e).has('removed')
+      const removeTag = tags.indexOf(e.type) > -1
       return !entityIsRemoved && !removeTag
     }
     entity.content = entity.content.filter(tagFilter)
@@ -125,9 +125,9 @@ function removeVersions (entity) {
 
 function defaultEntityMatchLookup (entity) {
   if (quantum.select.isEntity(entity)) {
-    var selection = quantum.select(entity)
-    var name = selection.ps()
-    var params = selection.selectAll(['param', 'param?']).map((param) => param.ps())
+    const selection = quantum.select(entity)
+    const name = selection.ps()
+    const params = selection.selectAll(['param', 'param?']).map((param) => param.ps())
     return entity.type + ': ' + name + '(' + params.join(', ') + ')'
   } else {
     return undefined
@@ -147,16 +147,16 @@ function defaultFilenameModifier (file, version) {
 }
 
 function versionTransform (page, options) {
-  var content = quantum.select(page.content)
-  var fullVersionList = options.versions || []
+  const content = quantum.select(page.content)
+  let fullVersionList = options.versions || []
 
   if (content.has('versionList', {recursive: true})) {
-    var inputList = content.selectAll('versionList', {recursive: true}).filter((versionList) => {
+    const inputList = content.selectAll('versionList', {recursive: true}).filter((versionList) => {
       return versionList.selectAll('version').length > 0
     })[0]
 
     if (inputList) {
-      var inputVersionList = inputList.selectAll('version').map((v) => v.ps())
+      const inputVersionList = inputList.selectAll('version').map((v) => v.ps())
       if (inputVersionList.length > 0) {
         fullVersionList = inputVersionList
       }
@@ -166,8 +166,8 @@ function versionTransform (page, options) {
     }
   }
 
-  var targetVersions = options.targetVersions || fullVersionList
-  var actualVersions = content.selectAll('version', {recursive: true})
+  const targetVersions = options.targetVersions || fullVersionList
+  const actualVersions = content.selectAll('version', {recursive: true})
 
   // Check if there are actual versions in the object, if there arent then no versioning is required.
   if (actualVersions.length > 0) {
@@ -179,17 +179,17 @@ function versionTransform (page, options) {
       })
     }
 
-    var versionsMap = {}
+    const versionsMap = {}
     actualVersions.forEach((version) => {
       versionsMap[version.ps()] = version
     })
-    var base
-    var results = []
+    let base = undefined
+    const results = []
 
-    var removableTags = getRemovableTags(options.tags)
+    const removableTags = getRemovableTags(options.tags)
 
     fullVersionList.forEach((v) => {
-      var version = versionsMap[v]
+      const version = versionsMap[v]
 
       if (version !== undefined) {
         if (base === undefined) {
@@ -202,13 +202,13 @@ function versionTransform (page, options) {
       }
 
       // replace the versioned parts for the @version entities
-      var source = quantum.clone(content.entity()) // {content: }
+      const source = quantum.clone(content.entity()) // {content: }
 
       // insert the versioned content just before the first version entity
       // this searches recursively until it finds the right one
       function insertVersionedContent (entity) {
         if (Array.isArray(entity.content)) {
-          var index = -1
+          let index = -1
           entity.content.forEach((v, i) => {
             if (v.type === 'version' && v.params && v.params[0] === actualVersions[0].param(0)) {
               index = i
@@ -266,7 +266,7 @@ function versionTransform (page, options) {
 // returns a function that expands a quantum ast containing `version`
 // entities into multiple ast's - one for each version
 module.exports = (opts) => {
-  var options = merge.recursive({
+  const options = merge.recursive({
     versions: undefined,
     targetVersions: undefined, // Target array of versions
     entityMatchLookup: defaultEntityMatchLookup,

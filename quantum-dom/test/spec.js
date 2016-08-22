@@ -1,9 +1,11 @@
-var chai = require('chai')
-var chaiAsPromised = require('chai-as-promised')
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+const dom = require('..')
+const Promise = require('bluebird')
+const path = require('path')
+
 chai.use(chaiAsPromised)
-var dom = require('..')
-var should = chai.should()
-var Promise = require('bluebird')
+chai.should()
 
 describe('Element', () => {
   it('should get the right type', () => {
@@ -206,7 +208,6 @@ describe('Element', () => {
           .add(dom.create('span'))
           .add(dom.create('div')))
       })
-
   })
 
   it('should construct the right thing when Element like Promises are chained with add and return out of order', () => {
@@ -222,7 +223,6 @@ describe('Element', () => {
           .add(dom.create('span'))
           .add(dom.create('div')))
       })
-
   })
 
   it('should add an element to the end if addToEnd is true', () => {
@@ -245,7 +245,6 @@ describe('Element', () => {
       .add([dom.create('div'), undefined]).stringify()
       .should.equal('<div><div></div><span></span><img></img></div>')
   })
-
 })
 
 describe('dom', () => {
@@ -296,8 +295,8 @@ describe('dom', () => {
 
     it('should stringify a page with assets (embedAssets: true)', () => {
       return dom.stringify([
-        dom.asset({url: '/assets/site.js', file: __dirname + '/assets/test.js', shared: true}),
-        dom.asset({url: '/assets/site.css', file: __dirname + '/assets/test.css', shared: true})
+        dom.asset({url: '/assets/site.js', file: path.join(__dirname, 'assets/test.js'), shared: true}),
+        dom.asset({url: '/assets/site.css', file: path.join(__dirname, 'assets/test.css'), shared: true})
       ], {embedAssets: true}).should.eventually.eql({html: "<!DOCTYPE html>\n<html><head><style>.div{ color: red; }\n</style></head><body><script>console.log(window.querySelectorAll('div'))\n</script></body></html>"})
     })
 
@@ -337,5 +336,4 @@ describe('dom', () => {
       dom.textNode('some text', {escape: false}).stringify().should.equal('some text')
     })
   })
-
 })

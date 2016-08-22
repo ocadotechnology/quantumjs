@@ -1,12 +1,12 @@
-var should = require('chai').should()
+require('chai').should()
 
-var quantum = require('..')
-var Page = quantum.Page
-var File = quantum.File
+const quantum = require('..')
+const Page = quantum.Page
+const File = quantum.File
 
-describe('json', function () {
-  it('should convert a page to json', function () {
-    var page = new Page({
+describe('json', () => {
+  it('should convert a page to json', () => {
+    const page = new Page({
       file: new File({
         src: 'src/page.um',
         resolved: 'page.um',

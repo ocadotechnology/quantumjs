@@ -3,10 +3,8 @@ const chai = require('chai')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const codeHighlight = require('..')
-const should = chai.should()
 
-const Page = quantum.Page
-const File = quantum.File
+chai.should()
 
 describe('quantum-code-highlight', () => {
   it('highlight some inline code', () => {

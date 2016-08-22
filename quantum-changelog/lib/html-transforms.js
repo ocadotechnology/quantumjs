@@ -30,10 +30,10 @@ module.exports = (opts) => {
 
   const linkEntity = (newEntityClass, text, urlLookup) => {
     return (selection) => {
-      urlLookup = urlLookup || defaultUrlLookup
+      const resolvedUrlLookup = urlLookup || defaultUrlLookup
       return dom.create('div')
         .class(newEntityClass)
-        .attr('href', urlLookup(selection))
+        .attr('href', resolvedUrlLookup(selection))
         .add(text)
     }
   }
@@ -64,11 +64,9 @@ module.exports = (opts) => {
 
     const extra = entityIfExists(entity, 'description', paragraphEntity('qm-changelog-entry-extra', transforms))
 
-    if (description || extra) {
-      var body = dom.create('div').class('qm-changelog-entry-body')
-        .add(description)
-        .add(extra)
-    }
+    const body = (description || extra) ? dom.create('div').class('qm-changelog-entry-body')
+      .add(description)
+      .add(extra) : undefined
 
     return dom.create('div').class('qm-changelog-entry')
       .add(dom.create('div').class('qm-changelog-entry-icon')
@@ -96,7 +94,7 @@ module.exports = (opts) => {
   }
 
   function item (entity, transforms, singleItemMode) {
-    var tags = Object.keys(options.tags).sort((a, b) => options.tags[a].order - options.tags[b].order)
+    const tags = Object.keys(options.tags).sort((a, b) => options.tags[a].order - options.tags[b].order)
 
     const link = entityIfExists(entity, 'link', linkEntity('qm-changelog-item-link', entity.ps()))
 
@@ -120,19 +118,19 @@ module.exports = (opts) => {
         .add(entries)
         .add(extra)
     } else {
-      var labels = dom.create('div').class('qm-changelog-item-labels')
+      let labels = dom.create('div').class('qm-changelog-item-labels')
       tags.forEach((tagName) => {
-        var count = unprocessedEntries.reduce((total, e) => e.type === tagName ? total + 1 : total, 0)
+        const count = unprocessedEntries.reduce((total, e) => e.type === tagName ? total + 1 : total, 0)
         if (count > 0) {
           labels = labels.add(label(tagName, options.tags[tagName], count))
         }
       })
 
-      var header = dom.create('div').class('qm-changelog-item-head')
+      const header = dom.create('div').class('qm-changelog-item-head')
         .add(title)
         .add(labels)
 
-      var content = dom.create('div').class('qm-changelog-item-body')
+      const content = dom.create('div').class('qm-changelog-item-body')
         .add(description)
         .add(entries)
         .add(extra)
@@ -142,9 +140,9 @@ module.exports = (opts) => {
   }
 
   function changelog (entity, transforms) {
-    var singleItem = entity.selectAll('item').length === 1
-    var itemArr = entity.selectAll('item')
-    var items = Promise.all(itemArr.map((itemEntity) => {
+    const singleItem = entity.selectAll('item').length === 1
+    const itemArr = entity.selectAll('item')
+    const items = Promise.all(itemArr.map((itemEntity) => {
       return item(itemEntity, transforms, singleItem && itemEntity.has('renderSingleItemInRoot'))
     }))
 
@@ -191,18 +189,19 @@ module.exports = (opts) => {
   }
 
   function key (entity, transforms) {
-    var keys = dom.create('div').class('qm-changelog-keys')
+    let keys = dom.create('div').class('qm-changelog-keys')
 
-    Object.keys(options.tags).map((tag) => {
+    Object.keys(options.tags).forEach((tag) => {
       keys = keys.add(keyItem(dom, tag, options.tags[tag]))
     })
+
     return dom.create('div').class('qm-changelog-key')
       .add(keys)
   }
 
   return {
-    'key': key,
-    'changelog': changelog,
-    'wrapper': wrapper
+    key: key,
+    changelog: changelog,
+    wrapper: wrapper
   }
 }

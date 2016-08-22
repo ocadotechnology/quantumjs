@@ -1,6 +1,7 @@
 const chai = require('chai')
-const should = chai.should()
 const diagram = require('..')
+
+chai.should()
 
 describe('diagram', () => {
   it('should be a function', () => {

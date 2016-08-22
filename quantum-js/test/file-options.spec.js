@@ -1,20 +1,18 @@
-var files = require('..').fileOptions
-var chai = require('chai')
-var should = chai.should()
-var expect = chai.expect
-var Promise = require('bluebird')
-var fs = Promise.promisifyAll(require('fs-extra'))
-var util = require('util')
-var File = require('..').File
+const files = require('..').fileOptions
+const chai = require('chai')
+const should = chai.should()
+const Promise = require('bluebird')
+const fs = Promise.promisifyAll(require('fs-extra'))
+const File = require('..').File
 
-describe('resolve', function () {
-  before(function () {
-    return fs.removeAsync('target/test').then(function () {
+describe('resolve', () => {
+  before(() => {
+    return fs.removeAsync('target/test').then(() => {
       return fs.copyAsync('test/files', 'target/test')
     })
   })
 
-  var expectedList1 = [
+  const expectedList1 = [
     new File({
       src: 'target/test/files1/a.um',
       resolved: 'a.um',
@@ -38,7 +36,7 @@ describe('resolve', function () {
     })
   ]
 
-  var expectedList2 = [
+  const expectedList2 = [
     new File({
       src: 'target/test/files2/e.um',
       resolved: 'e.um',
@@ -48,7 +46,7 @@ describe('resolve', function () {
     })
   ]
 
-  var expectedList3 = [
+  const expectedList3 = [
     new File({
       src: 'target/test/files2/e.um',
       resolved: 'e.um',
@@ -65,10 +63,10 @@ describe('resolve', function () {
     })
   ]
 
-  var expectedList = expectedList1.concat(expectedList2)
+  const expectedList = expectedList1.concat(expectedList2)
 
-  it('full options (with negative query)', function () {
-    var list = [
+  it('full options (with negative query)', () => {
+    const list = [
       {
         files: 'target/test/files1/**/*',
         base: 'target/test/files1'
@@ -79,97 +77,99 @@ describe('resolve', function () {
       }
     ]
 
-    var options = {
+    const options = {
       dir: '.',
       dest: 'target'
     }
 
-    return files.resolve(list, options).then(function (files) {
+    return files.resolve(list, options).then((files) => {
       files.should.eql(expectedList)
     })
   })
 
-  it('single object', function () {
-    var list = {
+  it('single object', () => {
+    const list = {
       files: 'target/test/files1/**/*',
       base: 'target/test/files1'
     }
 
-    var options = {
+    const options = {
       dir: '.',
       dest: 'target'
     }
 
-    return files.resolve(list, options).then(function (files) {
+    return files.resolve(list, options).then((files) => {
       files.should.eql(expectedList1)
     })
   })
 
-  it('single object (using default options)', function () {
-    var list = {
+  it('single object (using default options)', () => {
+    const list = {
       files: 'target/test/files1/**/*',
       base: 'target/test/files1'
     }
 
-    return files.resolve(list).then(function (files) {
+    return files.resolve(list).then((files) => {
       files.should.eql(expectedList1)
     })
   })
 
-  it('single object with array files list', function () {
-    var list = {
+  it('single object with array files list', () => {
+    const list = {
       files: ['target/test/files1/**/*'],
       base: 'target/test/files1'
     }
 
-    var options = {
+    const options = {
       dir: '.',
       dest: 'target'
     }
 
-    return files.resolve(list, options).then(function (files) {
+    return files.resolve(list, options).then((files) => {
       files.should.eql(expectedList1)
     })
   })
 
-  it('array of globs', function () {
-    var list = ['target/test/files1/**/*', 'target/test/files2/**/*']
+  it('array of globs', () => {
+    const list = ['target/test/files1/**/*', 'target/test/files2/**/*']
 
-    var options = {
+    const options = {
       dir: '.',
       dest: 'target'
     }
 
-    return files.resolve(list, options).then(function (files) {
+    return files.resolve(list, options).then((files) => {
       files.should.eql(expectedList1.concat(expectedList3))
     })
   })
 
-  it('single glob', function () {
-    var list = 'target/test/files1/**/*'
+  it('single glob', () => {
+    const list = 'target/test/files1/**/*'
 
-    var options = {
+    const options = {
       dir: '.',
       dest: 'target'
     }
 
-    return files.resolve(list, options).then(function (files) {
+    return files.resolve(list, options).then((files) => {
       files.should.eql(expectedList1)
     })
   })
 
-  it('should yield an error when an invalid spec is passed in', function (done) {
+  it('should yield an error when an invalid spec is passed in', (done) => {
     files.resolve({
       files: {},
       base: 'target/test/watch-change-inline-test',
       watch: true
-    }, {dest: 'target2'}).catch(function (err) {
+    }, {dest: 'target2'}).catch((err) => {
+      should.exist(err)
       done()
     })
   })
 
-  it('should yield an error when an invalid spec is passed in 2', function (done) {
-    files.resolve({}, {dest: 'target2'}).catch(function (err) {
+  it('should yield an error when an invalid spec is passed in 2', (done) => {
+    files.resolve({}, {dest: 'target2'}).catch((err) => {
+      should.exist(err)
       done()
     })
   })

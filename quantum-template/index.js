@@ -1,24 +1,19 @@
-var quantum = require('quantum-js')
+const quantum = require('quantum-js')
 
 function replacer (variables, str) {
-  var res = str
+  let res = str
   variables.forEach((v) => {
-    let val
-    if (typeof (v.value) === 'object') {
-      val = JSON.stringify(v.value)
-    } else {
-      val = v.value
-    }
+    const val = (typeof (v.value) === 'object') ? JSON.stringify(v.value) : v.value
     res = res.replace('{{' + v.key + '}}', val)
   })
   return res
 }
 
 function processEntity (entity, dictionary, content) {
-  var res = content.slice(0)
+  let res = content.slice(0)
   if (entity && entity.content) {
     entity.content.forEach((child) => {
-      var r = template(child, dictionary)
+      const r = template(child, dictionary)
       if (Array.isArray(r)) {
         res = res.concat(r)
       } else {
@@ -34,30 +29,28 @@ function template (entity, variables) {
   if (typeof (entity) === 'string') {
     return replacer(variables, entity)
   } else {
-    var content = []
-    let variableName, variable
+    let content = []
+    let variableName = undefined
+    let variable = undefined
     if (entity.type === 'for') {
       if (entity.params.length < 3) {
         throw new Error('for loop has wrong arguments: for ' + entity.params.join(' '))
       }
 
-      var variable1 = {
+      const usesIndex = entity.params[1] !== 'in'
+
+      const variable1 = {
         key: entity.params[0],
         value: undefined
       }
+      const variable2 = usesIndex ? {
+        key: entity.params[1],
+        value: undefined
+      } : undefined
 
-      let source
-      if (entity.params[1] !== 'in') {
-        var variable2 = {
-          key: entity.params[1],
-          value: undefined
-        }
-        source = entity.params[3]
-      } else {
-        source = entity.params[2]
-      }
+      const source = usesIndex ? entity.params[3] : entity.params[2]
 
-      var items = variables.filter((key) => key.key === source)[0]
+      let items = variables.filter((key) => key.key === source)[0]
 
       if (items) {
         items = items.value
@@ -124,29 +117,29 @@ function template (entity, variables) {
 }
 
 function prepareVariables (variables, prefix) {
-  var keys = []
-  var vars = variables || {}
-  prefix = prefix || ''
+  let keys = []
+  const vars = variables || {}
+  const resolvedPrefix = prefix || ''
 
   Object.keys(vars).forEach((key) => {
-    var value = vars[key]
+    const value = vars[key]
     if (value !== null && typeof (value) === 'object' && !Array.isArray(value)) {
       keys.push({
-        key: prefix + key,
+        key: resolvedPrefix + key,
         value: value
       })
-      keys = keys.concat(prepareVariables(value, prefix + key + '.'))
+      keys = keys.concat(prepareVariables(value, resolvedPrefix + key + '.'))
     } else {
       if (Array.isArray(value)) {
         value.forEach((v, i) => {
           keys.push({
-            key: prefix + key + '[' + i + ']',
+            key: resolvedPrefix + key + '[' + i + ']',
             value: v
           })
         })
       }
       keys.push({
-        key: prefix + key,
+        key: resolvedPrefix + key,
         value: value
       })
     }
@@ -160,8 +153,8 @@ function applyVariables (parsed, variables) {
 }
 
 function digestDefinitions (parsed) {
-  var defsList = quantum.select(parsed).selectAll('define', {recursive: true})
-  var definitions = {}
+  const defsList = quantum.select(parsed).selectAll('define', {recursive: true})
+  const definitions = {}
   defsList.forEach((def) => {
     definitions[def.ps()] = def.entity()
   })
@@ -174,21 +167,29 @@ function applyDefinitions (parsed, definitions) {
   } else if (parsed.type === 'define') {
     return undefined
   } else if (definitions.hasOwnProperty(parsed.type)) {
-    var selection = quantum.select(parsed)
+    const selection = quantum.select(parsed)
 
     // XXX: add sub-entities name.ps, name.cs, age.ps, age.cs, etc
-    var variables = [
+    const variables = [
       {key: 'ps', value: selection.ps()},
       {key: 'cs', value: selection.cs()}
     ]
 
+    selection.params().forEach((param, i) => {
+      variables.push({key: 'param[' + i + ']', value: param})
+    })
+
+    selection.content().forEach((param, i) => {
+      variables.push({key: 'content[' + i + ']', value: param})
+    })
+
     return template({type: '', ps: [], content: definitions[parsed.type].content}, variables).content
   } else {
-    let content
+    let content = undefined
     if (Array.isArray(parsed.content)) {
       content = []
       parsed.content.forEach((c) => {
-        var res = applyDefinitions(c, definitions)
+        const res = applyDefinitions(c, definitions)
         if (res !== undefined) {
           if (Array.isArray(res)) {
             content = content.concat(res)
@@ -216,10 +217,10 @@ function applyDefinitions (parsed, definitions) {
 }
 
 module.exports = (options) => {
-  var variables = prepareVariables(options ? options.variables : {})
+  const variables = prepareVariables(options ? options.variables : {})
 
   return (page) => {
-    var definitions = digestDefinitions(page.content)
+    const definitions = digestDefinitions(page.content)
 
     return page.clone({
       content: applyVariables(applyDefinitions(page.content, definitions), variables)
@@ -232,9 +233,9 @@ module.exports.wrapper = (options) => {
   return (obj) => {
     return quantum.read(options.templateFilename)
       .then((template) => {
-        var contentEntity = quantum.select(template.content).select('content', {recursive: true})
-        var position = contentEntity.parent.content.indexOf(contentEntity.original)
-        var parentContent = contentEntity.parent.original.content
+        const contentEntity = quantum.select(template.content).select('content', {recursive: true})
+        const position = contentEntity.parent.content.indexOf(contentEntity.original)
+        const parentContent = contentEntity.parent.original.content
         parentContent.splice.apply(parentContent, [position, 1].concat(obj.content.content))
         obj.content = template.content
         return obj

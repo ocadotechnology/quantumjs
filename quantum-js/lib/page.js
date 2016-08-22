@@ -21,7 +21,7 @@
 
 */
 
-var merge = require('merge')
+const merge = require('merge')
 
 function Page (options) {
   this.file = options.file

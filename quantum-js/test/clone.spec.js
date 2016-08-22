@@ -1,5 +1,4 @@
-const should = require('chai').should()
-
+require('chai').should()
 const quantum = require('..')
 
 describe('clone', () => {

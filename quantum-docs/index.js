@@ -126,8 +126,8 @@ transforms.versionSelector = (selection, transforms) => {
     const id = dom.nextId()
 
     // XXX: make this configurable (it should be a function with no external dependencies that can run in browsers)
-    const redirectorFunction = (url, current, version) => {
-      if (hx.endsWith(url, current + '/')) {
+    const redirectorFunction = function (url, current, version) {
+      if (url.indexOf((current + '/'), url.length - (current + '/').length) !== -1) {
         return '../' + version + '/'
       } else {
         return version + '/'
@@ -222,7 +222,9 @@ transforms.header = (selection, transforms) => {
 }
 
 transforms.breadcrumb = (selection, transforms) => {
-  if (selection.selectAll('item').length === 0) return undefined
+  if (selection.selectAll('item').length === 0) {
+    return undefined
+  }
 
   const element = dom.create('div')
     .class('qm-docs-breadcrumb')
@@ -232,7 +234,9 @@ transforms.breadcrumb = (selection, transforms) => {
     .class('qm-docs-top-section-centered qm-docs-breadcrumb-padding')
 
   selection.selectAll('item').forEach((item, i) => {
-    if (i > 0) container.add(dom.create('i').class('fa fa-angle-right qm-docs-breadcrumb-arrow-icon'))
+    if (i > 0) {
+      container.add(dom.create('i').class('fa fa-angle-right qm-docs-breadcrumb-arrow-icon'))
+    }
     container.add(dom.create('a').attr('href', item.ps()).class('qm-docs-breadcrumb-section').text(item.cs()))
   })
 

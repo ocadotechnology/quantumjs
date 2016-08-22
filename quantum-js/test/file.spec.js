@@ -1,11 +1,11 @@
-var should = require('chai').should()
+require('chai').should()
 
-var quantum = require('..')
-var File = quantum.File
+const quantum = require('..')
+const File = quantum.File
 
-describe('File', function () {
-  it('should use the options to set up the properties', function () {
-    var file = new File({
+describe('File', () => {
+  it('should use the options to set up the properties', () => {
+    const file = new File({
       src: 'src/content/a.um',
       resolved: 'a.um',
       base: 'src/content',
@@ -20,9 +20,9 @@ describe('File', function () {
     file.watch.should.equal(true)
   })
 
-  describe('File::clone', function () {
-    it('should clone', function () {
-      var file = new File({
+  describe('File::clone', () => {
+    it('should clone', () => {
+      const file = new File({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -39,8 +39,8 @@ describe('File', function () {
       }))
     })
 
-    it('should change src', function () {
-      var file = new File({
+    it('should change src', () => {
+      const file = new File({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -59,8 +59,8 @@ describe('File', function () {
       }))
     })
 
-    it('should change resolved', function () {
-      var file = new File({
+    it('should change resolved', () => {
+      const file = new File({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -79,8 +79,8 @@ describe('File', function () {
       }))
     })
 
-    it('should change base', function () {
-      var file = new File({
+    it('should change base', () => {
+      const file = new File({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -99,8 +99,8 @@ describe('File', function () {
       }))
     })
 
-    it('should change base', function () {
-      var file = new File({
+    it('should change base', () => {
+      const file = new File({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -119,8 +119,8 @@ describe('File', function () {
       }))
     })
 
-    it('should change base', function () {
-      var file = new File({
+    it('should change base', () => {
+      const file = new File({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -140,9 +140,9 @@ describe('File', function () {
     })
   })
 
-  describe('File::withExtension', function () {
-    it('should change the extension', function () {
-      var file = new File({
+  describe('File::withExtension', () => {
+    it('should change the extension', () => {
+      const file = new File({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',

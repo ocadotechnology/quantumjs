@@ -93,10 +93,18 @@ module.exports = (opts) => {
     const childUpdated = !selection.has(tagNames) && selection.has(tagNames, {recursive: true})
 
     const tags = []
-    if (selection.has('added')) tags.push('added')
-    if (selection.has('deprecated')) tags.push('deprecated')
-    if (selection.has('removed')) tags.push('removed')
-    if (selection.has('updated') || childUpdated) tags.push('updated')
+    if (selection.has('added')) {
+      tags.push('added')
+    }
+    if (selection.has('deprecated')) {
+      tags.push('deprecated')
+    }
+    if (selection.has('removed')) {
+      tags.push('removed')
+    }
+    if (selection.has('updated') || childUpdated) {
+      tags.push('updated')
+    }
 
     return tags
   }
@@ -138,8 +146,13 @@ module.exports = (opts) => {
   }
 
   function sortEntities (a, b) {
-    if (a.params[0] < b.params[0]) return -1
-    else if (a.params[0] > b.params[0]) return 1
+    if (a.params[0] < b.params[0]) {
+      return -1
+    } else if (a.params[0] > b.params[0]) {
+      return 1
+    } else {
+      return 0
+    }
   }
 
   function organisedEntity (selection) {
@@ -272,10 +285,9 @@ module.exports = (opts) => {
       .selectAll('returns')
       .filter(sel => !sel.has('removed'))[0]
 
-    let retns
-    if (returnsSelection) {
-      retns = dom.create('span').class('qm-api-function-returns').add(createType(returnsSelection.ps()))
-    }
+    const retns = returnsSelection ?
+      dom.create('span').class('qm-api-function-returns').add(createType(returnsSelection.ps())) :
+      undefined
 
     const details = dom.create('span')
       .add(name)
@@ -412,7 +424,7 @@ module.exports = (opts) => {
   const createPropertyLike = createItemBuilder({
     header: [ propertyHeader ],
     content: [ description, extras, defaultValue ],
-    renderAsOther: { 'Function': createFunctionLike, 'Object': createObjectLike }
+    renderAsOther: { Function: createFunctionLike, Object: createObjectLike }
   })
 
   const createClassLike = createItemBuilder({
@@ -423,7 +435,7 @@ module.exports = (opts) => {
   const createTypeLike = createItemBuilder({
     header: [ typeHeader ],
     content: [ description, extras ],
-    renderAsOther: { 'Function': createFunctionLike, 'Object': createObjectLike }
+    renderAsOther: { Function: createFunctionLike, Object: createObjectLike }
   })
 
   const createPrototypeLike = createItemBuilder({
@@ -448,21 +460,21 @@ module.exports = (opts) => {
   }
 
   return Object.freeze({
-    api: api,
-    group: createGroupLike('qm-api-group'),
-    prototype: createPrototypeLike('qm-api-prototype'),
-    object: createObjectLike('qm-api-object'),
-    method: createFunctionLike('qm-api-method'),
-    function: createFunctionLike('qm-api-function'),
-    constructor: createConstructorLike('qm-api-constructor'),
-    param: createPropertyLike('qm-api-param'),
+    'api': api,
+    'group': createGroupLike('qm-api-group'),
+    'prototype': createPrototypeLike('qm-api-prototype'),
+    'object': createObjectLike('qm-api-object'),
+    'method': createFunctionLike('qm-api-method'),
+    'function': createFunctionLike('qm-api-function'),
+    'constructor': createConstructorLike('qm-api-constructor'),
+    'param': createPropertyLike('qm-api-param'),
     'param?': createPropertyLike('qm-api-param'),
-    property: createPropertyLike('qm-api-property'),
+    'property': createPropertyLike('qm-api-property'),
     'property?': createPropertyLike('qm-api-property'),
-    event: createPropertyLike('qm-api-event'),
-    returns: createTypeLike('qm-api-returns'),
-    class: createClassLike('qm-api-class'),
-    extraclass: createClassLike('qm-api-extraclass'),
-    childclass: createClassLike('qm-api-childclass')
+    'event': createPropertyLike('qm-api-event'),
+    'returns': createTypeLike('qm-api-returns'),
+    'class': createClassLike('qm-api-class'),
+    'extraclass': createClassLike('qm-api-extraclass'),
+    'childclass': createClassLike('qm-api-childclass')
   })
 }

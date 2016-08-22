@@ -115,7 +115,7 @@ Selection.prototype = {
   },
   has: function (type, options) {
     if (options && options.recursive) {
-      var parent = this
+      const parent = this
       // OPTIM: benchmark and test against not using some
       // OPTIM: don't use recursion here - try and do the loop in place
       return this._entity.content.some((d) => d.type === type) || this._entity.content.some((child) => {
@@ -145,10 +145,10 @@ Selection.prototype = {
     return this.selectAll(type, options)[0] || emptySelection()
   },
   selectAll: function (type, options) {
-    var parent = this
-    var res
+    const parent = this
+    let res = undefined
     if (Array.isArray(type)) {
-      var types = type
+      const types = type
       // OPTIM: do this without the filter and map
       res = this._entity.content.filter((d) => types.indexOf(d.type) > -1)
         .map((child) => select(child, parent))
@@ -177,7 +177,7 @@ Selection.prototype = {
     } else if (isText(f)) {
       return this.filter((entity) => entity.type === f)
     } else {
-      var filteredEntity = {
+      const filteredEntity = {
         type: this._entity.type,
         params: this._entity.params,
         content: this._entity.content.filter(f)
@@ -187,14 +187,14 @@ Selection.prototype = {
   },
   remove: function (type, options) {
     if (Array.isArray(type)) {
-      var self = this
+      const self = this
       // OPTIM: remove the use of map
       return type.map((t) => self.remove(t, options))
     } else {
-      var i = 0
-      var content = this._entity.content
+      let i = 0
+      const content = this._entity.content
       while (i < content.length) {
-        var entity = content[i]
+        const entity = content[i]
         if (isEntity(entity) && entity.type === type) {
           content.splice(i, 1)
           return entity
@@ -205,10 +205,12 @@ Selection.prototype = {
       if (options && options.recursive) {
         i = 0
         while (i < content.length) {
-          var child = content[i]
+          const child = content[i]
           if (isEntity(child)) {
-            var removed = select(child).remove(type, options)
-            if (removed) return removed
+            const removed = select(child).remove(type, options)
+            if (removed) {
+              return removed
+            }
           }
           i++
         }
@@ -217,15 +219,15 @@ Selection.prototype = {
   },
   removeAll: function (type, options) {
     if (Array.isArray(type)) {
-      var self = this
+      const self = this
       // OPTIM: remove the use of map
       return type.map((t) => self.removeAll(t, options))
     } else {
-      var result = []
-      var i = 0
-      var content = this._entity.content
+      const result = []
+      let i = 0
+      const content = this._entity.content
       while (i < content.length) {
-        var entity = content[i]
+        const entity = content[i]
         if (isEntity(entity) && entity.type === type) {
           content.splice(i, 1)
           result.push(entity)
@@ -237,7 +239,7 @@ Selection.prototype = {
       if (options && options.recursive) {
         i = 0
         while (i < content.length) {
-          var child = content[i]
+          const child = content[i]
           if (isEntity(child)) {
             select(child).removeAll(type, options).forEach((removed) => {
               result.push(removed)
