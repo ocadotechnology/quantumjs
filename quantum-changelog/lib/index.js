@@ -1,3 +1,4 @@
+'use-strict'
 const quantum = require('quantum-js')
 const clone = require('clone')
 const flatten = require('flatten')
@@ -353,14 +354,14 @@ function processAll (content, options) {
   return content
 }
 
-module.exports = (opts) => {
+function pipeline (opts) {
   const options = merge.recursive(require('./config.js'), opts)
   return (page) => page.clone({ content: processAll(page.content, options) })
 }
 
-module.exports.transforms = require('./html-transforms')
-
+module.exports = pipeline
+module.exports.transforms = require('./transforms')
 module.exports.assets = {
-  'quantum-changelog.css': path.join(__dirname, '/client/quantum-changelog.css'),
-  'quantum-changelog.js': path.join(__dirname, '/client/quantum-changelog.js')
+  'quantum-changelog.css': path.join(__dirname, '../assets/quantum-changelog.css'),
+  'quantum-changelog.js': path.join(__dirname, '../assets/quantum-changelog.js')
 }

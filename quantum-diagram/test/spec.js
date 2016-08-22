@@ -1,10 +1,10 @@
-const chai = require('chai')
+'use-strict'
+require('chai').should()
 const diagram = require('..')
 
-chai.should()
-
 describe('diagram', () => {
-  it('should be a function', () => {
-    diagram.should.be.a.function
+  it('should export the correct things', () => {
+    diagram.should.be.an.object
+    diagram.transforms.should.be.a.function
   })
 })

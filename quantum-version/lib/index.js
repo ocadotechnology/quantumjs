@@ -1,3 +1,4 @@
+'use-strict'
 /*
      ____                    __                      _
     / __ \__  ______ _____  / /___  ______ ___      (_)____
@@ -265,7 +266,7 @@ function versionTransform (page, options) {
 
 // returns a function that expands a quantum ast containing `version`
 // entities into multiple ast's - one for each version
-module.exports = (opts) => {
+function pipeline (opts) {
   const options = merge.recursive({
     versions: undefined,
     targetVersions: undefined, // Target array of versions
@@ -314,3 +315,5 @@ module.exports = (opts) => {
 
   return (page) => versionTransform(page, options)
 }
+
+module.exports = pipeline

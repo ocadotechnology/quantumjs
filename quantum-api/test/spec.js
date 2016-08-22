@@ -1,10 +1,10 @@
-const chai = require('chai')
+'use-strict'
+require('chai').should()
 const api = require('..')
 
-chai.should()
-
 describe('api', () => {
-  it('should be a function', () => {
-    api.should.be.a.function
+  it('should export the correct things', () => {
+    api.should.be.an.object
+    api.transforms.should.be.a.function
   })
 })

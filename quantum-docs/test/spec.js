@@ -1,10 +1,9 @@
-const chai = require('chai')
+require('chai').should()
 const docs = require('..')
 
-chai.should()
-
 describe('docs', () => {
-  it('should be a function', () => {
+  it('should export the correct things', () => {
     docs.should.be.a.function
+    docs.transforms.should.be.a.function
   })
 })

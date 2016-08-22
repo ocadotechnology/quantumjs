@@ -1,10 +1,11 @@
+'use-strict'
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const path = require('path')
 
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
-const api = require('..')
+const api = require('..').transforms
 
 chai.should()
 chai.use(chaiAsPromised)

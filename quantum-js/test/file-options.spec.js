@@ -1,6 +1,6 @@
+'use-strict'
 const files = require('..').fileOptions
-const chai = require('chai')
-const should = chai.should()
+const should = require('chai').should()
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs-extra'))
 const File = require('..').File

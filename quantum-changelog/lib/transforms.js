@@ -1,3 +1,4 @@
+'use-strict'
 const select = require('quantum-js').select
 const Promise = require('bluebird')
 const merge = require('merge')
@@ -6,7 +7,7 @@ const defaultConfig = require('./config.js')
 const path = require('path')
 const html = require('quantum-html')
 
-module.exports = (opts) => {
+function transforms (opts) {
   const options = merge.recursive(defaultConfig, opts)
 
   const entityIfExists = (entity, selector, transformer) => {
@@ -199,9 +200,11 @@ module.exports = (opts) => {
       .add(keys)
   }
 
-  return {
-    key: key,
-    changelog: changelog,
-    wrapper: wrapper
-  }
+  return Object.freeze({
+    key,
+    changelog,
+    wrapper
+  })
 }
+
+module.exports = transforms

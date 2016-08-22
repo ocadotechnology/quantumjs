@@ -1,16 +1,7 @@
 #! /bin/bash
 
-# This script removes all the node_modules folders
+# This script removes all the node_modules, target and coverage folders
 
-rm -rf quantum-js/node_modules
-rm -rf quantum-dom/node_modules
-rm -rf quantum-html/node_modules
-rm -rf quantum-code-highlight/node_modules
-rm -rf quantum-api/node_modules
-rm -rf quantum-changelog/node_modules
-rm -rf quantum-diagram/node_modules
-rm -rf quantum-docs/node_modules
-rm -rf quantum-version/node_modules
-rm -rf quantum-template/node_modules
-rm -rf docs/node_modules
-rm -rf docs/target
+find . -name "node_modules" -exec rm -rf '{}' +
+find . -name "target" -exec rm -rf '{}' +
+find . -name "coverage" -exec rm -rf '{}' +

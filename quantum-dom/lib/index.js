@@ -343,7 +343,7 @@ function stringify (elements, options) {
     })
 }
 
-module.exports = {
+module.exports = Object.freeze({
   create: create,
   textNode: textNode,
   bodyClassed: bodyClassed,
@@ -353,4 +353,4 @@ module.exports = {
   all: all,
   randomId: randomId,
   escapeHTML: escapeHTML
-}
+})

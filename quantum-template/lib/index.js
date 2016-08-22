@@ -1,3 +1,4 @@
+'use-strict'
 const quantum = require('quantum-js')
 
 function replacer (variables, str) {
@@ -216,7 +217,7 @@ function applyDefinitions (parsed, definitions) {
   }
 }
 
-module.exports = (options) => {
+function pipeline (options) {
   const variables = prepareVariables(options ? options.variables : {})
 
   return (page) => {
@@ -229,7 +230,7 @@ module.exports = (options) => {
 }
 
 // insert the page title by wrapping the passed in object
-module.exports.wrapper = (options) => {
+function wrapper (options) {
   return (obj) => {
     return quantum.read(options.templateFilename)
       .then((template) => {
@@ -242,3 +243,6 @@ module.exports.wrapper = (options) => {
       })
   }
 }
+
+module.exports = pipeline
+module.exports.wrapper = wrapper
