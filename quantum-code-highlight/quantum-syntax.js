@@ -1,12 +1,13 @@
 module.exports = function (hljs) {
-  var INLINE_CONTENT = {
+  const INLINE_CONTENT = {
     className: 'subst',
-    begin: '\\[', end: '\\]',
+    begin: '\\[',
+    end: '\\]',
     endsWithParent: true,
     endsParent: true
   }
 
-  var PARAMS = {
+  const PARAMS = {
     className: 'attr',
     variants: [
       {begin: '\\(', end: '\\)[^\\[]', endsWithParent: true, endsParent: true, contains: [INLINE_CONTENT]},

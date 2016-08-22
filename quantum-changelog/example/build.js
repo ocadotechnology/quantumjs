@@ -1,12 +1,12 @@
-var quantum = require('quantum-js')
-var html = require('quantum-html')
-var changelog = require('quantum-changelog')
+const quantum = require('quantum-js')
+const html = require('quantum-html')
+const changelog = require('quantum-changelog')
 
-var changelogOptions = {
+const changelogOptions = {
 
 }
 
-var htmlTransforms = {
+const htmlTransforms = {
   html: html.transforms,
   changelog: changelog(changelogOptions).transforms
 }
