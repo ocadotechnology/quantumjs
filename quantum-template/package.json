@@ -28,13 +28,13 @@
     "quantum-js": "^2.0.0"
   },
   "devDependencies": {
-    "istanbul": "^0.4.0",
-    "chai": "^2.3.0",
-    "html-file-cov": "^1.0.0",
-    "mocha": "^2.2.5",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
     "eslint": "^3.3.1",
     "eslint-config-standard": "^6.0.0-beta.3",
     "eslint-plugin-promise": "^2.0.1",
-    "eslint-plugin-standard": "^2.0.0"
+    "eslint-plugin-standard": "^2.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2"
   }
 }
