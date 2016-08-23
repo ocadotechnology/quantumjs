@@ -10,9 +10,25 @@ const api = require('..').transforms
 chai.should()
 chai.use(chaiAsPromised)
 
-describe('function', () => {
-  function transformer (selection) {
-    return quantum.select.isSelection(selection) ? api()[selection.type()](selection, transformer) : selection
+describe('transforms', () => {
+  function optionTransformer (options) {
+    return (selection) => {
+      return quantum.select.isSelection(selection) ? api(options)[selection.type()](selection, optionTransformer(options)) : selection
+    }
+  }
+
+  const transformer = optionTransformer()
+
+  // XXX: Work out why the api transform isn't synchronous but doesn't return a promise
+  // Uses of this can be replaced by `transformer(selection).should.eql(expected)` when the 'bug' is resolved
+  function asyncExpectation (selection, expected, done) {
+    const content = transformer(selection)
+    const waitMs = 5
+    const check = () => {
+      content.should.eql(expected)
+      done()
+    }
+    setTimeout(check, waitMs)
   }
 
   it('should render a return block (no description)', () => {
@@ -103,7 +119,7 @@ describe('function', () => {
     )
   })
 
-  it('should render a function that returns', () => {
+  it('should render a function that returns', (done) => {
     const selection = quantum.select({
       type: 'function',
       params: ['lemon'],
@@ -150,7 +166,140 @@ describe('function', () => {
           .add(dom.create('div').class('qm-api-extras'))
           .add(returnBlock)))
 
-    transformer(selection).should.eql(expected)
+    asyncExpectation(selection, expected, done)
+  })
+
+  // TODO: Add these tests
+
+  // it('should not sort function params', () => {
+  // })
+
+  // TODO: Do this for all types?
+  // it('should render constructors', () => {
+  // })
+
+  // it('should render optional entities correctly', () => {
+  // })
+
+  // it('should sort entities based on their params', () => {
+  // })
+
+  // it('should sort entities based on their tags', () => {
+  // })
+
+  // it('should group entities by type', () => {
+  // })
+
+  // it('should render deprecated/removed messages', () => {
+  // })
+
+  // it('should render type links', () => {
+  // })
+
+  // it('should render parameterised type links', () => {
+  // })
+
+  // it('should render as something else if the type parameter matches', () => {
+  // })
+
+  // it('should render extra content in the api', () => {
+  // })
+
+  // TODO: Should contain
+  // it('should render a complete api', () => {
+  // })
+
+  it('should sort group contents in the correct order', (done) => {
+    // XXX: Should this need to be wrapped in an @api to work?
+    const selection = quantum.select({
+      type: 'api',
+      params: [],
+      content: [
+        {
+          type: 'group',
+          params: ['Group'],
+          content: [
+            {
+              type: 'object',
+              params: ['b object'],
+              content: [
+                { type: 'removed', params: [], content: [] }
+              ]
+            },
+            { type: 'object', params: ['f object'], content: [] },
+            {
+              type: 'object',
+              params: ['e object'],
+              content: [
+                { type: 'added', params: [], content: [] }
+              ]
+            },
+            {
+              type: 'object',
+              params: ['d object'],
+              content: [
+                { type: 'deprecated', params: [], content: [] }
+              ]
+            },
+            {
+              type: 'object',
+              params: ['c object'],
+              content: [
+                { type: 'updated', params: [], content: [] }
+              ]
+            },
+            { type: 'object', params: ['a object'], content: [] }
+          ]
+        }
+      ]
+    })
+
+    const createTag = (type) => {
+      if (type) {
+        return dom.create('span').class(`qm-api-tag qm-api-tag-${type}`).text(type)
+      }
+    }
+
+    const createObject = (name, tagName) => {
+      return dom.create('div')
+        .class('qm-api-collapsible qm-api-item qm-api-object qm-api-item-no-description')
+        .add(dom.create('div').class('qm-api-collapsible-heading')
+          .add(dom.create('div').class('qm-api-collapsible-toggle')
+            .add(dom.create('i').class('qm-api-chevron-icon')))
+          .add(dom.create('div').class('qm-api-collapsible-head')
+            .add(dom.create('div').class('qm-api-item-head')
+              .add(dom.create('div').class('qm-api-item-header qm-api-property-header')
+                .add(dom.create('span').class(`qm-api-header-details${tagName ? ' qm-api-' + tagName : ''}`)
+                  .add(dom.create('span').class('qm-api-property-name').text(name))
+                  .add(dom.create('span').class('qm-api-property-type')))
+                .add(dom.create('span').class('qm-api-header-tags')
+                  .add(createTag(tagName)))))))
+        .add(dom.create('div').class('qm-api-collapsible-content')
+          .add(dom.create('div').class('qm-api-item-content')
+            .add(dom.create('div').class('qm-api-description').text(''))
+            .add(dom.create('div').class('qm-api-extras'))))
+    }
+
+    const expected = dom.create('div')
+      .class('qm-api-item-content')
+        .add(dom.create('div').class('qm-api-description').text(''))
+        .add(dom.create('div').class('qm-api-extras'))
+        .add(dom.asset({url: '/assets/quantum-api.css', file: path.resolve(__dirname, '../assets/quantum-api.css'), shared: true}))
+        .add(dom.asset({url: '/assets/quantum-api.js', file: path.resolve(__dirname, '../assets/quantum-api.js'), shared: true}))
+        .add(dom.create('div').class('qm-api-group-container')
+          .add(dom.create('div').class('qm-api-group')
+            .add(dom.create('h2').text('Group'))
+            .add(dom.create('div').class('qm-api-group-content')
+              .add(dom.create('div').class('qm-api-description').text(''))
+              .add(createObject('e object', 'added'))
+              .add(createObject('c object', 'updated'))
+              .add(createObject('a object'))
+              .add(createObject('f object'))
+              .add(createObject('d object', 'deprecated'))
+              .add(createObject('b object', 'removed'))
+        )))
+
+    asyncExpectation(selection, expected, done)
   })
 })
 

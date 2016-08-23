@@ -156,47 +156,51 @@ function transforms (opts) {
     }
   }
 
-  function organisedEntity (selection) {
-    const added = []
-    const updated = []
-    const existing = []
-    const deprecated = []
-    const removed = []
+  function organisedEntity (selection, opts) {
+    if ((!options || !options.noSort) && (!opts || !opts.noSort)) {
+      const added = []
+      const updated = []
+      const existing = []
+      const deprecated = []
+      const removed = []
 
-    selection.content().forEach(entity => {
-      if (quantum.select.isEntity(entity)) {
-        const selection = quantum.select(entity)
-        if (selection.has('removed')) {
-          removed.push(entity)
-        } else if (selection.has('deprecated')) {
-          deprecated.push(entity)
-        } else if (selection.has('updated')) {
-          updated.push(entity)
-        } else if (selection.has('added')) {
-          added.push(entity)
-        } else {
-          existing.push(entity)
+      selection.content().forEach(entity => {
+        if (quantum.select.isEntity(entity)) {
+          const selection = quantum.select(entity)
+          if (selection.has('removed')) {
+            removed.push(entity)
+          } else if (selection.has('deprecated')) {
+            deprecated.push(entity)
+          } else if (selection.has('updated')) {
+            updated.push(entity)
+          } else if (selection.has('added')) {
+            added.push(entity)
+          } else {
+            existing.push(entity)
+          }
         }
-      }
-    })
+      })
 
-    const sortedAdded = added.sort(sortEntities)
-    const sortedUpdated = updated.sort(sortEntities)
-    const sortedExisting = existing.sort(sortEntities)
-    const sortedDeprecated = deprecated.sort(sortEntities)
-    const sortedRemoved = removed.sort(sortEntities)
+      const sortedAdded = added.sort(sortEntities)
+      const sortedUpdated = updated.sort(sortEntities)
+      const sortedExisting = existing.sort(sortEntities)
+      const sortedDeprecated = deprecated.sort(sortEntities)
+      const sortedRemoved = removed.sort(sortEntities)
 
-    const newContent = sortedAdded
-      .concat(sortedUpdated)
-      .concat(sortedExisting)
-      .concat(sortedDeprecated)
-      .concat(sortedRemoved)
+      const newContent = sortedAdded
+        .concat(sortedUpdated)
+        .concat(sortedExisting)
+        .concat(sortedDeprecated)
+        .concat(sortedRemoved)
 
-    return quantum.select({
-      type: selection.type(),
-      params: selection.params(),
-      content: newContent
-    })
+      return quantum.select({
+        type: selection.type(),
+        params: selection.params(),
+        content: newContent
+      })
+    } else {
+      return selection
+    }
   }
 
   // creates a group of items (like all the methods on a prototype, or all the properties on an object)
@@ -205,7 +209,9 @@ function transforms (opts) {
       const hasType = Array.isArray(type) ? type.some(t => selection.has(t)) : selection.has(type)
 
       if (hasType) {
-        const filtered = (!options || !options.noSort) ? organisedEntity(selection.filter(type)) : selection.filter(type)
+        const filtered = organisedEntity(selection.filter(type), options)
+
+        // deals with optional types  (e.g. ['param', 'param?'])
         const firstType = Array.isArray(type) ? type[0] : type
 
         return dom.create('div').class('qm-api-' + firstType + '-group')
@@ -257,7 +263,7 @@ function transforms (opts) {
 
           opts.header.forEach((builder) => header.add(builder(selection, transforms)))
 
-          const extraClasses = selection.isEmpty() ? ' qm-api-item-no-description' : ''
+          const extraClasses = selection.filter(sel => tagNames.indexOf(sel.type) === -1).isEmpty() ? ' qm-api-item-no-description' : ''
 
           return createCollapsible(itemClass + extraClasses, header, content)
         } else {
@@ -371,7 +377,7 @@ function transforms (opts) {
     if (selection.has('group')) {
       const sortedEntity = selection.filter('group')
       return dom.create('div').class('qm-api-group-container')
-        .add(dom.all(sortedEntity.selectAll('group').map((groupSelection) => {
+        .add(dom.all(sortedEntity.selectAll('group').map(organisedEntity).map((groupSelection) => {
           return dom.create('div').class('qm-api-group')
             .add(dom.create('h2').text(groupSelection.ps()))
             .add(dom.create('div').class('qm-api-group-content')
@@ -455,7 +461,7 @@ function transforms (opts) {
       }))
       .add(dom.asset({
         url: '/assets/quantum-api.js',
-        file: path.join(__dirname, '/assets/quantum-api.js'),
+        file: path.join(__dirname, '../assets/quantum-api.js'),
         shared: true
       }))
   }
