@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 const hljs = require('highlight.js')
 const dom = require('quantum-dom')
 const quantumSyntax = require('./quantum-syntax.js')

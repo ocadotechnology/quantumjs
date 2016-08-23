@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 require('chai').should()
 const path = require('path')
 const quantum = require('quantum-js')

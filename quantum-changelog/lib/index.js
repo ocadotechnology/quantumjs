@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 const quantum = require('quantum-js')
 const clone = require('clone')
 const flatten = require('flatten')

@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const paragraphTransform = require('quantum-html').paragraphTransform

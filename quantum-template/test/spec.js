@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 const should = require('chai').should()
 const template = require('..')
 const quantum = require('quantum-js')

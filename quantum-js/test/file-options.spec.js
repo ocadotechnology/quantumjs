@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 const files = require('..').fileOptions
 const should = require('chai').should()
 const Promise = require('bluebird')

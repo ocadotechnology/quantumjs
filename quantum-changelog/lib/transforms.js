@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 const select = require('quantum-js').select
 const Promise = require('bluebird')
 const merge = require('merge')

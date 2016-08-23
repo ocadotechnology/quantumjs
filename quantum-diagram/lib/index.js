@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 const dagre = require('dagre')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')

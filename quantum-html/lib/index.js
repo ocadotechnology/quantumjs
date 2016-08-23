@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 const path = require('path')
 const unique = require('array-unique')
 const Promise = require('bluebird')

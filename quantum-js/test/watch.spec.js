@@ -1,4 +1,4 @@
-'use-strict'
+'use strict'
 const should = require('chai').should()
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs-extra'))
