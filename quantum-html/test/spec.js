@@ -7,7 +7,7 @@ const quantum = require('quantum-js')
 const Page = quantum.Page
 const File = quantum.File
 
-describe('html', () => {
+describe('pipeline', () => {
   it('should export the correct things', () => {
     html.should.be.a.function
     html.transforms.should.be.a.function

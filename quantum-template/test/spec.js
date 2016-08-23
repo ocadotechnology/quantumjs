@@ -1,9 +1,9 @@
 'use strict'
 const should = require('chai').should()
-const template = require('..')
 const quantum = require('quantum-js')
+const template = require('..')
 
-describe('Template', () => {
+describe('pipeline', () => {
   it('should export the correct things', () => {
     template.should.be.a.function
     template.wrapper.should.be.a.function
@@ -178,5 +178,11 @@ describe('Template', () => {
     it('should handle indexed content', () => {
       return compare({}, 'test/um/content-indexing/source.um', 'test/um/content-indexing/expected-1.um')
     })
+  })
+})
+
+describe('wrapper', () => {
+  it('placeholder', () => {
+    template.wrapper.should.be.a.function
   })
 })
