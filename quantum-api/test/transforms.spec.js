@@ -301,6 +301,44 @@ describe('transforms', () => {
 
     asyncExpectation(selection, expected, done)
   })
+
+  it('should render default entities correctly', (done) => {
+    const selection = quantum.select({
+      type: 'property',
+      params: ['prop'],
+      content: [
+        {
+          type: 'default',
+          params: ['true'],
+          content: [
+            'false'
+          ]
+        }
+      ]
+    })
+
+    const expected = dom.create('div')
+      .class('qm-api-collapsible qm-api-item qm-api-property')
+      .add(dom.create('div').class('qm-api-collapsible-heading')
+        .add(dom.create('div').class('qm-api-collapsible-toggle')
+          .add(dom.create('i').class('qm-api-chevron-icon')))
+        .add(dom.create('div').class('qm-api-collapsible-head')
+          .add(dom.create('div').class('qm-api-item-head')
+            .add(dom.create('div').class('qm-api-item-header qm-api-property-header')
+              .add(dom.create('span').class('qm-api-header-details')
+                .add(dom.create('span').class('qm-api-property-name').text('prop'))
+                .add(dom.create('span').class('qm-api-property-type')))
+              .add(dom.create('span').class('qm-api-header-tags'))))))
+      .add(dom.create('div').class('qm-api-collapsible-content')
+        .add(dom.create('div').class('qm-api-item-content')
+          .add(dom.create('div').class('qm-api-description').text(''))
+          .add(dom.create('div').class('qm-api-extras'))
+          .add(dom.create('div').class('qm-api-default')
+            .add(dom.create('span').class('qm-api-default-key').text('Default: '))
+            .add('false'))))
+
+    asyncExpectation(selection, expected, done)
+  })
 })
 
 // @describe function
