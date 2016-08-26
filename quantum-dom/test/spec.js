@@ -33,8 +33,12 @@ describe('Element', () => {
     dom.create('div').stringify().should.equal('<div></div>')
   })
 
-  it('should stringify correctly with an attribute set', () => {
-    dom.create('div').attr('test', 'thing').stringify().should.equal('<div test="thing"></div>')
+  it('should ignore things that are not strings when stringifying', () => {
+    dom.create('div').add({}).stringify().should.equal('<div></div>')
+  })
+
+  it('should ignore things that are not strings when stringifying', () => {
+    dom.create('div').add({}, {addToEnd: true}).stringify().should.equal('<div></div>')
   })
 
   it('should stringify correctly with multiple attributes set', () => {
@@ -281,10 +285,29 @@ describe('dom', () => {
       ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head></head><body><div></div></body></html>'})
     })
 
+    it('should stringify a page with body content', () => {
+      return dom.stringify([
+        'Some content',
+        {ignore: 'this'}
+      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head></head><body>Some content</body></html>'})
+    })
+
     it('should stringify a page with head content', () => {
       return dom.stringify([
         dom.head(dom.create('title').text('title'))
       ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head><title>title</title></head><body></body></html>'})
+    })
+
+    it('should add content that are strings when stringifying', () => {
+      return dom.stringify([
+        dom.head('Some content')
+      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head>Some content</head><body></body></html>'})
+    })
+
+    it('should ignore content that are not strings when stringifying', () => {
+      return dom.stringify([
+        dom.head({not: 'an element'})
+      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head></head><body></body></html>'})
     })
 
     it('should deduplicate head elements with the same id', () => {
@@ -335,6 +358,22 @@ describe('dom', () => {
 
     it('should not escape if escape is set to false', () => {
       dom.textNode('some text', {escape: false}).stringify().should.equal('some text')
+    })
+  })
+
+  describe('asset', () => {
+    it('should default to the correct values', () => {
+      const asset = dom.asset()
+      asset.url.should.equal('')
+      asset.filename.should.equal('')
+      asset.shared.should.equal(false)
+    })
+
+    it('should default to the correct values (when an empty object is passed in)', () => {
+      const asset = dom.asset({})
+      asset.url.should.equal('')
+      asset.filename.should.equal('')
+      asset.shared.should.equal(false)
     })
   })
 })

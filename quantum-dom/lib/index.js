@@ -262,7 +262,8 @@ function head (element, options) {
 
 // adds an asset to the page - the user can choose to embed or not when stringifying
 function asset (options) {
-  return new Asset(options.url || '', options.file || '', options.shared === true)
+  const opts = options || {}
+  return new Asset(opts.url || '', opts.file || '', opts.shared === true)
 }
 
 // renders the element given to html
