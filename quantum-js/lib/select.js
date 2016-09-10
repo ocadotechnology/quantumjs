@@ -28,10 +28,11 @@ function isSelection (d) {
   return d instanceof Selection
 }
 
-function Selection (entity, parent, isFiltered) {
+function Selection (entity, parent, isFiltered, renderContext) {
   this._entity = entity
   this._parent = parent
   this._isFiltered = isFiltered
+  this._renderContext = renderContext
 }
 
 function checkNotFiltered (selection) {
@@ -119,9 +120,10 @@ Selection.prototype = {
       const parent = this
       // OPTIM: benchmark and test against not using some
       // OPTIM: don't use recursion here - try and do the loop in place
-      return this._entity.content.some((d) => d.type === type) || this._entity.content.some((child) => {
-        return isEntity(child) && select(child, parent).has(type, options)
-      })
+      return this._entity.content.some((d) => d.type === type) ||
+        this._entity.content.some((child) => {
+          return isEntity(child) && select(child, parent).has(type, options)
+        })
     } else {
       // OPTIM: benchmark and test against not using some
       return this._entity.content.some((child) => child.type === type)
@@ -183,7 +185,7 @@ Selection.prototype = {
         params: this._entity.params,
         content: this._entity.content.filter(f)
       }
-      return new Selection(filteredEntity, this._parent, true)
+      return new Selection(filteredEntity, this._parent, true, this._renderContext)
     }
   },
   remove: function (type, options) {
@@ -253,20 +255,32 @@ Selection.prototype = {
       return result
     }
   },
+  transformContext: function (obj) {
+    if (arguments.length > 0) {
+      this._renderContext = obj
+      return this
+    } else {
+      return this._renderContext
+    }
+  },
   transform: function (transformer) {
-    return select.Promise.all(this._entity.content.map((child) => {
+    return all(this._entity.content.map((child) => {
       return transformer(isEntity(child) ? select(child, this) : child)
     }))
   }
 }
 
+function all (maybePromises) {
+  return maybePromises.some(p => p.then) ? select.Promise.all(maybePromises) : maybePromises
+}
+
 function emptySelection () {
-  return new Selection({type: '', params: [], content: []}, undefined, false)
+  return new Selection({type: '', params: [], content: []}, undefined, false, {})
 }
 
 function select (entity, parent) {
   if (Array.isArray(entity.content)) {
-    return new Selection(entity, parent, false)
+    return new Selection(entity, parent, false, {})
   } else if (entity instanceof Selection) {
     return entity
   } else {

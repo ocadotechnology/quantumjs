@@ -83,11 +83,9 @@ function transforms (opts) {
 
   function setupElement (type, selection, transform, parsePs) {
     const element = entityToElement(type, selection, parsePs)
-    return selection
+    return element.add(selection
       .filter((entity) => attributeEntities.indexOf(entity.type) === -1)
-      .transform(transform)
-      .then((elements) => element.add(elements.filter(d => d)))
-      .then(() => element)
+      .transform(transform))
   }
 
   // define the common element types as entity transforms
@@ -126,17 +124,19 @@ function transforms (opts) {
   const css = (selection, transforms) => dom.head(dom.create('style').text(selection.cs(), {escape: false}))
 
   return Object.freeze(merge(elementTransforms, {
-    bodyClassed,
-    title,
-    head,
-    html,
-    script,
-    stylesheet,
-    hyperlink,
-    js,
-    css
+    bodyClassed: bodyClassed,
+    title: title,
+    head: head,
+    html: html,
+    script: script,
+    stylesheet: stylesheet,
+    hyperlink: hyperlink,
+    js: js,
+    css: css
   }))
-}// flattens out namespaced renderers into a single object
+}
+
+// flattens out namespaced renderers into a single object
 function prepareTransforms (transforms, namespace, target) {
   const resolvedNamespace = namespace || ''
   const resolvedTarget = target || {}
@@ -186,8 +186,7 @@ function pipeline (opts) {
     }
 
     // select and transform the content, then returns the page object
-    return quantum.select(page.content)
-      .transform(transformer)
+    return Promise.resolve(quantum.select(page.content).transform(transformer))
       .then((elements) => page.clone({ content: new HTMLPage(elements) }))
   }
 }

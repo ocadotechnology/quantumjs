@@ -1,9 +1,14 @@
 @stylesheet [https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css]
+@stylesheet [https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700]
 
 @css
   .content {
     margin: 0 auto;
     width: 960px;
+  }
+
+  body {
+    font-family: 'Source Sans Pro', sans-serif;
   }
 
 @div .content

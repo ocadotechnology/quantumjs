@@ -1,4 +1,3 @@
-const quantum = require('quantum-js')
 const html = require('quantum-html')
 const api = require('quantum-api')
 
@@ -16,11 +15,19 @@ const apiOptions = {
 }
 
 const htmlTransforms = {
-  html: html.transforms,
-  api: api(apiOptions)
+  html: html.transforms(),
+  api: api.transforms(apiOptions)
 }
 
-quantum.read('index.um')
-  .map(html(htmlTransforms))
-  .map(html.stringify())
-  .map(quantum.write('target'))
+function pipeline (page) {
+  return Promise.resolve(page)
+    .then(html({ transforms: htmlTransforms }))
+    .then(html.stringify())
+    .then(html.htmlRenamer())
+}
+
+module.exports = {
+  pipeline: pipeline,
+  pages: 'src/*.um',
+  htmlTransforms: htmlTransforms
+}

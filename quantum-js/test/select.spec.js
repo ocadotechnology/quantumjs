@@ -884,6 +884,28 @@ describe('select', () => {
     })
   })
 
+  describe('Selection::transformContext', () => {
+    it('should return an object by default', () => {
+      select({type: '', params: [], content: []})
+        .transformContext().should.eql({})
+    })
+
+    it('should store and get the transformContext', () => {
+      const obj = {}
+      select({type: '', params: [], content: []})
+        .transformContext(obj)
+        .transformContext().should.equal(obj)
+    })
+
+    it('should be retained when filtering', () => {
+      const obj = {}
+      select({type: '', params: [], content: []})
+        .transformContext(obj)
+        .filter(d => true)
+        .transformContext().should.equal(obj)
+    })
+  })
+
   describe('Selection::transform', () => {
     it('should act on each of the child elements', () => {
       const entity = {

@@ -202,7 +202,7 @@ describe('Element', () => {
     })
   }
 
-  it('should construct the right thing when Element like Promises are chained with add and return out of order', () => {
+  it('should construct the right thing when Element like Promises are chained with add and return out of order 1', () => {
     return dom.create('div')
       .add(delayedPromise(5, dom.create('div')))
       .add(delayedPromise(20, dom.create('span')))
@@ -215,7 +215,7 @@ describe('Element', () => {
       })
   })
 
-  it('should construct the right thing when Element like Promises are chained with add and return out of order', () => {
+  it('should construct the right thing when Element like Promises are chained with add and return out of order 2', () => {
     return dom.create('div')
       .add([
         delayedPromise(5, dom.create('div')),
@@ -227,6 +227,32 @@ describe('Element', () => {
           .add(dom.create('div'))
           .add(dom.create('span'))
           .add(dom.create('div')))
+      })
+  })
+
+  it('should construct the right thing when Element like Promises are chained with add and return out of order 3', () => {
+    return dom.create('div')
+      .add([
+        delayedPromise(5, dom.create('div').add(delayedPromise(20, dom.create('span')))),
+        delayedPromise(10, dom.create('div'))
+      ])
+      .then(element => {
+        element.should.eql(dom.create('div')
+          .add(dom.create('div').add(dom.create('span')))
+          .add(dom.create('div')))
+      })
+  })
+
+  it('should construct the right thing when Element like Promises are chained with add and return out of order 4', () => {
+    return dom.create('div')
+      .add(delayedPromise(5, dom.create('div')
+        .add(delayedPromise(20, dom.create('span')
+          .add(delayedPromise(10, dom.create('div')))))))
+      .then(element => {
+        element.should.eql(dom.create('div')
+          .add(dom.create('div')
+            .add(dom.create('span')
+              .add(dom.create('div')))))
       })
   })
 

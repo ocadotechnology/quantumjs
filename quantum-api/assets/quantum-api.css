@@ -1,5 +1,5 @@
 .qm-api {
-  padding: 0.5em;
+  padding: 0.5em 0;
 }
 
 /* Notice styles */
@@ -40,12 +40,12 @@
 .qm-api-collapsible {}
 
 .qm-api-collapsible-heading {
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
-  -webkit-align-items: center;
   -ms-flex-align: center;
-  align-items: center;
+  -webkit-box-align: center;
+          align-items: center;
   background: #f4f4f4;
 }
 
@@ -53,7 +53,8 @@
   padding: 0.5em;
   text-align: center;
   cursor: pointer;
-  flex-shrink: 0;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
 }
 
 .qm-api-chevron-icon {
@@ -62,7 +63,9 @@
 
 .qm-api-collapsible-toggle .qm-api-chevron-icon {
   transition: -webkit-transform 0.2s;
+  -webkit-transition: -webkit-transform 0.2s;
   transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
 }
 
 .qm-api-collapsible-open > .qm-api-collapsible-heading .qm-api-chevron-icon {
@@ -73,14 +76,14 @@
 .qm-api-collapsible-head {
   padding: 0.5em;
   line-height: 1em;
-  -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-flex-shrink: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
   height: 1em;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .qm-api-collapsible-content {
@@ -92,7 +95,7 @@
   display: block;
 }
 
-.qm-api-group-container {}
+.qm-api-groups {}
 
 .qm-api-group {}
 
@@ -129,27 +132,25 @@
 }
 
 .qm-api-item-header {
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
 }
 
 .qm-api-header-details {
-  -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
-  -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
 }
 
 .qm-api-header-tags {
-  -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
-  -webkit-flex-grow: 0;
   -ms-flex-positive: 0;
-  flex-grow: 0;
+  -webkit-box-flex: 0;
+          flex-grow: 0;
 }
 
 .qm-api-tag {
@@ -307,49 +308,49 @@
 
 .qm-api-entity {}
 
-.qm-api-function-name {}
+.qm-api-header-function-name {}
 
-.qm-api-function-params {}
+.qm-api-header-function-params {}
 
-.qm-api-function-params:before {
+.qm-api-header-function-params:before {
   content: "(";
 }
 
-.qm-api-function-params:after {
+.qm-api-header-function-params:after {
   content: ")";
 }
 
-.qm-api-function-param {}
+.qm-api-header-function-param {}
 
-.qm-api-function-param:after {
+.qm-api-header-function-param:after {
   content: ",";
   margin-right: 4px;
 }
 
-.qm-api-function-param:last-child:after {
+.qm-api-header-function-param:last-child:after {
   content: none;
   margin-right: 0;
 }
 
-.qm-api-function-param.qm-api-optional:after {
+.qm-api-header-function-param.qm-api-optional:after {
   content: "],";
   margin-right: 4px;
 }
 
-.qm-api-function-param.qm-api-optional:last-child:after {
+.qm-api-header-function-param.qm-api-optional:last-child:after {
   content: "]";
   margin-right: 0;
 }
 
-.qm-api-function-param-name {}
+.qm-api-header-function-param-name {}
 
-.qm-api-function-param-type:not(:empty) {
+.qm-api-header-function-param-type:not(:empty) {
   padding-left: 0.25em;
 }
 
-.qm-api-function-returns {}
+.qm-api-header-function-returns {}
 
-.qm-api-function-returns:not(:empty):before {
+.qm-api-header-function-returns:not(:empty):before {
   content: ":";
   margin-right: 4px;
 }
@@ -366,14 +367,14 @@
 
 .qm-api-property-name {}
 
-.qm-api-property-type {}
+.qm-api-header-property-type {}
 
-.qm-api-property-type:before {
+.qm-api-header-property-type:before {
   content: ":";
   margin-right: 4px;
 }
 
-.qm-api-property-type:empty:before {
+.qm-api-header-property-type:empty:before {
   content: none;
   margin-right: 0;
 }
@@ -432,18 +433,17 @@
   font-weight: bold;
 }
 
-.qm-api-property-name,
-.qm-api-function-name,
-.qm-api-type-name,
-.qm-api-entity-name {
+.qm-api-header-property-name,
+.qm-api-header-function-name,
+.qm-api-header-type-name,
+.qm-api-header-entity-name {
   font-weight: bold;
 }
 
-.qm-api-property-type,
-.qm-api-function-type,
-.qm-api-function-param-type,
-.qm-api-type-type,
-.qm-api-entity-type {
+.qm-api-header-property-type,
+.qm-api-header-function-type,
+.qm-api-header-function-param-type,
+.qm-api-header-type-type {
   color: #8C8C8C;
 }
 

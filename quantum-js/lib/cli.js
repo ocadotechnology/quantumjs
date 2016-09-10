@@ -80,7 +80,7 @@ QuantumJS (${version})
 
 function buildPage (sourcePage, pipeline, config, logger) {
   const start = Date.now()
-  return pipeline(sourcePage, config)
+  return Promise.resolve(pipeline(sourcePage, config))
     .then((pages) => Array.isArray(pages) ? pages : [pages])
     .map((page) => fs.outputFileAsync(page.file.dest, page.content).then(() => page))
     .then((destPages) => {
@@ -101,7 +101,7 @@ function copyResource (file, logger) {
 
 function copyResources (config, options, logger) {
   logger({type: 'header', message: 'Copying Resources'})
-  return fileOptions.resolve(config.resources, options)
+  return fileOptions.resolve(config.resources || [], options)
     .map((file) => copyResource(file, logger), {concurrency: options.concurrency})
 }
 
@@ -162,9 +162,11 @@ function watch (config) {
       }
     })
 
-    qwatch.watcher(config.resources, options).then((watcher) => {
-      watcher.on('change', (file) => copyResource(file, logger))
-    })
+    if (config.resources) {
+      qwatch.watcher(config.resources, options).then((watcher) => {
+        watcher.on('change', (file) => copyResource(file, logger))
+      })
+    }
   })
 }
 

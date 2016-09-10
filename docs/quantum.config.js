@@ -16,12 +16,12 @@ const htmlOptions = {
 }
 
 const htmlTransforms = {
-  html: html.transforms,
-  api: api(),
+  html: html.transforms(),
+  api: api.transforms(),
   changelog: changelog.transforms(),
-  diagram: diagram(),
-  docs: docs(),
-  highlight: codeHighlight(),
+  diagram: diagram.transforms(),
+  docs: docs.transforms(),
+  highlight: codeHighlight.transforms(),
   site: quantumSite
 }
 
@@ -51,7 +51,7 @@ function pipeline (page) {
     .then(template({ variables: templateVariables }))
     .then(changelog())
     .then(version())
-    .map(docs.populateTableOfContents())
+    .map(docs())
     .map(html({ transforms: htmlTransforms }))
     .map(html.stringify(htmlOptions))
     .map(html.htmlRenamer())
