@@ -23,21 +23,20 @@
 }
 
 .qm-changelog-item-head {
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
-  -webkit-flex-wrap: none;
   -ms-flex-wrap: none;
   flex-wrap: none;
-  -webkit-align-items: center;
   -ms-flex-align: center;
-  align-items: center;
+  -webkit-box-align: center;
+          align-items: center;
 }
 
 .qm-changelog-item-title {
-  -webkit-flex: 1;
   -ms-flex: 1;
-  flex: 1;
+  -webkit-box-flex: 1;
+          flex: 1;
 }
 
 .qm-changelog-item-link {}
@@ -59,10 +58,9 @@
 .qm-changelog-item-entries {}
 
 .qm-changelog-entry {
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
-  -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
 }
@@ -76,9 +74,9 @@
 .qm-changelog-entry-icon {}
 
 .qm-changelog-entry-content {
-  -webkit-flex: 1;
   -ms-flex: 1;
-  flex: 1;
+  -webkit-box-flex: 1;
+          flex: 1;
   margin-left: 0.5em;
 }
 
@@ -203,12 +201,12 @@
 .qm-changelog-collapsible {}
 
 .qm-changelog-collapsible-heading {
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
-  -webkit-align-items: center;
   -ms-flex-align: center;
-  align-items: center;
+  -webkit-box-align: center;
+          align-items: center;
   background: white;
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
 }
@@ -229,7 +227,9 @@
 
 .qm-changelog-collapsible-toggle .qm-changelog-chevron-icon {
   transition: -webkit-transform 0.2s;
+  -webkit-transition: -webkit-transform 0.2s;
   transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
 }
 
 .qm-changelog-collapsible-open > .qm-changelog-collapsible-heading .qm-changelog-chevron-icon {
@@ -240,10 +240,9 @@
 .qm-changelog-collapsible-head {
   padding: 0.5em;
   line-height: 1em;
-  -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-flex-shrink: 0;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
   -ms-flex-negative: 0;
   flex-shrink: 0;
   height: 1em;
@@ -263,8 +262,8 @@
 .qm-changelog-key-items {}
 
 .qm-changelog-key-item {
-  display: -webkit-flex;
   display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
   margin: 0 0.4em;
 }
@@ -277,7 +276,7 @@
 .qm-changelog-key-item-icon {}
 
 .qm-changelog-key-item-text {
-  -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
 }
