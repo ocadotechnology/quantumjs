@@ -6,6 +6,7 @@
   "contributors": [
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
+    "engines" : { "node" : ">=4.0.0" },
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -14,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/ocadotechnology/quantumjs/issues"
   },
-  "homepage": "https://quantum.hexagonjs.io",
+  "homepage": "",
   "main": "lib/index.js",
   "directories": {
     "test": "test"

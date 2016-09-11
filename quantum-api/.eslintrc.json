@@ -21,6 +21,7 @@
     "init-declarations": ["error", "always"],
     "no-undef-init": "off",
     "quote-props": ["error", "consistent-as-needed"],
-    "operator-linebreak": ["error", "after"]
+    "operator-linebreak": ["error", "after"],
+    "func-style": ["error", "declaration"]
   }
 }
