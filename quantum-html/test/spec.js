@@ -1,9 +1,13 @@
 'use strict'
-require('chai').should()
+
+const chai = require('chai')
 const path = require('path')
 const dom = require('quantum-dom')
 const html = require('..')
 const quantum = require('quantum-js')
+
+chai.should()
+
 const Page = quantum.Page
 const File = quantum.File
 
@@ -16,6 +20,90 @@ describe('pipeline', () => {
     html.stringify.should.be.a.function
     html.paragraphTransform.should.be.a.function
     html.htmlRenamer.should.be.a.function
+  })
+
+  it('should transform a page', () => {
+    const page = new Page({
+      file: new File({
+        src: 'filename.um',
+        dest: 'filename.um'
+      }),
+      content: {
+        content: [{
+          type: 'div',
+          params: [],
+          content: ['Content']
+        }]
+      }
+    })
+
+    return html()(page)
+      .then((page) => {
+        page.file.dest.should.equal('filename.um')
+        page.content.elements.length.should.equal(1)
+        page.content.elements[0].type.should.equal('div')
+      })
+  })
+
+  it('should use the default renderer when a type is unknown', () => {
+    const page = new Page({
+      file: new File({
+        src: 'filename.um',
+        dest: 'filename.um'
+      }),
+      content: {
+        content: [{
+          type: 'notaknowntype',
+          params: [],
+          content: ['Content']
+        }]
+      }
+    })
+
+    return html()(page)
+      .then((page) => {
+        page.file.dest.should.equal('filename.um')
+        page.content.elements.length.should.equal(1)
+        page.content.elements[0].should.equal('Content')
+      })
+  })
+})
+
+describe('htmlRenamer', () => {
+  it('should rename a page', () => {
+    html.htmlRenamer()(new Page({
+      file: new File({
+        src: 'content/filename.um',
+        dest: 'target/filename.html',
+        base: 'content'
+      }),
+      content: {}
+    })).should.eql(new Page({
+      file: new File({
+        src: 'content/filename.um',
+        dest: 'target/filename/index.html',
+        base: 'content'
+      }),
+      content: {}
+    }))
+  })
+
+  it('should do nothing when the filename is already in the right format', () => {
+    html.htmlRenamer()(new Page({
+      file: new File({
+        src: 'content/index.um',
+        dest: 'target/index.html',
+        base: 'content'
+      }),
+      content: {}
+    })).should.eql(new Page({
+      file: new File({
+        src: 'content/index.um',
+        dest: 'target/index.html',
+        base: 'content'
+      }),
+      content: {}
+    }))
   })
 })
 

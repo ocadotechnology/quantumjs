@@ -6,6 +6,7 @@
   "contributors": [
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
+  "engines" : { "node" : ">=4.0.0" },
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -14,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/ocadotechnology/quantumjs/issues"
   },
-  "homepage": "https://quantum.hexagonjs.io",
+  "homepage": "",
   "main": "lib/index.js",
   "directories": {
     "test": "test"
@@ -22,17 +23,17 @@
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test && npm run lint",
     "lint": "eslint lib/*.js test/*.js",
-    "fix-lint-issues": "eslint --fix lib/*.js test/*.js"
+    "fix-lint-issues": "eslint --fix lib/*.js test/*.js",
+    "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"
   },
   "dependencies": {
     "array-unique": "^0.2.1",
     "bluebird": "^2.9.27",
-    "fs-extra": "^0.26.4",
-    "merge": "^1.2.0",
     "quantum-dom": "^2.0.0",
     "quantum-js": "^2.0.0"
   },
   "devDependencies": {
+    "autoprefixer": "^6.4.1",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "eslint": "^3.3.1",
@@ -40,6 +41,7 @@
     "eslint-plugin-promise": "^2.0.1",
     "eslint-plugin-standard": "^2.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "postcss-cli": "^2.6.0"
   }
 }

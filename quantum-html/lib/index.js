@@ -1,4 +1,5 @@
 'use strict'
+
 const path = require('path')
 const unique = require('array-unique')
 const Promise = require('bluebird')
@@ -6,124 +7,93 @@ const merge = require('merge')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 
-function transforms (opts) {
-  const elementTransforms = {}
-  const types = [
-    'a',
-    'b',
-    'br',
-    'button',
-    'div',
-    'form',
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-    'hr',
-    'i',
-    'img',
-    'input',
-    'label',
-    'li',
-    'link',
-    'meta',
-    'ol',
-    'option',
-    'p',
-    'pre',
-    'select',
-    'span',
-    'style',
-    'table',
-    'tbody',
-    'td',
-    'textarea',
-    'th',
-    'thead',
-    'tr',
-    'ul',
-    'vr'
-  ]
+function setupElement (type, selection, transform, parsePs) {
+  const element = dom.create(type)
+  const classId = selection.ps()
 
-  function entityToElement (type, selection, parsePs) {
-    const element = dom.create(type)
-    const classId = selection.ps()
-
-    if (selection.has('id')) {
-      element.id(selection.select('id').ps())
-    } else if (parsePs) {
-      const match = classId.match(/#[^\.#]+/)
-      if (match) {
-        const id = match.map(d => d.substring(1))[0]
-        element.id(id)
-      }
+  if (selection.has('id')) {
+    element.id(selection.select('id').ps())
+  } else if (parsePs) {
+    const match = classId.match(/#[^\.#]+/)
+    if (match) {
+      const id = match.map(d => d.substring(1))[0]
+      element.id(id)
     }
+  }
 
-    if (selection.has('class')) {
-      element.class(selection.select('class').ps())
-    } else if (parsePs) {
-      const match = classId.match(/(\.[^\.#]+)/g)
-      if (match) {
-        const cls = unique(match.map(d => d.substring(1))).join(' ')
-        element.class(cls)
-      }
+  if (selection.has('class')) {
+    element.class(selection.select('class').ps())
+  } else if (parsePs) {
+    const match = classId.match(/(\.[^\.#]+)/g)
+    if (match) {
+      const cls = unique(match.map(d => d.substring(1))).join(' ')
+      element.class(cls)
     }
-
-    selection.selectAll('attr').forEach((attr) => element.attr(attr.ps(), attr.cs()))
-    return element
   }
 
-  const attributeEntities = [
-    'attr',
-    'class',
-    'id'
-  ]
+  selection.selectAll('attr').forEach((attr) => element.attr(attr.ps(), attr.cs()))
+  return element.add(selection
+    .filter((entity) => {
+      return entity.type !== 'attr' && entity.type !== 'class' && entity.type !== 'id'
+    })
+    .transform(transform))
+}
 
-  function setupElement (type, selection, transform, parsePs) {
-    const element = entityToElement(type, selection, parsePs)
-    return element.add(selection
-      .filter((entity) => attributeEntities.indexOf(entity.type) === -1)
-      .transform(transform))
+function elementTransform (type) {
+  return (selection, transform) => {
+    return setupElement(type, selection, transform, true)
   }
+}
 
-  // define the common element types as entity transforms
-  types.forEach((type) => {
-    elementTransforms[type] = (selection, transform) => setupElement(type, selection, transform, true)
-  })
+function bodyClassed (selection, transform) {
+  return dom.bodyClassed(selection.ps(), selection.cs() !== 'false')
+}
 
-  const bodyClassed = (selection, transform) => {
-    return dom.bodyClassed(selection.ps(), selection.cs() !== 'false')
+function title (selection, transform) {
+  return dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
+}
+
+function head (selection, transform) {
+  const content = selection.transform(transform)
+  if (content.then) {
+    return content.then((elements) => {
+      return elements.filter(d => d).map(e => dom.head(e))
+    })
+  } else {
+    return content.filter(d => d).map(e => dom.head(e))
   }
+}
 
-  const title = (selection, transform) => {
-    return dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
-  }
+function html (selection, transform) {
+  return dom.textNode(selection.cs(), {escape: false})
+}
 
-  const head = (selection, transform) => {
-    return selection.transform(transform)
-      .then((elements) => elements.filter(d => d).map(e => dom.head(e)))
-  }
+function script (selection, transform) {
+  return dom.create('script').attr('src', selection.ps())
+}
 
-  const html = (selection, transform) => dom.textNode(selection.cs(), {escape: false})
-  const script = (selection, transform) => dom.create('script').attr('src', selection.ps())
+function stylesheet (selection, transform) {
+  return dom.head(dom.create('link')
+    .attr('href', selection.ps())
+    .attr('rel', 'stylesheet'))
+}
 
-  const stylesheet = (selection, transform) => {
-    return dom.head(dom.create('link')
-      .attr('href', selection.ps())
-      .attr('rel', 'stylesheet'))
-  }
+function hyperlink (selection, transform) {
+  return setupElement('a', selection, transform, false)
+    .attr('href', selection.ps())
+}
 
-  const hyperlink = (selection, transform) => {
-    return setupElement('a', selection, transform, false)
-      .then((element) => element.attr('href', selection.ps()))
-  }
+function js (selection, transforms) {
+  return dom.create('script').text(selection.cs(), {escape: false})
+}
 
-  const js = (selection, transforms) => dom.create('script').text(selection.cs(), {escape: false})
-  const css = (selection, transforms) => dom.head(dom.create('style').text(selection.cs(), {escape: false}))
+function css (selection, transforms) {
+  return dom.head(dom.create('style').text(selection.cs(), {escape: false}))
+}
 
-  return Object.freeze(merge(elementTransforms, {
+function transforms (options) {
+  // No options at the moment - this is just future proofing
+  return Object.freeze({
     bodyClassed: bodyClassed,
     title: title,
     head: head,
@@ -132,8 +102,44 @@ function transforms (opts) {
     stylesheet: stylesheet,
     hyperlink: hyperlink,
     js: js,
-    css: css
-  }))
+    css: css,
+    a: elementTransform('a'),
+    b: elementTransform('b'),
+    br: elementTransform('br'),
+    button: elementTransform('button'),
+    div: elementTransform('div'),
+    form: elementTransform('form'),
+    h1: elementTransform('h1'),
+    h2: elementTransform('h2'),
+    h3: elementTransform('h3'),
+    h4: elementTransform('h4'),
+    h5: elementTransform('h5'),
+    h6: elementTransform('h6'),
+    hr: elementTransform('hr'),
+    i: elementTransform('i'),
+    img: elementTransform('img'),
+    input: elementTransform('input'),
+    label: elementTransform('label'),
+    li: elementTransform('li'),
+    link: elementTransform('link'),
+    meta: elementTransform('meta'),
+    ol: elementTransform('ol'),
+    option: elementTransform('option'),
+    p: elementTransform('p'),
+    pre: elementTransform('pre'),
+    select: elementTransform('select'),
+    span: elementTransform('span'),
+    style: elementTransform('style'),
+    table: elementTransform('table'),
+    tbody: elementTransform('tbody'),
+    td: elementTransform('td'),
+    textarea: elementTransform('textarea'),
+    th: elementTransform('th'),
+    thead: elementTransform('thead'),
+    tr: elementTransform('tr'),
+    ul: elementTransform('ul'),
+    vr: elementTransform('vr')
+  })
 }
 
 // flattens out namespaced renderers into a single object
@@ -152,40 +158,31 @@ function prepareTransforms (transforms, namespace, target) {
   return resolvedTarget
 }
 
-// returns the transform function that converts parsed um source to virtual dom.
-// returns a new transform function for the transforms object supplied. this curried
-// function makes that api a bit more fluid.
-function pipeline (opts) {
-  const options = merge({
-    transforms: transforms(),
-    transformer: (selection, defaultTransformer) => defaultTransformer(selection)
-  }, opts)
+// the default transform just makes a text node
+function standardDefaultTransform (selection) {
+  return quantum.select.isSelection(selection) ? selection.cs() : selection
+}
 
-  // holds all transforms with namespace variants and non namespace variants
-  const transformMap = prepareTransforms(options.transforms)
+/*
+  Returns the transform function that converts parsed quantum source to virtual dom.
+*/
+function pageTransform (options) {
+  const opts = options || {}
 
-  // the actual transform function that turns parsed content into html content
+  const meta = opts.meta // gets passed through to all transforms (mainly useful for custom transforms - should never be used in libraries)
+  const defaultTransform = opts.defaultTransform || standardDefaultTransform
+  const entityTransforms = opts.transforms || transforms()
+  const transformMap = prepareTransforms(entityTransforms)
+
+  // renders an selection by looking at its type and selecting the transform from the list
+  function transformer (selection) {
+    const type = quantum.select.isSelection(selection) ? selection.type() : undefined
+    const entityTransform = transformMap[type] || defaultTransform
+    return entityTransform(selection, transformer, meta) // bootstrap to itself to  make the transformer accessible to children
+  }
+
+  // the page transform function that turns parsed content into html content
   return (page) => {
-    // the default transform just makes a text node
-    function defaultTransform (selection) {
-      return quantum.select.isSelection(selection) ? selection.cs() : selection
-    }
-
-    // renders an selection by looking at its type and selecting the transform from the list
-    function transformEntity (selection) {
-      const type = quantum.select.isSelection(selection) ? selection.type() : undefined
-      if (type in transformMap) {
-        return transformMap[type](selection, transformer)
-      } else {
-        return defaultTransform(selection)
-      }
-    }
-
-    function transformer (selection) {
-      return options.transformer(selection, transformEntity)
-    }
-
-    // select and transform the content, then returns the page object
     return Promise.resolve(quantum.select(page.content).transform(transformer))
       .then((elements) => page.clone({ content: new HTMLPage(elements) }))
   }
@@ -271,7 +268,7 @@ function htmlRenamer () {
   }
 }
 
-module.exports = pipeline
+module.exports = pageTransform
 module.exports.transforms = transforms
 
 module.exports.HTMLPage = HTMLPage

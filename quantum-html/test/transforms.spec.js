@@ -1,8 +1,14 @@
 'use strict'
+
 const html = require('..')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const path = require('path')
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+
+chai.use(chaiAsPromised)
+chai.should()
 
 describe('transforms', () => {
   function transformEntity () {
@@ -19,6 +25,20 @@ describe('transforms', () => {
     }
   }
 
+  function promiseTransformEntity () {
+    function defaultTransform (selection) {
+      return Promise.resolve(dom.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection))
+    }
+    return function transformer (selection) {
+      const type = quantum.select.isSelection(selection) ? selection.type() : undefined
+      if (type in html.transforms()) {
+        return Promise.resolve(html.transforms()[type](selection, transformer))
+      } else {
+        return defaultTransform(selection)
+      }
+    }
+  }
+
   function elementSpec (type) {
     describe(type, () => {
       it('should the correct element', () => {
@@ -28,9 +48,8 @@ describe('transforms', () => {
           content: []
         })
 
-        return html.transforms()[type](selection, transformEntity()).then((res) => {
-          res.should.eql(dom.create(type))
-        })
+        html.transforms()[type](selection, transformEntity())
+          .should.eql(dom.create(type))
       })
 
       it('should parse the parameter string correctly (id only)', () => {
@@ -40,9 +59,8 @@ describe('transforms', () => {
           content: ['content']
         })
 
-        return html.transforms()[type](selection, transformEntity()).then((res) => {
-          res.should.eql(dom.create(type).id('id').add(dom.textNode('content')))
-        })
+        html.transforms()[type](selection, transformEntity())
+          .should.eql(dom.create(type).id('id').add(dom.textNode('content')))
       })
 
       it('should parse the parameter string correctly (class only)', () => {
@@ -52,9 +70,8 @@ describe('transforms', () => {
           content: ['content']
         })
 
-        return html.transforms()[type](selection, transformEntity()).then((res) => {
-          res.should.eql(dom.create(type).class('class class2').add(dom.textNode('content')))
-        })
+        html.transforms()[type](selection, transformEntity())
+          .should.eql(dom.create(type).class('class class2').add(dom.textNode('content')))
       })
 
       it('should parse the parameter string correctly (id+class)', () => {
@@ -64,9 +81,8 @@ describe('transforms', () => {
           content: ['content']
         })
 
-        return html.transforms()[type](selection, transformEntity()).then((res) => {
-          res.should.eql(dom.create(type).class('class class2').id('id').add(dom.textNode('content')))
-        })
+        html.transforms()[type](selection, transformEntity())
+          .should.eql(dom.create(type).class('class class2').id('id').add(dom.textNode('content')))
       })
 
       it('should use the attr property', () => {
@@ -80,9 +96,8 @@ describe('transforms', () => {
           }]
         })
 
-        return html.transforms()[type](selection, transformEntity()).then((res) => {
-          res.should.eql(dom.create(type).attr('x', '0'))
-        })
+        html.transforms()[type](selection, transformEntity())
+          .should.eql(dom.create(type).attr('x', '0'))
       })
 
       it('should use the id property', () => {
@@ -96,9 +111,8 @@ describe('transforms', () => {
           }]
         })
 
-        return html.transforms()[type](selection, transformEntity()).then((res) => {
-          res.should.eql(dom.create(type).id('id'))
-        })
+        html.transforms()[type](selection, transformEntity())
+          .should.eql(dom.create(type).id('id'))
       })
 
       it('should use the class property', () => {
@@ -112,9 +126,8 @@ describe('transforms', () => {
           }]
         })
 
-        return html.transforms()[type](selection, transformEntity()).then((res) => {
-          res.should.eql(dom.create(type).class('class'))
-        })
+        html.transforms()[type](selection, transformEntity())
+          .should.eql(dom.create(type).class('class'))
       })
 
       it('should render children', () => {
@@ -128,9 +141,8 @@ describe('transforms', () => {
           }]
         })
 
-        return html.transforms()[type](selection, transformEntity()).then((res) => {
-          res.should.eql(dom.create(type).add(dom.create(type).class('x').add(dom.textNode('content'))))
-        })
+        html.transforms()[type](selection, transformEntity())
+          .should.eql(dom.create(type).add(dom.create(type).class('x').add(dom.textNode('content'))))
       })
     })
   }
@@ -217,9 +229,8 @@ describe('transforms', () => {
         content: ['Text']
       })
 
-      return html.transforms().hyperlink(selection, transformEntity()).then((res) => {
-        res.should.eql(dom.create('a').attr('href', 'my-link').add(dom.textNode('Text')))
-      })
+      return html.transforms().hyperlink(selection, transformEntity())
+        .should.eql(dom.create('a').attr('href', 'my-link').add(dom.textNode('Text')))
     })
 
     it('should use the attr property', () => {
@@ -233,9 +244,8 @@ describe('transforms', () => {
         }]
       })
 
-      return html.transforms().hyperlink(selection, transformEntity()).then((res) => {
-        res.should.eql(dom.create('a').attr('x', '0').attr('href', ''))
-      })
+      return html.transforms().hyperlink(selection, transformEntity())
+        .should.eql(dom.create('a').attr('x', '0').attr('href', ''))
     })
 
     it('should use the id property', () => {
@@ -249,9 +259,8 @@ describe('transforms', () => {
         }]
       })
 
-      return html.transforms().hyperlink(selection, transformEntity()).then((res) => {
-        res.should.eql(dom.create('a').id('id').attr('href', ''))
-      })
+      return html.transforms().hyperlink(selection, transformEntity())
+        .should.eql(dom.create('a').id('id').attr('href', ''))
     })
 
     it('should use the class property', () => {
@@ -265,9 +274,8 @@ describe('transforms', () => {
         }]
       })
 
-      return html.transforms().hyperlink(selection, transformEntity()).then((res) => {
-        res.should.eql(dom.create('a').class('class').attr('href', ''))
-      })
+      return html.transforms().hyperlink(selection, transformEntity())
+        .should.eql(dom.create('a').class('class').attr('href', ''))
     })
 
     it('should render children', () => {
@@ -281,9 +289,8 @@ describe('transforms', () => {
         }]
       })
 
-      return html.transforms().hyperlink(selection, transformEntity()).then((res) => {
-        res.should.eql(dom.create('a').attr('href', '').add(dom.create('div').class('x').add(dom.textNode('content'))))
-      })
+      return html.transforms().hyperlink(selection, transformEntity())
+        .should.eql(dom.create('a').attr('href', '').add(dom.create('div').class('x').add(dom.textNode('content'))))
     })
   })
 
@@ -327,12 +334,44 @@ describe('transforms', () => {
         ]
       })
 
-      return html.transforms().head(selection, transformEntity()).then((res) => {
-        res.should.eql([
-          dom.head(dom.create('meta').attr('name', 'value')),
-          dom.head(dom.create('meta').attr('name2', 'value2'))
-        ])
+      return html.transforms().head(selection, transformEntity()).should.eql([
+        dom.head(dom.create('meta').attr('name', 'value')),
+        dom.head(dom.create('meta').attr('name2', 'value2'))
+      ])
+    })
+  })
+
+  describe('head', () => {
+    it('should add elements to the head', () => {
+      const selection = quantum.select({
+        type: 'head',
+        params: ['My Title'],
+        content: [
+          {
+            type: 'meta',
+            params: [],
+            content: [{
+              type: 'attr',
+              params: ['name'],
+              content: ['value']
+            }]
+          },
+          {
+            type: 'meta',
+            params: [],
+            content: [{
+              type: 'attr',
+              params: ['name2'],
+              content: ['value2']
+            }]
+          }
+        ]
       })
+
+      return html.transforms().head(selection, promiseTransformEntity()).should.eventually.eql([
+        dom.head(dom.create('meta').attr('name', 'value')),
+        dom.head(dom.create('meta').attr('name2', 'value2'))
+      ])
     })
   })
 
