@@ -13,27 +13,61 @@ describe('pipeline', () => {
   })
 
   it('should return a function', () => {
-    version({}).should.be.a.function
+    version().should.be.a.function
   })
 
   it('should do nothing without version entities', () => {
-    const src = {
-      filename: 'filename.um',
+    const page = new Page({
+      file: new File({
+        src: 'filename.um',
+        dest: 'filename.um'
+      }),
       content: {
-        content: [{
-          type: 'fruits',
-          params: ['banana', 'strawberry'],
-          content: []
-        },
+        content: [
           {
-            type: 'veg',
-            params: ['carrot', 'sweetcorn'],
+            type: 'stawberry',
+            params: ['0.1.0'],
+            content: []
+          },
+          {
+            type: 'raspberry',
+            params: ['0.2.0'],
             content: []
           }]
       }
-    }
+    })
 
-    version({outputLatest: false})(src).should.eql([src])
+    version({outputLatest: false})(page).should.eql([page])
+  })
+
+  it('should warn when no version list could be found', () => {
+    const page = new Page({
+      file: new File({
+        src: 'filename.um',
+        dest: 'filename.um'
+      }),
+      content: {
+        content: [
+          {
+            type: 'version',
+            params: ['0.1.0'],
+            content: []
+          },
+          {
+            type: 'version',
+            params: ['0.2.0'],
+            content: []
+          }]
+      }
+    })
+
+    version()(page)[0].warnings.should.eql([
+      {
+        module: 'quantum-version',
+        problem: 'This file contains versioned content, but the full list of versions is not available for quantum-version to use: options.versions is not defined and no @versionsList was found in this file',
+        resolution: 'Either define a @versionList or pass in options.versions to quantum-version'
+      }
+    ])
   })
 
   // reads and executes in a suite defined in quantm markup
@@ -77,7 +111,8 @@ describe('pipeline', () => {
               unmergeable: ['unmergeable'],
               taggable: ['function', 'method', 'constructor', 'property', 'object', 'class', 'prototype'],
               versions: spec.select('versions').content(),
-              outputLatest: false
+              targetVersions: spec.has('targetVersions') ? spec.select('targetVersions').content() : undefined,
+              outputLatest: spec.has('outputLatest')
             }
 
             version(options)(input).should.eql(outputs)

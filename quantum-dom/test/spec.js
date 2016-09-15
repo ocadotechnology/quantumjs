@@ -290,16 +290,6 @@ describe('dom', () => {
     })
   })
 
-  describe('all', () => {
-    it('should return a promise if one of the entries is a promise', () => {
-      dom.all([1, 2, 3, Promise.resolve(4)]).should.be.an.instanceof(Promise)
-    })
-
-    it('should return an array if none of the entries are a promise', () => {
-      dom.all([1, 2, 3, 4]).should.be.an.instanceof(Array)
-    })
-  })
-
   describe('stringify', () => {
     it('should stringify an empty page', () => {
       return dom.stringify([]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head></head><body></body></html>'})

@@ -1,13 +1,6 @@
 'use strict'
 /*
 
-     ____                    __                      _
-    / __ \__  ______ _____  / /___  ______ ___      (_)____
-   / / / / / / / __ `/ __ \/ __/ / / / __ `__ \    / / ___/
-  / /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / /   / (__  )
-  \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
-                                              /___/
-
   Dom
   ====
 
@@ -43,11 +36,6 @@ function randomId () {
     res[i] = alphabet[Math.floor(Math.random() * 16)]
   }
   return res.join('')
-}
-
-// like Promise.all - but if no Promise in arr then the result will be an Array
-function all (arr) {
-  return arr.some(x => x.then) ? Promise.all(arr) : arr
 }
 
 function isString (x) {
@@ -344,14 +332,13 @@ function stringify (elements, options) {
     })
 }
 
-module.exports = Object.freeze({
+module.exports = {
   create: create,
   textNode: textNode,
   bodyClassed: bodyClassed,
   asset: asset,
   head: head,
   stringify: stringify,
-  all: all,
   randomId: randomId,
   escapeHTML: escapeHTML
-})
+}

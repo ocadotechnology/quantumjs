@@ -57,8 +57,7 @@ describe('body-builders', () => {
         ]
       })
 
-      const transforms = () => {
-      }
+      function transforms () {}
 
       bodyBuilders.description()(selection, transforms).should.eql(
         dom.create('div')
@@ -85,8 +84,7 @@ describe('body-builders', () => {
         ]
       })
 
-      const transforms = () => {
-      }
+      function transforms () {}
 
       bodyBuilders.description()(selection, transforms).should.eql(
         dom.create('div')
@@ -112,8 +110,7 @@ describe('body-builders', () => {
         ]
       })
 
-      const transforms = () => {
-      }
+      function transforms () {}
 
       bodyBuilders.defaultValue()(selection, transforms).should.eql(
         dom.create('div').class('qm-api-default')
@@ -130,8 +127,7 @@ describe('body-builders', () => {
       content: []
     })
 
-    const transforms = () => {
-    }
+    function transforms () {}
 
     should.not.exist(bodyBuilders.defaultValue()(selection, transforms))
   })
@@ -163,8 +159,7 @@ describe('body-builders', () => {
         ]
       })
 
-      const transforms = () => {
-      }
+      function transforms () {}
 
       bodyBuilders.extras()(selection, transforms).should.eql(
         dom.create('div').class('qm-api-extras')
@@ -181,8 +176,7 @@ describe('body-builders', () => {
       content: []
     })
 
-    const transforms = () => {
-    }
+    function transforms () {}
 
     should.not.exist(bodyBuilders.extras()(selection, transforms))
   })
@@ -214,7 +208,7 @@ describe('body-builders', () => {
         ]
       })
 
-      const transforms = (selection) => {
+      function transforms (selection) {
         return dom.create('span').text(selection.cs())
       }
 
@@ -266,8 +260,7 @@ describe('body-builders', () => {
       ]
     })
 
-    const transforms = () => {
-    }
+    function transforms () {}
 
     return bodyBuilders.groups()(selection, transforms).should.eql(
       dom.create('div').class('qm-api-groups')
@@ -289,8 +282,7 @@ describe('body-builders', () => {
       content: []
     })
 
-    const transforms = () => {
-    }
+    function transforms () {}
 
     should.not.exist(bodyBuilders.groups()(selection, transforms))
   })

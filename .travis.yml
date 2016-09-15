@@ -20,6 +20,7 @@ env:
   - MODULE="quantum-js"
   - MODULE="quantum-template"
   - MODULE="quantum-version"
+  - MODULE="cross-compatible"
   - MODULE="docs"
 
 before_install: cd $MODULE

@@ -29,10 +29,10 @@ function defaultValue (selection, transforms) {
 function extras (selection, transforms) {
   if (selection.has('extra')) {
     return dom.create('div').class('qm-api-extras').add(
-      dom.all(selection.selectAll('extra').map((e) => {
+      selection.selectAll('extra').map((e) => {
         return dom.create('div').class('qm-api-extra')
           .add(html.paragraphTransform(e, transforms))
-      })))
+      }))
   }
 }
 
@@ -41,7 +41,7 @@ function groups (selection, transforms) {
   if (selection.has('group')) {
     const sortedEntity = selection.filter('group')
     return dom.create('div').class('qm-api-groups')
-      .add(dom.all(sortedEntity.selectAll('group').map(organisedEntity).map((groupSelection) => {
+      .add(sortedEntity.selectAll('group').map(organisedEntity).map((groupSelection) => {
         return dom.create('div').class('qm-api-group')
           .add(dom.create('h2').text(groupSelection.ps()))
           .add(dom.create('div').class('qm-api-group-content')
@@ -49,7 +49,7 @@ function groups (selection, transforms) {
             .add(groupSelection
               .filter(entity => quantum.select.isEntity(entity) && entity.type !== 'description')
               .transform(transforms)))
-      })))
+      }))
   }
 }
 

@@ -536,3 +536,142 @@
           @function test3
             @added
           @untaggable Bob
+
+
+
+@spec Should only output targetVersions
+  @versions
+    0.1.0
+    0.2.0
+    0.3.0
+  @targetVersions
+    0.1.0
+    0.3.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        @function test
+          @description: Description 1
+          @param input [String]: Description 1
+      @version 0.2.0
+        @function test
+          @description: Description 2
+          @param input [String]
+      @version 0.3.0
+        @function test
+          @param input [String]: Description 2
+
+  @expected
+    @output
+      @filename filename/0.1.0.um
+      @version 0.1.0
+      @content
+        @function test
+          @description: Description 1
+          @param input [String]: Description 1
+
+    @output
+      @filename filename/0.3.0.um
+      @version 0.3.0
+      @content
+        @function test
+          @description: Description 2
+          @param input [String]: Description 2
+          @updated
+
+
+
+@spec Output latest version
+  @versions
+    0.1.0
+    0.2.0
+  @outputLatest
+  @source
+    @filename filename/index.um
+    @content
+      @version 0.1.0
+        Content 1
+      @version 0.2.0
+        Content 2
+
+  @expected
+    @output
+      @filename filename/0.1.0/index.um
+      @version 0.1.0
+      @content
+        Content 1
+
+    @output
+      @filename filename/0.2.0/index.um
+      @version 0.2.0
+      @content
+        Content 2
+
+    @output
+      @filename filename/index.um
+      @version 0.2.0
+      @content
+        Content 2
+
+@spec Entities can replace non entities
+  @versions
+    0.1.0
+    0.2.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.1.0
+        @div
+          @function func1
+      @version 0.2.0
+        @div
+          Content
+
+  @expected
+    @output
+      @filename filename/0.1.0.um
+      @version 0.1.0
+      @content
+        @div
+          @function func1
+
+    @output
+      @filename filename/0.2.0.um
+      @version 0.2.0
+      @content
+        @div
+          Content
+
+
+
+@spec Missing versions should have no content
+  @versions
+    0.1.0
+    0.2.0
+    0.3.0
+  @source
+    @filename filename.um
+    @content
+      @version 0.2.0
+        Content 1
+      @version 0.3.0
+        Content 2
+
+  @expected
+    @output
+      @filename filename/0.1.0.um
+      @version 0.1.0
+      @content
+
+    @output
+      @filename filename/0.2.0.um
+      @version 0.2.0
+      @content
+        Content 1
+
+    @output
+      @filename filename/0.3.0.um
+      @version 0.3.0
+      @content
+        Content 2

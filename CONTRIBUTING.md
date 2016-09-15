@@ -44,3 +44,5 @@ For example, to run the tests for quantum-js:
     npm test
 
 Coverage data is output to the `coverage/` folder within the module directory
+
+The tests are also run whenever you push to github.

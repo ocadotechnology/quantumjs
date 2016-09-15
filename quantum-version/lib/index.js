@@ -1,11 +1,5 @@
 'use strict'
 /*
-     ____                    __                      _
-    / __ \__  ______ _____  / /___  ______ ___      (_)____
-   / / / / / / / __ `/ __ \/ __/ / / / __ `__ \    / / ___/
-  / /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / /   / (__  )
-  \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
-                                              /___/
 
   Version
   =======
@@ -14,7 +8,7 @@
 
 */
 
-const quantum = require('quantum-js') // needed for its selection api
+const quantum = require('quantum-js')
 const merge = require('merge')
 
 function getEntityType (type) {
@@ -46,21 +40,19 @@ function mergeContent (content1, content2, options) {
 
       if (e1) {
         const e1s = quantum.select(e1)
-        if (e1.content && e2.content) {
-          if (options.unmergeable.indexOf(entityType) > -1) {
-            e1s.content(e2.content)
-          } else {
-            e1s.content(mergeContent(e1.content, e2.content, options))
-          }
+        if (options.unmergeable.indexOf(entityType) > -1) {
+          e1s.content(e2.content)
+        } else {
+          e1s.content(mergeContent(e1.content, e2.content, options))
+        }
 
-          const e1sCanBeUpdated = !e1s.has('removed') && !e1s.has('deprecated')
-          const e2sCanBeUpdated = quantum.select.isEntity(e2) && !quantum.select(e2).has('removed') && !quantum.select(e2).has('deprecated')
+        const e1sCanBeUpdated = !e1s.has('removed') && !e1s.has('deprecated')
+        const e2sCanBeUpdated = quantum.select.isEntity(e2) && !quantum.select(e2).has('removed') && !quantum.select(e2).has('deprecated')
 
-          if (isTaggable && e1sCanBeUpdated && e2sCanBeUpdated) {
-            e1.content.push({ type: 'updated', params: [], content: [] })
-          } else if (e1s.has('removed') && e1s.has('deprecated')) {
-            e1s.remove('deprecated')
-          }
+        if (isTaggable && e1sCanBeUpdated && e2sCanBeUpdated) {
+          e1.content.push({ type: 'updated', params: [], content: [] })
+        } else if (e1s.has('removed') && e1s.has('deprecated')) {
+          e1s.remove('deprecated')
         }
       } else {
         if (isTaggable) {
@@ -89,12 +81,13 @@ function getRemovableTags (tags) {
 // added, updated: removes flags from item, leaves item in content
 // removed: removes item from content
 function removeTags (entity, tags) {
+  function tagFilter (e) {
+    const entityIsRemoved = quantum.select.isEntity(e) && quantum.select(e).has('removed')
+    const removeTag = tags.indexOf(e.type) > -1
+    return !entityIsRemoved && !removeTag
+  }
+
   if (Array.isArray(entity.content)) {
-    const tagFilter = (e) => {
-      const entityIsRemoved = quantum.select.isEntity(e) && quantum.select(e).has('removed')
-      const removeTag = tags.indexOf(e.type) > -1
-      return !entityIsRemoved && !removeTag
-    }
     entity.content = entity.content.filter(tagFilter)
     entity.content.forEach((e) => removeTags(e, tags))
   }
@@ -103,7 +96,7 @@ function removeTags (entity, tags) {
 
 // adds the versions to the @versionList entity. mutates the input
 function populateVersionList (entity, versions, currentVersion) {
-  if (entity.type === 'versionList') {
+  if (entity.type && entity.type === 'versionList') {
     entity.content.push({type: 'current', params: [currentVersion], content: []})
     versions.forEach((v) => {
       entity.content.push({type: 'version', params: [v], content: []})
@@ -157,10 +150,7 @@ function versionTransform (page, options) {
     })[0]
 
     if (inputList) {
-      const inputVersionList = inputList.selectAll('version').map((v) => v.ps())
-      if (inputVersionList.length > 0) {
-        fullVersionList = inputVersionList
-      }
+      fullVersionList = inputList.selectAll('version').map((v) => v.ps())
 
       // remove the list of versions - they will be repopulated by the populateVersionList function
       inputList.content([])
@@ -173,11 +163,13 @@ function versionTransform (page, options) {
   // Check if there are actual versions in the object, if there arent then no versioning is required.
   if (actualVersions.length > 0) {
     if (fullVersionList.length === 0) {
-      page.warning({
+      const p = page.clone()
+      p.warning({
         module: 'quantum-version',
-        problem: 'No versions available for quantum-version to use: options.versions is not defined and no @versionsList was found in this file',
+        problem: 'This file contains versioned content, but the full list of versions is not available for quantum-version to use: options.versions is not defined and no @versionsList was found in this file',
         resolution: 'Either define a @versionList or pass in options.versions to quantum-version'
       })
+      return [p]
     }
 
     const versionsMap = {}
@@ -198,7 +190,7 @@ function versionTransform (page, options) {
         } else {
           base = {content: mergeContent(removeTags(quantum.clone(base), removableTags).content, version.content(), options)}
         }
-      } else {
+      } else if (base !== undefined) {
         base = removeTags(quantum.clone(base), removableTags)
       }
 
@@ -266,14 +258,14 @@ function versionTransform (page, options) {
 
 // returns a function that expands a quantum ast containing `version`
 // entities into multiple ast's - one for each version
-function pipeline (opts) {
-  const options = merge.recursive({
+function pipeline (options) {
+  const opts = merge.recursive({
     versions: undefined,
     targetVersions: undefined, // Target array of versions
     entityMatchLookup: defaultEntityMatchLookup,
     filenameModifier: defaultFilenameModifier,
     outputLatest: true,
-    taggable: [ // Elements that can be tagged and should be indexed
+    taggable: [ // Entities that can be tagged and should be indexed
       'function',
       'prototype',
       'method',
@@ -288,11 +280,13 @@ function pipeline (opts) {
       'childclass',
       'entity'
     ],
-    indexable: [ // Elements that can't be tagged but should be indexed
+    indexable: [ // Entities that can't be tagged but should be indexed
       'param',
       'group'
     ],
-    unmergeable: [], // Elements that can not be merged (e.g. descriptions)
+    unmergeable: [ // Entities that can not be merged (i.e. have to be completely replaced)
+      'description'
+    ],
     tags: {
       added: {
         retain: false, // Whether to retain the tag across versions
@@ -311,9 +305,9 @@ function pipeline (opts) {
         removeEntity: true
       }
     }
-  }, opts)
+  }, options)
 
-  return (page) => versionTransform(page, options)
+  return (page) => versionTransform(page, opts)
 }
 
 module.exports = pipeline
