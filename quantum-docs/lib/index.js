@@ -137,8 +137,17 @@ function sidebar (selection, transforms) {
   return dom.create('div')
     .add(stylesheetAsset)
     .add(scriptAsset)
-    .class('qm-docs-sidebar ' + (selection.ps() === 'right' ? 'qm-docs-sidebar-right' : 'qm-docs-sidebar-left'))
+    .class('qm-docs-sidebar')
     .add(selection.transform(transforms))
+}
+
+function sidebarPage (selection, transforms) {
+  return dom.create('div')
+    .add(stylesheetAsset)
+    .class('qm-docs-sidebar-page')
+    .add(selection.filter('sidebar').transform(transforms))
+    .add(dom.create('div').class('qm-docs-content-section-container')
+      .add(selection.select('content').transform(transforms)))
     .add(dom.bodyClassed('qm-docs-sidebar-page', true))
 }
 
@@ -171,20 +180,20 @@ function tableOfContents (selection, transforms) {
 function navigationMenu (selection, transforms) {
   const sections = selection.selectAll('section').map((sectionEntity) => {
     const pages = sectionEntity.selectAll('page').map((pageEntity) => {
-      return dom.create('a').class('qm-docs-navication-menu-page')
+      return dom.create('a').class('qm-docs-navigation-menu-page')
         .attr('href', pageEntity.ps())
         .text(pageEntity.cs())
     })
 
-    return dom.create('div').class('qm-docs-navication-menu-section')
-      .add(dom.create('div').class('qm-docs-navication-menu-section-title').text(sectionEntity.ps()))
-      .add(dom.create('div').class('qm-docs-navication-menu-section-body').add(pages))
+    return dom.create('div').class('qm-docs-navigation-menu-section')
+      .add(dom.create('div').class('qm-docs-navigation-menu-section-title').text(sectionEntity.ps()))
+      .add(dom.create('div').class('qm-docs-navigation-menu-section-body').add(pages))
   })
 
   return dom.create('div')
     .add(stylesheetAsset)
-    .class('qm-docs-navication-menu-wrapper')
-    .add(dom.create('div').class('qm-docs-navication-menu').add(sections))
+    .class('qm-docs-navigation-menu-wrapper')
+    .add(dom.create('div').class('qm-docs-navigation-menu').add(sections))
 }
 
 function header (selection, transforms) {
@@ -192,6 +201,7 @@ function header (selection, transforms) {
     .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-centered')
       .add(dom.create('div').class('qm-docs-header-wrapper')
+        .add(selection.has('icon') ? dom.create('image').class('qm-docs-header-logo').attr('src', selection.select('icon').ps()) : undefined)
         .add(dom.create('div').class('qm-docs-header-title').text(selection.select('title').ps()))
         .add(selection.selectAll('link').map((e) => {
           return dom.create('a')
@@ -239,11 +249,9 @@ function topSection (selection, transforms) {
 }
 
 function contentSection (selection, transforms) {
-  return dom.create('div').class('qm-docs-content-section-container')
+  return dom.create('div').class('qm-docs-content-section')
     .add(stylesheetAsset)
-    .add(dom.create('div').class('qm-docs-content-section')
-      .add(dom.create('div').class('qm-docs-centered')
-        .add(selection.transform(transforms))))
+    .add(selection.transform(transforms))
 }
 
 function bottomSection (selection, transforms) {
@@ -295,6 +303,7 @@ function transforms (opts) {
     summary: summary,
     group: group,
     versionSelector: versionSelector,
+    sidebarPage: sidebarPage,
     sidebar: sidebar,
     tableOfContents: tableOfContents,
     navigationMenu: navigationMenu,

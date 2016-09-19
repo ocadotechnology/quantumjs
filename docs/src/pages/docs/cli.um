@@ -1,0 +1,9 @@
+@inline ../../templates/sidebar-page.um
+
+@topSection
+  @title Using the CLI
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    This page explains how use the command line interface (CLI)
+
+@contentSection

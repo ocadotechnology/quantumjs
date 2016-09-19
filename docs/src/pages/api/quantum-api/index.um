@@ -1,0 +1,252 @@
+@inline ../../../templates/sidebar-page.um
+
+@versionList
+  @version 1.0.0
+
+@topSection
+  @title Quantum Api
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+
+@contentSection
+  @topic About
+    @sheet
+      This module provides a set of transforms for writing api docs
+      for a JavaScript, CSS or quantum api.
+
+      It can be customised to support other structures / langauges,
+      but these are the ones supported out of the box.
+
+      The api renderers work well with the @hyperlink(../version/)[version transform] (
+      added, updated, deprecated and removed tags affect the rendered html)
+
+  @topic Example
+    @p: Using the api renderers is simple - just add them to the html transforms:
+
+    @codeblock js
+      var quantum = require('quantum-js')
+      var api     = require('quantum-api')
+      var html    = require('quantum-html')
+
+      var htmlTransforms = {
+        html: html.transforms,
+        api: api()              // this is the bit that includes the api renderers
+      }
+
+      quantum.read('index.um')
+        .map(html(htmlTransforms))
+        .map(html.stringify())
+        .map(quantum.write('target'))
+
+    @p: Example markup
+    @codeblock um: @inline markup-example.um [text]
+
+    @p: Example result
+    @sheet
+      @inline markup-example.um
+
+  @topic Api
+    @api
+      @function api
+        @description:
+          @p: A function that returns a function for taking @(@api) AST objects and transforming them into virtual dom
+          @p: This is the function returned from @code[require('quantum-api')]
+        @param? options [Object]
+          @property typeLinks [Object]
+            @description
+              @p: An object with links to documentation for types.
+
+              @p: Example:
+              @codeblock js
+                {
+                  'Array': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array',
+                  'Boolean': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean',
+                  'Date': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date',
+                  'Element': 'https://developer.mozilla.org/en/docs/Web/API/Element',
+                  'Function': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function',
+                  'HTMLElement': 'https://developer.mozilla.org/en/docs/Web/API/HTMLElement',
+                  'Node': 'https://developer.mozilla.org/en/docs/Web/API/Node',
+                  'Number': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number',
+                  'Object': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object',
+                  'String': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
+                  'SVGElement': 'https://developer.mozilla.org/en/docs/Web/API/SVGElement'
+                }
+
+          @property tags [Object]
+            @description
+              @p: The tags that can be shown in an api section and the sort order to give them.
+              @p: A tag is defined as such:
+
+              @codeblock js
+                {
+                  entityName: {
+                    tagText: 'screenName',
+                    order: 1
+                  }
+                }
+
+              @ul
+                @li: entityName: The @code(um)[@entityName] of the element
+                @li: tagText: The text to show on screen when rendering
+                @li: order: The order to sort the tags in the api content
+
+            @default
+              @codeblock js
+                {
+                  added: {
+                    tagText: 'added',
+                    order: 4
+                  },
+                  updated: {
+                    tagText: 'updated',
+                    order: 3
+                  },
+                  deprecated: {
+                    tagText: 'deprecated',
+                    order: 2
+                  },
+                  removed: {
+                    tagText: 'removed',
+                    order: 1
+                  }
+                }
+
+      @entity api
+        @params name
+        @description
+          @p: The root container for any api.
+          @p: Example:
+          @@codeblock um
+            @api Api Name
+
+      @entity group
+        @params name
+        @description
+          @p: Defines a group that can contain the other entity types, useful for changing the header shown around a group of properies or functions.
+          @p: See the example markup / result at the top of the page for a use of @(@group)
+
+      @entity function
+        @params name
+        @description:
+          @p: An entity for describing a function
+          @p: Example:
+          @@codeblock um
+            @function min
+              @description: Gets the minimum value
+              @param arr [Array]: The array of values
+              @param? ignoreNegative [Boolean]: Whether to ignore negative values
+                @default false
+              @returns Number: The min value
+          @p: Describes function:
+          @codeblock js
+            function min(arr, ignoreNegative) {
+              var min = Math.min.apply(arr)
+              return (ignoreNegative ? Math.max(0, min) : min)
+            }
+        @entity description: A description of what the function does
+
+        @entity param
+          @params name type
+          @description: See the @(@param) entity for full details.
+
+        @entity param?
+          @params name type
+          @description: See the @(@param?) entity for full details.
+
+        @entity returns
+          @params type
+          @description: See the @(@returns) entity for full details.
+
+      @entity param:
+        @params name type
+        @description
+          @p: Denotes an argument. @(@param) and @(@param) entites should be specified in the same order that the arguments appear in in the actual function and will not be sorted when rendered.
+          @p: If type if Object then this entity may be treated as an @(@object) entity.
+          @p: If type is Function then this entity may be treated as a @(@function) entity.
+        @entity description: A description of what the param is.
+
+      @entity param?: Denotes an optional argument. Works in the same way as @(@param) but renders as an optional argument.
+        @params name type
+        @entity default: Denotes the default value for an optional argument.
+
+      @entity returns
+        @params type
+        @description:
+          @p: Denotes the return value/type for the function or method
+          @p: If type if Object then this entity may be treated as an @(@object) entity.
+          @p: If type is Function then this entity may be treated as a @(@function) entity.
+        @entity description
+          @description: A description of what the returned value is.
+
+      @entity object
+        @params name
+        @description
+          @p: Denotes an object.
+          @p: Example:
+          @@codeblock um
+            @object values
+              @property isOpen [Boolean]: Whether something is open
+        @entity description
+          @description
+            @p: A description of what the object is. Objects can contain any other entity type but they must be declared as @(@property) elements
+            @p: See the @(@property) entity for full details.
+
+      @entity property
+        @params name type
+        @description
+          @p: Denotes a property of an object or prototype.
+          @p: If type if Object then this entity may be treated as an @(@object) entity.
+          @p: If type is Function then this entity may be treated as a @(@function) entity.
+        @entity description
+          @description: A description of what the property is.
+
+      @entity prototype
+        @description: An entity for describing a prototype
+        @params name
+
+        @entity description
+          @description: A description of what the prototype does.
+
+        @entity constructor
+          @entity description
+            @description: A description of what the constructor does.
+
+          @entity param
+            @params name type
+            @description: See the @(@param) entity for full details.
+
+          @entity param?
+            @params name type
+            @description: See the @(@param?) entity for full details.
+
+
+        @entity property
+          @description: See the @(@property) entity for full details.
+
+        @entity method
+          @description: An entity for describing a method
+
+          @entity description
+            @description: A description of what the method does.
+
+          @entity param
+            @params name type
+            @description: See the @(@param) entity for full details.
+
+          @entity param?
+            @params name type
+            @description: See the @(@param?) entity for full details.
+
+          @entity returns
+            @params type
+            @description: See the @(@returns) entity for full details.
+
+
+        @entity event
+          @description: Documents an event emitted
+          @params name type
+          @entity description
+            @description: A description of the event - when it is emitted, information it contains.
+
+        @entity function
+          @description: See the @(@function) entity for full details.

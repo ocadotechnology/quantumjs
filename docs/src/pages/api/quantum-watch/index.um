@@ -1,0 +1,69 @@
+@inline ../../../templates/sidebar-page.um
+
+@versionList
+  @version 1.0.0
+
+@topSection
+  @title Quantum Watch
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+
+@contentSection
+  @topic About
+    @sheet
+      This module watches quantum files for changes, and calls a callback when
+      changes are made. It keeps track of @code(um)[@inline] entity references,
+      allowing only the files affected by a file change to be rebuilt.
+
+
+  @topic Example
+    Install via npm:
+
+    @codeblock bash
+      npm install --save quantum-watch
+
+    This example watches for changes to all .um files, and rebuilds them upon change.
+
+    @codeblock js
+      var watch = require('quantum-watch')
+      var Promise = require('bluebird')
+      var html = require('quantum-html')
+
+      watch('**/*.um', {}, function(objs) {
+        Promise.all(objs)
+          .map(html())                        // transform the ast to virtual dom
+          .map(html.stringify())              // render the virtual dom to html
+          .map(quantum.write('target'))       // write the result to target/index.html
+      })
+
+
+  @topic Api
+    @api
+      @function watch
+        @param glob [String]
+          @description: A glob which matches the files to watch. eg '**/index.um'
+        @param? options [Object]
+          @property loader [Function]
+            @description: Can be set to replace the default loader function. This should take a filename and return a promise that holds the contents of the file.
+            @param filename [String]: The path to the file to load.
+            @param inlineParent [String]
+              @description: If this load is the result of an @code[@inline] include, this argument will be set to the filename of the parent file (the file that did the @code[@inline]).
+            @returns [Promise[String]]: A promise that yields the parsed object.
+          @property inlineEntityType [String]
+            @description: The entity type to use for inlining other files. The default is "inline".
+            @default inline
+          @property inline [Boolean]
+            @description: When inline mode is on, the inlineEntityType (@code(um)[@inline] by default) will be replaced with the content of the specified files.
+            @default true
+          @property base [String]
+            @description: The base of the glob path that should be ignored when writing to the target.
+        @param handler [Function]
+          @description: This function is called every time a file is changed.
+          @param objs [Array[Object]]
+            @description
+              Each object in the array has the following form:
+              @codeblock js
+                {
+                  filename: 'path/to/file.um',
+                  content: <parsed quantum ast>
+                }

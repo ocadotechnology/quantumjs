@@ -1,0 +1,108 @@
+@versionList
+  @version 2.0.0
+
+@version 2.0.0
+  @api
+    @function parse
+      @param input [String]
+        @description:
+          @p: A string containing markup to parse. Ie something that looks like this:
+          @codeblock um
+            @inline ../the-markup.um [text]
+
+      @returns Object
+        @description
+          @p: The parsed ast. Looks something like this:
+          @codeblock json
+            @inline ../the-markup.json [text]
+
+    @function read
+      @param glob [String]: A filename or glob string which matches files to load.
+      @param? options [Object]
+        @property inlineEntityType [String]
+          @description: The entity type to use for inlining other files. The default is "inline".
+          @default inline
+        @property inline [Boolean]
+          @description: When inline mode is on, the inlineEntityType (@code(um)[@inline] by default) will be replaced with the content of the specified files.
+          @default true
+        @property loader [Function]
+          @description: A function for loading a file as a string.
+          @param filename [String]: The file/resource to load.
+          @returns [Promise[String]]: A promise that yields the parsed object.
+        @property base [String]
+          @description: The base of the glob path that should be ignored when writing to the target.
+      @returns [Promise[Object]]
+        @description
+          @p: A promise that yields the parsed ast wrapped in an object that looks like this:
+          @codeblock js
+            {
+              filename: 'path/to/source.um',
+              content: '<ast>'
+            }
+
+    @function select
+      @description
+        A helper api for extracting values from parsed ast. Pass in parsed
+        ast, and use the methods on Selection to make working with the ast easier.
+      @param entity [Object]
+        @description: An entity object to select.
+      @returns Selection
+
+
+    @prototype File
+      @description
+        Represents a file
+
+    @prototype Page
+
+    @function stringify
+
+
+
+    @function json
+
+    @function fileOptions
+
+    @function watch
+
+    @function cli
+
+    @function clone
+      @description
+        Creates a deep clone of some ast:
+
+        @@codeblock js
+          const entity = {
+            type: 'fruit',
+            params: [],
+            content: ['Strawberry', 'Kiwi', 'Cherry']
+          }
+
+          const cloned = quantum.clone(entity)
+          // cloned will look exactly the same as entity (but will be a copy,
+          // so changes to one will not appear in the other)
+
+      @param ast [Object]: The AST to clone.
+      @returns Object: The cloned AST
+
+    @prototype select.Selection
+      @description
+        The type of object returned from quantum.select
+
+      @method clone
+      @method cs
+      @method empty
+      @method entityContent
+      @method filter
+      @method has
+      @method hasContent
+      @method json
+      @method nonEmpty
+      @method param
+      @method ps
+      @method replaceContent
+      @method replaceParams
+      @method select
+      @method selectAll
+      @method textContent
+      @method transform

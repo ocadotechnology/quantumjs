@@ -8,7 +8,7 @@ const changelog = require('quantum-changelog')
 const diagram = require('quantum-diagram')
 const codeHighlight = require('quantum-code-highlight')
 const docs = require('quantum-docs')
-const quantumSite = require('./transforms/transforms')
+const quantumSite = require('./src/transforms/transforms')
 
 const htmlOptions = {
   embedAssets: true,
@@ -23,16 +23,6 @@ const htmlTransforms = {
   docs: docs.transforms(),
   highlight: codeHighlight.transforms(),
   site: quantumSite
-}
-
-const templateVariables = {
-  examples: {
-    exampleList: [1, 2, 3],
-    exampleObject: {
-      name: 'Dave',
-      age: 25
-    }
-  }
 }
 
 function pipeline (page) {
@@ -59,7 +49,7 @@ function pipeline (page) {
 
 module.exports = {
   pipeline: pipeline,
-  pages: 'content/pages/**/*.um',
+  pages: 'src/pages/**/*.um',
   htmlTransforms: htmlTransforms,
   resources: [
     {
@@ -74,7 +64,7 @@ module.exports = {
       watch: false
     },
     {
-      files: 'content/resources/**/*',
+      files: 'src/resources/**/*',
       dest: 'resources',
       watch: true
     }

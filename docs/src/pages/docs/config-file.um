@@ -1,0 +1,97 @@
+@inline ../../templates/sidebar-page.um
+
+@topSection
+  @title Config File
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    This page explains how to configure the build pipeline.
+
+@contentSection
+  @topic Configuring Quantum
+    Quantum is configured by creating a config file called @code[quantum.config.js] which
+    contains the pipeline definition as well as config for which files
+    to build.
+
+  @topic Using the config with the cli
+    If your config file is called @code[quantum.config.js], you can just run this
+    in the same directory as the config file:
+
+    @codeblock bash
+      quantum build
+
+    If the config file has a different name the @code[--config] option can be used:
+
+    @codeblock bash
+      quantum --config="quantum.config.production.js" build
+
+  @topic An example config file
+    @@codeblock js
+      const html = require('quantum-html')
+      const docs = require('quantum-docs')
+      const api = require('quantum-api')
+      const version = require('quantum-version')
+      const template = require('quantum-template')
+      const changelog = require('quantum-changelog')
+      const diagram = require('quantum-diagram')
+
+      // bluebird makes mapping over arrays of pages easier
+      // when the version transform is used
+      const bluebird = require('bluebird')
+
+      // Define the entity transforms to use to transform
+      // individual entities into html
+      const htmlTransforms = {
+        html: html.transforms(),
+        api: api.transforms(),
+        changelog: changelog.transforms(),
+        diagram: diagram.transforms(),
+        docs: docs.transforms()
+      }
+
+      // This defines how to transform an entire page into html
+      function pipeline (page) {
+        return Promise.resolve(page)
+          .then(template())
+          .then(changelog())
+          .then(version())
+          .map(docs())
+          .map(html({ transforms: htmlTransforms }))
+          .map(html.stringify())
+          .map(html.htmlRenamer())
+      }
+
+      // Export the config, which includes the files to watch,
+      // and any resources that should be copied
+      module.exports = {
+        pipeline: pipeline,
+        pages: 'pages/**/*.um',
+        resources: 'resources/**/*',
+        htmlTransforms: htmlTransforms
+      }
+
+  @topic Available options
+    @api
+      @property pipeline [Function]
+        @description
+          Takes a page as its input and returns a page (or array of pages) that
+          have been transformed. The transformed pages should have a html string
+          as thier content.
+
+          Here is the most basic pipeline you can define:
+
+          @codeblock js
+            const html = require('quantum-html')
+
+            function pipeline (page) {
+              return Promise.resolve(page)
+                .then(html())           // convert the page to virtual dom
+                .then(html.stringify()) // stringify the virtual dom to html
+            }
+
+        @param page [Page]: The page to transform into html
+        @returns [Page/Array[Page]]: The transformed page
+
+      @property pages [String/Array[String]/Array[Object]]
+        @description
+          This property should describe the files that should be processed by
+          quantum as pages. 

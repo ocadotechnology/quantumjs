@@ -1,0 +1,47 @@
+
+@template
+  @contentEntityName templateContent
+  @content
+    @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:400,100|Roboto+Slab:400,700]
+    @stylesheet [/hexagon-js/hexagon.css]
+    @stylesheet [/resources/quantum-site.css]
+
+    @header
+      @icon /resources/logo.png
+      @title QuantumJS
+
+    @sidebarPage
+      @sidebar
+        @navigationMenu
+          @section Introduction
+            @page /docs/quick-start/: Quick Start
+            @page /docs/config-file/: Config file
+            @page /docs/cli/: Using the CLI
+            @page /docs/api/: Using the API
+            @page /docs/quantum-vs-markdown: Quantum vs Markdown
+
+          @section Advanced Topics
+            @page /docs/markup/: The Markup Language
+            @page /docs/pipeline/: The Pipeline
+            @page /docs/page-transforms/: Page Transforms
+            @page /docs/entity-transforms/: Entity Transforms
+
+          @section Tutorials
+            @page /tutorials/writing-technical-documentation/: Writing Technical Documentation
+            @page /tutorials/creating-a-blog/: Creating a Blog
+
+          @section Module Docs
+            @page /api/quantum-js/: quantum-js
+            @page /api/quantum-dom/: quantum-dom
+
+            @page /api/quantum-html/: quantum-html
+            @page /api/quantum-code-highlight/: quantum-code-highlight
+            @page /api/quantum-docs/: quantum-docs
+            @page /api/quantum-api/: quantum-api
+            @page /api/quantum-changelog/: quantum-changelog
+            @page /api/quantum-template/: quantum-template
+            @page /api/quantum-diagram/: quantum-diagram
+            @page /api/quantum-version/: quantum-version
+
+      @content
+        @templateContent

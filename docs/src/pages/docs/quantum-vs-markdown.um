@@ -1,0 +1,314 @@
+@inline ../../templates/sidebar-page.um
+
+@topSection
+  @title Quantum vs Markdown
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    This page compares quantum with markdown.
+
+@contentSection
+
+  @topic Before we start
+    Firstly it is worth noting that Markdown is simple, ubiquitous and integrated
+    into many systems. This is a big pro - if Markdown is sufficient for your needs
+    then there is really no need to look any further.
+
+    We wanted something that is as easy to read and write in source form as markdown
+    but with more functionality and structure. This is why we created quantum.
+
+    If you are still interested to find out when and where you might want to use
+    quantum over markdown then please, read on!
+
+  @topic Customising
+    @bold[Markdown] has a fixed way of rendering the markup to HTML (although
+    there are several different flavours). In this respect it isn't at all customisable.
+    This is actually one of the strengths of markdown - it has a small set of
+    features and focused way of doing things that makes it really easy to pick up.
+
+    @bold[Quantum] is build with customisability in mind - every part of the rendering
+    process can be customised, allowing new functionalty to be added. New renderers
+    that convert entites to html are easy to define and override in quantum.
+    In quantum @italic[you] choose how your markup gets converted into HTML. This
+    can be achieved by picking libraries of transforms that already meet your needs,
+    or by rolling your own transforms.
+
+    This highlights difference in opinion between the two markup languages - in Quantum
+    everything is tagged with a type (and these types are can be anything), and each type
+    can be rendered to HTML in whatever way you want. In markdown the markup is tightly
+    tied with HTML tags.
+
+
+    @subsection Quantum (using the quantum-docs transforms)
+      @@codeblock um
+        @topic Heading 1
+          @section Section 1
+            Blah blah blah
+
+          @section Section 2
+            Blah blah blah
+
+        @topic Heading 2
+          Blah blah blah
+
+    @subsection Markdown
+      @@codeblock md
+        \# Heading 1
+
+        \## Section 1
+        Blah blah blah
+
+        \## Section 2
+        Blah blah blah
+
+        \# Heading 2
+        Blah blah blah
+
+  @topic HTML proprocessing
+    Whilst @bold[Markdown] provides nice markup for a subset of HTML, is not a
+    full HTML preprocessor replacement.
+
+    @bold[Quantum] can be used as a full HTML preprocessor - with the use of the
+    @code[quantum-html] module
+
+    Quantum has the same syntax when doing HTML preprocessing, as when using more
+    high level entites. With markdown, when html can be used directly when markdown
+    doesn't have syntax for the tag you need.
+
+    An example of quantum being used to do HTML preprocessing:
+    @@codeblock um
+      @html
+        @head
+          @stylesheet /styles.css
+          @script /index.js
+        @body
+          @div .header
+            @span .title: Title
+          @div .body
+            Some interesting content
+
+    There isn't really an equivelent snippet for markdown in this case, as markdown
+    is not designed for this use.
+
+
+  @topic Source Readability
+    @bold[Markdown] puts a heavy focus on the source being as human readable as the
+    rendered HTML page. It's kind of its thing.
+
+    @bold[Quantum] has a similar focus, but also tries to ensure that working with
+    the parsed content is easy. Having tagged entities makes this possible but
+    does add some verbosity to the source. Compare the following two:
+
+    @@codeblock md
+      \# My first blog
+
+      \## Where to start
+      Blah blah *blah*
+
+
+    @@codeblock um
+      @h1: My first blog
+
+      @h2: Where to start
+      Blah blah @italic[blah]
+
+    @bold[Markdown] uses symbols to keep the markup from interfering with the
+    readability of the source.
+
+    @bold[Quantum] uses more explicit @italic[names] for things, which adds flexibilty
+    and explicitness at the expense of some readability.
+
+
+  @topic Templating
+
+    @italic[Things like, injecting variables when building your site so that it uses different config when vs in production ]
+    @italic[If statements, loops, defining common blocks of markup for reuse elsewhere, etc]
+
+    @br
+
+    @bold[Markdown] doesn't support templating out of the box.
+
+    @bold[Quantum] can do templating when the @code(js)[quantum-template] module is
+    included in the pipeline.
+
+  @topic Equivalent markup
+    This section shows roughly equivalent ways of doing things in Markdown and Quantum.
+    This section only compares things that Markdown and Quantum have in common.
+
+    @docs.table
+      @header
+        @cell: Type
+        @cell: Markup
+        @cell: Result
+      @row
+        @cell: Bold Text
+
+        @cell:
+          @subsection Markdown
+            @codeblock md: Some **bold** text
+          @subsection Quantum
+            @@codeblock um: Some @bold[bold] text
+
+        @cell
+          Some @bold[bold] text
+
+      @row
+        @cell: Italic Text
+
+        @cell:
+          @subsection Markdown
+            @codeblock md: Some **italic** text
+          @subsection Quantum
+            @@codeblock um
+              Some @italic[italic] text
+        @cell: Some @italic[italic] text
+
+      @row
+        @cell: Strikethrough Text
+
+        @cell:
+          @subsection Markdown
+            @codeblock md: Some ~~crossed out~~ text
+          @subsection Quantum
+            @@codeblock um
+              Some @strikethrough[crossed out] text
+        @cell: Some @strikethrough[crossed out] text
+
+      @row
+        @cell: Headers
+        @cell
+          @subsection Markdown
+            @codeblock md
+              \# H1
+              \## H2
+              \### H3
+              \#### H4
+              \##### H5
+              \###### H6
+
+          @subsection Quantum
+            @@codeblock um
+              @topic Topic Name
+                @section Section Name
+
+              @h1: H1
+              @h2: H2
+              @h3: H3
+              @h4: H4
+              @h5: H5
+              @h6: H6
+        @cell
+          @topic Topic Name
+            @section Section Name
+
+          @h1: H1
+          @h2: H2
+          @h3: H3
+          @h4: H4
+          @h5: H5
+          @h6: H6
+
+      @row
+        @cell: Code highlighting
+        @cell
+          @subsection Markdown
+            @codeblock md
+              ```
+              function () {
+                return 0;
+              }
+              ```
+
+          @subsection Quantum
+            @@codeblock um
+              @codeblock js
+                function () {
+                  return 0;
+                }
+
+        @cell
+          @codeblock js
+            function () {
+              return 0;
+            }
+
+      @row
+        @cell: Inline code highlighting
+        @cell
+          @subsection Markdown
+            @codeblock md
+              Some `inline()` code
+
+          @subsection Quantum
+            @@codeblock um
+              Some @code(js)[inline()] code
+
+        @cell
+          Some @code(js)[inline()] code
+
+      @row
+        @cell: Links
+        @cell
+          @subsection Markdown
+            @codeblock md
+              Click [here](/path/to/link).
+
+          @subsection Quantum
+            @@codeblock um
+              Click @hyperlink(/path/to/link)[here].
+
+        @cell
+          Click @hyperlink(/path/to/link)[here].
+
+      @row
+        @cell: Lists
+        @cell
+          @subsection Markdown
+            @codeblock md
+              - item 1
+              - item 2
+              - item 3
+
+              1. item
+              2. item
+              3. item
+
+          @subsection Quantum
+            @@codeblock um
+              @list
+                @item: item 1
+                @item: item 2
+                @item: item 3
+
+              @list ordered
+                @item: item
+                @item: item
+                @item: item
+
+        @cell
+          @list
+            @item: item 1
+            @item: item 2
+            @item: item 3
+
+          @list ordered
+            @item: item 1
+            @item: item 2
+            @item: item 3
+
+      @row
+        @cell: Images
+        @cell
+          @subsection Markdown
+            @codeblock md
+              ![Quantum Logo](/resources/logo.png)
+
+
+          @subsection Quantum
+            @@codeblock um
+              @image(/resources/logo.png)[Quantum Logo]
+
+        @cell
+          @img
+            @attr style: width:auto;width:100px;margin:25px;
+            @attr src: /resources/logo.png
+            @attr alt: Quantum Logo

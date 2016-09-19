@@ -172,7 +172,12 @@ function pageTransform (options) {
   const meta = opts.meta // gets passed through to all transforms (mainly useful for custom transforms - should never be used in libraries)
   const defaultTransform = opts.defaultTransform || standardDefaultTransform
   const entityTransforms = opts.transforms || transforms()
+  const includeCommonMetaTags = opts.includeCommonMetaTags !== false
   const transformMap = prepareTransforms(entityTransforms)
+
+  const commonMetaTags = [
+    dom.head(dom.create('meta').attr('name', 'viewport').attr('content', 'width=device-width, initial-scale=1'))
+  ]
 
   // renders an selection by looking at its type and selecting the transform from the list
   function transformer (selection) {
@@ -184,7 +189,12 @@ function pageTransform (options) {
   // the page transform function that turns parsed content into html content
   return (page) => {
     return Promise.resolve(quantum.select(page.content).transform(transformer))
-      .then((elements) => page.clone({ content: new HTMLPage(elements) }))
+      .then((elements) => {
+        const completeElements = includeCommonMetaTags ? elements.concat(commonMetaTags) : elements
+        return page.clone({
+          content: new HTMLPage(completeElements)
+        })
+      })
   }
 }
 

@@ -222,14 +222,13 @@ function transforms (opts) {
       .add(svg)
       .add(dom.asset({
         url: '/assets/quantum-diagram.css',
-        file: path.join(__dirname, '/assets/quantum-diagram.css'),
+        file: path.join(__dirname, '../assets/quantum-diagram.css'),
         shared: true
       }))
   }
 
   return Object.freeze({
-    diagram
-  })
+  diagram})
 }
 
 module.exports.transforms = transforms

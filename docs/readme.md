@@ -1,6 +1,6 @@
 # docs
 
-The source for the Quantum JS docs site: <url-goes-here>
+The source for the QuantumJS docs site: <url-goes-here>
 
 # Building
 

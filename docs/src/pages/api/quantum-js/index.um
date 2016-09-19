@@ -1,0 +1,197 @@
+@inline ../../../templates/sidebar-page.um
+
+@topSection
+  @title QuantumJS
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description: The cli and low level apis for parsing, manulipating AST, and watching quantum source files.
+
+@contentSection
+  @topic About
+    The core quantum module (quantum-js) consists of a cli (command line interface),
+    a parser for the markup language, a selection api for working with the parsed
+    AST (abstract syntax tree) and an api for watching quantum files for changes.
+
+  @topic Command Line Interface
+    The cli is bundled with this module - so if you install this globally, you should
+    have access to the @code(bash)[quantum] command. The best way to find out more about the cli
+    is to run @code(bash)[quantum help].
+
+    There are also a guides for @hyperlink(/docs/cli)[using] and
+    @hyperlink(/docs/config)[configuring] the cli.
+
+  @topic Parsing
+    @notice Note
+      The rest of this page goes into low level apis that you most likely won't have
+      to worry about if you are just using quantum as a tool with existing transforms.
+      If you are developing your own transforms then some of the material in the
+      rest of this document may be useful.
+
+    First we will explore how to parse a quantum markup file (which usually has the .um
+    extension).
+
+    @subsection example.um
+      @@codeblock um
+        @example param1 params2
+          Content 1
+          Content 2
+
+    The result of feeding this into @code(um)[quantum.parse(...)] would result in the following:
+
+    @@codeblock js
+      {
+        content: [
+          {
+            type: 'example',
+            params: ['param1', 'param2'],
+            content: ['Content 1', 'Content 2']
+          }
+        ]
+      }
+
+    The quantum language gets parsed into a tree of objects of the form
+    @code(js)[{type, params, content}]. The content section of an entity can contain
+    more entities (an entity is the name given to an entry starting with @(@), or
+    the @code(js)[{type, params, content}] object when parsed)
+
+    Here is some example markup that covers all the features in the language:
+
+    @subsection example.um
+      @@codeblock um
+        \# comments start with a hash
+
+        \# basic structure of an entity
+        @type parameters: Content
+
+        \# Entities can contain multiple lines of text content:
+        @person parameter1 parameter2
+          Name: Alejandro
+          Age: 32
+
+        \# And can also have nested entites
+        @person parameter1 parameter2
+          @name: Alejandro
+          @age: 32
+
+        \# Content may be mixed between entities and text
+        @button
+          @icon fa fa-add
+          Click Me!
+
+        \# Entites can also use a more compact single line syntax (when written like this they are called inline entites):
+        @type(parameters)[Content]
+
+        \# Inline entites may be placed in the middle of text
+        This line has an @bold[inline] entity
+
+        \# The above button example could also be written like this
+        @button: @icon(fa fa-add) Click Me!
+
+        \# Parameters with spaces should be wrapped in [...]
+        @person parameter1 [parameter2 with spaces]
+
+        \# escaping the @ sign is done by wrapping it (and optionally surrounding text) in @(...)
+        @(your.name@ocado.com)
+
+        \# nested content may be completely escaped by starting an entity with @@
+        @@codeblock um
+          \# this content is treated as text. No entites are parsed when in @@ mode
+          @person
+            @name: Alejandro
+            @age: 32
+
+        \# The hash character can be escaped with \#
+
+    We can read the from file and parse this markup using the read function:
+
+    @codeblock js
+      const quantum = require('quantum-js')
+
+      quantum.read('example.um')
+        .then((parsed) => {
+          // parsed = {content: [...]}
+        })
+
+    @code(js)[quantum.read] will return a promise that yields the parsed AST.
+
+    The parsed object for the above input would look like this:
+
+    @codeblock json
+      @inline output.json
+
+
+  @topic Selection Api
+    The selection api allows the selection and manipulation of quantum entities:
+
+    @codeblock js
+      const quantum = require('quantum-js')
+
+      quantum.read('example.um').then((parsed) => {
+        const entity = parsed.content
+
+        const selection = quantum.select(entity)
+        selection.ps()                      // extract the parameter string from an entity
+        selection.cs()                      // extract the content string from an entity
+        selection.select('banana')          // selects the first child entity called banana
+        selection.selectAll('kiwi')         // selects all the child entities called kiwi (returns an array)
+        selection.select('lemon').param(2)  // gets the second parameter from the first lemon entity in the selection
+      })
+
+    Lets go into more detail to explain various parts of the selection api
+
+
+    @section Selecting, querying and modifying an entity
+      An entity, when parsed looks like this:
+
+      @@codeblock js
+        {
+          type: 'fruits',
+          params: ['kiwi', 'lime', 'grapes'],
+          content: ['Some fruits that are green']
+        }
+
+      An entity can be wrapped in a selection to make it easier to query:
+
+      @@codeblock js
+        const entity = {
+          type: 'fruits',
+          params: ['kiwi', 'lime', 'grapes'],
+          content: [
+            'Some fruits that are green'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.type()   // 'fruits'
+        selection.params() // ['kiwi', 'lime', 'grapes']
+        selection.param(1) // 'lime'
+        selection.param(2) // 'grapes'
+        selection.ps()     // 'kiwi lime grapes'
+
+        selection.content() // ['Some fruits that are green']
+        selection.cs()      // 'Some fruits that are green'
+
+      A selection can also be used to modify an entity:
+
+      @@codeblock js
+        const entity = {
+          type: 'fruits',
+          params: ['kiwi', 'lime', 'grapes'],
+          content: [
+            'Some fruits that are green'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.type('fruitSalad')       // sets entity.type to 'fruitSalad'
+        selection.param(1, 'apple')        // changes the 2nd parameter to 'apple'
+        selection.content(['New content']) // replaces entity.content
+        selection.add('More content')      // pushes more content into entity.content
+
+      Of course, you can also poke around the @code(js)[entity] object instead of wrapping
+      it in a selection if you prefer.
+
+
+  @topic Api
+    @inline api.um

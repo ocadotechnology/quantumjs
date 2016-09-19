@@ -6,29 +6,29 @@ var footerSection = hx.select('.qm-docs-bottom-section')
 
 // XXX: remove reliance on hexagon
 
-function checkSidebarPositions () {
-  var topClientRect = topSection.box()
-  var bottomClientRect = bottomSection.box()
-
-  if (!topSection.empty()) {
-    var headerBottom = topClientRect.bottom
-    sidebarLeft.classed('qm-docs-sidebar-at-top', headerBottom > 46)
-    sidebarRight.classed('qm-docs-sidebar-at-top', headerBottom > 46)
-  }
-
-  var topSectionBottom = Math.max(46, topClientRect.bottom)
-  var footerTop = bottomSection.empty() ? window.innerHeight : Math.min(window.innerHeight, bottomClientRect.top)
-
-  sidebarLeft.style('max-height', (footerTop - topSectionBottom) + 'px')
-  sidebarLeft.style('max-height', (footerTop - topSectionBottom) + 'px')
-}
-
-window.addEventListener('scroll', checkSidebarPositions)
-window.addEventListener('resize', checkSidebarPositions)
-
-sidebarLeft.classed('qm-docs-sidebar-at-top', true)
-sidebarRight.classed('qm-docs-sidebar-at-top', true)
-checkSidebarPositions()
+// function checkSidebarPositions () {
+//   var topClientRect = topSection.box()
+//   var bottomClientRect = bottomSection.box()
+//
+//   if (!topSection.empty()) {
+//     var headerBottom = topClientRect.bottom
+//     sidebarLeft.classed('qm-docs-sidebar-at-top', headerBottom > 46)
+//     sidebarRight.classed('qm-docs-sidebar-at-top', headerBottom > 46)
+//   }
+//
+//   var topSectionBottom = Math.max(46, topClientRect.bottom)
+//   var footerTop = bottomSection.empty() ? window.innerHeight : Math.min(window.innerHeight, bottomClientRect.top)
+//
+//   sidebarLeft.style('max-height', (footerTop - topSectionBottom) + 'px')
+//   sidebarLeft.style('max-height', (footerTop - topSectionBottom) + 'px')
+// }
+//
+// window.addEventListener('scroll', checkSidebarPositions)
+// window.addEventListener('resize', checkSidebarPositions)
+//
+// sidebarLeft.classed('qm-docs-sidebar-at-top', true)
+// sidebarRight.classed('qm-docs-sidebar-at-top', true)
+// checkSidebarPositions()
 
 function redirectorFunction (url, current, version) {
   if (url.indexOf((current + '/'), url.length - (current + '/').length) !== -1) {

@@ -217,30 +217,52 @@ function applyDefinitions (parsed, definitions) {
   }
 }
 
+// Processes the page for wrapping templates.
+function wrapper (pageContent, wrapperOptions) {
+  const selection = quantum.select({
+    type: '',
+    params: [],
+    content: pageContent.content
+  })
+
+  if (selection.has('template')) {
+    const template = selection.select('template')
+
+    // find out the name of the entity to replace with the page content
+    const contentEntityType = template.has('contentEntityName') ?
+      template.select('contentEntityName').ps() : 'content'
+
+    // find the place to mount the rest of the page's content
+    const contentEntity = template.select('content').select(contentEntityType, {recursive: true})
+
+    // find out where the mount point is
+    const position = contentEntity.parent().content().indexOf(contentEntity.entity())
+    const parentContent = contentEntity.parent().content()
+
+    // get the content to place at the mount point (ie remove all @templates from the page)
+    const nonTemplateContent = selection.filter(x => x.type !== 'template')
+
+    // make the replacement
+    parentContent.splice.apply(parentContent, [position, 1].concat(nonTemplateContent.content()))
+
+    return {
+      content: template.select('content').content()
+    }
+  } else {
+    return pageContent
+  }
+}
+
 function pipeline (options) {
   const variables = prepareVariables(options ? options.variables : {})
+  const wrapperOptions = {}
 
   return (page) => {
     const definitions = digestDefinitions(page.content)
 
     return page.clone({
-      content: applyVariables(applyDefinitions(page.content, definitions), variables)
+      content: applyVariables(applyDefinitions(wrapper(page.content, wrapperOptions), definitions), variables)
     })
-  }
-}
-
-// insert the page title by wrapping the passed in object
-function wrapper (options) {
-  return (obj) => {
-    return quantum.read(options.templateFilename)
-      .then((template) => {
-        const contentEntity = quantum.select(template.content).select('content', {recursive: true})
-        const position = contentEntity.parent.content.indexOf(contentEntity.original)
-        const parentContent = contentEntity.parent.original.content
-        parentContent.splice.apply(parentContent, [position, 1].concat(obj.content.content))
-        obj.content = template.content
-        return obj
-      })
   }
 }
 
