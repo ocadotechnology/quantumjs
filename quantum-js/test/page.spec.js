@@ -50,6 +50,50 @@ describe('Page', () => {
     page.meta.should.eql({})
   })
 
+  describe('Page::warning', () => {
+    it('should store warnings', () => {
+      const page = new Page({
+        file: file1
+      })
+
+      page.warning({
+        module: 'quantum-js',
+        problem: 'something broke',
+        resolution: 'fix it'
+      })
+
+      page.warnings.should.eql([
+        {
+          module: 'quantum-js',
+          problem: 'something broke',
+          resolution: 'fix it'
+        }
+      ])
+    })
+  })
+
+  describe('Page::error', () => {
+    it('should store errors', () => {
+      const page = new Page({
+        file: file1
+      })
+
+      page.error({
+        module: 'quantum-js',
+        problem: 'something broke',
+        resolution: 'fix it'
+      })
+
+      page.errors.should.eql([
+        {
+          module: 'quantum-js',
+          problem: 'something broke',
+          resolution: 'fix it'
+        }
+      ])
+    })
+  })
+
   describe('Page::clone', () => {
     const page = new Page({
       file: file1,
@@ -116,6 +160,78 @@ describe('Page', () => {
             innerKey2: 'value2'
           }
         }
+      }))
+
+      // check the original page was untouched
+      page.should.eql(new Page({
+        file: file1,
+        content: content1,
+        meta: meta1
+      }))
+    })
+
+    it('should clone warnings and errors', () => {
+      const clone = page.clone()
+      clone.warning({
+        module: 'quantum-js',
+        problem: 'warning: something broke',
+        resolution: 'fix it'
+      })
+      clone.error({
+        module: 'quantum-js',
+        problem: 'error: something broke',
+        resolution: 'fix it'
+      })
+
+      clone.clone().should.eql(new Page({
+        file: file1,
+        content: content1,
+        warnings: [
+          {
+            module: 'quantum-js',
+            problem: 'warning: something broke',
+            resolution: 'fix it'
+          }
+        ],
+        errors: [
+          {
+            module: 'quantum-js',
+            problem: 'error: something broke',
+            resolution: 'fix it'
+          }
+        ]
+      }))
+    })
+
+    it('should allow changes to warnings and errors when cloning', () => {
+      page.clone({
+        warnings: [{
+          module: 'quantum-js',
+          problem: 'warning: something broke',
+          resolution: 'fix it'
+        }],
+        errors: [{
+          module: 'quantum-js',
+          problem: 'error: something broke',
+          resolution: 'fix it'
+        }]
+      }).should.eql(new Page({
+        file: file1,
+        content: content1,
+        warnings: [
+          {
+            module: 'quantum-js',
+            problem: 'warning: something broke',
+            resolution: 'fix it'
+          }
+        ],
+        errors: [
+          {
+            module: 'quantum-js',
+            problem: 'error: something broke',
+            resolution: 'fix it'
+          }
+        ]
       }))
 
       // check the original page was untouched

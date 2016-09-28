@@ -63,7 +63,7 @@ function parseFile (filename, doParse, options, parentFile) {
       .then((input) => parse(input, options))
       .then((parsed) => inline(parsed, currentDir, options, filename))
       .catch((e) => {
-        if (e.type === 'quantum-parse') {
+        if (e instanceof parse.ParseError) {
           throw merge(e, {
             filename: e.filename || filename
           })

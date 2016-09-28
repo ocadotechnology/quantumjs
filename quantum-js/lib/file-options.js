@@ -95,7 +95,7 @@ function normalizeSpec (item) {
 /* Infers a sensible base directory for a glob string */
 function inferBase (globString) {
   const end = globString.indexOf('*')
-  return globString.slice(0, end - 1)
+  return (end === -1) ? '.' : globString.slice(0, end - 1)
 }
 
 /* Resolves a list of specs into a list of file-objects */

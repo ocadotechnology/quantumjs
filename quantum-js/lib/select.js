@@ -258,14 +258,10 @@ Selection.prototype = {
     }
   },
   transform: function (transformer) {
-    return all(this._entity.content.map((child) => {
+    return this._entity.content.map((child) => {
       return transformer(isEntity(child) ? select(child, this) : child)
-    }))
+    })
   }
-}
-
-function all (maybePromises) {
-  return maybePromises.some(p => p.then) ? select.Promise.all(maybePromises) : maybePromises
 }
 
 function emptySelection () {

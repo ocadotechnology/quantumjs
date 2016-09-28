@@ -32,8 +32,8 @@ Page.prototype = {
       file: changes && changes.file !== undefined ? changes.file : this.file,
       content: changes && changes.content !== undefined ? changes.content : this.content,
       meta: changes && changes.meta !== undefined ? merge.recursive({}, this.meta, changes.meta) : this.meta,
-      warnings: changes && changes.warnings !== undefined ? changes.warnings : this.warnings,
-      errors: changes && changes.errors !== undefined ? changes.errors : this.errors
+      warnings: changes && changes.warnings !== undefined ? changes.warnings.slice() : this.warnings.slice(),
+      errors: changes && changes.errors !== undefined ? changes.errors.slice() : this.errors.slice()
     })
   },
   warning: function (warning) {

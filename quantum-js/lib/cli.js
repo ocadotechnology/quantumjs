@@ -116,7 +116,7 @@ function build (config) {
           return buildPage(page, pipeline, config, logger)
         })
         .catch((err) => {
-          if (err.type === 'quantum-parse') {
+          if (err instanceof quantum.parse.ParseError) {
             logger({type: 'page-load-error', file: file.src, error: err})
           } else {
             throw err

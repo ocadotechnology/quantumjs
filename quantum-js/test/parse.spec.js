@@ -216,7 +216,13 @@ describe('parse', () => {
 
     it('messed up indentation should throw an error', () => {
       chai.expect(() => {
-        tokenize('@fruits\n  indent\n    indent\n       alsoindent\n dedent')
+        tokenize('@fruits\n  indent\n    indent\n       alsoindent\n dedent\ndedent\ndedent\ndedent')
+      }).to.throw()
+    })
+
+    it('messed up indentation should throw an error (should show the surrounding lines)', () => {
+      chai.expect(() => {
+        tokenize('@fruits\n  indent\n    indent\n       alsoindent\n dedent\ndedent\ndedent\ndedent\ndedent')
       }).to.throw()
     })
 
@@ -314,6 +320,34 @@ describe('parse', () => {
       tokenize('@(@escaped)').should.eql([
         { type: 'TYPE', value: '' },
         { type: 'PARAMS', value: '@escaped' }
+      ])
+    })
+
+    it('should emit the correct type for escaping', () => {
+      tokenize('person@(@example).com').should.eql([
+        { type: 'CONTENT', value: 'person' },
+        { type: 'TYPE', value: '' },
+        { type: 'PARAMS', value: '@example' },
+        { type: 'CONTENT', value: '.com' }
+      ])
+    })
+
+    it('should emit the correct type for escaping', () => {
+      tokenize('person@(@example)\n.com').should.eql([
+        { type: 'CONTENT', value: 'person' },
+        { type: 'TYPE', value: '' },
+        { type: 'PARAMS', value: '@example' },
+        { type: 'CONTENT', value: '.com' }
+      ])
+    })
+
+    it('escaped mode should exit when dedenting', () => {
+      tokenize('content\n  @@thing\n@outdented').should.eql([
+        { type: 'CONTENT', value: 'content' },
+        { type: 'INDENT', value: 2 },
+        { type: 'TYPE', value: 'thing' },
+        { type: 'DEDENT', value: 2 },
+        { type: 'TYPE', value: 'outdented' }
       ])
     })
 
@@ -478,6 +512,35 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'content' },
         { type: 'END_INLINE_CONTENT' },
         { type: 'CONTENT', value: 'Some more content' }
+      ])
+    })
+
+    it('should handle inline content in same line content (ending on a newline)', () => {
+      tokenize('@italic: @bold[test]\nContent').should.eql([
+        { type: 'TYPE', value: 'italic' },
+        { type: 'START_SAME_LINE_CONTENT' },
+        { type: 'TYPE', value: 'bold' },
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'test' },
+        { type: 'END_INLINE_CONTENT' },
+        { type: 'END_SAME_LINE_CONTENT' },
+        { type: 'CONTENT', value: 'Content'}
+      ])
+    })
+
+    it('should handle inline and sameline content that end at a newline with indentations', () => {
+      tokenize('@container\n  @italic: @bold[test]\nContent').should.eql([
+        { type: 'TYPE', value: 'container' },
+        { type: 'INDENT', value: 2 },
+        { type: 'TYPE', value: 'italic' },
+        { type: 'START_SAME_LINE_CONTENT' },
+        { type: 'TYPE', value: 'bold' },
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'test' },
+        { type: 'END_INLINE_CONTENT' },
+        { type: 'END_SAME_LINE_CONTENT' },
+        { type: 'DEDENT', value: 2},
+        { type: 'CONTENT', value: 'Content'}
       ])
     })
   })
@@ -718,12 +781,14 @@ describe('parse', () => {
       ]))
     })
 
-    it('should emit the correct tokens for escaping 2', () => {
+    it('should handle a more complex escaping', () => {
       const tokens = [
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: 'something' },
         { type: 'TYPE', value: '' },
-        { type: 'PARAMS', value: '@escaped' }
+        { type: 'PARAMS', value: '@escaped' },
+        { type: 'CONTENT', value: '.com' }
       ]
 
       ast(tokens).should.eql(selection([
@@ -731,9 +796,121 @@ describe('parse', () => {
           type: 'fruits',
           params: [],
           content: [
-            '@escaped'
+            'something@escaped.com'
           ]
         }
+      ]))
+    })
+
+    it('should handle empty excaped sections', () => {
+      const tokens = [
+        { type: 'TYPE', value: 'fruits' },
+        { type: 'INDENT', value: 2 },
+        { type: 'TYPE', value: '' },
+        { type: 'PARAMS', value: '' },
+        { type: 'CONTENT', value: '.com' }
+      ]
+
+      ast(tokens).should.eql(selection([
+        {
+          type: 'fruits',
+          params: [],
+          content: [
+            '.com'
+          ]
+        }
+      ]))
+    })
+
+    it('should handle a more escaping that ends on a newline', () => {
+      const tokens = [
+        { type: 'TYPE', value: 'fruits' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: 'something' },
+        { type: 'TYPE', value: '' },
+        { type: 'PARAMS', value: '@escaped' },
+        { type: 'CONTENT', value: '' },
+        { type: 'CONTENT', value: '.com' }
+      ]
+
+      ast(tokens).should.eql(selection([
+        {
+          type: 'fruits',
+          params: [],
+          content: [
+            'something@escaped',
+            '.com'
+          ]
+        }
+      ]))
+    })
+
+    it('should handle inline and sameline content that end at a newline', () => {
+      const tokens = [
+        { type: 'TYPE', value: 'italic' },
+        { type: 'START_SAME_LINE_CONTENT' },
+        { type: 'TYPE', value: 'bold' },
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'test' },
+        { type: 'END_INLINE_CONTENT' },
+        { type: 'END_SAME_LINE_CONTENT' },
+        { type: 'CONTENT', value: 'Content'}
+      ]
+
+      ast(tokens).should.eql(selection([
+        {
+          type: 'italic',
+          params: [],
+          content: [
+            {
+              type: 'bold',
+              params: [],
+              content: [
+                'test'
+              ]
+            }
+          ]
+        },
+        'Content'
+      ]))
+    })
+
+    it('should handle inline and sameline content that end at a newline with indentations', () => {
+      const tokens = [
+        { type: 'TYPE', value: 'container' },
+        { type: 'INDENT', value: 2 },
+        { type: 'TYPE', value: 'italic' },
+        { type: 'START_SAME_LINE_CONTENT' },
+        { type: 'TYPE', value: 'bold' },
+        { type: 'START_INLINE_CONTENT' },
+        { type: 'CONTENT', value: 'test' },
+        { type: 'END_INLINE_CONTENT' },
+        { type: 'END_SAME_LINE_CONTENT' },
+        { type: 'DEDENT', value: 2},
+        { type: 'CONTENT', value: 'Content'}
+      ]
+
+      ast(tokens).should.eql(selection([
+        {
+          type: 'container',
+          params: [],
+          content: [
+            {
+              type: 'italic',
+              params: [],
+              content: [
+                {
+                  type: 'bold',
+                  params: [],
+                  content: [
+                    'test'
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        'Content'
       ]))
     })
 
@@ -1388,6 +1565,20 @@ describe('parse', () => {
           {
             type: 'link',
             params: ['http://example.com'],
+            content: ['example.com']
+          }
+        ]
+      }
+      chai.expect(parse(source)).to.eql(expected)
+    })
+
+    it('empty inline parameter should be fine', () => {
+      const source = '@link()[example.com]'
+      const expected = {
+        content: [
+          {
+            type: 'link',
+            params: [],
             content: ['example.com']
           }
         ]

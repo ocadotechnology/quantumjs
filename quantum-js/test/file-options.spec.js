@@ -87,10 +87,48 @@ describe('resolve', () => {
     })
   })
 
+  it('single file', () => {
+    const list = {
+      files: 'target/test/files1/a.um'
+    }
+
+    const options = {
+      dir: '.',
+      dest: 'target2'
+    }
+
+    return files.resolve(list, options).then((files) => {
+      files.should.eql([
+        new File({
+          src: 'target/test/files1/a.um',
+          resolved: 'target/test/files1/a.um',
+          base: '.',
+          dest: 'target2/target/test/files1/a.um',
+          watch: true
+        })
+      ])
+    })
+  })
+
   it('single object', () => {
     const list = {
       files: 'target/test/files1/**/*',
       base: 'target/test/files1'
+    }
+
+    const options = {
+      dir: '.',
+      dest: 'target'
+    }
+
+    return files.resolve(list, options).then((files) => {
+      files.should.eql(expectedList1)
+    })
+  })
+
+  it('single object (inferred base)', () => {
+    const list = {
+      files: 'target/test/files1/**/*'
     }
 
     const options = {

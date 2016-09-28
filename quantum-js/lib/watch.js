@@ -17,6 +17,7 @@ const chokidar = require('chokidar')
 const flatten = require('flatten')
 const fs = Promise.promisifyAll(require('fs-extra'))
 
+const parse = require('./parse')
 const read = require('./read')
 const Page = require('./page')
 const fileOptions = require('./file-options')
@@ -182,7 +183,7 @@ function watch (specs, options, handler) {
         return handler(undefined, page, work.cause)
       })
       .catch((err) => {
-        if (err.type === 'quantum-parse') {
+        if (err instanceof parse.ParseError) {
           return handler(err, new Page({file: work.file, content: undefined}), work.cause)
         } else {
           throw err
@@ -242,19 +243,20 @@ function WorkQueue (handler, options) {
 
 WorkQueue.prototype = {
   add: function (work) {
+    const self = this
+    function process () {
+      if (self.queue.length > 0) {
+        const work = self.queue.pop()
+        self.handler(work).then(process)
+      } else {
+        self.activeWorkerCount--
+      }
+    }
+
     this.queue.push(work)
 
     // check if we can start up another concurrent piece or work
     if (this.activeWorkerCount < this.concurrency) {
-      const self = this
-      const process = () => {
-        if (self.queue.length > 0) {
-          const work = self.queue.pop()
-          self.handler(work).then(process)
-        } else {
-          self.activeWorkerCount--
-        }
-      }
       this.activeWorkerCount++
       process()
     }

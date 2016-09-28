@@ -706,4 +706,21 @@ describe('watch', () => {
       })
     })
   })
+
+  it('should emit an error when the the file handler returns a parse error', (done) => {
+    const specs = {
+      files: 'target/test/watch-invalid/index.um',
+      base: 'target/test/watch-invalid',
+      watch: true
+    }
+
+    const options = {dest: 'target2'}
+
+    function handler (err, parsed, details) {
+      err.should.be.an.instanceof(quantum.parse.ParseError)
+      done()
+    }
+
+    watch(specs, options, handler)
+  })
 })

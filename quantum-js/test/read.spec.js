@@ -244,4 +244,9 @@ describe('read', () => {
 
     return read.page(filename).should.eventually.eql(expected)
   })
+
+  it('should yield an error when parsing fails', () => {
+    const filename = 'test/files/read/invalid.um'
+    return read(filename).should.eventually.be.rejected
+  })
 })
