@@ -54,7 +54,7 @@ function tokenize (str) {
   let escapedParamCounter = 0
   let consumingEscapedParams = false
   let consumingUnparsed = false // true when in an @@ block
-  let lastInlineContentEndPos = -10
+  let lastInlineContentEndPos = undefined
   let unparsedIndentStart = undefined
 
   const indent = [0]

@@ -15,6 +15,7 @@ const fs = Promise.promisifyAll(require('fs-extra'))
 const liveserver = require('live-server')
 
 const qwatch = require('./watch')
+const parse = require('./parse')
 const read = require('./read')
 const Page = require('./page')
 const fileOptions = require('./file-options')
@@ -116,7 +117,7 @@ function build (config) {
           return buildPage(page, pipeline, config, logger)
         })
         .catch((err) => {
-          if (err instanceof quantum.parse.ParseError) {
+          if (err instanceof parse.ParseError) {
             logger({type: 'page-load-error', file: file.src, error: err})
           } else {
             throw err
