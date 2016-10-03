@@ -10,7 +10,7 @@ const html = require('quantum-html')
 function transforms (opts) {
   const options = merge.recursive(defaultConfig, opts)
 
-  const entityIfExists = (entity, selector, transformer) => {
+  function entityIfExists (entity, selector, transformer) {
     if (entity.has(selector)) {
       const selection = entity.select(selector)
       if (selection.content().length || selection.params().length) {
@@ -19,7 +19,7 @@ function transforms (opts) {
     }
   }
 
-  const paragraphEntity = (newEntityClass, transforms) => {
+  function paragraphEntity (newEntityClass, transforms) {
     return (selection) => {
       return dom.create('div')
         .class(newEntityClass)
@@ -27,9 +27,9 @@ function transforms (opts) {
     }
   }
 
-  const defaultUrlLookup = (selection) => selection.ps()
+  function defaultUrlLookup (selection) { return selection.ps() }
 
-  const linkEntity = (newEntityClass, text, urlLookup) => {
+  function linkEntity (newEntityClass, text, urlLookup) {
     return (selection) => {
       const resolvedUrlLookup = urlLookup || defaultUrlLookup
       return dom.create('div')
@@ -152,7 +152,10 @@ function transforms (opts) {
 
     const link = entityIfExists(entity, 'link', linkEntity('qm-changelog-item-link', entity.ps()))
 
-    const milestoneUrlLookup = (selection) => options.milestoneUrl + selection.ps()
+    function milestoneUrlLookup (selection) {
+      return options.milestoneUrl + selection.ps()
+    }
+
     const milestone = entityIfExists(entity, 'milestone', linkEntity('qm-changelog-item-milestone', entity.ps()), milestoneUrlLookup)
 
     const title = link || milestone || entity.ps()

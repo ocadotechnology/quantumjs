@@ -524,7 +524,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'test' },
         { type: 'END_INLINE_CONTENT' },
         { type: 'END_SAME_LINE_CONTENT' },
-        { type: 'CONTENT', value: 'Content'}
+        { type: 'CONTENT', value: 'Content' }
       ])
     })
 
@@ -539,8 +539,8 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'test' },
         { type: 'END_INLINE_CONTENT' },
         { type: 'END_SAME_LINE_CONTENT' },
-        { type: 'DEDENT', value: 2},
-        { type: 'CONTENT', value: 'Content'}
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: 'Content' }
       ])
     })
   })
@@ -854,7 +854,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'test' },
         { type: 'END_INLINE_CONTENT' },
         { type: 'END_SAME_LINE_CONTENT' },
-        { type: 'CONTENT', value: 'Content'}
+        { type: 'CONTENT', value: 'Content' }
       ]
 
       ast(tokens).should.eql(selection([
@@ -886,8 +886,8 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'test' },
         { type: 'END_INLINE_CONTENT' },
         { type: 'END_SAME_LINE_CONTENT' },
-        { type: 'DEDENT', value: 2},
-        { type: 'CONTENT', value: 'Content'}
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: 'Content' }
       ]
 
       ast(tokens).should.eql(selection([
