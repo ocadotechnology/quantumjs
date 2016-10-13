@@ -91,6 +91,14 @@ function css (selection, transforms) {
   return dom.head(dom.create('style').text(selection.cs(), {escape: false}))
 }
 
+function link (selection, transforms) {
+  return dom.head(setupElement('link', selection, transforms, false))
+}
+
+function meta (selection, transforms) {
+  return dom.head(setupElement('link', selection, transforms, false))
+}
+
 function transforms (options) {
   // No options at the moment - this is just future proofing
   return Object.freeze({
@@ -103,6 +111,8 @@ function transforms (options) {
     hyperlink: hyperlink,
     js: js,
     css: css,
+    link: link,
+    meta: meta,
     a: elementTransform('a'),
     b: elementTransform('b'),
     br: elementTransform('br'),
@@ -121,8 +131,6 @@ function transforms (options) {
     input: elementTransform('input'),
     label: elementTransform('label'),
     li: elementTransform('li'),
-    link: elementTransform('link'),
-    meta: elementTransform('meta'),
     ol: elementTransform('ol'),
     option: elementTransform('option'),
     p: elementTransform('p'),
