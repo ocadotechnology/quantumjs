@@ -342,7 +342,7 @@ describe('transforms', () => {
   })
 
   describe('head', () => {
-    it('should add elements to the head', () => {
+    it('should add elements to the head (promise)', () => {
       const selection = quantum.select({
         type: 'head',
         params: ['My Title'],

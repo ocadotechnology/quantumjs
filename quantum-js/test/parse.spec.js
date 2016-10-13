@@ -7,12 +7,6 @@ const parse = quantum.parse
 const tokenize = parse.tokenize
 const ast = parse.ast
 
-function selection (x) {
-  return {
-    content: x
-  }
-}
-
 describe('parse', () => {
   describe('tokenize', () => {
     it('should detect a type correctly', () => {
@@ -551,11 +545,11 @@ describe('parse', () => {
         { type: 'TYPE', value: 'fruits' }
       ]
 
-      ast(tokens).should.eql(selection([{
+      ast(tokens).should.eql([{
         type: 'fruits',
         params: [],
         content: []
-      }]))
+      }])
     })
 
     it('basic entities one after another', () => {
@@ -564,7 +558,7 @@ describe('parse', () => {
         { type: 'TYPE', value: 'veg' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: [],
@@ -575,7 +569,7 @@ describe('parse', () => {
           params: [],
           content: []
         }
-      ]))
+      ])
     })
 
     it('basic entity with params', () => {
@@ -584,11 +578,11 @@ describe('parse', () => {
         { type: 'PARAMS', value: 'kiwi lemon' }
       ]
 
-      ast(tokens).should.eql(selection([{
+      ast(tokens).should.eql([{
         type: 'fruits',
         params: ['kiwi', 'lemon'],
         content: []
-      }]))
+      }])
     })
 
     it('escaped params should work', () => {
@@ -597,11 +591,11 @@ describe('parse', () => {
         { type: 'PARAMS', value: '[one two three] four' }
       ]
 
-      ast(tokens).should.eql(selection([{
+      ast(tokens).should.eql([{
         type: 'fruits',
         params: ['one two three', 'four'],
         content: []
-      }]))
+      }])
     })
 
     it('basic indented entities', () => {
@@ -611,7 +605,7 @@ describe('parse', () => {
         { type: 'TYPE', value: 'veg' }
       ]
 
-      ast(tokens).should.eql(selection([{
+      ast(tokens).should.eql([{
         type: 'fruits',
         params: [],
         content: [{
@@ -619,7 +613,7 @@ describe('parse', () => {
           params: [],
           content: []
         }]
-      }]))
+      }])
     })
 
     it('basic indented then dedented entities', () => {
@@ -631,7 +625,7 @@ describe('parse', () => {
         { type: 'TYPE', value: 'meat' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: [],
@@ -646,7 +640,7 @@ describe('parse', () => {
           params: [],
           content: []
         }
-      ]))
+      ])
     })
 
     it('non type indentations should be ignored', () => {
@@ -665,7 +659,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'brocolli' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: [],
@@ -683,7 +677,7 @@ describe('parse', () => {
             }
           ]
         }
-      ]))
+      ])
     })
 
     it('non type indentations should be ignored', () => {
@@ -696,7 +690,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'quince' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: [],
@@ -705,7 +699,7 @@ describe('parse', () => {
             'quince'
           ]
         }
-      ]))
+      ])
     })
 
     // @fruits: @ripe[banana]\n  @veg: parsnip
@@ -725,7 +719,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'parsnip' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: [],
@@ -742,7 +736,7 @@ describe('parse', () => {
             }
           ]
         }
-      ]))
+      ])
     })
 
     it('empty line following newline', () => {
@@ -756,7 +750,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'strawberry' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: [],
@@ -767,7 +761,7 @@ describe('parse', () => {
         },
         '',
         'strawberry'
-      ]))
+      ])
     })
 
     it('should emit the correct tokens for escaping', () => {
@@ -776,9 +770,9 @@ describe('parse', () => {
         { type: 'PARAMS', value: '@escaped' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         '@escaped'
-      ]))
+      ])
     })
 
     it('should handle a more complex escaping', () => {
@@ -791,7 +785,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: '.com' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: [],
@@ -799,7 +793,7 @@ describe('parse', () => {
             'something@escaped.com'
           ]
         }
-      ]))
+      ])
     })
 
     it('should handle empty excaped sections', () => {
@@ -811,7 +805,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: '.com' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: [],
@@ -819,7 +813,7 @@ describe('parse', () => {
             '.com'
           ]
         }
-      ]))
+      ])
     })
 
     it('should handle a more escaping that ends on a newline', () => {
@@ -833,7 +827,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: '.com' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: [],
@@ -842,7 +836,7 @@ describe('parse', () => {
             '.com'
           ]
         }
-      ]))
+      ])
     })
 
     it('should handle inline and sameline content that end at a newline', () => {
@@ -857,7 +851,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'Content' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'italic',
           params: [],
@@ -872,7 +866,7 @@ describe('parse', () => {
           ]
         },
         'Content'
-      ]))
+      ])
     })
 
     it('should handle inline and sameline content that end at a newline with indentations', () => {
@@ -890,7 +884,7 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'Content' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'container',
           params: [],
@@ -911,7 +905,7 @@ describe('parse', () => {
           ]
         },
         'Content'
-      ]))
+      ])
     })
 
     it('three inline, then newline entity', () => {
@@ -925,7 +919,7 @@ describe('parse', () => {
         { type: 'TYPE', value: 'four' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'one',
           params: [],
@@ -948,7 +942,7 @@ describe('parse', () => {
           params: [],
           content: []
         }
-      ]))
+      ])
     })
 
     it('three inline, then parameter then newline entity', () => {
@@ -963,7 +957,7 @@ describe('parse', () => {
         { type: 'TYPE', value: 'four' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'one',
           params: [],
@@ -986,7 +980,7 @@ describe('parse', () => {
           params: [],
           content: []
         }
-      ]))
+      ])
     })
 
     it('should handle empty lines correctly', () => {
@@ -1000,7 +994,7 @@ describe('parse', () => {
         { type: 'TYPE', value: 'lychee' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'fruits',
           params: ['ripe'],
@@ -1019,7 +1013,7 @@ describe('parse', () => {
             }
           ]
         }
-      ]))
+      ])
     })
 
     it('newlines should be allowed in inline content', () => {
@@ -1032,17 +1026,25 @@ describe('parse', () => {
         { type: 'END_INLINE_CONTENT' }
       ]
 
-      ast(tokens).should.eql(selection([
+      ast(tokens).should.eql([
         {
           type: 'thing',
           params: [],
           content: ['very long content']
         }
-      ]))
+      ])
     })
   })
 
   describe('full parse', () => {
+    function selection (content) {
+      return {
+        type: '',
+        params: [],
+        content: content
+      }
+    }
+
     it('should parse a tag with no parameters', () => {
       const source = '@button'
       const expected = selection([
@@ -1488,250 +1490,219 @@ describe('parse', () => {
 
     it('should handle content with square bracket followed by non whitespace', () => {
       const source = '[] this is fine'
-      const expected = {
-        content: ['[] this is fine']
-      }
+      const expected = selection(['[] this is fine'])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('should handle content with square bracket followed by non whitespace', () => {
       const source = '@content\n  [] this is fine'
-      const expected = {
-        content: [
-          {
-            type: 'content',
-            params: [],
-            content: ['[] this is fine']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'content',
+          params: [],
+          content: ['[] this is fine']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('should handle content with square bracket followed by non whitespace', () => {
       const source = '] ;'
-      const expected = {
-        content: ['] ;']
-      }
+      const expected = selection(['] ;'])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('inline should work with square brackets after', () => {
       const source = '@type[content] []'
-      const expected = {
-        content: [
-          {
-            type: 'type',
-            params: [],
-            content: ['content']
-          }, ' []'
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'type',
+          params: [],
+          content: ['content']
+        },
+        ' []'
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('colon in an escaped parameter should be fine', () => {
       const source = '@link [http://example.com]: example.com'
-      const expected = {
-        content: [
-          {
-            type: 'link',
-            params: ['http://example.com'],
-            content: ['example.com']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'link',
+          params: ['http://example.com'],
+          content: ['example.com']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('colon in an escaped parameter should be fine (newline content)', () => {
       const source = '@link [http://example.com]\n  example.com'
-      const expected = {
-        content: [
-          {
-            type: 'link',
-            params: ['http://example.com'],
-            content: ['example.com']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'link',
+          params: ['http://example.com'],
+          content: ['example.com']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('colon in an inline escaped parameter should be fine', () => {
       const source = '@link([http://example.com])[example.com]'
-      const expected = {
-        content: [
-          {
-            type: 'link',
-            params: ['http://example.com'],
-            content: ['example.com']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'link',
+          params: ['http://example.com'],
+          content: ['example.com']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('empty inline parameter should be fine', () => {
       const source = '@link()[example.com]'
-      const expected = {
-        content: [
-          {
-            type: 'link',
-            params: [],
-            content: ['example.com']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'link',
+          params: [],
+          content: ['example.com']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('colon in an inline parameter list should be fine', () => {
       const source = '@link(http://example.com)[example.com]'
-      const expected = {
-        content: [
-          {
-            type: 'link',
-            params: ['http://example.com'],
-            content: ['example.com']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'link',
+          params: ['http://example.com'],
+          content: ['example.com']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('should be able to parse parameter strings containing brackets', () => {
       const source = '@default [rgba(255, 255, 255, 0.5)]: Content'
-      const expected = {
-        content: [
-          {
-            type: 'default',
-            params: ['rgba(255, 255, 255, 0.5)'],
-            content: ['Content']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'default',
+          params: ['rgba(255, 255, 255, 0.5)'],
+          content: ['Content']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('should be able to parse parameter strings containing brackets', () => {
       const source = '@default rgba(255, 255, 255, 0.5): Content'
-      const expected = {
-        content: [
-          {
-            type: 'default',
-            params: ['rgba(255,', '255,', '255,', '0.5)'],
-            content: ['Content']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'default',
+          params: ['rgba(255,', '255,', '255,', '0.5)'],
+          content: ['Content']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('escaping should work for nested closing square brackets', () => {
       const source = '@thing[\\[1, 2, 3\\]]'
-      const expected = {
-        content: [
-          {
-            type: 'thing',
-            params: [],
-            content: ['[1, 2, 3]']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'thing',
+          params: [],
+          content: ['[1, 2, 3]']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('should parse nested square brackets correctly for inline content', () => {
       const source = '@thing[[1, 2, 3]]'
-      const expected = {
-        content: [{
+      const expected = selection([
+        {
           type: 'thing',
           params: [],
           content: ['[1, 2, 3]']
-        }]
-      }
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('nested square brackets should be allowed', () => {
       const source = '@thing: [1, 2, 3]'
-      const expected = {
-        content: [
-          {
-            type: 'thing',
-            params: [],
-            content: ['[1, 2, 3]']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'thing',
+          params: [],
+          content: ['[1, 2, 3]']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('square brackets should be allowed in regular content', () => {
       const source = '@thing: 1, [2, 3]'
-      const expected = {
-        content: [
-          {
-            type: 'thing',
-            params: [],
-            content: ['1, [2, 3]']
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'thing',
+          params: [],
+          content: ['1, [2, 3]']
+        }
+      ])
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('deal with empty newlines', () => {
       const source = '@tag hello\n\n  @tag-a\n  \n  @tag-b'
-      const expected = {
-        content: [
-          {
-            type: 'tag',
-            params: ['hello'],
-            content: [
-              '',
-              {
-                type: 'tag-a',
-                params: [],
-                content: []
-              },
-              '  ',
-              {
-                type: 'tag-b',
-                params: [],
-                content: []
-              }
-            ]
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'tag',
+          params: ['hello'],
+          content: [
+            '',
+            {
+              type: 'tag-a',
+              params: [],
+              content: []
+            },
+            '  ',
+            {
+              type: 'tag-b',
+              params: [],
+              content: []
+            }
+          ]
+        }
+      ])
 
       chai.expect(parse(source)).to.eql(expected)
     })
 
     it('should have correct indentation when multiple entities on the same line are followed by another line', () => {
       const source = '@one: @two\n@three'
-      const expected = {
-        content: [
-          {
-            type: 'one',
-            params: [],
-            content: [
-              {
-                type: 'two',
-                params: [],
-                content: []
-              }
-            ]
-          },
-          {
-            type: 'three',
-            params: [],
-            content: []
-          }
-        ]
-      }
+      const expected = selection([
+        {
+          type: 'one',
+          params: [],
+          content: [
+            {
+              type: 'two',
+              params: [],
+              content: []
+            }
+          ]
+        },
+        {
+          type: 'three',
+          params: [],
+          content: []
+        }
+      ])
 
       chai.expect(parse(source)).to.eql(expected)
     })

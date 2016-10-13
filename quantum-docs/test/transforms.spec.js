@@ -379,28 +379,8 @@ describe('@sidebar', () => {
       dom.create('div')
         .add(stylesheetAsset)
         .add(scriptAsset)
-        .class('qm-docs-sidebar qm-docs-sidebar-left')
+        .class('qm-docs-sidebar')
         .add(selection.transform(transforms))
-        .add(dom.bodyClassed('qm-docs-sidebar-page', true))
-    )
-  })
-
-  it('should render as expected (right)', () => {
-    const selection = quantum.select({
-      type: 'sidebar',
-      params: ['right'],
-      content: [
-        'Content'
-      ]
-    })
-
-    docs.transforms().sidebar(selection, transforms).should.eql(
-      dom.create('div')
-        .add(stylesheetAsset)
-        .add(scriptAsset)
-        .class('qm-docs-sidebar qm-docs-sidebar-right')
-        .add(selection.transform(transforms))
-        .add(dom.bodyClassed('qm-docs-sidebar-page', true))
     )
   })
 })
@@ -725,11 +705,10 @@ describe('@contentSection', () => {
     })
 
     docs.transforms().contentSection(selection, transforms).should.eql(
-      dom.create('div').class('qm-docs-content-section-container')
+      dom.create('div')
+        .class('qm-docs-content-section')
         .add(stylesheetAsset)
-        .add(dom.create('div').class('qm-docs-content-section')
-          .add(dom.create('div').class('qm-docs-centered')
-            .add(selection.transform(transforms))))
+        .add(selection.transform(transforms))
     )
   })
 })

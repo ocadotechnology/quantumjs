@@ -35,6 +35,10 @@ function checkNotFiltered (selection) {
   }
 }
 
+function maybePromiseAll (arr) {
+  return arr.some(x => x ? x.then : false) ? Promise.all(arr) : arr
+}
+
 Selection.prototype = {
   entity: function () {
     return this._entity
@@ -114,7 +118,7 @@ Selection.prototype = {
       const parent = this
       // OPTIM: benchmark and test against not using some
       // OPTIM: don't use recursion here - try and do the loop in place
-      return this._entity.content.some((d) => d.type === type) ||
+      return this._entity.content.some((child) => child.type === type) ||
         this._entity.content.some((child) => {
           return isEntity(child) && select(child, parent).has(type, options)
         })
@@ -143,23 +147,38 @@ Selection.prototype = {
   },
   selectAll: function (type, options) {
     const parent = this
-    let res = undefined
+    const res = []
     if (Array.isArray(type)) {
       const types = type
-      // OPTIM: do this without the filter and map
-      res = this._entity.content.filter((d) => types.indexOf(d.type) > -1)
-        .map((child) => select(child, parent))
+      const a = this._entity.content
+      const l = a.length
+      for (let i = 0; i < l; i++) {
+        const child = a[i]
+        if (types.indexOf(child.type) > -1) {
+          res.push(select(child, parent))
+        }
+      }
     } else {
-      // OPTIM: do this without the filter and map
-      res = this._entity.content.filter((d) => d.type === type)
-        .map((child) => select(child, parent))
+      const a = this._entity.content
+      const l = a.length
+      for (let i = 0; i < l; i++) {
+        const child = a[i]
+        if (child.type === type) {
+          res.push(select(child, parent))
+        }
+      }
     }
 
     if (options && options.recursive) {
-      // OPTIM: do this without the forEach and the recursion
-      this._entity.content.filter(isEntity).forEach((child) => {
-        res = res.concat(select(child, parent).selectAll(type, options))
-      })
+      const a = this._entity.content
+      const l = a.length
+      for (let i = 0; i < l; i++) {
+        const child = a[i]
+        if (isEntity(child)) {
+          // OPTIM: do this without the recursion
+          select(child, parent).selectAll(type, options).forEach(d => res.push(d))
+        }
+      }
     }
 
     if (options && options.required && res.length === 0) {
@@ -258,9 +277,9 @@ Selection.prototype = {
     }
   },
   transform: function (transformer) {
-    return this._entity.content.map((child) => {
+    return maybePromiseAll(this._entity.content.map((child) => {
       return transformer(isEntity(child) ? select(child, this) : child)
-    })
+    }))
   }
 }
 

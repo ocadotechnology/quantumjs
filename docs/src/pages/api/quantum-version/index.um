@@ -7,104 +7,139 @@
   @title Quantum Version
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
+    A page transform for writing versioned content
 
 @contentSection
   @topic About
-    @sheet
-      This module provides a transform that enables the generation of incrementally versioned content.
-      The version transform works well with the @hyperlink(../changelog/)[changelog] and @hyperlink(../api/)[api] transforms
-      as the content is iterated upon in a similar method, showing the various tags available.
+    This module provides a page transform that enables the generation of
+    incrementally versioned content. The version transform works well with the
+    @hyperlink(../quantum-changelog/)[quantum-changelog] and
+    @hyperlink(../quantum-api/)[quantum-api] transforms for generating versioned
+    api documentation.
 
   @topic Example
-    @p: Using the version transform is easy:
+    Here is an example that explains what the transform does. Given the following
+    input:
 
-    @@codeblock js
-      var quantum = require('quantum-js')
-      var version = require('quantum-version')
-      var html = require('quantum-html')
+    @subsection Input File
+      @@codeblock um
+        @version 1.0.0
+          @api Module 1
+            @object example
+              @added
+              @property exampleString [String]: A string
 
-      var versionOptions = {
-        // set version options here
-      }
+        @version 2.0.0
+          @api Module 1
+            @object example
+              @property exampleFunction [Function]: A Function
 
-      quantum.read('index.um')
-        .map(version(versionOptions)) // this is the bit that deals with @version entities
-        .map(html(htmlTransforms))
-        .map(html.stringify())
-        .map(quantum.write('target'))
+    The version transorm would output two files, equivalent to:
 
-    @p: Example markup
-    @@codeblock um
-      @version 1.0.0
+    @subsection Output File 1
+      @@codeblock um
         @api Module 1
           @object example
             @added
             @property exampleString [String]: A string
 
-      @version 2.0.0
+    @subsection Output File 2
+      @@codeblock um
         @api Module 1
-          @object example
-            @property exampleFunction [Function]: A Function
-
-    @p: The above example would output two files, equivalent to:
-    @h4: File 1
-    @@codeblock um
-      @api Module 1
-        @object example
-          @added
-          @property exampleString [String]: A string
-    @h4: File 2
-    @@codeblock um
-      @api Module 1
-        @updated
-        @object example
           @updated
-          @property exampleString [String]: A string
-          @property exampleFunction [Function]: A Function
-            @added
+          @object example
+            @updated
+            @property exampleString [String]: A string
+            @property exampleFunction [Function]: A Function
+              @added
 
   @topic Api
     @api
       @function api
-        @description:
-          @p: A function that returns a function for processing @(@version) entities and outputting a combined set of versions.
-          @p: This is the function returned from @code[require('quantum-version')]
-        @param? options [Object]: The options to use when processing versions
-          @property versions [Array[String]]: An array of the versions to process for when versioning. If left undefined, all the versions found will be rendered.
+        @description
+          A function that returns a function for processing @(@version) entities
+          and outputting a combined set of versions. This is the function returned
+          from @code[require('quantum-version')].
+
+          @@codeblock js
+            const html = require('quantum-html')
+            const api = require('quantum-api')
+
+            function pipeline (page) {
+              return Promise.resolve(page)
+                .then(api({
+                  versions: ['1.0.0', '1.1.0', '2.0.0'],
+                  outputLatest: true
+                }))
+                .then(html())
+                .then(html.stringify())
+            }
+
+        @param? options [Object]
+          @description
+            The options to use when processing versions
+          @property versions [Array[String]]
+            @description
+              An array of the versions to process for when versioning. If left
+              undefined, all the versions found will be rendered.
           @property targetVersions [Array[String]]
-            @description:
-              @p: The versions to output.
-              @p: This allows a subset of the complete list of versions to be output whilst still processing the changes made in other versions.
-              @p: If left undefined, this will be the same as @code[versions].
+            @description
+              The versions to output.
 
-          @property outputLatest [Boolean]: Whether to output the latest version without the filename modifier applied.
-            @default true
-          @property entityMatchLookup [Function]: A function that returns a unique string for each entity to allow entities to be compared.
-            @param entity [Object]: The current entity.
-            @returns String: A unique signature or id that describes an entity. This enables the version transform to compare entities and check whether they should be merged when versioning.
-            @default
-              @codeblock js
-                function  (entity) {
-                  entity = quantum.select(entity)
-                  var name = entity.ps()
-                  var params = entity.selectAll(['param', 'param?']).map(function (param) {return param.ps()})
-                  return entity.type + ': ' + name + '(' + params.join(', ') + ')'
-                }
+              This allows a subset of the complete list of versions to be output
+              whilst still processing the changes made in other versions. If left
+              undefined, this will be the same as @code[versions].
 
-          @property filenameModifier [Function]: A function for modifying the filename of versioned content so that each version has it's own file.
-            @param filename [String]: The name of the current file
-            @param version [String]: The name of the current version
-            @returns String: The new filename
+          @property outputLatest [Boolean]
+            @description
+              Whether to output the latest version without the filename modifier
+              applied.
+            @default: true
+
+          @property entityMatchLookup [Function]
+            @description
+              A function that returns a unique string for each distinct entity to
+              allow entities to be compared.
             @default
-              @codeblock js
-                function (filename, version) {
-                  if (endsWith(filename, 'index.um')) {
-                    return filename.replace('index.um', version) + '/' + 'index.um'
-                  } else {
-                    return filename.replace('.um', '') + '/' + version + '.um'
+              @@codeblock js
+                {
+                  entityMatchLookup: function (entity) {
+                    const selection = quantum.select(entity)
+                    const name = selection.ps()
+                    const params = selection.selectAll(['param', 'param?'])
+                      .map(param => param.ps())
+                    return selection.type() + ': ' + name + '(' + params.join(', ') + ')'
                   }
                 }
-          @property taggable [Array[String]]: The array of entities to look for tags within, including the element itself
+            @param entity [Object]: The entity to serialise into a string.
+            @returns String
+              @description
+                A unique signature or id that describes an entity. This enables
+                the version transform to compare entities and check whether they
+                should be merged when versioning.
+
+          @property filenameModifier [Function]
+            @description
+              A function for constructing the filename for verisioned pages.
+            @default
+              @codeblock js
+                {
+                  filenameModifier: function (filename, version) {
+                    if (endsWith(filename, 'index.um')) {
+                      return filename.replace('index.um', version) + '/' + 'index.um'
+                    } else {
+                      return filename.replace('.um', '') + '/' + version + '.um'
+                    }
+                  }
+                }
+            @param filename [String]: The file being processed.
+            @param version [String]: The file version to generate a filename for.
+            @returns String: The generated filename
+
+          @property taggable [Array[String]]
+            @description
+              The array of entities that can have tags (or can have children that
+              contain tags)
             @default
               @codeblock js
                 [
@@ -121,20 +156,29 @@
                   'extraclass',
                   'childclass'
                 ]
-          @property indexable [Array[String]]: The array of entities to look for tags within, excluding the element itself, i.e., only looking within children of the entity.
+
+          @property indexable [Array[String]]
+            @description
+              The array of entities to look for tags within, excluding the element
+              itself, i.e., only looking within children of the entity.
             @default
               @codeblock js
                 [
                   'param',
                   'group'
                 ]
-          @property unmergeable [Array[String]]: Elements that should not be merged if an updated version is found, e.g. @(@description) elements
-            @default [[]]
+
+          @property unmergeable [Array[String]]
+            @description
+              Elements that should not be merged if an updated version is
+              found, e.g. @(@description) elements
+            @default: []
 
           @property tags [Object]
             @description:
-              @p: An object containing all the tags to look for when versioning the content.
-              @p: A tag is defined as follows:
+              An object containing all the tags to look for when versioning the
+              content. A tag is defined as follows:
+
               @@codeblock js
                 {
                   entityName: {         // The @entityName of the tag (e.g. @added)
@@ -142,6 +186,7 @@
                     removeEntity: false // Whether to remove the tagged entity in the next version
                   }
                 }
+                
             @default
               @codeblock js
                 {
@@ -164,11 +209,10 @@
                 }
 
         @returns Function
-          @description: A function that generates the versioned parts of an object.
+          @description
+            A page transform that expands pages with @code(um)[@version] entities
+            into multiple pages - one for each version.
           @param obj [Object]: The object to process content for.
-          @returns [Object/Array[Object]]: If there is versionable content, an array of processed versions is returned. Otherwise, the original object is returned.
-
-      @entity version
-        @params versionName
-        @description:
-          @p: The entity used to define a version
+          @returns [Object/Array[Object]]
+            If there is versionable content, an array of processed versions is
+            returned. Otherwise, the original object is returned.
