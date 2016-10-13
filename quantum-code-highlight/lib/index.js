@@ -14,28 +14,33 @@ const stylesheetAsset = dom.asset({
 // TODO: try and get quantum registered in hljs
 hljs.registerLanguage('um', quantumSyntax)
 
-function highlightCode (language, code) {
-  if (language) {
+function highlightCode (code, language) {
+  if (language === 'nohighlight') {
+    return code
+  } else if (language) {
     return hljs.highlight(language, code, true).value
   } else {
     return hljs.highlightAuto(code).value
   }
 }
 
+function createHighlightedDom (code, language) {
+  return dom.create('code')
+    .text(highlightCode(code, language), {escape: false})
+    .add(stylesheetAsset)
+}
+
 function codeblock (selection, transform) {
   const language = selection.ps()
   return dom.create('div')
-    .class('quantum-code-highlight-codeblock' + (language ? ' language-' + language : ''))
-    .add(dom.create('pre').text(highlightCode(language, selection.cs()), {escape: false}))
-    .add(stylesheetAsset)
+    .class('quantum-code-highlight-codeblock' + (language && language !== 'nohighlight' ? ' language-' + language : ''))
+    .add(dom.create('pre').add(createHighlightedDom(selection.cs(), language)))
 }
 
 function code (selection, transform) {
   const language = selection.ps()
-  return dom.create('code')
-    .class('quantum-code-highlight-code' + (language ? ' language-' + language : ''))
-    .text(highlightCode(language, selection.cs()), {escape: false})
-    .add(stylesheetAsset)
+  return createHighlightedDom(selection.cs(), language)
+    .class('quantum-code-highlight-code' + (language && language !== 'nohighlight' ? ' language-' + language : ''))
 }
 
 function transforms (opts) {
@@ -45,4 +50,6 @@ function transforms (opts) {
   })
 }
 
+module.exports.highlightCode = highlightCode
+module.exports.stylesheetAsset = stylesheetAsset
 module.exports.transforms = transforms

@@ -39,3 +39,7 @@ popd
 pushd quantum-template
 npm test
 popd
+
+pushd quantum-markdown
+npm test
+popd

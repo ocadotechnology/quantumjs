@@ -1,0 +1,14 @@
+{
+  "name": "quantum-markdown-example",
+  "version": "2.0.0",
+  "description": "An example markdown page for testing out quantum-markdown",
+  "private": true,
+  "scripts": {
+    "start": "quantum watch"
+  },
+  "devDependencies": {
+    "quantum-js": "^2.0.0",
+    "quantum-html": "^2.0.0",
+    "quantum-markdown": "^2.0.0"
+  }
+}
