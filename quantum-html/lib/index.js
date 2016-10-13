@@ -50,7 +50,7 @@ function bodyClassed (selection, transform) {
 }
 
 function title (selection, transform) {
-  return dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
+  return dom.head(dom.create('title').text(selection.ps()), {id: 'title'})
 }
 
 function head (selection, transform) {
