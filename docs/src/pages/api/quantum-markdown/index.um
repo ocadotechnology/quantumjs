@@ -14,13 +14,13 @@
 
   @topic Example
     Example Markup:
-    @codeblock markdown
-      \# H1
-      \## H2
-      \### H3
-      \#### H4
-      \##### H5
-      \###### H6
+    @@codeblock markdown
+      # H1
+      ## H2
+      ### H3
+      #### H4
+      ##### H5
+      ###### H6
 
       Alternatively, for H1 and H2, an underline-ish style:
 
@@ -67,13 +67,13 @@
       > This line is part of the same quote.
 
     Example Result:
-    @markdown
-      \# H1
-      \## H2
-      \### H3
-      \#### H4
-      \##### H5
-      \###### H6
+    @@markdown
+      # H1
+      ## H2
+      ### H3
+      #### H4
+      ##### H5
+      ###### H6
 
       Alternatively, for H1 and H2, an underline-ish style:
 
