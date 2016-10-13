@@ -6,7 +6,7 @@
 
 .qm-changelog-head {
   font-size: 1.5em;
-  margin: 1.5em 0 0.5em 0;
+  margin: 0 0 0.5em 0;
 }
 
 .qm-changelog-body {}
@@ -16,13 +16,17 @@
   padding: 0.5em;
 }
 
-.qm-changelog-item {
+.qm-changelog-description:empty {
+  display: none;
+}
+
+.qm-changelog-group {
   margin: 0.5em 0;
   padding: 0;
   border-left: 2px solid #00ADA8;
 }
 
-.qm-changelog-item-head {
+.qm-changelog-group-head {
   display: -ms-flexbox;
   display: -webkit-box;
   display: flex;
@@ -33,15 +37,15 @@
           align-items: center;
 }
 
-.qm-changelog-item-title {
+.qm-changelog-group-title {
   -ms-flex: 1;
   -webkit-box-flex: 1;
           flex: 1;
 }
 
-.qm-changelog-item-link {}
+.qm-changelog-group-link {}
 
-.qm-changelog-item-labels {
+.qm-changelog-group-labels {
   margin: -0.2em;
 }
 
@@ -51,11 +55,11 @@
   vertical-align: 1px;
 }
 
-.qm-changelog-item-body {}
+.qm-changelog-group-body {}
 
-.qm-changelog-item-description {}
+.qm-changelog-group-description {}
 
-.qm-changelog-item-entries {}
+.qm-changelog-group-entries {}
 
 .qm-changelog-entry {
   display: -ms-flexbox;
@@ -66,7 +70,7 @@
 }
 
 .qm-changelog-entry,
-.qm-changelog-item-description {
+.qm-changelog-group-description {
   margin: 0.5em 0;
   padding: 0.5em;
 }
@@ -82,6 +86,14 @@
 
 .qm-changelog-entry-head {}
 
+.qm-changelog-entry-title {}
+
+.qm-changelog-entry-issues {}
+
+.qm-changelog-entry-issue {
+  padding: 0.15em;
+}
+
 .qm-changelog-entry-body {}
 
 .qm-changelog-entry-head + .qm-changelog-entry-body {
@@ -92,18 +104,16 @@
 .qm-changelog-entry-description {}
 
 .qm-changelog-description > :first-child,
-.qm-changelog-item-description > :first-child,
+.qm-changelog-group-description > :first-child,
 .qm-changelog-entry-description > :first-child {
   margin-top: 0;
 }
 
 .qm-changelog-description > :last-child,
-.qm-changelog-item-description > :last-child,
+.qm-changelog-group-description > :last-child,
 .qm-changelog-entry-description > :last-child {
   margin-bottom: 0;
 }
-
-.qm-changelog-entry-extra {}
 
 .qm-changelog-label {
   display: inline-block;
@@ -114,7 +124,7 @@
   border-radius: 1px;
 }
 
-.qm-changelog-item-description,
+.qm-changelog-group-description,
 .qm-changelog-description,
 .qm-changelog-parent-content,
 .qm-changelog-entry {
@@ -122,46 +132,46 @@
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
 }
 
-.qm-changelog-background-added {
+.qm-changelog-label-added {
   background: #98b313;
 }
 
-.qm-changelog-background-updated {
+.qm-changelog-label-updated {
   background: #AB7BC1;
 }
 
-.qm-changelog-background-deprecated {
+.qm-changelog-label-deprecated {
   background: #A9A9A9;
 }
 
-.qm-changelog-background-removed {
+.qm-changelog-label-removed {
   background: #EC3A65;
 }
 
-.qm-changelog-background-enhancement {
+.qm-changelog-label-enhancement {
   background: #44AFAC;
 }
 
-.qm-changelog-background-bugfix {
+.qm-changelog-label-bugfix {
   background: #D69B24;
 }
 
-.qm-changelog-background-docs {
+.qm-changelog-label-docs {
   background: #5E99D0;
 }
 
-.qm-changelog-background-info {
+.qm-changelog-label-info {
   background: #6F6F6F;
 }
 
-.qm-changelog-background-added,
-.qm-changelog-background-updated,
-.qm-changelog-background-deprecated,
-.qm-changelog-background-removed,
-.qm-changelog-background-enhancement,
-.qm-changelog-background-bugfix,
-.qm-changelog-background-docs,
-.qm-changelog-background-info {
+.qm-changelog-label-added,
+.qm-changelog-label-updated,
+.qm-changelog-label-deprecated,
+.qm-changelog-label-removed,
+.qm-changelog-label-enhancement,
+.qm-changelog-label-bugfix,
+.qm-changelog-label-docs,
+.qm-changelog-label-info {
   color: white;
 }
 

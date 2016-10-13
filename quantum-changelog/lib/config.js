@@ -1,9 +1,8 @@
 'use strict'
-const path = require('path')
 
 function defaultDocsUrlLookup (version, api) {
   return {
-    link: path.join('/', 'docs', version, api.split(' ').join('-').toLowerCase()),
+    link: '/docs/' + version + '/' + api.split(' ').join('-').toLowerCase(),
     text: 'Docs'
   }
 }
@@ -11,6 +10,9 @@ function defaultDocsUrlLookup (version, api) {
 module.exports = {
   namespace: 'changelog',
   targetVersions: undefined, // Target array of versions, used to exclude versions from the list.
+
+  // XXX: these will be replaced by the 'languages' option
+  // XXX: what does an element being 'tagged' mean - explain this better
   taggable: [ // Elements that can be tagged and should be indexed
     'function',
     'prototype',
@@ -25,56 +27,29 @@ module.exports = {
     'extraclass',
     'childclass'
   ],
+  // XXX: what does an element being 'indexed' mean - think of a more descriptive name
   indexable: [ // Elements that can't be tagged but should be indexed
     'param',
     'group'
   ],
+
+  // XXX: remove this option - the list should just be defined in the reverse order to start with
   reverseVisibleList: false, // Whether the list of items should be shown in the order provided or reversed. Default reversed.
+
+  // XXX: decide if these should be in here - or should rely on template? Template is probably the better option
   dontAddDocsLink: false, // Whether docs links should be ignored and the docsUrlLookup should not be run
-  renderSingleItemInRoot: false, // Whether changelogs with a single item should render the entries in the root of that changelog
   milestoneUrl: '',
   issueUrl: '',
   docsUrlLookup: defaultDocsUrlLookup, // The lookup for urls from a changelog to a docs page
-  tags: {
-    added: {
-      keyText: 'Added', // The text for the key
-      iconClass: 'fa fa-fw fa-plus', // The class for the icon
-      order: 8 // The order to display tagged content in
-    },
-    updated: {
-      keyText: 'Updated',
-      iconClass: 'fa fa-fw fa-level-up',
-      order: 7
-    },
-    deprecated: {
-      keyText: 'Deprecated',
-      iconClass: 'fa fa-fw fa-recycle',
-      order: 5
-    },
-    removed: {
-      keyText: 'Removed',
-      iconClass: 'fa fa-fw fa-times',
-      order: 4
-    },
-    enhancement: {
-      keyText: 'Enhancement',
-      iconClass: 'fa fa-fw fa-magic',
-      order: 6
-    },
-    bugfix: {
-      keyText: 'Bug Fix',
-      iconClass: 'fa fa-fw fa-bug',
-      order: 3
-    },
-    docs: {
-      keyText: 'Documentation',
-      iconClass: 'fa fa-fw fa-book',
-      order: 2
-    },
-    info: {
-      keyText: 'Information',
-      iconClass: 'fa fa-fw fa-info',
-      order: 1
-    }
-  }
+  tags: [
+    // XXX: remove the dependence on font awesome
+    { entityType: 'info', displayName: 'Information', iconClass: 'fa fa-fw fa-info' },
+    { entityType: 'docs', displayName: 'Documentation', iconClass: 'fa fa-fw fa-book' },
+    { entityType: 'bugfix', displayName: 'Bug Fix', iconClass: 'fa fa-fw fa-bug' },
+    { entityType: 'removed', displayName: 'Removed', iconClass: 'fa fa-fw fa-times' },
+    { entityType: 'deprecated', displayName: 'Deprecated', iconClass: 'fa fa-fw fa-recycle' },
+    { entityType: 'enhancement', displayName: 'Enhancement', iconClass: 'fa fa-fw fa-magic' },
+    { entityType: 'updated', displayName: 'Updated', iconClass: 'fa fa-fw fa-level-up' },
+    { entityType: 'added', displayName: 'Added', iconClass: 'fa fa-fw fa-plus' }
+  ]
 }

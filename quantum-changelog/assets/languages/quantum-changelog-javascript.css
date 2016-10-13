@@ -1,0 +1,19 @@
+.qm-changelog-javascript-function-params:before {
+  content: '(';
+}
+
+.qm-changelog-javascript-function-params:after {
+  content: ')';
+}
+
+.qm-changelog-javascript-function-param:after {
+  content: ', ';
+}
+
+.qm-changelog-javascript-function-param:last-child:after {
+  content: '';
+}
+
+.qm-changelog-javascript-function-param-name:after {
+    content: ': ';
+}
