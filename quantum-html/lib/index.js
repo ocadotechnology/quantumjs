@@ -39,9 +39,13 @@ function setupElement (type, selection, transform, parsePs) {
     .transform(transform))
 }
 
-function elementTransform (type) {
+function setupHeadElement (type, selection, transform, parsePs) {
+  return dom.head(setupElement(type, selection, transform, parsePs))
+}
+
+function elementTransform (type, head) {
   return (selection, transform) => {
-    return setupElement(type, selection, transform, true)
+    return (head ? setupHeadElement : setupElement)(type, selection, transform, true)
   }
 }
 
@@ -91,14 +95,6 @@ function css (selection, transforms) {
   return dom.head(dom.create('style').text(selection.cs(), {escape: false}))
 }
 
-function link (selection, transforms) {
-  return dom.head(setupElement('link', selection, transforms, false))
-}
-
-function meta (selection, transforms) {
-  return dom.head(setupElement('link', selection, transforms, false))
-}
-
 function transforms (options) {
   // No options at the moment - this is just future proofing
   return Object.freeze({
@@ -111,8 +107,8 @@ function transforms (options) {
     hyperlink: hyperlink,
     js: js,
     css: css,
-    link: link,
-    meta: meta,
+    link: elementTransform('link', true),
+    meta: elementTransform('meta', true),
     a: elementTransform('a'),
     b: elementTransform('b'),
     br: elementTransform('br'),
