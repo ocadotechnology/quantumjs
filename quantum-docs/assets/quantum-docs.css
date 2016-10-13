@@ -574,7 +574,7 @@ p:last-child {
   padding-top: 42px;
 }
 
-.qm-docs-table {
+/* .qm-docs-table {
   border-spacing: 0;
 }
 
@@ -617,6 +617,33 @@ p:last-child {
 .qm-docs-table tr:last-child th:last-child,
 .qm-docs-table tr:last-child td:last-child {
   border-bottom-right-radius: 0.2em;
+} */
+
+.qm-docs-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: block;
+  overflow: auto;
+  width: 100%;
+}
+
+.qm-docs-table th {
+  font-weight: bold
+}
+
+.qm-docs-table th,
+.qm-docs-table td {
+  border: 1px solid #ddd;
+  padding: 0.4em 0.8em;
+}
+
+.qm-docs-table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.qm-docs-table tr:nth-child(2n) {
+  background-color: #f8f8f8;
 }
 
 @media (max-width: 800px) {
