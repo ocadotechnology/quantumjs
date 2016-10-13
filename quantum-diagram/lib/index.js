@@ -10,11 +10,11 @@ const textHeight = 35
 const labelTextHeight = 24
 
 function transforms (opts) {
-  const svgPath = (points, close) => {
+  function svgPath (points, close) {
     return `M${points.map((d) => d[0] + ',' + d[1]).join(',')}${(close ? 'z' : '')}`
   }
 
-  const diagram = (selection, transform) => {
+  function diagram (selection, transform) {
     function createRect (layout, cls, radius) {
       return dom.create('rect')
         .class(cls)
@@ -227,8 +227,7 @@ function transforms (opts) {
       }))
   }
 
-  return Object.freeze({
-  diagram})
+  return Object.freeze({ diagram })
 }
 
 module.exports.transforms = transforms

@@ -4,8 +4,22 @@
         Adds a @code(html)[<{{ps}}>] element
 
         @@codeblock um
+          \# Create a <{{ps}}> element
           @{{ps}}
-      @group
+
+          \# Create a <{{ps}}> element with class='className'
+          @{{ps}} .className
+
+          \# Create a <{{ps}}> element with id='idName'
+          @{{ps}} #idName
+
+          \# Create a <{{ps}}> element with id='idName' and class='className'
+          @{{ps}} #idName.className
+
+          \# Chain multiple classes without spaces
+          @{{ps}} #idName.className.otherClassName
+
+      @group Child Entities
         @property @id
           @description: Sets the id attribute property to a value
           @params: value
@@ -67,22 +81,22 @@
         @object css
           @params: css
           @description
-            Adds some styles to be applied to the page (added to the head)
+            Adds some styles to be applied to the page (adds a @code(html)[<style>] element to the @code(html)[<head>])
 
         @object js
           @params: javascript
           @description
-            Adds some javascript to be executed on the page (added at the end of the body)
+            Adds some javascript to be executed on the page (adds a @code(html)[<script>] element to the @code(html)[<body>])
 
         @object script
           @params link
           @description
-            Adds a link to a javascript file
+            Adds a link to a javascript file to the bottom of the @code(html)[<body>]
 
         @object stylesheet
           @params link
           @description
-            Adds a link to a css file
+            Adds a link to a css file to the bottom of the @code(html)[<head>]
 
         @object hyperlink
           @params link: content
@@ -93,7 +107,7 @@
         @object title
           @params title
           @description
-            Sets the page title (adds a <title)
+            Sets the page title (adds a @code(html)[<title>] element to the @code(html)[<head>])
 
   @topic Api
     @api quantum-html

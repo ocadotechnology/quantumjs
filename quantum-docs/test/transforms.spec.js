@@ -379,28 +379,8 @@ describe('@sidebar', () => {
       dom.create('div')
         .add(stylesheetAsset)
         .add(scriptAsset)
-        .class('qm-docs-sidebar qm-docs-sidebar-left')
+        .class('qm-docs-sidebar')
         .add(selection.transform(transforms))
-        .add(dom.bodyClassed('qm-docs-sidebar-page', true))
-    )
-  })
-
-  it('should render as expected (right)', () => {
-    const selection = quantum.select({
-      type: 'sidebar',
-      params: ['right'],
-      content: [
-        'Content'
-      ]
-    })
-
-    docs.transforms().sidebar(selection, transforms).should.eql(
-      dom.create('div')
-        .add(stylesheetAsset)
-        .add(scriptAsset)
-        .class('qm-docs-sidebar qm-docs-sidebar-right')
-        .add(selection.transform(transforms))
-        .add(dom.bodyClassed('qm-docs-sidebar-page', true))
     )
   })
 })
@@ -511,8 +491,8 @@ describe('@navigationMenu', () => {
     docs.transforms().navigationMenu(selection, transforms).should.eql(
       dom.create('div')
         .add(stylesheetAsset)
-        .class('qm-docs-navication-menu-wrapper')
-        .add(dom.create('div').class('qm-docs-navication-menu'))
+        .class('qm-docs-navigation-menu-wrapper')
+        .add(dom.create('div').class('qm-docs-navigation-menu'))
     )
   })
 
@@ -542,23 +522,23 @@ describe('@navigationMenu', () => {
     docs.transforms().navigationMenu(selection, transforms).should.eql(
       dom.create('div')
         .add(stylesheetAsset)
-        .class('qm-docs-navication-menu-wrapper')
+        .class('qm-docs-navigation-menu-wrapper')
         .add(dom.create('div')
-          .class('qm-docs-navication-menu')
-          .add(dom.create('div').class('qm-docs-navication-menu-section')
-            .add(dom.create('div').class('qm-docs-navication-menu-section-title').text('Section One'))
-            .add(dom.create('div').class('qm-docs-navication-menu-section-body')
-              .add(dom.create('a').class('qm-docs-navication-menu-page')
+          .class('qm-docs-navigation-menu')
+          .add(dom.create('div').class('qm-docs-navigation-menu-section')
+            .add(dom.create('div').class('qm-docs-navigation-menu-section-title').text('Section One'))
+            .add(dom.create('div').class('qm-docs-navigation-menu-section-body')
+              .add(dom.create('a').class('qm-docs-navigation-menu-page')
                 .attr('href', '/page/one')
                 .text('Page One'))
           ))
-          .add(dom.create('div').class('qm-docs-navication-menu-section')
-            .add(dom.create('div').class('qm-docs-navication-menu-section-title').text('Section Two'))
-            .add(dom.create('div').class('qm-docs-navication-menu-section-body')
-              .add(dom.create('a').class('qm-docs-navication-menu-page')
+          .add(dom.create('div').class('qm-docs-navigation-menu-section')
+            .add(dom.create('div').class('qm-docs-navigation-menu-section-title').text('Section Two'))
+            .add(dom.create('div').class('qm-docs-navigation-menu-section-body')
+              .add(dom.create('a').class('qm-docs-navigation-menu-page')
                 .attr('href', '/page/one')
                 .text('Page One'))
-              .add(dom.create('a').class('qm-docs-navication-menu-page')
+              .add(dom.create('a').class('qm-docs-navigation-menu-page')
                 .attr('href', '/page/two')
                 .text('Page Two'))
           ))
@@ -725,11 +705,10 @@ describe('@contentSection', () => {
     })
 
     docs.transforms().contentSection(selection, transforms).should.eql(
-      dom.create('div').class('qm-docs-content-section-container')
+      dom.create('div')
+        .class('qm-docs-content-section')
         .add(stylesheetAsset)
-        .add(dom.create('div').class('qm-docs-content-section')
-          .add(dom.create('div').class('qm-docs-centered')
-            .add(selection.transform(transforms))))
+        .add(selection.transform(transforms))
     )
   })
 })

@@ -1,4 +1,11 @@
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 body {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -511,6 +518,7 @@ p:last-child {
   width: 100%;
   z-index: 1000;
   padding: 0 15px;
+  box-shadow: 1px 1px 1px 1px #d8d8d8;
 }
 
 .qm-docs-sidebar-page {
@@ -538,7 +546,7 @@ p:last-child {
 }
 
 .qm-docs-header-title {
-  color: white;
+  color: #828282;
   line-height: 42px;
   font-size: 24px;
   font-weight: 100;
@@ -548,16 +556,18 @@ p:last-child {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .qm-docs-header-link {
   border-bottom: solid 3px rgba(255, 255, 255, 0.5);
-  color: white;
+  color: #828282;
   line-height: 39px;
   background: rgba(255,255,255,0.1);
   padding: 0 1em;
   margin: 0 0.25em;
   cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .qm-docs-header-link:hover {

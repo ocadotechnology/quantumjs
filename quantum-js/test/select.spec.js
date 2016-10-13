@@ -918,7 +918,7 @@ describe('select', () => {
         return Promise.resolve(value.type ? value.type() : value)
       }
 
-      return Promise.all(select(entity).transform(transformer)).then((res) => {
+      return select(entity).transform(transformer).then((res) => {
         res.should.eql(['one', 'two', 'three'])
       })
     })

@@ -287,7 +287,7 @@ function stringify (elements, options) {
     .join('')
 
   const bodyElements = elements
-    .map(e => e.stringify ? e.stringify() : (isString(e) ? e : ''))
+    .map(e => e !== undefined && e.stringify ? e.stringify() : (isString(e) ? e : ''))
     .join('')
 
   const assets = extractByType(elements, Asset)

@@ -22,7 +22,7 @@ function defaultValue (selection, transforms) {
   if (selection.has('default')) {
     return dom.create('div').class('qm-api-default')
       .add(dom.create('span').class('qm-api-default-key').text('Default: '))
-      .add(dom.create('span').class('qm-api-default-value').text(selection.select('default').cs()))
+      .add(dom.create('span').class('qm-api-default-value').add(selection.select('default').transform(transforms)))
   }
 }
 

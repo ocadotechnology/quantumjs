@@ -12,6 +12,8 @@ describe('read', () => {
 
   it('should work', () => {
     const expected = {
+      type: '',
+      params: [],
       content: [
         {
           type: 'test',
@@ -56,6 +58,8 @@ describe('read', () => {
     const filename = 'test/files/read/source1.um'
 
     const expected = {
+      type: '',
+      params: [],
       content: [
         {
           type: 'test',
@@ -100,6 +104,8 @@ describe('read', () => {
     const filename = 'test/files/read/source4.um'
 
     const expected = {
+      type: '',
+      params: [],
       content: [
         {
           type: 'test',
@@ -130,6 +136,8 @@ describe('read', () => {
     const filename = 'test/files/read/source7.um'
 
     const expected = {
+      type: '',
+      params: [],
       content: [
         {
           type: 'test',
@@ -174,6 +182,8 @@ describe('read', () => {
     const filename = 'test/files/read/source2.um'
 
     const expected = {
+      type: '',
+      params: [],
       content: [
         {
           type: 'inlinedContent',
@@ -204,6 +214,8 @@ describe('read', () => {
         dest: filename
       }),
       content: {
+        type: '',
+        params: [],
         content: [
           {
             type: 'test',
