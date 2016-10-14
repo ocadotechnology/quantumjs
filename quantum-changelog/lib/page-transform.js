@@ -10,7 +10,7 @@ const javascript = require('./languages/javascript')
 const css = require('./languages/css')
 
 /* This extracts the versions and api sections from the selection passed in */
-function extractApis (selection) {
+function extractApis (selection, reverseVisibleList) {
   const stop = timesink.start('extractApis')
   const stopselect = timesink.start('extractApis-select')
   const versionSelections = selection.selectAll('version', { recursive: true })
@@ -35,6 +35,10 @@ function extractApis (selection) {
   const versions = Array.from(unorderedVersionSelectionsMap.keys())
   // XXX: support reverse ordering
   versions.sort(utils.semanticVersionComparator)
+
+  if (reverseVisibleList) {
+    versions.reverse()
+  }
 
   const apisGroupedByVersion = new Map()
   versions.forEach(version => {
@@ -118,18 +122,15 @@ function buildApiMap (api, previousApiMap, isFirstVersion) {
   const languages = [javascript, css]
 
   languages.forEach(language => {
-    language.entityTypes.forEach(type => {
-      // XXX: does feeding these all into the select all in one go get better performance?
-      api.selectAll(type, { recursive: true }).forEach(selection => {
-        const key = language.hashEntry(selection, api)
-        if (key) {
-          const previousEntry = previousApiMap ? previousApiMap.get(key) : undefined
-          const newEntry = changelogEntryForChange(selection, previousEntry, isFirstVersion, language)
-          if (newEntry) {
-            apiMap.set(key, newEntry)
-          }
+    api.selectAll(language.entityTypes, { recursive: true }).forEach(selection => {
+      const key = language.hashEntry(selection, api)
+      if (key) {
+        const previousEntry = previousApiMap ? previousApiMap.get(key) : undefined
+        const newEntry = changelogEntryForChange(selection, previousEntry, isFirstVersion, language)
+        if (newEntry) {
+          apiMap.set(key, newEntry)
         }
-      })
+      }
     })
   })
 
@@ -192,11 +193,11 @@ function buildChangelog (page, version, data) {
         if (entry.selection.select(entry.tagType).has('description')) {
           entryContent.push(entry.selection.select(entry.tagType).select('description').entity())
         } else if (entry.selection.cs().length > 0) {
-          page.warning({
-            module: 'quantum-changelog',
-            problem: '@' + entry.tagType + ' entity found with description content, but no description section was found',
-            resolution: 'use a @description block'
-          })
+          // page.warning({
+          //   module: 'quantum-changelog',
+          //   problem: '@' + entry.tagType + ' entity found with description content, but no description section was found',
+          //   resolution: 'use a @description block'
+          // })
         }
       }
 
@@ -222,13 +223,14 @@ function buildChangelog (page, version, data) {
 
 function process (page, wrapper, options) {
   const groupByApi = true // XXX: make this an option / entity flag
+  const reverseVisibleList = true // XXX: make this an option / entity flag
 
   const stop = timesink.start('process')
   const processSelection = wrapper.select('process')
   const wrapperVersions = wrapper.selectAll('version')
 
   // pull out the api entries from the content
-  const {versions: actualVersions, apisGroupedByVersion} = extractApis(processSelection)
+  const {versions: actualVersions, apisGroupedByVersion} = extractApis(processSelection, reverseVisibleList)
   const targetVersionList = options.targetVersions || actualVersions
 
   // Next we are going to build an 'api map' for each (version, api) pair.

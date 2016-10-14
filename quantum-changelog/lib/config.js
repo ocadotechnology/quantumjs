@@ -33,7 +33,6 @@ module.exports = {
     'group'
   ],
 
-  // XXX: remove this option - the list should just be defined in the reverse order to start with
   reverseVisibleList: false, // Whether the list of items should be shown in the order provided or reversed. Default reversed.
 
   // XXX: decide if these should be in here - or should rely on template? Template is probably the better option

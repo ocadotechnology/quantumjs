@@ -24,6 +24,7 @@ const merge = require('merge')
 const dom = require('quantum-dom')
 const path = require('path')
 const html = require('quantum-html')
+const utils = require('./utils')
 
 // XXX: This should come from the config
 const javascript = require('./languages/javascript')
@@ -126,7 +127,7 @@ function group (selection, options, tagsByName, tagNames, transforms) {
     .class('qm-changelog-group-title')
     .add(link || selection.ps())
 
-  const entryEntities = selection.selectAll(tagNames)
+  const entryEntities = selection.selectAll(tagNames).sort(utils.compareEntrySelections)
   const entries = dom.create('div').class('qm-changelog-group-entries')
     .add(entryEntities.map(ent => entry(ent, options, tagsByName, transforms)))
 

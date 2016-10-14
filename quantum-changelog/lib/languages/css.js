@@ -40,7 +40,6 @@ function changelogEntryForChange (selection, previousEntry, isFirstVersion) {
 
 /* Builds the header ast for an entry */
 function buildHeaderASTForEntry (entry) {
-  console.log('here')
   const selection = entry.selection
   const type = selection.type()
 
