@@ -1,123 +1,47 @@
 @inline ../../../templates/sidebar-page.um
 
 @versionList
-  @version 1.0.0
+  @version 2.0.0
 
 @topSection
-  @title Quantum Diagram
+  @title Quantum Markdown
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
-  @description
+  @description: A transform for using markdown inline inside a Quantum site.
 
 @contentSection
   @topic About
-    TODO
+    This module provides the @code(um)[@markdown] transform for rendering using @hyperlink(https://github.com/chjj/marked)[marked] to parse the markdown to HTML which can then be rendered by quantum.
 
-  @topic Example
-    Example Markup:
+    The features available are defined by their support in the marked module.
+
+  @topic Inline Example
+    To render markdown in quantum inline, you need to escape the @code(um)[#] character as Quantum treats these as comments.
+
+    This can be done in two ways, either using @code(um)[\#], or by escaping the entire block using @code(um)[@@markdown]
+
+    Without this, lines with the @code(um)[#] at the start will not be rendered.
+
+    Example Code:
     @@codeblock markdown
-      # H1
-      ## H2
-      ### H3
-      #### H4
-      ##### H5
-      ###### H6
+      @@markdown
+        # Example heading
 
-      Alternatively, for H1 and H2, an underline-ish style:
+        Example _italic_ or **bold** text.
 
-      Alt-H1
-      ======
-
-      Alt-H2
-      ------
-
-      Emphasis, aka italics, with *asterisks* or _underscores_.
-
-      Strong emphasis, aka bold, with **asterisks** or __underscores__.
-
-      Combined emphasis with **asterisks and _underscores_**.
-
-      Strikethrough uses two tildes. ~~Scratch this.~~
-
-      1. First ordered list item
-      2. Another item
-        * Unordered sub-list.
-
-      ```javascript
-      var s = "JavaScript syntax highlighting";
-      alert(s);
-      ```
-
-      ```
-      No language indicated, so no syntax highlighting.
-      But let's throw in a <b>tag</b>.
-      ```
-
-      | Tables        | Are           | Cool  |
-      | ------------- |:-------------:| -----:|
-      | col 3 is      | right-aligned | $1600 |
-      | col 2 is      | centered      |   $12 |
-      | zebra stripes | are neat      |    $1 |
-
-      Markdown | Less | Pretty
-      --- | --- | ---
-      *Still* | `renders` | **nicely**
-      1 | 2 | 3
-
-      > Blockquotes are very handy in email to emulate reply text.
-      > This line is part of the same quote.
 
     Example Result:
     @@markdown
-      # H1
-      ## H2
-      ### H3
-      #### H4
-      ##### H5
-      ###### H6
+      # Example heading
+      Example _italic_ or **bold** text.
 
-      Alternatively, for H1 and H2, an underline-ish style:
+  @topic Markdown File Example
+    It is also possible to include markdown inline directly from @code(nohighlight)[.md] files:
 
-      Alt-H1
-      ======
+    When inlining using this method, you should use @code(um)[@markdown] instead of @code(um)[@@markdown]
 
-      Alt-H2
-      ------
+    Example code:
+    @@codeblock um
+      @markdown: @inline path/to/file.md
 
-      Emphasis, aka italics, with *asterisks* or _underscores_.
-
-      Strong emphasis, aka bold, with **asterisks** or __underscores__.
-
-      Combined emphasis with **asterisks and _underscores_**.
-
-      Strikethrough uses two tildes. ~~Scratch this.~~
-
-      1. First ordered list item
-      2. Another item
-        * Unordered sub-list.
-
-      ```javascript
-      var s = "JavaScript syntax highlighting";
-      alert(s);
-      ```
-
-      ```
-      No language indicated, so no syntax highlighting.
-      But let's throw in a <b>tag</b>.
-      ```
-
-      | Tables        | Are           | Cool  |
-      | ------------- |:-------------:| -----:|
-      | col 3 is      | right-aligned | $1600 |
-      | col 2 is      | centered      |   $12 |
-      | zebra stripes | are neat      |    $1 |
-
-      Markdown | Less | Pretty
-      --- | --- | ---
-      *Still* | `renders` | **nicely**
-      1 | 2 | 3
-
-      > Blockquotes are very handy in email to emulate reply text.
-      > This line is part of the same quote.
-
-  @topic Api
-    TODO
+  @topic Api and Entities
+    @inline api.um

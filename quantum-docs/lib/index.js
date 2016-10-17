@@ -238,7 +238,7 @@ function topSection (selection, transforms) {
   const source = selection.has('source') ? selection.select('source') : undefined
 
   return dom.create('div').class('qm-docs-top-section')
-    .add(pageTitle ? dom.head(dom.create('title').attr('name', pageTitle), {id: 'title'}) : undefined)
+    .add(pageTitle ? dom.head(dom.create('title').text(pageTitle), {id: 'title'}) : undefined)
     .add(stylesheetAsset)
     .add(breadcrumb(selection.select('breadcrumb'), transforms))
     .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
