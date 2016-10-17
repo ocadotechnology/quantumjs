@@ -7,22 +7,25 @@
     This page will guide you through creating your first page
 
 @contentSection
-  @siteSidebars
 
-  @notice TODO
-    Make this actually work!
+  @topic Introduction
+    This page will guide you through setting up your first site built with
+    QuantumJS. At the end you will have written some quantum markup and will
+    have compiled it into a HTML page that can be viewed in the browser.
 
   @topic Install quantum
-    Run these commands in the terminal to install the quantum command line
-    tool and a standard pipeline to build pages with.
+    The first step is to install quantum globally. Here is the command for doing
+    that:
 
     @codeblock bash
       npm install -g quantum-js
 
   @topic Initialise the project
-    Create a new directory for our example project to live in, and cd into it
+    Next we are going to set up the project and install the dependencies we need.
 
-    @codeblock bash
+    Create a new directory for our example project to live in, and cd into it:
+
+    @@codeblock bash
       mkdir example-quantum-site
       cd example-quantum-site
 
@@ -31,13 +34,48 @@
     @codeblock bash
       npm init
 
-    Then run the following to initialise a standard quantum project:
+    Then install some of the quantum modules we are going to use:
 
     @codeblock bash
-      quantum init
+      npm install --save-dev quantum-html quantum-docs
 
-    This will generate a config file with a standard pipeline set up, and will
-    install all the dependencies needed for this default pipeline.
+  @topic Create a config file
+    Next we'll create a config file for building our project. Create a file called
+    @bold[quantum.config.js] and copy the following into it:
+
+    @@codeblock js
+      const html = require('quantum-html')
+      const docs = require('quantum-docs')
+
+      /*
+        Define the set of entity transforms - these transform
+        individual entries in the page to virtual dom.
+      */
+      const htmlTransforms = {
+        html: html.transforms(),
+        docs: docs.transforms()
+      }
+
+      /*
+        Define the pipeline - this transforms an entire page from
+        quantum ast to HTML.
+      */
+      function pipeline (page) {
+        return Promise.resolve(page)
+          .then(html({ transforms: htmlTransforms }))
+          .then(html.stringify())
+      }
+
+      /* Export the pipeline, the pages we want to transform */
+      module.exports = {
+        pipeline: pipeline,
+        pages: '*.um'
+      }
+
+
+
+
+
 
   @topic Create an example page
     Create a file called index.um and copy this into it:
@@ -53,7 +91,7 @@
   @topic Build the site
     Run this command in the terminal to build the site
 
-    @codeblock bash
+    @@codeblock bash
       quantum build
 
     Check the @code['target'] directory for the output. There should be a file
@@ -62,13 +100,13 @@
   @topic Watching for changes
     Run this command to build the site, and then rebuild when there are changes.
 
-    @codeblock bash
+    @@codeblock bash
       quantum watch
 
     The watch command also starts up a web browser with live reload enabled so
     whenever you save, your browser will update to show the changes.
 
-    After running @code(bash)[quantum watch], try opening @hyperlink(http://localhost:8080)[http://localhost:8080]
+    After running @code(bash)[quantum watch], open @hyperlink(http://localhost:8080)[http://localhost:8080]
     in your browser and then change something in index.um.
 
   @notice [What Next?]

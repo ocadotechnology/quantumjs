@@ -491,11 +491,15 @@ function ast (tokens) {
     i++
   }
 
-  return state
+  return state.content
 }
 
 function parse (str) {
-  return ast(tokenize(str))
+  return {
+    type: '',
+    params: [],
+    content: ast(tokenize(str))
+  }
 }
 
 module.exports = parse

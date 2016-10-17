@@ -37,7 +37,7 @@ describe('pipeline', () => {
       }
     })
 
-    return html()(page)
+    return html({includeCommonMetaTags: false})(page)
       .then((page) => {
         page.file.dest.should.equal('filename.um')
         page.content.elements.length.should.equal(1)
@@ -60,7 +60,7 @@ describe('pipeline', () => {
       }
     })
 
-    return html()(page)
+    return html({includeCommonMetaTags: false})(page)
       .then((page) => {
         page.file.dest.should.equal('filename.um')
         page.content.elements.length.should.equal(1)
@@ -123,7 +123,7 @@ describe('element', () => {
       }
     })
 
-    return html()(page)
+    return html({includeCommonMetaTags: false})(page)
       .then((page) => {
         page.file.dest.should.equal('filename.um')
         page.content.elements.length.should.equal(1)
@@ -147,7 +147,7 @@ describe('element', () => {
         }
       })
 
-      return html()(page)
+      return html({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')
@@ -171,7 +171,7 @@ describe('element', () => {
         }
       })
 
-      return html()(page)
+      return html({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')
@@ -195,7 +195,7 @@ describe('element', () => {
         }
       })
 
-      return html()(page)
+      return html({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')
@@ -219,7 +219,7 @@ describe('element', () => {
         }
       })
 
-      return html()(page)
+      return html({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')
@@ -243,7 +243,7 @@ describe('element', () => {
         }
       })
 
-      return html()(page)
+      return html({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')

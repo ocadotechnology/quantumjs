@@ -379,6 +379,8 @@ describe('watch', () => {
             watch: true
           }),
           content: {
+            type: '',
+            params: [],
             content: ['Content 1', 'Content 3']
           },
           meta: {}
@@ -413,6 +415,8 @@ describe('watch', () => {
             watch: true
           }),
           content: {
+            type: '',
+            params: [],
             content: ['Content 1', 'Content 3']
           },
           meta: {}
@@ -449,6 +453,8 @@ describe('watch', () => {
             watch: true
           }),
           content: {
+            type: '',
+            params: [],
             content: ['Content 1', 'Content 3']
           },
           meta: {}
@@ -485,6 +491,8 @@ describe('watch', () => {
             watch: true
           }),
           content: {
+            type: '',
+            params: [],
             content: ['Content 0', 'Content 2']
           },
           meta: {}
@@ -521,6 +529,8 @@ describe('watch', () => {
             watch: true
           }),
           content: {
+            type: '',
+            params: [],
             content: ['Content 1']
           },
           meta: {}
@@ -640,6 +650,8 @@ describe('watch', () => {
             watch: true
           }),
           content: {
+            type: '',
+            params: [],
             content: ['Content 1', 'Content 3']
           },
           meta: {}

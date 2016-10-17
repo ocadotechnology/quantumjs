@@ -39,9 +39,13 @@ function setupElement (type, selection, transform, parsePs) {
     .transform(transform))
 }
 
-function elementTransform (type) {
+function setupHeadElement (type, selection, transform, parsePs) {
+  return dom.head(setupElement(type, selection, transform, parsePs))
+}
+
+function elementTransform (type, head) {
   return (selection, transform) => {
-    return setupElement(type, selection, transform, true)
+    return (head ? setupHeadElement : setupElement)(type, selection, transform, true)
   }
 }
 
@@ -50,7 +54,7 @@ function bodyClassed (selection, transform) {
 }
 
 function title (selection, transform) {
-  return dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
+  return dom.head(dom.create('title').text(selection.ps()), {id: 'title'})
 }
 
 function head (selection, transform) {
@@ -103,6 +107,8 @@ function transforms (options) {
     hyperlink: hyperlink,
     js: js,
     css: css,
+    link: elementTransform('link', true),
+    meta: elementTransform('meta', true),
     a: elementTransform('a'),
     b: elementTransform('b'),
     br: elementTransform('br'),
@@ -121,8 +127,6 @@ function transforms (options) {
     input: elementTransform('input'),
     label: elementTransform('label'),
     li: elementTransform('li'),
-    link: elementTransform('link'),
-    meta: elementTransform('meta'),
     ol: elementTransform('ol'),
     option: elementTransform('option'),
     p: elementTransform('p'),
