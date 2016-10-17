@@ -229,6 +229,15 @@ describe('parse', () => {
       ])
     })
 
+    it('should not parse comments inside escaped blocks', () => {
+      tokenize('@@fruits\n  #comment\n  indent').should.eql([
+        { type: 'TYPE', value: 'fruits' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: '#comment' },
+        { type: 'CONTENT', value: 'indent' }
+      ])
+    })
+
     it('comment escaping should work correctly', () => {
       tokenize('@fruits\n  \\#content\n  indent').should.eql([
         { type: 'TYPE', value: 'fruits' },

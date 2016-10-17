@@ -146,7 +146,7 @@ function tokenize (str) {
           pos += ind + 1
           row++
           emit('EMPTY_CONTENT', str.substring(start, pos - 1))
-        } else if (str[pos + ind] !== '#') {
+        } else if (str[pos + ind] !== '#' || consumingUnparsed) {
           if (ind > indent[indent.length - 1]) {
             emit('INDENT', ind - indent[indent.length - 1])
             indent.push(ind)
