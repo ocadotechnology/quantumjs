@@ -44,6 +44,6 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "postcss-cli": "^2.6.0",
-    "quantum-js": "^1.2.0"
+    "quantum-js": "^2.0.0"
   }
 }

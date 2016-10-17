@@ -135,17 +135,16 @@
 .qm-markdown code {
   background: rgba(0, 0, 0, 0.05);
   border-radius: 3px;
-  font-size: 85%;
-  margin: 0;
-  padding: 0.3em;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 0.2em 0.4em;
 }
 
 
 .qm-markdown pre {
-  background-color: #f7f7f7;
+  background: rgba(0, 0, 0, 0.05);
   border-radius: 3px;
-  font-size: 85%;
-  line-height: 1.45;
+  margin: 0.5em 0;
   overflow: auto;
   padding: 1em;
   word-break: normal;

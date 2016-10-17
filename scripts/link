@@ -61,7 +61,7 @@ npm link
 popd
 
 pushd quantum-markdown
-npm link quantum-code-highlight quantum-dom
+npm link quantum-code-highlight quantum-dom quantum-js
 npm install
 npm link
 popd
