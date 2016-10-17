@@ -39,13 +39,9 @@ function setupElement (type, selection, transform, parsePs) {
     .transform(transform))
 }
 
-function setupHeadElement (type, selection, transform, parsePs) {
-  return dom.head(setupElement(type, selection, transform, parsePs))
-}
-
-function elementTransform (type, head) {
+function elementTransform (type) {
   return (selection, transform) => {
-    return (head ? setupHeadElement : setupElement)(type, selection, transform, true)
+    return setupElement(type, selection, transform, true)
   }
 }
 
@@ -107,8 +103,8 @@ function transforms (options) {
     hyperlink: hyperlink,
     js: js,
     css: css,
-    link: elementTransform('link', true),
-    meta: elementTransform('meta', true),
+    link: elementTransform('link'),
+    meta: elementTransform('meta'),
     a: elementTransform('a'),
     b: elementTransform('b'),
     br: elementTransform('br'),

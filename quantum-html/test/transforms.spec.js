@@ -303,7 +303,7 @@ describe('transforms', () => {
       })
 
       html.transforms().title(selection, transformEntity())
-        .should.eql(dom.head(dom.create('title').attr('name', 'My Title'), {id: 'title'}))
+        .should.eql(dom.head(dom.create('title').text('My Title'), {id: 'title'}))
     })
   })
 

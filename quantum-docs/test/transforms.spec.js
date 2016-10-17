@@ -642,7 +642,7 @@ describe('@topSection', () => {
 
     docs.transforms().topSection(selection, transforms).should.eql(
       dom.create('div').class('qm-docs-top-section')
-        .add(dom.head(dom.create('title').attr('name', 'Title'), {id: 'title'}))
+        .add(dom.head(dom.create('title').text('Title'), {id: 'title'}))
         .add(stylesheetAsset)
         .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transforms))
         .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
