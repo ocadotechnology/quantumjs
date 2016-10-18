@@ -24,7 +24,6 @@
       @div: Welcome to the site, sign in below
       @signIn
 
-
     @i .fa.fa-arrow-right
       @attr style: padding: 1em; # hack
 

@@ -277,16 +277,28 @@ function relatedButtons (selection, transforms) {
 }
 
 function table (selection, transforms) {
-  return dom.create('table')
-    .class('qm-docs-table')
-    .add(stylesheetAsset)
-    .add(selection.selectAll(['header', 'row']).map(row => {
-      const isHeader = row.type() === 'header'
-      return dom.create('tr').add(row.selectAll('cell').map(cell => {
-        return dom.create(isHeader ? 'th' : 'td')
-          .add(html.paragraphTransform(cell, transforms))
-      }))
+  function createRow (row) {
+    const isHeader = row.type() === 'header'
+    return dom.create('tr').add(row.selectAll('cell').map(cell => {
+      return dom.create(isHeader ? 'th' : 'td')
+        .add(html.paragraphTransform(cell, transforms))
     }))
+  }
+
+  const table = dom.create('table')
+    .class('qm-docs-table')
+
+  if (selection.has('header')) {
+    table.add(dom.create('thead')
+      .add(selection.selectAll('header').map(createRow)))
+  }
+  if (selection.has('row')) {
+    table.add(dom.create('thead')
+      .add(selection.selectAll('row').map(createRow)))
+  }
+
+  return table
+    .add(stylesheetAsset)
 }
 
 function transforms (opts) {

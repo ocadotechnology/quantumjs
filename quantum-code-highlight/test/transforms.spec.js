@@ -55,12 +55,13 @@ describe('transforms', () => {
       dom.create('div')
         .class('quantum-code-highlight-codeblock language-js')
         .add(dom.create('pre')
-          .text('<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">x</span>) </span>{ <span class="hljs-keyword">return</span> x * x }', {escape: false}))
-        .add(dom.asset({
-          url: '/assets/quantum-code-highlight.css',
-          file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
-          shared: true
-        }))
+          .add(dom.create('code')
+            .text('<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">x</span>) </span>{ <span class="hljs-keyword">return</span> x * x }', {escape: false})
+            .add(dom.asset({
+              url: '/assets/quantum-code-highlight.css',
+              file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
+              shared: true
+            }))))
     )
   })
 
@@ -75,12 +76,34 @@ describe('transforms', () => {
       dom.create('div')
         .class('quantum-code-highlight-codeblock')
         .add(dom.create('pre')
-          .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false}))
-        .add(dom.asset({
-          url: '/assets/quantum-code-highlight.css',
-          file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
-          shared: true
-        }))
+          .add(dom.create('code')
+            .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false})
+            .add(dom.asset({
+              url: '/assets/quantum-code-highlight.css',
+              file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
+              shared: true
+            }))))
+    )
+  })
+
+  it('not highlight a codeblock with "nohighlight"', () => {
+    const selection = quantum.select({
+      type: 'code',
+      params: ['nohighlight'],
+      content: ['function (x) { return x * x }']
+    })
+
+    codeHighlight().codeblock(selection).should.eql(
+      dom.create('div')
+        .class('quantum-code-highlight-codeblock')
+        .add(dom.create('pre')
+          .add(dom.create('code')
+            .text('function (x) { return x * x }')
+            .add(dom.asset({
+              url: '/assets/quantum-code-highlight.css',
+              file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
+              shared: true
+            }))))
     )
   })
 })

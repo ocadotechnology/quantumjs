@@ -1,0 +1,26 @@
+@version 2.0.0
+  @api quantum-markdown
+    @group Entities
+      @object @markdown
+        @description
+          A renderer for rendering @code(nohighlight)[markdown] using quantum
+
+          Example Code:
+          @@codeblock markdown
+            @@markdown
+              # Example heading
+
+              Example _italic_ or **bold** text.
+
+
+          Example Result:
+          @@markdown
+            # Example heading
+            Example _italic_ or **bold** text.
+
+
+          @code(um)[@inline] can also be used:
+          @@codeblock um
+            @markdown: @inline path/to/file.md
+
+

@@ -39,6 +39,7 @@
             @page /api/quantum-template/: quantum-template
             @page /api/quantum-diagram/: quantum-diagram
             @page /api/quantum-version/: quantum-version
+            @page /api/quantum-markdown/: quantum-markdown
 
       @content
         @templateContent
