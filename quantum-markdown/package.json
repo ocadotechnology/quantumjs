@@ -2,10 +2,8 @@
   "name": "quantum-markdown",
   "version": "2.0.0",
   "description": "quantum support for markdown",
-  "author": "James Smyth <james.smyth@ocado.com>",
-  "contributors": [
-    "Charlie Frater <charlie.frater@ocado.com>"
-  ],
+  "author": "Charlie Frater <charlie.frater@ocado.com>",
+  "contributors": [],
   "engines": {
     "node": ">=4.0.0"
   },
