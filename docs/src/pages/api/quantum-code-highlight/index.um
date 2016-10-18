@@ -1,7 +1,7 @@
 @inline ../../../templates/sidebar-page.um
 
 @versionList
-  @version 1.0.0
+  @version 2.0.0
 
 @topSection
   @title Quantum Code Highlight
@@ -10,10 +10,26 @@
 
 @contentSection
   @topic About
-    TODO
+    This module provides the transforms for @code(um)[@code] and @code(um)[@codeblock] entities.
+    The code and codeblock entities render highlighted code blocks.
 
   @topic Example
-    TODO
+    @section Example Code
+      @@codeblock um
+        Inline code @code(js)[var inlineJS = true;] with text
 
-  @topic Api
-    TODO
+        @codeblock css
+          .class {
+            background: #FFF;
+          }
+
+    @section Example Result
+      Inline code @code(js)[var inlineJS = true;] with text
+
+      @codeblock css
+        .class {
+          background: #FFF;
+        }
+
+  @topic Api and Entities
+    @inline api.um
