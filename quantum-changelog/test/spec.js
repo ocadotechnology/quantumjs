@@ -1,6 +1,6 @@
 'use strict'
 require('chai').should()
-const changelog = require('..')
+const changelog = require('../')
 const path = require('path')
 
 describe('pipeline', () => {

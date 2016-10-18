@@ -1,6 +1,6 @@
 'use strict'
 require('chai').should()
-const quantum = require('..')
+const quantum = require('../')
 
 describe('clone', () => {
   it('should clone an entity', () => {

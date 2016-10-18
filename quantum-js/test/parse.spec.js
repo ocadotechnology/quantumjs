@@ -2,7 +2,7 @@
 const chai = require('chai')
 chai.should()
 
-const quantum = require('..')
+const quantum = require('../')
 const parse = quantum.parse
 const tokenize = parse.tokenize
 const ast = parse.ast

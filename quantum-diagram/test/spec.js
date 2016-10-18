@@ -1,6 +1,6 @@
 'use strict'
 require('chai').should()
-const diagram = require('..')
+const diagram = require('../')
 
 describe('pipeline', () => {
   it('should export the correct things', () => {
