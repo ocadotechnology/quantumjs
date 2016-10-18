@@ -3,7 +3,7 @@ require('chai').should()
 const path = require('path')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
-const codeHighlight = require('..').transforms
+const codeHighlight = require('../').transforms
 
 describe('transforms', () => {
   it('highlight some inline code', () => {

@@ -1,7 +1,7 @@
 'use strict'
 
 const chai = require('chai')
-const docs = require('..')
+const docs = require('../')
 const quantum = require('quantum-js')
 
 const Page = quantum.Page

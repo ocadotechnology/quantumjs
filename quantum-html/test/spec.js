@@ -3,7 +3,7 @@
 const chai = require('chai')
 const path = require('path')
 const dom = require('quantum-dom')
-const html = require('..')
+const html = require('../')
 const quantum = require('quantum-js')
 
 chai.should()

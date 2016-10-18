@@ -2,7 +2,7 @@
 
 const chai = require('chai')
 const path = require('path')
-const docs = require('..')
+const docs = require('../')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const html = require('quantum-html')

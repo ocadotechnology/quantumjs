@@ -1,0 +1,26 @@
+{
+  "config": {
+    "srcDirs": "quantum-js/lib/**/*.js quantum-dom/lib/**/*.js quantum-html/lib/**/*.js quantum-template/lib/**/*.js quantum-version/lib/**/*.js quantum-api/lib/**/*.js quantum-changelog/lib/**/*.js quantum-docs/lib/**/*.js quantum-diagram/lib/**/*.js quantum-code-highlight/lib/**/*.js",
+    "testDirs": "quantum-js/test/**/*spec.js quantum-dom/test/**/*spec.js quantum-html/test/**/*spec.js quantum-template/test/**/*spec.js quantum-version/test/**/*spec.js quantum-api/test/**/*spec.js quantum-changelog/test/**/*spec.js quantum-docs/test/**/*spec.js quantum-diagram/test/**/*spec.js quantum-code-highlight/test/**/*spec.js"
+  },
+  "scripts": {
+    "lint": "eslint $npm_package_config_srcDirs",
+    "test-and-cover": "./node_modules/istanbul/lib/cli.js cover -x lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec $npm_package_config_testDirs",
+    "test": "npm run lint && npm run test-and-cover",
+    "clean": "rm -r coverage; true && rm -r target; true",
+    "clean-all": "./scripts/clean",
+    "install-all": "./scripts/install",
+    "link-all": "./scripts/link",
+    "unlink-all": "./scripts/unlink",
+    "test-all": "./scripts/test"
+  },
+  "devDependencies": {
+    "eslint": "^3.3.1",
+    "eslint-config-standard": "^6.0.0-beta.3",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.1.2"
+  },
+  "private": true
+}

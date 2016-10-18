@@ -6,12 +6,17 @@ const chokidar = require('chokidar')
 const EventEmitter = require('events')
 const util = require('util')
 
-const quantum = require('..')
+const quantum = require('../')
 const watch = quantum.watch
 const File = quantum.File
 const Page = quantum.Page
+const path = require('path')
 
 describe('watcher', () => {
+  const currDir = process.cwd()
+  before(() => process.chdir(path.join(__dirname, '../')))
+  after(() => process.chdir(currDir))
+
   it('should watch the right files for change', () => {
     return watch.watcher('target/test/watch-test/*').then((watcher) => {
       watcher.files().then((files) => {
@@ -358,6 +363,10 @@ describe('watcher', () => {
 })
 
 describe('watch', () => {
+  const currDir = process.cwd()
+  before(() => process.chdir(path.join(__dirname, '../')))
+  after(() => process.chdir(currDir))
+
   it('should watch inline files', (done) => {
     const specs = {
       files: 'target/test/watch-change-inline-test/index.um',
