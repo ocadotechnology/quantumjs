@@ -4,7 +4,7 @@
     @inline resources.um
 
     @header
-      @icon /resources/logo.png
+      @icon /resources/logo.svg
       @title QuantumJS
 
     @sidebarPage

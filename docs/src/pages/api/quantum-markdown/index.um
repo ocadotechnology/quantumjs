@@ -21,18 +21,30 @@
 
     Without this, lines with the @code(um)[#] at the start will not be rendered.
 
-    Example Code:
-    @@codeblock markdown
+    @section Example Code
+      @@codeblock markdown
+        @markdown
+          \### Escaped Heading
+          ### Quantum Comment (will not show)
+
+          Some text
+
+        @@markdown
+          ### Example heading
+
+          Example _italic_ or **bold** text.
+
+    @section Example Result
+      @markdown
+        \### Escaped Heading
+        ### Quantum Comment (will not show)
+
+        Some text
+
       @@markdown
-        # Example heading
+        ### Example heading
 
         Example _italic_ or **bold** text.
-
-
-    Example Result:
-    @@markdown
-      # Example heading
-      Example _italic_ or **bold** text.
 
   @topic Markdown File Example
     It is also possible to include markdown inline directly from @code(nohighlight)[.md] files:

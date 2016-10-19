@@ -3,49 +3,11 @@
     @group Api
       @function transforms
         @description
-          The function for adding the transforms to the quantum pipeline
+          The function for adding the transforms to the quantum pipeline.
 
-          Example:
+          This is the function returned from @code[require('quantum-code-highlight')]
 
-          @bold: script.js
-          @codeblock js
-            const codeHighlight = require('quantum-code-highlight')
-            const html = require('quantum-html')
-            const quantum = require('quantum-js')
-
-            const htmlTransforms = {
-              highlight: codeHighlight.transforms(),
-            }
-
-            quantum.read('file.um')
-              .map(html({ transforms: htmlTransforms }))
-              .map(html.stringify())
-
-          @bold: file.um
-          @@codeblock um
-            @h1: Heading
-
-            @p: Page content here
-
-            @codeblock js
-              var a = true;
-
-          @bold: Result
-          @codeblock html
-            <!DOCTYPE html>
-            <html>
-              <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-                <style>
-                  /* page and highlight styles */
-                </style>
-              </head>
-              <body>
-                <h1>Heading</h1>
-                <p>Page content here</p>
-                <div class="quantum-code-highlight-codeblock language-js"><pre><span class="hljs-keyword">var</span> a = <span class="hljs-literal">true</span>;</pre></div>
-              </body>
-            </html>
+          See the @hyperlink(/docs/api/)[Using the CLI] and @hyperlink(/docs/api/)[Using the API] page for more information about how to use transforms
 
     @group Entities
       @object @code
@@ -71,7 +33,7 @@
 
           @code(js)[var a = true]
 
-          # @code(nohighlight)[some code without highlighting]
+          @code(nohighlight)[some code without highlighting]
 
 
       @object @codeblock
@@ -102,6 +64,6 @@
           @codeblock js
             var a = true
 
-          # @codeblock nohighlight
-          #   some code without highlighting
+          @codeblock nohighlight
+            some code without highlighting
 
