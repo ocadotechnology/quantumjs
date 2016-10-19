@@ -293,7 +293,7 @@ function table (selection, transforms) {
       .add(selection.selectAll('header').map(createRow)))
   }
   if (selection.has('row')) {
-    table.add(dom.create('thead')
+    table.add(dom.create('tbody')
       .add(selection.selectAll('row').map(createRow)))
   }
 
