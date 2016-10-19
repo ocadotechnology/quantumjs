@@ -13,7 +13,7 @@ const quantumSite = require('./src/transforms/transforms')
 
 const htmlOptions = {
   embedAssets: true,
-  assetPath: '/assets'
+  assetPath: '/resources'
 }
 
 const htmlTransforms = {

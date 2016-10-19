@@ -235,9 +235,10 @@ function wrapper (pageContent, wrapperOptions) {
     // find the place to mount the rest of the page's content
     const contentEntity = template.select('content').select(contentEntityType, {recursive: true})
 
-    // find out where the mount point is
-    const position = contentEntity.parent().content().indexOf(contentEntity.entity())
     const parentContent = contentEntity.parent().content()
+
+    // find out where the mount point is
+    const position = parentContent.indexOf(contentEntity.entity())
 
     // get the content to place at the mount point (ie remove all @templates from the page)
     const nonTemplateContent = selection.filter(x => x.type !== 'template')
