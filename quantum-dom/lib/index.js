@@ -321,7 +321,7 @@ function stringify (elements, options) {
 
   return Promise.all([stylesheets, scripts])
     .spread((stylesheets, scripts) => {
-      const head = '<head>' + headElements + stylesheets.join('') + '</head>'
+      const head = '<head>' + stylesheets.join('') + headElements + '</head>'
       const openBodyTag = bodyClass ? '<body class="' + bodyClass + '">' : '<body>'
       const body = openBodyTag + bodyElements + scripts.join('') + '</body>'
       const html = '<!DOCTYPE html>\n' + '<html>' + head + body + '</html>'
