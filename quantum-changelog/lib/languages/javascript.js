@@ -21,10 +21,10 @@ const entityTypes = [
 
 /* Hashes an api entry to a string - used for linking entities together across versions */
 function hashEntry (apiEntry, root) {
-  const stop = timesink.start('hashEntry')
+  const stop = timesink.start('javascript-hashEntry')
   let current = apiEntry
   let key = ''
-  while(current !== root) {
+  while (current !== root) {
     const type = current.type()
     const name = current.param(0)
     if (type === 'function' || type === 'method' || type === 'constructor') {
@@ -38,11 +38,24 @@ function hashEntry (apiEntry, root) {
   return key
 }
 
+/*
+  Extracts the useful information from a selection and returns an object that
+  represents that api entry. This is only used by this language, so can be
+  whatever we want
+*/
+function extractEntry (selection, previousExtraction) {
+  const type = selection.type()
+
+  return {
+
+  }
+}
+
 /* Returns a changelog entry for the change between two entries. Can be undefined */
 function changelogEntryForChange (selection, previousEntry, isFirstVersion) {
   /*
     Language rules
-    1. If a description changes in any of the entityTypes, add an updated tag
+    1. If a description changes in any of the entityTypes, add an updated tag - move to general eventually?
     2. For function-like entries, any change to the return type or parameter descriptions should also cause an updated tag to be added
     3. For events, any changes to the data should case an updated tag to be added
   */
@@ -108,6 +121,7 @@ function createDivider (selection) {
   return parent.param(0) + separator
 }
 
+// XXX: rename to createHeaderDOM
 function createHeader (selection) {
   const type = selection.select('type').ps()
 
