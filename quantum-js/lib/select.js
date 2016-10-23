@@ -109,21 +109,17 @@ Selection.prototype = {
       this._entity.content = cs.split('\n')
       return this
     } else {
-      // OPTIM: without the filter (and join?)
       return this._entity.content.filter(isText).join('\n')
     }
   },
   has: function (type, options) {
     if (options && options.recursive) {
       const parent = this
-      // OPTIM: benchmark and test against not using some
-      // OPTIM: don't use recursion here - try and do the loop in place
       return this._entity.content.some((child) => child.type === type) ||
         this._entity.content.some((child) => {
           return isEntity(child) && select(child, parent).has(type, options)
         })
     } else {
-      // OPTIM: benchmark and test against not using some
       return this._entity.content.some((child) => child.type === type)
     }
   },
@@ -134,7 +130,6 @@ Selection.prototype = {
     return this._entity.content.length > 0
   },
   isEmpty: function () {
-    // OPTIM: remove the use of some (and perhaps trim?)
     return !this._entity.content.some((d) => {
       return isEntity(d) || d.trim() !== ''
     })
