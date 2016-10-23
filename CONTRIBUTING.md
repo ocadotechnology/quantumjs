@@ -9,7 +9,7 @@ There are a couple of ways you can help out:
 
  2. Add new features. Check the issue tracker for tasks tagged with 'Idea' or
     'New Feature'. If you have a new idea that isn't yet in the issue tracker, add
-    an issue, and we can discuss!
+    an issue, and we can discuss.
 
  3. Improve the documentation. If you come across something that isn't well documented
     and want to help improve the documentation, submit a pull request to this repository.
