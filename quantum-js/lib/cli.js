@@ -100,8 +100,19 @@ function copyResources (config, options, logger) {
     .map((file) => copyResource(file, logger), {concurrency: options.concurrency})
 }
 
+function getLoggerWrapper (config) {
+  switch (config.loglevel) {
+    case 'none':
+      return silentLogger
+    case 'error':
+      return errorLogger
+    default:
+      return allLogger
+  }
+}
+
 function build (config) {
-  const logger = config.logger
+  const logger = getLoggerWrapper(config)(config.logger || defaultLogger)
   const options = {concurrency: config.concurrency || 1, dest: config.dest}
   const pipeline = config.pipeline
 
@@ -139,7 +150,7 @@ function startServer (options) {
 }
 
 function watch (config) {
-  const logger = config.logger
+  const logger = getLoggerWrapper(config)(config.logger || defaultLogger)
   const options = {concurrency: config.concurrency || 1, dest: config.dest || 'target', port: config.port || 8080}
   const pipeline = config.pipeline
 
@@ -186,10 +197,18 @@ const commands = {
   list: list
 }
 
-function silentLogger (evt) {
-  if (evt.type === 'error') {
-    console.error(evt.error.stack || evt.error)
+function silentLogger (logger) { return () => {} }
+
+function errorLogger (logger) {
+  return (evt) => {
+    if (evt.type === 'error') {
+      logger(evt)
+    }
   }
+}
+
+function allLogger (logger) {
+  return (evt) => logger(evt)
 }
 
 function defaultLogger (evt) {
@@ -229,8 +248,8 @@ function defaultLogger (evt) {
 }
 
 function cli () {
-  const silent = process.argv.find((arg) => arg === '--silent' || arg === '-s') !== undefined
   const command = process.argv.find((arg) => arg === 'build' || arg === 'watch' || arg === 'list')
+  const loglevel = process.argv.find((arg) => arg.startsWith('--loglevel='))
 
   const customConfigFile = process.argv.find((arg) => arg.startsWith('--config='))
   const configFile = customConfigFile ? customConfigFile.slice(9) : 'quantum.config.js'
@@ -238,7 +257,7 @@ function cli () {
   if (command) {
     // XXX: check if the config file exists and print a friendly warning if not
     const config = require(path.relative(__dirname, path.resolve(configFile)))
-    config.logger = silent ? silentLogger : (config.logger || defaultLogger)
+    config.loglevel = loglevel ? loglevel.slice(11) : config.loglevel
     commands[command](config)
   } else {
     help()
