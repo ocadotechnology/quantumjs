@@ -17,6 +17,7 @@ const liveserver = require('live-server')
 const qwatch = require('./watch')
 const parse = require('./parse')
 const read = require('./read')
+const write = require('./write')
 const Page = require('./page')
 const fileOptions = require('./file-options')
 const version = require('../package.json').version
@@ -76,8 +77,7 @@ QuantumJS (${version})
 function buildPage (sourcePage, pipeline, config, logger) {
   const start = Date.now()
   return Promise.resolve(pipeline(sourcePage, config))
-    .then((pages) => Array.isArray(pages) ? pages : [pages])
-    .map((page) => fs.outputFileAsync(page.file.dest, page.content).then(() => page))
+    .then(write)
     .then((destPages) => {
       const timeTaken = Date.now() - start
       logger({type: 'build-page', timeTaken: timeTaken, sourcePage: sourcePage, destPages: destPages})
