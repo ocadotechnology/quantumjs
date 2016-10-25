@@ -25,6 +25,11 @@ function spinalCase (string) {
   return string.toLowerCase().split(' ').join('-')
 }
 
+function fullWidth (selection, transforms) {
+  return dom.create('div').class('qm-docs-fullWidth')
+    .add(selection.transform(transforms))
+}
+
 function topic (selection, transforms) {
   return dom.create('div')
     .class('qm-docs-topic')
@@ -323,6 +328,7 @@ function transforms (opts) {
     breadcrumb: breadcrumb,
     topSection: topSection,
     contentSection: contentSection,
+    fullWidth: fullWidth,
     bottomSection: bottomSection,
     relatedButtons: relatedButtons,
     table: table

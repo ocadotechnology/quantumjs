@@ -103,6 +103,7 @@ p:last-child {
 
 .qm-docs-sidebar-page .qm-docs-content-section-container {
   overflow: auto;
+  position: relative;
 }
 
 .qm-docs-content-section-container {
@@ -123,7 +124,7 @@ p:last-child {
 }
 
 .qm-docs-navigation-menu-wrapper {
-  margin: 5px 15px;
+  padding: 5px 15px;
   overflow: auto;
 }
 
@@ -372,9 +373,13 @@ p:last-child {
 }
 
 .qm-docs-content-section {
-  max-width: 750px;
   margin: auto;
   padding: 30px;
+}
+
+.qm-docs-content-section > *:not(.qm-docs-full-width) {
+  max-width: 750px;
+  margin: auto;
 }
 
 .qm-docs-top-section-title {
