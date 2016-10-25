@@ -26,7 +26,7 @@ function spinalCase (string) {
 }
 
 function fullWidth (selection, transforms) {
-  return dom.create('div').class('qm-docs-fullWidth')
+  return dom.create('div').class('qm-docs-full-width')
     .add(selection.transform(transforms))
 }
 
