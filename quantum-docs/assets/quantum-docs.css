@@ -379,7 +379,8 @@ p:last-child {
 
 .qm-docs-content-section > *:not(.qm-docs-full-width) {
   max-width: 750px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .qm-docs-top-section-title {
