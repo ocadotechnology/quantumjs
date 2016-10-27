@@ -124,7 +124,6 @@ p:last-child {
 }
 
 .qm-docs-navigation-menu-wrapper {
-  padding: 5px 15px;
   overflow: auto;
 }
 
@@ -475,7 +474,7 @@ p:last-child {
 /* Nagivation menu */
 
 .qm-docs-navigation-menu {
-  padding: 1em;
+  padding: 1.5em;
   border-radius: 2px;
 }
 
@@ -483,10 +482,14 @@ p:last-child {
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.39);
   font-size: 12px;
+  margin: 1.5em 0 1em 0;
+}
+
+.qm-docs-navigation-menu-section:first-child .qm-docs-navigation-menu-section-title {
+  margin-top: 0;
 }
 
 .qm-docs-navigation-menu-section-body {
-  margin: 1em 0;
 }
 
 .qm-docs-navigation-menu-page {
@@ -549,6 +552,11 @@ p:last-child {
   width: auto;
   height: 30px;
   margin-right: 8px;
+}
+
+.qm-docs-header-logo-link {
+  display: inline-block;
+  cursor: pointer;
 }
 
 .qm-docs-header-title {
