@@ -247,17 +247,38 @@ function defaultLogger (evt) {
   }
 }
 
-function cli () {
-  const command = process.argv.find((arg) => arg === 'build' || arg === 'watch' || arg === 'list')
-  const loglevel = process.argv.find((arg) => arg.startsWith('--loglevel='))
+function findArg (args, argToFind) {
+  const val = args.find((arg) => arg.startsWith('--' + argToFind + '='))
+  return val ? val.slice(argToFind.length + 3) : undefined
+}
 
-  const customConfigFile = process.argv.find((arg) => arg.startsWith('--config='))
-  const configFile = customConfigFile ? customConfigFile.slice(9) : 'quantum.config.js'
+function cli (cliArgs) {
+  const args = cliArgs || process.argv.slice(2, process.argv.length)
+  const command = args.find((arg) => arg === 'build' || arg === 'watch' || arg === 'list')
 
   if (command) {
-    // XXX: check if the config file exists and print a friendly warning if not
-    const config = require(path.relative(__dirname, path.resolve(configFile)))
-    config.loglevel = loglevel ? loglevel.slice(11) : config.loglevel
+    const customConfigFile = findArg(args, 'config')
+    const configFile = customConfigFile ? customConfigFile.slice(9) : 'quantum.config.js'
+
+    let config = {}
+    try {
+      config = require(path.relative(__dirname, path.resolve(configFile)))
+    } catch (e) {
+      let warning = ''
+      if (customConfigFile) {
+        warning = chalk.yellow('[warning] No Config file found: expected ' + configFile)
+      } else {
+        warning = chalk.yellow('[warning] No Config file provided, using default values.') + '\n  Config can be provided in ' + configFile
+      }
+      console.warn(warning)
+    }
+
+    const cliOpts = ['loglevel', 'port']
+
+    cliOpts.forEach((option) => {
+      config[option] = findArg(args, option) || config[option]
+    })
+
     commands[command](config)
   } else {
     help()
