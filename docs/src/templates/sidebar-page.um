@@ -20,6 +20,7 @@
           @section Advanced Topics
             @page /docs/markup/: The Markup Language
             @page /docs/pipeline/: The Pipeline
+            @page /docs/ast/: The AST
             @page /docs/page-transforms/: Page Transforms
             @page /docs/entity-transforms/: Entity Transforms
 

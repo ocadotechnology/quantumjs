@@ -80,13 +80,26 @@
   @topic Create an example page
     Create a file called index.um and copy this into it:
 
-    @notice TODO
-      Make this example a bit more interesting
-
     @subsection index.um
       @@codeblock um
-        @h1: First Page
-        @div: Hello World!
+        @topSection
+          @title My First Page
+          @description: My first page built with Quantum
+
+        @contentSection
+          @topic Information
+            Page Content can go inside topics
+
+            @sectin Sub-information
+              It can also go inside sections inside topics
+
+            @codeblock js
+              // Example Codeblock
+              const length = 5
+              for (let i = 0; i < length; i++) {
+                console.log(i)
+              }
+
 
   @topic Build the site
     Run this command in the terminal to build the site

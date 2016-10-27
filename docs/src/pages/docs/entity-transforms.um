@@ -1,10 +1,11 @@
 @inline ../../templates/sidebar-page.um
 
 @topSection
-  @title Using the CLI
+  @title Entity Transforms
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    This page explains how use the command line interface (CLI)
+    This page explains entity transforms, what they are and what they're for
 
 @contentSection
-  @notice TODO: Write this page...
+  @topic About
+    @notice TODO: Write this page...

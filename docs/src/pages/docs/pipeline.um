@@ -1,0 +1,47 @@
+@inline ../../templates/sidebar-page.um
+
+@topSection
+  @title The Pipeline
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    This page explains the pipeline for transforming files
+
+@contentSection
+  @topic About
+    One standout feature the quantum has is the way in which it turns markup into html.
+
+    It uses a chain of functions to first parse the markup, then apply various transforms to get the output in the right format before turning it into html.
+
+    This might sound a bit abstract, and it might not be clear at first why this is useful, but it turns out that taking this approach allows multiple useful features to be added on top of the basic markup language (versioning, automatic table of contents generation, templating logic and more).
+
+    A typical pipeline for turning quantum markup into html:
+
+    @diagram
+      @item start [Read Index.um]
+      @item parse [Parsed AST]
+      @item transform [Page Transforms]
+      @item dom [Virtual Dom]
+      @item html [HTML]
+      @item write [Write index.html]
+
+      @link start -> parse
+      @link parse --> transform
+      @link transform --> dom
+      @link dom -> html
+      @link html -> write
+
+    When using the API, the write step is handled automatically so a pipeline could look something like this:
+
+    @codeblock js
+      const htmlTransforms = {
+        html: html.transforms()
+      }
+
+      function pipeline (page) {
+        return Promise.resolve(page)
+          .map(html({ transforms: htmlTransforms }))
+          .map(html.stringify())
+      }
+
+    See the @hyperlink(/docs/config-file/)[Config File] page for more information about using the pipeline.
+
