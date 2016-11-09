@@ -27,39 +27,27 @@ describe('utils', () => {
 
   describe('compareEntrySelections', () => {
     it('should sort correctly', () => {
-      function entrySelection (type, name) {
+      function entrySelection (name) {
         return quantum.select({
-          type: type,
+          type: 'entry',
           params: [],
           content: [
-            {
-              type: 'header',
-              params: [],
-              content: [
-                { type: 'name', params: [name], content: [] }
-              ]
-            }
+            { type: 'name', params: [name], content: [] }
           ]
         })
       }
       const entrySelections = [
-        entrySelection('removed', 'bbb'),
-        entrySelection('deprecated', 'aaa'),
-        entrySelection('added', 'ccc'),
-        entrySelection('added', 'bbb'),
-        entrySelection('added', 'ddd'),
-        entrySelection('added', 'aaa'),
-        entrySelection('added', 'ddd')
+        entrySelection('bbb'),
+        entrySelection('aaa'),
+        entrySelection('ccc'),
+        entrySelection('bbb')
       ]
 
       entrySelections.sort(utils.compareEntrySelections).should.eql([
-        entrySelection('added', 'aaa'),
-        entrySelection('added', 'bbb'),
-        entrySelection('added', 'ccc'),
-        entrySelection('added', 'ddd'),
-        entrySelection('added', 'ddd'),
-        entrySelection('removed', 'bbb'),
-        entrySelection('deprecated', 'aaa')
+        entrySelection('aaa'),
+        entrySelection('bbb'),
+        entrySelection('bbb'),
+        entrySelection('ccc')
       ])
     })
   })

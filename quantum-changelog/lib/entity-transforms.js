@@ -2,14 +2,13 @@
 
 /*
   This file defines the entity transforms for the changelog module. There
-  are three transforms:
+  are two transforms:
 
     @changelog
-    @wrapper
-    @key
+    @changelogList
 
   The @changelog entity is for a single version. Meaning, to document the changes
-  to a single api there will be multiple @changelog entries. (The @wrapper entity
+  to a single api there will be multiple @changelog entries. (The @changelogList entity
   helps with this, see details below). The @changelog entity has a description and entries.
 
   Entries (@entry) within a changelog can be grouped using @group. For example,
@@ -18,8 +17,8 @@
   removals, updates, etc in the header of the collapsible.
 */
 
-const quantum = require('quantum-js')
-const Promise = require('bluebird')
+// const quantum = require('quantum-js')
+// const Promise = require('bluebird')
 const merge = require('merge')
 const dom = require('quantum-dom')
 const path = require('path')
@@ -28,7 +27,7 @@ const utils = require('./utils')
 
 // XXX: This should come from the config
 const javascript = require('./languages/javascript')
-const css = require('./languages/css')
+// const css = require('./languages/css')
 
 const defaultConfig = require('./config.js')
 
@@ -65,60 +64,62 @@ function label (tag, count) {
     .add(dom.create('span').text(count))
 }
 
-function createHeader (selection) {
-  // console.log(selection)
-  if (selection.has('header')) {
-    const headerSelection = selection.select('header')
+// function defaultEntry (selection) {
+//   return dom.create('span')
+//     .class('qm-changelog-entry-title')
+//     .text(selection.ps())
+// }
 
-    const languages = [javascript, css]
-
-    const language = languages.filter(language => language.entityTypes.indexOf(headerSelection.select('type').ps()) !== -1)[0]
-    if (language) {
-      return language.createHeader(headerSelection)
-    }
-  } else {
-    return dom.create('span')
-      .class('qm-changelog-entry-title')
-      .text(selection.ps())
-  }
-}
-
-/* Creates a single changelog entry */
-function entry (selection, options, tagsByName, transforms) {
-  const type = tagsByName[selection.type()]
-  const icon = dom.create('i')
-    .class(type.iconClass + ' ' + (type.textClass || 'qm-changelog-text-' + selection.type()))
+function changeDom (selection, transforms, tagsByName, options) {
+  const changeType = selection.param(0)
 
   const issues = options.issueUrl && selection.has('issue') ?
-    dom.create('span').class('qm-changelog-entry-issues')
+    dom.create('span').class('qm-changelog-change-issues')
       .add(selection.selectAll('issue').map((issue) => {
         return dom.create('a')
-          .class('qm-changelog-entry-issue')
+          .class('qm-changelog-change-issue')
           .attr('href', options.issueUrl + issue.ps())
           .text('#' + issue.ps())
       })) : undefined
 
-  const heading = dom.create('div').class('qm-changelog-entry-head')
-    .add(createHeader(selection))
-    .add(issues)
+  const icon = dom.create('div')
+    .class('qm-changelog-change-icon')
+    .add(dom.create('i')
+      .class(tagsByName[changeType].iconClass + ' qm-changelog-text-' + changeType)
+      .attr('title', tagsByName[changeType].displayName))
 
-  const description = selection.has('description') ?
-    wrappedParagraph('qm-changelog-entry-description', selection.select('description'), transforms) :
-    undefined
+  return dom.create('div')
+    .class('qm-changelog-change')
+    .add(dom.create('div').class('qm-changelog-change-header')
+      .add(icon)
+      .add(dom.create('div').class('qm-changelog-change-type').text(tagsByName[changeType].displayName))
+      .add(issues))
+    .add(dom.create('div').class('qm-changelog-change-body')
+      .add(selection.has('description') ? html.paragraphTransform(selection.select('description'), transforms) : undefined))
+}
 
-  const body = (description) ? dom.create('div').class('qm-changelog-entry-body')
-    .add(description) : undefined
+function defaultHeader (selection) {
+  // XXX: implement
+}
 
-  return dom.create('div').class('qm-changelog-entry')
-    .add(dom.create('div').class('qm-changelog-entry-icon')
-      .add(icon))
-    .add(dom.create('div').class('qm-changelog-entry-content')
-      .add(heading)
-      .add(body))
+/* Creates a single changelog entry */
+function entry (selection, transforms, options, tagsByName) {
+  // XXX: config
+  const languages = [javascript] // [javascript, css]
+
+  const language = languages.find(language => language.entityTypes.indexOf(selection.select('type').ps()) !== -1)
+  const header = language ? language.createHeaderDom(selection, transforms, tagsByName) : defaultHeader(selection)
+  const changes = selection.selectAll('change')
+    .map(change => changeDom(change, transforms, tagsByName, options))
+
+  return dom.create('div')
+    .class('qm-changelog-entry')
+    .add(dom.create('div').class('qm-changelog-entry-header').add(header))
+    .add(dom.create('div').class('qm-changelog-entry-content').add(changes))
 }
 
 /* Creates a group of entries displayed as a collapsible */
-function group (selection, options, tagsByName, tagNames, transforms) {
+function group (selection, transforms, options, tagsByName, tagNames) {
   const link = selection.has('link') ?
     linkEntity('qm-changelog-group-link', selection.select('link').ps(), selection.ps()) :
     undefined
@@ -127,15 +128,31 @@ function group (selection, options, tagsByName, tagNames, transforms) {
     .class('qm-changelog-group-title')
     .add(link || selection.ps())
 
-  const entryEntities = selection.selectAll(tagNames).sort(utils.compareEntrySelections)
+  const entryEntities = selection.selectAll('entry').sort(utils.compareEntrySelections)
+
+  const topLevelChanges = selection.selectAll('change')
+    .map(change => {
+      return dom.create('div')
+        .class('qm-changelog-entry')
+        .add(changeDom(change, transforms, tagsByName, options))
+    })
+
   const entries = dom.create('div').class('qm-changelog-group-entries')
-    .add(entryEntities.map(ent => entry(ent, options, tagsByName, transforms)))
+    .add(topLevelChanges)
+    .add(entryEntities.map(ent => entry(ent, transforms, options, tagsByName)))
 
   const labels = dom.create('div').class('qm-changelog-group-labels')
     .add(options.tags.map(tag => {
-      const count = entryEntities.reduce((total, e) => {
-        return e.type() === tag.entityType ? total + 1 : total
+      const topLevelCount = selection.selectAll('change').reduce((acc, change) => {
+        return change.param(0) === tag.entityType ? acc + 1 : acc
       }, 0)
+      const entrySubCount = entryEntities.reduce((total, entry) => {
+        const subtotal = entry.selectAll('change').reduce((acc, change) => {
+          return change.param(0) === tag.entityType ? acc + 1 : acc
+        }, 0)
+        return total + subtotal
+      }, 0)
+      const count = topLevelCount + entrySubCount
       return count > 0 ? label(tag, count) : undefined
     }))
 
@@ -155,7 +172,7 @@ function group (selection, options, tagsByName, tagNames, transforms) {
     .add(createCollapsible(header, content))
 }
 
-function changelog (selection, options, transforms) {
+function changelog (selection, transforms, options) {
   const tagsByName = {}
   const tagNames = []
   options.tags.forEach(tag => {
@@ -168,10 +185,10 @@ function changelog (selection, options, transforms) {
     undefined
 
   const groups = selection.selectAll('group')
-    .map(grp => group(grp, options, tagsByName, tagNames, transforms))
+    .map(grp => group(grp, transforms, options, tagsByName, tagNames))
 
-  const entries = selection.selectAll(tagNames)
-    .map(ent => entry(ent, options, tagsByName, transforms))
+  const entries = selection.selectAll('entry')
+    .map(ent => entry(ent, transforms, options, tagsByName))
 
   if (description || groups.length > 0 || entries.length > 0) {
     const link = selection.has('link') ?
@@ -202,26 +219,13 @@ function changelog (selection, options, transforms) {
   }
 }
 
-/* Generates the key that explains the tag icons */
-function key (selection, options, transforms) {
-  return dom.create('div').class('qm-changelog-key')
-    .add(dom.create('div').class('qm-changelog-keys')
-      .add(options.tags.map((tag) => {
-        return dom.create('div').class('qm-changelog-key-item')
-          .add(dom.create('div').class('qm-changelog-key-item-icon')
-            .add(dom.create('i').class(tag.iconClass + ' qm-changelog-text-' + tag.entityType)))
-          .add(dom.create('div').class('qm-changelog-key-item-text')
-            .add(tag.displayName))
-      })))
-}
-
 /*
-  A wrapper for multiple @changelog entries. Also used by the page entry as a
+  A changelogList for multiple @changelog entries. Also used by the page entry as a
   place to generate @changelog entries in.
 */
-function wrapper (selection, transforms) {
-  return dom.create('div').class('qm-changelog-wrapper')
-    .add(selection.transform(transforms))
+function changelogList (selection, transforms) {
+  return dom.create('div').class('qm-changelog-list')
+    .add(selection.filter('changelog').transform(transforms))
 }
 
 /* Factory for the entity transforms for changelog */
@@ -229,9 +233,8 @@ function transforms (options) {
   const resolvedOptions = merge(defaultConfig, options)
 
   return Object.freeze({
-    key: (selection, transforms) => key(selection, resolvedOptions, transforms),
-    changelog: (selection, transforms) => changelog(selection, resolvedOptions, transforms),
-    wrapper: wrapper
+    changelog: (selection, transforms) => changelog(selection, transforms, resolvedOptions),
+    changelogList: changelogList
   })
 }
 

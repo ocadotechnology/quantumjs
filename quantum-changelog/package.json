@@ -21,7 +21,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test && npm run lint",
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd --recursive \"test/**/*spec.js\" && npm run lint",
     "lint": "eslint lib/*.js test/*.js",
     "fix-lint-issues": "eslint --fix lib/*.js test/*.js",
     "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"

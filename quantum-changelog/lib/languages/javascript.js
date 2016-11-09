@@ -1,6 +1,7 @@
 'use strict'
 
 const dom = require('quantum-dom')
+const html = require('quantum-html')
 
 const timesink = require('timesink')
 
@@ -27,14 +28,18 @@ function hashEntry (apiEntry, root) {
   while (current !== root) {
     const type = current.type()
     const name = current.param(0)
+    if (entityTypes.indexOf(type) === -1) {
+      return undefined
+    }
     if (type === 'function' || type === 'method' || type === 'constructor') {
-      key = '/' + type + ':' + name + ':' + current.selectAll(['param', 'param?']).map(p => p.params().join(':')).join(':') + key
+      key = '/' + type + ':' + name + '(' + current.selectAll(['param', 'param?']).map(p => p.params().join(':')).join(',') + ')' + key
     } else {
       key = '/' + type + ':' + name + key
     }
     current = current.parent()
   }
   stop()
+
   return key
 }
 
@@ -44,30 +49,45 @@ function hashEntry (apiEntry, root) {
   whatever we want
 */
 function extractEntry (selection, previousExtraction) {
-  const type = selection.type()
+  const returnType = selection.has('returns') ? selection.select('returns').ps() : undefined
+
+  const returnTypeHasChanged = (returnType && previousExtraction) ? previousExtraction.returnType !== returnType : false
+
+  const returnTypeChange = returnTypeHasChanged ? {
+    oldType: previousExtraction ? previousExtraction.returnType : undefined,
+    newType: returnType
+  } : undefined
 
   return {
-
+    type: selection.type(),
+    name: selection.param(0),
+    parentType: selection.parent() ? selection.parent().type() : undefined,
+    parentName: selection.parent() ? selection.parent().param(0) : undefined,
+    params: selection.selectAll(['param', 'param?']).map(param => {
+      return {
+        paramType: param.type(),
+        name: param.param(0) || '',
+        type: param.param(1) || ''
+      }
+    }),
+    returnType: returnType,
+    returnTypeChange: returnTypeChange
   }
 }
 
-/* Returns a changelog entry for the change between two entries. Can be undefined */
-function changelogEntryForChange (selection, previousEntry, isFirstVersion) {
-  /*
-    Language rules
-    1. If a description changes in any of the entityTypes, add an updated tag - move to general eventually?
-    2. For function-like entries, any change to the return type or parameter descriptions should also cause an updated tag to be added
-    3. For events, any changes to the data should case an updated tag to be added
-  */
-  return undefined
-}
-
 /* Builds the header ast for an entry */
-function buildHeaderASTForEntry (entry) {
-  const selection = entry.selection
-  const type = selection.type()
+function buildAstForEntry (apiEntryChanges) {
+  const apiEntry = apiEntryChanges.apiEntry
 
-  const headerContent = [
+  const type = apiEntry.type
+  const name = apiEntry.name
+  const params = apiEntry.params
+  const returnType = apiEntry.returnType
+  const parentType = apiEntry.parentType
+  const parentName = apiEntry.parentName
+  const returnTypeChange = apiEntry.returnTypeChange
+
+  const content = [
     {
       type: 'type',
       params: [type],
@@ -75,43 +95,56 @@ function buildHeaderASTForEntry (entry) {
     },
     {
       type: 'name',
-      params: selection.param(0) ? [selection.param(0)] : [],
+      params: name ? [name] : [],
       content: []
     }
   ]
 
   if (type === 'function' || type === 'method' || type === 'constructor') {
-    selection.selectAll(['param', 'param?']).forEach(param => {
-      headerContent.push({
-        type: param.type(),
-        params: param.params().slice(),
+    params.forEach(param => {
+      content.push({
+        type: param.paramType,
+        params: [param.name, param.type],
         content: []
       })
     })
 
-    if (selection.has('returns')) {
-      headerContent.push({
+    if (returnType) {
+      content.push({
         type: 'returns',
-        params: selection.select('returns').params().slice(),
+        params: [returnType],
         content: []
       })
     }
   }
 
   if (type === 'function' || type === 'method' || type === 'constructor' || type === 'property' || type === 'property?' || type === 'event') {
-    if (selection.parent() && selection.parent().type() === 'prototype' || selection.parent().type() === 'object') {
-      headerContent.push({
+    if (parentType === 'prototype' || parentType === 'object') {
+      content.push({
         type: 'parent',
-        params: [selection.parent().param(0), selection.parent().type()],
+        params: [parentName, parentType],
         content: []
       })
     }
   }
 
+  // add extra changelog changes to the entry (language specific)
+  if (type === 'function' || type === 'method') {
+    if (returnTypeChange) {
+      content.push({
+        type: 'change',
+        params: ['updated'],
+        content: [
+          { type: 'description', params: [], content: ['Return type changed to ' + returnTypeChange.newType]}
+        ]
+      })
+    }
+  }
+
   return {
-    type: 'header',
+    type: 'entry',
     params: [],
-    content: headerContent
+    content: content
   }
 }
 
@@ -121,9 +154,10 @@ function createDivider (selection) {
   return parent.param(0) + separator
 }
 
-// XXX: rename to createHeaderDOM
-function createHeader (selection) {
+function createHeaderDom (selection) {
   const type = selection.select('type').ps()
+
+  // XXX: add icons for each of the types (functions, prototypes, events etc)
 
   if (type === 'function' || type === 'method' || type === 'constructor') {
     return dom.create('span')
@@ -152,7 +186,7 @@ module.exports = {
   name: 'javascript',
   entityTypes: entityTypes,
   hashEntry: hashEntry,
-  changelogEntryForChange: changelogEntryForChange,
-  buildHeaderASTForEntry: buildHeaderASTForEntry,
-  createHeader: createHeader
+  extractEntry: extractEntry,
+  buildAstForEntry: buildAstForEntry,
+  createHeaderDom: createHeaderDom
 }

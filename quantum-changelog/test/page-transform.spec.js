@@ -38,11 +38,13 @@ describe('page transform', () => {
         content: {
           type: '',
           params: [],
-          content: [{
-            type: 'changelogList',
-            params: [],
-            content: []
-          }]
+          content: [
+            {
+              type: 'changelogList',
+              params: [],
+              content: []
+            }
+          ]
         }
       })
       pageTransform.pageTransform(page).should.not.equal(page)
@@ -56,9 +58,9 @@ describe('page transform', () => {
     })
 
     it('should resolve targetVersions correctly', () => {
-      pageTransform.resolveOptions(undefined).targetVersions.should.eql([])
-      pageTransform.resolveOptions({}).targetVersions.should.eql([])
-      pageTransform.resolveOptions({targetVersions: undefined}).targetVersions.should.eql([])
+      should.not.exist(pageTransform.resolveOptions(undefined).targetVersions)
+      should.not.exist(pageTransform.resolveOptions({}).targetVersions)
+      should.not.exist(pageTransform.resolveOptions({targetVersions: undefined}).targetVersions)
       pageTransform.resolveOptions({targetVersions: []}).targetVersions.should.eql([])
       pageTransform.resolveOptions({targetVersions: ['0.1.0', '0.2.0']}).targetVersions
         .should.eql(['0.1.0', '0.2.0'])
@@ -69,8 +71,8 @@ describe('page transform', () => {
       pageTransform.resolveOptions({}).languages.should.eql([])
       pageTransform.resolveOptions({languages: undefined}).languages.should.eql([])
       pageTransform.resolveOptions({languages: []}).languages.should.eql([])
-      pageTransform.resolveOptions({languages: [{name: 'javascript'}, {name: 'css'}]}).languages
-        .should.eql([{name: 'javascript'}, {name: 'css'}])
+      pageTransform.resolveOptions({languages: [{name: 'javascript'}, {name: 'css'}]})
+        .languages.should.eql([{name: 'javascript'}, {name: 'css'}])
     })
 
     it('should resolve reverseVisibleList correctly', () => {
@@ -93,7 +95,547 @@ describe('page transform', () => {
   })
 
   describe('processChangelogList', () => {
-    xit('should work', () => {
+    const testlanguage1 = {
+      name: 'test-language-1',
+      entityTypes: ['function'],
+      hashEntry: (selection, parent) => {
+        return selection.ps()
+      },
+      extractEntry: (selection, previousExtraction) => {
+        return {
+          type: selection.type(),
+          name: selection.ps()
+        }
+      },
+      buildAstForEntry: (apiEntryChanges) => {
+        return {
+          type: 'entry',
+          params: [],
+          content: []
+        }
+      }
+    }
+
+    it('should process the changelogList', () => {
+      const changelogList = {
+        type: 'changelogList',
+        params: [],
+        content: [
+          {
+            type: 'process',
+            params: [],
+            content: [
+              {
+                type: 'version',
+                params: ['0.1.0'],
+                content: [
+                  {
+                    type: 'api',
+                    params: ['ApiName'],
+                    content: [
+                      {
+                        type: 'function',
+                        params: ['fname'],
+                        content: [
+                          {
+                            type: 'added',
+                            params: [],
+                            content: [
+                              {
+                                type: 'description',
+                                params: [],
+                                content: ['some-description-1']
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'version',
+                params: ['0.2.0'],
+                content: [
+                  {
+                    type: 'api',
+                    params: ['ApiName'],
+                    content: [
+                      {
+                        type: 'function',
+                        params: ['fname'],
+                        content: [
+                          {
+                            type: 'updated',
+                            params: [],
+                            content: [
+                              {
+                                type: 'description',
+                                params: [],
+                                content: ['some-description-2']
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'version',
+            params: ['0.1.0'],
+            content: [
+              {
+                type: 'description',
+                params: [],
+                content: ['some description']
+              }
+            ]
+          },
+          {
+            type: 'version',
+            params: ['0.2.0'],
+            content: []
+          }
+        ]
+      }
+
+      const page = new quantum.Page({
+        file: new quantum.File({
+          src: 'src/content/a1.um',
+          resolved: 'a1.um',
+          base: 'src/content',
+          dest: 'target/a1.um',
+          watch: true
+        }),
+        content: {
+          type: '',
+          params: [],
+          content: [changelogList]
+        }
+      })
+
+      const options = {
+        reverseVisibleList: false,
+        groupByApi: false,
+        languages: [testlanguage1]
+      }
+
+      pageTransform.processChangelogList(page, quantum.select(changelogList), options)
+
+      changelogList.content.should.eql([
+        {
+          type: 'changelog',
+          params: ['0.1.0'],
+          content: [
+            {
+              type: 'description',
+              params: [],
+              content: ['some description']
+            },
+            {
+              type: 'entry',
+              params: [],
+              content: [
+                {
+                  type: 'change',
+                  params: ['added'],
+                  content: [
+                    {
+                      type: 'description',
+                      params: [],
+                      content: [
+                        'some-description-1'
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'changelog',
+          params: ['0.2.0'],
+          content: [
+            {
+              type: 'entry',
+              params: [],
+              content: [
+                {
+                  type: 'change',
+                  params: ['updated'],
+                  content: [
+                    {
+                      type: 'description',
+                      params: [],
+                      content: [
+                        'some-description-2'
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    })
+
+    it('should reverseVisibleList', () => {
+      const changelogList = {
+        type: 'changelogList',
+        params: [],
+        content: [
+          {
+            type: 'process',
+            params: [],
+            content: [
+              {
+                type: 'version',
+                params: ['0.1.0'],
+                content: [
+                  {
+                    type: 'api',
+                    params: ['ApiName'],
+                    content: [
+                      {
+                        type: 'function',
+                        params: ['fname'],
+                        content: [
+                          {
+                            type: 'added',
+                            params: [],
+                            content: [
+                              {
+                                type: 'description',
+                                params: [],
+                                content: ['some-description-1']
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'version',
+                params: ['0.2.0'],
+                content: [
+                  {
+                    type: 'api',
+                    params: ['ApiName'],
+                    content: [
+                      {
+                        type: 'function',
+                        params: ['fname'],
+                        content: [
+                          {
+                            type: 'updated',
+                            params: [],
+                            content: [
+                              {
+                                type: 'description',
+                                params: [],
+                                content: ['some-description-2']
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'version',
+            params: ['0.1.0'],
+            content: [
+              {
+                type: 'description',
+                params: [],
+                content: ['some description']
+              }
+            ]
+          },
+          {
+            type: 'version',
+            params: ['0.2.0'],
+            content: []
+          }
+        ]
+      }
+
+      const page = new quantum.Page({
+        file: new quantum.File({
+          src: 'src/content/a1.um',
+          resolved: 'a1.um',
+          base: 'src/content',
+          dest: 'target/a1.um',
+          watch: true
+        }),
+        content: {
+          type: '',
+          params: [],
+          content: [changelogList]
+        }
+      })
+
+      const options = {
+        reverseVisibleList: true,
+        groupByApi: false,
+        languages: [testlanguage1]
+      }
+
+      pageTransform.processChangelogList(page, quantum.select(changelogList), options)
+
+      changelogList.content.should.eql([
+        {
+          type: 'changelog',
+          params: ['0.2.0'],
+          content: [
+            {
+              type: 'entry',
+              params: [],
+              content: [
+                {
+                  type: 'change',
+                  params: ['updated'],
+                  content: [
+                    {
+                      type: 'description',
+                      params: [],
+                      content: [
+                        'some-description-2'
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'changelog',
+          params: ['0.1.0'],
+          content: [
+            {
+              type: 'description',
+              params: [],
+              content: ['some description']
+            },
+            {
+              type: 'entry',
+              params: [],
+              content: [
+                {
+                  type: 'change',
+                  params: ['added'],
+                  content: [
+                    {
+                      type: 'description',
+                      params: [],
+                      content: [
+                        'some-description-1'
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    })
+
+    it('should process the groupByApi', () => {
+      const changelogList = {
+        type: 'changelogList',
+        params: [],
+        content: [
+          {
+            type: 'process',
+            params: [],
+            content: [
+              {
+                type: 'version',
+                params: ['0.1.0'],
+                content: [
+                  {
+                    type: 'api',
+                    params: ['ApiName'],
+                    content: [
+                      {
+                        type: 'function',
+                        params: ['fname'],
+                        content: [
+                          {
+                            type: 'added',
+                            params: [],
+                            content: [
+                              {
+                                type: 'description',
+                                params: [],
+                                content: ['some-description-1']
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'version',
+                params: ['0.2.0'],
+                content: [
+                  {
+                    type: 'api',
+                    params: ['ApiName'],
+                    content: [
+                      {
+                        type: 'function',
+                        params: ['fname'],
+                        content: [
+                          {
+                            type: 'updated',
+                            params: [],
+                            content: [
+                              {
+                                type: 'description',
+                                params: [],
+                                content: ['some-description-2']
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'version',
+            params: ['0.1.0'],
+            content: [
+              {
+                type: 'description',
+                params: [],
+                content: ['some description']
+              }
+            ]
+          },
+          {
+            type: 'version',
+            params: ['0.2.0'],
+            content: []
+          }
+        ]
+      }
+
+      const page = new quantum.Page({
+        file: new quantum.File({
+          src: 'src/content/a1.um',
+          resolved: 'a1.um',
+          base: 'src/content',
+          dest: 'target/a1.um',
+          watch: true
+        }),
+        content: {
+          type: '',
+          params: [],
+          content: [changelogList]
+        }
+      })
+
+      const options = {
+        reverseVisibleList: false,
+        groupByApi: true,
+        languages: [testlanguage1]
+      }
+
+      pageTransform.processChangelogList(page, quantum.select(changelogList), options)
+
+      changelogList.content.should.eql([
+        {
+          type: 'changelog',
+          params: ['0.1.0'],
+          content: [
+            {
+              type: 'description',
+              params: [],
+              content: ['some description']
+            },
+            {
+              type: 'group',
+              params: ['ApiName'],
+              content: [
+                {
+                  type: 'entry',
+                  params: [],
+                  content: [
+                    {
+                      type: 'change',
+                      params: ['added'],
+                      content: [
+                        {
+                          type: 'description',
+                          params: [],
+                          content: [
+                            'some-description-1'
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'changelog',
+          params: ['0.2.0'],
+          content: [
+            {
+              type: 'group',
+              params: ['ApiName'],
+              content: [
+                {
+                  type: 'entry',
+                  params: [],
+                  content: [
+                    {
+                      type: 'change',
+                      params: ['updated'],
+                      content: [
+                        {
+                          type: 'description',
+                          params: [],
+                          content: [
+                            'some-description-2'
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ])
     })
   })
 
@@ -110,20 +652,6 @@ describe('page transform', () => {
 
       const result = pageTransform.extractApis(quantum.select(quantum.parse(markup)))
       result.versions.should.eql(['0.1.0', '0.2.0', '0.3.0'])
-    })
-
-    it('should extract the versions in reverse order if requested', () => {
-      const markup = `
-        @section
-          @version 0.1.0
-        @section
-          @nested
-            @version 0.2.0
-        @version 0.3.0
-        `
-
-      const result = pageTransform.extractApis(quantum.select(quantum.parse(markup)), true)
-      result.versions.should.eql(['0.3.0', '0.2.0', '0.1.0'])
     })
 
     it('should create a version -> api selections map', () => {
@@ -154,42 +682,55 @@ describe('page transform', () => {
     })
   })
 
-  describe('buildApiMap', () => {
-    const testLanguages = [{
-      name: 'test-language',
+  describe('buildChangelogEntries', () => {
+    const testlanguage1 = {
+      name: 'test-language-1',
       entityTypes: ['function'],
-      hashEntry(selection, parent) {
-        return selection.type() + ':' + selection.ps()
+      hashEntry: (selection, parent) => {
+        return selection.ps() !== 'canthash' ? selection.type() + ':' + selection.ps() : undefined
       },
-      extractEntry(selection, previousExtraction) {
+      extractEntry: (selection, previousExtraction) => {
         return {
           type: selection.type(),
-          name: selection.ps()
+          name: selection.ps(),
+          hadFlag: previousExtraction ? previousExtraction.hasFlag : false
         }
-      },
-      buildChangelogEntries(previousEntry, entry) {
-        return [
-          {
-            tagType: previousEntry === undefined ? 'added' : 'updated',
-            type: entry.type,
-            name: entry.name
-          }
-        ]
       }
-    }]
+    }
 
-    it('should return the new api map and a list of changelog entries', () => {
+    const testLanguages = [testlanguage1]
+
+    it('should return the new api map and a map of changelog entries', () => {
       const markup = `
         @api name
         `
 
       const selection = quantum.select(quantum.parse(markup))
-      const languages = []
+      const languages = testLanguages
 
-      pageTransform.buildApiMap(languages, selection, undefined).should.eql({
-        apiMap: new Map(),
-        changelogEntries: []
-      })
+      const result = pageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
+
+      result.apiMap.should.be.an.instanceof(Map)
+      result.apiMap.size.should.eql(0)
+      result.changelogEntriesMap.should.be.an.instanceof(Map)
+      result.changelogEntriesMap.size.should.eql(0)
+    })
+
+    it('should ignore entries that cant be hashed', () => {
+      const markup = `
+        @api name
+          @function canthash
+        `
+
+      const selection = quantum.select(quantum.parse(markup))
+      const languages = testLanguages
+
+      const result = pageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
+
+      result.apiMap.should.be.an.instanceof(Map)
+      result.apiMap.size.should.eql(0)
+      result.changelogEntriesMap.should.be.an.instanceof(Map)
+      result.changelogEntriesMap.size.should.eql(0)
     })
 
     it('should keep the entries from the old api map', () => {
@@ -202,17 +743,17 @@ describe('page transform', () => {
 
       const oldApiMap = new Map()
       oldApiMap.set('some-entry', {
-        tagType: 'added',
-        apiEntry: quantum.select({type: 'function', params: ['name'], content: []})
+        type: 'function',
+        name: 'testFunc'
       })
 
-      const result = pageTransform.buildApiMap(languages, selection, oldApiMap)
+      const result = pageTransform.buildChangelogEntries(languages, selection.select('api'), oldApiMap, false)
 
       result.apiMap.size.should.eql(1)
 
       result.apiMap.get('some-entry').should.eql({
-        tagType: 'added',
-        apiEntry: quantum.select({type: 'function', params: ['name'], content: []})
+        type: 'function',
+        name: 'testFunc'
       })
     })
 
@@ -225,16 +766,47 @@ describe('page transform', () => {
       const selection = quantum.select(quantum.parse(markup))
       const languages = testLanguages
 
-      const result = pageTransform.buildApiMap(languages, selection, undefined)
+      const result = pageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
       result.apiMap.size.should.eql(1)
 
       result.apiMap.get('function:testFunc').should.eql({
         type: 'function',
-        name: 'testFunc'
+        name: 'testFunc',
+        hadFlag: false
       })
     })
 
-    it('should generate changelog entries', () => {
+    it('should generate changelog entries using the default entry generator', () => {
+      const markup = `
+        @api name
+          @function testFunc
+            @added
+              @description: Some description
+        `
+
+      const selection = quantum.select(quantum.parse(markup))
+      const languages = testLanguages
+
+      const result = pageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
+
+      result.changelogEntriesMap.size.should.equal(1)
+      result.changelogEntriesMap.get('function:testFunc').should.eql({
+        language: testlanguage1,
+        apiEntry: {
+          type: 'function',
+          name: 'testFunc',
+          hadFlag: false
+        },
+        changelogEntries: [
+          {
+            tagType: 'added',
+            selection: selection.select('api').select('function').select('added')
+          }
+        ]
+      })
+    })
+
+    it('should automatically detect added entries', () => {
       const markup = `
         @api name
           @function testFunc
@@ -243,25 +815,64 @@ describe('page transform', () => {
       const selection = quantum.select(quantum.parse(markup))
       const languages = testLanguages
 
-      const result = pageTransform.buildApiMap(languages, selection, undefined)
+      const result = pageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, true)
 
-      result.changelogEntries.should.eql([
-        {
-          language: 'test-language',
-          entry: {
+      result.changelogEntriesMap.size.should.equal(1)
+      result.changelogEntriesMap.get('function:testFunc').should.eql({
+        language: testlanguage1,
+        apiEntry: {
+          type: 'function',
+          name: 'testFunc',
+          hadFlag: false
+        },
+        changelogEntries: [
+          {
             tagType: 'added',
-            type: 'function',
-            name: 'testFunc'
+            selection: quantum.select({
+              type: 'added',
+              params: [],
+              content: []
+            })
           }
-        }
-      ])
+        ]
+      })
+    })
+
+    it('should not automatically detect added entries when there is an explicit added tag', () => {
+      const markup = `
+        @api name
+          @function testFunc
+            @added
+        `
+
+      const selection = quantum.select(quantum.parse(markup))
+      const languages = testLanguages
+
+      const result = pageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, true)
+
+      result.changelogEntriesMap.size.should.equal(1)
+      result.changelogEntriesMap.get('function:testFunc').should.eql({
+        language: testlanguage1,
+        apiEntry: {
+          type: 'function',
+          name: 'testFunc',
+          hadFlag: false
+        },
+        changelogEntries: [
+          {
+            tagType: 'added',
+            selection: selection.select('api').select('function').select('added')
+          }
+        ]
+      })
     })
 
     it('should generate changelog entries using the previous entry', () => {
       const markup = `
-        @api name
-          @function testFunc
-        `
+      @api name
+        @function testFunc
+          @info
+      `
 
       const selection = quantum.select(quantum.parse(markup))
       const languages = testLanguages
@@ -269,41 +880,27 @@ describe('page transform', () => {
       const previousApiMap = new Map()
       previousApiMap.set('function:testFunc', {
         type: 'function',
-        name: 'testFunc'
+        name: 'testFunc',
+        hasFlag: true
       })
 
-      const result = pageTransform.buildApiMap(languages, selection, previousApiMap)
+      const result = pageTransform.buildChangelogEntries(languages, selection, previousApiMap)
 
-      result.changelogEntries.should.eql([
-        {
-          language: 'test-language',
-          entry: {
-            tagType: 'updated',
-            type: 'function',
-            name: 'testFunc'
+      result.changelogEntriesMap.size.should.equal(1)
+      result.changelogEntriesMap.get('function:testFunc').should.eql({
+        language: testlanguage1,
+        apiEntry: {
+          type: 'function',
+          name: 'testFunc',
+          hadFlag: true
+        },
+        changelogEntries: [
+          {
+            tagType: 'info',
+            selection: selection.select('api').select('function').select('info')
           }
-        }
-      ])
-    })
-  })
-
-  describe('buildDefaultChangelogEntries', () => {
-    it('should create added entries for new entries', () => {
-      const selection = quantum.select({
-        type: 'function',
-        params: [],
-        content: []
+        ]
       })
-      const entry = {}
-      const previousEntry = undefined
-      const detectAdded = true
-      const language = {
-        name: 'test-language'
-      }
-      pageTransform.buildDefaultChangelogEntries(previousEntry, entry, selection, detectAdded).should.eql([{
-        tagType: 'added',
-        entry: entry
-      }])
     })
   })
 })

@@ -34,7 +34,7 @@ function code (selection, transform) {
   const language = selection.ps()
   return dom.create('code')
     .class('quantum-code-highlight-code' + (language ? ' language-' + language : ''))
-    .text(highlightCode(language, selection.cs()), {escape: false})
+    .text(selection.cs(), {escape: true})
     .add(stylesheetAsset)
 }
 

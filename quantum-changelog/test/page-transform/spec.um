@@ -1,0 +1,530 @@
+@spec page-transform
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @version 0.1.0
+          @api ApiName
+            @added
+              @description: Api added
+            @function test
+              @added
+                @issue 123
+                @description: Function added
+              @param arg0 [String]
+              @returns Number
+        @version 0.2.0
+          @api ApiName
+            @function test
+              @updated
+                @issue 456
+                Function updated
+              @param arg0 [String]
+              @returns Number
+        @version 0.3.0
+          @api ApiName
+            @function test
+              @deprecated
+              @param arg0 [String]
+              @returns Number
+        @version 0.4.0
+          @api ApiName
+            @function test
+              @info
+              @param arg0 [String]
+              @returns Number
+        @version 0.6.0
+          @api ApiName
+            @function test
+              @removed
+                @description: Function removed
+              @param arg0 [String]
+              @returns Number
+      @version 0.1.0
+        @description: Version 0.1.0
+      @version 0.2.0
+        @description: Version 0.2.0
+      @version 0.3.0
+        @description: Version 0.3.0
+      @version 0.4.0
+        @description: Version 0.4.0
+      @version 0.5.0
+        @description: Version 0.5.0
+      @version 0.6.0
+        @description: Version 0.6.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @description: Version 0.1.0
+        @change added
+          @description: Api added
+        @entry
+          @type function
+          @name test
+          @change added
+            @issue 123
+            @description: Function added
+      @changelog 0.2.0
+        @description: Version 0.2.0
+        @entry
+          @type function
+          @name test
+          @change updated
+            @issue 456
+            @description: Function updated
+      @changelog 0.3.0
+        @description: Version 0.3.0
+        @entry
+          @type function
+          @name test
+          @change deprecated
+      @changelog 0.4.0
+        @description: Version 0.4.0
+        @entry
+          @type function
+          @name test
+          @change info
+          @change deprecated
+      @changelog 0.5.0
+        @description: Version 0.5.0
+        @entry
+          @type function
+          @name test
+          @change deprecated
+      @changelog 0.6.0
+        @description: Version 0.6.0
+        @entry
+          @type function
+          @name test
+          @change removed
+            @description: Function removed
+
+
+@spec groupByApi
+  @options
+    @groupByApi true
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @version 0.1.0
+          @api ApiName
+            @added
+              @description: Api added
+            @function test
+              @added
+                @issue 123
+                @description: Function added
+              @param arg0 [String]
+              @returns Number
+        @version 0.2.0
+          @api ApiName
+            @function test
+              @updated
+                @issue 456
+                Function updated
+              @param arg0 [String]
+              @returns Number
+        @version 0.3.0
+          @api ApiName
+            @function test
+              @deprecated
+              @param arg0 [String]
+              @returns Number
+        @version 0.4.0
+          @api ApiName
+            @function test
+              @info
+              @param arg0 [String]
+              @returns Number
+        @version 0.6.0
+          @api ApiName
+            @function test
+              @removed
+                @description: Function removed
+              @param arg0 [String]
+              @returns Number
+      @version 0.1.0
+        @description: Version 0.1.0
+      @version 0.2.0
+        @description: Version 0.2.0
+      @version 0.3.0
+        @description: Version 0.3.0
+      @version 0.4.0
+        @description: Version 0.4.0
+      @version 0.5.0
+        @description: Version 0.5.0
+      @version 0.6.0
+        @description: Version 0.6.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @description: Version 0.1.0
+        @group ApiName
+          @change added
+            @description: Api added
+          @entry
+            @type function
+            @name test
+            @change added
+              @issue 123
+              @description: Function added
+      @changelog 0.2.0
+        @description: Version 0.2.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change updated
+              @issue 456
+              @description: Function updated
+      @changelog 0.3.0
+        @description: Version 0.3.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change deprecated
+      @changelog 0.4.0
+        @description: Version 0.4.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change info
+            @change deprecated
+      @changelog 0.5.0
+        @description: Version 0.5.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change deprecated
+      @changelog 0.6.0
+        @description: Version 0.6.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change removed
+              @description: Function removed
+
+
+@spec groupByApi
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @groupByApi true
+      @process
+        @version 0.1.0
+          @api ApiName
+            @added
+              @description: Api added
+            @function test
+              @added
+                @issue 123
+                @description: Function added
+              @param arg0 [String]
+              @returns Number
+        @version 0.2.0
+          @api ApiName
+            @function test
+              @updated
+                @issue 456
+                Function updated
+              @param arg0 [String]
+              @returns Number
+        @version 0.3.0
+          @api ApiName
+            @function test
+              @deprecated
+              @param arg0 [String]
+              @returns Number
+        @version 0.4.0
+          @api ApiName
+            @function test
+              @info
+              @param arg0 [String]
+              @returns Number
+        @version 0.6.0
+          @api ApiName
+            @function test
+              @removed
+                @description: Function removed
+              @param arg0 [String]
+              @returns Number
+      @version 0.1.0
+        @description: Version 0.1.0
+      @version 0.2.0
+        @description: Version 0.2.0
+      @version 0.3.0
+        @description: Version 0.3.0
+      @version 0.4.0
+        @description: Version 0.4.0
+      @version 0.5.0
+        @description: Version 0.5.0
+      @version 0.6.0
+        @description: Version 0.6.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @description: Version 0.1.0
+        @group ApiName
+          @change added
+            @description: Api added
+          @entry
+            @type function
+            @name test
+            @change added
+              @issue 123
+              @description: Function added
+      @changelog 0.2.0
+        @description: Version 0.2.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change updated
+              @issue 456
+              @description: Function updated
+      @changelog 0.3.0
+        @description: Version 0.3.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change deprecated
+      @changelog 0.4.0
+        @description: Version 0.4.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change info
+            @change deprecated
+      @changelog 0.5.0
+        @description: Version 0.5.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change deprecated
+      @changelog 0.6.0
+        @description: Version 0.6.0
+        @group ApiName
+          @entry
+            @type function
+            @name test
+            @change removed
+              @description: Function removed
+
+@spec reverseVisibleList
+  @options
+    @groupByApi false
+    @reverseVisibleList true
+  @input
+    @changelogList
+      @process
+        @version 0.1.0
+          @api ApiName
+            @added
+              @description: Api added
+            @function test
+              @added
+                @issue 123
+                @description: Function added
+              @param arg0 [String]
+              @returns Number
+        @version 0.2.0
+          @api ApiName
+            @function test
+              @updated
+                @issue 456
+                Function updated
+              @param arg0 [String]
+              @returns Number
+        @version 0.3.0
+          @api ApiName
+            @function test
+              @deprecated
+              @param arg0 [String]
+              @returns Number
+        @version 0.4.0
+          @api ApiName
+            @function test
+              @info
+              @param arg0 [String]
+              @returns Number
+        @version 0.6.0
+          @api ApiName
+            @function test
+              @removed
+                @description: Function removed
+              @param arg0 [String]
+              @returns Number
+      @version 0.1.0
+        @description: Version 0.1.0
+      @version 0.2.0
+        @description: Version 0.2.0
+      @version 0.3.0
+        @description: Version 0.3.0
+      @version 0.4.0
+        @description: Version 0.4.0
+      @version 0.5.0
+        @description: Version 0.5.0
+      @version 0.6.0
+        @description: Version 0.6.0
+  @output
+    @changelogList
+      @changelog 0.6.0
+        @description: Version 0.6.0
+        @entry
+          @type function
+          @name test
+          @change removed
+            @description: Function removed
+      @changelog 0.5.0
+        @description: Version 0.5.0
+        @entry
+          @type function
+          @name test
+          @change deprecated
+      @changelog 0.4.0
+        @description: Version 0.4.0
+        @entry
+          @type function
+          @name test
+          @change info
+          @change deprecated
+      @changelog 0.3.0
+        @description: Version 0.3.0
+        @entry
+          @type function
+          @name test
+          @change deprecated
+      @changelog 0.2.0
+        @description: Version 0.2.0
+        @entry
+          @type function
+          @name test
+          @change updated
+            @issue 456
+            @description: Function updated
+      @changelog 0.1.0
+        @description: Version 0.1.0
+        @change added
+          @description: Api added
+        @entry
+          @type function
+          @name test
+          @change added
+            @issue 123
+            @description: Function added
+
+@spec reverseVisibleList
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @reverseVisibleList true
+      @process
+        @version 0.1.0
+          @api ApiName
+            @added
+              @description: Api added
+            @function test
+              @added
+                @issue 123
+                @description: Function added
+              @param arg0 [String]
+              @returns Number
+        @version 0.2.0
+          @api ApiName
+            @function test
+              @updated
+                @issue 456
+                Function updated
+              @param arg0 [String]
+              @returns Number
+        @version 0.3.0
+          @api ApiName
+            @function test
+              @deprecated
+              @param arg0 [String]
+              @returns Number
+        @version 0.4.0
+          @api ApiName
+            @function test
+              @info
+              @param arg0 [String]
+              @returns Number
+        @version 0.6.0
+          @api ApiName
+            @function test
+              @removed
+                @description: Function removed
+              @param arg0 [String]
+              @returns Number
+      @version 0.1.0
+        @description: Version 0.1.0
+      @version 0.2.0
+        @description: Version 0.2.0
+      @version 0.3.0
+        @description: Version 0.3.0
+      @version 0.4.0
+        @description: Version 0.4.0
+      @version 0.5.0
+        @description: Version 0.5.0
+      @version 0.6.0
+        @description: Version 0.6.0
+  @output
+    @changelogList
+      @changelog 0.6.0
+        @description: Version 0.6.0
+        @entry
+          @type function
+          @name test
+          @change removed
+            @description: Function removed
+      @changelog 0.5.0
+        @description: Version 0.5.0
+        @entry
+          @type function
+          @name test
+          @change deprecated
+      @changelog 0.4.0
+        @description: Version 0.4.0
+        @entry
+          @type function
+          @name test
+          @change info
+          @change deprecated
+      @changelog 0.3.0
+        @description: Version 0.3.0
+        @entry
+          @type function
+          @name test
+          @change deprecated
+      @changelog 0.2.0
+        @description: Version 0.2.0
+        @entry
+          @type function
+          @name test
+          @change updated
+            @issue 456
+            @description: Function updated
+      @changelog 0.1.0
+        @description: Version 0.1.0
+        @change added
+          @description: Api added
+        @entry
+          @type function
+          @name test
+          @change added
+            @issue 123
+            @description: Function added

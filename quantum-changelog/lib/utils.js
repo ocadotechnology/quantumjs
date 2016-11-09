@@ -25,27 +25,11 @@ function semanticVersionComparator (v1, v2) {
   }
 }
 
-const typeOrder = {
-  added: 0,
-  removed: 1,
-  updated: 2,
-  enhancement: 3,
-  bugfix: 4,
-  information: 5,
-  deprecated: 6
-}
-
 /* Compares entries for sorting - groups by entry type, then sorts by name */
 function compareEntrySelections (e1, e2) {
-  const type1 = e1.type()
-  const type2 = e2.type()
-  if (typeOrder[type1] !== typeOrder[type2]) {
-    return typeOrder[type1] - typeOrder[type2]
-  } else {
-    const name1 = e1.select('header').select('name').param(0)
-    const name2 = e2.select('header').select('name').param(0)
-    return name1 < name2 ? -1 : name1 > name2 ? 1 : 0
-  }
+  const name1 = e1.select('name').param(0)
+  const name2 = e2.select('name').param(0)
+  return name1 < name2 ? -1 : name1 > name2 ? 1 : 0
 }
 
 module.exports = {

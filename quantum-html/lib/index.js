@@ -219,8 +219,7 @@ function stringify (opts) {
     return Promise.props({
       file: page.file.withExtension('.html'),
       content: page.content.stringify(options).then(x => x.html)
-    })
-      .then((changes) => page.clone(changes))
+    }).then((changes) => page.clone(changes))
   }
 }
 

@@ -72,26 +72,56 @@
 .qm-changelog-entry,
 .qm-changelog-group-description {
   margin: 0.5em 0;
+
+  flex-direction: column;
+}
+
+.qm-changelog-entry-header {
   padding: 0.5em;
 }
 
-.qm-changelog-entry-icon {}
+.qm-changelog-change {
+padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+border-top: solid 1px whitesmoke;
 
-.qm-changelog-entry-content {
+}
+
+.qm-changelog-change-icon {
+  flex: 0 0 auto;
+  padding-right: 0.4em;
+}
+
+.qm-changelog-change-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.qm-changelog-change-body {
+    padding-left: 1.75em;
+    padding-top: 0.5em;
+}
+
+.qm-changelog-change-content {
   -ms-flex: 1;
   -webkit-box-flex: 1;
           flex: 1;
   margin-left: 0.5em;
 }
 
-.qm-changelog-entry-head {}
 
-.qm-changelog-entry-title {}
 
-.qm-changelog-entry-issues {}
+.qm-changelog-change-icon {}
 
-.qm-changelog-entry-issue {
+.qm-changelog-change-issues {
+    margin-left: 0.25em;
+}
+
+.qm-changelog-change-issue {
   padding: 0.15em;
+  color: #00ADA8;
+  text-decoration: none;
 }
 
 .qm-changelog-entry-body {}
@@ -130,6 +160,7 @@
 .qm-changelog-entry {
   background: white;
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+  border: solid 1px whitesmoke;
 }
 
 .qm-changelog-label-added {
@@ -229,6 +260,7 @@
   height: 1em;
   width: 1em;
   margin-left: -2px;
+  border: solid 1px #00ADA8;
 }
 
 .qm-changelog-chevron-icon {
@@ -256,6 +288,8 @@
   -ms-flex-negative: 0;
   flex-shrink: 0;
   height: 1em;
+  border: solid 1px whitesmoke;
+  border-left: none;
 }
 
 .qm-changelog-collapsible-content {
