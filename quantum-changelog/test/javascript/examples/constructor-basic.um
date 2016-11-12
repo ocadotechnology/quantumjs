@@ -1,4 +1,4 @@
-@spec function
+@spec constructor
   @options
     @groupByApi false
     @reverseVisibleList false
@@ -7,9 +7,9 @@
       @process
         @version 0.1.0
           @api ApiName
-            @function test
+            @constructor test
               @added
-                @description: Function added
+                @description: Constructor added
               @param arg0 [String]
               @returns Number
       @version 0.1.0
@@ -17,9 +17,9 @@
     @changelogList
       @changelog 0.1.0
         @entry
-          @type function
-          @name test
-          @param arg0 [String]
-          @returns Number
+          @header constructor
+            @name test
+            @param arg0 [String]
+            @returns Number
           @change added
-            @description: Function added
+            @description: Constructor added

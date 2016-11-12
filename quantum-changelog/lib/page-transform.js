@@ -230,8 +230,12 @@ function buildChangelogEntries (languages, api, previousApiMap, detectAdded) {
         const changelogEntries = []
         const previousEntry = previousApiMap ? previousApiMap.get(key) : undefined
 
-        const apiEntry = language.extractEntry(selection, previousEntry)
+        const { apiEntry, changes: languageChanges } = language.extractEntry(selection, previousEntry)
         apiMap.set(key, apiEntry)
+
+        languageChanges.forEach(change => {
+          changelogEntries.push(change)
+        })
 
         let added = false
         selection.selectAll(tags).map(tagSelection => {
@@ -397,7 +401,14 @@ function buildChangelogAST (page, version, changelogEntriesByApi, groupByApi, de
     changelogEntriesMap.forEach((apiEntryChanges, key) => {
       // handle the api entry changes
       if (apiEntryChanges.language) {
-        const entryAst = apiEntryChanges.language.buildAstForEntry(apiEntryChanges)
+        const entryAst = {
+          type: 'entry',
+          params: [],
+          content: [
+            apiEntryChanges.language.buildEntryHeaderAst(apiEntryChanges)
+          ]
+        }
+
         apiEntryChanges.changelogEntries.forEach(change => {
           entryAst.content.push({
             type: 'change',
@@ -405,6 +416,7 @@ function buildChangelogAST (page, version, changelogEntriesByApi, groupByApi, de
             content: extractChangeContent(change)
           })
         })
+
         targetContent.push(entryAst)
       } else {
         // handle the top level changes

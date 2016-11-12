@@ -61,43 +61,43 @@
         @change added
           @description: Api added
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change added
             @issue 123
             @description: Function added
       @changelog 0.2.0
         @description: Version 0.2.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change updated
             @issue 456
             @description: Function updated
       @changelog 0.3.0
         @description: Version 0.3.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change deprecated
       @changelog 0.4.0
         @description: Version 0.4.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change info
           @change deprecated
       @changelog 0.5.0
         @description: Version 0.5.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change deprecated
       @changelog 0.6.0
         @description: Version 0.6.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change removed
             @description: Function removed
 
@@ -166,8 +166,8 @@
           @change added
             @description: Api added
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change added
               @issue 123
               @description: Function added
@@ -175,8 +175,8 @@
         @description: Version 0.2.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change updated
               @issue 456
               @description: Function updated
@@ -184,30 +184,30 @@
         @description: Version 0.3.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change deprecated
       @changelog 0.4.0
         @description: Version 0.4.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change info
             @change deprecated
       @changelog 0.5.0
         @description: Version 0.5.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change deprecated
       @changelog 0.6.0
         @description: Version 0.6.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change removed
               @description: Function removed
 
@@ -277,8 +277,8 @@
           @change added
             @description: Api added
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change added
               @issue 123
               @description: Function added
@@ -286,8 +286,8 @@
         @description: Version 0.2.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change updated
               @issue 456
               @description: Function updated
@@ -295,30 +295,30 @@
         @description: Version 0.3.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change deprecated
       @changelog 0.4.0
         @description: Version 0.4.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change info
             @change deprecated
       @changelog 0.5.0
         @description: Version 0.5.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change deprecated
       @changelog 0.6.0
         @description: Version 0.6.0
         @group ApiName
           @entry
-            @type function
-            @name test
+            @header function
+              @name test
             @change removed
               @description: Function removed
 
@@ -383,34 +383,34 @@
       @changelog 0.6.0
         @description: Version 0.6.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change removed
             @description: Function removed
       @changelog 0.5.0
         @description: Version 0.5.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change deprecated
       @changelog 0.4.0
         @description: Version 0.4.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change info
           @change deprecated
       @changelog 0.3.0
         @description: Version 0.3.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change deprecated
       @changelog 0.2.0
         @description: Version 0.2.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change updated
             @issue 456
             @description: Function updated
@@ -419,8 +419,8 @@
         @change added
           @description: Api added
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change added
             @issue 123
             @description: Function added
@@ -487,34 +487,34 @@
       @changelog 0.6.0
         @description: Version 0.6.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change removed
             @description: Function removed
       @changelog 0.5.0
         @description: Version 0.5.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change deprecated
       @changelog 0.4.0
         @description: Version 0.4.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change info
           @change deprecated
       @changelog 0.3.0
         @description: Version 0.3.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change deprecated
       @changelog 0.2.0
         @description: Version 0.2.0
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change updated
             @issue 456
             @description: Function updated
@@ -523,8 +523,8 @@
         @change added
           @description: Api added
         @entry
-          @type function
-          @name test
+          @header function
+            @name test
           @change added
             @issue 123
             @description: Function added

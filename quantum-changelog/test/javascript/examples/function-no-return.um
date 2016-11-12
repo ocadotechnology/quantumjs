@@ -1,0 +1,23 @@
+@spec function (basic)
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @version 0.1.0
+          @api ApiName
+            @function test
+              @added
+                @description: Function added
+              @param arg0 [String]
+      @version 0.1.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @entry
+          @header function
+            @name test
+            @param arg0 [String]
+          @change added
+            @description: Function added

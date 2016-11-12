@@ -25,10 +25,6 @@ const path = require('path')
 const html = require('quantum-html')
 const utils = require('./utils')
 
-// XXX: This should come from the config
-const javascript = require('./languages/javascript')
-// const css = require('./languages/css')
-
 const defaultConfig = require('./config.js')
 
 /* Creates a paragraph section wrapped in a div */
@@ -64,12 +60,6 @@ function label (tag, count) {
     .add(dom.create('span').text(count))
 }
 
-// function defaultEntry (selection) {
-//   return dom.create('span')
-//     .class('qm-changelog-entry-title')
-//     .text(selection.ps())
-// }
-
 function changeDom (selection, transforms, tagsByName, options) {
   const changeType = selection.param(0)
 
@@ -104,11 +94,9 @@ function defaultHeader (selection) {
 
 /* Creates a single changelog entry */
 function entry (selection, transforms, options, tagsByName) {
-  // XXX: config
-  const languages = [javascript] // [javascript, css]
-
-  const language = languages.find(language => language.entityTypes.indexOf(selection.select('type').ps()) !== -1)
-  const header = language ? language.createHeaderDom(selection, transforms, tagsByName) : defaultHeader(selection)
+  const language = options.languages.find(language => language.entityTypes.indexOf(selection.select('header').ps()) !== -1)
+  const headerSelection = selection.select('header')
+  const header = language ? language.createHeaderDom(headerSelection, transforms) : defaultHeader(headerSelection)
   const changes = selection.selectAll('change')
     .map(change => changeDom(change, transforms, tagsByName, options))
 

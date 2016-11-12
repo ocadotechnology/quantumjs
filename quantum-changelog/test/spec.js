@@ -10,4 +10,8 @@ describe('module', () => {
     changelog.should.be.a.function
     changelog.transforms.should.be.a.function
   })
+
+  it('should be a factory', () => {
+    changelog().should.be.a.function
+  })
 })

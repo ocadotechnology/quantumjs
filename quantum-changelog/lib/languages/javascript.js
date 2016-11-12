@@ -2,6 +2,7 @@
 
 const dom = require('quantum-dom')
 const html = require('quantum-html')
+const quantum = require('quantum-js')
 
 const timesink = require('timesink')
 
@@ -51,15 +52,10 @@ function hashEntry (apiEntry, root) {
 function extractEntry (selection, previousExtraction) {
   const returnType = selection.has('returns') ? selection.select('returns').ps() : undefined
 
-  const returnTypeHasChanged = (returnType && previousExtraction) ? previousExtraction.returnType !== returnType : false
+  const type = selection.type()
 
-  const returnTypeChange = returnTypeHasChanged ? {
-    oldType: previousExtraction ? previousExtraction.returnType : undefined,
-    newType: returnType
-  } : undefined
-
-  return {
-    type: selection.type(),
+  const apiEntry = {
+    type: type,
     name: selection.param(0),
     parentType: selection.parent() ? selection.parent().type() : undefined,
     parentName: selection.parent() ? selection.parent().param(0) : undefined,
@@ -70,13 +66,40 @@ function extractEntry (selection, previousExtraction) {
         type: param.param(1) || ''
       }
     }),
-    returnType: returnType,
-    returnTypeChange: returnTypeChange
+    returnType: returnType
   }
+
+  const changes = []
+
+  // add extra changelog changes to the entry (language specific)
+  if (type === 'function' || type === 'method') {
+    const returnTypeHasChanged = (returnType && previousExtraction) ? previousExtraction.returnType !== returnType : false
+
+    const returnTypeChange = returnTypeHasChanged ? {
+      oldType: previousExtraction ? previousExtraction.returnType : undefined,
+      newType: returnType
+    } : undefined
+
+    if (returnTypeChange) {
+      //XXX: feels very verbose for an exposed api
+      changes.push({
+        tagType: 'updated',
+        selection: quantum.select({
+          type: 'updated',
+          params: [],
+          content: [
+            { type: 'description', params: [], content: ['Return type changed to ' + returnTypeChange.newType]}
+          ]
+        })
+      })
+    }
+  }
+
+  return { apiEntry, changes }
 }
 
 /* Builds the header ast for an entry */
-function buildAstForEntry (apiEntryChanges) {
+function buildEntryHeaderAst (apiEntryChanges) {
   const apiEntry = apiEntryChanges.apiEntry
 
   const type = apiEntry.type
@@ -85,14 +108,8 @@ function buildAstForEntry (apiEntryChanges) {
   const returnType = apiEntry.returnType
   const parentType = apiEntry.parentType
   const parentName = apiEntry.parentName
-  const returnTypeChange = apiEntry.returnTypeChange
 
   const content = [
-    {
-      type: 'type',
-      params: [type],
-      content: []
-    },
     {
       type: 'name',
       params: name ? [name] : [],
@@ -128,22 +145,9 @@ function buildAstForEntry (apiEntryChanges) {
     }
   }
 
-  // add extra changelog changes to the entry (language specific)
-  if (type === 'function' || type === 'method') {
-    if (returnTypeChange) {
-      content.push({
-        type: 'change',
-        params: ['updated'],
-        content: [
-          { type: 'description', params: [], content: ['Return type changed to ' + returnTypeChange.newType]}
-        ]
-      })
-    }
-  }
-
   return {
-    type: 'entry',
-    params: [],
+    type: 'header',
+    params: [type],
     content: content
   }
 }
@@ -154,14 +158,13 @@ function createDivider (selection) {
   return parent.param(0) + separator
 }
 
-function createHeaderDom (selection) {
-  const type = selection.select('type').ps()
+function createHeaderDom (selection, transforms) {
+  const type = selection.ps()
 
   // XXX: add icons for each of the types (functions, prototypes, events etc)
 
   if (type === 'function' || type === 'method' || type === 'constructor') {
-    return dom.create('span')
-      .class('qm-changelog-javascript-function-header')
+    return dom.create('span').class('qm-changelog-javascript-function-header')
       .add(selection.has('parent') ? dom.create('span').class('qm-changelog-javascript-function-parent').text(createDivider(selection)) : undefined)
       .add(dom.create('span').class('qm-changelog-javascript-function-name').text(selection.select('name').ps()))
       .add(dom.create('span').class('qm-changelog-javascript-function-params')
@@ -171,13 +174,11 @@ function createHeaderDom (selection) {
             .add(dom.create('span').class('qm-changelog-javascript-function-param-type').text(param.param(1)))
         })))
   } else if (type === 'property' || type === 'property?' || type === 'event') {
-    return dom.create('span')
-      .class('qm-changelog-javascript-property-header')
+    return dom.create('span').class('qm-changelog-javascript-property-header')
       .add(selection.has('parent') ? dom.create('span').class('qm-changelog-javascript-property-parent').text(createDivider(selection)) : undefined)
       .add(dom.create('span').class('qm-changelog-javascript-property-name').text(selection.select('name').ps()))
   } else if (type === 'object' || type === 'prototype') {
-    return dom.create('span')
-      .class('qm-changelog-javascript-object-header')
+    return dom.create('span').class('qm-changelog-javascript-object-header')
       .add(dom.create('span').class('qm-changelog-javascript-object-name').text(selection.select('name').ps()))
   }
 }
@@ -187,6 +188,6 @@ module.exports = {
   entityTypes: entityTypes,
   hashEntry: hashEntry,
   extractEntry: extractEntry,
-  buildAstForEntry: buildAstForEntry,
+  buildEntryHeaderAst: buildEntryHeaderAst,
   createHeaderDom: createHeaderDom
 }

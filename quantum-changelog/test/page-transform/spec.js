@@ -1,7 +1,7 @@
 'use strict'
 
 const chai = require('chai')
-const pageTransform = require('../../lib/page-transform')
+const changelog = require('../..')
 const path = require('path')
 const quantum = require('quantum-js')
 
@@ -12,17 +12,20 @@ const testlanguage = {
     return selection.ps()
   },
   extractEntry: (selection, previousExtraction) => {
-    return {
+    const apiEntry = {
       type: selection.type(),
       name: selection.ps()
     }
+
+    const changes = []
+
+    return { apiEntry, changes }
   },
-  buildAstForEntry: (apiEntryChanges) => {
+  buildEntryHeaderAst: (apiEntryChanges) => {
     return {
-      type: 'entry',
-      params: [],
+      type: 'header',
+      params: [apiEntryChanges.apiEntry.type],
       content: [
-        {type: 'type', params: [apiEntryChanges.apiEntry.type], content: []},
         {type: 'name', params: [apiEntryChanges.apiEntry.name], content: []}
       ]
     }
@@ -65,12 +68,12 @@ function checkSpec (spec) {
   }
 
 
-  pageTransform.pageTransform(inputPage, options).should.eql(outputPage)
+  changelog(options)(inputPage).should.eql(outputPage)
 
 }
 
-describe('javascript', () => {
-  it('should work', () => {
+describe('pageTransform', () => {
+  it('spec.um', () => {
     return quantum.read(path.join(__dirname, 'spec.um'))
       .then(parsed => {
         quantum.select(parsed)
