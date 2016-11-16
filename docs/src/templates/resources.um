@@ -1,4 +1,4 @@
 @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:700,400,100|Roboto+Slab:400,700]
-@stylesheet [/hexagon-js/hexagon.css]
+@stylesheet [/resources/hexagon-js/hexagon.css]
 @stylesheet [/resources/quantum-site.css]
 @inline favicons.um

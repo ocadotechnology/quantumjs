@@ -60,6 +60,7 @@ a {
   box-shadow: 0 3px #B54A15;
   top: 3px;
   outline: 0;
+  text-decoration: none;
 }
 
 .get-started {

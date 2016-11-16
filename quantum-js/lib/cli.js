@@ -251,12 +251,15 @@ function cli () {
   const command = process.argv.find((arg) => arg === 'build' || arg === 'watch' || arg === 'list')
   const loglevel = process.argv.find((arg) => arg.startsWith('--loglevel='))
 
+  const port = command === 'watch' ? process.argv.find((arg) => arg.startsWith('--port=')) : undefined
+
   const customConfigFile = process.argv.find((arg) => arg.startsWith('--config='))
   const configFile = customConfigFile ? customConfigFile.slice(9) : 'quantum.config.js'
 
   if (command) {
     // XXX: check if the config file exists and print a friendly warning if not
     const config = require(path.relative(__dirname, path.resolve(configFile)))
+    config.port = port ? port.slice(7) : config.port
     config.loglevel = loglevel ? loglevel.slice(11) : config.loglevel
     commands[command](config)
   } else {
