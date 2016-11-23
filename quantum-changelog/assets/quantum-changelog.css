@@ -13,7 +13,7 @@
 
 .qm-changelog-description {
   margin-bottom: 1em;
-  padding: 0.5em;
+  padding: 1em;
 }
 
 .qm-changelog-description:empty {
@@ -50,7 +50,7 @@
 }
 
 .qm-changelog-label > i {
-  font-size: 0.75em;
+  font-size: 1.5em;
   margin-right: 0.15em;
   vertical-align: 1px;
 }
@@ -72,7 +72,6 @@
 .qm-changelog-entry,
 .qm-changelog-group-description {
   margin: 0.5em 0;
-
   flex-direction: column;
 }
 
@@ -81,16 +80,22 @@
 }
 
 .qm-changelog-change {
-padding: 0.5em;
+  padding: 0.5em;
   display: flex;
   flex-direction: column;
-border-top: solid 1px whitesmoke;
-
+  border-top: solid 1px whitesmoke;
 }
 
 .qm-changelog-change-icon {
   flex: 0 0 auto;
   padding-right: 0.4em;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.qm-changelog-change-icon > i {
+  font-size: 1.25em;
 }
 
 .qm-changelog-change-header {
@@ -99,23 +104,25 @@ border-top: solid 1px whitesmoke;
 }
 
 .qm-changelog-change-body {
-    padding-left: 1.75em;
-    padding-top: 0.5em;
+  padding-left: 1.65em;
+  padding-top: 0.5em;
+}
+
+.qm-changelog-change-body:empty {
+  padding-top: 0;
 }
 
 .qm-changelog-change-content {
   -ms-flex: 1;
   -webkit-box-flex: 1;
-          flex: 1;
+  flex: 1;
   margin-left: 0.5em;
 }
-
-
 
 .qm-changelog-change-icon {}
 
 .qm-changelog-change-issues {
-    margin-left: 0.25em;
+  margin-left: 0.25em;
 }
 
 .qm-changelog-change-issue {
@@ -146,7 +153,8 @@ border-top: solid 1px whitesmoke;
 }
 
 .qm-changelog-label {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   margin-left: 0.25em;
   font-size: 11px;
   color: white;
@@ -164,35 +172,35 @@ border-top: solid 1px whitesmoke;
 }
 
 .qm-changelog-label-added {
-  background: #98b313;
+  color: #98b313;
 }
 
 .qm-changelog-label-updated {
-  background: #AB7BC1;
+  color: #AB7BC1;
 }
 
 .qm-changelog-label-deprecated {
-  background: #A9A9A9;
+  color: #A9A9A9;
 }
 
 .qm-changelog-label-removed {
-  background: #EC3A65;
+  color: #EC3A65;
 }
 
 .qm-changelog-label-enhancement {
-  background: #44AFAC;
+  color: #44AFAC;
 }
 
 .qm-changelog-label-bugfix {
-  background: #D69B24;
+  color: #D69B24;
 }
 
 .qm-changelog-label-docs {
-  background: #5E99D0;
+  color: #5E99D0;
 }
 
 .qm-changelog-label-info {
-  background: #6F6F6F;
+  color: #6F6F6F;
 }
 
 .qm-changelog-label-added,
@@ -203,7 +211,7 @@ border-top: solid 1px whitesmoke;
 .qm-changelog-label-bugfix,
 .qm-changelog-label-docs,
 .qm-changelog-label-info {
-  color: white;
+  /*background: white;*/
 }
 
 .qm-changelog-text-added {

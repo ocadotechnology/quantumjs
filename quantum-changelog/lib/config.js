@@ -1,33 +1,54 @@
 'use strict'
 
-// function defaultModuleLookup (version, api) {
-//   return {
-//     link: '/docs/' + version + '/' + api.split(' ').join('-').toLowerCase(),
-//     text: 'Docs'
-//   }
-// }
+function defaultIssueUrl () {
+  return undefined
+}
+
+/*
+  Resolves the options passed in to make sure every option is set to something
+  sensible.
+*/
+function resolve (options) {
+  return {
+    targetVersions: options ? options.targetVersions : undefined,
+    languages: options ? options.languages || [] : [],
+    reverseVisibleList: options ? options.reverseVisibleList === true : false,
+    groupByApi: options ? options.groupByApi === true : false,
+    issueUrl: options ? options.issueUrl || defaultIssueUrl : defaultIssueUrl,
+    tags: {
+      info: {
+        displayName: 'Information',
+        iconClass: 'quantum-changelog-icon-info'
+      },
+      bugfix: {
+        displayName: 'Bug Fix',
+        iconClass: 'quantum-changelog-icon-bug-fix'
+      },
+      removed: {
+        displayName: 'Removed',
+        iconClass: 'quantum-changelog-icon-removed'
+      },
+      deprecated: {
+        displayName: 'Deprecated',
+        iconClass: 'quantum-changelog-icon-deprecated'
+      },
+      enhancement: {
+        displayName: 'Enhancement',
+        iconClass: 'quantum-changelog-icon-enhancement'
+      },
+      updated: {
+        displayName: 'Updated',
+        iconClass: 'quantum-changelog-icon-updated'
+      },
+      added: {
+        displayName: 'Added',
+        iconClass: 'quantum-changelog-icon-added'
+      }
+    }
+  }
+}
 
 module.exports = {
-  namespace: 'changelog',
-  targetVersions: undefined, // Target array of versions, used to exclude versions from the list.
-
-  reverseVisibleList: false, // Whether the list of items should be shown in the order provided or reversed. Default reversed.
-
-  dontAddDocsLink: false, // Whether docs links should be ignored and the moduleUrlLookup should not be run
-  milestoneUrlLookup: undefined,
-  issueUrlLookup: undefined,
-  moduleUrlLookup: undefined, // The lookup for urls from a changelog to a docs page
-
-  // XXX: Change this to an object (any ordering is decided by changelog)
-  tags: [
-    // XXX: remove the dependence on font awesome
-    { entityType: 'info', displayName: 'Information', iconClass: 'fa fa-fw fa-info' },
-    { entityType: 'docs', displayName: 'Documentation', iconClass: 'fa fa-fw fa-book' },
-    { entityType: 'bugfix', displayName: 'Bug Fix', iconClass: 'fa fa-fw fa-bug' },
-    { entityType: 'removed', displayName: 'Removed', iconClass: 'fa fa-fw fa-times' },
-    { entityType: 'deprecated', displayName: 'Deprecation', iconClass: 'fa fa-fw fa-recycle' },
-    { entityType: 'enhancement', displayName: 'Enhancement', iconClass: 'fa fa-fw fa-magic' },
-    { entityType: 'updated', displayName: 'Update', iconClass: 'fa fa-fw fa-level-up' },
-    { entityType: 'added', displayName: 'Added', iconClass: 'fa fa-fw fa-plus' }
-  ]
+  resolve,
+  defaultIssueUrl
 }

@@ -18,12 +18,12 @@ describe('api', () => {
       dom.create('div')
         .class('qm-api')
         .add(dom.asset({
-          url: '/assets/quantum-api.css',
+          url: '/quantum-api.css',
           file: path.join(__dirname, '../../assets/quantum-api.css'),
           shared: true
         }))
         .add(dom.asset({
-          url: '/assets/quantum-api.js',
+          url: '/quantum-api.js',
           file: path.join(__dirname, '../../assets/quantum-api.js'),
           shared: true
         }))

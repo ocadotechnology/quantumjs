@@ -17,15 +17,51 @@
   removals, updates, etc in the header of the collapsible.
 */
 
-// const quantum = require('quantum-js')
-// const Promise = require('bluebird')
-const merge = require('merge')
-const dom = require('quantum-dom')
 const path = require('path')
+
+const dom = require('quantum-dom')
 const html = require('quantum-html')
+
+const config = require('./config.js')
 const utils = require('./utils')
 
-const defaultConfig = require('./config.js')
+const assets = [
+  dom.asset({
+    url: '/quantum-changelog.css',
+    file: path.join(__dirname, '../assets/quantum-changelog.css'),
+    shared: true
+  }),
+  dom.asset({
+    url: '/quantum-changelog.js',
+    file: path.join(__dirname, '../assets/quantum-changelog.js'),
+    shared: true
+  }),
+  dom.asset({
+    url: '/quantum-changelog-icons.css',
+    file: path.join(__dirname, '../assets/quantum-changelog-icons.css'),
+    shared: true
+  }),
+  dom.asset({
+    url: '/fonts/quantum-changelog-icons.eot',
+    file: path.join(__dirname, '../assets/fonts/quantum-changelog-icons.eot'),
+    shared: true
+  }),
+  dom.asset({
+    url: '/fonts/quantum-changelog-icons.svg',
+    file: path.join(__dirname, '../assets/fonts/quantum-changelog-icons.svg'),
+    shared: true
+  }),
+  dom.asset({
+    url: '/fonts/quantum-changelog-icons.ttf',
+    file: path.join(__dirname, '../assets/fonts/quantum-changelog-icons.ttf'),
+    shared: true
+  }),
+  dom.asset({
+    url: '/fonts/quantum-changelog-icons.woff',
+    file: path.join(__dirname, '../assets/fonts/quantum-changelog-icons.woff'),
+    shared: true
+  })
+]
 
 /* Creates a paragraph section wrapped in a div */
 function wrappedParagraph (cls, selection, transforms) {
@@ -54,94 +90,91 @@ function createCollapsible (header, content) {
 }
 
 /* Creates a label element - for showing the number of updates, additions removals, etc.. */
-function label (tag, count) {
-  return dom.create('div').class('qm-changelog-label ' + 'qm-changelog-label-' + tag.entityType)
-    .add(dom.create('i').class(tag.iconClass))
+function label (tagType, iconClass, count) {
+  return dom.create('div').class('qm-changelog-label ' + 'qm-changelog-label-' + tagType)
+    .add(dom.create('i').class(iconClass))
     .add(dom.create('span').text(count))
 }
 
-function changeDom (selection, transforms, tagsByName, options) {
+function changeDom (selection, transforms, tagsByName, issueUrl) {
   const changeType = selection.param(0)
+  const tagByName = tagsByName[changeType]
 
-  const issues = options.issueUrl && selection.has('issue') ?
+  const iconClass = tagByName ? tagByName.iconClass ? tagByName.iconClass + ' ' : '' : ''
+  const displayName = tagByName ? tagByName.displayName : undefined
+
+  const issues = selection.has('issue') ?
     dom.create('span').class('qm-changelog-change-issues')
-      .add(selection.selectAll('issue').map((issue) => {
+      .add(selection.selectAll('issue').map(issue => {
         return dom.create('a')
           .class('qm-changelog-change-issue')
-          .attr('href', options.issueUrl + issue.ps())
+          .attr('href', issueUrl(issue.ps()))
           .text('#' + issue.ps())
       })) : undefined
 
-  const icon = dom.create('div')
-    .class('qm-changelog-change-icon')
-    .add(dom.create('i')
-      .class(tagsByName[changeType].iconClass + ' qm-changelog-text-' + changeType)
-      .attr('title', tagsByName[changeType].displayName))
+  const icon = tagByName ? dom.create('i')
+    .class(iconClass + 'qm-changelog-text-' + changeType)
+    .attr('title', displayName) : undefined
 
-  return dom.create('div')
-    .class('qm-changelog-change')
+  return dom.create('div').class('qm-changelog-change')
     .add(dom.create('div').class('qm-changelog-change-header')
-      .add(icon)
-      .add(dom.create('div').class('qm-changelog-change-type').text(tagsByName[changeType].displayName))
+      .add(dom.create('div').class('qm-changelog-change-icon')
+        .add(icon))
+      .add(dom.create('div').class('qm-changelog-change-type').text(displayName))
       .add(issues))
     .add(dom.create('div').class('qm-changelog-change-body')
       .add(selection.has('description') ? html.paragraphTransform(selection.select('description'), transforms) : undefined))
 }
 
-function defaultHeader (selection) {
-  // XXX: implement
-}
-
 /* Creates a single changelog entry */
-function entry (selection, transforms, options, tagsByName) {
-  const language = options.languages.find(language => language.entityTypes.indexOf(selection.select('header').ps()) !== -1)
+function entry (selection, transforms, options) {
+  const language = options.languages.find(language => language.name === selection.select('header').ps())
   const headerSelection = selection.select('header')
-  const header = language ? language.createHeaderDom(headerSelection, transforms) : defaultHeader(headerSelection)
+  const header = language ? language.createHeaderDom(headerSelection, transforms) : undefined
   const changes = selection.selectAll('change')
-    .map(change => changeDom(change, transforms, tagsByName, options))
+    .map(change => changeDom(change, transforms, options.tags, options.issueUrl))
 
-  return dom.create('div')
-    .class('qm-changelog-entry')
+  return dom.create('div').class('qm-changelog-entry')
     .add(dom.create('div').class('qm-changelog-entry-header').add(header))
     .add(dom.create('div').class('qm-changelog-entry-content').add(changes))
 }
 
 /* Creates a group of entries displayed as a collapsible */
-function group (selection, transforms, options, tagsByName, tagNames) {
+function group (selection, transforms, options) {
   const link = selection.has('link') ?
     linkEntity('qm-changelog-group-link', selection.select('link').ps(), selection.ps()) :
     undefined
 
-  const title = dom.create('div')
-    .class('qm-changelog-group-title')
+  const title = dom.create('div').class('qm-changelog-group-title')
     .add(link || selection.ps())
 
-  const entryEntities = selection.selectAll('entry').sort(utils.compareEntrySelections)
+  const entryEntities = selection.selectAll('entry')
+    .sort(utils.compareEntrySelections)
 
   const topLevelChanges = selection.selectAll('change')
     .map(change => {
       return dom.create('div')
         .class('qm-changelog-entry')
-        .add(changeDom(change, transforms, tagsByName, options))
+        .add(changeDom(change, transforms, options.tags, options.issueUrl))
     })
 
   const entries = dom.create('div').class('qm-changelog-group-entries')
     .add(topLevelChanges)
-    .add(entryEntities.map(ent => entry(ent, transforms, options, tagsByName)))
+    .add(entryEntities.map(ent => entry(ent, transforms, options)))
 
   const labels = dom.create('div').class('qm-changelog-group-labels')
-    .add(options.tags.map(tag => {
+    .add(Object.keys(options.tags).map(tagType => {
       const topLevelCount = selection.selectAll('change').reduce((acc, change) => {
-        return change.param(0) === tag.entityType ? acc + 1 : acc
+        return change.param(0) === tagType ? acc + 1 : acc
       }, 0)
       const entrySubCount = entryEntities.reduce((total, entry) => {
         const subtotal = entry.selectAll('change').reduce((acc, change) => {
-          return change.param(0) === tag.entityType ? acc + 1 : acc
+          return change.param(0) === tagType ? acc + 1 : acc
         }, 0)
         return total + subtotal
       }, 0)
       const count = topLevelCount + entrySubCount
-      return count > 0 ? label(tag, count) : undefined
+      return count > 0 ? label(tagType, options.tags[tagType].iconClass, count) : undefined
     }))
 
   const header = dom.create('div').class('qm-changelog-group-head')
@@ -161,22 +194,15 @@ function group (selection, transforms, options, tagsByName, tagNames) {
 }
 
 function changelog (selection, transforms, options) {
-  const tagsByName = {}
-  const tagNames = []
-  options.tags.forEach(tag => {
-    tagsByName[tag.entityType] = tag
-    tagNames.push(tag.entityType)
-  })
-
   const description = selection.has('description') ?
     wrappedParagraph('qm-changelog-description', selection.select('description'), transforms) :
     undefined
 
   const groups = selection.selectAll('group')
-    .map(grp => group(grp, transforms, options, tagsByName, tagNames))
+    .map(grp => group(grp, transforms, options))
 
   const entries = selection.selectAll('entry')
-    .map(ent => entry(ent, transforms, options, tagsByName))
+    .map(ent => entry(ent, transforms, options))
 
   if (description || groups.length > 0 || entries.length > 0) {
     const link = selection.has('link') ?
@@ -186,19 +212,8 @@ function changelog (selection, transforms, options) {
     const title = link || selection.ps()
 
     return dom.create('div').class('qm-changelog')
-      .add(dom.asset({
-        url: '/assets/quantum-changelog.css',
-        file: path.join(__dirname, '../assets/quantum-changelog.css')
-      }))
-      // XXX: get this from the options
-      .add(dom.asset({
-        url: '/assets/quantum-changelog/languages/javascript.css',
-        file: path.join(__dirname, '../assets/languages/quantum-changelog-javascript.css')
-      }))
-      .add(dom.asset({
-        url: '/assets/quantum-changelog.js',
-        file: path.join(__dirname, '../assets/quantum-changelog.js')
-      }))
+      .add(assets)
+      .add(options.languages.map(l => l.assets))
       .add(dom.create('div').class('qm-changelog-head').add(title))
       .add(dom.create('div').class('qm-changelog-body')
         .add(description)
@@ -218,7 +233,7 @@ function changelogList (selection, transforms) {
 
 /* Factory for the entity transforms for changelog */
 function transforms (options) {
-  const resolvedOptions = merge(defaultConfig, options)
+  const resolvedOptions = config.resolve(options)
 
   return Object.freeze({
     changelog: (selection, transforms) => changelog(selection, transforms, resolvedOptions),
@@ -226,4 +241,8 @@ function transforms (options) {
   })
 }
 
-module.exports = transforms
+module.exports.transforms = transforms
+module.exports.createCollapsible = createCollapsible
+module.exports.changeDom = changeDom
+module.exports.label = label
+module.exports.assets = assets

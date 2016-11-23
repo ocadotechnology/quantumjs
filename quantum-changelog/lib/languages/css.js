@@ -1,8 +1,7 @@
 'use strict'
 
+const path = require('path')
 const dom = require('quantum-dom')
-
-const timesink = require('timesink')
 
 /*
   The entity types this language handles - these entites can be represented as
@@ -14,9 +13,19 @@ const entityTypes = [
   'extraclass'
 ]
 
+/*
+  The assets that should be included on the page for this language
+*/
+const assets = [
+  dom.asset({
+    url: '/quantum-changelog/languages/css.css',
+    file: path.join(__dirname, '../../assets/languages/css.css'),
+    shared: true
+  })
+]
+
 /* Hashes an api entry to a string - used for linking entities together across versions */
 function hashEntry (apiEntry, root) {
-  const stop = timesink.start('css-hashEntry')
   let current = apiEntry
   let key = ''
   while(current !== root) {
@@ -24,75 +33,85 @@ function hashEntry (apiEntry, root) {
     const name = current.param(0)
     if (type === 'extraclass') {
       key += '.' + name
-    } else {
+    } else if (type === 'childclass') {
+      key += ' > ' + name
+    } else if (type === 'class') {
       key += ' ' + name
+    } else {
+      return undefined
     }
     current = current.parent()
   }
-  stop()
   return key
 }
 
-/* Returns a changelog entry for the change between two entries. Can be undefined */
-function changelogEntryForChange (selection, previousEntry, isFirstVersion) {
-  return undefined
+function extractEntry (selection, previousExtraction) {
+  let s = selection
+  const entries = []
+  while(s) {
+    entries.unshift({
+      type: s.type(),
+      name: s.ps()
+    })
+    s = s.parent() && entityTypes.indexOf(s.parent().type()) !==-1 ? s.parent() : undefined
+  }
+
+  const apiEntry = {
+    entries
+  }
+
+  const changes = []
+
+  return { apiEntry, changes }
 }
 
 /* Builds the header ast for an entry */
-function buildHeaderASTForEntry (entry) {
-  const selection = entry.selection
-  const type = selection.type()
+function buildEntryHeaderAst (apiEntryChanges) {
+  const apiEntry = apiEntryChanges.apiEntry
+  const entries = apiEntry.entries
 
-  const headerContent = [
-    {
-      type: 'type',
-      params: [type],
-      content: []
-    },
-    {
-      type: 'name',
-      params: selection.param(0) ? ['.' + selection.param(0)] : [],
-      content: []
-    }
-  ]
-
-  if (type === 'childclass' || type === 'extraclass') {
-    if (selection.parent() && selection.parent().type() === 'class' || selection.parent().type() === 'childclass' || selection.parent().type() === 'extraclass') {
-      headerContent.push({
-        type: 'parent',
-        params: ['.' + selection.parent().param(0), selection.parent().type()],
-        content: []
-      })
-    }
-  }
+  const content = []
+  let currentContent = content
+  entries.forEach(entry => {
+    const newContent = []
+    currentContent.push({
+      type: entry.type,
+      params: [entry.name],
+      content: newContent
+    })
+    currentContent = newContent
+  })
 
   return {
     type: 'header',
-    params: [],
-    content: headerContent
+    params: ['css'],
+    content: content
   }
 }
 
-function createDivider (selection) {
-  const parent = selection.select('parent')
-  const separator = selection.select('type').ps() === 'childclass' ? ' ' : ''
-  return parent.param(0) + separator
-}
+function createHeaderDom (selection) {
+  if (entityTypes.some(entityType => selection.has(entityType))) {
+    const header = dom.create('span')
+      .class('qm-changelog-css-header')
 
-function createHeader (selection) {
-  const type = selection.select('type').ps()
+    let current = selection
+    while (entityTypes.some(entityType => current.has(entityType)))  {
+      current = current.select(entityTypes)
+      header.add(dom.create('span')
+        .class('qm-changelog-css-' + current.type())
+        .text(current.ps()))
+    }
 
-  return dom.create('span')
-    .class('qm-changelog-javascript-property-header')
-    .add(selection.has('parent') ? dom.create('span').class('qm-changelog-javascript-property-parent').text(createDivider(selection)) : undefined)
-    .add(dom.create('span').class('qm-changelog-javascript-property-name').text(selection.select('name').ps()))
+    return header
+  }
 }
 
 module.exports = {
   name: 'css',
   entityTypes: entityTypes,
+  assets: assets,
   hashEntry: hashEntry,
-  changelogEntryForChange: changelogEntryForChange,
-  buildHeaderASTForEntry: buildHeaderASTForEntry,
-  createHeader: createHeader
+  extractEntry: extractEntry,
+  buildEntryHeaderAst: buildEntryHeaderAst,
+  createHeaderDom: createHeaderDom
 }

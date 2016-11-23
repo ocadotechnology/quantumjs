@@ -48,6 +48,13 @@ describe('Element', () => {
       .stringify().should.equal('<div test="thing" test2="thing2"></div>')
   })
 
+  it('should remove an attr by setting it to undefined', () => {
+    dom.create('div')
+      .attr('test', 'thing')
+      .attr('test', undefined)
+      .stringify().should.equal('<div></div>')
+  })
+
   it('should stringify content correctly', () => {
     dom.create('div').id('outer')
       .add(dom.create('div').id('inner'))
@@ -292,72 +299,107 @@ describe('dom', () => {
 
   describe('stringify', () => {
     it('should stringify an empty page', () => {
-      return dom.stringify([]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head></head><body></body></html>'})
+      return dom.stringify([]).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head></head><body></body></html>',
+        assets: []
+      })
     })
 
     it('should stringify a page with body content', () => {
       return dom.stringify([
         dom.create('div')
-      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head></head><body><div></div></body></html>'})
+      ]).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head></head><body><div></div></body></html>',
+        assets: []
+      })
     })
 
     it('should stringify a page with body content', () => {
       return dom.stringify([
         'Some content',
         {ignore: 'this'}
-      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head></head><body>Some content</body></html>'})
+      ]).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head></head><body>Some content</body></html>',
+        assets: []
+      })
     })
 
     it('should stringify a page with head content', () => {
       return dom.stringify([
         dom.head(dom.create('title').text('title'))
-      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head><title>title</title></head><body></body></html>'})
+      ]).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head><title>title</title></head><body></body></html>',
+        assets: []
+      })
     })
 
     it('should add content that are strings when stringifying', () => {
       return dom.stringify([
         dom.head('Some content')
-      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head>Some content</head><body></body></html>'})
+      ]).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head>Some content</head><body></body></html>',
+        assets: []
+      })
     })
 
     it('should ignore content that are not strings when stringifying', () => {
       return dom.stringify([
         dom.head({not: 'an element'})
-      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head></head><body></body></html>'})
+      ]).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head></head><body></body></html>',
+        assets: []
+      })
     })
 
     it('should deduplicate head elements with the same id', () => {
       return dom.stringify([
         dom.head(dom.create('title').text('title'), {id: 'title'}),
         dom.head(dom.create('title').text('title2'), {id: 'title'})
-      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head><title>title2</title></head><body></body></html>'})
+      ]).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head><title>title2</title></head><body></body></html>',
+        assets: []
+      })
     })
 
     it('should stringify a page with assets (embedAssets: true)', () => {
       return dom.stringify([
         dom.asset({url: '/assets/site.js', file: path.join(__dirname, 'assets/test.js'), shared: true}),
         dom.asset({url: '/assets/site.css', file: path.join(__dirname, 'assets/test.css'), shared: true})
-      ], {embedAssets: true}).should.eventually.eql({html: "<!DOCTYPE html>\n<html><head><style>.div{ color: red; }\n</style></head><body><script>console.log(window.querySelectorAll('div'))\n</script></body></html>"})
+      ], {embedAssets: true}).should.eventually.eql({
+        html: "<!DOCTYPE html>\n<html><head><style>.div{ color: red; }\n</style></head><body><script>console.log(window.querySelectorAll('div'))\n</script></body></html>",
+        assets: []
+      })
     })
 
     it('should stringify a page with assets (embedAssets: false)', () => {
-      return dom.stringify([
-        dom.asset({url: '/assets/site.js', file: 'src/assets/site.js', shared: true}),
-        dom.asset({url: '/assets/site.css', file: 'src/assets/site.css', shared: true})
-      ], {embedAssets: false}).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/assets/site.css"></link></head><body><script src="/assets/site.js"></script></body></html>'})
+      const elements = [
+        dom.asset({url: '/assets/site.css', file: 'src/assets/site.css', shared: true}),
+        dom.asset({url: '/assets/site.js', file: 'src/assets/site.js', shared: true})
+      ]
+      return dom.stringify(elements, {embedAssets: false}).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/assets/site.css"></link></head><body><script src="/assets/site.js"></script></body></html>',
+        assets: elements
+      })
     })
 
     it('should stringify a page with assets (embedAssets: false, assetPath: /resources)', () => {
-      return dom.stringify([
-        dom.asset({url: '/assets/site.js', file: 'src/assets/site.js', shared: true}),
-        dom.asset({url: '/assets/site.css', file: 'src/assets/site.css', shared: true})
-      ], {embedAssets: false, assetPath: '/resources'}).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/resources/assets/site.css"></link></head><body><script src="/resources/assets/site.js"></script></body></html>'})
+      const elements = [
+        dom.asset({url: '/assets/site.css', file: 'src/assets/site.css', shared: true}),
+        dom.asset({url: '/assets/site.js', file: 'src/assets/site.js', shared: true})
+      ]
+      return dom.stringify(elements, {embedAssets: false, assetPath: '/resources'}).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/resources/assets/site.css"></link></head><body><script src="/resources/assets/site.js"></script></body></html>',
+        assets: elements
+      })
     })
 
     it('should modify the body class correctly', () => {
       return dom.stringify([
         dom.bodyClassed('my-class', true)
-      ]).should.eventually.eql({html: '<!DOCTYPE html>\n<html><head></head><body class="my-class"></body></html>'})
+      ]).should.eventually.eql({
+        html: '<!DOCTYPE html>\n<html><head></head><body class="my-class"></body></html>',
+        assets: []
+      })
     })
   })
 

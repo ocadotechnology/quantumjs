@@ -15,7 +15,7 @@
     @changelogList
       @changelog 0.1.0
         @entry
-          @header object
-            @name test
+          @header javascript
+            @object test
           @change added
             @description: Object added

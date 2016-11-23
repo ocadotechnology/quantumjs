@@ -6,7 +6,7 @@ const quantumSyntax = require('./quantum-syntax.js')
 const path = require('path')
 
 const stylesheetAsset = dom.asset({
-  url: '/assets/quantum-code-highlight.css',
+  url: '/quantum-code-highlight.css',
   file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
   shared: true
 })

@@ -27,10 +27,6 @@
     "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"
   },
   "dependencies": {
-    "bluebird": "^2.10.2",
-    "clone": "^1.0.2",
-    "flatten": "0.0.1",
-    "merge": "^1.2.0",
     "quantum-js": "^2.0.0",
     "quantum-dom": "^2.0.0",
     "quantum-html": "^2.0.0"

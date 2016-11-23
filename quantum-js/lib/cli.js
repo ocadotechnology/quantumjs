@@ -12,7 +12,10 @@ const chalk = require('chalk')
 const path = require('path')
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs-extra'))
-const liveserver = require('live-server')
+const connect = require('connect')
+const serveStatic = require('serve-static')
+const compression = require('compression')
+const ws = require('ws')
 
 const qwatch = require('./watch')
 const parse = require('./parse')
@@ -20,6 +23,8 @@ const read = require('./read')
 const Page = require('./page')
 const fileOptions = require('./file-options')
 const version = require('../package.json').version
+
+const liveReloadScriptTag = fs.readFileSync(path.join(__dirname, '..', 'assets', 'live-reload.html'))
 
 function help () {
   console.log(`
@@ -75,9 +80,15 @@ QuantumJS (${version})
 
 function buildPage (sourcePage, pipeline, config, logger) {
   const start = Date.now()
-  return Promise.resolve(pipeline(sourcePage, config))
+  return Promise.resolve(pipeline(sourcePage))
     .then((pages) => Array.isArray(pages) ? pages : [pages])
-    .map((page) => fs.outputFileAsync(page.file.dest, page.content).then(() => page))
+    .map((page) => {
+      let content = page.content
+      if (page.file.dest.indexOf('.html') === page.file.dest.length - 5) {
+        content = content.replace('</body>', liveReloadScriptTag + '</body>')
+      }
+      return fs.outputFileAsync(page.file.dest, content).then(() => page)
+    })
     .then((destPages) => {
       const timeTaken = Date.now() - start
       logger({type: 'build-page', timeTaken: timeTaken, sourcePage: sourcePage, destPages: destPages})
@@ -100,11 +111,29 @@ function copyResources (config, options, logger) {
     .map((file) => copyResource(file, logger), {concurrency: options.concurrency})
 }
 
+function flatten (arrays) {
+  return Array.prototype.concat.apply([], arrays)
+}
+
+function createPipeline (transforms) {
+  return (page) => {
+    let result = Promise.resolve([page])
+    transforms.forEach(transform => {
+      result = result.then(pages => {
+        return Promise.all(pages.map(transform)).then(flatten)
+      })
+    })
+    return result
+  }
+}
+
 function build (config) {
   const logger = config.logger
   const options = {concurrency: config.concurrency || 1, dest: config.dest}
-  const pipeline = config.pipeline
+  const pipeline = createPipeline(config.pipeline)
 
+  let builtCount = 0
+  const startTime = Date.now()
   return copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Pages'})
     return fileOptions.resolve(config.pages, options).map((file) => {
@@ -115,6 +144,10 @@ function build (config) {
             content: content
           })
           return buildPage(page, pipeline, config, logger)
+            .then(pages => {
+              builtCount += pages.length
+              return pages
+            })
         })
         .catch((err) => {
           if (err instanceof parse.ParseError) {
@@ -124,28 +157,52 @@ function build (config) {
           }
         })
     }, {concurrency: options.concurrency})
-  }).then(() => logger({type: 'end'}))
+  }).then(() => logger({type: 'end', builtCount: builtCount, timeTaken: Date.now() - startTime}))
 }
 
 function startServer (options) {
-  liveserver.start({
-    port: options.port,
-    host: '0.0.0.0',
-    root: options.dest,
-    open: false,
-    wait: 0,
-    quiet: true
+  const server = require('http').createServer()
+  const wss = new ws.Server({ server: server })
+  const app = connect()
+
+  const connections = new Set()
+
+  wss.on('connection', (ws) => {
+    connections.add(ws)
+    ws.on('close', () => connections.delete(ws))
   })
+
+  app.use(compression())
+  app.use(serveStatic(options.dest))
+  server.on('request', app)
+  server.listen(options.port, '0.0.0.0', (err) => {
+    if (err) {
+      console.error('Unable to start server: ' + err)
+    }
+  })
+
+  function triggerReload (filename) {
+    // XXX: use the filename for more targeted reloads
+    connections.forEach(ws => {
+      if (ws.readyState === ws.OPEN) {
+        ws.send('reload')
+      } else {
+        connections.delete(ws)
+      }
+    })
+  }
+
+  return triggerReload
 }
 
 function watch (config) {
   const logger = config.logger
   const options = {concurrency: config.concurrency || 1, dest: config.dest || 'target', port: config.port || 8080}
-  const pipeline = config.pipeline
+  const pipeline = createPipeline(config.pipeline)
 
   logger({type: 'header', message: 'Starting Server'})
   logger({type: 'message', message: 'http://0.0.0.0:' + options.port})
-  startServer(options)
+  const triggerReload = startServer(options)
 
   copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Site'})
@@ -154,12 +211,18 @@ function watch (config) {
         logger({type: 'page-load-error', file: page.file.src, error: err})
       } else {
         return buildPage(page, pipeline, config, logger)
+          .then((pages) => {
+            pages.forEach(p => triggerReload(p.file.dest))
+          })
       }
     })
 
     if (config.resources) {
       qwatch.watcher(config.resources, options).then((watcher) => {
-        watcher.on('change', (file) => copyResource(file, logger))
+        watcher.on('change', (file) => {
+          copyResource(file, logger)
+          triggerReload(file.dest)
+        })
       })
     }
   })
@@ -198,33 +261,36 @@ function defaultLogger (evt) {
   } else if (evt.type === 'message') {
     console.log(evt.message)
   } else if (evt.type === 'build-page') {
-    console.log(evt.sourcePage.file.src + chalk.magenta(' [' + evt.timeTaken + ' ms]'))
+    console.log(evt.sourcePage.file.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.gray(' -> ' + evt.destPages.length + ' page' + (evt.destPages.length > 1 ? 's' : '')))
     evt.sourcePage.warnings.forEach((warning) => {
       console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
     })
     evt.sourcePage.errors.forEach((error) => {
       console.log(chalk.red('  [error] ') + chalk.cyan(error.module) + ': ' + chalk.yellow(error.problem) + '.  ' + error.resolution)
     })
-    evt.destPages.forEach((page) => {
-      console.log(chalk.green('  + ' + page.file.dest))
-      page.warnings.forEach((warning) => {
-        console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
-      })
-      page.errors.forEach((error) => {
-        console.log(chalk.red('  [error] ') + chalk.cyan(error.module) + ': ' + chalk.yellow(error.problem) + '.  ' + error.resolution)
-      })
-    })
+    // if(evt.destPages.length < 4) {
+    //   evt.destPages.forEach((page) => {
+    //     console.log(chalk.green('  + ' + page.file.dest))
+    //     page.warnings.forEach((warning) => {
+    //       console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
+    //     })
+    //     page.errors.forEach((error) => {
+    //       console.log(chalk.red('  [error] ') + chalk.cyan(error.module) + ': ' + chalk.yellow(error.problem) + '.  ' + error.resolution)
+    //     })
+    //   })
+    // }
   } else if (evt.type === 'page-load-error') {
     console.log(evt.file)
     const context = evt.file !== evt.error.filename ? 'in inlined file ' + chalk.cyan(evt.error.filename) + ': ' : ''
     const errorMessage = evt.error.toString().split('\n').map((line, i) => (i > 0 ? '  ' : '') + line).join('\n')
     console.log(chalk.red('  [error] ' + context + errorMessage))
   } else if (evt.type === 'copy-resource') {
-    console.log(evt.file.src + chalk.magenta(' [' + evt.timeTaken + ' ms]' + chalk.gray(' -> ' + evt.file.dest)))
+    console.log(evt.file.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.gray(' -> ' + evt.file.dest))
   } else if (evt.type === 'error') {
     console.error(evt.error.stack || evt.error)
   } else if (evt.type === 'end') {
-    // console.log('Rendered ' + count + ' pages')
+    console.log()
+    console.log('Built ' + evt.builtCount + ' pages ' + chalk.magenta('[' + (evt.timeTaken / 1000).toFixed(2) + ' s]'))
   }
 }
 

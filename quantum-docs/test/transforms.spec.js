@@ -14,13 +14,13 @@ function transforms (selection) {
 }
 
 const stylesheetAsset = dom.asset({
-  url: '/assets/quantum-docs.css',
+  url: '/quantum-docs.css',
   file: path.join(__dirname, '../assets/quantum-docs.css'),
   shared: true
 })
 
 const scriptAsset = dom.asset({
-  url: '/assets/quantum-docs.js',
+  url: '/quantum-docs.js',
   file: path.join(__dirname, '../assets/quantum-docs.js'),
   shared: true
 })

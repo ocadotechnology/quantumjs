@@ -36,7 +36,7 @@ function checkNotFiltered (selection) {
 }
 
 function maybePromiseAll (arr) {
-  return arr.some(x => x ? x.then : false) ? Promise.all(arr) : arr
+  return arr.some(x => x ? x.then : false) ? select.Promise.all(arr) : arr
 }
 
 Selection.prototype = {

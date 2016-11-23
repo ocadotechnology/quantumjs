@@ -1,21 +1,21 @@
-const merge = require('merge')
+'use strict'
 
+const config = require('./config.js')
 const pageTransform = require('./page-transform')
 const entityTransforms = require('./entity-transforms')
-const defaultConfig = require('./config.js')
 
 const javascript = require('./languages/javascript')
 const css = require('./languages/css')
 
 module.exports = function (options) {
-  const opts = merge(defaultConfig, options)
+  const opts = config.resolve(options)
   return (page) => {
     return pageTransform.pageTransform(page, opts)
   }
 }
-module.exports.transforms = entityTransforms
+module.exports.transforms = entityTransforms.transforms
 
-// XXX: add quantum language
+// XXX: add quantum language and rest
 module.exports.languages = {
   javascript: javascript,
   css: css

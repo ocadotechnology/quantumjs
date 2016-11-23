@@ -62,7 +62,11 @@ Element.prototype.attr = function (name, value) {
   if (arguments.length === 1) {
     return this.attrs[name]
   } else {
-    this.attrs[name] = value
+    if (value === undefined) {
+      delete this.attrs[name]
+    } else {
+      this.attrs[name] = value
+    }
     return this
   }
 }
@@ -174,10 +178,34 @@ Element.prototype.remove = function () {
 
 // turns the element into an html string
 Element.prototype.stringify = function () {
-  const attributes = Object.keys(this.attrs).map(k => k + '="' + this.attrs[k] + '"').join(' ')
-  const content = this.content.map(d => d.stringify ? d.stringify() : (isString(d) ? d : '')).join('')
-  const endContent = this.endContent.map(d => d.stringify ? d.stringify() : (isString(d) ? d : '')).join('')
-  return '<' + this.type + (attributes.length > 0 ? ' ' + attributes : '') + '>' + content + endContent + '</' + this.type + '>'
+  let res = '<' + this.type
+  const attrs = this.attrs
+  const attrKeys = Object.keys(attrs)
+  const attrKeysL = attrKeys.length
+  for (let i = 0; i < attrKeysL; i++) {
+    const k = attrKeys[i]
+    res += ' ' + k + '="' + attrs[k] + '"'
+  }
+
+  res += '>'
+
+  const content = this.content
+  const contentL = content.length
+  for (let i = 0; i < contentL; i++) {
+    const d = content[i]
+    res += d.stringify ? d.stringify() : (isString(d) ? d : '')
+  }
+
+  const endContent = this.endContent
+  const endContentL = endContent.length
+  for (let i = 0; i < endContentL; i++) {
+    const d = endContent[i]
+    res += d.stringify ? d.stringify() : (isString(d) ? d : '')
+  }
+
+  res += '</' + this.type + '>'
+
+  return res
 }
 
 function TextNode (text) {
@@ -203,21 +231,24 @@ function PageModifier (options) {
   this.options = options
 }
 
-// extracts 'elements' of a particular type from the tree of elements (for
+// extracts 'elements' of particular types from the tree of elements (for
 // extracting HeadInjectWrapper and Asset 'elements')
-function extractByType (elements, Type) {
+function extractTypes (elements, Types) {
   function inner (elements, res) {
-    elements.forEach((e) => {
-      if (e instanceof Type) {
-        res.push(e)
+    const l = elements.length
+    for (let i = 0; i < l; i++) {
+      const e = elements[i]
+      const index = Types.indexOf(e.constructor)
+      if (index > -1) {
+        res[index].push(e)
       } else if (e instanceof Element) {
         inner(e.content, res)
         inner(e.endContent, res)
       }
-    })
+    }
   }
 
-  const res = []
+  const res = Types.map(() => [])
   inner(elements, res)
   return res
 }
@@ -254,13 +285,12 @@ function asset (options) {
   return new Asset(opts.url || '', opts.file || '', opts.shared === true)
 }
 
-// renders the element given to html
+// renders the elements given to html
 function stringify (elements, options) {
   const embedAssets = options ? options.embedAssets !== false : true
   const assetPath = options ? options.assetPath || '' : ''
 
-  const headElementWrappers = extractByType(elements, HeadInjectWrapper)
-  const modifiers = extractByType(elements, PageModifier)
+  const [headElementWrappers, modifiers, assets] = extractTypes(elements, [HeadInjectWrapper, PageModifier, Asset])
 
   const latestById = {}
   headElementWrappers.forEach(w => {
@@ -290,8 +320,6 @@ function stringify (elements, options) {
     .map(e => e !== undefined && e.stringify ? e.stringify() : (isString(e) ? e : ''))
     .join('')
 
-  const assets = extractByType(elements, Asset)
-
   // XXX: add an option for choosing where the assets live
 
   // only keep unique assets
@@ -301,11 +329,14 @@ function stringify (elements, options) {
   })
   const uniqueAssets = Object.keys(uniqueAssetsMap).map(k => uniqueAssetsMap[k])
 
+  const exportAssets = []
+
   const stylesheets = Promise.all(uniqueAssets.filter(a => a.url.endsWith('.css')).map(s => {
     if (embedAssets) {
       // XXX: make this loader configurable so that assets can be cached
       return fs.readFileAsync(s.filename, 'utf-8').then(content => '<style>' + content + '</style>')
     } else {
+      exportAssets.push(s)
       return '<link rel="stylesheet" href="' + assetPath + s.url + '"></link>'
     }
   }))
@@ -315,9 +346,17 @@ function stringify (elements, options) {
       // XXX: make this loader configurable so that assets can be cached
       return fs.readFileAsync(s.filename, 'utf-8').then(content => '<script>' + content + '</script>')
     } else {
+      exportAssets.push(s)
       return '<script src="' + assetPath + s.url + '"></script>'
     }
   }))
+
+  // Also export any un-embeddable assets
+  uniqueAssets.forEach(asset => {
+    if (!asset.url.endsWith('.js') && !asset.url.endsWith('.css')) {
+      exportAssets.push(asset)
+    }
+  })
 
   return Promise.all([stylesheets, scripts])
     .spread((stylesheets, scripts) => {
@@ -326,8 +365,8 @@ function stringify (elements, options) {
       const body = openBodyTag + bodyElements + scripts.join('') + '</body>'
       const html = '<!DOCTYPE html>\n' + '<html>' + head + body + '</html>'
       return {
-        // XXX: add the list of assets for copying reources
-        html: html
+        html: html,
+        assets: exportAssets
       }
     })
 }
@@ -340,5 +379,6 @@ module.exports = {
   head: head,
   stringify: stringify,
   randomId: randomId,
-  escapeHTML: escapeHTML
+  escapeHTML: escapeHTML,
+  Element: Element
 }

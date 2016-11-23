@@ -1,0 +1,16 @@
+
+.qm-changelog-css-header {
+  font-weight: bold;
+}
+
+.qm-changelog-css-class:before {
+  content: ' .';
+}
+
+.qm-changelog-css-childclass:before {
+  content: ' > .';
+}
+
+.qm-changelog-css-extraclass:before {
+  content: '.';
+}

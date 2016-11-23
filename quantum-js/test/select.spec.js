@@ -425,16 +425,18 @@ describe('select', () => {
   describe('Selection::selectAll', () => {
     it('should selectAll correctly', () => {
       const entity = {
-        content: [{
-          type: 'tag',
-          params: [],
-          content: [
-            {type: 'tagA', params: [], content: []},
-            {type: 'tagA', params: [], content: []},
-            {type: 'tagA', params: [], content: []}
-          ]
-        }
-      ]}
+        content: [
+          {
+            type: 'tag',
+            params: [],
+            content: [
+              {type: 'tagA', params: [], content: []},
+              {type: 'tagA', params: [], content: []},
+              {type: 'tagA', params: [], content: []}
+            ]
+          }
+        ]
+      }
 
       select(entity).select('tag').selectAll('tagA').should.eql([
         select(entity).selectAll('tagA', {recursive: true})[0],
@@ -445,16 +447,18 @@ describe('select', () => {
 
     it('should selectAll for an array of types correctly', () => {
       const entity = {
-        content: [{
-          type: 'tag',
-          params: [],
-          content: [
-            {type: 'tagA', params: [], content: []},
-            {type: 'tagB', params: [], content: []},
-            {type: 'tagA', params: [], content: []}
-          ]
-        }
-      ]}
+        content: [
+          {
+            type: 'tag',
+            params: [],
+            content: [
+              {type: 'tagA', params: [], content: []},
+              {type: 'tagB', params: [], content: []},
+              {type: 'tagA', params: [], content: []}
+            ]
+          }
+        ]
+      }
 
       select(entity).select('tag').selectAll(['tagA', 'tagB']).should.eql([
         select(entity).selectAll('tagA', {recursive: true})[0],

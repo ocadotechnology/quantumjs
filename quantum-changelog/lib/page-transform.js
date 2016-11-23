@@ -1,9 +1,9 @@
 'use strict'
 
 const quantum = require('quantum-js')
-const utils = require('./utils')
 
-const timesink = require('timesink')
+const config = require('./config.js')
+const utils = require('./utils')
 
 const tags = ['removed', 'deprecated', 'enhancement', 'bugfix', 'updated', 'added', 'info']
 
@@ -19,7 +19,7 @@ const tags = ['removed', 'deprecated', 'enhancement', 'bugfix', 'updated', 'adde
   If no @changelogList is found, this function does nothing to the page
 */
 function pageTransform (page, options) {
-  const resolvedOptions = resolveOptions(options)
+  const resolvedOptions = config.resolve(options)
 
   const root = quantum.select(page.content)
 
@@ -28,19 +28,6 @@ function pageTransform (page, options) {
     return page.clone({ content: page.content })
   } else {
     return page
-  }
-}
-
-/*
-  Resolves the options passed in to make sure every option is set to something
-  sensible.
-*/
-function resolveOptions (options) {
-  return {
-    targetVersions: options ? options.targetVersions : undefined,
-    languages: options ? options.languages || [] : [],
-    reverseVisibleList: options ? options.reverseVisibleList === true : false,
-    groupByApi: options ? options.groupByApi === true : false
   }
 }
 
@@ -57,8 +44,6 @@ function processChangelogList (page, changelogList, options) {
   const reverseVisibleList = changelogList.has('reverseVisibleList') ? changelogList.select('reverseVisibleList').ps() === 'true' : options.reverseVisibleList
   const languages = options.languages
   const targetVersions = options.targetVersions
-
-  const stop = timesink.start('process')
 
   const processSelection = changelogList.select('process')
 
@@ -92,8 +77,6 @@ function processChangelogList (page, changelogList, options) {
 
   // replace the wrapper's content with the built changelog
   changelogList.content(changelogAST)
-
-  stop()
 }
 
 /*
@@ -112,12 +95,8 @@ function processChangelogList (page, changelogList, options) {
   over without any extra sorting needed.
 */
 function extractApis (selection) {
-  const stop = timesink.start('extractApis')
-
-  const stopselect = timesink.start('extractApis-select')
   // find all the version tags within the document
   const versionSelections = selection.selectAll('version', { recursive: true })
-  stopselect()
 
   // group the apis by version (for faster lookup when processing)
   const unorderedApisGroupedByVersion = new Map()
@@ -143,7 +122,6 @@ function extractApis (selection) {
     apisByVersion.set(version, unorderedApisGroupedByVersion.get(version))
   })
 
-  stop()
   return {versions, apisByVersion}
 }
 
@@ -204,7 +182,6 @@ function extractApis (selection) {
   down the line.
 */
 function buildChangelogEntries (languages, api, previousApiMap, detectAdded) {
-  const stop = timesink.start('buildChangelogEntries')
   const apiMap = new Map(previousApiMap)
   const changelogEntriesMap = new Map()
 
@@ -270,7 +247,6 @@ function buildChangelogEntries (languages, api, previousApiMap, detectAdded) {
     })
   })
 
-  stop()
   return {
     apiMap: apiMap,
     changelogEntriesMap: changelogEntriesMap
@@ -387,8 +363,6 @@ function extractChangeContent (change) {
 }
 
 function buildChangelogAST (page, version, changelogEntriesByApi, groupByApi, description) {
-  const stop = timesink.start('buildChangelog')
-
   const content = []
 
   if (description) {
@@ -439,7 +413,6 @@ function buildChangelogAST (page, version, changelogEntriesByApi, groupByApi, de
     }
   })
 
-  stop()
   return {
     type: 'changelog',
     params: [version],
@@ -449,7 +422,6 @@ function buildChangelogAST (page, version, changelogEntriesByApi, groupByApi, de
 
 module.exports = {
   pageTransform: pageTransform,
-  resolveOptions: resolveOptions,
   process: process,
   processChangelogList: processChangelogList,
   extractApis: extractApis,
