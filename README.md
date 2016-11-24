@@ -13,7 +13,6 @@ QuantumJS is a static site generator with the following design goals:
  - Clean separation of content from final styled output
  - Simplicity
  - Speed
- - Output format agnostic (be able to output to HTML, PDF, Markdown, etc)
 
 This repository contains the parser for the language along with some common transforms:
 

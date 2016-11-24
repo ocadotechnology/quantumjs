@@ -14,6 +14,7 @@ function File (options) {
   this.resolved = options.resolved
   this.base = options.base
   this.dest = options.dest
+  this.destBase = options.destBase
   this.watch = options.watch
 }
 
@@ -31,6 +32,7 @@ File.prototype = {
       resolved: changes && changes.resolved !== undefined ? changes.resolved : this.resolved,
       base: changes && changes.base !== undefined ? changes.base : this.base,
       dest: changes && changes.dest !== undefined ? changes.dest : this.dest,
+      destBase: changes && changes.destBase !== undefined ? changes.destBase : this.destBase,
       watch: changes && changes.watch !== undefined ? changes.watch : this.watch
     })
   }

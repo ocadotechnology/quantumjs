@@ -1,0 +1,21 @@
+@spec property
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @version 0.1.0
+          @api ApiName
+            @property test [String]
+              @added
+                @description: Property added
+      @version 0.1.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @entry
+          @header javascript
+            @property test [String]
+          @change added
+            @description: Property added

@@ -19,11 +19,12 @@ describe('watcher', () => {
 
   it('should watch the right files for change', () => {
     return watch.watcher('target/test/watch-test/*').then((watcher) => {
-      watcher.files().then((files) => {
+      return watcher.files().then((files) => {
         files.should.eql([
           new File({
             base: 'target/test/watch-test',
             dest: 'target/index.css',
+            destBase: 'target',
             resolved: 'index.css',
             src: 'target/test/watch-test/index.css',
             watch: true
@@ -31,6 +32,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/watch-test',
             dest: 'target/index.um',
+            destBase: 'target',
             resolved: 'index.um',
             src: 'target/test/watch-test/index.um',
             watch: true
@@ -38,6 +40,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/watch-test',
             dest: 'target/index1.um',
+            destBase: 'target',
             resolved: 'index1.um',
             src: 'target/test/watch-test/index1.um',
             watch: true
@@ -60,6 +63,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/watch-test',
             dest: 'target2/index.css',
+            destBase: 'target2',
             resolved: 'index.css',
             src: 'target/test/watch-test/index.css',
             watch: true
@@ -82,6 +86,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/watch-test',
             dest: 'target2/subtarget/index.css',
+            destBase: 'target2',
             resolved: 'index.css',
             src: 'target/test/watch-test/index.css',
             watch: true
@@ -99,6 +104,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/files1',
             dest: 'target2/a.um',
+            destBase: 'target2',
             resolved: 'a.um',
             src: 'target/test/files1/a.um',
             watch: true
@@ -106,6 +112,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/files1',
             dest: 'target2/b.um',
+            destBase: 'target2',
             resolved: 'b.um',
             src: 'target/test/files1/b.um',
             watch: true
@@ -113,6 +120,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/files2',
             dest: 'target2/e.um',
+            destBase: 'target2',
             resolved: 'e.um',
             src: 'target/test/files2/e.um',
             watch: true
@@ -120,6 +128,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/files2',
             dest: 'target2/z.um',
+            destBase: 'target2',
             resolved: 'z.um',
             src: 'target/test/files2/z.um',
             watch: true
@@ -145,6 +154,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/files1',
             dest: 'target2/a.um',
+            destBase: 'target2',
             resolved: 'a.um',
             src: 'target/test/files1/a.um',
             watch: true
@@ -152,6 +162,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/files1',
             dest: 'target2/b.um',
+            destBase: 'target2',
             resolved: 'b.um',
             src: 'target/test/files1/b.um',
             watch: true
@@ -159,6 +170,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test',
             dest: 'target2/files2/e.um',
+            destBase: 'target2',
             resolved: 'files2/e.um',
             src: 'target/test/files2/e.um',
             watch: true
@@ -166,6 +178,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test',
             dest: 'target2/files2/z.um',
+            destBase: 'target2',
             resolved: 'files2/z.um',
             src: 'target/test/files2/z.um',
             watch: true
@@ -191,6 +204,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/files1',
             dest: 'target2/a.um',
+            destBase: 'target2',
             resolved: 'a.um',
             src: 'target/test/files1/a.um',
             watch: true
@@ -198,6 +212,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test',
             dest: 'target2/files2/e.um',
+            destBase: 'target2',
             resolved: 'files2/e.um',
             src: 'target/test/files2/e.um',
             watch: true
@@ -223,6 +238,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/files1',
             dest: 'target2/a.um',
+            destBase: 'target2',
             resolved: 'a.um',
             src: 'target/test/files1/a.um',
             watch: true
@@ -230,6 +246,7 @@ describe('watcher', () => {
           new File({
             base: 'target/test/files1',
             dest: 'target2/b.um',
+            destBase: 'target2',
             resolved: 'b.um',
             src: 'target/test/files1/b.um',
             watch: true
@@ -252,6 +269,7 @@ describe('watcher', () => {
           resolved: 'subdir/index.add',
           base: 'target/test/watch-change-test',
           dest: 'target2/subdir/index.add',
+          destBase: 'target2',
           watch: true
         }))
         watcher.stop()
@@ -274,6 +292,7 @@ describe('watcher', () => {
           resolved: 'index.um',
           base: 'target/test/watch-change-test',
           dest: 'target2/index.um',
+          destBase: 'target2',
           watch: true
         }))
         watcher.stop()
@@ -297,6 +316,7 @@ describe('watcher', () => {
             resolved: 'subdir/index.remove',
             base: 'target/test/watch-change-test',
             dest: 'target2/subdir/index.remove',
+            destBase: 'target2',
             watch: true
           }))
           watcher.stop()
@@ -385,6 +405,7 @@ describe('watch', () => {
             resolved: 'index.um',
             base: 'target/test/watch-change-inline-test',
             dest: 'target2/index.um',
+            destBase: 'target2',
             watch: true
           }),
           content: {
@@ -421,6 +442,7 @@ describe('watch', () => {
             resolved: 'index.um',
             base: 'target/test/watch-change-inline-default-test',
             dest: 'target/index.um',
+            destBase: 'target',
             watch: true
           }),
           content: {
@@ -459,6 +481,7 @@ describe('watch', () => {
             resolved: 'index.um',
             base: 'target/test/watch-change-deep-inline-test',
             dest: 'target2/index.um',
+            destBase: 'target2',
             watch: true
           }),
           content: {
@@ -497,6 +520,7 @@ describe('watch', () => {
             resolved: 'index.um',
             base: 'target/test/watch-change-base-inline-test',
             dest: 'target2/index.um',
+            destBase: 'target2',
             watch: true
           }),
           content: {
@@ -535,6 +559,7 @@ describe('watch', () => {
             resolved: 'index.um',
             base: 'target/test/watch-change-remove-inline-test',
             dest: 'target2/index.um',
+            destBase: 'target2',
             watch: true
           }),
           content: {
@@ -656,6 +681,7 @@ describe('watch', () => {
             resolved: 'index.um',
             base: 'target/test/watch-change-non-quantum-inline-test',
             dest: 'target2/index.um',
+            destBase: 'target2',
             watch: true
           }),
           content: {

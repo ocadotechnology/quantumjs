@@ -221,7 +221,7 @@ function transforms (opts) {
     return dom.create('div').class('qm-diagram')
       .add(svg)
       .add(dom.asset({
-        url: '/assets/quantum-diagram.css',
+        url: '/quantum-diagram.css',
         file: path.join(__dirname, '../assets/quantum-diagram.css'),
         shared: true
       }))

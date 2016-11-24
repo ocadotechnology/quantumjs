@@ -9,8 +9,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "quantum-js": "^1.0.0",
-    "quantum-html": "^1.0.0",
-    "quantum-changelog": "^1.0.0"
+    "quantum-js": "^2.0.0",
+    "quantum-html": "^2.0.0",
+    "quantum-changelog": "^2.0.0"
   }
 }

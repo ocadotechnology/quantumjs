@@ -1,0 +1,21 @@
+@spec object
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @version 0.1.0
+          @api ApiName
+            @object test
+              @added
+                @description: Object added
+      @version 0.1.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @entry
+          @header javascript
+            @object test
+          @change added
+            @description: Object added

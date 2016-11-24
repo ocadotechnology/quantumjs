@@ -27,7 +27,7 @@ const htmlTransforms = {
   site: quantumSite
 }
 
-function pipeline (page) {
+function customizedTemplate (page) {
   const templateVariables = {
     examples: {
       exampleList: [1, 2, 3],
@@ -39,18 +39,19 @@ function pipeline (page) {
     filename: page.file.src
   }
 
-  return Promise.resolve(page)
-    .then(template({ variables: templateVariables }))
-    .then(changelog())
-    .then(version())
-    .map(docs())
-    .map(html({ transforms: htmlTransforms }))
-    .map(html.stringify(htmlOptions))
-    .map(html.htmlRenamer())
+  return template({ variables: templateVariables })(page)
 }
 
 module.exports = {
-  pipeline: pipeline,
+  pipeline: [
+    customizedTemplate,
+    changelog(),
+    version(),
+    docs(),
+    html({ transforms: htmlTransforms }),
+    html.build(htmlOptions),
+    html.htmlRenamer()
+  ],
   pages: 'src/pages/**/*.um',
   htmlTransforms: htmlTransforms,
   resources: [

@@ -2,8 +2,8 @@
   "name": "quantum-api",
   "version": "2.0.0",
   "description": "quantum entity to virtual dom transforms for writing api docs",
-  "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
+    "James Smyth <james.smyth@ocado.com>",
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
   "engines" : { "node" : ">=4.0.0" },

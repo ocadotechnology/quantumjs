@@ -1,0 +1,25 @@
+@spec constructor
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @version 0.1.0
+          @api ApiName
+            @constructor test
+              @added
+                @description: Constructor added
+              @param arg0 [String]
+              @returns Number
+      @version 0.1.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @entry
+          @header javascript
+            @constructor test
+              @param arg0 [String]
+              @returns Number
+          @change added
+            @description: Constructor added

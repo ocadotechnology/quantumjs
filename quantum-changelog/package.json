@@ -4,7 +4,8 @@
   "description": "changelog for quantum",
   "author": "Charlie Frater <charlie.frater@ocado.com>",
   "contributors": [
-    "James Smyth <james.smyth@ocado.com>"
+    "James Smyth <james.smyth@ocado.com>",
+    "Charlie Frater <charlie.frater@ocado.com>"
   ],
   "engines" : { "node" : ">=4.0.0" },
   "license": "Apache-2.0",
@@ -21,16 +22,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test && npm run lint",
-    "lint": "eslint lib/*.js test/*.js",
-    "fix-lint-issues": "eslint --fix lib/*.js test/*.js",
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd --recursive \"test/**/*spec.js\" && npm run lint",
+    "lint": "eslint lib/**/*.js test/**/*.js",
+    "fix-lint-issues": "eslint --fix lib/**/*.js test/**/*.js",
     "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"
   },
   "dependencies": {
-    "bluebird": "^2.10.2",
-    "clone": "^1.0.2",
-    "flatten": "0.0.1",
-    "merge": "^1.2.0",
     "quantum-js": "^2.0.0",
     "quantum-dom": "^2.0.0",
     "quantum-html": "^2.0.0"

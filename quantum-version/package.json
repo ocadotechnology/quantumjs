@@ -2,8 +2,8 @@
   "name": "quantum-version",
   "version": "2.0.0",
   "description": "quantum transform that lets you specify versioned content, only specify what changes between versions",
-  "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
+    "James Smyth <james.smyth@ocado.com>",
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
   "engines" : { "node" : ">=4.0.0" },

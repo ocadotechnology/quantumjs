@@ -31,6 +31,7 @@ function createFileUsingSpec (src, spec, dest) {
     resolved: resolved,
     base: base,
     dest: destForFile,
+    destBase: dest,
     watch: watch
   })
 }

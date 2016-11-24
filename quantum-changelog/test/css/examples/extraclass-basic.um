@@ -1,0 +1,21 @@
+@spec extraclass
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @version 0.1.0
+          @api ApiName
+            @extraclass test
+              @added
+                @description: ExtraClass added
+      @version 0.1.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @entry
+          @header css
+            @extraclass test
+          @change added
+            @description: ExtraClass added

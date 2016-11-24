@@ -110,7 +110,9 @@ describe('body-builders', () => {
         ]
       })
 
-      function transforms (selection) { return selection }
+      function transforms (selection) {
+        return selection.cs ? selection.cs() : selection
+      }
 
       bodyBuilders.defaultValue()(selection, transforms).should.eql(
         dom.create('div').class('qm-api-default')

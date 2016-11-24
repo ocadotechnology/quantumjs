@@ -1,6 +1,7 @@
 'use strict'
 
 const path = require('path')
+const fs = require('fs')
 const unique = require('array-unique')
 const Promise = require('bluebird')
 const merge = require('merge')
@@ -14,7 +15,7 @@ function setupElement (type, selection, transform, parsePs) {
   if (selection.has('id')) {
     element.id(selection.select('id').ps())
   } else if (parsePs) {
-    const match = classId.match(/#[^\.#]+/)
+    const match = classId.match(/#[^.#]+/)
     if (match) {
       const id = match.map(d => d.substring(1))[0]
       element.id(id)
@@ -24,7 +25,7 @@ function setupElement (type, selection, transform, parsePs) {
   if (selection.has('class')) {
     element.class(selection.select('class').ps())
   } else if (parsePs) {
-    const match = classId.match(/(\.[^\.#]+)/g)
+    const match = classId.match(/(\.[^.#]+)/g)
     if (match) {
       const cls = unique(match.map(d => d.substring(1))).join(' ')
       element.class(cls)
@@ -209,31 +210,58 @@ HTMLPage.prototype.stringify = function (options) {
   })
 }
 
-function stringify (opts) {
+function build (opts) {
   const options = merge({
     embedAssets: true,
     assetPath: undefined
   }, opts)
 
   return (page) => {
-    return Promise.props({
-      file: page.file.withExtension('.html'),
-      content: page.content.stringify(options).then(x => x.html)
+    return page.content.stringify(options).then(p => {
+      const assetPagesPromise = Promise.all(p.assets.map(asset => {
+        // XXX: make this loader an option so that caching can be done
+        return fs.readFileAsync(asset.filename, 'utf-8')
+          .then(content => {
+            return new quantum.Page({
+              file: new quantum.File({
+                src: asset.filename,
+                resolved: asset.filename,
+                base: '',
+                dest: (page.file.destBase || '') + (options.assetPath || '') + asset.url,
+                destBase: page.file.destBase,
+                watch: false
+              }),
+              content: content
+            })
+          })
+      }))
+
+      return assetPagesPromise.then(assetPages => {
+        const resultPages = []
+
+        resultPages.push(page.clone({
+          file: page.file.withExtension('.html'),
+          content: p.html
+        }))
+
+        assetPages.forEach(p => resultPages.push(p))
+
+        return resultPages
+      })
     })
-      .then((changes) => page.clone(changes))
   }
 }
 
 function paragraphTransform (selection, transform) {
   const paragraphs = [
     dom.asset({
-      url: '/assets/quantum-html.css',
+      url: '/quantum-html.css',
       file: path.join(__dirname, '../assets/quantum-html.css'),
       shared: true
     })
   ]
 
-  let currentParagraph = undefined
+  let currentParagraph = void (0)
 
   selection.content().forEach((e) => {
     if (e === '') {
@@ -268,13 +296,17 @@ function paragraphTransform (selection, transform) {
 // renames name.html to name/index.html and leaves index.html as it is
 function htmlRenamer () {
   return (page) => {
-    const filenameWithoutExtension = path.basename(page.file.dest).replace('.html', '')
-    const rootPath = path.dirname(page.file.dest)
-    return page.clone({
-      file: page.file.clone({
-        dest: filenameWithoutExtension === 'index' ? page.file.dest : path.join(rootPath, filenameWithoutExtension, 'index.html')
+    if (page.file.dest.lastIndexOf('.html') === page.file.dest.length - 5) {
+      const filenameWithoutExtension = path.basename(page.file.dest).replace('.html', '')
+      const rootPath = path.dirname(page.file.dest)
+      return page.clone({
+        file: page.file.clone({
+          dest: filenameWithoutExtension === 'index' ? page.file.dest : path.join(rootPath, filenameWithoutExtension, 'index.html')
+        })
       })
-    })
+    } else {
+      return page
+    }
   }
 }
 
@@ -283,6 +315,6 @@ module.exports.transforms = transforms
 
 module.exports.HTMLPage = HTMLPage
 module.exports.prepareTransforms = prepareTransforms
-module.exports.stringify = stringify
+module.exports.build = build
 module.exports.paragraphTransform = paragraphTransform
 module.exports.htmlRenamer = htmlRenamer

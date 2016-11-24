@@ -1,18 +1,21 @@
+const fs = require('fs')
 const quantum = require('quantum-js')
 const html = require('quantum-html')
-const changelog = require('quantum-changelog')
+const changelog = require('..')
 
-const changelogOptions = {
-
+const htmlOptions = {
+  transforms: {
+    html: html.transforms(),
+    changelog: changelog.transforms({
+      issueUrl: '/issue/'
+    })
+  }
 }
 
-const htmlTransforms = {
-  html: html.transforms,
-  changelog: changelog(changelogOptions).transforms
-}
-
-quantum.read('index.um')
-  .map(changelog(changelogOptions))
-  .map(html(htmlTransforms))
-  .map(html.stringify())
-  .map(quantum.write('target'))
+quantum.read.page('index.um')
+  // .then(changelog(changelogOptions))
+  .then(html(htmlOptions))
+  .then(html.stringify())
+  .then((page) => {
+    fs.writeFileSync(page.file.dest, page.content)
+  })

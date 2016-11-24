@@ -17,7 +17,7 @@ describe('pipeline', () => {
     html.transforms.should.be.a.function
     html.HTMLPage.should.be.a.function
     html.prepareTransforms.should.be.a.function
-    html.stringify.should.be.a.function
+    html.build.should.be.a.function
     html.paragraphTransform.should.be.a.function
     html.htmlRenamer.should.be.a.function
   })
@@ -264,7 +264,8 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify()
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head></head><body><div id="strawberry" class="banana"></div></body></html>'
+          html: '<!DOCTYPE html>\n<html><head></head><body><div id="strawberry" class="banana"></div></body></html>',
+          assets: []
         })
       })
   })
@@ -277,7 +278,8 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify()
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><link id="strawberry" class="banana"></link></head><body></body></html>'
+          html: '<!DOCTYPE html>\n<html><head><link id="strawberry" class="banana"></link></head><body></body></html>',
+          assets: []
         })
       })
   })
@@ -290,7 +292,8 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify()
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><style>.red {background: red;}\n</style></head><body></body></html>'
+          html: '<!DOCTYPE html>\n<html><head><style>.red {background: red;}\n</style></head><body></body></html>',
+          assets: []
         })
       })
   })
@@ -305,7 +308,8 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify()
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head></head><body class="class-2"></body></html>'
+          html: '<!DOCTYPE html>\n<html><head></head><body class="class-2"></body></html>',
+          assets: []
         })
       })
   })
@@ -318,7 +322,8 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify({embedAssets: true})
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><style>.red {background: red;}\n</style></head><body></body></html>'
+          html: '<!DOCTYPE html>\n<html><head><style>.red {background: red;}\n</style></head><body></body></html>',
+          assets: []
         })
       })
   })
@@ -331,7 +336,10 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify({embedAssets: false})
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="test.css"></link></head><body></body></html>'
+          html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="test.css"></link></head><body></body></html>',
+          assets: [
+            dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+          ]
         })
       })
   })
@@ -344,14 +352,17 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify({embedAssets: false, assetPath: '/bob'})
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/bob/assets/test.css"></link></head><body></body></html>'
+          html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/bob/assets/test.css"></link></head><body></body></html>',
+          assets: [
+            dom.asset({url: '/assets/test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+          ]
         })
       })
   })
 })
 
-describe('stringify', () => {
-  it('should stringify a page with an asset element (embedAssets: true)', () => {
+describe('build', () => {
+  it('should build a page with an asset element (embedAssets: true)', () => {
     const htmlPage = new html.HTMLPage([
       dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
@@ -364,15 +375,17 @@ describe('stringify', () => {
       content: htmlPage
     })
 
-    return html.stringify({embedAssets: true})(page)
+    return html.build({embedAssets: true})(page)
       .then(result => {
-        result.should.eql(new Page({
-          file: new File({
-            src: 'filename.um',
-            dest: 'filename.html'
-          }),
-          content: '<!DOCTYPE html>\n<html><head><style>.red {background: red;}\n</style></head><body></body></html>'
-        }))
+        result.should.eql([
+          new Page({
+            file: new File({
+              src: 'filename.um',
+              dest: 'filename.html'
+            }),
+            content: '<!DOCTYPE html>\n<html><head><style>.red {background: red;}\n</style></head><body></body></html>'
+          })
+        ])
       })
   })
 
@@ -389,15 +402,27 @@ describe('stringify', () => {
       content: htmlPage
     })
 
-    return html.stringify({embedAssets: false})(page)
+    return html.build({embedAssets: false})(page)
       .then(result => {
-        result.should.eql(new Page({
-          file: new File({
-            src: 'filename.um',
-            dest: 'filename.html'
+        result.should.eql([
+          new Page({
+            file: new File({
+              src: 'filename.um',
+              dest: 'filename.html'
+            }),
+            content: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="test.css"></link></head><body></body></html>'
           }),
-          content: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="test.css"></link></head><body></body></html>'
-        }))
+          new Page({
+            file: new File({
+              base: '',
+              src: path.join(__dirname, '/assets/test.css'),
+              resolved: path.join(__dirname, '/assets/test.css'),
+              dest: 'test.css',
+              watch: false
+            }),
+            content: '.red {background: red;}\n'
+          })
+        ])
       })
   })
 
@@ -409,20 +434,35 @@ describe('stringify', () => {
     const page = new Page({
       file: new File({
         src: 'filename.um',
-        dest: 'filename.um'
+        dest: 'filename.um',
+        destBase: 'target'
       }),
       content: htmlPage
     })
 
-    return html.stringify({embedAssets: false, assetPath: '/bob'})(page)
+    return html.build({embedAssets: false, assetPath: '/bob'})(page)
       .then(result => {
-        result.should.eql(new Page({
-          file: new File({
-            src: 'filename.um',
-            dest: 'filename.html'
+        result.should.eql([
+          new Page({
+            file: new File({
+              src: 'filename.um',
+              dest: 'filename.html',
+              destBase: 'target'
+            }),
+            content: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/bob/assets/test.css"></link></head><body></body></html>'
           }),
-          content: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/bob/assets/test.css"></link></head><body></body></html>'
-        }))
+          new Page({
+            file: new File({
+              base: '',
+              src: path.join(__dirname, '/assets/test.css'),
+              resolved: path.join(__dirname, '/assets/test.css'),
+              dest: 'target/bob/assets/test.css',
+              destBase: 'target',
+              watch: false
+            }),
+            content: '.red {background: red;}\n'
+          })
+        ])
       })
   })
 })

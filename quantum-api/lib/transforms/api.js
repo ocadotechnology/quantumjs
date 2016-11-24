@@ -10,12 +10,12 @@ module.exports = function group (options) {
       .class('qm-api')
       .add(builders.map(builder => builder(selection, transforms)))
       .add(dom.asset({
-        url: '/assets/quantum-api.css',
+        url: '/quantum-api.css',
         file: path.join(__dirname, '../../assets/quantum-api.css'),
         shared: true
       }))
       .add(dom.asset({
-        url: '/assets/quantum-api.js',
+        url: '/quantum-api.js',
         file: path.join(__dirname, '../../assets/quantum-api.js'),
         shared: true
       }))

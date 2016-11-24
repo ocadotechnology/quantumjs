@@ -7,7 +7,7 @@
     "lint": "eslint $npm_package_config_srcDirs",
     "test-and-cover": "./node_modules/istanbul/lib/cli.js cover -x lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec $npm_package_config_testDirs",
     "test": "npm run lint && npm run test-and-cover",
-    "clean": "rm -r coverage; true && rm -r target; true",
+    "clean": "rm -r coverage; true && rm -r target; true && ./scripts/clean",
     "clean-all": "./scripts/clean",
     "install-all": "./scripts/install",
     "link-all": "./scripts/link",

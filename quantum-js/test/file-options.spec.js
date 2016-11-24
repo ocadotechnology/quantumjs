@@ -22,6 +22,7 @@ describe('resolve', () => {
       resolved: 'a.um',
       base: 'target/test/files1',
       dest: 'target/a.um',
+      destBase: 'target',
       watch: true
     }),
     new File({
@@ -29,6 +30,7 @@ describe('resolve', () => {
       resolved: 'b.um',
       base: 'target/test/files1',
       dest: 'target/b.um',
+      destBase: 'target',
       watch: true
     }),
     new File({
@@ -36,6 +38,7 @@ describe('resolve', () => {
       resolved: 'c/d.um',
       base: 'target/test/files1',
       dest: 'target/c/d.um',
+      destBase: 'target',
       watch: true
     })
   ]
@@ -46,6 +49,7 @@ describe('resolve', () => {
       resolved: 'e.um',
       base: 'target/test/files2',
       dest: 'target/e.um',
+      destBase: 'target',
       watch: true
     })
   ]
@@ -56,6 +60,7 @@ describe('resolve', () => {
       resolved: 'e.um',
       base: 'target/test/files2',
       dest: 'target/e.um',
+      destBase: 'target',
       watch: true
     }),
     new File({
@@ -63,6 +68,7 @@ describe('resolve', () => {
       resolved: 'z.um',
       base: 'target/test/files2',
       dest: 'target/z.um',
+      destBase: 'target',
       watch: true
     })
   ]
@@ -108,6 +114,7 @@ describe('resolve', () => {
           resolved: 'target/test/files1/a.um',
           base: '.',
           dest: 'target2/target/test/files1/a.um',
+          destBase: 'target2',
           watch: true
         })
       ])
