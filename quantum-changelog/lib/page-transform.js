@@ -136,7 +136,7 @@ function extractApis (selection) {
 
   An api map is a collection of all the entries in an api (e.g. @function, @property,
   @method etc). The api map is a flat map, so nested api entries are keyed using
-  the combination of thier own key, and thier parent's key. This means that a property
+  the combination of their own key, and their parent's key. This means that a property
   on an object such as this:
 
     @object bob

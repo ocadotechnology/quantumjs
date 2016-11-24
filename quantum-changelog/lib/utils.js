@@ -25,7 +25,7 @@ function semanticVersionComparator (v1, v2) {
   }
 }
 
-/* Compares entries for sorting - groups by entry type, then sorts by name */
+/* Compares entries for sorting */
 function compareEntrySelections (e1, e2) {
   const name1 = e1.select('name').param(0)
   const name2 = e2.select('name').param(0)

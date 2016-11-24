@@ -42,12 +42,14 @@ function checkSpec (spec) {
     languages: [css]
   }
 
-
   pageTransform.pageTransform(inputPage, options).should.eql(outputPage)
-
 }
 
 describe('css', () => {
+  function transform () {
+    return dom.create('div')
+  }
+
   describe('examples', () => {
     function testExample (filename) {
       it(filename, () => {
@@ -55,7 +57,7 @@ describe('css', () => {
           .then(parsed => {
             checkSpec(quantum.select(parsed).select('spec'))
           })
-        })
+      })
     }
 
     testExample('examples/class-basic.um')
@@ -113,7 +115,7 @@ describe('css', () => {
     })
 
     describe('should hash differently for different names', () => {
-      function test(type) {
+      function test (type) {
         const selection1 = quantum.select({
           type: type,
           params: ['name1'],
@@ -132,7 +134,6 @@ describe('css', () => {
       it('class', () => test('class'))
       it('extraclass', () => test('extraclass'))
       it('childclass', () => test('childclass'))
-
     })
   })
 
@@ -183,10 +184,6 @@ describe('css', () => {
         content: []
       })
 
-      function transform () {
-        return dom.create('div')
-      }
-
       should.not.exist(css.createHeaderDom(selection, transform))
     })
 
@@ -202,10 +199,6 @@ describe('css', () => {
           }
         ]
       })
-
-      function transform () {
-        return dom.create('div')
-      }
 
       css.createHeaderDom(selection, transform).should.eql(
         dom.create('span')
@@ -226,10 +219,6 @@ describe('css', () => {
           }
         ]
       })
-
-      function transform () {
-        return dom.create('div')
-      }
 
       css.createHeaderDom(selection, transform).should.eql(
         dom.create('span')
@@ -263,10 +252,6 @@ describe('css', () => {
         ]
       })
 
-      function transform () {
-        return dom.create('div')
-      }
-
       css.createHeaderDom(selection, transform).should.eql(
         dom.create('span')
           .class('qm-changelog-css-header')
@@ -275,7 +260,5 @@ describe('css', () => {
           .add(dom.create('span').class('qm-changelog-css-extraclass').text('name3'))
       )
     })
-
   })
-
 })

@@ -8,7 +8,7 @@ const quantum = require('quantum-js')
 const changelog = require('../..')
 const pageTransform = require('../../lib/page-transform')
 
-const should = chai.should()
+chai.should()
 
 const testlanguage = {
   name: 'test-language-1',
@@ -72,9 +72,7 @@ function checkSpec (spec) {
     reverseVisibleList: spec.select('options').select('reverseVisibleList').ps() === 'true'
   }
 
-
   changelog(options)(inputPage).should.eql(outputPage)
-
 }
 
 describe('pageTransform', () => {

@@ -28,7 +28,7 @@ const assets = [
 function hashEntry (apiEntry, root) {
   let current = apiEntry
   let key = ''
-  while(current !== root) {
+  while (current !== root) {
     const type = current.type()
     const name = current.param(0)
     if (type === 'extraclass') {
@@ -48,12 +48,12 @@ function hashEntry (apiEntry, root) {
 function extractEntry (selection, previousExtraction) {
   let s = selection
   const entries = []
-  while(s) {
+  while (s) {
     entries.unshift({
       type: s.type(),
       name: s.ps()
     })
-    s = s.parent() && entityTypes.indexOf(s.parent().type()) !==-1 ? s.parent() : undefined
+    s = s.parent() && entityTypes.indexOf(s.parent().type()) !== -1 ? s.parent() : undefined
   }
 
   const apiEntry = {
@@ -95,7 +95,7 @@ function createHeaderDom (selection) {
       .class('qm-changelog-css-header')
 
     let current = selection
-    while (entityTypes.some(entityType => current.has(entityType)))  {
+    while (entityTypes.some(entityType => current.has(entityType))) {
       current = current.select(entityTypes)
       header.add(dom.create('span')
         .class('qm-changelog-css-' + current.type())

@@ -4,17 +4,29 @@ function defaultIssueUrl () {
   return undefined
 }
 
+const defaultOptions = {
+  targetVersions: undefined,
+  languages: [],
+  reverseVisibleList: false,
+  groupByApi: false,
+  issueUrl: defaultIssueUrl
+}
+
+function resolveOption (options, name) {
+  return options && options.hasOwnProperty(name) ? options[name] : defaultOptions[name]
+}
+
 /*
   Resolves the options passed in to make sure every option is set to something
   sensible.
 */
 function resolve (options) {
   return {
-    targetVersions: options ? options.targetVersions : undefined,
-    languages: options ? options.languages || [] : [],
-    reverseVisibleList: options ? options.reverseVisibleList === true : false,
-    groupByApi: options ? options.groupByApi === true : false,
-    issueUrl: options ? options.issueUrl || defaultIssueUrl : defaultIssueUrl,
+    targetVersions: resolveOption(options, 'targetVersions'),
+    languages: resolveOption(options, 'languages'),
+    reverseVisibleList: resolveOption(options, 'reverseVisibleList'),
+    groupByApi: resolveOption(options, 'groupByApi'),
+    issueUrl: resolveOption(options, 'issueUrl'),
     tags: {
       info: {
         displayName: 'Information',

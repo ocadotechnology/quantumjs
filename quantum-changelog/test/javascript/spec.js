@@ -42,9 +42,7 @@ function checkSpec (spec) {
     languages: [javascript]
   }
 
-
   pageTransform.pageTransform(inputPage, options).should.eql(outputPage)
-
 }
 
 describe('javascript', () => {
@@ -55,7 +53,7 @@ describe('javascript', () => {
           .then(parsed => {
             checkSpec(quantum.select(parsed).select('spec'))
           })
-        })
+      })
     }
 
     testExample('examples/function-basic.um')
@@ -120,7 +118,7 @@ describe('javascript', () => {
     })
 
     describe('should hash differently for different params', () => {
-      function test(type) {
+      function test (type) {
         const selection1 = quantum.select({
           type: type,
           params: ['name1'],
@@ -159,7 +157,7 @@ describe('javascript', () => {
     })
 
     describe('should hash differently for different names', () => {
-      function test(type) {
+      function test (type) {
         const selection1 = quantum.select({
           type: type,
           params: ['name1'],
@@ -183,7 +181,6 @@ describe('javascript', () => {
       it('method', () => test('method'))
       it('property', () => test('property'))
       it('property?', () => test('property?'))
-
     })
   })
 
@@ -220,7 +217,7 @@ describe('javascript', () => {
     })
 
     describe('should render object types correctly', () => {
-      function test(type) {
+      function test (type) {
         it(type, () => {
           const selection = quantum.select({
             type: 'header',
@@ -249,11 +246,10 @@ describe('javascript', () => {
 
       test('object')
       test('prototype')
-
     })
 
     describe('should render function types correctly', () => {
-      function test(type) {
+      function test (type) {
         it(type, () => {
           const selection = quantum.select({
             type: 'header',
@@ -292,11 +288,10 @@ describe('javascript', () => {
       test('function')
       test('method')
       test('constructor')
-
     })
 
     describe('should render property types correctly', () => {
-      function test(type) {
+      function test (type) {
         it(type, () => {
           const selection = quantum.select({
             type: 'header',
@@ -327,8 +322,6 @@ describe('javascript', () => {
       test('property')
       test('event')
       test('property?')
-
     })
   })
-
 })

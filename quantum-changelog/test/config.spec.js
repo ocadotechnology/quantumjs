@@ -22,7 +22,6 @@ describe('config.resolve', () => {
   it('should resolve languages correctly', () => {
     config.resolve(undefined).languages.should.eql([])
     config.resolve({}).languages.should.eql([])
-    config.resolve({languages: undefined}).languages.should.eql([])
     config.resolve({languages: []}).languages.should.eql([])
     config.resolve({languages: [{name: 'javascript'}, {name: 'css'}]})
       .languages.should.eql([{name: 'javascript'}, {name: 'css'}])
@@ -31,19 +30,15 @@ describe('config.resolve', () => {
   it('should resolve reverseVisibleList correctly', () => {
     config.resolve(undefined).reverseVisibleList.should.equal(false)
     config.resolve({}).reverseVisibleList.should.equal(false)
-    config.resolve({reverseVisibleList: undefined}).reverseVisibleList.should.equal(false)
     config.resolve({reverseVisibleList: false}).reverseVisibleList.should.equal(false)
     config.resolve({reverseVisibleList: true}).reverseVisibleList.should.equal(true)
-    config.resolve({reverseVisibleList: 'nope'}).reverseVisibleList.should.equal(false)
   })
 
   it('should resolve groupByApi correctly', () => {
     config.resolve(undefined).groupByApi.should.equal(false)
     config.resolve({}).groupByApi.should.equal(false)
-    config.resolve({groupByApi: undefined}).groupByApi.should.equal(false)
     config.resolve({groupByApi: false}).groupByApi.should.equal(false)
     config.resolve({groupByApi: true}).groupByApi.should.equal(true)
-    config.resolve({groupByApi: 'nope'}).groupByApi.should.equal(false)
   })
 
   it('should resolve issueUrl correctly', () => {
@@ -53,7 +48,6 @@ describe('config.resolve', () => {
 
     config.resolve(undefined).issueUrl.should.equal(config.defaultIssueUrl)
     config.resolve({}).issueUrl.should.equal(config.defaultIssueUrl)
-    config.resolve({issueUrl: undefined}).issueUrl.should.equal(config.defaultIssueUrl)
     config.resolve({issueUrl: altIssueUrl}).issueUrl.should.equal(altIssueUrl)
 
     should.not.exist(config.resolve(undefined).issueUrl())

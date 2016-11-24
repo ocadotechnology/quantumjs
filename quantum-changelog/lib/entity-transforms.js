@@ -25,42 +25,23 @@ const html = require('quantum-html')
 const config = require('./config.js')
 const utils = require('./utils')
 
-const assets = [
-  dom.asset({
-    url: '/quantum-changelog.css',
-    file: path.join(__dirname, '../assets/quantum-changelog.css'),
-    shared: true
-  }),
-  dom.asset({
-    url: '/quantum-changelog.js',
-    file: path.join(__dirname, '../assets/quantum-changelog.js'),
-    shared: true
-  }),
-  dom.asset({
-    url: '/quantum-changelog-icons.css',
-    file: path.join(__dirname, '../assets/quantum-changelog-icons.css'),
-    shared: true
-  }),
-  dom.asset({
-    url: '/fonts/quantum-changelog-icons.eot',
-    file: path.join(__dirname, '../assets/fonts/quantum-changelog-icons.eot'),
-    shared: true
-  }),
-  dom.asset({
-    url: '/fonts/quantum-changelog-icons.svg',
-    file: path.join(__dirname, '../assets/fonts/quantum-changelog-icons.svg'),
-    shared: true
-  }),
-  dom.asset({
-    url: '/fonts/quantum-changelog-icons.ttf',
-    file: path.join(__dirname, '../assets/fonts/quantum-changelog-icons.ttf'),
-    shared: true
-  }),
-  dom.asset({
-    url: '/fonts/quantum-changelog-icons.woff',
-    file: path.join(__dirname, '../assets/fonts/quantum-changelog-icons.woff'),
+function domAsset (filename) {
+  return dom.asset({
+    url: '/' + filename,
+    file: path.join(__dirname, '../assets/' + filename),
     shared: true
   })
+}
+
+const assets = [
+  domAsset('quantum-changelog.css'),
+  domAsset('quantum-changelog.js'),
+  domAsset('quantum-changelog-icons.css'),
+  domAsset('fonts/quantum-changelog-icons.eot'),
+  domAsset('fonts/quantum-changelog-icons.svg'),
+  domAsset('fonts/quantum-changelog-icons.svg'),
+  domAsset('fonts/quantum-changelog-icons.ttf'),
+  domAsset('fonts/quantum-changelog-icons.woff')
 ]
 
 /* Creates a paragraph section wrapped in a div */

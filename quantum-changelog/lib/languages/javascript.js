@@ -3,7 +3,6 @@
 const path = require('path')
 
 const dom = require('quantum-dom')
-const html = require('quantum-html')
 const quantum = require('quantum-js')
 
 /*
@@ -32,9 +31,8 @@ const assets = [
   })
 ]
 
-
 /* Hashes an api entry to a string - used for linking entities together across versions */
-//XXX: can be simplified so that the while loop is done for you by page-transform
+// XXX: can be simplified so that the while loop is done for you by page-transform
 function hashEntry (apiEntry, root) {
   let current = apiEntry
   let key = ''
@@ -61,11 +59,10 @@ function hashEntry (apiEntry, root) {
   whatever we want
 */
 function extractEntry (selection, previousExtraction) {
-
   // build the faux-ast (can change for the proper ast soon)
   let s = selection
   const entries = []
-  while(s) {
+  while (s) {
     entries.unshift({
       type: s.type(),
       params: s.params(),
@@ -78,7 +75,7 @@ function extractEntry (selection, previousExtraction) {
       }),
       returns: s.has('returns') ? s.select('returns').ps() : undefined
     })
-    s = s.parent() && entityTypes.indexOf(s.parent().type()) !==-1 ? s.parent() : undefined
+    s = s.parent() && entityTypes.indexOf(s.parent().type()) !== -1 ? s.parent() : undefined
   }
 
   // for tracking changes
@@ -102,14 +99,14 @@ function extractEntry (selection, previousExtraction) {
     } : undefined
 
     if (returnTypeChange) {
-      //XXX: feels very verbose for an exposed api
+      // XXX: feels very verbose for an exposed api
       changes.push({
         tagType: 'updated',
         selection: quantum.select({
           type: 'updated',
           params: [],
           content: [
-            { type: 'description', params: [], content: ['Return type changed to ' + returnTypeChange.newType]}
+            { type: 'description', params: [], content: ['Return type changed to ' + returnTypeChange.newType] }
           ]
         })
       })
@@ -121,7 +118,7 @@ function extractEntry (selection, previousExtraction) {
 
 /* Builds the header ast for an entry */
 function buildEntryHeaderAst (apiEntryChanges) {
-  //XXX: do this ast building in extract entry
+  // XXX: do this ast building in extract entry
   const apiEntry = apiEntryChanges.apiEntry
 
   const entries = apiEntry.entries
@@ -166,7 +163,7 @@ function createHeaderDom (selection, transform) {
       .class('qm-changelog-javascript-header')
 
     let current = selection
-    while (entityTypes.some(entityType => current.has(entityType)))  {
+    while (entityTypes.some(entityType => current.has(entityType))) {
       current = current.select(entityTypes)
 
       const type = current.type()
