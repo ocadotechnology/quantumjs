@@ -60,7 +60,13 @@ npm install
 npm link
 popd
 
+pushd quantum-markdown
+npm link quantum-js quantum-dom quantum-code-highlight
+npm install
+npm link
+popd
+
 pushd docs
-npm link quantum-js quantum-html quantum-template quantum-api quantum-changelog quantum-diagram quantum-docs quantum-version quantum-code-highlight
+npm link quantum-js quantum-html quantum-template quantum-api quantum-changelog quantum-diagram quantum-dom quantum-docs quantum-version quantum-code-highlight quantum-markdown
 npm install
 popd

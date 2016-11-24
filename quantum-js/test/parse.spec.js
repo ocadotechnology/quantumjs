@@ -2,7 +2,7 @@
 const chai = require('chai')
 chai.should()
 
-const quantum = require('..')
+const quantum = require('../')
 const parse = quantum.parse
 const tokenize = parse.tokenize
 const ast = parse.ast
@@ -225,6 +225,15 @@ describe('parse', () => {
         { type: 'TYPE', value: 'fruits' },
         { type: 'COMMENT', value: 'comment' },
         { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: 'indent' }
+      ])
+    })
+
+    it('should not parse comments inside escaped blocks', () => {
+      tokenize('@@fruits\n  #comment\n  indent').should.eql([
+        { type: 'TYPE', value: 'fruits' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: '#comment' },
         { type: 'CONTENT', value: 'indent' }
       ])
     })

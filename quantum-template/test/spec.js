@@ -1,9 +1,14 @@
 'use strict'
 const should = require('chai').should()
 const quantum = require('quantum-js')
-const template = require('..')
+const template = require('../')
+const path = require('path')
 
 describe('pipeline', () => {
+  const currDir = process.cwd()
+  before(() => process.chdir(path.join(__dirname, '../')))
+  after(() => process.chdir(currDir))
+
   it('should export the correct things', () => {
     template.should.be.a.function
     template.wrapper.should.be.a.function

@@ -1,16 +1,18 @@
 'use strict'
 
-const html = require('..')
+const html = require('../')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const path = require('path')
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 
-chai.use(chaiAsPromised)
-chai.should()
-
 describe('transforms', () => {
+  before(() => {
+    chai.use(chaiAsPromised)
+    chai.should()
+  })
+
   function transformEntity () {
     function defaultTransform (selection) {
       return dom.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection)
@@ -303,7 +305,7 @@ describe('transforms', () => {
       })
 
       html.transforms().title(selection, transformEntity())
-        .should.eql(dom.head(dom.create('title').attr('name', 'My Title'), {id: 'title'}))
+        .should.eql(dom.head(dom.create('title').text('My Title'), {id: 'title'}))
     })
   })
 
@@ -339,9 +341,7 @@ describe('transforms', () => {
         dom.head(dom.create('meta').attr('name2', 'value2'))
       ])
     })
-  })
 
-  describe('head', () => {
     it('should add elements to the head (promise)', () => {
       const selection = quantum.select({
         type: 'head',

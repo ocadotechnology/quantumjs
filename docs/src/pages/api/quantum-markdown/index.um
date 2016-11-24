@@ -1,0 +1,59 @@
+@inline ../../../templates/sidebar-page.um
+
+@versionList
+  @version 2.0.0
+
+@topSection
+  @title Quantum Markdown
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description: A transform for using markdown inline inside a Quantum site.
+
+@contentSection
+  @topic About
+    This module provides the @code(um)[@markdown] transform for rendering using @hyperlink(https://github.com/chjj/marked)[marked] to parse the markdown to HTML which can then be rendered by quantum.
+
+    The features available are defined by their support in the marked module.
+
+  @topic Inline Example
+    To render markdown in quantum inline, you need to escape the @code(um)[#] character as Quantum treats these as comments.
+
+    This can be done in two ways, either using @code(um)[\#], or by escaping the entire block using @code(um)[@@markdown]
+
+    Without this, lines with the @code(um)[#] at the start will not be rendered.
+
+    @section Example Code
+      @@codeblock markdown
+        @markdown
+          \### Escaped Heading
+          ### Quantum Comment (will not show)
+
+          Some text
+
+        @@markdown
+          ### Example heading
+
+          Example _italic_ or **bold** text.
+
+    @section Example Result
+      @markdown
+        \### Escaped Heading
+        ### Quantum Comment (will not show)
+
+        Some text
+
+      @@markdown
+        ### Example heading
+
+        Example _italic_ or **bold** text.
+
+  @topic Markdown File Example
+    It is also possible to include markdown inline directly from @code(nohighlight)[.md] files:
+
+    When inlining using this method, you should use @code(um)[@markdown] instead of @code(um)[@@markdown]
+
+    Example code:
+    @@codeblock um
+      @markdown: @inline path/to/file.md
+
+  @topic Api and Entities
+    @inline api.um

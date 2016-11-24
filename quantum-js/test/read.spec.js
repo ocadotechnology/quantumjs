@@ -1,14 +1,20 @@
 'use strict'
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
-chai.use(chaiAsPromised)
-chai.should()
 
 const quantum = require('../lib')
 const read = quantum.read
+const path = require('path')
 
 describe('read', () => {
   const filename = 'test/files/read/source1.um'
+  const currDir = process.cwd()
+  before(() => {
+    chai.use(chaiAsPromised)
+    chai.should()
+    process.chdir(path.join(__dirname, '../'))
+  })
+  after(() => process.chdir(currDir))
 
   it('should work', () => {
     const expected = {

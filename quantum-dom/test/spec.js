@@ -1,14 +1,16 @@
 'use strict'
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
-const dom = require('..')
+const dom = require('../')
 const Promise = require('bluebird')
 const path = require('path')
 
-chai.use(chaiAsPromised)
-chai.should()
-
 describe('Element', () => {
+  before(() => {
+    chai.use(chaiAsPromised)
+    chai.should()
+  })
+
   it('should get the right type', () => {
     dom.create('div').type.should.equal('div')
   })
@@ -286,6 +288,10 @@ describe('Element', () => {
 })
 
 describe('dom', () => {
+  const currDir = process.cwd()
+  before(() => process.chdir(path.join(__dirname, '../')))
+  after(() => process.chdir(currDir))
+
   describe('randomId', () => {
     it('should return a 32 character string', () => {
       dom.randomId().should.be.a.string

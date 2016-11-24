@@ -25,6 +25,11 @@ function spinalCase (string) {
   return string.toLowerCase().split(' ').join('-')
 }
 
+function fullWidth (selection, transforms) {
+  return dom.create('div').class('qm-docs-full-width')
+    .add(selection.transform(transforms))
+}
+
 function topic (selection, transforms) {
   return dom.create('div')
     .class('qm-docs-topic')
@@ -177,23 +182,39 @@ function tableOfContents (selection, transforms) {
   )
 }
 
-function navigationMenu (selection, transforms) {
-  const sections = selection.selectAll('section').map((sectionEntity) => {
-    const pages = sectionEntity.selectAll('page').map((pageEntity) => {
-      return dom.create('a').class('qm-docs-navigation-menu-page')
-        .attr('href', pageEntity.ps())
-        .text(pageEntity.cs())
-    })
+function makeNavigationMenuSection (sectionEntity) {
+  const pages = sectionEntity.selectAll('page').map(makeNavigationMenuPage)
 
-    return dom.create('div').class('qm-docs-navigation-menu-section')
-      .add(dom.create('div').class('qm-docs-navigation-menu-section-title').text(sectionEntity.ps()))
-      .add(dom.create('div').class('qm-docs-navigation-menu-section-body').add(pages))
-  })
+  return dom.create('div').class('qm-docs-navigation-menu-section')
+    .add(dom.create('div').class('qm-docs-navigation-menu-section-title').text(sectionEntity.ps()))
+    .add(dom.create('div').class('qm-docs-navigation-menu-section-body').add(pages))
+}
+
+function makeNavigationMenuPage (pageEntity) {
+  return dom.create('a').class('qm-docs-navigation-menu-page')
+    .attr('href', pageEntity.ps())
+    .text(pageEntity.cs())
+}
+
+function navigationMenu (selection, transforms) {
+  const pages = selection.selectAll('page').map(makeNavigationMenuPage)
+  const sections = selection.selectAll('section').map(makeNavigationMenuSection)
 
   return dom.create('div')
     .add(stylesheetAsset)
     .class('qm-docs-navigation-menu-wrapper')
-    .add(dom.create('div').class('qm-docs-navigation-menu').add(sections))
+    .add(dom.create('div').class('qm-docs-navigation-menu').add(pages).add(sections))
+}
+
+function makeHeaderIcon (icon) {
+  const image = dom.create('image').class('qm-docs-header-logo').attr('src', icon.param(0))
+  if (icon.param(1)) {
+    return dom.create('a').class('qm-docs-header-logo-link')
+      .attr('href', icon.param(1))
+      .add(image)
+  } else {
+    return image
+  }
 }
 
 function header (selection, transforms) {
@@ -201,7 +222,7 @@ function header (selection, transforms) {
     .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-centered')
       .add(dom.create('div').class('qm-docs-header-wrapper')
-        .add(selection.has('icon') ? dom.create('image').class('qm-docs-header-logo').attr('src', selection.select('icon').ps()) : undefined)
+        .add(selection.has('icon') ? makeHeaderIcon(selection.select('icon')) : undefined)
         .add(dom.create('div').class('qm-docs-header-title').text(selection.select('title').ps()))
         .add(selection.selectAll('link').map((e) => {
           return dom.create('a')
@@ -238,7 +259,7 @@ function topSection (selection, transforms) {
   const source = selection.has('source') ? selection.select('source') : undefined
 
   return dom.create('div').class('qm-docs-top-section')
-    .add(pageTitle ? dom.head(dom.create('title').attr('name', pageTitle), {id: 'title'}) : undefined)
+    .add(pageTitle ? dom.head(dom.create('title').text(pageTitle), {id: 'title'}) : undefined)
     .add(stylesheetAsset)
     .add(breadcrumb(selection.select('breadcrumb'), transforms))
     .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
@@ -277,16 +298,28 @@ function relatedButtons (selection, transforms) {
 }
 
 function table (selection, transforms) {
-  return dom.create('table')
-    .class('qm-docs-table')
-    .add(stylesheetAsset)
-    .add(selection.selectAll(['header', 'row']).map(row => {
-      const isHeader = row.type() === 'header'
-      return dom.create('tr').add(row.selectAll('cell').map(cell => {
-        return dom.create(isHeader ? 'th' : 'td')
-          .add(html.paragraphTransform(cell, transforms))
-      }))
+  function createRow (row) {
+    const isHeader = row.type() === 'header'
+    return dom.create('tr').add(row.selectAll('cell').map(cell => {
+      return dom.create(isHeader ? 'th' : 'td')
+        .add(html.paragraphTransform(cell, transforms))
     }))
+  }
+
+  const table = dom.create('table')
+    .class('qm-docs-table')
+
+  if (selection.has('header')) {
+    table.add(dom.create('thead')
+      .add(selection.selectAll('header').map(createRow)))
+  }
+  if (selection.has('row')) {
+    table.add(dom.create('tbody')
+      .add(selection.selectAll('row').map(createRow)))
+  }
+
+  return table
+    .add(stylesheetAsset)
 }
 
 function transforms (opts) {
@@ -311,6 +344,7 @@ function transforms (opts) {
     breadcrumb: breadcrumb,
     topSection: topSection,
     contentSection: contentSection,
+    fullWidth: fullWidth,
     bottomSection: bottomSection,
     relatedButtons: relatedButtons,
     table: table

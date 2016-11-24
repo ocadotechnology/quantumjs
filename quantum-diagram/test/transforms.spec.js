@@ -1,6 +1,6 @@
 'use strict'
 require('chai').should()
-const diagram = require('..').transforms
+const diagram = require('../').transforms
 
 describe('transforms', () => {
   it('placeholder', () => {

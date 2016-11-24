@@ -14,20 +14,14 @@ const stylesheetAsset = dom.asset({
 // TODO: try and get quantum registered in hljs
 hljs.registerLanguage('um', quantumSyntax)
 
-function highlightCode (language, code) {
-  if (language) {
+function highlightCode (code, language) {
+  if (language === 'nohighlight') {
+    return code
+  } else if (language) {
     return hljs.highlight(language, code, true).value
   } else {
     return hljs.highlightAuto(code).value
   }
-}
-
-function codeblock (selection, transform) {
-  const language = selection.ps()
-  return dom.create('div')
-    .class('quantum-code-highlight-codeblock' + (language ? ' language-' + language : ''))
-    .add(dom.create('pre').text(highlightCode(language, selection.cs()), {escape: false}))
-    .add(stylesheetAsset)
 }
 
 function code (selection, transform) {
@@ -38,11 +32,23 @@ function code (selection, transform) {
     .add(stylesheetAsset)
 }
 
+function codeblock (selection, transform) {
+  const language = selection.ps()
+  return dom.create('div')
+    .class('quantum-code-highlight-codeblock' + (language && language !== 'nohighlight' ? ' language-' + language : ''))
+    .add(dom.create('pre')
+      .add(dom.create('code')
+        .text(highlightCode(selection.cs(), language), {escape: false})))
+    .add(stylesheetAsset)
+}
+
 function transforms (opts) {
   return Object.freeze({
-    codeblock: codeblock,
-    code: code
+    code: code,
+    codeblock: codeblock
   })
 }
 
+module.exports.highlightCode = highlightCode
+module.exports.stylesheetAsset = stylesheetAsset
 module.exports.transforms = transforms

@@ -2,8 +2,8 @@
   "name": "quantum-dom",
   "version": "2.0.0",
   "description": "A virtual dom builder",
-  "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
+    "James Smyth <james.smyth@ocado.com>",
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
   "engines" : { "node" : ">=4.0.0" },

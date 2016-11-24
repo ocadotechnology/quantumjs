@@ -19,8 +19,10 @@ a {
 .header {
   padding: 1em 1em;
   text-align: center;
-  background: #f8f8f8;
-  border-bottom: solid 1px #e2e2e2;
+  background: #15668e;
+  box-shadow: 0 6px 10px #CCC;
+  color: white;
+  margin-bottom: 10px;
 }
 
 .logo {
@@ -39,6 +41,32 @@ a {
   font-size: 24px;
   padding-bottom: 1em;
   font-family: 'Roboto Slab', serif;
+}
+
+.qm-button {
+  background: #dc6a1e;
+  border-radius: 5px;
+  box-shadow: 0 6px #B54A15;
+  color: white;
+  padding: 1em 1.5em;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Roboto Slab', serif;
+  position: relative;
+  text-decoration: none;
+}
+
+.qm-button:hover {
+  box-shadow: 0 3px #B54A15;
+  top: 3px;
+  outline: 0;
+  text-decoration: none;
+}
+
+.get-started {
+  margin: 0 auto;
+  font-size: 16px;
+  padding: 1em 5em;
 }
 
 .color-band {
@@ -63,7 +91,7 @@ a {
   max-width: 1000px;
 }
 
-.install-link-stip {
+.install-link-strip {
   display: flex;
   justify-content: space-between;
   padding: 1em;
@@ -75,7 +103,6 @@ a {
 
 .github-icon {
   opacity: 0.5;
-  margin-right: 2em;
   cursor: pointer;
 }
 
@@ -132,7 +159,7 @@ a {
 
 
 .qm-docs-summary-header {
-  color: #774A8A !important;
+  /* color: #774A8A !important; */
 }
 .qm-docs-summary-link {
   /*color: #dc6a1e !important;*/

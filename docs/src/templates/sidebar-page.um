@@ -1,13 +1,10 @@
-
 @template
   @contentEntityName templateContent
   @content
-    @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:700,400,100|Roboto+Slab:400,700]
-    @stylesheet [/hexagon-js/hexagon.css]
-    @stylesheet [/resources/quantum-site.css]
+    @inline resources.um
 
     @header
-      @icon /resources/logo.png
+      @icon [/resources/logo.svg] [/]
       @title QuantumJS
 
     @sidebarPage
@@ -23,6 +20,7 @@
           @section Advanced Topics
             @page /docs/markup/: The Markup Language
             @page /docs/pipeline/: The Pipeline
+            @page /docs/ast/: The AST
             @page /docs/page-transforms/: Page Transforms
             @page /docs/entity-transforms/: Entity Transforms
 
@@ -42,6 +40,7 @@
             @page /api/quantum-template/: quantum-template
             @page /api/quantum-diagram/: quantum-diagram
             @page /api/quantum-version/: quantum-version
+            @page /api/quantum-markdown/: quantum-markdown
 
       @content
         @templateContent

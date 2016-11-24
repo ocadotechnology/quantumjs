@@ -6,13 +6,14 @@ const version = require('quantum-version')
 const template = require('quantum-template')
 const changelog = require('quantum-changelog')
 const diagram = require('quantum-diagram')
+const markdown = require('quantum-markdown')
 const codeHighlight = require('quantum-code-highlight')
 const docs = require('quantum-docs')
 const quantumSite = require('./src/transforms/transforms')
 
 const htmlOptions = {
   embedAssets: true,
-  assetPath: '/assets'
+  assetPath: '/resources'
 }
 
 const htmlTransforms = {
@@ -20,6 +21,7 @@ const htmlTransforms = {
   api: api.transforms(),
   changelog: changelog.transforms(),
   diagram: diagram.transforms(),
+  markdown: markdown.transforms(),
   docs: docs.transforms(),
   highlight: codeHighlight.transforms(),
   site: quantumSite

@@ -1,9 +1,12 @@
+@inline ../templates/resources.um
 @title QuantumJS
 
 @div .header
-  @img .logo: @attr src: /resources/logo.png
+  @img .logo: @attr src: /resources/logo.svg
   @div .title: QuantumJS
   @div .tagline: A node.js static site generator with a focus on extensibility and speed.
+  @a .qm-button.get-started: Get Started
+    @attr href: /docs/quick-start
 
 # @div .color-band
 #   @div .content
@@ -20,7 +23,6 @@
     @@codeblock um
       @div: Welcome to the site, sign in below
       @signIn
-
 
     @i .fa.fa-arrow-right
       @attr style: padding: 1em; # hack
@@ -52,11 +54,3 @@
     @item: Prebuilt transforms for writing technical documentation
     @item: Auto browser page refresh when files are changed
     @item: Fast - can build a 2000 page site in x seconds
-
-@bottomSection
-
-  @relatedButtons
-
-    @button /docs/quick-start
-      @title: Next
-      @description: Getting started

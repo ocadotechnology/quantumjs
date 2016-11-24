@@ -1,7 +1,7 @@
 'use strict'
 require('chai').should()
 
-const version = require('..')
+const version = require('../')
 const quantum = require('quantum-js')
 const path = require('path')
 const Page = quantum.Page

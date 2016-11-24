@@ -1,7 +1,7 @@
 'use strict'
 require('chai').should()
 
-const quantum = require('..')
+const quantum = require('../')
 const File = quantum.File
 
 describe('File', () => {

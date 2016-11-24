@@ -2,7 +2,7 @@
 
 const chai = require('chai')
 const path = require('path')
-const docs = require('..')
+const docs = require('../')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const html = require('quantum-html')
@@ -385,6 +385,53 @@ describe('@sidebar', () => {
   })
 })
 
+describe('@sidebarPage', () => {
+  it('should render as expected', () => {
+    const selection = quantum.select({
+      type: 'sidebarPage',
+      params: [],
+      content: [
+        {
+          type: 'sidebar',
+          params: [],
+          content: [
+            'Content1'
+          ]
+        },
+        {
+          type: 'content',
+          params: [],
+          content: [
+            'Content2'
+          ]
+        }
+      ]
+    })
+
+    function transformer (selection) {
+      const type = quantum.select.isSelection(selection) ? selection.type() : undefined
+      if (type === 'sidebar') {
+        return docs.transforms().sidebar(selection, transforms)
+      } else {
+        return transforms(selection)
+      }
+    }
+
+    docs.transforms().sidebarPage(selection, transformer).should.eql(
+      dom.create('div').class('qm-docs-sidebar-page')
+        .add(stylesheetAsset)
+        .add(dom.create('div')
+          .add(stylesheetAsset)
+          .add(scriptAsset)
+          .class('qm-docs-sidebar')
+          .add(dom.create('div').text('Content1')))
+        .add(dom.create('div').class('qm-docs-content-section-container')
+          .add(dom.create('div').text('Content2')))
+        .add(dom.bodyClassed('qm-docs-sidebar-page', true))
+    )
+  })
+})
+
 describe('@tableOfContents', () => {
   it('should render as expected (empty)', () => {
     const selection = quantum.select({
@@ -576,6 +623,36 @@ describe('@header', () => {
         ))
     )
   })
+
+  it('should render with an icon', () => {
+    const selection = quantum.select({
+      type: 'header',
+      params: [],
+      content: [
+        { type: 'link', params: ['/link/one'], content: ['Link One'] },
+        { type: 'link', params: ['/link/two'], content: ['Link Two'] },
+        { type: 'icon', params: ['/path/to/icon.png'], content: [] }
+      ]
+    })
+
+    docs.transforms().header(selection, transforms).should.eql(
+      dom.create('div').class('qm-docs-header')
+        .add(stylesheetAsset)
+        .add(dom.create('div').class('qm-docs-centered')
+          .add(dom.create('div').class('qm-docs-header-wrapper')
+            .add(dom.create('image').class('qm-docs-header-logo').attr('src', selection.select('icon').ps()))
+            .add(dom.create('div').class('qm-docs-header-title').text(selection.select('title').ps()))
+            .add(dom.create('a')
+              .class('qm-docs-header-link')
+              .attr('href', '/link/one')
+              .text('Link One'))
+            .add(dom.create('a')
+              .class('qm-docs-header-link')
+              .attr('href', '/link/two')
+              .text('Link Two'))
+        ))
+    )
+  })
 })
 
 describe('@breadcrumb', () => {
@@ -642,7 +719,7 @@ describe('@topSection', () => {
 
     docs.transforms().topSection(selection, transforms).should.eql(
       dom.create('div').class('qm-docs-top-section')
-        .add(dom.head(dom.create('title').attr('name', 'Title'), {id: 'title'}))
+        .add(dom.head(dom.create('title').text('Title'), {id: 'title'}))
         .add(stylesheetAsset)
         .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transforms))
         .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
@@ -815,19 +892,92 @@ describe('@table', () => {
     docs.transforms().table(selection, transforms).should.eql(
       dom.create('table')
         .class('qm-docs-table')
+        .add(dom.create('thead')
+          .add(dom.create('tr')
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell1']}), transforms)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell2']}), transforms)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell3']}), transforms))))
+          .add(dom.create('tr')
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell7']}), transforms)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell8']}), transforms)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell9']}), transforms)))))
+        .add(dom.create('tbody')
+          .add(dom.create('tr')
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell4']}), transforms)))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell5']}), transforms)))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell6']}), transforms)))))
         .add(stylesheetAsset)
-        .add(dom.create('tr')
-          .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell1']}), transforms)))
-          .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell2']}), transforms)))
-          .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell3']}), transforms))))
-        .add(dom.create('tr')
-          .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell4']}), transforms)))
-          .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell5']}), transforms)))
-          .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell6']}), transforms))))
-        .add(dom.create('tr')
-          .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell7']}), transforms)))
-          .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell8']}), transforms)))
-          .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell9']}), transforms))))
+    )
+  })
+
+  it('should cope with having no rows', () => {
+    const selection = quantum.select({
+      type: 'table',
+      params: [],
+      content: [
+        {
+          type: 'header',
+          params: [],
+          content: [
+            {type: 'cell', params: [], content: ['Cell1']},
+            {type: 'cell', params: [], content: ['Cell2']},
+            {type: 'cell', params: [], content: ['Cell3']}
+          ]
+        },
+        {
+          type: 'header',
+          params: [],
+          content: [
+            {type: 'cell', params: [], content: ['Cell7']},
+            {type: 'cell', params: [], content: ['Cell8']},
+            {type: 'cell', params: [], content: ['Cell9']}
+          ]
+        }
+      ]
+    })
+
+    docs.transforms().table(selection, transforms).should.eql(
+      dom.create('table')
+        .class('qm-docs-table')
+        .add(dom.create('thead')
+          .add(dom.create('tr')
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell1']}), transforms)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell2']}), transforms)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell3']}), transforms))))
+          .add(dom.create('tr')
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell7']}), transforms)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell8']}), transforms)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell9']}), transforms)))))
+        .add(stylesheetAsset)
+    )
+  })
+
+  it('should cope with having no headers', () => {
+    const selection = quantum.select({
+      type: 'table',
+      params: [],
+      content: [
+        {
+          type: 'row',
+          params: [],
+          content: [
+            {type: 'cell', params: [], content: ['Cell4']},
+            {type: 'cell', params: [], content: ['Cell5']},
+            {type: 'cell', params: [], content: ['Cell6']}
+          ]
+        }
+      ]
+    })
+
+    docs.transforms().table(selection, transforms).should.eql(
+      dom.create('table')
+        .class('qm-docs-table')
+        .add(dom.create('tbody')
+          .add(dom.create('tr')
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell4']}), transforms)))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell5']}), transforms)))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell6']}), transforms)))))
+        .add(stylesheetAsset)
     )
   })
 })

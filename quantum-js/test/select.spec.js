@@ -3,7 +3,7 @@ const chai = require('chai')
 const should = chai.should()
 const expect = chai.expect
 
-const quantum = require('..')
+const quantum = require('../')
 const select = quantum.select
 
 describe('select', () => {

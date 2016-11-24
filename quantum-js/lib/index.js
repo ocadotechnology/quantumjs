@@ -15,6 +15,7 @@ module.exports = {
   parse: require('./parse'),
   stringify: require('./stringify'),
   read: require('./read'),
+  write: require('./write'),
   select: require('./select'),
   json: require('./json'),
   fileOptions: require('./file-options'),

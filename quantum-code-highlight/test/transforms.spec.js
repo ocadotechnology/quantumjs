@@ -55,7 +55,8 @@ describe('transforms', () => {
       dom.create('div')
         .class('quantum-code-highlight-codeblock language-js')
         .add(dom.create('pre')
-          .text('<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">x</span>) </span>{ <span class="hljs-keyword">return</span> x * x }', {escape: false}))
+          .add(dom.create('code')
+            .text('<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">x</span>) </span>{ <span class="hljs-keyword">return</span> x * x }', {escape: false})))
         .add(dom.asset({
           url: '/quantum-code-highlight.css',
           file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
@@ -75,7 +76,8 @@ describe('transforms', () => {
       dom.create('div')
         .class('quantum-code-highlight-codeblock')
         .add(dom.create('pre')
-          .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false}))
+            .add(dom.create('code')
+              .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false})))
         .add(dom.asset({
           url: '/quantum-code-highlight.css',
           file: path.join(__dirname, '../assets/quantum-code-highlight.css'),

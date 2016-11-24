@@ -25,7 +25,7 @@ const entityMap = {
 
 // html entity encoding
 function escapeHTML (text) {
-  return String(text).replace(/[&<>"'\/]/g, (s) => entityMap[s])
+  return String(text).replace(/[&<>"'/]/g, (s) => entityMap[s])
 }
 
 // creates a random id
@@ -360,7 +360,7 @@ function stringify (elements, options) {
 
   return Promise.all([stylesheets, scripts])
     .spread((stylesheets, scripts) => {
-      const head = '<head>' + headElements + stylesheets.join('') + '</head>'
+      const head = '<head>' + stylesheets.join('') + headElements + '</head>'
       const openBodyTag = bodyClass ? '<body class="' + bodyClass + '">' : '<body>'
       const body = openBodyTag + bodyElements + scripts.join('') + '</body>'
       const html = '<!DOCTYPE html>\n' + '<html>' + head + body + '</html>'

@@ -15,7 +15,7 @@ function setupElement (type, selection, transform, parsePs) {
   if (selection.has('id')) {
     element.id(selection.select('id').ps())
   } else if (parsePs) {
-    const match = classId.match(/#[^\.#]+/)
+    const match = classId.match(/#[^.#]+/)
     if (match) {
       const id = match.map(d => d.substring(1))[0]
       element.id(id)
@@ -25,7 +25,7 @@ function setupElement (type, selection, transform, parsePs) {
   if (selection.has('class')) {
     element.class(selection.select('class').ps())
   } else if (parsePs) {
-    const match = classId.match(/(\.[^\.#]+)/g)
+    const match = classId.match(/(\.[^.#]+)/g)
     if (match) {
       const cls = unique(match.map(d => d.substring(1))).join(' ')
       element.class(cls)
@@ -51,7 +51,7 @@ function bodyClassed (selection, transform) {
 }
 
 function title (selection, transform) {
-  return dom.head(dom.create('title').attr('name', selection.ps()), {id: 'title'})
+  return dom.head(dom.create('title').text(selection.ps()), {id: 'title'})
 }
 
 function head (selection, transform) {
@@ -104,6 +104,8 @@ function transforms (options) {
     hyperlink: hyperlink,
     js: js,
     css: css,
+    link: elementTransform('link'),
+    meta: elementTransform('meta'),
     a: elementTransform('a'),
     b: elementTransform('b'),
     br: elementTransform('br'),
@@ -122,8 +124,6 @@ function transforms (options) {
     input: elementTransform('input'),
     label: elementTransform('label'),
     li: elementTransform('li'),
-    link: elementTransform('link'),
-    meta: elementTransform('meta'),
     ol: elementTransform('ol'),
     option: elementTransform('option'),
     p: elementTransform('p'),
@@ -261,7 +261,7 @@ function paragraphTransform (selection, transform) {
     })
   ]
 
-  let currentParagraph = undefined
+  let currentParagraph = void (0)
 
   selection.content().forEach((e) => {
     if (e === '') {
