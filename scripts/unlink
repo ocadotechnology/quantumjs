@@ -31,11 +31,6 @@ npm unlink quantum-js quantum-dom quantum-html
 npm unlink
 popd
 
-pushd quantum-changelog
-npm unlink quantum-js quantum-dom quantum-html
-npm unlink
-popd
-
 pushd quantum-diagram
 npm unlink quantum-js quantum-dom
 npm unlink
@@ -52,5 +47,5 @@ npm unlink
 popd
 
 pushd docs
-npm unlink quantum-js quantum-html quantum-template quantum-api quantum-changelog quantum-diagram quantum-docs quantum-version quantum-code-highlight
+npm unlink quantum-js quantum-html quantum-template quantum-api quantum-diagram quantum-docs quantum-version quantum-code-highlight
 popd

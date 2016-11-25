@@ -1,7 +1,0 @@
-/node_modules
-/example/node_modules
-/example/target
-/example/index.html
-/coverage
-.DS_Store
-npm-debug.log

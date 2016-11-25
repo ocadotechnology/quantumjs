@@ -20,10 +20,6 @@ pushd quantum-api
 npm test
 popd
 
-pushd quantum-changelog
-npm test
-popd
-
 pushd quantum-diagram
 npm test
 popd

@@ -4,7 +4,6 @@ const html = require('quantum-html')
 const api = require('quantum-api')
 const version = require('quantum-version')
 const template = require('quantum-template')
-const changelog = require('quantum-changelog')
 const diagram = require('quantum-diagram')
 const markdown = require('quantum-markdown')
 const codeHighlight = require('quantum-code-highlight')
@@ -19,7 +18,6 @@ const htmlOptions = {
 const htmlTransforms = {
   html: html.transforms(),
   api: api.transforms(),
-  changelog: changelog.transforms(),
   diagram: diagram.transforms(),
   markdown: markdown.transforms(),
   docs: docs.transforms(),
@@ -45,7 +43,7 @@ function customizedTemplate (page) {
 module.exports = {
   pipeline: [
     customizedTemplate,
-    changelog(),
+    api(),
     version(),
     docs(),
     html({ transforms: htmlTransforms }),

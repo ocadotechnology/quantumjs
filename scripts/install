@@ -7,7 +7,6 @@ npm --prefix ./quantum-dom install ./quantum-dom
 npm --prefix ./quantum-html install ./quantum-html
 npm --prefix ./quantum-code-highlight install ./quantum-code-highlight
 npm --prefix ./quantum-api install ./quantum-api
-npm --prefix ./quantum-changelog install ./quantum-changelog
 npm --prefix ./quantum-diagram install ./quantum-diagram
 npm --prefix ./quantum-docs install ./quantum-docs
 npm --prefix ./quantum-version install ./quantum-version

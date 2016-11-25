@@ -1,7 +1,7 @@
 {
   "name": "quantum-markdown",
   "version": "2.0.0",
-  "description": "quantum support for markdown",
+  "description": "A markdown transform for QuantumJS",
   "contributors": [
     "Charlie Frater <charlie.frater@ocado.com>"
   ],

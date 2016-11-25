@@ -19,15 +19,12 @@ const htmlTransforms = {
   api: api.transforms(apiOptions)
 }
 
-function pipeline (page) {
-  return Promise.resolve(page)
-    .then(html({ transforms: htmlTransforms }))
-    .then(html.stringify())
-    .then(html.htmlRenamer())
-}
-
 module.exports = {
-  pipeline: pipeline,
+  pipeline: [
+    html({ transforms: htmlTransforms }),
+    html.build(),
+    html.htmlRenamer()
+  ],
   pages: 'src/*.um',
   htmlTransforms: htmlTransforms
 }
