@@ -1,6 +1,6 @@
 {
   "name": "quantum-code-highlight",
-  "version": "2.0.0",
+  "version": "2.0.0-rc0",
   "description": "code highlighting transforms for quantum-html",
   "contributors": [
     "James Smyth <james.smyth@ocado.com>",
@@ -28,15 +28,16 @@
   },
   "dependencies": {
     "highlight.js": "^9.3.0",
+    "quantum-js": "^2.0.0",
     "quantum-dom": "^2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",
     "chai": "^3.5.0",
-    "chai-as-promised": "^5.3.0",
+    "chai-as-promised": "^6.0.0",
     "eslint": "^3.3.1",
     "eslint-config-standard": "^6.0.0-beta.3",
-    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",

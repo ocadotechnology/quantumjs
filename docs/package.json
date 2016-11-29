@@ -11,7 +11,6 @@
   "devDependencies": {
     "bluebird": "^3.1.1",
     "quantum-api": "^2.0.0",
-    "quantum-changelog": "^2.0.0",
     "quantum-code-highlight": "^2.0.0",
     "quantum-docs": "^2.0.0",
     "quantum-dom": "^2.0.0",

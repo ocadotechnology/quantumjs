@@ -2,7 +2,7 @@
 
 const dom = require('quantum-dom')
 
-console.log('XXX: get the tags from options')
+// XXX: get the tags from options
 const tags = ['removed', 'deprecated', 'enhancement', 'bugfix', 'updated', 'added', 'info']
 
 /* Gets the tags that should be applied to an entry */

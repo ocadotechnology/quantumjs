@@ -13,13 +13,14 @@ const File = quantum.File
 
 describe('pipeline', () => {
   it('should export the correct things', () => {
-    html.should.be.a.function
-    html.transforms.should.be.a.function
-    html.HTMLPage.should.be.a.function
-    html.prepareTransforms.should.be.a.function
-    html.build.should.be.a.function
-    html.paragraphTransform.should.be.a.function
-    html.htmlRenamer.should.be.a.function
+    html.should.be.a('function')
+    html.transforms.should.be.a('function')
+    html.HTMLPage.should.be.a('function')
+    html.prepareTransforms.should.be.a('function')
+    html.buildHTML.should.be.a('function')
+    html.buildDOM.should.be.a('function')
+    html.paragraphTransform.should.be.a('function')
+    html.htmlRenamer.should.be.a('function')
   })
 
   it('should transform a page', () => {
@@ -37,7 +38,7 @@ describe('pipeline', () => {
       }
     })
 
-    return html({includeCommonMetaTags: false})(page)
+    return html.buildDOM({includeCommonMetaTags: false})(page)
       .then((page) => {
         page.file.dest.should.equal('filename.um')
         page.content.elements.length.should.equal(1)
@@ -60,7 +61,7 @@ describe('pipeline', () => {
       }
     })
 
-    return html({includeCommonMetaTags: false})(page)
+    return html.buildDOM({includeCommonMetaTags: false})(page)
       .then((page) => {
         page.file.dest.should.equal('filename.um')
         page.content.elements.length.should.equal(1)
@@ -123,7 +124,7 @@ describe('element', () => {
       }
     })
 
-    return html({includeCommonMetaTags: false})(page)
+    return html.buildDOM({includeCommonMetaTags: false})(page)
       .then((page) => {
         page.file.dest.should.equal('filename.um')
         page.content.elements.length.should.equal(1)
@@ -147,7 +148,7 @@ describe('element', () => {
         }
       })
 
-      return html({includeCommonMetaTags: false})(page)
+      return html.buildDOM({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')
@@ -171,7 +172,7 @@ describe('element', () => {
         }
       })
 
-      return html({includeCommonMetaTags: false})(page)
+      return html.buildDOM({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')
@@ -195,7 +196,7 @@ describe('element', () => {
         }
       })
 
-      return html({includeCommonMetaTags: false})(page)
+      return html.buildDOM({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')
@@ -219,7 +220,7 @@ describe('element', () => {
         }
       })
 
-      return html({includeCommonMetaTags: false})(page)
+      return html.buildDOM({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')
@@ -243,7 +244,7 @@ describe('element', () => {
         }
       })
 
-      return html({includeCommonMetaTags: false})(page)
+      return html.buildDOM({includeCommonMetaTags: false})(page)
         .then((page) => {
           page.file.dest.should.equal('filename.um')
           page.content.elements[0].type.should.equal('div')
@@ -361,7 +362,7 @@ describe('HTMLPage::stringify', () => {
   })
 })
 
-describe('build', () => {
+describe('buildHTML', () => {
   it('should build a page with an asset element (embedAssets: true)', () => {
     const htmlPage = new html.HTMLPage([
       dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
@@ -375,7 +376,7 @@ describe('build', () => {
       content: htmlPage
     })
 
-    return html.build({embedAssets: true})(page)
+    return html.buildHTML({embedAssets: true})(page)
       .then(result => {
         result.should.eql([
           new Page({
@@ -402,7 +403,7 @@ describe('build', () => {
       content: htmlPage
     })
 
-    return html.build({embedAssets: false})(page)
+    return html.buildHTML({embedAssets: false})(page)
       .then(result => {
         result.should.eql([
           new Page({
@@ -440,7 +441,7 @@ describe('build', () => {
       content: htmlPage
     })
 
-    return html.build({embedAssets: false, assetPath: '/bob'})(page)
+    return html.buildHTML({embedAssets: false, assetPath: '/bob'})(page)
       .then(result => {
         result.should.eql([
           new Page({

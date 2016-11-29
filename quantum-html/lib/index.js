@@ -167,7 +167,7 @@ function standardDefaultTransform (selection) {
 /*
   Returns the transform function that converts parsed quantum source to virtual dom.
 */
-function buildDom (options) {
+function buildDOM (options) {
   const opts = options || {}
 
   const meta = opts.meta // gets passed through to all transforms (mainly useful for custom transforms - should never be used in libraries)
@@ -310,8 +310,8 @@ function htmlRenamer () {
   }
 }
 
-function html (options) {
-  const domBuilder = buildDom(options)
+module.exports = function (options) {
+  const domBuilder = buildDOM(options)
   const htmlBuilder = buildHTML(options)
   const renamer = htmlRenamer()
   return (page) => {
@@ -323,12 +323,12 @@ function html (options) {
   }
 }
 
-module.exports = html
-module.exports.transforms = transforms
-
 module.exports.HTMLPage = HTMLPage
+
 module.exports.prepareTransforms = prepareTransforms
-module.exports.buildDom = buildDom
-module.exports.buildHTML = buildHTML
+module.exports.transforms = transforms
 module.exports.paragraphTransform = paragraphTransform
+
+module.exports.buildDOM = buildDOM
+module.exports.buildHTML = buildHTML
 module.exports.htmlRenamer = htmlRenamer

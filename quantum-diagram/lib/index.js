@@ -234,7 +234,7 @@ function constructDom (graph, graphOptions, nodeMap, edgeMap) {
     if (edge && nodeV && nodeW) {
       return constructEdgeDom(edge, layout)
     } else {
-      //XXX: add a warning (html warning need adding)
+      // XXX: add a warning (html warning need adding)
     }
   })
 

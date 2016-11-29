@@ -192,7 +192,7 @@ function startServer (options) {
     }
   })
 
-  let currentTriggerTimeout
+  let currentTriggerTimeout = void (0)
 
   function triggerReload (filename) {
     // XXX: use the filename for more targeted reloads
