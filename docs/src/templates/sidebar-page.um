@@ -11,6 +11,7 @@
       @sidebar
         @navigationMenu
           @section Introduction
+            @page /: About
             @page /docs/quick-start/: Quick Start
             @page /docs/config-file/: Config file
             @page /docs/cli/: Using the CLI
@@ -19,8 +20,8 @@
 
           @section Advanced Topics
             @page /docs/markup/: The Markup Language
-            @page /docs/pipeline/: The Pipeline
             @page /docs/ast/: The AST
+            @page /docs/core-concepts/: Core Concepts
             @page /docs/page-transforms/: Page Transforms
             @page /docs/entity-transforms/: Entity Transforms
 
@@ -29,18 +30,16 @@
             @page /tutorials/creating-a-blog/: Creating a Blog
 
           @section Module Docs
-            @page /api/quantum-js/: quantum-js
-            @page /api/quantum-dom/: quantum-dom
-
-            @page /api/quantum-html/: quantum-html
-            @page /api/quantum-code-highlight/: quantum-code-highlight
-            @page /api/quantum-docs/: quantum-docs
-            @page /api/quantum-api/: quantum-api
-            @page /api/quantum-changelog/: quantum-changelog
-            @page /api/quantum-template/: quantum-template
-            @page /api/quantum-diagram/: quantum-diagram
-            @page /api/quantum-version/: quantum-version
-            @page /api/quantum-markdown/: quantum-markdown
+            @page /modules/quantum-js/: quantum-js
+            @page /modules/quantum-dom/: quantum-dom
+            @page /modules/quantum-html/: quantum-html
+            @page /modules/quantum-code-highlight/: quantum-code-highlight
+            @page /modules/quantum-docs/: quantum-docs
+            @page /modules/quantum-api/: quantum-api
+            @page /modules/quantum-template/: quantum-template
+            @page /modules/quantum-diagram/: quantum-diagram
+            @page /modules/quantum-version/: quantum-version
+            @page /modules/quantum-markdown/: quantum-markdown
 
       @content
         @templateContent

@@ -8,22 +8,20 @@
     writing technical documentation
 
 @contentSection
-  @tableOfContents Contents
+  @topic About
+    In this tutorial we will document a fictitious hot drink delivery service.
+
+    This will include:
+    @list
+      @item: Setting up a new quantum project
+      @item: Writing some general documentation using the @bold[quantum-docs] module
+      @item: Documenting a javascript client library for the service with the @bold[quantum-api] and @bold[quantum-version] modules
+      @item: Documenting the tea/coffee making process with the @bold[quantum-diagram] module
+      @item: Writing custom transforms for the @bold[quantum-html] module
+
+    The finished tutorial is available as a git repository @hyperlink(#)[here].
 
   @topic Setting Up
-
-    @section About
-      In this tutorial we will document a fictitious hot drink delivery service.
-
-      This will include:
-      @list
-        @item: Setting up a project with @bold[quantum-hub]
-        @item: Writing some general documentation using the @bold[quantum-docs] module
-        @item: Documenting a javascript client library for the service with the @bold[quantum-api] and @bold[quantum-version] modules
-        @item: Documenting the tea/coffee making process with the @bold[quantum-diagram] module
-        @item: Writing custom transforms for the @bold[quantum-html] module
-
-      The finished tutorial is available as a git repository @hyperlink(#)[here].
 
     @section Installing the dependencies
       First, let's create a package.json in a new directory and then install some

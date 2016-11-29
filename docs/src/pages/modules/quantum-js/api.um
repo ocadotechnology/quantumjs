@@ -2,21 +2,32 @@
   @version 2.0.0
 
 @version 2.0.0
-  @api
+  @api quantum-js
     @function parse
+      @added
+        @description
+          A function for parsing string containing quantum markup into JavaScript
+          objects.
+
       @param input [String]
         @description:
-          @p: A string containing markup to parse. Ie something that looks like this:
+          A string containing markup to parse. i.e. something that looks like this:
+
           @codeblock um
             @inline ../the-markup.um [text]
 
       @returns Object
         @description
-          @p: The parsed ast. Looks something like this:
+          The parsed ast. Looks something like this:
+
           @codeblock json
             @inline ../the-markup.json [text]
 
     @function read
+      @added
+        @description
+          A function for reading a file and parsing the contents into JavaScript
+          objects
       @param glob [String]: A filename or glob string which matches files to load.
       @param? options [Object]
         @property inlineEntityType [String]
@@ -41,6 +52,9 @@
             }
 
     @function select
+      @added
+        @description
+          A utility for manipulating parsed quantum objects.
       @description
         A helper api for extracting values from parsed ast. Pass in parsed
         ast, and use the methods on Selection to make working with the ast easier.
@@ -48,15 +62,55 @@
         @description: An entity object to select.
       @returns Selection
 
-
     @prototype File
+      @added
+        @description
+          An object which holds filename information
       @description
         Represents a file
 
     @prototype Page
+      @added
+        @description
+          An object which represents a html page, css file or javascript file (or
+          any other file type that a transform decides to export)
 
     @function stringify
+      @added
+        @description
+          A function for turning quantum AST back into markup - does the opposite
+          to @code[parse]
+      @description
+        @@codeblock js
+          const quantum = require('quantum-js')
 
+          quantum.stringify({
+            type: 'example',
+            params: ['param1', 'param2'],
+            content: [
+              'Some Content',
+              {
+                type: 'child',
+                params: ['child-param'],
+                content: []
+              }
+            ]
+          })
+
+          /*
+            Returns this string:
+
+            @example param1 param2
+              Some content
+              @child child-param
+          */
+
+      @param ast [Object]
+        @description
+          The quantum objects (AST) to turn into a markup string.
+      @returns String
+        @description
+          The markup string
 
 
     @function json

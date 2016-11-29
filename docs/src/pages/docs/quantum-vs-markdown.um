@@ -23,19 +23,19 @@
     @bold[Markdown] has a fixed way of rendering the markup to HTML (although
     there are several different flavours). In this respect it isn't at all customisable.
     This is actually one of the strengths of markdown - it has a small set of
-    features and focused way of doing things that makes it really easy to pick up.
+    features and focused way of doing things that makes it really easy to pick up
+    and use.
 
     @bold[Quantum] is build with customisability in mind - every part of the rendering
-    process can be customised, allowing new functionalty to be added. New renderers
+    process can be customised, allowing new functionalty to easily be added. New renderers
     that convert entites to html are easy to define and override in quantum.
     In quantum @italic[you] choose how your markup gets converted into HTML. This
     can be achieved by picking libraries of transforms that already meet your needs,
     or by rolling your own transforms.
 
     This highlights difference in opinion between the two markup languages - in Quantum
-    everything is tagged with a type (and these types are can be anything), and each type
-    can be rendered to HTML in whatever way you want. In markdown the markup is tightly
-    tied with HTML tags.
+    everything is tagged with a type, and each type can be rendered to HTML in
+    whatever way you want. In markdown the markup is tightly tied with HTML tags.
 
 
     @subsection Quantum (using the quantum-docs transforms)
@@ -115,7 +115,7 @@
     readability of the source.
 
     @bold[Quantum] uses more explicit @italic[names] for things, which adds flexibilty
-    and explicitness at the expense of some readability.
+    and explicitness, at the expense of some verbosity.
 
 
   @topic Templating

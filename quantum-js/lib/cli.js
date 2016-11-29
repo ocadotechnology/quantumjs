@@ -78,13 +78,13 @@ QuantumJS (${version})
   `)
 }
 
-function buildPage (sourcePage, pipeline, config, logger) {
+function buildPage (sourcePage, pipeline, config, logger, addLiveReload) {
   const start = Date.now()
   return Promise.resolve(pipeline(sourcePage))
     .then((pages) => Array.isArray(pages) ? pages : [pages])
     .map((page) => {
       let content = page.content
-      if (page.file.dest.indexOf('.html') === page.file.dest.length - 5) {
+      if (addLiveReload && page.file.dest.indexOf('.html') === page.file.dest.length - 5) {
         content = content.replace('</body>', liveReloadScriptTag + '</body>')
       }
       return fs.outputFileAsync(page.file.dest, content).then(() => page)
@@ -154,7 +154,7 @@ function build (config) {
             file: file,
             content: content
           })
-          return buildPage(page, pipeline, config, logger)
+          return buildPage(page, pipeline, config, logger, false)
             .then(pages => {
               builtCount += pages.length
               return pages
@@ -192,15 +192,22 @@ function startServer (options) {
     }
   })
 
+  let currentTriggerTimeout
+
   function triggerReload (filename) {
     // XXX: use the filename for more targeted reloads
-    connections.forEach(ws => {
-      if (ws.readyState === ws.OPEN) {
-        ws.send('reload')
-      } else {
-        connections.delete(ws)
-      }
-    })
+
+    // Adds some debouncing - can be removed once targeted reloads are added
+    clearTimeout(currentTriggerTimeout)
+    currentTriggerTimeout = setTimeout(() => {
+      connections.forEach(ws => {
+        if (ws.readyState === ws.OPEN) {
+          ws.send('reload')
+        } else {
+          connections.delete(ws)
+        }
+      })
+    }, 100)
   }
 
   return triggerReload
@@ -221,7 +228,7 @@ function watch (config) {
       if (err) {
         logger({type: 'page-load-error', file: page.file.src, error: err})
       } else {
-        return buildPage(page, pipeline, config, logger)
+        return buildPage(page, pipeline, config, logger, true)
           .then((pages) => {
             pages.forEach(p => triggerReload(p.file.dest))
           })

@@ -13,14 +13,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Roboto Slab', serif;
 }
 a {
-  color: #15668e;
+  color: #0a70a2;
 }
 
 .header {
   padding: 1em 1em;
   text-align: center;
   background: #15668e;
-  box-shadow: 0 6px 10px #CCC;
+  box-shadow: 0 2px 2px #CCC;
   color: white;
   margin-bottom: 10px;
 }
@@ -44,9 +44,9 @@ a {
 }
 
 .qm-button {
-  background: #dc6a1e;
+  background: #f69724;
   border-radius: 5px;
-  box-shadow: 0 6px #B54A15;
+  box-shadow: 0 2px 2px #f0642a;
   color: white;
   padding: 1em 1.5em;
   cursor: pointer;
@@ -57,10 +57,14 @@ a {
 }
 
 .qm-button:hover {
-  box-shadow: 0 3px #B54A15;
-  top: 3px;
+  background: #f7a139;
   outline: 0;
   text-decoration: none;
+}
+
+.qm-button:active {
+  box-shadow: 0 1px 1px #f0642a;
+  top: 1px;
 }
 
 .get-started {
@@ -203,4 +207,18 @@ a {
 
 .qm-html-paragraph {
   line-height: 1.5em;
+}
+
+.qm-docs-sidebar {
+  background: #f69c26;
+}
+
+.qm-docs-notice-header {
+  background: #f69c26;
+}
+
+.qm-changelog-head {
+  font-family: 'Roboto Slab';
+  font-size: 32px;
+  color: #6b6b6b;
 }

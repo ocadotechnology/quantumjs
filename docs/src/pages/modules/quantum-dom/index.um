@@ -52,7 +52,7 @@
 
   @topic Examples
     The api allows creation of detached elements. Detached elements can be
-    added to another as children to create small chuncks of dom. Here are some
+    added to another as children to create small chunks of dom. Here are some
     examples of how to use the api:
 
     @@codeblock js

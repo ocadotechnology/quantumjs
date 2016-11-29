@@ -11,6 +11,12 @@
     a parser for the markup language, a selection api for working with the parsed
     AST (abstract syntax tree) and an api for watching quantum files for changes.
 
+  @notice Note
+    The rest of this page goes into low level apis that you most likely won't have
+    to worry about if you are just using quantum as a tool with existing transforms.
+    If you are developing your own transforms then some of the material in the
+    rest of this document may be useful.
+
   @topic Command Line Interface
     The cli is bundled with this module - so if you install this globally, you should
     have access to the @code(bash)[quantum] command. The best way to find out more about the cli
@@ -20,12 +26,6 @@
     @hyperlink(/docs/config)[configuring] the cli.
 
   @topic Parsing
-    @notice Note
-      The rest of this page goes into low level apis that you most likely won't have
-      to worry about if you are just using quantum as a tool with existing transforms.
-      If you are developing your own transforms then some of the material in the
-      rest of this document may be useful.
-
     First we will explore how to parse a quantum markup file (which usually has the .um
     extension).
 
@@ -39,6 +39,8 @@
 
     @@codeblock js
       {
+        type: '',
+        params: [],
         content: [
           {
             type: 'example',
@@ -108,7 +110,7 @@
 
       quantum.read('example.um')
         .then((parsed) => {
-          // parsed = {content: [...]}
+          // parsed = {type: '', params: [...], content: [...]}
         })
 
     @code(js)[quantum.read] will return a promise that yields the parsed AST.
@@ -130,14 +132,13 @@
 
         const selection = quantum.select(entity)
         selection.ps()                      // extract the parameter string from an entity
-        selection.cs()                      // extract the content string from an entity
+        selection.cs()                      // extract the content string from an entity (ignores all sub-entities)
         selection.select('banana')          // selects the first child entity called banana
         selection.selectAll('kiwi')         // selects all the child entities called kiwi (returns an array)
         selection.select('lemon').param(2)  // gets the second parameter from the first lemon entity in the selection
       })
 
-    Lets go into more detail to explain various parts of the selection api
-
+    Lets go into more detail to explain various parts of the selection api.
 
     @section Selecting, querying and modifying an entity
       An entity, when parsed looks like this:

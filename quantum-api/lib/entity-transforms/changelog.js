@@ -35,12 +35,7 @@ function domAsset (filename) {
 const assets = [
   domAsset('quantum-changelog.css'),
   domAsset('quantum-changelog.js'),
-  domAsset('quantum-changelog-icons.css'),
-  domAsset('fonts/quantum-changelog-icons.eot'),
-  domAsset('fonts/quantum-changelog-icons.svg'),
-  domAsset('fonts/quantum-changelog-icons.svg'),
-  domAsset('fonts/quantum-changelog-icons.ttf'),
-  domAsset('fonts/quantum-changelog-icons.woff')
+  domAsset('quantum-changelog-icons.css')
 ]
 
 /* Creates a paragraph section wrapped in a div */

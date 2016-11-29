@@ -8,21 +8,18 @@ const diagram = require('quantum-diagram')
 const markdown = require('quantum-markdown')
 const codeHighlight = require('quantum-code-highlight')
 const docs = require('quantum-docs')
-const quantumSite = require('./src/transforms/transforms')
 
 const htmlOptions = {
-  embedAssets: true,
-  assetPath: '/resources'
-}
-
-const htmlTransforms = {
-  html: html.transforms(),
-  api: api.transforms(),
-  diagram: diagram.transforms(),
-  markdown: markdown.transforms(),
-  docs: docs.transforms(),
-  highlight: codeHighlight.transforms(),
-  site: quantumSite
+  embedAssets: false,
+  assetPath: '/resources',
+  transforms: {
+    html: html.transforms(),
+    api: api.transforms(),
+    diagram: diagram.transforms(),
+    markdown: markdown.transforms(),
+    docs: docs.transforms(),
+    highlight: codeHighlight.transforms()
+  }
 }
 
 function customizedTemplate (page) {
@@ -46,12 +43,10 @@ module.exports = {
     api(),
     version(),
     docs(),
-    html({ transforms: htmlTransforms }),
-    html.build(htmlOptions),
+    html(htmlOptions),
     html.htmlRenamer()
   ],
   pages: 'src/pages/**/*.um',
-  htmlTransforms: htmlTransforms,
   resources: [
     {
       files: [

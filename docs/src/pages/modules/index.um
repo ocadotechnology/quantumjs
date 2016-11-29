@@ -1,11 +1,8 @@
 @inline ../../templates/sidebar-page.um
 
 @topSection
-  @title Entity Transforms
+  @title Modules Documentation
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    This page explains entity transforms, what they are and what they're for
 
 @contentSection
-  @topic About
-    @notice TODO: Write this page...

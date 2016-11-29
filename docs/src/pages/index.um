@@ -1,56 +1,77 @@
-@inline ../templates/resources.um
-@title QuantumJS
+@inline ../templates/sidebar-page.um
 
-@div .header
-  @img .logo: @attr src: /resources/logo.svg
-  @div .title: QuantumJS
-  @div .tagline: A node.js static site generator with a focus on extensibility and speed.
-  @a .qm-button.get-started: Get Started
-    @attr href: /docs/quick-start
+@topSection
+  @title Overview
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    A node.js static site generator with a focus on extensibility and speed
 
-# @div .color-band
-#   @div .content
-#     @div .install-link-stip
-#       @div .spacer
-#       @div .spacer.github-icon-container
-#         @hyperlink [https://github.com/ocadotechnology/quantumjs]
-#           @img .github-icon
-#             @attr src: /resources/github-mark.svg
+@contentSection
+  @topic What is QuantumJS?
+    QuantumJS is a static site generator. In other words, it is a tool for converting
+    human readable markup into a website.
 
-@div .content
-  @h2: Converts markup to html
-  @group
-    @@codeblock um
-      @div: Welcome to the site, sign in below
-      @signIn
+    QuantumJS comes preloaded with some modules for writing beautiful
+    @hyperlink(/modules/quantum-api/)[API docs],
+    @hyperlink(/modules/quantum-diagram/)[simple diagrams], and various
+    @hyperlink(/modules/quantum-docs/)[utilities for writing documentation]. It
+    also has support for @hyperlink(/modules/quantum-version/)[versioned content],
+    @hyperlink(/modules/quantum-template/)[templates] and
+    @hyperlink(/modules/quantum-code-highlight/)[code highlighting]. All of this
+    is supported through a simple @hyperlink(/docs/markup/)[Markup Language].
 
-    @i .fa.fa-arrow-right
-      @attr style: padding: 1em; # hack
+    QuantumJS has its own markup language, but it also has support for
+    @hyperlink(/modules/quantum-markdown/)[Markdown], great for when only basic
+    formatting options are needed, or for working with existing Markdown-based
+    sites.
 
-    @@codeblock html
-      <div>Welcome to the site, sign in below</div>
-      <div class="sign-in">
-        <input class="username-input" placeholder="Username"></input>
-        <input class="password-input" placeholder="Password"></input>
-        <button class="sign-in-button">Sign in</button>
-      </div>
+    Quantum comes with a @hyperlink(/docs/cli/)[CLI] (command line interface) for
+    building sites.
 
-  @h2: Define your own ways to convert markup into html
-  @@codeblock js
-    const dom = require('quantum-dom')
+  @topic Features
+    @list
+      @item: Explicit, easy to learn markup language for building web pages
+      @item: Built with customisability / extensibility in mind
+      @item: Uses node.js - full access to npm when writing custom transforms
+      @item: Prebuilt transforms for writing technical documentation
+      @item: Auto browser page refresh when files are changed
+      @item: Fast - builds this site in under 2 seconds
 
-    exports.signIn = function (selection) {
-      return dom.create('div').class('sign-in')
-        .add(dom.create('input').class('username-input'))
-        .add(dom.create('input').class('password-input'))
-        .add(dom.create('button').class('sign-in-button').text('Sign in'))
-    }
+  @topic Example
 
-  @h2: Features
-  @list
-    @item: Explicit, easy to learn markup language for building web pages
-    @item: Built with customisability in mind
-    @item: Uses node.js - full access to npm when writing custom transforms
-    @item: Prebuilt transforms for writing technical documentation
-    @item: Auto browser page refresh when files are changed
-    @item: Fast - can build a 2000 page site in x seconds
+    Suppose we have this very simple page (written using @hyperlink(/docs/markup/)[Quantum's markup])
+
+    @subsection sign-in.um
+      @@codeblock um
+        @div: Welcome to the site, please sign in below
+        @signIn
+
+    Building this page with quantum, would produce the following
+
+
+    @subsection sign-in.html
+      @@codeblock html
+        <div>Welcome to the site, please sign in below</div>
+        <div class="sign-in">
+          <input class="username-input" placeholder="Username"></input>
+          <input class="password-input" placeholder="Password"></input>
+          <button class="sign-in-button">Sign in</button>
+        </div>
+
+
+    The above conversion actually made use of this custom transform, that we defined
+    just for our site.
+
+    @@codeblock js
+      const dom = require('quantum-dom')
+
+      exports.signIn = (selection) => {
+        return dom.create('div').class('sign-in')
+          .add(dom.create('input').class('username-input'))
+          .add(dom.create('input').class('password-input'))
+          .add(dom.create('button').class('sign-in-button').text('Sign in'))
+      }
+
+  @notice [What's Next?]
+    Head to the @hyperlink(/docs/quick-start/)[Quick Start] page to get started
+    with QuantumJS.

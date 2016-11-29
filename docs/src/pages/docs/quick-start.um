@@ -40,7 +40,8 @@
       npm install --save-dev quantum-html quantum-docs
 
   @topic Create a config file
-    Next we'll create a config file for building our project. Create a file called
+    Next we'll create a config file for building our project. The config file
+    describes how to convert your markup into HTML. Create a file called
     @bold[quantum.config.js] and copy the following into it:
 
     @@codeblock js
@@ -60,22 +61,16 @@
         Define the pipeline - this transforms an entire page from
         quantum ast to HTML.
       */
-      function pipeline (page) {
-        return Promise.resolve(page)
-          .then(html({ transforms: htmlTransforms }))
-          .then(html.stringify())
-      }
+      const pipeline = [
+        html({ transforms: htmlTransforms })
+      ]
 
       /* Export the pipeline, the pages we want to transform */
       module.exports = {
         pipeline: pipeline,
+        htmlTransforms: htmlTransforms,
         pages: '*.um'
       }
-
-
-
-
-
 
   @topic Create an example page
     Create a file called index.um and copy this into it:
@@ -90,7 +85,7 @@
           @topic Information
             Page Content can go inside topics
 
-            @sectin Sub-information
+            @section Sub-information
               It can also go inside sections inside topics
 
             @codeblock js
@@ -111,13 +106,12 @@
     called index.html in there - open it up in a browser to see what has been generated.
 
   @topic Watching for changes
-    Run this command to build the site, and then rebuild when there are changes.
+    When working on your site, you'll more likely want to use the watch command.
+    This command starts up a web server and reloads the page in your browser
+    whenever a change is made.
 
     @@codeblock bash
       quantum watch
-
-    The watch command also starts up a web browser with live reload enabled so
-    whenever you save, your browser will update to show the changes.
 
     After running @code(bash)[quantum watch], open @hyperlink(http://localhost:8080)[http://localhost:8080]
     in your browser and then change something in index.um.

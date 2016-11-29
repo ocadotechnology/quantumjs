@@ -7,16 +7,19 @@
     This page explains the markup language and how it works
 
 @contentSection
-  @topic About
-    Content is written using the quantum markup language. Here is an overview of the language:
+  @topic Language Overview
+    Content is written using the quantum markup language. Here is an overview of
+    the entire language:
 
     @@codeblock um
-      # comments start with a hash
+      # Comments start with a hash
+
+      # The hash character can be escaped with \#
 
       # basic structure of an entity
       @type parameters: Content
 
-      # Entities can contain multiple lines of text content:
+      # Entities can contain multiple lines of text content
       @person parameter1 parameter2
         Name: Alejandro
         Age: 32
@@ -31,10 +34,11 @@
         @icon fa fa-add
         Click Me!
 
-      # Entites can also use a more compact single line syntax (when written like this they are called inline entites):
+      # Entites can also use a more compact single line syntax
+      # (when written like this they are called inline entites)
       @type(parameters)[Content]
 
-      # Inline entites may be placed in the middle of text
+      # Inline entities may be placed in the middle of text
       This line has an @bold[inline] entity
 
       # The above button example could also be written like this
@@ -43,14 +47,13 @@
       # Parameters with spaces should be wrapped in [...]
       @person parameter1 [parameter2 with spaces]
 
-      # escaping the @ sign is done by wrapping it (and optionally surrounding text) in @(...)
+      # Escaping the @ sign is done by wrapping it (and optionally
+      # surrounding text) in @(...)
       @(your.name@ocado.com)
 
-      # nested content may be completely escaped by starting an entity with @@
+      # Nested content may be completely escaped by starting an entity with @@
       @@codeblock um
-        # this content is treated as text. No entites are parsed when in @@ mode
+        # This content is treated as text. No entites are parsed when in @@ mode
         @person
           @name: Alejandro
           @age: 32
-
-      # The hash character can be escaped with \#

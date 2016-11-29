@@ -29,69 +29,66 @@
       const html = require('quantum-html')
       const docs = require('quantum-docs')
       const api = require('quantum-api')
+      const diagram = require('quantum-diagram')
       const version = require('quantum-version')
       const template = require('quantum-template')
-      const changelog = require('quantum-changelog')
-      const diagram = require('quantum-diagram')
-
-      // bluebird makes mapping over arrays of pages easier
-      // when the version transform is used
-      const bluebird = require('bluebird')
 
       // Define the entity transforms to use to transform
       // individual entities into html
-      const htmlTransforms = {
-        html: html.transforms(),
-        api: api.transforms(),
-        changelog: changelog.transforms(),
-        diagram: diagram.transforms(),
-        docs: docs.transforms()
+      const htmlOptions = {
+        transforms: {
+          html: html.transforms(),
+          api: api.transforms(),
+          diagram: diagram.transforms(),
+          docs: docs.transforms()
+        }
       }
 
       // This defines how to transform an entire page into html
-      function pipeline (page) {
-        return Promise.resolve(page)
-          .then(template())
-          .then(changelog())
-          .then(version())
-          .map(docs())
-          .map(html({ transforms: htmlTransforms }))
-          .map(html.stringify())
-          .map(html.htmlRenamer())
-      }
+      const pipeline = [
+        template(),
+        api(),
+        version(),
+        docs(),
+        html(htmlOptions)
+      ]
 
       // Export the config, which includes the files to watch,
       // and any resources that should be copied
       module.exports = {
         pipeline: pipeline,
         pages: 'pages/**/*.um',
-        resources: 'resources/**/*',
-        htmlTransforms: htmlTransforms
+        resources: 'resources/**/*'
       }
 
   @topic Available options
     @api
-      @property pipeline [Function]
+
+      @function PageTransform
         @description
-          Takes a page as its input and returns a page (or array of pages) that
-          have been transformed. The transformed pages should have a html string
-          as thier content.
+          A function that takes a page and returns a new page with a transformation
+          applied. This transfomation can be anything - from converting quantum-ast
+          to html, or a transformation that replaces variables in the markup with
+          values from template.
+
+        @param page [Page]: The page to transform
+        @returns [Page/Array[Page]]: The transformed page
+
+      @property pipeline [Array[PageTransform]]
+        @description
+          An array of PageTransform functions that take a page as the input and
+          return a page (or array of pages) that have been transformed.
 
           Here is the most basic pipeline you can define:
 
           @codeblock js
             const html = require('quantum-html')
 
-            function pipeline (page) {
-              return Promise.resolve(page)
-                .then(html())           // convert the page to virtual dom
-                .then(html.stringify()) // stringify the virtual dom to html
-            }
-
-        @param page [Page]: The page to transform into html
-        @returns [Page/Array[Page]]: The transformed page
+            const pipeline = [
+              html()
+            ]
 
       @property pages [String/Array[String]/Array[Object]]
         @description
           This property should describe the files that should be processed by
-          quantum as pages. 
+          quantum as pages.

@@ -1,34 +1,34 @@
 @define element-renderer
-    @object @{{ps}}
-      @description
-        Adds a @code(html)[<{{ps}}>] element
+  @object @{{ps}}
+    @description
+      Adds a @code(html)[<{{ps}}>] element
 
-        @@codeblock um
-          \# Create a <{{ps}}> element
-          @{{ps}}
+      @@codeblock um
+        \# Create a <{{ps}}> element
+        @{{ps}}
 
-          \# Create a <{{ps}}> element with class='className'
-          @{{ps}} .className
+        \# Create a <{{ps}}> element with class='className'
+        @{{ps}} .className
 
-          \# Create a <{{ps}}> element with id='idName'
-          @{{ps}} #idName
+        \# Create a <{{ps}}> element with id='idName'
+        @{{ps}} #idName
 
-          \# Create a <{{ps}}> element with id='idName' and class='className'
-          @{{ps}} #idName.className
+        \# Create a <{{ps}}> element with id='idName' and class='className'
+        @{{ps}} #idName.className
 
-          \# Chain multiple classes without spaces
-          @{{ps}} #idName.className.otherClassName
+        \# Chain multiple classes without spaces
+        @{{ps}} #idName.className.otherClassName
 
-      @group Child Entities
-        @property @id
-          @description: Sets the id attribute property to a value
-          @params: value
-        @property @class
-          @description: Sets the class attribute property to a value
-          @params: value
-        @property @attr
-          @description: Sets an attribute property to a value
-          @params name: value
+    @group Child Entities
+      @property @id
+        @description: Sets the id attribute property to a value
+        @params: value
+      @property @class
+        @description: Sets the class attribute property to a value
+        @params: value
+      @property @attr
+        @description: Sets an attribute property to a value
+        @params name: value
 
 @version 1.0.0
   @topic Entities

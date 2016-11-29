@@ -121,6 +121,7 @@ p:last-child {
   bottom: 0;
   top: 43px;
   background: #15668e;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 
 .qm-docs-navigation-menu-wrapper {
