@@ -1,0 +1,37 @@
+#! /bin/bash
+
+pushd quantum-js
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
+
+pushd quantum-dom
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
+
+pushd quantum-html
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
+
+pushd quantum-code-highlight
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
+
+pushd quantum-api
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
+
+pushd quantum-diagram
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
+
+pushd quantum-docs
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
+
+pushd quantum-version
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
+
+pushd quantum-template
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
