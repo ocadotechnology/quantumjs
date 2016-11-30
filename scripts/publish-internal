@@ -35,3 +35,7 @@ popd
 pushd quantum-template
 npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
 popd
+
+pushd quantum-markdown
+npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
+popd
