@@ -34,8 +34,8 @@
   },
   "dependencies": {
     "dagre": "0.7.4",
-    "quantum-js": "^2.0.0",
-    "quantum-dom": "^2.0.0"
+    "quantum-js": "^2.0.0-rc.1",
+    "quantum-dom": "^2.0.0-rc.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",

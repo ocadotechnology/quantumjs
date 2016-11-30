@@ -1,6 +1,6 @@
 {
   "name": "quantum-dom",
-  "version": "2.0.0-rc0",
+  "version": "2.0.0-rc.1",
   "description": "A virtual dom builder",
   "contributors": [
     "James Smyth <james.smyth@ocado.com>",

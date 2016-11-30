@@ -1,6 +1,6 @@
 {
   "name": "quantum-code-highlight",
-  "version": "2.0.0-rc0",
+  "version": "2.0.0-rc.1",
   "description": "code highlighting transforms for quantum-html",
   "contributors": [
     "James Smyth <james.smyth@ocado.com>",
@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "highlight.js": "^9.3.0",
-    "quantum-js": "^2.0.0",
-    "quantum-dom": "^2.0.0"
+    "quantum-js": "^2.0.0-rc.1",
+    "quantum-dom": "^2.0.0-rc.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",
