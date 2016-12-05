@@ -19,7 +19,6 @@ const stylesheetAsset = dom.asset({
   shared: true
 })
 
-// Behave more like markdown (don't fix any bugs in markdown)
 marked.setOptions({
   highlight: codeHighlight.highlightCode
 })
