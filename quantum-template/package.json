@@ -1,6 +1,6 @@
 {
   "name": "quantum-template",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "description": "Basic templating (ast -> ast) transform for quantum.js",
   "contributors": [
     "James Smyth <james.smyth@ocado.com>",
@@ -26,7 +26,7 @@
     "fix-lint-issues": "eslint --fix lib/*.js test/*.js"
   },
   "dependencies": {
-    "quantum-js": "^2.0.0-rc.1"
+    "quantum-js": "^2.0.0-rc.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",

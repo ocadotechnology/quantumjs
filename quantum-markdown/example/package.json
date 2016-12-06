@@ -7,8 +7,8 @@
     "start": "quantum watch"
   },
   "devDependencies": {
-    "quantum-js": "^2.0.0-rc.1",
-    "quantum-html": "^2.0.0-rc.1",
-    "quantum-markdown": "^2.0.0-rc.1"
+    "quantum-js": "^2.0.0-rc.2",
+    "quantum-html": "^2.0.0-rc.2",
+    "quantum-markdown": "^2.0.0-rc.2"
   }
 }

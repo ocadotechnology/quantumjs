@@ -10,13 +10,13 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "bluebird": "^3.1.1",
-    "quantum-api": "^2.0.0-rc.1",
-    "quantum-code-highlight": "^2.0.0-rc.1",
-    "quantum-docs": "^2.0.0-rc.1",
-    "quantum-dom": "^2.0.0-rc.1",
-    "quantum-html": "^2.0.0-rc.1",
-    "quantum-template": "^2.0.0-rc.1",
-    "quantum-version": "^2.0.0-rc.1"
+    "quantum-api": "^2.0.0-rc.2",
+    "quantum-code-highlight": "^2.0.0-rc.2",
+    "quantum-docs": "^2.0.0-rc.2",
+    "quantum-dom": "^2.0.0-rc.2",
+    "quantum-html": "^2.0.0-rc.2",
+    "quantum-template": "^2.0.0-rc.2",
+    "quantum-version": "^2.0.0-rc.2"
   },
   "private": true
 }

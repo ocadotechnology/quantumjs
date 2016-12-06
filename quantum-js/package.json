@@ -1,6 +1,6 @@
 {
   "name": "quantum-js",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "description": "The quantum cli, parser, and selection api",
   "contributors": [
     "James Smyth <james.smyth@ocado.com>",
