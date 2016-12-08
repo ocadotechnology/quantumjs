@@ -17,7 +17,10 @@ describe('header-builders', () => {
       })
 
       headerBuilders.nameHeaderDetails(selection).should.eql(
-        dom.create('span').class('qm-api-header-name').text('Name')
+        dom.create('span')
+          .class('qm-api-header-name')
+          .id('name')
+          .text('Name')
       )
     })
   })
@@ -33,6 +36,7 @@ describe('header-builders', () => {
       headerBuilders.typeHeaderDetails(selection, {}).should.eql(
         dom.create('span')
           .class('qm-api-header-type')
+          .id('type')
           .add(type('Type', {}))
       )
     })
@@ -49,6 +53,7 @@ describe('header-builders', () => {
       headerBuilders.propertyHeaderDetails(selection, {}).should.eql(
         dom.create('span')
           .class('qm-api-header-property')
+          .id('value')
           .add(dom.create('span').class('qm-api-header-property-name').add('value'))
           .add(dom.create('span').class('qm-api-header-property-type').add(type('Type', {})))
       )
@@ -83,6 +88,7 @@ describe('header-builders', () => {
 
       headerBuilders.functionHeaderDetails(selection, {}).should.eql(
         dom.create('span')
+          .id('functionname')
           .class('qm-api-header-function')
           .add(dom.create('span').class('qm-api-header-function-name').add('functionName'))
           .add(dom.create('span').class('qm-api-header-function-params')
@@ -106,6 +112,7 @@ describe('header-builders', () => {
 
       headerBuilders.functionHeaderDetails(selection, {}).should.eql(
         dom.create('span')
+          .id('functionname')
           .class('qm-api-header-function')
           .add(dom.create('span').class('qm-api-header-function-name').add('functionName'))
           .add(dom.create('span').class('qm-api-header-function-params'))
@@ -139,6 +146,7 @@ describe('header-builders', () => {
 
       headerBuilders.prototypeHeaderDetails(selection, {}).should.eql(
         dom.create('span')
+          .id('type')
           .class('qm-api-header-prototype')
           .add(dom.create('span').class('qm-api-prototype-name').text('Type'))
       )
@@ -173,6 +181,7 @@ describe('header-builders', () => {
 
       headerBuilders.prototypeHeaderDetails(selection, {}).should.eql(
         dom.create('span')
+          .id('type')
           .class('qm-api-header-prototype')
           .add(dom.create('span').class('qm-api-prototype-name').text('Type'))
           .add(dom.create('span').class('qm-api-prototype-extends').text('extends'))

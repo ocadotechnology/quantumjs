@@ -6,7 +6,7 @@ const chai = require('chai')
 const quantum = require('quantum-js')
 
 const api = require('../../..')
-const changelogPageTransform = require('../../../lib/page-transforms/changelog')
+const changelogFileTransform = require('../../../lib/file-transforms/changelog')
 
 chai.should()
 
@@ -43,7 +43,7 @@ const testlanguage = {
 chai.should()
 
 function checkSpec (spec) {
-  const file = new quantum.File({
+  const fileInfo = new quantum.FileInfo({
     src: 'src/content/a1.um',
     resolved: 'a1.um',
     base: 'src/content',
@@ -51,8 +51,8 @@ function checkSpec (spec) {
     watch: true
   })
 
-  const inputPage = new quantum.Page({
-    file: file,
+  const inputFile = new quantum.File({
+    info: fileInfo,
     content: {
       type: '',
       params: [],
@@ -60,8 +60,8 @@ function checkSpec (spec) {
     }
   })
 
-  const outputPage = new quantum.Page({
-    file: file,
+  const outputFile = new quantum.File({
+    info: fileInfo,
     content: {
       type: '',
       params: [],
@@ -75,10 +75,10 @@ function checkSpec (spec) {
     reverseVisibleList: spec.select('options').select('reverseVisibleList').ps() === 'true'
   }
 
-  api(options)(inputPage).should.eql(outputPage)
+  api(options)(inputFile).should.eql(outputFile)
 }
 
-describe('pageTransform', () => {
+describe('fileTransform', () => {
   it('spec.um', () => {
     return quantum.read(path.join(__dirname, 'spec.um'))
       .then(parsed => {
@@ -88,10 +88,10 @@ describe('pageTransform', () => {
       })
   })
 
-  describe('pageTransform', () => {
+  describe('fileTransform', () => {
     it('should do nothing when there is no @changelogList', () => {
-      const page = new quantum.Page({
-        file: new quantum.File({
+      const file = new quantum.File({
+        info: new quantum.FileInfo({
           src: 'src/content/a1.um',
           resolved: 'a1.um',
           base: 'src/content',
@@ -104,12 +104,12 @@ describe('pageTransform', () => {
           content: []
         }
       })
-      changelogPageTransform.pageTransform(page).should.eql(page)
+      changelogFileTransform.fileTransform(file).should.eql(file)
     })
 
     it('should process page when a @changelogList is found', () => {
-      const page = new quantum.Page({
-        file: new quantum.File({
+      const page = new quantum.File({
+        info: new quantum.FileInfo({
           src: 'src/content/a1.um',
           resolved: 'a1.um',
           base: 'src/content',
@@ -137,8 +137,8 @@ describe('pageTransform', () => {
 
       console.log(options)
 
-      changelogPageTransform.pageTransform(page, options).should.not.equal(page)
-      changelogPageTransform.pageTransform(page, options).should.be.an.instanceof(quantum.Page)
+      changelogFileTransform.fileTransform(page, options).should.not.equal(page)
+      changelogFileTransform.fileTransform(page, options).should.be.an.instanceof(quantum.File)
     })
   })
 
@@ -153,7 +153,7 @@ describe('pageTransform', () => {
         @version 0.3.0
         `
 
-      const result = changelogPageTransform.extractApis(quantum.select(quantum.parse(markup)))
+      const result = changelogFileTransform.extractApis(quantum.select(quantum.parse(markup)))
       result.versions.should.eql(['0.1.0', '0.2.0', '0.3.0'])
     })
 
@@ -175,7 +175,7 @@ describe('pageTransform', () => {
 
       const selection = quantum.select(quantum.parse(markup))
 
-      const result = changelogPageTransform.extractApis(selection)
+      const result = changelogFileTransform.extractApis(selection)
       const versions = selection.selectAll('version', {recursive: true})
       Array.from(result.apisByVersion).should.eql([
         ['0.1.0', versions.filter(v => v.ps() === '0.1.0').map(version => version.select('api'))],
@@ -215,7 +215,7 @@ describe('pageTransform', () => {
       const selection = quantum.select(quantum.parse(markup))
       const languages = testLanguages
 
-      const result = changelogPageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
+      const result = changelogFileTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
 
       result.apiMap.should.be.an.instanceof(Map)
       result.apiMap.size.should.eql(0)
@@ -232,7 +232,7 @@ describe('pageTransform', () => {
       const selection = quantum.select(quantum.parse(markup))
       const languages = testLanguages
 
-      const result = changelogPageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
+      const result = changelogFileTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
 
       result.apiMap.should.be.an.instanceof(Map)
       result.apiMap.size.should.eql(0)
@@ -254,7 +254,7 @@ describe('pageTransform', () => {
         name: 'testFunc'
       })
 
-      const result = changelogPageTransform.buildChangelogEntries(languages, selection.select('api'), oldApiMap, false)
+      const result = changelogFileTransform.buildChangelogEntries(languages, selection.select('api'), oldApiMap, false)
 
       result.apiMap.size.should.eql(1)
 
@@ -273,7 +273,7 @@ describe('pageTransform', () => {
       const selection = quantum.select(quantum.parse(markup))
       const languages = testLanguages
 
-      const result = changelogPageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
+      const result = changelogFileTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
       result.apiMap.size.should.eql(1)
 
       result.apiMap.get('function:testFunc').should.eql({
@@ -294,7 +294,7 @@ describe('pageTransform', () => {
       const selection = quantum.select(quantum.parse(markup))
       const languages = testLanguages
 
-      const result = changelogPageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
+      const result = changelogFileTransform.buildChangelogEntries(languages, selection.select('api'), undefined, false)
 
       result.changelogEntriesMap.size.should.equal(1)
       result.changelogEntriesMap.get('function:testFunc').should.eql({
@@ -322,7 +322,7 @@ describe('pageTransform', () => {
       const selection = quantum.select(quantum.parse(markup))
       const languages = testLanguages
 
-      const result = changelogPageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, true)
+      const result = changelogFileTransform.buildChangelogEntries(languages, selection.select('api'), undefined, true)
 
       result.changelogEntriesMap.size.should.equal(1)
       result.changelogEntriesMap.get('function:testFunc').should.eql({
@@ -355,7 +355,7 @@ describe('pageTransform', () => {
       const selection = quantum.select(quantum.parse(markup))
       const languages = testLanguages
 
-      const result = changelogPageTransform.buildChangelogEntries(languages, selection.select('api'), undefined, true)
+      const result = changelogFileTransform.buildChangelogEntries(languages, selection.select('api'), undefined, true)
 
       result.changelogEntriesMap.size.should.equal(1)
       result.changelogEntriesMap.get('function:testFunc').should.eql({
@@ -391,7 +391,7 @@ describe('pageTransform', () => {
         hasFlag: true
       })
 
-      const result = changelogPageTransform.buildChangelogEntries(languages, selection, previousApiMap)
+      const result = changelogFileTransform.buildChangelogEntries(languages, selection, previousApiMap)
 
       result.changelogEntriesMap.size.should.equal(1)
       result.changelogEntriesMap.get('function:testFunc').should.eql({

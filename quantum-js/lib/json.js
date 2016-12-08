@@ -9,10 +9,10 @@
 */
 
 module.exports = () => {
-  return (page) => {
-    return page.clone({
-      file: page.file.withExtension('.json'),
-      content: JSON.stringify(page.content, null, 2)
+  return (file) => {
+    return file.clone({
+      info: file.info.withExtension('.json'),
+      content: JSON.stringify(file.content, null, 2)
     })
   }
 }

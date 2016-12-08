@@ -1,0 +1,21 @@
+@prototype select.Selection
+  @description
+    The type of object returned from quantum.select
+
+  @method clone
+  @method cs
+  @method empty
+  @method entityContent
+  @method filter
+  @method has
+  @method hasContent
+  @method json
+  @method nonEmpty
+  @method param
+  @method ps
+  @method replaceContent
+  @method replaceParams
+  @method select
+  @method selectAll
+  @method textContent
+  @method transform

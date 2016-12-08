@@ -20,7 +20,7 @@ const ws = require('ws')
 const qwatch = require('./watch')
 const parse = require('./parse')
 const read = require('./read')
-const Page = require('./page')
+const File = require('./file')
 const fileOptions = require('./file-options')
 const version = require('../package.json').version
 
@@ -78,37 +78,37 @@ QuantumJS (${version})
   `)
 }
 
-function buildPage (sourcePage, pipeline, config, logger, addLiveReload) {
+function buildPage (sourceFile, pipeline, config, logger, addLiveReload) {
   const start = Date.now()
-  return Promise.resolve(pipeline(sourcePage))
-    .then((pages) => Array.isArray(pages) ? pages : [pages])
-    .map((page) => {
-      let content = page.content
-      if (addLiveReload && page.file.dest.indexOf('.html') === page.file.dest.length - 5) {
+  return Promise.resolve(pipeline(sourceFile))
+    .then((files) => Array.isArray(files) ? files : [files])
+    .map((file) => {
+      let content = file.content
+      if (addLiveReload && file.info.dest.indexOf('.html') === file.info.dest.length - 5) {
         content = content.replace('</body>', liveReloadScriptTag + '</body>')
       }
-      return fs.outputFileAsync(page.file.dest, content).then(() => page)
+      return fs.outputFileAsync(file.info.dest, content).then(() => file)
     })
-    .then((destPages) => {
+    .then((destFiles) => {
       const timeTaken = Date.now() - start
-      logger({type: 'build-page', timeTaken: timeTaken, sourcePage: sourcePage, destPages: destPages})
-      return destPages
+      logger({type: 'build-page', timeTaken: timeTaken, sourceFile: sourceFile, destFiles: destFiles})
+      return destFiles
     })
     .catch((err) => logger({type: 'error', error: err}))
 }
 
-function copyResource (file, logger) {
+function copyResource (fileInfo, logger) {
   const start = Date.now()
-  return fs.copyAsync(file.src, file.dest).then(() => {
+  return fs.copyAsync(fileInfo.src, fileInfo.dest).then(() => {
     const timeTaken = Date.now() - start
-    return logger({type: 'copy-resource', file: file, timeTaken: timeTaken})
+    return logger({type: 'copy-resource', fileInfo: fileInfo, timeTaken: timeTaken})
   })
 }
 
 function copyResources (config, options, logger) {
   logger({type: 'header', message: 'Copying Resources'})
   return fileOptions.resolve(config.resources || [], options)
-    .map((file) => copyResource(file, logger), {concurrency: options.concurrency})
+    .map((fileInfo) => copyResource(fileInfo, logger), {concurrency: options.concurrency})
 }
 
 function flatten (arrays) {
@@ -116,11 +116,11 @@ function flatten (arrays) {
 }
 
 function createPipeline (transforms) {
-  return (page) => {
-    let result = Promise.resolve([page])
+  return (file) => {
+    let result = Promise.resolve([file])
     transforms.forEach(transform => {
-      result = result.then(pages => {
-        return Promise.all(pages.map(transform)).then(flatten)
+      result = result.then(files => {
+        return Promise.all(files.map(transform)).then(flatten)
       })
     })
     return result
@@ -147,22 +147,22 @@ function build (config) {
   const startTime = Date.now()
   return copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Pages'})
-    return fileOptions.resolve(config.pages, options).map((file) => {
-      return read(file.src)
+    return fileOptions.resolve(config.pages, options).map((fileInfo) => {
+      return read(fileInfo.src)
         .then((content) => {
-          const page = new Page({
-            file: file,
+          const file = new File({
+            info: fileInfo,
             content: content
           })
-          return buildPage(page, pipeline, config, logger, false)
-            .then(pages => {
-              builtCount += pages.length
-              return pages
+          return buildPage(file, pipeline, config, logger, false)
+            .then(files => {
+              builtCount += files.length
+              return files
             })
         })
         .catch((err) => {
           if (err instanceof parse.ParseError) {
-            logger({type: 'page-load-error', file: file.src, error: err})
+            logger({type: 'page-load-error', fileInfo: fileInfo.src, error: err})
           } else {
             throw err
           }
@@ -224,13 +224,13 @@ function watch (config) {
 
   copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Site'})
-    qwatch(config.pages, options, (err, page) => {
+    qwatch(config.pages, options, (err, file) => {
       if (err) {
-        logger({type: 'page-load-error', file: page.file.src, error: err})
+        logger({type: 'page-load-error', fileInfo: file.info.src, error: err})
       } else {
-        return buildPage(page, pipeline, config, logger, true)
-          .then((pages) => {
-            pages.forEach(p => triggerReload(p.file.dest))
+        return buildPage(file, pipeline, config, logger, true)
+          .then((files) => {
+            files.forEach(file => triggerReload(file.info.dest))
           })
       }
     })
@@ -247,17 +247,17 @@ function watch (config) {
 }
 
 function list (config) {
-  const htmlTransforms = config.htmlTransforms
+  const entityTransforms = config.pipeline.map(x => x.entityTransforms).filter(x => x !== undefined)[0]
 
-  if (htmlTransforms) {
-    Object.keys(htmlTransforms).forEach((namespace) => {
+  if (entityTransforms) {
+    Object.keys(entityTransforms).forEach((namespace) => {
       console.log(chalk.yellow(namespace))
-      Object.keys(htmlTransforms[namespace]).forEach((entity) => {
+      Object.keys(entityTransforms[namespace]).forEach((entity) => {
         console.log(chalk.cyan('  @' + entity) + chalk.gray(' (@' + namespace + '.' + entity + ')'))
       })
     })
   } else {
-    console.log(chalk.yellow('htmlTransforms has not been exported in the quantum.config.js'))
+    console.log(chalk.yellow('No entity transforms are present in your pipeline'))
   }
 }
 
@@ -287,15 +287,15 @@ function defaultLogger (evt) {
   } else if (evt.type === 'message') {
     console.log(evt.message)
   } else if (evt.type === 'build-page') {
-    console.log(evt.sourcePage.file.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.gray(' -> ' + evt.destPages.length + ' page' + (evt.destPages.length > 1 ? 's' : '')))
-    evt.sourcePage.warnings.forEach((warning) => {
+    console.log(evt.sourceFile.info.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.gray(' -> ' + evt.destFiles.length + ' page' + (evt.destFiles.length > 1 ? 's' : '')))
+    evt.sourceFile.warnings.forEach((warning) => {
       console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
     })
-    evt.sourcePage.errors.forEach((error) => {
+    evt.sourceFile.errors.forEach((error) => {
       console.log(chalk.red('  [error] ') + chalk.cyan(error.module) + ': ' + chalk.yellow(error.problem) + '.  ' + error.resolution)
     })
-    // if(evt.destPages.length < 4) {
-    //   evt.destPages.forEach((page) => {
+    // if(evt.destFiles.length < 4) {
+    //   evt.destFiles.forEach((page) => {
     //     console.log(chalk.green('  + ' + page.file.dest))
     //     page.warnings.forEach((warning) => {
     //       console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
@@ -311,7 +311,7 @@ function defaultLogger (evt) {
     const errorMessage = evt.error.toString().split('\n').map((line, i) => (i > 0 ? '  ' : '') + line).join('\n')
     console.log(chalk.red('  [error] ' + context + errorMessage))
   } else if (evt.type === 'copy-resource') {
-    console.log(evt.file.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.gray(' -> ' + evt.file.dest))
+    console.log(evt.fileInfo.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.gray(' -> ' + evt.fileInfo.dest))
   } else if (evt.type === 'error') {
     console.error(evt.error.stack || evt.error)
   } else if (evt.type === 'end') {

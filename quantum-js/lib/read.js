@@ -15,8 +15,8 @@ const path = require('path')
 const fs = Promise.promisifyAll(require('fs'))
 const glob = Promise.promisify(require('glob'))
 const parse = require('./parse')
-const Page = require('./page')
 const File = require('./file')
+const FileInfo = require('./file-info')
 
 function defaultLoader (filename, parentFilename) {
   return fs.readFileAsync(filename, 'utf-8')
@@ -101,8 +101,8 @@ module.exports = read
 
 module.exports.page = (filename, options) => {
   return read(filename, options).then((content) => {
-    return new Page({
-      file: new File({
+    return new File({
+      info: new FileInfo({
         src: filename,
         dest: filename
       }),

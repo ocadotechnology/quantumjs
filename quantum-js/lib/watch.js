@@ -19,7 +19,7 @@ const fs = Promise.promisifyAll(require('fs-extra'))
 
 const parse = require('./parse')
 const read = require('./read')
-const Page = require('./page')
+const File = require('./file')
 const fileOptions = require('./file-options')
 
 /* Watches some glob specs for changes */
@@ -110,7 +110,7 @@ function watch (specs, options, handler) {
   const buildConcurrency = opts.concurrency || 1
 
   // State that is maintained by watching for file changes
-  const fileObjs = {}
+  const fileInfos = {}
   const affectedFiles = {}
   const affectedFilesInverse = {}
 
@@ -145,7 +145,7 @@ function watch (specs, options, handler) {
   const inlinedWatcher = chokidar.watch([], {cwd: dir})
   inlinedWatcher.on('change', (filename) => {
     const files = Array.from(getSourceFileObjs(filename))
-    Promise.all(files.map((fileObj) => handleFile(fileObj, {rootCause: 'change', cause: 'change'})))
+    Promise.all(files.map((fileInfo) => handleFile(fileInfo, {rootCause: 'change', cause: 'change'})))
       .then(() => events.emit('change', filename))
       .catch(handleFileFailure)
   })
@@ -153,7 +153,7 @@ function watch (specs, options, handler) {
   inlinedWatcher.on('unlink', (filename) => {
     const files = Array.from(getSourceFileObjs(filename))
     unlinkFile(filename)
-    Promise.all(files.map((fileObj) => handleFile(fileObj, {rootCause: 'delete', cause: 'change'})))
+    Promise.all(files.map((fileInfo) => handleFile(fileInfo, {rootCause: 'delete', cause: 'change'})))
       .then(() => events.emit('delete', filename))
       .catch(handleFileFailure)
   })
@@ -166,8 +166,8 @@ function watch (specs, options, handler) {
     const results = collectorSet || new Set()
     if (affectedFiles[filename]) {
       affectedFiles[filename].forEach((affectedFilename) => {
-        if (fileObjs[affectedFilename]) {
-          results.add(fileObjs[affectedFilename])
+        if (fileInfos[affectedFilename]) {
+          results.add(fileInfos[affectedFilename])
         }
         getSourceFileObjs(affectedFilename, results)
       })
@@ -176,15 +176,15 @@ function watch (specs, options, handler) {
   }
 
   function workHandler (work) {
-    fileObjs[work.file.src] = work.file
-    return read(work.file.src, {loader: linkingLoader})
+    fileInfos[work.fileInfo.src] = work.fileInfo
+    return read(work.fileInfo.src, {loader: linkingLoader})
       .then((content) => {
-        const page = new Page({file: work.file, content: content})
+        const page = new File({info: work.fileInfo, content: content})
         return handler(undefined, page, work.cause)
       })
       .catch((err) => {
         if (err instanceof parse.ParseError) {
-          return handler(err, new Page({file: work.file, content: undefined}), work.cause)
+          return handler(err, new File({info: work.fileInfo, content: undefined}), work.cause)
         } else {
           throw err
         }
@@ -195,9 +195,9 @@ function watch (specs, options, handler) {
 
   const workQueue = new WorkQueue(workHandler, {})
 
-  function handleFile (file, cause) {
+  function handleFile (fileInfo, cause) {
     return new Promise((resolve, reject) => {
-      workQueue.add({file: file, cause: cause, resolve: resolve, reject: reject})
+      workQueue.add({fileInfo: fileInfo, cause: cause, resolve: resolve, reject: reject})
     })
   }
 
@@ -207,28 +207,28 @@ function watch (specs, options, handler) {
 
   function build () {
     return Promise.all(w.files())
-      .map((fileObj) => {
-        return handleFile(fileObj, {rootCause: 'build', cause: 'build'})
+      .map((fileInfo) => {
+        return handleFile(fileInfo, {rootCause: 'build', cause: 'build'})
       }, {concurrency: buildConcurrency})
   }
 
   const w = new Watcher(normalisedSpecs, opts)
 
-  w.on('add', (fileObj) => {
-    return handleFile(fileObj, {rootCause: 'add', cause: 'add'})
-      .then(() => events.emit('add', fileObj.src))
+  w.on('add', (fileInfo) => {
+    return handleFile(fileInfo, {rootCause: 'add', cause: 'add'})
+      .then(() => events.emit('add', fileInfo.src))
       .catch(handleFileFailure)
   })
 
-  w.on('change', (fileObj) => {
-    return handleFile(fileObj, {rootCause: 'change', cause: 'change'})
-      .then(() => events.emit('change', fileObj.src))
+  w.on('change', (fileInfo) => {
+    return handleFile(fileInfo, {rootCause: 'change', cause: 'change'})
+      .then(() => events.emit('change', fileInfo.src))
       .catch(handleFileFailure)
   })
 
-  w.on('remove', (fileObj) => {
-    unlinkFile(fileObj.src)
-    events.emit('delete', fileObj.src)
+  w.on('remove', (fileInfo) => {
+    unlinkFile(fileInfo.src)
+    events.emit('delete', fileInfo.src)
   })
 
   return w._promise.then(() => ({build: build, events: events}))

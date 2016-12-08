@@ -4,8 +4,8 @@ require('chai').should()
 const version = require('../')
 const quantum = require('quantum-js')
 const path = require('path')
-const Page = quantum.Page
 const File = quantum.File
+const FileInfo = quantum.FileInfo
 
 describe('pipeline', () => {
   it('should export the correct things', () => {
@@ -17,8 +17,8 @@ describe('pipeline', () => {
   })
 
   it('should do nothing without version entities', () => {
-    const page = new Page({
-      file: new File({
+    const file = new File({
+      info: new FileInfo({
         src: 'filename.um',
         dest: 'filename.um'
       }),
@@ -37,12 +37,12 @@ describe('pipeline', () => {
       }
     })
 
-    version({outputLatest: false})(page).should.eql([page])
+    version({outputLatest: false})(file).should.eql([file])
   })
 
   it('should warn when no version list could be found', () => {
-    const page = new Page({
-      file: new File({
+    const file = new File({
+      info: new FileInfo({
         src: 'filename.um',
         dest: 'filename.um'
       }),
@@ -61,7 +61,7 @@ describe('pipeline', () => {
       }
     })
 
-    version()(page)[0].warnings.should.eql([
+    version()(file)[0].warnings.should.eql([
       {
         module: 'quantum-version',
         problem: 'This file contains versioned content, but the full list of versions is not available for quantum-version to use: options.versions is not defined and no @versionsList was found in this file',
@@ -80,8 +80,8 @@ describe('pipeline', () => {
             const source = spec.select('source')
             const filename = source.select('filename').ps()
             const content = {content: source.select('content').content()}
-            const input = new Page({
-              file: new File({
+            const input = new File({
+              info: new FileInfo({
                 src: filename,
                 dest: filename
               }),
@@ -94,8 +94,8 @@ describe('pipeline', () => {
               const outputFilename = output.select('filename').ps()
               const outputContent = {content: output.select('content').content()}
               const outputVersion = output.select('version').ps()
-              return (new Page({
-                file: new File({
+              return (new File({
+                info: new FileInfo({
                   src: filename,
                   dest: outputFilename
                 }),

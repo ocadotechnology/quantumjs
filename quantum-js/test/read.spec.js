@@ -214,8 +214,8 @@ describe('read', () => {
   })
 
   it('read.page should work', () => {
-    const expected = new quantum.Page({
-      file: new quantum.File({
+    const expected = new quantum.File({
+      info: new quantum.FileInfo({
         src: filename,
         dest: filename
       }),

@@ -1,14 +1,17 @@
 'use strict'
-require('chai').should()
 
+const chai = require('chai')
 const quantum = require('../')
-const Page = quantum.Page
+
+chai.should()
+
 const File = quantum.File
+const FileInfo = quantum.FileInfo
 
 describe('json', () => {
   it('should convert a page to json', () => {
-    const page = new Page({
-      file: new File({
+    const file = new File({
+      info: new FileInfo({
         src: 'src/page.um',
         resolved: 'page.um',
         base: 'src',
@@ -22,8 +25,8 @@ describe('json', () => {
       }
     })
 
-    quantum.json()(page).should.eql(new Page({
-      file: new File({
+    quantum.json()(file).should.eql(new File({
+      info: new FileInfo({
         src: 'src/page.um',
         resolved: 'page.um',
         base: 'src',

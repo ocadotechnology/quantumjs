@@ -1,0 +1,27 @@
+@function read
+  @added
+    @description
+      A function for reading a file and parsing the contents into JavaScript
+      objects
+  @param glob [String]: A filename or glob string which matches files to load.
+  @param? options [Object]
+    @property inlineEntityType [String]
+      @description: The entity type to use for inlining other files. The default is "inline".
+      @default inline
+    @property inline [Boolean]
+      @description: When inline mode is on, the inlineEntityType (@code(um)[@inline] by default) will be replaced with the content of the specified files.
+      @default true
+    @property loader [Function]
+      @description: A function for loading a file as a string.
+      @param filename [String]: The file/resource to load.
+      @returns [Promise[String]]: A promise that yields the parsed object.
+    @property base [String]
+      @description: The base of the glob path that should be ignored when writing to the target.
+  @returns [Promise[Object]]
+    @description
+      @p: A promise that yields the parsed ast wrapped in an object that looks like this:
+      @codeblock js
+        {
+          filename: 'path/to/source.um',
+          content: '<ast>'
+        }

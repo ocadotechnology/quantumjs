@@ -1,0 +1,134 @@
+@define fileInfoProperties
+  @property src [String]
+    @description
+      The filename of the source file for this page. Can be specified relative
+      to the cwd or as an absolute path
+
+  @property resolved [String]
+    @description
+      The filename of the source file, relative the the base directory. Can be
+      specified relative to the cwd or as an absolute path
+
+  @property base [String]
+    @description
+      The base directory used to extract the resolved filename
+
+  @property dest [String]
+    @description
+      The destBase directory + the resolved filename
+
+  @property destBase [String]
+    @description
+      The directory where files are output to
+
+  @property watch [Boolean]
+    @description
+      Whether or not this file should be watched for changes. This is only used
+      by the cli when in watch mode.
+
+@prototype FileInfo
+  @added
+    @description
+      An object which holds filename information. Each @api.type[File] instance
+      has one of these. The @api.type[FileInfo] object contains information on where
+      the file came from and where it is going to be written to.
+
+  @description
+    An object which holds filename information. Chances are this object is
+    something you'll never have to use, unless writing a page transform which
+    needs to modify the output filename.
+
+    Every @api.type[File] instance has a @code[info] property, which is one of these guys.
+
+    Creating a FileInfo instance:
+    @codeblock js
+      const quantum = require('quantum-js')
+
+      const fileInfo = new quantum.FileInfo({
+        src: "src/content/about.um",
+        resolved: "about.um",
+        base: "src/content",
+        dest: "target/about.um",
+        destBase: "target",
+        watch: true
+      })
+
+  @constructor
+    @description
+      Constructs a new @api.type[FileInfo]
+
+    @param? options [Object]
+      @description
+        An object with the properties to populate the @api.type[FileInfo] with
+      @fileInfoProperties
+
+  @fileInfoProperties
+
+  @method withExtension
+    @description
+      Returns a new @api.type[FileInfo] instance with the extension changed for the
+      dest property:
+
+      @codeblock js
+
+        const fileInfo = new quantum.FileInfo({
+          src: "src/content/about.um",
+          resolved: "about.um",
+          base: "src/content",
+          dest: "target/about.um",
+          destBase: "target",
+          watch: true
+        })
+
+        const newFileInfo = fileInfo.withExtension('.html')
+
+        console.log(newFileInfo.dest) // prints "target/about.html"
+
+    @param extension [String]
+      @description
+        The new extension the @type[FileInfo] should have. This should include the
+        preceding period:
+
+        @codeblock js
+          fileInfo.withExtension('.html') // This is correct
+          fileInfo.withExtension('html')  // This is (probably) not correct
+
+    @returns FileInfo
+      @description
+        A new @api.type[FileInfo] instance with the updated dest property.
+
+  @method clone
+    @description
+      Creates a clone of this @api.type[FileInfo], with some or all of the properties
+      replaced. The value returned from this function is a new @type[FileInfo] instance.
+
+      @codeblock js
+        const fileInfo = new quantum.FileInfo({
+          src: "src/content/about.um",
+          resolved: "about.um",
+          base: "src/content",
+          dest: "target/about.um",
+          destBase: "target",
+          watch: true
+        })
+
+        const newFileInfo = fileInfo.clone({
+          watch: false,
+          dest: "target/about/index.html"
+        })
+
+        // newFileInfo.src === "src/content/about.um",
+        // newFileInfo.resolved === "about.um",
+        // newFileInfo.base === "src/content",
+        // newFileInfo.dest === "target/about/index.html",
+        // newFileInfo.destBase === "target",
+        // newFileInfo.watch === false
+
+    @param? changes [Object]
+      @description
+        Provide any properties to override
+
+      @fileInfoProperties
+
+    @returns FileInfo
+      A new @api.Type[FileInfo] instance with the changes applied.

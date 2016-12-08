@@ -6,13 +6,13 @@ const chai = require('chai')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 
-const changelogPageTransform = require('../../../lib/page-transforms/changelog')
+const changelogFileTransform = require('../../../lib/file-transforms/changelog')
 const javascript = require('../../../lib/languages/javascript')
 
 const should = chai.should()
 
 function checkSpec (spec) {
-  const file = new quantum.File({
+  const fileInfo = new quantum.FileInfo({
     src: 'src/content/a1.um',
     resolved: 'a1.um',
     base: 'src/content',
@@ -20,8 +20,8 @@ function checkSpec (spec) {
     watch: true
   })
 
-  const inputPage = new quantum.Page({
-    file: file,
+  const inputFile = new quantum.File({
+    info: fileInfo,
     content: {
       type: '',
       params: [],
@@ -29,8 +29,8 @@ function checkSpec (spec) {
     }
   })
 
-  const outputPage = new quantum.Page({
-    file: file,
+  const outputFile = new quantum.File({
+    info: fileInfo,
     content: {
       type: '',
       params: [],
@@ -42,7 +42,7 @@ function checkSpec (spec) {
     languages: [javascript()]
   }
 
-  changelogPageTransform.pageTransform(inputPage, options).should.eql(outputPage)
+  changelogFileTransform.fileTransform(inputFile, options).should.eql(outputFile)
 }
 
 describe('javascript', () => {

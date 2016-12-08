@@ -8,6 +8,7 @@ const type = require('../components/type')
 function nameHeaderDetails (selection, typeLinks) {
   return dom.create('span')
     .class('qm-api-header-name')
+    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
     .add(selection.param(0))
 }
 
@@ -15,6 +16,7 @@ function nameHeaderDetails (selection, typeLinks) {
 function typeHeaderDetails (selection, typeLinks) {
   return dom.create('span')
     .class('qm-api-header-type')
+    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
     .add(type(selection.param(0), typeLinks))
 }
 
@@ -22,6 +24,7 @@ function typeHeaderDetails (selection, typeLinks) {
 function propertyHeaderDetails (selection, typeLinks) {
   return dom.create('span')
     .class('qm-api-header-property')
+    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
     .add(dom.create('span').class('qm-api-header-property-name').text(selection.param(0) || ''))
     .add(dom.create('span').class('qm-api-header-property-type').add(type(selection.param(1), typeLinks)))
 }
@@ -34,7 +37,8 @@ function functionHeaderDetails (selection, typeLinks) {
 
   const params = selection.selectAll(['param', 'param?']).map((param) => {
     const isOptional = param.type()[param.type().length - 1] === '?'
-    return dom.create('span').class(isOptional ? 'qm-api-header-function-param qm-api-optional' : 'qm-api-header-function-param')
+    return dom.create('span')
+      .class(isOptional ? 'qm-api-header-function-param qm-api-optional' : 'qm-api-header-function-param')
       .add(dom.create('span').class('qm-api-header-function-param-name').text(param.param(0)))
       .add(dom.create('span').class('qm-api-header-function-param-type').add(type(param.param(1), typeLinks)))
   })
@@ -51,6 +55,7 @@ function functionHeaderDetails (selection, typeLinks) {
 
   return dom.create('span')
     .class('qm-api-header-function')
+    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
     .add(name)
     .add(dom.create('span').class('qm-api-header-function-params').add(params))
     .add(retns)
@@ -60,6 +65,7 @@ function functionHeaderDetails (selection, typeLinks) {
 function prototypeHeaderDetails (selection, typeLinks) {
   let details = dom.create('span')
     .class('qm-api-header-prototype')
+    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
     .add(dom.create('span').class('qm-api-prototype-name').text(selection.param(0) || ''))
 
   const extendsEntities = selection.selectAll('extends')

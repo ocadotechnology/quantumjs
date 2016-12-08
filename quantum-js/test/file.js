@@ -2,11 +2,11 @@
 require('chai').should()
 
 const quantum = require('../')
+const FileInfo = quantum.FileInfo
 const File = quantum.File
-const Page = quantum.Page
 
-describe('Page', () => {
-  const file1 = new File({
+describe('File', () => {
+  const fileInfo1 = new FileInfo({
     src: 'src/content/a1.um',
     resolved: 'a1.um',
     base: 'src/content',
@@ -14,7 +14,7 @@ describe('Page', () => {
     watch: true
   })
 
-  const file2 = new File({
+  const fileInfo2 = new FileInfo({
     src: 'src/content/a2.um',
     resolved: 'a2.um',
     base: 'src/content',
@@ -29,40 +29,40 @@ describe('Page', () => {
   const meta3 = { key: { innerKey2: 'value2' } }
 
   it('should use the options to set up the properties', () => {
-    const page = new Page({
-      file: file1,
+    const file = new File({
+      info: fileInfo1,
       content: content1,
       meta: meta1
     })
 
-    page.file.should.equal(file1)
-    page.content.should.equal(content1)
-    page.meta.should.equal(meta1)
+    file.info.should.equal(fileInfo1)
+    file.content.should.equal(content1)
+    file.meta.should.equal(meta1)
   })
 
   it('should use defaults for content and meta', () => {
-    const page = new Page({
-      file: file1
+    const file = new File({
+      info: fileInfo1
     })
 
-    page.file.should.equal(file1)
-    page.content.should.eql([])
-    page.meta.should.eql({})
+    file.info.should.equal(fileInfo1)
+    file.content.should.eql([])
+    file.meta.should.eql({})
   })
 
-  describe('Page::warning', () => {
+  describe('File::warning', () => {
     it('should store warnings', () => {
-      const page = new Page({
-        file: file1
+      const file = new File({
+        info: fileInfo1
       })
 
-      page.warning({
+      file.warning({
         module: 'quantum-js',
         problem: 'something broke',
         resolution: 'fix it'
       })
 
-      page.warnings.should.eql([
+      file.warnings.should.eql([
         {
           module: 'quantum-js',
           problem: 'something broke',
@@ -72,19 +72,19 @@ describe('Page', () => {
     })
   })
 
-  describe('Page::error', () => {
+  describe('File::error', () => {
     it('should store errors', () => {
-      const page = new Page({
-        file: file1
+      const file = new File({
+        info: fileInfo1
       })
 
-      page.error({
+      file.error({
         module: 'quantum-js',
         problem: 'something broke',
         resolution: 'fix it'
       })
 
-      page.errors.should.eql([
+      file.errors.should.eql([
         {
           module: 'quantum-js',
           problem: 'something broke',
@@ -94,65 +94,65 @@ describe('Page', () => {
     })
   })
 
-  describe('Page::clone', () => {
-    const page = new Page({
-      file: file1,
+  describe('File::clone', () => {
+    const file = new File({
+      info: fileInfo1,
       content: content1,
       meta: meta1
     })
 
     it('should look the same after cloning', () => {
-      page.clone().should.eql(page)
+      file.clone().should.eql(file)
     })
 
     it('should change the file property', () => {
-      page.clone({file: file2}).should.eql(new Page({
-        file: file2,
+      file.clone({info: fileInfo2}).should.eql(new File({
+        info: fileInfo2,
         content: content1,
         meta: meta1
       }))
 
       // check the original page was untouched
-      page.should.eql(new Page({
-        file: file1,
+      file.should.eql(new File({
+        info: fileInfo1,
         content: content1,
         meta: meta1
       }))
     })
 
     it('should change the content property', () => {
-      page.clone({content: content2}).should.eql(new Page({
-        file: file1,
+      file.clone({content: content2}).should.eql(new File({
+        info: fileInfo1,
         content: content2,
         meta: meta1
       }))
 
       // check the original page was untouched
-      page.should.eql(new Page({
-        file: file1,
+      file.should.eql(new File({
+        info: fileInfo1,
         content: content1,
         meta: meta1
       }))
     })
 
     it('should change the meta property', () => {
-      page.clone({meta: meta2}).should.eql(new Page({
-        file: file1,
+      file.clone({meta: meta2}).should.eql(new File({
+        info: fileInfo1,
         content: content1,
         meta: meta2
       }))
 
       // check the original page was untouched
-      page.should.eql(new Page({
-        file: file1,
+      file.should.eql(new File({
+        info: fileInfo1,
         content: content1,
         meta: meta1
       }))
     })
 
     it('should merge changes into the meta property', () => {
-      page.clone({meta: meta2}).clone({meta: meta3}).should.eql(new Page({
-        file: file1,
+      file.clone({meta: meta2}).clone({meta: meta3}).should.eql(new File({
+        info: fileInfo1,
         content: content1,
         meta: {
           key: {
@@ -163,15 +163,15 @@ describe('Page', () => {
       }))
 
       // check the original page was untouched
-      page.should.eql(new Page({
-        file: file1,
+      file.should.eql(new File({
+        info: fileInfo1,
         content: content1,
         meta: meta1
       }))
     })
 
     it('should clone warnings and errors', () => {
-      const clone = page.clone()
+      const clone = file.clone()
       clone.warning({
         module: 'quantum-js',
         problem: 'warning: something broke',
@@ -183,8 +183,8 @@ describe('Page', () => {
         resolution: 'fix it'
       })
 
-      clone.clone().should.eql(new Page({
-        file: file1,
+      clone.clone().should.eql(new File({
+        info: fileInfo1,
         content: content1,
         warnings: [
           {
@@ -204,7 +204,7 @@ describe('Page', () => {
     })
 
     it('should allow changes to warnings and errors when cloning', () => {
-      page.clone({
+      file.clone({
         warnings: [{
           module: 'quantum-js',
           problem: 'warning: something broke',
@@ -215,8 +215,8 @@ describe('Page', () => {
           problem: 'error: something broke',
           resolution: 'fix it'
         }]
-      }).should.eql(new Page({
-        file: file1,
+      }).should.eql(new File({
+        info: fileInfo1,
         content: content1,
         warnings: [
           {
@@ -235,8 +235,8 @@ describe('Page', () => {
       }))
 
       // check the original page was untouched
-      page.should.eql(new Page({
-        file: file1,
+      file.should.eql(new File({
+        info: fileInfo1,
         content: content1,
         meta: meta1
       }))

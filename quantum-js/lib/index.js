@@ -11,7 +11,7 @@
 
 module.exports = {
   File: require('./file'),
-  Page: require('./page'),
+  FileInfo: require('./file-info'),
   parse: require('./parse'),
   stringify: require('./stringify'),
   read: require('./read'),

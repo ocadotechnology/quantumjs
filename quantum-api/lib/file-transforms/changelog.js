@@ -8,7 +8,7 @@ const utils = require('../utils')
 const tags = ['removed', 'deprecated', 'enhancement', 'bugfix', 'updated', 'added', 'info']
 
 /*
-  pageTransform
+  fileTransform
   -------------
 
   Checks if there is a @changelogList section that needs populating in a page.
@@ -18,7 +18,7 @@ const tags = ['removed', 'deprecated', 'enhancement', 'bugfix', 'updated', 'adde
 
   If no @changelogList is found, this function does nothing to the page
 */
-function pageTransform (page, options) {
+function fileTransform (page, options) {
   const root = quantum.select(page.content)
 
   if (root.has('changelogList', {recursive: true})) {
@@ -419,7 +419,7 @@ function buildChangelogAST (page, version, changelogEntriesByApi, groupByApi, de
 }
 
 module.exports = {
-  pageTransform: pageTransform,
+  fileTransform: fileTransform,
   process: process,
   processChangelogList: processChangelogList,
   extractApis: extractApis,

@@ -1,0 +1,19 @@
+@function parse
+  @added
+    @description
+      A function for parsing string containing quantum markup into JavaScript
+      objects.
+
+  @param input [String]
+    @description:
+      A string containing markup to parse. i.e. something that looks like this:
+
+      @codeblock um
+        @inline ../the-markup.um [text]
+
+  @returns Object
+    @description
+      The parsed ast. Looks something like this:
+
+      @codeblock json
+        @inline ../the-markup.json [text]

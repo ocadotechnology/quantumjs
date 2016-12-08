@@ -228,7 +228,7 @@ function versionTransform (page, options) {
       // build the new result with new filename and add the result to the results list
       if (targetVersions.indexOf(v) > -1) {
         results.push(page.clone({
-          file: options.filenameModifier(page.file, v),
+          info: options.filenameModifier(page.info, v),
           content: source,
           meta: {
             version: v

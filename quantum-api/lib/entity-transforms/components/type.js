@@ -41,7 +41,7 @@ function createLinkedType (typeString, typeLinks) {
 module.exports = function createType (typeString, typeLinks) {
   if (typeString !== undefined && typeString !== '') {
     return dom.create('span')
-      .class('qm-api-header-type')
+      .class('qm-api-type')
       .add(createLinkedType(typeString, typeLinks))
   }
 }

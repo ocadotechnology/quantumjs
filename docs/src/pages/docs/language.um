@@ -1,0 +1,45 @@
+# Comments start with a hash
+
+# The hash character can be escaped with \#
+
+# basic structure of an entity
+@type parameters: Content
+
+# Entities can contain multiple lines of text content
+@person Alejandro
+  The content of entities can be plain text like this,
+  and the text can span multiple lines.
+
+  # And can also have nested entites
+  @age 32
+  @gender male
+
+# Content can be mixed betwen text and entities
+@button
+  @icon fa fa-add
+  Click Me!
+
+# Entites can also use a more compact single line syntax
+# (when written like this they are called inline entites)
+@type(parameters)[Content]
+
+# Inline entities may be placed in the middle of text (hence the name)
+This line has an @bold[inline] entity
+
+# The above button example could also be written like this
+@button: @icon(fa fa-add) Click Me!
+
+# When a parameter contains spaces, you can use square brackets around it
+@person parameter1 [parameter2 with spaces]
+
+# Escaping the @ sign is done by wrapping it (and optionally
+# surrounding text) in @(...)
+@(your.name@ocado.com)
+
+# Nested content may be completely escaped by starting an entity with @@
+@@codeblock um
+  # This content is treated as text. No entites are parsed when in @@ mode
+  # Even this comment is treated as text
+  @person
+    @name: Alejandro
+    @age: 32

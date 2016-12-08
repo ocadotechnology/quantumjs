@@ -1,52 +1,51 @@
 'use strict'
 const chai = require('chai')
-
+const path = require('path')
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs-extra'))
 
 const quantum = require('../lib')
-const write = quantum.write
-const path = require('path')
 
+const write = quantum.write
+const FileInfo = quantum.FileInfo
 const File = quantum.File
-const Page = quantum.Page
 
 describe('write', () => {
-  const file1 = new File({
+  const fileInfo1 = new FileInfo({
     src: 'src/content/a1.um',
     resolved: 'a1.um',
     base: 'src/content',
     dest: 'target/write/a1.um'
   })
 
-  const file2 = new File({
+  const fileInfo2 = new FileInfo({
     src: 'src/content/a2.um',
     resolved: 'a2.um',
     base: 'src/content',
     dest: 'target/write/a2.um'
   })
 
-  const file3 = new File({
+  const fileInfo3 = new FileInfo({
     src: 'src/content/a2.um',
     resolved: 'a2.um',
     base: 'src/content',
     dest: 'target/write/a3.um'
   })
 
-  const page1 = new Page({
-    file: file1,
+  const file1 = new File({
+    info: fileInfo1,
     content: [ 'some content 1' ],
     meta: {}
   })
 
-  const page2 = new Page({
-    file: file2,
+  const file2 = new File({
+    info: fileInfo2,
     content: [ 'some content 2' ],
     meta: {}
   })
 
-  const page3 = new Page({
-    file: file3,
+  const file3 = new File({
+    info: fileInfo3,
     content: [ 'some content 3' ],
     meta: {}
   })
@@ -59,21 +58,21 @@ describe('write', () => {
   after(() => process.chdir(currDir))
 
   it('should write a file', () => {
-    return write(page1)
-      .map((page) => {
-        page.should.eql(page1)
+    return write(file1)
+      .map((file) => {
+        file.should.eql(file1)
 
-        return fs.readFileAsync(page.file.dest, 'utf-8')
-          .then(file => file.should.equal('some content 1'))
+        return fs.readFileAsync(file.info.dest, 'utf-8')
+          .then(res => res.should.equal('some content 1'))
       })
   })
 
   it('should write an array of files', () => {
-    return write([ page2, page3 ])
-      .map((page, index) => {
-        page.should.eql(index === 0 ? page2 : page3)
+    return write([ file2, file3 ])
+      .map((file, index) => {
+        file.should.eql(index === 0 ? file2 : file3)
 
-        return fs.readFileAsync(page.file.dest, 'utf-8')
+        return fs.readFileAsync(file.info.dest, 'utf-8')
           .then(res => res.should.equal('some content ' + (index + 2)))
       })
   })

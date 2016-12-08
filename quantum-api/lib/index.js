@@ -25,8 +25,8 @@ const changelogList = require('./entity-transforms/changelog-list')
 const javascript = require('./languages/javascript')
 const css = require('./languages/css')
 
-// page transforms
-const changelogPageTransform = require('./page-transforms/changelog')
+// file transforms
+const changelogFileTransform = require('./file-transforms/changelog')
 
 function transforms (options) {
   const opts = config.resolve(options)
@@ -52,14 +52,14 @@ function transforms (options) {
   return Object.freeze(transforms)
 }
 
-// The page transform
+// The file transform
 module.exports = function (options) {
   const opts = config.resolve(options)
-  return (page) => {
+  return (file) => {
     if(opts.processChangelogs) {
-      return changelogPageTransform.pageTransform(page, opts)
+      return changelogFileTransform.fileTransform(file, opts)
     } else {
-      return page
+      return file
     }
   }
 }

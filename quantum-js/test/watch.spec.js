@@ -8,8 +8,8 @@ const util = require('util')
 
 const quantum = require('../')
 const watch = quantum.watch
+const FileInfo = quantum.FileInfo
 const File = quantum.File
-const Page = quantum.Page
 const path = require('path')
 
 describe('watcher', () => {
@@ -19,9 +19,9 @@ describe('watcher', () => {
 
   it('should watch the right files for change', () => {
     return watch.watcher('target/test/watch-test/*').then((watcher) => {
-      return watcher.files().then((files) => {
-        files.should.eql([
-          new File({
+      return watcher.files().then((fileInfos) => {
+        fileInfos.should.eql([
+          new FileInfo({
             base: 'target/test/watch-test',
             dest: 'target/index.css',
             destBase: 'target',
@@ -29,7 +29,7 @@ describe('watcher', () => {
             src: 'target/test/watch-test/index.css',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test/watch-test',
             dest: 'target/index.um',
             destBase: 'target',
@@ -37,7 +37,7 @@ describe('watcher', () => {
             src: 'target/test/watch-test/index.um',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test/watch-test',
             dest: 'target/index1.um',
             destBase: 'target',
@@ -58,9 +58,9 @@ describe('watcher', () => {
       base: 'target/test/watch-test',
       watch: true
     }, {dest: 'target2'}).then((watcher) => {
-      return watcher.files().then((files) => {
-        files.should.eql([
-          new File({
+      return watcher.files().then((fileInfos) => {
+        fileInfos.should.eql([
+          new FileInfo({
             base: 'target/test/watch-test',
             dest: 'target2/index.css',
             destBase: 'target2',
@@ -81,9 +81,9 @@ describe('watcher', () => {
       watch: true,
       dest: 'subtarget'
     }, {dest: 'target2'}).then((watcher) => {
-      return watcher.files().then((files) => {
-        files.should.eql([
-          new File({
+      return watcher.files().then((fileInfos) => {
+        fileInfos.should.eql([
+          new FileInfo({
             base: 'target/test/watch-test',
             dest: 'target2/subtarget/index.css',
             destBase: 'target2',
@@ -99,9 +99,9 @@ describe('watcher', () => {
 
   it('should watch the right files for change (multiple simple specs)', () => {
     return watch.watcher(['target/test/files1/*.um', 'target/test/files2/*.um'], {dest: 'target2'}).then((watcher) => {
-      return watcher.files().then((files) => {
-        files.should.eql([
-          new File({
+      return watcher.files().then((fileInfos) => {
+        fileInfos.should.eql([
+          new FileInfo({
             base: 'target/test/files1',
             dest: 'target2/a.um',
             destBase: 'target2',
@@ -109,7 +109,7 @@ describe('watcher', () => {
             src: 'target/test/files1/a.um',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test/files1',
             dest: 'target2/b.um',
             destBase: 'target2',
@@ -117,7 +117,7 @@ describe('watcher', () => {
             src: 'target/test/files1/b.um',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test/files2',
             dest: 'target2/e.um',
             destBase: 'target2',
@@ -125,7 +125,7 @@ describe('watcher', () => {
             src: 'target/test/files2/e.um',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test/files2',
             dest: 'target2/z.um',
             destBase: 'target2',
@@ -149,9 +149,9 @@ describe('watcher', () => {
       base: 'target/test',
       watch: true
     }], {dest: 'target2'}).then((watcher) => {
-      return watcher.files().then((files) => {
-        files.should.eql([
-          new File({
+      return watcher.files().then((fileInfos) => {
+        fileInfos.should.eql([
+          new FileInfo({
             base: 'target/test/files1',
             dest: 'target2/a.um',
             destBase: 'target2',
@@ -159,7 +159,7 @@ describe('watcher', () => {
             src: 'target/test/files1/a.um',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test/files1',
             dest: 'target2/b.um',
             destBase: 'target2',
@@ -167,7 +167,7 @@ describe('watcher', () => {
             src: 'target/test/files1/b.um',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test',
             dest: 'target2/files2/e.um',
             destBase: 'target2',
@@ -175,7 +175,7 @@ describe('watcher', () => {
             src: 'target/test/files2/e.um',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test',
             dest: 'target2/files2/z.um',
             destBase: 'target2',
@@ -199,9 +199,9 @@ describe('watcher', () => {
       base: 'target/test',
       watch: true
     }], {dest: 'target2'}).then((watcher) => {
-      return watcher.files().then((files) => {
-        files.should.eql([
-          new File({
+      return watcher.files().then((fileInfos) => {
+        fileInfos.should.eql([
+          new FileInfo({
             base: 'target/test/files1',
             dest: 'target2/a.um',
             destBase: 'target2',
@@ -209,7 +209,7 @@ describe('watcher', () => {
             src: 'target/test/files1/a.um',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test',
             dest: 'target2/files2/e.um',
             destBase: 'target2',
@@ -233,9 +233,9 @@ describe('watcher', () => {
       base: 'target/test',
       watch: false
     }], {dest: 'target2'}).then((watcher) => {
-      return watcher.files().then((files) => {
-        files.should.eql([
-          new File({
+      return watcher.files().then((fileInfos) => {
+        fileInfos.should.eql([
+          new FileInfo({
             base: 'target/test/files1',
             dest: 'target2/a.um',
             destBase: 'target2',
@@ -243,7 +243,7 @@ describe('watcher', () => {
             src: 'target/test/files1/a.um',
             watch: true
           }),
-          new File({
+          new FileInfo({
             base: 'target/test/files1',
             dest: 'target2/b.um',
             destBase: 'target2',
@@ -263,8 +263,8 @@ describe('watcher', () => {
       base: 'target/test/watch-change-test',
       watch: true
     }, {dest: 'target2'}).then((watcher) => {
-      watcher.on('add', (obj) => {
-        obj.should.eql(new File({
+      watcher.on('add', (fileInfo) => {
+        fileInfo.should.eql(new FileInfo({
           src: 'target/test/watch-change-test/subdir/index.add',
           resolved: 'subdir/index.add',
           base: 'target/test/watch-change-test',
@@ -286,8 +286,8 @@ describe('watcher', () => {
       base: 'target/test/watch-change-test',
       watch: true
     }, {dest: 'target2'}).then((watcher) => {
-      watcher.on('change', (obj) => {
-        obj.should.eql(new File({
+      watcher.on('change', (fileInfo) => {
+        fileInfo.should.eql(new FileInfo({
           src: 'target/test/watch-change-test/index.um',
           resolved: 'index.um',
           base: 'target/test/watch-change-test',
@@ -310,8 +310,8 @@ describe('watcher', () => {
         base: 'target/test/watch-change-test',
         watch: true
       }, {dest: 'target2'}).then((watcher) => {
-        watcher.on('remove', (obj) => {
-          obj.should.eql(new File({
+        watcher.on('remove', (fileInfo) => {
+          fileInfo.should.eql(new FileInfo({
             src: 'target/test/watch-change-test/subdir/index.remove',
             resolved: 'subdir/index.remove',
             base: 'target/test/watch-change-test',
@@ -399,8 +399,8 @@ describe('watch', () => {
     function handler (err, parsed, details) {
       should.not.exist(err)
       if (details.cause === 'change') {
-        parsed.should.eql(new Page({
-          file: new File({
+        parsed.should.eql(new File({
+          info: new FileInfo({
             src: 'target/test/watch-change-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-inline-test',
@@ -436,8 +436,8 @@ describe('watch', () => {
     function handler (err, parsed, details) {
       should.not.exist(err)
       if (details.cause === 'change') {
-        parsed.should.eql(new Page({
-          file: new File({
+        parsed.should.eql(new File({
+          info: new FileInfo({
             src: 'target/test/watch-change-inline-default-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-inline-default-test',
@@ -475,8 +475,8 @@ describe('watch', () => {
     function handler (err, parsed, details) {
       should.not.exist(err)
       if (details.cause === 'change') {
-        parsed.should.eql(new Page({
-          file: new File({
+        parsed.should.eql(new File({
+          info: new FileInfo({
             src: 'target/test/watch-change-deep-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-deep-inline-test',
@@ -514,8 +514,8 @@ describe('watch', () => {
     function handler (err, parsed, details) {
       should.not.exist(err)
       if (details.cause === 'change') {
-        parsed.should.eql(new Page({
-          file: new File({
+        parsed.should.eql(new File({
+          info: new FileInfo({
             src: 'target/test/watch-change-base-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-base-inline-test',
@@ -553,8 +553,8 @@ describe('watch', () => {
     function handler (err, parsed, details) {
       should.not.exist(err)
       if (details.cause === 'change') {
-        parsed.should.eql(new Page({
-          file: new File({
+        parsed.should.eql(new File({
+          info: new FileInfo({
             src: 'target/test/watch-change-remove-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-remove-inline-test',
@@ -675,8 +675,8 @@ describe('watch', () => {
     function handler (err, parsed, details) {
       should.not.exist(err)
       if (details.cause === 'change') {
-        parsed.should.eql(new Page({
-          file: new File({
+        parsed.should.eql(new File({
+          info: new FileInfo({
             src: 'target/test/watch-change-non-quantum-inline-test/index.um',
             resolved: 'index.um',
             base: 'target/test/watch-change-non-quantum-inline-test',

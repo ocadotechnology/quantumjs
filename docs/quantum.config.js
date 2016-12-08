@@ -9,12 +9,29 @@ const markdown = require('quantum-markdown')
 const codeHighlight = require('quantum-code-highlight')
 const docs = require('quantum-docs')
 
+const typeLinks = {
+  'Array': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array',
+  'Boolean': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean',
+  'Function': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function',
+  'Number': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number',
+  'Object': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object',
+  'String': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
+  'File': '/modules/quantum-js/#file',
+  'FileInfo': '/modules/quantum-js/#fileinfo',
+}
+
 const htmlOptions = {
   embedAssets: false,
   assetPath: '/resources',
   transforms: {
     html: html.transforms(),
-    api: api.transforms(),
+    api: api.transforms({
+      languages: [
+        api.languages.javascript({
+          typeLinks: typeLinks
+        })
+      ]
+    }),
     diagram: diagram.transforms(),
     markdown: markdown.transforms(),
     docs: docs.transforms(),
@@ -22,7 +39,7 @@ const htmlOptions = {
   }
 }
 
-function customizedTemplate (page) {
+function customizedTemplate (file) {
   const templateVariables = {
     examples: {
       exampleList: [1, 2, 3],
@@ -31,10 +48,10 @@ function customizedTemplate (page) {
         age: 25
       }
     },
-    filename: page.file.src
+    filename: file.info.src
   }
 
-  return template({ variables: templateVariables })(page)
+  return template({ variables: templateVariables })(file)
 }
 
 module.exports = {
@@ -43,8 +60,7 @@ module.exports = {
     api(),
     version(),
     docs(),
-    html(htmlOptions),
-    html.htmlRenamer()
+    html(htmlOptions)
   ],
   pages: 'src/pages/**/*.um',
   resources: [

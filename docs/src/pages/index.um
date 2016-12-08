@@ -8,13 +8,16 @@
 
 @contentSection
   @topic What is QuantumJS?
-    QuantumJS is a static site generator. In other words, it is a tool for converting
-    human readable markup into a website.
+    QuantumJS is a tool for building websites.
+
+    More specifically, QuantumJS is a @italic[static site generator]. This is
+    just a fancy name for a tool that can convert @bold[human readable markup]
+    into @bold[html].
 
     QuantumJS comes preloaded with some modules for writing beautiful
-    @hyperlink(/modules/quantum-api/)[API docs],
-    @hyperlink(/modules/quantum-diagram/)[simple diagrams], and various
-    @hyperlink(/modules/quantum-docs/)[utilities for writing documentation]. It
+    @hyperlink(/modules/quantum-api/)[API docs], drawing simple
+    @hyperlink(/modules/quantum-diagram/)[diagrams], and various utilities aimed for
+    @hyperlink(/modules/quantum-docs/)[writing documentation]. It
     also has support for @hyperlink(/modules/quantum-version/)[versioned content],
     @hyperlink(/modules/quantum-template/)[templates] and
     @hyperlink(/modules/quantum-code-highlight/)[code highlighting]. All of this

@@ -13,7 +13,7 @@ const Promise = require('bluebird')
 const globby = require('globby')
 const flatten = require('flatten')
 
-const File = require('./file')
+const FileInfo = require('./file-info')
 
 function isString (str) {
   return typeof str === 'string' || str instanceof String
@@ -26,7 +26,7 @@ function createFileUsingSpec (src, spec, dest) {
   const resolved = path.relative(base, src)
   const destForFile = path.join(destForObj, resolved)
   const watch = spec.watch === undefined ? true : spec.watch
-  return new File({
+  return new FileInfo({
     src: src,
     resolved: resolved,
     base: base,

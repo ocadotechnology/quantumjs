@@ -45,10 +45,11 @@
     transforms function:
 
     @@codeblock js
-      function post (entity, page, transforms) {
-        return page.create('div').class('post')
-          .add(page.create('post-title').text(entity.ps()))
-          .add(page.create('post-content').add(entity.select('content').transform(transforms)))
+      function post (selection, transforms) {
+        return dom.create('div').class('post')
+          .add(dom.create('post-title').text(selection.ps()))
+          .add(dom.create('post-content')
+            .add(selection.select('content').transform(transforms)))
       }
 
     This function takes an entity, and returns some virtual dom which represents
@@ -59,36 +60,41 @@
 
     @subsection blog-transforms.js
       @codeblock js
-        exports.post = function (entity, page, transforms) {
-          return page.create('div').class('post')
-            .add(page.create('post-title').text(entity.ps()))
-            .add(page.create('post-content').add(entity.select('content').transform(transforms)))
+        const dom = require('quantum-dom')
+
+        exports.transforms = () => {
+          function post (selection, transforms) {
+            return dom.create('div').class('post')
+              .add(dom.create('post-title').text(selection.ps()))
+              .add(dom.create('post-content')
+                .add(selection.select('content').transform(transforms)))
+          }
+
+          return {
+            post: post
+          }
         }
 
-    Now we can include the transforms file as we would with any other html
-    transforms:
+    Now we can set up quantum to use our new blog transform:
 
     @subsection quantum.config.js
       @codeblock js
-        var html = require('quantum-html')
-        var blog = require('./blog-transforms')
+        const html = require('quantum-html')
+        const blog = require('./blog-transforms')
 
-        function pipeline () {
-          var htmlTransforms = {
-            html: html.transforms,
-            blog: blog
-          }
-
-          // returns a function that compiles a page out to html
-          return function (obj) {
-            return Promise.resolve(obj)
-              .map(html({ transforms: htmlTransforms }))
-              .map(html.stringify(htmlOptions))
-              .map(html.htmlRenamer())
+        const htmlOptions = {
+          transforms: {
+            html: html.transforms(),
+            blog: blog.transforms()
           }
         }
 
         module.exports = {
-          pipeline: pipeline,
+          pipeline: [
+            html(htmlOptions)
+          ],
           files: '**/*.um'
         }
+
+    Any time quantum comes across a @code[@blog] entity, it will now use the
+    transform we just defined.

@@ -4,8 +4,8 @@ const chai = require('chai')
 const docs = require('../')
 const quantum = require('quantum-js')
 
-const Page = quantum.Page
 const File = quantum.File
+const FileInfo = quantum.FileInfo
 
 chai.should()
 
@@ -18,8 +18,8 @@ describe('pipeline', () => {
 
 describe('populateTableOfContents', () => {
   it('should populate a table of contents (default options)', () => {
-    const page = new Page({
-      file: new File({
+    const page = new File({
+      info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
       }),
@@ -45,8 +45,8 @@ describe('populateTableOfContents', () => {
       }
     })
 
-    docs()(page).should.eql(new Page({
-      file: new File({
+    docs()(page).should.eql(new File({
+      info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
       }),
@@ -90,8 +90,8 @@ describe('populateTableOfContents', () => {
   })
 
   it('should populate a table of contents (explicitly enabled)', () => {
-    const page = new Page({
-      file: new File({
+    const page = new File({
+      info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
       }),
@@ -117,8 +117,8 @@ describe('populateTableOfContents', () => {
       }
     })
 
-    docs({populateTableOfContents: {enabled: true}})(page).should.eql(new Page({
-      file: new File({
+    docs({populateTableOfContents: {enabled: true}})(page).should.eql(new File({
+      info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
       }),
@@ -162,8 +162,8 @@ describe('populateTableOfContents', () => {
   })
 
   it('should populate a table of contents (explicitly disabled)', () => {
-    const page = new Page({
-      file: new File({
+    const page = new File({
+      info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
       }),
@@ -189,8 +189,8 @@ describe('populateTableOfContents', () => {
       }
     })
 
-    docs({populateTableOfContents: {enabled: false}})(page).should.eql(new Page({
-      file: new File({
+    docs({populateTableOfContents: {enabled: false}})(page).should.eql(new File({
+      info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
       }),

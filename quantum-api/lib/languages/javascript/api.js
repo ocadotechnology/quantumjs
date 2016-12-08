@@ -1,8 +1,13 @@
 'use strict'
 
+const dom = require('quantum-dom')
+
+const type = require('../../entity-transforms/components/type')
+
 const header = require('../../entity-transforms/builders/header-builders')
 const body = require('../../entity-transforms/builders/body-builders')
 const itemBuilder = require('../../entity-transforms/builders/item-builder')
+
 
 /* The config for building javascript api docs */
 
@@ -54,6 +59,11 @@ module.exports = (options) => {
   })
 
   return {
+    'type': (selection) => {
+      return dom.create('span')
+        .class('qm-api-type-standalone')
+        .add(type(selection.cs(), typeLinks))
+    },
     'prototype': itemBuilder({
       class: 'qm-api-prototype',
       header: prototypeHeader,

@@ -3,7 +3,7 @@ const files = require('../').fileOptions
 const should = require('chai').should()
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs-extra'))
-const File = require('../').File
+const FileInfo = require('../').FileInfo
 const path = require('path')
 
 describe('resolve', () => {
@@ -17,7 +17,7 @@ describe('resolve', () => {
   after(() => process.chdir(currDir))
 
   const expectedList1 = [
-    new File({
+    new FileInfo({
       src: 'target/test/files1/a.um',
       resolved: 'a.um',
       base: 'target/test/files1',
@@ -25,7 +25,7 @@ describe('resolve', () => {
       destBase: 'target',
       watch: true
     }),
-    new File({
+    new FileInfo({
       src: 'target/test/files1/b.um',
       resolved: 'b.um',
       base: 'target/test/files1',
@@ -33,7 +33,7 @@ describe('resolve', () => {
       destBase: 'target',
       watch: true
     }),
-    new File({
+    new FileInfo({
       src: 'target/test/files1/c/d.um',
       resolved: 'c/d.um',
       base: 'target/test/files1',
@@ -44,7 +44,7 @@ describe('resolve', () => {
   ]
 
   const expectedList2 = [
-    new File({
+    new FileInfo({
       src: 'target/test/files2/e.um',
       resolved: 'e.um',
       base: 'target/test/files2',
@@ -55,7 +55,7 @@ describe('resolve', () => {
   ]
 
   const expectedList3 = [
-    new File({
+    new FileInfo({
       src: 'target/test/files2/e.um',
       resolved: 'e.um',
       base: 'target/test/files2',
@@ -63,7 +63,7 @@ describe('resolve', () => {
       destBase: 'target',
       watch: true
     }),
-    new File({
+    new FileInfo({
       src: 'target/test/files2/z.um',
       resolved: 'z.um',
       base: 'target/test/files2',
@@ -109,7 +109,7 @@ describe('resolve', () => {
 
     return files.resolve(list, options).then((files) => {
       files.should.eql([
-        new File({
+        new FileInfo({
           src: 'target/test/files1/a.um',
           resolved: 'target/test/files1/a.um',
           base: '.',

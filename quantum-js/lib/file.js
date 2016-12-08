@@ -4,37 +4,43 @@
   File
   ====
 
-  Stores information about where a file / page came from and where it is going
-  to be written to.
+  Represents a file or html page as it passes through the quantum pipeline.
+
+  A page contains a reference to the source file, and the destination file it
+  will be written to, the content (which can contain the parsed ast, virtual
+  dom, or html depending on which part of the pipeline you are at), and a meta
+  object, which can contain other information which is collected up as the page
+  is built. An example of some meta information is the version number of the page
+  which is added by quantum-version when expanding a single source page into multiple
+  versioned pages.
 
 */
 
+const merge = require('merge')
+
 function File (options) {
-  this.src = options.src
-  this.resolved = options.resolved
-  this.base = options.base
-  this.dest = options.dest
-  this.destBase = options.destBase
-  this.watch = options.watch
+  this.info = options.info
+  this.content = options.content || []
+  this.meta = options.meta || {}
+  this.warnings = options.warnings || []
+  this.errors = options.errors || []
 }
 
 File.prototype = {
-  /* Changes the extension of the dest property - returns a new File */
-  withExtension: function (extension) {
-    return this.clone({
-      dest: this.dest.replace('.um', extension)
-    })
-  },
-  /* Returns a new File with the specified properties changed */
   clone: function (changes) {
     return new File({
-      src: changes && changes.src !== undefined ? changes.src : this.src,
-      resolved: changes && changes.resolved !== undefined ? changes.resolved : this.resolved,
-      base: changes && changes.base !== undefined ? changes.base : this.base,
-      dest: changes && changes.dest !== undefined ? changes.dest : this.dest,
-      destBase: changes && changes.destBase !== undefined ? changes.destBase : this.destBase,
-      watch: changes && changes.watch !== undefined ? changes.watch : this.watch
+      info: changes && changes.info !== undefined ? changes.info : this.info,
+      content: changes && changes.content !== undefined ? changes.content : this.content,
+      meta: changes && changes.meta !== undefined ? merge.recursive({}, this.meta, changes.meta) : this.meta,
+      warnings: changes && changes.warnings !== undefined ? changes.warnings.slice() : this.warnings.slice(),
+      errors: changes && changes.errors !== undefined ? changes.errors.slice() : this.errors.slice()
     })
+  },
+  warning: function (warning) {
+    this.warnings.push(warning)
+  },
+  error: function (errors) {
+    this.errors.push(errors)
   }
 }
 

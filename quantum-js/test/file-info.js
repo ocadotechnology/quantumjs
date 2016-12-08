@@ -2,11 +2,11 @@
 require('chai').should()
 
 const quantum = require('../')
-const File = quantum.File
+const FileInfo = quantum.FileInfo
 
-describe('File', () => {
+describe('FileInfo', () => {
   it('should use the options to set up the properties', () => {
-    const file = new File({
+    const file = new FileInfo({
       src: 'src/content/a.um',
       resolved: 'a.um',
       base: 'src/content',
@@ -21,9 +21,9 @@ describe('File', () => {
     file.watch.should.equal(true)
   })
 
-  describe('File::clone', () => {
+  describe('FileInfo::clone', () => {
     it('should clone', () => {
-      const file = new File({
+      const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -31,7 +31,7 @@ describe('File', () => {
         watch: true
       })
 
-      file.clone().should.eql(new File({
+      file.clone().should.eql(new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -41,7 +41,7 @@ describe('File', () => {
     })
 
     it('should change src', () => {
-      const file = new File({
+      const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -51,7 +51,7 @@ describe('File', () => {
 
       file.clone({
         src: 'src/content/a.test.um'
-      }).should.eql(new File({
+      }).should.eql(new FileInfo({
         src: 'src/content/a.test.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -61,7 +61,7 @@ describe('File', () => {
     })
 
     it('should change resolved', () => {
-      const file = new File({
+      const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -71,7 +71,7 @@ describe('File', () => {
 
       file.clone({
         resolved: 'a.test.um'
-      }).should.eql(new File({
+      }).should.eql(new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.test.um',
         base: 'src/content',
@@ -81,7 +81,7 @@ describe('File', () => {
     })
 
     it('should change base', () => {
-      const file = new File({
+      const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -91,7 +91,7 @@ describe('File', () => {
 
       file.clone({
         base: 'src'
-      }).should.eql(new File({
+      }).should.eql(new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src',
@@ -101,7 +101,7 @@ describe('File', () => {
     })
 
     it('should change base', () => {
-      const file = new File({
+      const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -111,7 +111,7 @@ describe('File', () => {
 
       file.clone({
         dest: 'target/a.test.um'
-      }).should.eql(new File({
+      }).should.eql(new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -121,7 +121,7 @@ describe('File', () => {
     })
 
     it('should change base', () => {
-      const file = new File({
+      const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -131,7 +131,7 @@ describe('File', () => {
 
       file.clone({
         watch: false
-      }).should.eql(new File({
+      }).should.eql(new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -141,9 +141,9 @@ describe('File', () => {
     })
   })
 
-  describe('File::withExtension', () => {
+  describe('FileInfo::withExtension', () => {
     it('should change the extension', () => {
-      const file = new File({
+      const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
@@ -151,7 +151,7 @@ describe('File', () => {
         watch: true
       })
 
-      file.withExtension('.txt').should.eql(new File({
+      file.withExtension('.txt').should.eql(new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
         base: 'src/content',
