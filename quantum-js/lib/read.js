@@ -10,10 +10,9 @@
 */
 
 const Promise = require('bluebird')
-const merge = require('merge')
 const path = require('path')
 const fs = Promise.promisifyAll(require('fs'))
-const glob = Promise.promisify(require('glob'))
+const globby = require('globby')
 const parse = require('./parse')
 const File = require('./file')
 const FileInfo = require('./file-info')
@@ -26,47 +25,40 @@ function flatten (arrays) {
   return Array.prototype.concat.apply([], arrays)
 }
 
-function inline (parsed, currentDir, options, parentFile) {
-  const promises = []
-
-  parsed.content.forEach((entity, i) => {
+const inline = Promise.coroutine(function * (parsed, currentDir, options, parentFile) {
+  const content = parsed.content
+  let i = 0
+  while (i < content.length) {
+    const entity = content[i]
     if (entity.type === options.inlineEntityType) {
-      let doParse = undefined
+      const doParse = entity.params[1] === 'parse' ? true : entity.params[1] === 'text' ? false : undefined
 
-      if (!doParse && entity.params.length > 1 && entity.params[1] === 'parse') {
-        doParse = true
-      }
+      const globStrings = entity.params.filter(p => p).map(p => path.join(currentDir, p))
+      const parsedFiles = yield parseFiles(globStrings, doParse, options, parentFile)
+      const newContent = flatten(parsedFiles.map(f => f.content))
 
-      if (!doParse && entity.params.length > 1 && entity.params[1] === 'text') {
-        doParse = false
-      }
-
-      const filename = path.join(currentDir, entity.params[0])
-      const promise = parseFiles(filename, doParse, options, parentFile)
-        .then((res) => {
-          const newContent = flatten(res.map((d) => d.content))
-          return parsed.content.splice.apply(parsed.content, [i, 1].concat(newContent))
-        })
-      promises.push(promise)
+      content.splice.apply(content, [i, 1].concat(newContent))
+      i += newContent.length - 1
     } else if (entity.type !== undefined) {
-      promises.push(inline(entity, currentDir, options, parentFile))
+      yield inline(entity, currentDir, options, parentFile)
     }
-  })
 
-  return Promise.all(promises).then(() => parsed)
-}
+    i += 1
+  }
+
+  return parsed
+})
 
 function parseFile (filename, doParse, options, parentFile) {
   if (doParse || doParse === undefined && path.extname(filename) === '.um') {
     const currentDir = path.dirname(filename)
     return options.loader(filename, parentFile)
-      .then((input) => parse(input, options))
-      .then((parsed) => inline(parsed, currentDir, options, filename))
-      .catch((e) => {
+      .then(input => parse(input, options))
+      .then(parsed => inline(parsed, currentDir, options, filename))
+      .catch(e => {
         if (e instanceof parse.ParseError) {
-          throw merge(e, {
-            filename: e.filename || filename
-          })
+          e.filename = e.filename || filename
+          throw e
         } else {
           throw new Error('quantum: ' + filename + ': ' + e)
         }
@@ -78,17 +70,20 @@ function parseFile (filename, doParse, options, parentFile) {
   }
 }
 
-function parseFiles (globString, doParse, options, parentFile) {
-  return glob(globString).map((filename) => parseFile(filename, doParse, options, parentFile))
+function parseFiles (globStrings, doParse, options, parentFile) {
+  return Promise.resolve(globby(globStrings))
+    .map(filename => parseFile(filename, doParse, options, parentFile))
 }
 
 function read (filename, opts) {
-  const options = merge({
-    inlineEntityType: 'inline',
-    inline: true,
-    loader: defaultLoader,
-    base: undefined
-  }, opts)
+  const {
+    inlineEntityType = 'inline',
+    inline = true,
+    loader = defaultLoader,
+    base = undefined
+  } = opts || {}
+
+  const options = { inlineEntityType, inline, loader, base }
 
   if (options.inline) {
     return parseFile(filename, true, options)
@@ -100,7 +95,7 @@ function read (filename, opts) {
 module.exports = read
 
 module.exports.page = (filename, options) => {
-  return read(filename, options).then((content) => {
+  return read(filename, options).then(content => {
     return new File({
       info: new FileInfo({
         src: filename,

@@ -378,7 +378,7 @@ function ast (tokens) {
   let handlingInlineContent = false // true when between an START_INLINE_CONTENT and END_INLINE_CONTENT
   /*
     notCreatedInlineContent
-    This istrue when the inline content entry has not yet been created in the parsed
+    This is true when the inline content entry has not yet been created in the parsed
     content (which is done for the first content encountered between START_INLINE_CONTENT
     and END_INLINE_CONTENT)
   */

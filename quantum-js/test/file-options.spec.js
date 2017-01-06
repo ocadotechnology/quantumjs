@@ -1,5 +1,5 @@
 'use strict'
-const files = require('../').fileOptions
+const files = require('../lib/file-options')
 const should = require('chai').should()
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs-extra'))

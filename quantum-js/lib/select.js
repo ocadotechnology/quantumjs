@@ -89,6 +89,22 @@ Selection.prototype = {
     this._entity.content.push(content)
     return this
   },
+  addAfter: function (content) {
+    if (this._parent) {
+      const parentContent = this._parent.content()
+      const index = parentContent.indexOf(this._entity)
+      if (index > -1) {
+        if (Array.isArray(content)) {
+          parentContent.splice.apply(parentContent, [index + 1, 0].concat(content))
+        } else {
+          parentContent.splice(index + 1, 0, content)
+        }
+      }
+      return this
+    } else {
+      throw new Error("Can't add content after this element - it has no parent")
+    }
+  },
   append: function (content) {
     checkNotFiltered(this)
     this._entity.content.push(content)
@@ -196,11 +212,29 @@ Selection.prototype = {
       return new Selection(filteredEntity, this._parent, true, this._renderContext)
     }
   },
-  remove: function (type, options) {
+  remove: function () {
+    if (this._parent) {
+      if (this._parent.removeChild(this._entity)) {
+        this._parent = undefined
+      }
+    } else {
+      throw new Error("An entity with no parent can't be removed")
+    }
+  },
+  removeChild: function (childEntity) {
+    const childIndex = this._entity.content.indexOf(childEntity)
+    if (childIndex > -1) {
+      this._entity.content.splice(childIndex, 1)
+      return true
+    } else {
+      return false
+    }
+  },
+  removeChildOfType: function (type, options) {
     if (Array.isArray(type)) {
       const self = this
       // OPTIM: remove the use of map
-      return type.map((t) => self.remove(t, options))
+      return type.map((t) => self.removeChildOfType(t, options))
     } else {
       let i = 0
       const content = this._entity.content
@@ -218,7 +252,7 @@ Selection.prototype = {
         while (i < content.length) {
           const child = content[i]
           if (isEntity(child)) {
-            const removed = select(child).remove(type, options)
+            const removed = select(child).removeChildOfType(type, options)
             if (removed) {
               return removed
             }
@@ -228,11 +262,11 @@ Selection.prototype = {
       }
     }
   },
-  removeAll: function (type, options) {
+  removeAllChildOfType: function (type, options) {
     if (Array.isArray(type)) {
       const self = this
       // OPTIM: remove the use of map
-      return type.map((t) => self.removeAll(t, options))
+      return type.map((t) => self.removeAllChildOfType(t, options))
     } else {
       const result = []
       let i = 0
@@ -252,7 +286,7 @@ Selection.prototype = {
         while (i < content.length) {
           const child = content[i]
           if (isEntity(child)) {
-            select(child).removeAll(type, options).forEach((removed) => {
+            select(child).removeAllChildOfType(type, options).forEach((removed) => {
               result.push(removed)
             })
           }

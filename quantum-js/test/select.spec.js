@@ -626,6 +626,150 @@ describe('select', () => {
     })
   })
 
+  describe('Selection::addAfter', () => {
+    it('should throw an error if there is no parent', () => {
+      const childEntity = {
+        type: 'child',
+        params: [],
+        content: []
+      }
+      const selection = select(childEntity)
+      should.throw(() => selection.addAfter('added after'))
+    })
+
+    it('should do nothing if the child no longer exists in the parent', () => {
+      const childEntity = {
+        type: 'child',
+        params: [],
+        content: []
+      }
+      const parentEntity = {
+        type: 'parent',
+        params: [],
+        content: [
+          'Surrounding',
+          childEntity,
+          'Content'
+        ]
+      }
+
+      const selection = select(parentEntity)
+      const childSelection = selection.select('child')
+
+      selection.select('child').remove()
+
+      childSelection.addAfter('added after').should.equal(childSelection)
+      parentEntity.content.should.eql([
+        'Surrounding',
+        'Content'
+      ])
+    })
+
+    it('should add text content', () => {
+      const childEntity = {
+        type: 'child',
+        params: [],
+        content: []
+      }
+      const parentEntity = {
+        type: 'parent',
+        params: [],
+        content: [
+          'Surrounding',
+          childEntity,
+          'Content'
+        ]
+      }
+
+      const selection = select(parentEntity)
+      const childSelection = selection.select('child')
+
+      childSelection.addAfter('added after').should.equal(childSelection)
+      parentEntity.content.should.eql([
+        'Surrounding',
+        childEntity,
+        'added after',
+        'Content'
+      ])
+    })
+
+    it('should add entity content', () => {
+      const entity = {
+        type: 'tag',
+        params: [],
+        content: []
+      }
+
+      const childEntity = {
+        type: 'child',
+        params: [],
+        content: []
+      }
+      const parentEntity = {
+        type: 'parent',
+        params: [],
+        content: [
+          'Surrounding',
+          childEntity,
+          'Content'
+        ]
+      }
+
+      const selection = select(parentEntity)
+      const childSelection = selection.select('child')
+
+      childSelection.addAfter(entity).should.equal(childSelection)
+      parentEntity.content.should.eql([
+        'Surrounding',
+        childEntity,
+        entity,
+        'Content'
+      ])
+    })
+
+    it('should add array content', () => {
+      const entity1 = {
+        type: 'tag1',
+        params: [],
+        content: []
+      }
+
+      const entity2 = {
+        type: 'tag2',
+        params: [],
+        content: []
+      }
+
+      const childEntity = {
+        type: 'child',
+        params: [],
+        content: []
+      }
+
+      const parentEntity = {
+        type: 'parent',
+        params: [],
+        content: [
+          'Surrounding',
+          childEntity,
+          'Content'
+        ]
+      }
+
+      const selection = select(parentEntity)
+      const childSelection = selection.select('child')
+
+      childSelection.addAfter([entity1, entity2]).should.equal(childSelection)
+      parentEntity.content.should.eql([
+        'Surrounding',
+        childEntity,
+        entity1,
+        entity2,
+        'Content'
+      ])
+    })
+  })
+
   describe('Selection::append', () => {
     it('should add entity content', () => {
       const entity = {
@@ -664,7 +808,119 @@ describe('select', () => {
     })
   })
 
+  describe('Selection::removeChild', () => {
+    it('should return true when it removes a child', () => {
+      const childEntity = {
+        type: 'child',
+        params: [],
+        content: []
+      }
+
+      const parentEntity = {
+        type: 'parent',
+        params: [],
+        content: [
+          'Surrounding',
+          childEntity,
+          'Content'
+        ]
+      }
+
+      const selection = select(parentEntity)
+      selection.removeChild(childEntity).should.equal(true)
+      parentEntity.content.should.eql(['Surrounding', 'Content'])
+    })
+
+    it('should remove string content', () => {
+      const parentEntity = {
+        type: 'parent',
+        params: [],
+        content: [
+          'Surrounding',
+          'child',
+          'Content'
+        ]
+      }
+
+      const selection = select(parentEntity)
+      selection.removeChild('child').should.equal(true)
+      parentEntity.content.should.eql(['Surrounding', 'Content'])
+    })
+
+    it('should return false when the entity being removed is not a child', () => {
+      const childEntity = {
+        type: 'child',
+        params: [],
+        content: []
+      }
+
+      const parentEntity = {
+        type: 'parent',
+        params: [],
+        content: [
+          'Surrounding',
+          'Content'
+        ]
+      }
+
+      const selection = select(parentEntity)
+      selection.removeChild(childEntity).should.equal(false)
+      parentEntity.content.should.eql(['Surrounding', 'Content'])
+    })
+  })
+
   describe('Selection::remove', () => {
+    it('should return true when it removes the content', () => {
+      const childEntity = {
+        type: 'child',
+        params: [],
+        content: []
+      }
+
+      const parentEntity = {
+        type: 'parent',
+        params: [],
+        content: [
+          'Surrounding',
+          childEntity,
+          'Content'
+        ]
+      }
+
+      const selection = select(parentEntity)
+      const childSelection = selection.select('child')
+      childSelection.remove()
+      parentEntity.content.should.eql(['Surrounding', 'Content'])
+      should.throw(() => childSelection.remove())
+    })
+
+    it('should handle the case where one selection removes and one still references', () => {
+      const childEntity = {
+        type: 'child',
+        params: [],
+        content: []
+      }
+
+      const parentEntity = {
+        type: 'parent',
+        params: [],
+        content: [
+          'Surrounding',
+          childEntity,
+          'Content'
+        ]
+      }
+
+      const selection = select(parentEntity)
+      const childSelection1 = selection.select('child')
+      const childSelection2 = selection.select('child')
+      childSelection1.remove()
+      parentEntity.content.should.eql(['Surrounding', 'Content'])
+      childSelection2.remove()
+    })
+  })
+
+  describe('Selection::removeChildOfType', () => {
     it('should remove entities by type', () => {
       const child1 = {type: 'child1', params: [], content: []}
       const child2 = {type: 'child2', params: [], content: []}
@@ -682,11 +938,11 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.remove('child1').should.equal(child1)
+      selection.removeChildOfType('child1').should.equal(child1)
       entity.content.should.eql([child2, child3])
-      selection.remove('child1').should.equal(child3)
+      selection.removeChildOfType('child1').should.equal(child3)
       entity.content.should.eql([child2])
-      should.not.exist(selection.remove('child1'))
+      should.not.exist(selection.removeChildOfType('child1'))
       entity.content.should.eql([child2])
     })
 
@@ -710,14 +966,14 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.remove('child4', {recursive: true}).should.eql(child4)
+      selection.removeChildOfType('child4', {recursive: true}).should.eql(child4)
       entity.content.should.eql([
         child1,
         'text',
         child5,
         {type: 'child2', params: [], content: ['text', child3]}
       ])
-      should.not.exist(selection.remove('child4', {recursive: true}))
+      should.not.exist(selection.removeChildOfType('child4', {recursive: true}))
     })
 
     it('should remove multiple entities by type', () => {
@@ -737,11 +993,11 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.remove(['child1', 'child2']).should.eql([child1, child2])
+      selection.removeChildOfType(['child1', 'child2']).should.eql([child1, child2])
       entity.content.should.eql([child3])
-      selection.remove(['child1', 'child2']).should.eql([child3, undefined])
+      selection.removeChildOfType(['child1', 'child2']).should.eql([child3, undefined])
       entity.content.should.eql([])
-      selection.remove(['child1', 'child2']).should.eql([undefined, undefined])
+      selection.removeChildOfType(['child1', 'child2']).should.eql([undefined, undefined])
       entity.content.should.eql([])
     })
 
@@ -765,17 +1021,17 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.remove(['child1', 'child4'], {recursive: true}).should.eql([child1, child4])
+      selection.removeChildOfType(['child1', 'child4'], {recursive: true}).should.eql([child1, child4])
       entity.content.should.eql([
         'text',
         child5,
         {type: 'child2', params: [], content: ['text', child3]}
       ])
-      selection.remove(['child1', 'child4'], {recursive: true}).should.eql([undefined, undefined])
+      selection.removeChildOfType(['child1', 'child4'], {recursive: true}).should.eql([undefined, undefined])
     })
   })
 
-  describe('Selection::removeAll', () => {
+  describe('Selection::removeAllChildOfType', () => {
     it('should remove entities by type', () => {
       const child1 = {type: 'child1', params: [], content: []}
       const child2 = {type: 'child2', params: [], content: []}
@@ -793,9 +1049,9 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.removeAll('child1').should.eql([child1, child3])
+      selection.removeAllChildOfType('child1').should.eql([child1, child3])
       entity.content.should.eql([child2])
-      selection.removeAll('child1').should.eql([])
+      selection.removeAllChildOfType('child1').should.eql([])
       entity.content.should.eql([child2])
     })
 
@@ -819,13 +1075,13 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.removeAll('child4', {recursive: true}).should.eql([child4, child5])
+      selection.removeAllChildOfType('child4', {recursive: true}).should.eql([child4, child5])
       entity.content.should.eql([
         child1,
         'text',
         {type: 'child2', params: [], content: ['text', child3]}
       ])
-      selection.removeAll('child4', {recursive: true}).should.eql([])
+      selection.removeAllChildOfType('child4', {recursive: true}).should.eql([])
     })
 
     it('should remove multiple entities by type', () => {
@@ -851,11 +1107,11 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.removeAll(['child1', 'child2']).should.eql([[child1, child4], [child2, child5]])
+      selection.removeAllChildOfType(['child1', 'child2']).should.eql([[child1, child4], [child2, child5]])
       entity.content.should.eql([child3, child6])
-      selection.removeAll(['child1', 'child2']).should.eql([[], []])
+      selection.removeAllChildOfType(['child1', 'child2']).should.eql([[], []])
       entity.content.should.eql([child3, child6])
-      selection.removeAll(['child3']).should.eql([[child3, child6]])
+      selection.removeAllChildOfType(['child3']).should.eql([[child3, child6]])
       entity.content.should.eql([])
     })
 
@@ -879,12 +1135,12 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.removeAll(['child1', 'child4'], {recursive: true}).should.eql([[child1], [child5, child4]])
+      selection.removeAllChildOfType(['child1', 'child4'], {recursive: true}).should.eql([[child1], [child5, child4]])
       entity.content.should.eql([
         'text',
         {type: 'child2', params: [], content: ['text', child3]}
       ])
-      selection.removeAll(['child1', 'child4'], {recursive: true}).should.eql([[], []])
+      selection.removeAllChildOfType(['child1', 'child4'], {recursive: true}).should.eql([[], []])
     })
   })
 

@@ -213,6 +213,55 @@ describe('read', () => {
     return read(filename, {inline: false}).should.eventually.eql(expected)
   })
 
+  it('should inline multiple files', () => {
+    const filename = 'test/files/read/source9.um'
+
+    const expected = {
+      type: '',
+      params: [],
+      content: [
+        {
+          type: 'inlinedContent',
+          params: [],
+          content: [
+            {
+              type: 'div',
+              params: ['file1'],
+              content: ['Part1']
+            },
+            {
+              type: 'div',
+              params: ['file1'],
+              content: ['Part2']
+            },
+            {
+              type: 'div',
+              params: ['file2'],
+              content: ['Part1']
+            },
+            {
+              type: 'div',
+              params: ['file2'],
+              content: ['Part2']
+            },
+            {
+              type: 'div',
+              params: ['file3'],
+              content: ['Part1']
+            },
+            {
+              type: 'div',
+              params: ['file3'],
+              content: ['Part2']
+            }
+          ]
+        }
+      ]
+    }
+
+    return read(filename).should.eventually.eql(expected)
+  })
+
   it('read.page should work', () => {
     const expected = new quantum.File({
       info: new quantum.FileInfo({

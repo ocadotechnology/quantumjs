@@ -38,7 +38,6 @@
     "connect": "^3.5.0",
     "flatten": "^1.0.2",
     "fs-extra": "^1.0.0",
-    "glob": "^7.1.1",
     "globby": "^6.1.0",
     "merge": "^1.2.0",
     "serve-static": "^1.11.1",

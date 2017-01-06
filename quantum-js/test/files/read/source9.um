@@ -1,0 +1,4 @@
+@inlinedContent
+  @inline file1.um
+  @inline file2.um
+  @inline file3.um

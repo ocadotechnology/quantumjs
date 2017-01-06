@@ -68,13 +68,6 @@ QuantumJS (${version})
 
     ${chalk.bold('quantum ')}${chalk.yellow.bold('list')}
       Lists out the available entities
-
-    ${chalk.bold('quantum ')}${chalk.yellow.bold('help ')}${chalk.yellow.green('<entity>')}
-      Displays this help information, or information about entities available.
-
-      ${chalk.cyan('Examples')}
-        quantum help
-        quantum help docs.titlebar
   `)
 }
 
@@ -125,6 +118,20 @@ function createPipeline (transforms) {
     })
     return result
   }
+}
+
+function silentLogger (logger) { return (evt) => {} }
+
+function errorLogger (logger) {
+  return (evt) => {
+    if (evt.type === 'error') {
+      logger(evt)
+    }
+  }
+}
+
+function allLogger (logger) {
+  return (evt) => logger(evt)
 }
 
 function getLoggerWrapper (config) {
@@ -265,20 +272,6 @@ const commands = {
   build: build,
   watch: watch,
   list: list
-}
-
-function silentLogger (logger) { return () => {} }
-
-function errorLogger (logger) {
-  return (evt) => {
-    if (evt.type === 'error') {
-      logger(evt)
-    }
-  }
-}
-
-function allLogger (logger) {
-  return (evt) => logger(evt)
 }
 
 function defaultLogger (evt) {
