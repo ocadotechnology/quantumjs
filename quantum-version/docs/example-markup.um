@@ -1,0 +1,62 @@
+
+@versionedPage
+
+# Only included in versions 0.1.0 and later
+@function Bob
+  @added 0.1.0
+  @description
+    # Versioned content provides alternative versions of content for
+    # different versions. It does a full replacement.
+    @versioned
+      @version 0.1.0: Description 1
+      @version 0.2.0: Description 2
+
+  @param x [Number]
+    @description
+      Some Description
+
+  # Only included in versions 0.2.0 and later, and gets removed after 0.4.0
+  @param y [Number]
+    @added 0.2.0
+    @deprecated 0.3.0
+    @removed 0.4.0
+    @description
+      @versioned
+        @version 0.2.0: Description 1
+        @version 0.4.0: Description 2
+
+# Special tags
+
+@versionedPage
+  @version 0.1.0
+  @version 0.2.0
+  @version 0.3.0
+# 'Turns on' versioning for this page and specifies the versions to build
+
+@added version
+# Marks that a resource has been added (this tag gets removed in the next version).
+
+@updated verson
+# Marks that a resource has been changed (this tag gets removed in the next version).
+
+@deprecated version
+# Marks that a resource has been deprecated (this tag stays around until a @removed tag is
+# added for a version.
+
+@removed version
+# Marks that a resource has been removed (removes any @deprecated tag found). In
+# the next version the entity this tag has been placed in will be automatically
+# removed.
+
+@versioned
+  @version 0.1.0
+    # content for 0.1.0 here
+  @version 0.2.0
+    # content for 0.2.0 here
+  @version 0.3.0
+    # content for 0.3.0 here
+# Defines multiple alternative content for different versions
+
+@versionList
+# This will be populated with the complete list of versions built and the current
+# version.

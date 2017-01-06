@@ -26,8 +26,6 @@
     "fix-lint-issues": "eslint --fix lib/*.js test/*.js"
   },
   "dependencies": {
-    "chalk": "^1.1.1",
-    "merge": "^1.2.0",
     "quantum-js": "^2.0.0-rc.2"
   },
   "devDependencies": {
