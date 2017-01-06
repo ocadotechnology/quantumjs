@@ -18,6 +18,7 @@ const typeLinks = {
   'String': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
   'File': '/modules/quantum-js/#file',
   'FileInfo': '/modules/quantum-js/#fileinfo',
+  'Selection': '/modules/quantum-js/#selection',
 }
 
 const htmlOptions = {
@@ -57,8 +58,8 @@ function customizedTemplate (file) {
 module.exports = {
   pipeline: [
     customizedTemplate,
-    api(),
     version(),
+    api(),
     docs(),
     html(htmlOptions)
   ],

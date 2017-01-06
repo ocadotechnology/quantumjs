@@ -1,6 +1,10 @@
 @function clone
+  @added 2.0.0
+    @description
+      Added a function for deep cloning AST.
+
   @description
-    Creates a deep clone of some ast:
+    Creates a deep clone of some AST:
 
     @@codeblock js
       const entity = {

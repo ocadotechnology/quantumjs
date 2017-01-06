@@ -119,6 +119,7 @@
   @notice [What Next?]
     Read more about quantum and how it works here:
     @list
+      @item: @hyperlink(/docs/markup)[Markup language]
       @item: @hyperlink(/docs/core-concepts)[Core Concepts]
 
     And for some more interesting examples, check out these tutorials:

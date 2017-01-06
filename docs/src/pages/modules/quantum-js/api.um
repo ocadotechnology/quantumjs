@@ -1,4 +1,9 @@
-@versionList
-  @version 2.0.0
-
-@inline api/2.0.0.um
+@api quantum-js
+  @inline api/file-info.um
+  @inline api/file.um
+  @inline api/parse.um
+  @inline api/clone.um
+  @inline api/stringify.um
+  @inline api/json.um
+  @inline api/select.um
+  @inline api/selection.um

@@ -27,7 +27,7 @@
       by the cli when in watch mode.
 
 @prototype FileInfo
-  @added
+  @added 2.0.0
     @description
       An object which holds filename information. Each @api.type[File] instance
       has one of these. The @api.type[FileInfo] object contains information on where

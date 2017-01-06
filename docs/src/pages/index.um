@@ -16,8 +16,8 @@
 
     QuantumJS comes preloaded with some modules for writing beautiful
     @hyperlink(/modules/quantum-api/)[API docs], drawing simple
-    @hyperlink(/modules/quantum-diagram/)[diagrams], and various utilities aimed for
-    @hyperlink(/modules/quantum-docs/)[writing documentation]. It
+    @hyperlink(/modules/quantum-diagram/)[diagrams], and comes with various
+    utilities to help with @hyperlink(/modules/quantum-docs/)[writing documentation]. It
     also has support for @hyperlink(/modules/quantum-version/)[versioned content],
     @hyperlink(/modules/quantum-template/)[templates] and
     @hyperlink(/modules/quantum-code-highlight/)[code highlighting]. All of this
@@ -38,7 +38,7 @@
       @item: Uses node.js - full access to npm when writing custom transforms
       @item: Prebuilt transforms for writing technical documentation
       @item: Auto browser page refresh when files are changed
-      @item: Fast - builds this site in under 2 seconds
+      @item: Fast - builds this site in ~1 second
 
   @topic Example
 

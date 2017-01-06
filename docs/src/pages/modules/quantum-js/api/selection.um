@@ -1,6 +1,7 @@
-@prototype select.Selection
+@prototype Selection
+  @added 2.0.0
+
   @description
-    The type of object returned from quantum.select
 
   @method clone
   @method cs

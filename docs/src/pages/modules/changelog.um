@@ -6,7 +6,6 @@
   @description
     What has changed in quantum for each release.
 
-
 @contentSection
   @changelogList
     @groupByApi true

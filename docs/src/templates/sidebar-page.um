@@ -3,6 +3,9 @@
   @content
     @inline resources.um
 
+    @versionedPage
+      @version 2.0.0
+
     @header
       @icon [/resources/logo.svg] [/]
       @title QuantumJS

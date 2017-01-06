@@ -1,0 +1,60 @@
+@function parse
+  @added 2.0.0
+    @description
+      A function for parsing string containing quantum markup into JavaScript
+      objects.
+
+  @description
+    A function for parsing string containing quantum markup into JavaScript
+    objects.
+
+    @@codeblock js
+      const quantum = require('quantum-js')
+
+      const markup = `
+        @example param1 params2
+          Content 1
+          Content 2
+      `
+
+      console.log(quantum.parse(markup))
+      /*
+        {
+          type: '',
+          params: [],
+          content: [
+            {
+              type: 'example',
+              params: ['param1', 'param2'],
+              content: ['Content 1', 'Content 2']
+            }
+          ]
+        }
+      */
+
+  @param input [String]
+    @description:
+      A string containing markup to parse. i.e. something that looks like this:
+
+      @@codeblock um
+        @blogEntry 10/01/17
+          Blah blah blah
+
+  @returns Object
+    @description
+      The parsed ast. Looks something like this:
+
+      @codeblock js
+        {
+          type: "",
+          params: [],
+          content: [
+            {
+              type: "blogEntry",
+              params: ["10/01/17"],
+              content: [
+                "Blah blah blah"
+              ]
+            }
+          ]
+        }

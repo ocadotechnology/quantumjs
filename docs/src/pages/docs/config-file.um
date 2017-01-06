@@ -46,9 +46,9 @@
 
       // This defines how to transform an entire page into html
       const pipeline = [
+        version(),
         template(),
         api(),
-        version(),
         docs(),
         html(htmlOptions)
       ]
@@ -63,20 +63,19 @@
 
   @topic Available options
     @api
-
-      @function PageTransform
+      @function FileTransform
         @description
           A function that takes a page and returns a new page with a transformation
           applied. This transfomation can be anything - from converting quantum-ast
           to html, or a transformation that replaces variables in the markup with
           values from template.
 
-        @param page [Page]: The page to transform
-        @returns [Page/Array[Page]]: The transformed page
+        @param page [File]: The page to transform
+        @returns [File/Array[File]]: The transformed page
 
-      @property pipeline [Array[PageTransform]]
+      @property pipeline [Array[FileTransform]]
         @description
-          An array of PageTransform functions that take a page as the input and
+          An array of FileTransform functions that take a page as the input and
           return a page (or array of pages) that have been transformed.
 
           Here is the most basic pipeline you can define:
