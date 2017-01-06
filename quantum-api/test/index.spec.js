@@ -1,9 +1,6 @@
 'use strict'
 
 const chai = require('chai')
-const path = require('path')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
 const api = require('..')
 
 chai.should()

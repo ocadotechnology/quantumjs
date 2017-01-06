@@ -56,7 +56,7 @@ function transforms (options) {
 module.exports = function (options) {
   const opts = config.resolve(options)
   return (file) => {
-    if(opts.processChangelogs) {
+    if (opts.processChangelogs) {
       return changelogFileTransform.fileTransform(file, opts)
     } else {
       return file
@@ -64,7 +64,7 @@ module.exports = function (options) {
   }
 }
 
-module.exports.transforms = transforms,
+module.exports.transforms = transforms
 module.exports.languages = {
   javascript: javascript,
   css: css

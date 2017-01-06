@@ -2,6 +2,6 @@
 
 # This script removes all the node_modules, target and coverage folders
 
-find . -name "node_modules" -exec rm -rf '{}' +
-find . -name "target" -exec rm -rf '{}' +
-find . -name "coverage" -exec rm -rf '{}' +
+rm -r */target
+rm -r */coverage
+rm -r */node_modules

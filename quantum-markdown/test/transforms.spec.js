@@ -1,10 +1,13 @@
 'use strict'
-require('chai').should()
+
+const chai = require('chai')
 const path = require('path')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const codeHighlight = require('quantum-code-highlight')
 const markdown = require('..').transforms
+
+chai.should()
 
 describe('transforms', () => {
   it('render some basic markdown', () => {

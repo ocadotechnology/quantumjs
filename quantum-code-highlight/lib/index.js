@@ -16,12 +16,8 @@ hljs.registerLanguage('um', quantumSyntax)
 
 function highlightCode (code, language) {
   if (language) {
-    const validLanguage = hljs.listLanguages().indexOf(language) > -1
-    if (language.startsWith('nohighlight') || !validLanguage) {
-      return code
-    } else {
-      return validLanguage ? hljs.highlight(language, code, true).value : code
-    }
+    const validLanguage = hljs.getLanguage(language) !== undefined
+    return validLanguage ? hljs.highlight(language, code, true).value : code
   } else {
     return hljs.highlightAuto(code).value
   }

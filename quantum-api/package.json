@@ -24,8 +24,8 @@
   },
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd --recursive -R spec test && npm run lint",
-    "lint": "eslint lib/**/*.js test/**/*.js",
-    "fix-lint-issues": "eslint --fix lib/**/*.js test/**/*.js",
+    "lint": "eslint lib/**/*.js lib/*.js test/**/*.js test/*.js",
+    "fix-lint-issues": "eslint --fix lib/**/*.js lib/*.js test/**/*.js test/*.js",
     "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"
   },
   "dependencies": {

@@ -311,7 +311,7 @@ describe('javascript', () => {
 
           javascript().changelog.createHeaderDom(selection, transform).should.eql(
             dom.create('span').class('qm-changelog-javascript-header')
-              .add(dom.create('span').class('qm-changelog-javascript-' + type)
+              .add(dom.create('span').class('qm-changelog-javascript-' + type.replace('?', ''))
                 .add(dom.create('span').class('qm-changelog-javascript-name').text('name'))
                 .add(dom.create('span').class('qm-changelog-javascript-type').text('type'))
               )

@@ -61,7 +61,7 @@ function resolve (options) {
     issueUrl: resolveOption(options, 'issueUrl'),
     processChangelogs: resolveOption(options, 'processChangelogs'),
 
-    //XXX: come up with better names for these changlog-only options
+    // XXX: come up with better names for these changlog-only options
     reverseVisibleList: resolveOption(options, 'reverseVisibleList'),
     groupByApi: resolveOption(options, 'groupByApi'),
 
@@ -81,10 +81,6 @@ function resolve (options) {
       deprecated: {
         displayName: 'Deprecated',
         iconClass: 'quantum-changelog-icon-deprecated'
-      },
-      enhancement: {
-        displayName: 'Enhancement',
-        iconClass: 'quantum-changelog-icon-enhancement'
       },
       updated: {
         displayName: 'Updated',

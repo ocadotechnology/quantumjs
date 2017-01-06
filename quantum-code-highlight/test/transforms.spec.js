@@ -46,7 +46,7 @@ describe('transforms', () => {
 
   it('highlight a codeblock', () => {
     const selection = quantum.select({
-      type: 'code',
+      type: 'codeblock',
       params: ['js'],
       content: ['function (x) { return x * x }']
     })
@@ -65,9 +65,30 @@ describe('transforms', () => {
     )
   })
 
+  it('highlight a codeblock (invalid language)', () => {
+    const selection = quantum.select({
+      type: 'codeblock',
+      params: ['notalanguage'],
+      content: ['function (x) { return x * x }']
+    })
+
+    codeHighlight().codeblock(selection).should.eql(
+      dom.create('div')
+        .class('quantum-code-highlight-codeblock language-notalanguage')
+        .add(dom.create('pre')
+          .add(dom.create('code')
+            .text('function (x) { return x * x }', {escape: false})))
+        .add(dom.asset({
+          url: '/quantum-code-highlight.css',
+          file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
+          shared: true
+        }))
+    )
+  })
+
   it('highlight a codeblock (auto highlight)', () => {
     const selection = quantum.select({
-      type: 'code',
+      type: 'codeblock',
       params: [],
       content: ['function (x) { return x * x }']
     })

@@ -188,11 +188,11 @@ function buildDOM (options) {
   }
 
   // the page transform function that turns parsed content into html content
-  return (page) => {
-    return Promise.resolve(quantum.select(page.content).transform(transformer))
+  return (file) => {
+    return Promise.resolve(quantum.select(file.content).transform(transformer))
       .then((elements) => {
         const completeElements = includeCommonMetaTags ? elements.concat(commonMetaTags) : elements
-        return page.clone({
+        return file.clone({
           content: new HTMLPage(completeElements)
         })
       })
@@ -216,19 +216,19 @@ function buildHTML (opts) {
     assetPath: undefined
   }, opts)
 
-  return (page) => {
-    return page.content.stringify(options).then(p => {
-      const assetPagesPromise = Promise.all(p.assets.map(asset => {
+  return (file) => {
+    return file.content.stringify(options).then(p => {
+      const assetFilesPromise = Promise.all(p.assets.map(asset => {
         // XXX: make this loader an option so that caching can be done
         return fs.readFileAsync(asset.filename, 'utf-8')
           .then(content => {
-            return new quantum.Page({
-              file: new quantum.File({
+            return new quantum.File({
+              info: new quantum.FileInfo({
                 src: asset.filename,
                 resolved: asset.filename,
                 base: '',
-                dest: (page.file.destBase || '') + (options.assetPath || '') + asset.url,
-                destBase: page.file.destBase,
+                dest: (file.info.destBase || '') + (options.assetPath || '') + asset.url,
+                destBase: file.info.destBase,
                 watch: false
               }),
               content: content
@@ -236,15 +236,15 @@ function buildHTML (opts) {
           })
       }))
 
-      return assetPagesPromise.then(assetPages => {
+      return assetFilesPromise.then(assetFiles => {
         const resultPages = []
 
-        resultPages.push(page.clone({
-          file: page.file.withExtension('.html'),
+        resultPages.push(file.clone({
+          info: file.info.withExtension('.html'),
           content: p.html
         }))
 
-        assetPages.forEach(p => resultPages.push(p))
+        assetFiles.forEach(p => resultPages.push(p))
 
         return resultPages
       })
@@ -295,17 +295,17 @@ function paragraphTransform (selection, transform) {
 
 // renames name.html to name/index.html and leaves index.html as it is
 function htmlRenamer () {
-  return (page) => {
-    if (page.file.dest.lastIndexOf('.html') === page.file.dest.length - 5) {
-      const filenameWithoutExtension = path.basename(page.file.dest).replace('.html', '')
-      const rootPath = path.dirname(page.file.dest)
-      return page.clone({
-        file: page.file.clone({
-          dest: filenameWithoutExtension === 'index' ? page.file.dest : path.join(rootPath, filenameWithoutExtension, 'index.html')
+  return (file) => {
+    if (file.info.dest.lastIndexOf('.html') === file.info.dest.length - 5) {
+      const filenameWithoutExtension = path.basename(file.info.dest).replace('.html', '')
+      const rootPath = path.dirname(file.info.dest)
+      return file.clone({
+        info: file.info.clone({
+          dest: filenameWithoutExtension === 'index' ? file.info.dest : path.join(rootPath, filenameWithoutExtension, 'index.html')
         })
       })
     } else {
-      return page
+      return file
     }
   }
 }
