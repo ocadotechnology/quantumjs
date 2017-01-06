@@ -8,6 +8,7 @@
 
 ## Processing @added, @removed, @updated and @deprecated tags
 Not necessarily in this order
+
 1. Remove the @added **tag** where the version doesn't match the @added version
 2. Remove the @update **tag** where the version doesn't match the @updated version
 3. Remove any @deprecated **tag** for elements also tagged with @deprecated for the current version or an earlier version
