@@ -1,37 +1,38 @@
 'use strict'
 
+const body = require('./entity-transforms/builders/body')
 const javascript = require('./languages/javascript')
 const css = require('./languages/css')
-
-const bodyBuilders = require('./entity-transforms/builders/body-builders')
 
 function defaultIssueUrl () {
   return undefined
 }
 
 const defaultOptions = {
+  // Defines what the default api looks like
   apiBuilders: [
-    bodyBuilders.description(),
-    bodyBuilders.extras(),
-    bodyBuilders.groups(),
-    bodyBuilders.properties(),
-    bodyBuilders.prototypes(),
-    bodyBuilders.objects(),
-    bodyBuilders.functions(),
-    bodyBuilders.classes()
+    body.description,
+    body.extras,
+    body.groups,
+    javascript.properties,
+    javascript.prototypes,
+    javascript.objects,
+    javascript.functions,
+    css.classes
   ],
+  // Defines what the default group looks like
   groupBuilders: [
-    bodyBuilders.description(),
-    bodyBuilders.extras(),
-    bodyBuilders.groups(),
-    bodyBuilders.params(),
-    bodyBuilders.properties(),
-    bodyBuilders.prototypes(),
-    bodyBuilders.objects(),
-    bodyBuilders.functions(),
-    bodyBuilders.methods(),
-    bodyBuilders.classes(),
-    bodyBuilders.events()
+    body.description,
+    body.extras,
+    body.groups,
+    javascript.params,
+    javascript.properties,
+    javascript.prototypes,
+    javascript.objects,
+    javascript.functions,
+    javascript.methods,
+    javascript.events,
+    css.classes
   ],
   processChangelogs: true,
   targetVersions: undefined,
@@ -39,8 +40,8 @@ const defaultOptions = {
     javascript(),
     css()
   ],
-  reverseVisibleList: false,
-  groupByApi: false,
+  changelogReverseVisibleList: false,
+  changelogGroupByApi: false,
   issueUrl: defaultIssueUrl
 }
 
@@ -60,37 +61,8 @@ function resolve (options) {
     targetVersions: resolveOption(options, 'targetVersions'),
     issueUrl: resolveOption(options, 'issueUrl'),
     processChangelogs: resolveOption(options, 'processChangelogs'),
-
-    // XXX: come up with better names for these changlog-only options
-    reverseVisibleList: resolveOption(options, 'reverseVisibleList'),
-    groupByApi: resolveOption(options, 'groupByApi'),
-
-    tags: {
-      info: {
-        displayName: 'Information',
-        iconClass: 'quantum-changelog-icon-info'
-      },
-      bugfix: {
-        displayName: 'Bug Fix',
-        iconClass: 'quantum-changelog-icon-bug-fix'
-      },
-      removed: {
-        displayName: 'Removed',
-        iconClass: 'quantum-changelog-icon-removed'
-      },
-      deprecated: {
-        displayName: 'Deprecated',
-        iconClass: 'quantum-changelog-icon-deprecated'
-      },
-      updated: {
-        displayName: 'Updated',
-        iconClass: 'quantum-changelog-icon-updated'
-      },
-      added: {
-        displayName: 'Added',
-        iconClass: 'quantum-changelog-icon-added'
-      }
-    }
+    changelogReverseVisibleList: resolveOption(options, 'changelogReverseVisibleList'),
+    changelogGroupByApi: resolveOption(options, 'changelogGroupByApi')
   }
 }
 

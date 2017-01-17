@@ -4,17 +4,13 @@ const should = require('chai').should()
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs-extra'))
 const FileInfo = require('../').FileInfo
-const path = require('path')
 
 describe('resolve', () => {
-  const currDir = process.cwd()
   before(() => {
-    process.chdir(path.join(__dirname, '../'))
     return fs.removeAsync('target/test').then(() => {
       return fs.copyAsync('test/files', 'target/test')
     })
   })
-  after(() => process.chdir(currDir))
 
   const expectedList1 = [
     new FileInfo({

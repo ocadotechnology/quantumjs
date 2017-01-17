@@ -422,6 +422,40 @@ describe('select', () => {
     })
   })
 
+  describe('Selection::selectUpwards', () => {
+    it('should selectAll correctly', () => {
+      const entity = {
+        content: [
+          {
+            type: 'parent',
+            params: [],
+            content: [
+              {
+                type: 'child1',
+                params: [],
+                content: [
+                  {
+                    type: 'child2',
+                    params: [],
+                    content: []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+
+      select(entity)
+        .select('parent')
+        .select('child1')
+        .select('child2')
+        .selectUpwards('parent')
+        .entity()
+        .should.equal(entity.content[0])
+    })
+  })
+
   describe('Selection::selectAll', () => {
     it('should selectAll correctly', () => {
       const entity = {
@@ -443,6 +477,25 @@ describe('select', () => {
         select(entity).selectAll('tagA', {recursive: true})[1],
         select(entity).selectAll('tagA', {recursive: true})[2]
       ])
+    })
+
+    it('should return an empty array when nothing can be found', () => {
+      const entity = {
+        content: [
+          {
+            type: 'tag',
+            params: [],
+            content: [
+              {type: 'tagA', params: [], content: []},
+              {type: 'tagA', params: [], content: []},
+              {type: 'tagA', params: [], content: []},
+              'non entity'
+            ]
+          }
+        ]
+      }
+
+      select(entity).selectAll(['tagD'], {recursive: true}).should.eql([])
     })
 
     it('should selectAll for an array of types correctly', () => {
@@ -1181,6 +1234,22 @@ describe('select', () => {
       return select(entity).transform(transformer).then((res) => {
         res.should.eql(['one', 'two', 'three'])
       })
+    })
+
+    it('should act on each of the child (non promise)', () => {
+      const entity = {
+        type: 'tag',
+        params: [],
+        content: ['one', {type: 'two', params: [], content: []}, 'three']
+      }
+
+      function transformer (value) {
+        if (value === 'one') { return undefined }
+        return value.type ? value.type() : value
+      }
+
+      return select(entity).transform(transformer)
+        .should.eql([undefined, 'two', 'three'])
     })
   })
 })

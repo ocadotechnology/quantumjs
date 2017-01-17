@@ -1,19 +1,46 @@
 {
-  "config": {
-    "src_lint_globs": "quantum-js/lib/**/*.js quantum-dom/lib/**/*.js quantum-html/lib/**/*.js quantum-template/lib/**/*.js quantum-version/lib/**/*.js quantum-api/lib/**/*.js quantum-docs/lib/**/*.js quantum-diagram/lib/**/*.js quantum-code-highlight/lib/**/*.js quantum-markdown/lib/**/*.js",
-    "test_lint_globs": "quantum-js/test/**/*.js quantum-js/test/*.js quantum-dom/test/**/*.js quantum-dom/test/*.js quantum-html/test/**/*.js quantum-html/test/*.js quantum-code-highlight/test/**/*.js quantum-code-highlight/test/*.js quantum-api/test/**/*.js quantum-api/test/*.js quantum-diagram/test/**/*.js quantum-diagram/test/*.js quantum-docs/test/**/*.js quantum-docs/test/*.js quantum-version/test/**/*.js quantum-version/test/*.js quantum-template/test/**/*.js quantum-template/test/*.js quantum-markdown/test/**/*.js quantum-markdown/test/*.js",
-    "test_globs": "quantum-js/test/**/*.spec.js quantum-js/test/*.spec.js quantum-dom/test/**/*.spec.js quantum-dom/test/*.spec.js quantum-html/test/**/*.spec.js quantum-html/test/*.spec.js quantum-code-highlight/test/**/*.spec.js quantum-code-highlight/test/*.spec.js quantum-api/test/**/*.spec.js quantum-api/test/*.spec.js quantum-diagram/test/**/*.spec.js quantum-diagram/test/*.spec.js quantum-docs/test/**/*.spec.js quantum-docs/test/*.spec.js quantum-version/test/**/*.spec.js quantum-version/test/*.spec.js quantum-template/test/**/*.spec.js quantum-template/test/*.spec.js quantum-markdown/test/**/*.spec.js quantum-markdown/test/*.spec.js"
-  },
+  "private": true,
   "scripts": {
-    "lint": "eslint $npm_package_config_src_lint_globs $npm_package_config_test_lint_globs",
-    "test-and-cover": "./node_modules/istanbul/lib/cli.js cover -x lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec $npm_package_config_test_globs",
-    "test": "npm run lint && npm run test-and-cover",
-    "clean": "rm -r coverage; true && rm -r target; true && ./scripts/clean",
-    "clean-all": "./scripts/clean",
-    "install-all": "./scripts/install",
+    "lint": "npm-run-all lint:*",
+    "lint:quantum-api": "cd quantum-api && npm run lint",
+    "lint:quantum-code-highlight": "cd quantum-code-highlight && npm run lint",
+    "lint:quantum-diagram": "cd quantum-diagram && npm run lint",
+    "lint:quantum-docs": "cd quantum-docs && npm run lint",
+    "lint:quantum-dom": "cd quantum-dom && npm run lint",
+    "lint:quantum-html": "cd quantum-html && npm run lint",
+    "lint:quantum-js": "cd quantum-js && npm run lint",
+    "lint:quantum-markdown": "cd quantum-markdown && npm run lint",
+    "lint:quantum-template": "cd quantum-template && npm run lint",
+    "lint:quantum-version": "cd quantum-version && npm run lint",
+
+    "test": "npm-run-all test:* && npm run combine-coverage",
+    "combine-coverage": "node scripts/combine-coverage */coverage/coverage.json",
+    "test:quantum-api": "cd quantum-api && npm test",
+    "test:quantum-code-highlight": "cd quantum-code-highlight && npm test",
+    "test:quantum-diagram": "cd quantum-diagram && npm test",
+    "test:quantum-docs": "cd quantum-docs && npm test",
+    "test:quantum-dom": "cd quantum-dom && npm test",
+    "test:quantum-html": "cd quantum-html && npm test",
+    "test:quantum-js": "cd quantum-js && npm test",
+    "test:quantum-markdown": "cd quantum-markdown && npm test",
+    "test:quantum-template": "cd quantum-template && npm test",
+    "test:quantum-version": "cd quantum-version && npm test",
+
+    "postinstall": "npm-run-all install-all:*",
+    "install-all:quantum-api": "cd quantum-api && npm install --production",
+    "install-all:quantum-code-highlight": "cd quantum-code-highlight && npm install --production",
+    "install-all:quantum-diagram": "cd quantum-diagram && npm install --production",
+    "install-all:quantum-docs": "cd quantum-docs && npm install --production",
+    "install-all:quantum-dom": "cd quantum-dom && npm install --production",
+    "install-all:quantum-html": "cd quantum-html && npm install --production",
+    "install-all:quantum-js": "cd quantum-js && npm install --production",
+    "install-all:quantum-markdown": "cd quantum-markdown && npm install --production",
+    "install-all:quantum-template": "cd quantum-template && npm install --production",
+    "install-all:quantum-version": "cd quantum-version && npm install --production",
+
+    "clean": "rm -rf coverage target node_modules */coverage */target */node_modules",
     "link-all": "./scripts/link",
-    "unlink-all": "./scripts/unlink",
-    "test-all": "./scripts/test"
+    "unlink-all": "./scripts/unlink"
   },
   "devDependencies": {
     "eslint": "^3.3.1",
@@ -21,7 +48,8 @@
     "eslint-plugin-promise": "^2.0.1",
     "eslint-plugin-standard": "^2.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.1.2"
-  },
-  "private": true
+    "istanbul-combine": "^0.3.0",
+    "mocha": "^3.1.2",
+    "npm-run-all": "^4.0.0"
+  }
 }

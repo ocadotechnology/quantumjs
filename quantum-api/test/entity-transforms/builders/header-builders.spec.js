@@ -1,7 +1,7 @@
 const chai = require('chai')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
-const headerBuilders = require('../../../lib/entity-transforms/builders/header-builders')
+const headerBuilders = require('../../../lib/entity-transforms/builders/header')
 const header = require('../../../lib/entity-transforms/components/header')
 const type = require('../../../lib/entity-transforms/components/type')
 

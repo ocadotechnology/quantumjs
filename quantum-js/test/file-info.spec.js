@@ -106,6 +106,28 @@ describe('FileInfo', () => {
         resolved: 'a.um',
         base: 'src/content',
         dest: 'target/a.um',
+        destBase: 'target',
+        watch: true
+      })
+
+      file.clone({
+        destBase: 'target2'
+      }).should.eql(new FileInfo({
+        src: 'src/content/a.um',
+        resolved: 'a.um',
+        base: 'src/content',
+        dest: 'target/a.um',
+        destBase: 'target2',
+        watch: true
+      }))
+    })
+
+    it('should change dest', () => {
+      const file = new FileInfo({
+        src: 'src/content/a.um',
+        resolved: 'a.um',
+        base: 'src/content',
+        dest: 'target/a.um',
         watch: true
       })
 
@@ -120,7 +142,7 @@ describe('FileInfo', () => {
       }))
     })
 
-    it('should change base', () => {
+    it('should change watch', () => {
       const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',

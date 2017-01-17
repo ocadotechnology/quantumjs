@@ -92,9 +92,7 @@ function read (filename, opts) {
   }
 }
 
-module.exports = read
-
-module.exports.page = (filename, options) => {
+function readAsFile (filename, options) {
   return read(filename, options).then(content => {
     return new File({
       info: new FileInfo({
@@ -104,4 +102,9 @@ module.exports.page = (filename, options) => {
       content: content
     })
   })
+}
+
+module.exports = {
+  read,
+  readAsFile
 }

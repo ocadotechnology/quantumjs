@@ -5,12 +5,11 @@
   @input
     @changelogList
       @process
-        @version 0.1.0
-          @api ApiName
-            @object parentObj
-              @property test [String]
-                @added
-                  @description: Property added
+        @api ApiName
+          @object parentObj
+            @property test [String]
+              @added 0.1.0
+                @description: Property added
       @version 0.1.0
   @output
     @changelogList

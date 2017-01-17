@@ -179,6 +179,10 @@
   color: #AB7BC1;
 }
 
+.qm-changelog-label-bugfix {
+  color: #D69B24;
+}
+
 .qm-changelog-label-deprecated {
   color: #A9A9A9;
 }
@@ -187,29 +191,15 @@
   color: #EC3A65;
 }
 
-.qm-changelog-label-enhancement {
-  color: #44AFAC;
-}
-
-.qm-changelog-label-bugfix {
-  color: #D69B24;
-}
-
-.qm-changelog-label-docs {
-  color: #5E99D0;
-}
-
 .qm-changelog-label-info {
   color: #6F6F6F;
 }
 
 .qm-changelog-label-added,
 .qm-changelog-label-updated,
+.qm-changelog-label-bugfix,
 .qm-changelog-label-deprecated,
 .qm-changelog-label-removed,
-.qm-changelog-label-enhancement,
-.qm-changelog-label-bugfix,
-.qm-changelog-label-docs,
 .qm-changelog-label-info {
   /*background: white;*/
 }

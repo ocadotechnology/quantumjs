@@ -3,12 +3,21 @@
 const dom = require('quantum-dom')
 
 const collapsible = require('../components/collapsible')
-const noticeBuilder = require('./notice-builder')
+const notice = require('./notice')
 
-const deprecatedNoticeBuilder = noticeBuilder('deprecated', 'Deprecated')
-const removedNoticeBuilder = noticeBuilder('removed', 'Removed')
+const addedNoticeBuilder = notice('added', 'Added')
+const updatedNoticeBuilder = notice('updated', 'Updated')
+const bugfixNoticeBuilder = notice('bugfix', 'Bug Fix')
+const deprecatedNoticeBuilder = notice('deprecated', 'Deprecated')
+const removedNoticeBuilder = notice('removed', 'Removed')
 
-const standardBuilders = [deprecatedNoticeBuilder, removedNoticeBuilder]
+const standardBuilders = [
+  addedNoticeBuilder,
+  updatedNoticeBuilder,
+  bugfixNoticeBuilder,
+  deprecatedNoticeBuilder,
+  removedNoticeBuilder
+]
 
 module.exports = function itemBuilder (options) {
   // render as something else if the type parameter matches

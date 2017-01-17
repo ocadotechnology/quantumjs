@@ -2,7 +2,7 @@ const chai = require('chai')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const group = require('../../lib/entity-transforms/group')
-const bodyBuilders = require('../../lib/entity-transforms/builders/body-builders')
+const javascript = require('../../lib/languages/javascript')
 
 chai.should()
 
@@ -34,7 +34,7 @@ describe('group', () => {
       }
     }
 
-    group({builders: [bodyBuilders.functions()]})(selection, transformer).should.eql(
+    group({builders: [javascript.functions]})(selection, transformer).should.eql(
       dom.create('div').class('qm-api-group')
         .add(dom.create('div').class('qm-api-function-group')
           .add(dom.create('h2').text('Functions'))

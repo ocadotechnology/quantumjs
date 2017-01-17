@@ -198,6 +198,15 @@ Selection.prototype = {
 
     return res
   },
+  selectUpwards: function (type) {
+    let s = this
+    while (s.parent()) {
+      s = s.parent()
+      if (s.type() === type) {
+        return s
+      }
+    }
+  },
   filter: function (f) {
     if (Array.isArray(f)) {
       return this.filter((entity) => f.indexOf(entity.type) > -1)

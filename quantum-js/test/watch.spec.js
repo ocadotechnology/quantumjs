@@ -10,13 +10,8 @@ const quantum = require('../')
 const watch = quantum.watch
 const FileInfo = quantum.FileInfo
 const File = quantum.File
-const path = require('path')
 
 describe('watcher', () => {
-  const currDir = process.cwd()
-  before(() => process.chdir(path.join(__dirname, '../')))
-  after(() => process.chdir(currDir))
-
   it('should watch the right files for change', () => {
     return watch.watcher('target/test/watch-test/*').then((watcher) => {
       return watcher.files().then((fileInfos) => {
@@ -383,10 +378,6 @@ describe('watcher', () => {
 })
 
 describe('watch', () => {
-  const currDir = process.cwd()
-  before(() => process.chdir(path.join(__dirname, '../')))
-  after(() => process.chdir(currDir))
-
   it('should watch inline files', (done) => {
     const specs = {
       files: 'target/test/watch-change-inline-test/index.um',

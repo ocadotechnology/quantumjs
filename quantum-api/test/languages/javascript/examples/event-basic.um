@@ -5,11 +5,10 @@
   @input
     @changelogList
       @process
-        @version 0.1.0
-          @api ApiName
-            @event test [String]
-              @added
-                @description: Event added
+        @api ApiName
+          @event test [String]
+            @added 0.1.0
+              @description: Event added
       @version 0.1.0
   @output
     @changelogList

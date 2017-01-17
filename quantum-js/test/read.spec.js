@@ -1,20 +1,17 @@
 'use strict'
+
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 
 const quantum = require('../lib')
 const read = quantum.read
-const path = require('path')
+const readAsFile = quantum.readAsFile
+
+chai.use(chaiAsPromised)
+chai.should()
 
 describe('read', () => {
   const filename = 'test/files/read/source1.um'
-  const currDir = process.cwd()
-  before(() => {
-    chai.use(chaiAsPromised)
-    chai.should()
-    process.chdir(path.join(__dirname, '../'))
-  })
-  after(() => process.chdir(currDir))
 
   it('should work', () => {
     const expected = {
@@ -262,7 +259,7 @@ describe('read', () => {
     return read(filename).should.eventually.eql(expected)
   })
 
-  it('read.page should work', () => {
+  it('readAsFile should work', () => {
     const expected = new quantum.File({
       info: new quantum.FileInfo({
         src: filename,
@@ -309,7 +306,7 @@ describe('read', () => {
       }
     })
 
-    return read.page(filename).should.eventually.eql(expected)
+    return readAsFile(filename).should.eventually.eql(expected)
   })
 
   it('should yield an error when parsing fails', () => {

@@ -45,12 +45,14 @@ function versionTransform (file, options) {
   const rootSelection = quantum.select(file.content)
 
   // Is it a versioned file? Early return if not
-  if (!rootSelection.has('versionedPage')) {
+  if (!rootSelection.has('versionedPage', {recursive: true})) {
     return [file]
   }
 
   // Resolve the complete version list
-  const versions = rootSelection.select('versionedPage').selectAll('version').map(s => s.ps())
+  const versions = rootSelection.select('versionedPage', {recursive: true})
+    .selectAll('version')
+    .map(s => s.ps())
 
   // Resolve the list of versions to build
   const targetVersions = options.versions || versions
@@ -83,9 +85,9 @@ function versionTransform (file, options) {
 
 /* Does the content manipulation for the page to resolve all versioned content */
 function processFile (file, version, versions, targetVersions) {
-  processTags(file, version, versions)
-  processVersioned(file, version, versions)
-  processVersionLists(file, version, targetVersions)
+  processTags(file.content, version, versions, file)
+  processVersioned(file.content, version, versions)
+  processVersionLists(file.content, version, targetVersions)
   return file
 }
 
@@ -96,7 +98,7 @@ function versionABeforeVersionB (versionA, versionB, versions) {
 }
 
 /* Processes all @added, @updated, @deprecated and @removed tags for a file */
-function processTags (file, version, versions) {
+function processTags (content, version, versions, file) {
   const tags = quantum.select(file.content)
     .selectAll(['added', 'updated', 'deprecated', 'removed'], {recursive: true})
     .filter(tag => {
@@ -165,8 +167,8 @@ function mostRecentVersion (version, candidateVersionSelections, versions) {
 }
 
 /* Processes all @versioned sections for a file */
-function processVersioned (file, version, versions) {
-  quantum.select(file.content)
+function processVersioned (content, version, versions) {
+  quantum.select(content)
     .selectAll('versioned', {recursive: true})
     .forEach(versioned => {
       const candidateVersionSelections = versioned.selectAll('version')
@@ -179,8 +181,8 @@ function processVersioned (file, version, versions) {
 }
 
 /* Populates all @versionList entities with @version and @current tags for a page */
-function processVersionLists (file, version, versions) {
-  quantum.select(file.content)
+function processVersionLists (content, version, versions) {
+  quantum.select(content)
     .selectAll('versionList', {recursive: true})
     .forEach(versionList => {
       versionList.content(versions.map(v => {
@@ -194,5 +196,8 @@ module.exports = {
   resolveOptions,
   defaultFilenameModifier,
   fileTransform,
-  mostRecentVersion
+  mostRecentVersion,
+  processTags,
+  processVersioned,
+  processVersionLists
 }

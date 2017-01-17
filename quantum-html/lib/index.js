@@ -314,13 +314,18 @@ module.exports = function (options) {
   const domBuilder = buildDOM(options)
   const htmlBuilder = buildHTML(options)
   const renamer = htmlRenamer()
-  return (page) => {
+
+  function transformer (page) {
     return domBuilder(page)
       .then(htmlBuilder)
       .then(pages => {
         return pages.map(renamer)
       })
   }
+
+  transformer.entityTransforms = (options || {}).transforms || transforms()
+
+  return transformer
 }
 
 module.exports.HTMLPage = HTMLPage

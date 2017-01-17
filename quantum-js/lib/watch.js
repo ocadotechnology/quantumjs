@@ -18,7 +18,7 @@ const flatten = require('flatten')
 const fs = Promise.promisifyAll(require('fs-extra'))
 
 const parse = require('./parse')
-const read = require('./read')
+const read = require('./read').read
 const File = require('./file')
 const fileOptions = require('./file-options')
 

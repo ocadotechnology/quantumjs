@@ -2,20 +2,15 @@
 const should = require('chai').should()
 const quantum = require('quantum-js')
 const template = require('../')
-const path = require('path')
 
 describe('pipeline', () => {
-  const currDir = process.cwd()
-  before(() => process.chdir(path.join(__dirname, '../')))
-  after(() => process.chdir(currDir))
-
   it('should export the correct things', () => {
     template.should.be.a.function
     template.wrapper.should.be.a.function
   })
 
   function compare (input, source, expected) {
-    return quantum.read.page(source)
+    return quantum.readAsFile(source)
       .then(template({variables: input}))
       .then((result) => {
         return quantum.read(expected)

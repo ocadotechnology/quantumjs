@@ -2,50 +2,11 @@ const chai = require('chai')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const html = require('quantum-html')
-const bodyBuilders = require('../../../lib/entity-transforms/builders/body-builders')
+const body = require('../../../lib/entity-transforms/builders/body')
 
 const should = chai.should()
 
 describe('body-builders', () => {
-  describe('item group builders should exist', () => {
-    it('prototypes', () => {
-      bodyBuilders.prototypes().should.be.a('function')
-    })
-    it('constructors', () => {
-      bodyBuilders.constructors().should.be.a('function')
-    })
-    it('objects', () => {
-      bodyBuilders.objects().should.be.a('function')
-    })
-    it('params', () => {
-      bodyBuilders.params().should.be.a('function')
-    })
-    it('properties', () => {
-      bodyBuilders.properties().should.be.a('function')
-    })
-    it('methods', () => {
-      bodyBuilders.methods().should.be.a('function')
-    })
-    it('events', () => {
-      bodyBuilders.events().should.be.a('function')
-    })
-    it('functions', () => {
-      bodyBuilders.functions().should.be.a('function')
-    })
-    it('returns', () => {
-      bodyBuilders.returns().should.be.a('function')
-    })
-    it('classes', () => {
-      bodyBuilders.classes().should.be.a('function')
-    })
-    it('extraClasses', () => {
-      bodyBuilders.extraClasses().should.be.a('function')
-    })
-    it('childClasses', () => {
-      bodyBuilders.childClasses().should.be.a('function')
-    })
-  })
-
   describe('description', () => {
     it('should create a basic block using only the text content', () => {
       const selection = quantum.select({
@@ -59,7 +20,7 @@ describe('body-builders', () => {
 
       function transforms () {}
 
-      bodyBuilders.description()(selection, transforms).should.eql(
+      body.description(selection, transforms).should.eql(
         dom.create('div')
           .class('qm-api-description')
           .text('Some text only content\nThat spans multiple lines')
@@ -86,7 +47,7 @@ describe('body-builders', () => {
 
       function transforms () {}
 
-      bodyBuilders.description()(selection, transforms).should.eql(
+      body.description(selection, transforms).should.eql(
         dom.create('div')
           .class('qm-api-description')
           .add(html.paragraphTransform(quantum.select(descriptionBlock, transforms)))
@@ -114,7 +75,7 @@ describe('body-builders', () => {
         return selection.cs ? selection.cs() : selection
       }
 
-      bodyBuilders.defaultValue()(selection, transforms).should.eql(
+      body.default(selection, transforms).should.eql(
         dom.create('div').class('qm-api-default')
           .add(dom.create('span').class('qm-api-default-key').text('Default: '))
           .add(dom.create('span').class('qm-api-default-value').text('True'))
@@ -131,7 +92,7 @@ describe('body-builders', () => {
 
     function transforms () {}
 
-    should.not.exist(bodyBuilders.defaultValue()(selection, transforms))
+    should.not.exist(body.default(selection, transforms))
   })
 
   describe('extras', () => {
@@ -163,7 +124,7 @@ describe('body-builders', () => {
 
       function transforms () {}
 
-      bodyBuilders.extras()(selection, transforms).should.eql(
+      body.extras(selection, transforms).should.eql(
         dom.create('div').class('qm-api-extras')
           .add(dom.create('div').class('qm-api-extra').add(html.paragraphTransform(quantum.select(extra1), transforms)))
           .add(dom.create('div').class('qm-api-extra').add(html.paragraphTransform(quantum.select(extra2), transforms)))
@@ -180,7 +141,7 @@ describe('body-builders', () => {
 
     function transforms () {}
 
-    should.not.exist(bodyBuilders.extras()(selection, transforms))
+    should.not.exist(body.extras(selection, transforms))
   })
 
   describe('groups', () => {
@@ -214,16 +175,16 @@ describe('body-builders', () => {
         return dom.create('span').text(selection.cs())
       }
 
-      return bodyBuilders.groups()(selection, transforms).should.eql(
+      return body.groups(selection, transforms).should.eql(
         dom.create('div').class('qm-api-groups')
           .add(dom.create('div').class('qm-api-group')
             .add(dom.create('h2').text('Group 1'))
             .add(dom.create('div').class('qm-api-group-content')
-              .add(bodyBuilders.description()(quantum.select(group1), transforms))))
+              .add(body.description(quantum.select(group1), transforms))))
           .add(dom.create('div').class('qm-api-group')
             .add(dom.create('h2').text('Group 2'))
             .add(dom.create('div').class('qm-api-group-content')
-              .add(bodyBuilders.description()(quantum.select(group2), transforms))))
+              .add(body.description(quantum.select(group2), transforms))))
       )
     })
   })
@@ -264,16 +225,16 @@ describe('body-builders', () => {
 
     function transforms () {}
 
-    return bodyBuilders.groups()(selection, transforms).should.eql(
+    return body.groups(selection, transforms).should.eql(
       dom.create('div').class('qm-api-groups')
         .add(dom.create('div').class('qm-api-group')
           .add(dom.create('h2').text('Group 1'))
           .add(dom.create('div').class('qm-api-group-content')
-            .add(bodyBuilders.description()(quantum.select(group1), transforms))))
+            .add(body.description(quantum.select(group1), transforms))))
         .add(dom.create('div').class('qm-api-group')
           .add(dom.create('h2').text('Group 2'))
           .add(dom.create('div').class('qm-api-group-content')
-            .add(bodyBuilders.description()(quantum.select(group2), transforms))))
+            .add(body.description(quantum.select(group2), transforms))))
     )
   })
 
@@ -286,6 +247,6 @@ describe('body-builders', () => {
 
     function transforms () {}
 
-    should.not.exist(bodyBuilders.groups()(selection, transforms))
+    should.not.exist(body.groups(selection, transforms))
   })
 })

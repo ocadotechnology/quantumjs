@@ -27,18 +27,18 @@ describe('config.resolve', () => {
       .languages.should.eql([{name: 'javascript'}, {name: 'css'}])
   })
 
-  it('should resolve reverseVisibleList correctly', () => {
-    config.resolve(undefined).reverseVisibleList.should.equal(false)
-    config.resolve({}).reverseVisibleList.should.equal(false)
-    config.resolve({reverseVisibleList: false}).reverseVisibleList.should.equal(false)
-    config.resolve({reverseVisibleList: true}).reverseVisibleList.should.equal(true)
+  it('should resolve changelogReverseVisibleList correctly', () => {
+    config.resolve(undefined).changelogReverseVisibleList.should.equal(false)
+    config.resolve({}).changelogReverseVisibleList.should.equal(false)
+    config.resolve({changelogReverseVisibleList: false}).changelogReverseVisibleList.should.equal(false)
+    config.resolve({changelogReverseVisibleList: true}).changelogReverseVisibleList.should.equal(true)
   })
 
-  it('should resolve groupByApi correctly', () => {
-    config.resolve(undefined).groupByApi.should.equal(false)
-    config.resolve({}).groupByApi.should.equal(false)
-    config.resolve({groupByApi: false}).groupByApi.should.equal(false)
-    config.resolve({groupByApi: true}).groupByApi.should.equal(true)
+  it('should resolve changelogGroupByApi correctly', () => {
+    config.resolve(undefined).changelogGroupByApi.should.equal(false)
+    config.resolve({}).changelogGroupByApi.should.equal(false)
+    config.resolve({changelogGroupByApi: false}).changelogGroupByApi.should.equal(false)
+    config.resolve({changelogGroupByApi: true}).changelogGroupByApi.should.equal(true)
   })
 
   it('should resolve issueUrl correctly', () => {

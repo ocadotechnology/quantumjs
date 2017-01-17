@@ -1,7 +1,7 @@
 const chai = require('chai')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
-const itemGroupBuilder = require('../../../lib/entity-transforms/builders/item-group-builder')
+const itemGroup = require('../../../lib/entity-transforms/builders/item-group')
 const utils = require('../../../lib/utils')
 
 const should = chai.should()
@@ -14,7 +14,7 @@ describe('item-group-builder', () => {
       content: []
     })
 
-    should.not.exist(itemGroupBuilder()(selection))
+    should.not.exist(itemGroup()(selection))
   })
 
   it('should render something if the type is present (type and title should be passed through properly)', () => {
@@ -32,7 +32,7 @@ describe('item-group-builder', () => {
       return dom.create('div')
     }
 
-    itemGroupBuilder('function', 'Functions')(selection, transform).should.eql(
+    itemGroup('function', 'Functions')(selection, transform).should.eql(
       dom.create('div').class('qm-api-function-group')
         .add(dom.create('h2').text('Functions'))
         .add(utils.organisedEntity(selection.filter('function')).transform(transform))
@@ -54,7 +54,7 @@ describe('item-group-builder', () => {
       return dom.create('div')
     }
 
-    itemGroupBuilder(['function', 'notfunction'], 'Functions and more')(selection, transform).should.eql(
+    itemGroup(['function', 'notfunction'], 'Functions and more')(selection, transform).should.eql(
       dom.create('div').class('qm-api-function-group')
         .add(dom.create('h2').text('Functions and more'))
         .add(utils.organisedEntity(selection).transform(transform))

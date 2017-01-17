@@ -1,6 +1,7 @@
 'use strict'
 
 const chai = require('chai')
+const quantum = require('quantum-js')
 const api = require('..')
 
 chai.should()
@@ -71,5 +72,29 @@ describe('quantum-api', () => {
     api.transforms({languages: [css]})['class'].should.be.a('function')
     api.transforms({languages: [css]})['extraclass'].should.be.a('function')
     api.transforms({languages: [css]})['childclass'].should.be.a('function')
+  })
+
+  it('should do nothing when options.processChangelogs is false', () => {
+    const file = new quantum.File({
+      info: new quantum.FileInfo({
+        src: 'src/content/a1.um',
+        resolved: 'a1.um',
+        base: 'src/content',
+        dest: 'target/a1.um',
+        watch: true
+      }),
+      content: {
+        type: '',
+        params: [],
+        content: [
+          {
+            type: 'changelogList',
+            params: [],
+            content: []
+          }
+        ]
+      }
+    })
+    api({processChangelogs: false})(file).should.eql(file)
   })
 })

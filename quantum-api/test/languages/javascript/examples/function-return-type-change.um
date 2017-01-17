@@ -5,16 +5,24 @@
   @input
     @changelogList
       @process
-        @version 0.1.0
-          @api ApiName
-            @function test
-              @param arg0 [String]
-              @returns Number
-        @version 0.2.0
-          @api ApiName
-            @function test
-              @param arg0 [String]
-              @returns String
+        @api ApiName
+          @function test
+            # @added 0.1.0
+            #   @description: Return type starts as Number
+            @updated 0.2.0
+              @description: Return type changed to String
+            @param arg0 [String]
+            @versioned
+              @version 0.1.0
+                @returns Number
+              @version 0.2.0
+                @returns String
+
+        @api ApiName
+          @function test
+            @param arg0 [String]
+            @returns String
+
       @version 0.1.0
       @version 0.2.0
   @output

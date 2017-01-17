@@ -11,15 +11,15 @@
 const config = require('./config')
 
 // builders
-const bodyBuilders = require('./entity-transforms/builders/body-builders')
-const headerBuilders = require('./entity-transforms/builders/header-builders')
-const itemBuilder = require('./entity-transforms/builders/item-builder')
+const header = require('./entity-transforms/builders/header')
+const body = require('./entity-transforms/builders/body')
+const item = require('./entity-transforms/builders/item')
 
 // entity transforms
 const api = require('./entity-transforms/api')
 const group = require('./entity-transforms/group')
-const changelog = require('./entity-transforms/changelog')
 const changelogList = require('./entity-transforms/changelog-list')
+const changelog = require('./entity-transforms/changelog')
 
 // languages
 const javascript = require('./languages/javascript')
@@ -32,14 +32,10 @@ function transforms (options) {
   const opts = config.resolve(options)
 
   const transforms = {
-    api: api({
-      builders: opts.apiBuilders
-    }),
-    group: group({
-      builders: opts.groupBuilders
-    }),
-    changelog: changelog(opts),
-    changelogList: changelogList()
+    api: api({ builders: opts.apiBuilders }),
+    group: group({ builders: opts.groupBuilders }),
+    changelogList: changelogList(),
+    changelog: changelog(opts)
   }
 
   opts.languages.forEach(language => {
@@ -65,12 +61,15 @@ module.exports = function (options) {
 }
 
 module.exports.transforms = transforms
+module.exports.fileTransform = {
+  changelog: changelogFileTransform
+}
 module.exports.languages = {
-  javascript: javascript,
-  css: css
+  javascript,
+  css
 }
 module.exports.builders = {
-  itemBuilder: itemBuilder,
-  headerBuilders: headerBuilders,
-  bodyBuilders: bodyBuilders
+  header,
+  body,
+  item
 }

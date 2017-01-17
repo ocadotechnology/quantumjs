@@ -20,12 +20,13 @@ function changelogBlock () {
 
 describe('changelog', () => {
   const testLanguage = {
+    name: 'test-language',
+    entityTypes: [],
     changelog: {
-      name: 'test-language',
+      assets: [],
       createHeaderDom (headerSelection, transforms) {
         return dom.create('div').class('test-header').text(headerSelection.select('name').ps())
-      },
-      assets: []
+      }
     }
   }
 
@@ -34,7 +35,7 @@ describe('changelog', () => {
     tags: {
       updated: {
         displayName: 'Updated',
-        iconClass: 'quantum-changelog-icon-updated'
+        iconClass: 'qm-changelog-icon-updated'
       }
     }
   }
@@ -44,7 +45,7 @@ describe('changelog', () => {
     tags: {
       updated: {
         displayName: 'Updated',
-        iconClass: 'quantum-changelog-icon-updated'
+        iconClass: 'qm-changelog-icon-updated'
       }
     }
   }
@@ -95,6 +96,8 @@ describe('changelog', () => {
     })
 
     const testLanguage = {
+      name: 'test-language',
+      entityTypes: [],
       changelog: {
         assets: [
           dom.asset({
@@ -197,7 +200,7 @@ describe('changelog', () => {
       .add(changelog.changeDom(quantum.select(change), transform, {
         updated: {
           displayName: 'Updated',
-          iconClass: 'quantum-changelog-icon-updated'
+          iconClass: 'qm-changelog-icon-updated'
         }
       }))
 
@@ -339,7 +342,7 @@ describe('changelog', () => {
       const header = dom.create('div').class('qm-changelog-group-head')
         .add(dom.create('div').class('qm-changelog-group-title').text('GroupName'))
         .add(dom.create('div').class('qm-changelog-group-labels')
-        .add(changelog.label('updated', 'quantum-changelog-icon-updated', 1)))
+        .add(changelog.label('updated', 'qm-changelog-icon-updated', 1)))
 
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries')
@@ -347,7 +350,7 @@ describe('changelog', () => {
             .add(changelog.changeDom(quantum.select(change), transform, {
               updated: {
                 displayName: 'Updated',
-                iconClass: 'quantum-changelog-icon-updated'
+                iconClass: 'qm-changelog-icon-updated'
               }
             }))))
 
@@ -396,7 +399,7 @@ describe('changelog', () => {
       const header = dom.create('div').class('qm-changelog-group-head')
         .add(dom.create('div').class('qm-changelog-group-title').text('GroupName'))
         .add(dom.create('div').class('qm-changelog-group-labels')
-        .add(changelog.label('updated', 'quantum-changelog-icon-updated', 1)))
+        .add(changelog.label('updated', 'qm-changelog-icon-updated', 1)))
 
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries')
@@ -406,7 +409,7 @@ describe('changelog', () => {
               .add(changelog.changeDom(quantum.select(change), transform, {
                 updated: {
                   displayName: 'Updated',
-                  iconClass: 'quantum-changelog-icon-updated'
+                  iconClass: 'qm-changelog-icon-updated'
                 }
               })))))
 
@@ -466,7 +469,7 @@ describe('changelog', () => {
       const header = dom.create('div').class('qm-changelog-group-head')
         .add(dom.create('div').class('qm-changelog-group-title').text('GroupName'))
         .add(dom.create('div').class('qm-changelog-group-labels')
-        .add(changelog.label('updated', 'quantum-changelog-icon-updated', 1)))
+        .add(changelog.label('updated', 'qm-changelog-icon-updated', 1)))
 
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries')
@@ -477,7 +480,7 @@ describe('changelog', () => {
               .add(changelog.changeDom(quantum.select(change), transform, {
                 updated: {
                   displayName: 'Updated',
-                  iconClass: 'quantum-changelog-icon-updated'
+                  iconClass: 'qm-changelog-icon-updated'
                 }
               })))))
 
@@ -493,19 +496,6 @@ describe('changelog', () => {
 })
 
 describe('changeDom', () => {
-  const tagsByName = {
-    updated: {
-      displayName: 'Updated',
-      iconClass: 'quantum-changelog-icon-class'
-    },
-    added: {
-      displayName: 'Added'
-    },
-    removed: {
-      iconClass: 'quantum-changelog-icon-class'
-    }
-  }
-
   function issueUrl (id) {
     return '/link/to/issue/' + id
   }
@@ -517,7 +507,7 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, tagsByName, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon'))
@@ -533,7 +523,7 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, tagsByName, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon'))
@@ -549,12 +539,12 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, tagsByName, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon')
             .add(dom.create('i')
-              .class('quantum-changelog-icon-class qm-changelog-text-updated')
+              .class('qm-changelog-icon-updated qm-changelog-text-updated')
               .attr('title', 'Updated')))
           .add(dom.create('div').class('qm-changelog-change-type').text('Updated')))
         .add(dom.create('div').class('qm-changelog-change-body'))
@@ -574,12 +564,12 @@ describe('changeDom', () => {
       ]
     })
 
-    changelog.changeDom(changeSelection, transform, tagsByName, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon')
             .add(dom.create('i')
-              .class('quantum-changelog-icon-class qm-changelog-text-updated')
+              .class('qm-changelog-icon-updated qm-changelog-text-updated')
               .attr('title', 'Updated')))
           .add(dom.create('div').class('qm-changelog-change-type').text('Updated'))
           .add(dom.create('span').class('qm-changelog-change-issues')
@@ -598,12 +588,12 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, tagsByName, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon')
             .add(dom.create('i')
-              .class('qm-changelog-text-added')
+              .class('qm-changelog-icon-added qm-changelog-text-added')
               .attr('title', 'Added')))
           .add(dom.create('div').class('qm-changelog-change-type').text('Added')))
         .add(dom.create('div').class('qm-changelog-change-body'))
@@ -617,12 +607,14 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, tagsByName, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon')
-            .add(dom.create('i').class('quantum-changelog-icon-class qm-changelog-text-removed')))
-          .add(dom.create('div').class('qm-changelog-change-type')))
+            .add(dom.create('i')
+              .class('qm-changelog-icon-removed qm-changelog-text-removed')
+              .attr('title', 'Removed')))
+          .add(dom.create('div').class('qm-changelog-change-type').text('Removed')))
         .add(dom.create('div').class('qm-changelog-change-body'))
     )
   })

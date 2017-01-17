@@ -5,13 +5,12 @@
   @input
     @changelogList
       @process
-        @version 0.1.0
-          @api ApiName
-            @constructor test
-              @added
-                @description: Constructor added
-              @param arg0 [String]
-              @returns Number
+        @api ApiName
+          @constructor test
+            @added 0.1.0
+              @description: Constructor added
+            @param arg0 [String]
+            @returns Number
       @version 0.1.0
   @output
     @changelogList

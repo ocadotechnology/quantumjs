@@ -29,5 +29,9 @@ function entityToString (entity, indent) {
 }
 
 module.exports = (ast, options) => {
-  return ast.content.map((entity) => entityToString(entity, '')).join('\n') + '\n'
+  if (ast.type) {
+    return entityToString(ast, '')
+  } else {
+    return ast.content.map((entity) => entityToString(entity, '')).join('\n') + '\n'
+  }
 }

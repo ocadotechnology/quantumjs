@@ -1,0 +1,151 @@
+/*XXX: sort out naming to be qm-api-javascript-xxx*/
+
+.qm-api-type {
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+
+.qm-api-type-link {}
+
+.qm-api-type-link:not(:last-child):after {
+  margin: 0 0.1em;
+}
+
+/* Types */
+.qm-api-prototype {
+  border-color: #AB7BC1;
+}
+
+.qm-api-prototype > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #AB7BC1;
+}
+
+.qm-api-object {
+  border-color: #98b313;
+}
+
+.qm-api-object > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #98b313;
+}
+
+.qm-api-method {
+  border-color: #98b313;
+}
+
+.qm-api-method > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #98b313;
+}
+
+.qm-api-function {
+  border-color: #98b313;
+}
+
+.qm-api-function > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #98b313;
+}
+
+.qm-api-constructor {
+  border-color: #98b313;
+}
+
+.qm-api-constructor > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #98b313;
+}
+
+.qm-api-property {
+  border-color: #EEAD2B;
+}
+
+.qm-api-property > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #EEAD2B;
+}
+
+.qm-api-param {}
+
+.qm-api-event {
+  border-color: #EC3A65;
+}
+
+.qm-api-event > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #EC3A65;
+}
+
+.qm-api-returns {
+  border-color: #757575;
+}
+
+.qm-api-returns > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #757575;
+}
+
+
+.qm-changelog-javascript-header {
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.qm-changelog-javascript-object + .qm-changelog-javascript-object:before,
+.qm-changelog-javascript-object + .qm-changelog-javascript-prototype:before,
+.qm-changelog-javascript-object + .qm-changelog-javascript-function:before,
+.qm-changelog-javascript-object + .qm-changelog-javascript-property:before,
+.qm-changelog-javascript-prototype + .qm-changelog-javascript-function:before,
+.qm-changelog-javascript-prototype + .qm-changelog-javascript-object:before,
+.qm-changelog-javascript-property + .qm-changelog-javascript-property:before,
+.qm-changelog-javascript-property + .qm-changelog-javascript-function:before {
+  content: '.';
+  font-weight: normal;
+}
+
+.qm-changelog-javascript-prototype + .qm-changelog-javascript-property:before,
+.qm-changelog-javascript-prototype + .qm-changelog-javascript-method:before {
+  content: '::';
+  font-weight: normal;
+}
+.qm-changelog-javascript-prototype + .qm-changelog-javascript-event:before {
+  content: '~';
+  font-weight: normal;
+}
+
+.qm-changelog-javascript-property .qm-changelog-javascript-type,
+.qm-changelog-javascript-event .qm-changelog-javascript-type {
+  display: none;
+}
+
+.qm-changelog-javascript-property:last-child .qm-changelog-javascript-type,
+.qm-changelog-javascript-event:last-child .qm-changelog-javascript-type {
+  display: inline;
+}
+
+.qm-changelog-javascript-params:before {
+  content: '(';
+}
+
+.qm-changelog-javascript-params:after {
+  content: ')';
+}
+
+.qm-changelog-javascript-param {
+  font-weight: normal;
+}
+
+.qm-changelog-javascript-param:after {
+  content: ', ';
+}
+
+.qm-changelog-javascript-param:last-child:after {
+  content: '';
+}
+
+.qm-changelog-javascript-param-name:after {
+  content: ': ';
+}
+
+.qm-changelog-javascript-type,
+.qm-changelog-javascript-param-type {
+  font-weight: normal;
+  color: #8C8C8C;
+}
+
+.qm-changelog-javascript-type:before {
+  content: ': ';
+}

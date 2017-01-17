@@ -13,24 +13,10 @@
 }
 
 .qm-api-notice-header {
+  color: white;
   padding: 0.5em;
   margin: 0;
 }
-
-.qm-api-notice-added {}
-
-.qm-api-notice-updated {}
-
-.qm-api-notice-deprecated > .qm-api-notice-header {
-  background: #D8942A;
-  color: white;
-}
-
-.qm-api-notice-removed > .qm-api-notice-header {
-  background: #EC3A65;
-  color: white;
-}
-
 .qm-api-notice-body {
   background: white;
   padding: 1em;
@@ -40,6 +26,30 @@
   margin: 0;
 }
 
+.qm-api-notice-added > .qm-api-notice-header {
+  background: #98b313;
+}
+
+.qm-api-notice-updated > .qm-api-notice-header {
+  background: #AB7BC1;
+}
+
+.qm-api-notice-bugfix > .qm-api-notice-header {
+  background: #D69B24;
+}
+
+.qm-api-notice-deprecated > .qm-api-notice-header {
+  background: #A9A9A9;
+}
+
+.qm-api-notice-removed > .qm-api-notice-header {
+  background: #EC3A65;
+}
+
+.qm-api-notice-info > .qm-api-notice-header {
+  background: #6F6F6F;
+}
+
 /* Collapsible Styles */
 .qm-api-collapsible {}
 
@@ -47,16 +57,18 @@
   display: -ms-flexbox;
   display: -webkit-box;
   display: flex;
-  -ms-flex-align: center;
-  -webkit-box-align: center;
-          align-items: center;
+  -ms-flex-align: flex-start;
+  -webkit-box-align: flex-start;
+          align-items: flex-start;
   background: #ffffff;
+  height: 2em;
 }
 
 .qm-api-collapsible-toggle {
   padding: 0.5em;
   text-align: center;
   cursor: pointer;
+  align-self: stretch;
   -ms-flex-negative: 0;
       flex-shrink: 0;
 }
@@ -85,7 +97,7 @@
           flex-grow: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
-  height: 1em;
+  min-height: 1em;
   overflow-x: auto;
   overflow-y: hidden;
 }
@@ -142,11 +154,24 @@
 }
 
 .qm-api-header-details {
+  font-family: monospace;
   -ms-flex-negative: 1;
   flex-shrink: 1;
   -ms-flex-positive: 1;
   -webkit-box-flex: 1;
           flex-grow: 1;
+  display: inline-flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+}
+
+.qm-api-header-details.qm-api-deprecated {
+  opacity: 0.5;
+}
+
+.qm-api-header-details.qm-api-removed {
+  text-decoration: line-through;
+  opacity: 0.5;
 }
 
 .qm-api-header-tags {
@@ -174,25 +199,20 @@
   background: #AB7BC1;
 }
 
+.qm-api-tag-bugfix {
+  background: #D69B24;
+}
+
 .qm-api-tag-deprecated {
-  background: #D8942A;
+  background: #A9A9A9;
 }
 
 .qm-api-tag-removed {
   background: #EC3A65;
 }
 
-.qm-api-added {}
-
-.qm-api-updated {}
-
-.qm-api-deprecated {
-  color: #9E9E9E;
-}
-
-.qm-api-removed {
-  color: #9E9E9E;
-  text-decoration: line-through;
+.qm-api-tag-info {
+  background: #6F6F6F;
 }
 
 .qm-api-item-content {}
@@ -217,104 +237,14 @@
   content: "]";
 }
 
-.qm-api-type-link {}
-
-.qm-api-type-link:not(:last-child):after {
-  margin: 0 0.1em;
-}
-
-/* Types */
-.qm-api-prototype {
-  border-color: #AB7BC1;
-}
-
-.qm-api-prototype > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #AB7BC1;
-}
-
-.qm-api-object {
-  border-color: #98b313;
-}
-
-.qm-api-object > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #98b313;
-}
-
-.qm-api-method {
-  border-color: #98b313;
-}
-
-.qm-api-method > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #98b313;
-}
-
-.qm-api-function {
-  border-color: #98b313;
-}
-
-.qm-api-function > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #98b313;
-}
-
-.qm-api-constructor {
-  border-color: #98b313;
-}
-
-.qm-api-constructor > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #98b313;
-}
-
-.qm-api-property {
-  border-color: #EEAD2B;
-}
-
-.qm-api-property > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #EEAD2B;
-}
-
-.qm-api-param {}
-
-.qm-api-event {
-  border-color: #EC3A65;
-}
-
-.qm-api-event > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #EC3A65;
-}
-
-.qm-api-returns {
-  border-color: #757575;
-}
-
-.qm-api-returns > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #757575;
-}
-
-.qm-api-class {}
-
-.qm-api-childclass {
-  border-color: #D8942A;
-}
-
-.qm-api-childclass > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #D8942A;
-}
-
-.qm-api-extraclass {
-  border-color: #98b313;
-}
-
-.qm-api-extraclass > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
-  background-color: #98b313;
-}
-
-.qm-api-childclass {}
-
-.qm-api-entity {}
-
 .qm-api-header-function-name {}
 
-.qm-api-header-function-params {}
+.qm-api-header-function-params {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    flex-direction: row;
+}
 
 .qm-api-header-function-params:before {
   content: "(";
@@ -324,7 +254,11 @@
   content: ")";
 }
 
-.qm-api-header-function-param {}
+.qm-api-header-function-param {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
 
 .qm-api-header-function-param:after {
   content: ",";

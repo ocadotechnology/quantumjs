@@ -15,7 +15,7 @@ describe('transforms', () => {
 
     codeHighlight().code(selection).should.eql(
       dom.create('code')
-        .class('quantum-code-highlight-code language-js')
+        .class('qm-code-highlight-code language-js')
         .text('function (x) { return x * x }', {escape: false})
         .add(dom.asset({
           url: '/quantum-code-highlight.css',
@@ -34,7 +34,7 @@ describe('transforms', () => {
 
     codeHighlight().code(selection).should.eql(
       dom.create('code')
-        .class('quantum-code-highlight-code')
+        .class('qm-code-highlight-code')
         .text('function (x) { return x * x }', {escape: false})
         .add(dom.asset({
           url: '/quantum-code-highlight.css',
@@ -53,7 +53,7 @@ describe('transforms', () => {
 
     codeHighlight().codeblock(selection).should.eql(
       dom.create('div')
-        .class('quantum-code-highlight-codeblock language-js')
+        .class('qm-code-highlight-codeblock language-js')
         .add(dom.create('pre')
           .add(dom.create('code')
             .text('<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">x</span>) </span>{ <span class="hljs-keyword">return</span> x * x }', {escape: false})))
@@ -74,7 +74,7 @@ describe('transforms', () => {
 
     codeHighlight().codeblock(selection).should.eql(
       dom.create('div')
-        .class('quantum-code-highlight-codeblock language-notalanguage')
+        .class('qm-code-highlight-codeblock language-notalanguage')
         .add(dom.create('pre')
           .add(dom.create('code')
             .text('function (x) { return x * x }', {escape: false})))
@@ -95,7 +95,7 @@ describe('transforms', () => {
 
     codeHighlight().codeblock(selection).should.eql(
       dom.create('div')
-        .class('quantum-code-highlight-codeblock')
+        .class('qm-code-highlight-codeblock')
         .add(dom.create('pre')
             .add(dom.create('code')
               .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false})))

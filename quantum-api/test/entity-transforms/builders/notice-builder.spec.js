@@ -1,7 +1,7 @@
 const chai = require('chai')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
-const noticeBuilder = require('../../../lib/entity-transforms/builders/notice-builder')
+const notice = require('../../../lib/entity-transforms/builders/notice')
 
 const should = chai.should()
 
@@ -13,7 +13,7 @@ describe('notice-builder', () => {
       content: []
     })
 
-    should.not.exist(noticeBuilder()(selection))
+    should.not.exist(notice()(selection))
   })
 
   it('should render nothing if there is no content in the notice', () => {
@@ -25,7 +25,7 @@ describe('notice-builder', () => {
       ]
     })
 
-    should.not.exist(noticeBuilder('removed', 'Removed')(selection))
+    should.not.exist(notice('removed', 'Removed')(selection))
   })
 
   it('should render a notice', () => {
@@ -41,7 +41,7 @@ describe('notice-builder', () => {
       return selection
     }
 
-    noticeBuilder('removed', 'Removed')(selection, transformer).should.eql(
+    notice('removed', 'Removed')(selection, transformer).should.eql(
       dom.create('div').class('qm-api-notice qm-api-notice-removed')
         .add(dom.create('div').class('qm-api-notice-header').add('Removed'))
         .add(dom.create('div').class('qm-api-notice-body').add('Hi'))

@@ -19,7 +19,7 @@ const ws = require('ws')
 
 const qwatch = require('./watch')
 const parse = require('./parse')
-const read = require('./read')
+const read = require('./read').read
 const File = require('./file')
 const fileOptions = require('./file-options')
 const version = require('../package.json').version

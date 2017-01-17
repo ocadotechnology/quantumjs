@@ -558,6 +558,8 @@ p:last-child {
 .qm-docs-header-logo-link {
   display: inline-block;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .qm-docs-header-title {

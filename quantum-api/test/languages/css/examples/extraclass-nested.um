@@ -5,13 +5,12 @@
   @input
     @changelogList
       @process
-        @version 0.1.0
-          @api ApiName
-            @extraclass test1
-              @extraclass test2
-                @extraclass test3
-                  @added
-                    @description: Class added
+        @api ApiName
+          @extraclass test1
+            @extraclass test2
+              @extraclass test3
+                @added 0.1.0
+                  @description: Class added
       @version 0.1.0
   @output
     @changelogList

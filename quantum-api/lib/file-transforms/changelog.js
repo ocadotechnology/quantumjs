@@ -1,11 +1,9 @@
 'use strict'
 
 const quantum = require('quantum-js')
-
+const qversion = require('quantum-version')
 const utils = require('../utils')
-
-// XXX: get from config
-const tags = ['removed', 'deprecated', 'enhancement', 'bugfix', 'updated', 'added', 'info']
+const tags = require('../tags')
 
 /*
   fileTransform
@@ -19,10 +17,13 @@ const tags = ['removed', 'deprecated', 'enhancement', 'bugfix', 'updated', 'adde
   If no @changelogList is found, this function does nothing to the page
 */
 function fileTransform (page, options) {
-  const root = quantum.select(page.content)
+  const changelogLists = quantum.select(page.content)
+    .selectAll('changelogList', {recursive: true})
 
-  if (root.has('changelogList', {recursive: true})) {
-    processChangelogList(page, root.select('changelogList', {recursive: true}), options)
+  if (changelogLists.length > 0) {
+    changelogLists.forEach(changelogList => {
+      processChangelogList(page, changelogList, options)
+    })
     return page.clone({ content: page.content })
   } else {
     return page
@@ -38,392 +39,194 @@ function fileTransform (page, options) {
   entries.
 */
 function processChangelogList (page, changelogList, options) {
-  const groupByApi = changelogList.has('groupByApi') ? changelogList.select('groupByApi').ps() === 'true' : options.groupByApi
-  const reverseVisibleList = changelogList.has('reverseVisibleList') ? changelogList.select('reverseVisibleList').ps() === 'true' : options.reverseVisibleList
-  const languages = options.languages.map(l => l.changelog)
-  const targetVersions = options.targetVersions
-
-  const processSelection = changelogList.select('process')
-
-  const foundVersions = changelogList.selectAll('version').map(v => v.ps())
-
-  // pull out the api entries from the content
-  const { apisByVersion } = extractApis(processSelection)
-  const targetVersionList = targetVersions || foundVersions
-
-  // collect the descriptions
-  const descriptionsByVersion = new Map()
-  changelogList.selectAll('version').forEach(versionSelection => {
-    if (versionSelection.has('description')) {
-      descriptionsByVersion.set(versionSelection.ps(), versionSelection.select('description'))
-    }
+  const groupByApi = changelogList.has('groupByApi') ? changelogList.select('groupByApi').ps() === 'true' : options.changelogGroupByApi
+  const reverseVisibleList = changelogList.has('reverseVisibleList') ? changelogList.select('reverseVisibleList').ps() === 'true' : options.changelogReverseVisibleList
+  const entityTypeToLanguage = {}
+  options.languages.forEach(language => {
+    language.changelog.entityTypes.forEach(entityType => {
+      entityTypeToLanguage[entityType] = language
+    })
   })
 
-  // build the api maps and changelog entries
-  const changelogMapsByVersion = buildAllChangelogEntries(languages, targetVersionList, apisByVersion)
-
-  // convert the changelog entries into ast
-  const changelogAST = targetVersionList.map(version => {
-    const changelogEntriesByApi = changelogMapsByVersion.get(version)
-    const description = descriptionsByVersion.get(version)
-    return buildChangelogAST(page, version, changelogEntriesByApi, groupByApi, description)
-  })
+  const changelogs = buildChangelogs(changelogList, entityTypeToLanguage, groupByApi)
 
   if (reverseVisibleList) {
-    changelogAST.reverse()
+    changelogs.reverse()
   }
 
-  // replace the wrapper's content with the built changelog
-  changelogList.content(changelogAST)
+  changelogList.content(changelogs)
 }
 
 /*
-  extractApis
-  -----------
+  buildChangelogs
+  ---------------
 
-  This extracts the versions and the api entities from the selection passed in.
-  When used, this funcion is passed the entire page, and is the first step in
-  the changelog building process - it pulls out versions and apis for further
-  processing. This function is also responsible for sorting api versions so that
-  the changelog is built in the correct order.
-
-  This function returns an object of the form {versions, apisByVersion}. versions
-  is the list of versions (sorted), and apisByVersion is a Map which contains
-  the apis keyed by version. This Map has been built in order, so can be iterated
-  over without any extra sorting needed.
+  Creates the @changelog sections by finding tags and grouping by version and api
 */
-function extractApis (selection) {
-  // find all the version tags within the document
-  const versionSelections = selection.selectAll('version', { recursive: true })
+function buildChangelogs (changelogList, entityTypeToLanguage, groupByApi) {
+  const processSelection = changelogList.select('process')
+  const tagSelections = processSelection.selectAll(tags, {recursive: true})
 
-  // group the apis by version (for faster lookup when processing)
-  const unorderedApisGroupedByVersion = new Map()
+  // Select the versions and build a map for fast lookup
+  const versionSelections = changelogList.selectAll('version')
+  const versionSelectionsByVersion = {}
   versionSelections.forEach(versionSelection => {
-    const currentGroup = unorderedApisGroupedByVersion.get(versionSelection.ps()) || []
-    unorderedApisGroupedByVersion.set(versionSelection.ps(), currentGroup)
-    if (versionSelection.has('api')) {
-      currentGroup.push(versionSelection.select('api'))
-    }
+    versionSelectionsByVersion[versionSelection.ps()] = versionSelection
   })
 
-  // sort the versions into order
-  const unorderedVersions = new Set()
-  versionSelections.forEach(versionSelection => {
-    unorderedVersions.add(versionSelection.ps())
-  })
-  const versions = Array.from(unorderedVersions.keys())
-  versions.sort(utils.semanticVersionComparator)
+  const versions = Object.keys(versionSelectionsByVersion).sort(utils.semanticVersionComparator)
 
-  // build the api map in order (so it can be iterated over)
-  const apisByVersion = new Map()
+  // Group the tags by version
+  const tagSelectionsByVersion = {}
   versions.forEach(version => {
-    apisByVersion.set(version, unorderedApisGroupedByVersion.get(version))
+    tagSelectionsByVersion[version] = []
+  })
+  tagSelections.forEach(t => {
+    const version = t.ps()
+    tagSelectionsByVersion[version] = tagSelectionsByVersion[version] || []
+    tagSelectionsByVersion[version].push(t)
   })
 
-  return {versions, apisByVersion}
-}
-
-/*
-  buildChangelogEntries
-  =====================
-
-  This builds up an apiMap and a list of chagelogEntries
-
-  What is an api map?
-  -------------------
-
-  An api map is a collection of all the entries in an api (e.g. @function, @property,
-  @method etc). The api map is a flat map, so nested api entries are keyed using
-  the combination of their own key, and their parent's key. This means that a property
-  on an object such as this:
-
-    @object bob
-      @property jane
-
-  would be keyed as follows:
-
-    object:bob.property:jane
-
-  The actual key format depends on how the language defines it's hashing function,
-  but the above is the general idea.
-
-  The api map's values are also language dependent - they are objects that contain
-  information extracted from the api entries which is used later for generating
-  changelog entries.
-
-  What does this function do?
-  ---------------------------
-
-  This function builds an api map for a single version. It does this by taking the
-  api map from the previous version and applying the diffs found for the current api.
-  Whilst working out the new api map, the changes are collected into a list of
-  changelog entries.
-
-  The api map itself is not used for anything - but it is needed to to work out
-  what has changed from one version to the next and to keep track of how the whole
-  api evolves from one version to the next. Once we finish processing the apis we
-  can actually throw away the api maps and just keep the changelog entries for
-  the next phase of processing.
-
-  These changelog entries are used later to build the changelog ast - but this
-  function just extracts the entries for one api and for one version change.
-  A full changelog can consist of multiple apis and multiple versions so this
-  function is run many times to build the whole changelog.
-
-  This function returns an object of the form {apiMap, changelogEntriesMap}. The
-  apiMap is the new api map that has been built. The api map is a Map, with keys
-  that are hashes of the api entries, and values which are the api entries.
-
-  The changelogEntriesMap is a map containing arrays of objects that represent
-  changelog entries for the language - the information in these objects is specific
-  to the language as the language is responsible for turning the entry into a
-  piece of virtual dom down the line.
-*/
-function buildChangelogEntries (languages, api, previousApiMap, detectAdded) {
-  const apiMap = new Map(previousApiMap)
-  const changelogEntriesMap = new Map()
-
-  const toplevelEntries = api.selectAll(tags).map(tagSelection => {
-    return {
-      tagType: tagSelection.type(),
-      selection: tagSelection
-    }
-  })
-
-  if (toplevelEntries.length > 0) {
-    changelogEntriesMap.set('__toplevel__', {
-      apiEntry: undefined,
-      language: undefined,
-      changelogEntries: toplevelEntries
-    })
-  }
-
-  languages.forEach(language => {
-    api.selectAll(language.entityTypes, { recursive: true }).forEach(selection => {
-      const key = language.hashEntry(selection, api)
-      if (key) {
-        const changelogEntries = []
-        const previousEntry = previousApiMap ? previousApiMap.get(key) : undefined
-
-        const { apiEntry, changes: languageChanges } = language.extractEntry(selection, previousEntry)
-        apiMap.set(key, apiEntry)
-
-        languageChanges.forEach(change => {
-          changelogEntries.push(change)
-        })
-
-        let added = false
-        selection.selectAll(tags).map(tagSelection => {
-          if (tagSelection.type() === 'added') {
-            added = true
-          }
-          changelogEntries.push({
-            tagType: tagSelection.type(),
-            selection: tagSelection
-          })
-        })
-
-        if (!added && previousEntry === undefined && detectAdded) {
-          changelogEntries.push({
-            tagType: 'added',
-            selection: quantum.select({
-              type: 'added',
-              params: [],
-              content: []
-            })
-          })
-        }
-
-        if (changelogEntries.length > 0) {
-          changelogEntriesMap.set(key, {
-            apiEntry: apiEntry,
-            language: language,
-            changelogEntries: changelogEntries
-          })
-        }
-      }
-    })
-  })
-
-  return {
-    apiMap: apiMap,
-    changelogEntriesMap: changelogEntriesMap
-  }
-}
-
-/* Builds the api maps for all versions supplied */
-function buildAllChangelogEntries (languages, versions, apisByVersion) {
-  // This will return a Map which goes from version -> (another) map
-  // the values will be Maps which go from api-name -> Map[key -> Array[ChangelogEntry]]
-  // As it goes, it should build up api maps for the entire api
-
-  const previousApiMapByApi = new Map()
-  const previousChangelogEntriesMapByApi = new Map()
-  const changelogMapByVersion = new Map()
-
+  // Copy any deprecated tags across to the next version until a removed tag is reached
   versions.forEach((version, i) => {
-    // XXX: do this properly / config?
-    const detectAdded = i > 0
-
-    const apis = apisByVersion.get(version)
-    const changelogEntriesMapByApi = new Map()
-    changelogMapByVersion.set(version, changelogEntriesMapByApi)
-
-    if (apis) {
-      apis.forEach(api => {
-        const previousApiMap = previousApiMapByApi.get(api.ps())
-
-        const { apiMap, changelogEntriesMap } = buildChangelogEntries(languages, api, previousApiMap, detectAdded)
-
-        previousApiMapByApi.set(api.ps(), apiMap)
-        previousChangelogEntriesMapByApi.set(api.ps(), changelogEntriesMap)
-        changelogEntriesMapByApi.set(api.ps(), changelogEntriesMap)
-      })
+    if (i + 1 < versions.length) {
+      const nextVersion = versions[i + 1]
+      tagSelectionsByVersion[version]
+        .filter(tag => tag.type() === 'deprecated')
+        .forEach(tag => {
+          if (tag.parent().has('removed') && tag.parent().select('removed').ps() !== nextVersion) {
+            tagSelectionsByVersion[nextVersion].push(tag)
+          }
+        })
     }
   })
 
-  return carryAcrossDeprecations(changelogMapByVersion)
-}
-
-function carryAcrossDeprecations (changelogMapByVersion) {
-  const deprecationsMapByApi = new Map()
-
-  changelogMapByVersion.forEach((changelogEntriesMapByApi, version) => {
-    changelogEntriesMapByApi.forEach((changelogEntriesMap, apiName) => {
-      const deprecationsMap = deprecationsMapByApi.get(apiName) || new Map()
-      deprecationsMapByApi.set(apiName, deprecationsMap)
-      changelogEntriesMap.forEach((apiEntryChanges, key) => {
-        apiEntryChanges.changelogEntries.forEach(changelogEntry => {
-          if (changelogEntry.tagType === 'deprecated') {
-            deprecationsMap.set(key, {
-              apiEntryChanges: apiEntryChanges,
-              changelogEntry: changelogEntry
-            })
-          }
-
-          if (changelogEntry.tagType === 'removed') {
-            deprecationsMap.delete(key)
-          }
-        })
-      })
-    })
-
-    deprecationsMapByApi.forEach((deprecationsMap, apiName) => {
-      if (changelogEntriesMapByApi.has(apiName)) {
-        const changelogEntriesMap = changelogEntriesMapByApi.get(apiName)
-        deprecationsMap.forEach((deprecation, key) => {
-          const apiEntryChanges = changelogEntriesMap.get(key)
-          if (apiEntryChanges && !apiEntryChanges.changelogEntries.some(changelogEntry => changelogEntry.tagType === 'deprecated')) {
-            apiEntryChanges.changelogEntries.push(deprecation.changelogEntry)
-          }
-        })
-      } else {
-        const changelogEntriesMap = new Map()
-        changelogEntriesMapByApi.set(apiName, changelogEntriesMap)
-        deprecationsMap.forEach((deprecation, key) => {
-          changelogEntriesMap.set(key, {
-            apiEntry: deprecation.apiEntryChanges.apiEntry,
-            language: deprecation.apiEntryChanges.language,
-            changelogEntries: [deprecation.changelogEntry]
-          })
-        })
-      }
-    })
-  })
-
-  return changelogMapByVersion
-}
-
-function extractChangeContent (change) {
-  if (change.selection.has('description')) {
-    return change.selection.filter(['description', 'issue']).content()
-  } else if (change.selection.cs().length > 0) {
-    // page.warning({
-    //   module: 'quantum-changelog',
-    //   problem: '@' + change.tagType + ' entity found with description content, but no description section was found',
-    //   resolution: 'use a @description block'
-    // })
-    // XXX: remove and reenable the warning above once hexagon has been converted over to the new format
-    const content = change.selection.filter('issue').content()
-
-    content.push({
-      type: 'description',
-      params: [],
-      content: change.selection.filter(d => d.type !== 'issue').content()
-    })
-
-    change.selection.filter('issue').content()
-
-    return content
-  } else {
-    return []
-  }
-}
-
-function buildChangelogAST (page, version, changelogEntriesByApi, groupByApi, description) {
-  const content = []
-
-  if (description) {
-    content.push(description.entity())
-  }
-
-  changelogEntriesByApi.forEach((changelogEntriesMap, apiName) => {
-    const targetContent = groupByApi ? [] : content
-
-    changelogEntriesMap.forEach((apiEntryChanges, key) => {
-      // handle the api entry changes
-      if (apiEntryChanges.language) {
-        const entryAst = {
-          type: 'entry',
-          params: [],
-          content: [
-            apiEntryChanges.language.buildEntryHeaderAst(apiEntryChanges)
-          ]
-        }
-
-        apiEntryChanges.changelogEntries.forEach(change => {
-          entryAst.content.push({
-            type: 'change',
-            params: [change.tagType],
-            content: extractChangeContent(change)
-          })
-        })
-
-        targetContent.push(entryAst)
-      } else {
-        // handle the top level changes
-        apiEntryChanges.changelogEntries.forEach(change => {
-          targetContent.push({
-            type: 'change',
-            params: [change.tagType],
-            content: extractChangeContent(change)
-          })
-        })
-      }
-    })
-
-    if (groupByApi && targetContent.length > 0) {
-      content.push({
-        type: 'group',
-        params: [apiName],
-        content: targetContent
-      })
+  // Create the changelogs for each version and add the descriptions from the changelogList
+  return versions.map(version => {
+    const changelog = buildChangelog(version, versions, tagSelectionsByVersion[version], entityTypeToLanguage, groupByApi)
+    const versionSelection = versionSelectionsByVersion[version]
+    if (versionSelection && versionSelection.has('description')) {
+      changelog.content.unshift(versionSelection.select('description').entity())
     }
+    return changelog
   })
+}
 
+function buildChangelog (version, versions, tagSelections, entityTypeToLanguage, groupByApi) {
   return {
     type: 'changelog',
     params: [version],
-    content: content
+    content: groupByApi ? buildGroups(version, versions, tagSelections, entityTypeToLanguage) : buildEntries(version, versions, tagSelections, entityTypeToLanguage)
   }
 }
 
+function buildGroups (version, versions, tagSelections, entityTypeToLanguage) {
+  // Group the tags by api
+  const tagsByApi = new Map()
+  tagSelections.forEach(tag => {
+    const parentApi = tag.selectUpwards('api')
+    if (parentApi) {
+      const parentApiName = parentApi.ps()
+      tagsByApi.set(parentApiName, tagsByApi.get(parentApiName) || [])
+      tagsByApi.get(parentApiName).push(tag)
+    }
+  })
+
+  return Array.from(tagsByApi.entries()).map(([apiName, tags]) => {
+    return {
+      type: 'group',
+      params: [apiName],
+      content: buildEntries(version, versions, tagSelections, entityTypeToLanguage)
+    }
+  })
+}
+
+function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
+  // Group the tags by the parent
+  const tagsByParent = new Map()
+  tagSelections.forEach(tag => {
+    const parent = tag.parent()
+    tagsByParent.set(parent, tagsByParent.get(parent) || [])
+    tagsByParent.get(parent).push(tag)
+  })
+
+  const res = []
+  Array.from(tagsByParent.entries()).forEach(([parent, tagSelections]) => {
+    if (parent.type() === 'api') {
+      tagSelections.forEach(tag => {
+        const content = tag.content()
+        if (!tag.has('description') && parent.has('description') && tag.type() === 'added') {
+          content.push(quantum.clone(parent.select('description').entity()))
+        }
+        res.push({
+          type: 'change',
+          params: [tag.type()],
+          content: content
+        })
+      })
+    } else {
+      const language = entityTypeToLanguage[parent.type()]
+
+      // Select all the way up to the api and build a narrow view of the api that
+      // just includes this entry. Filter out @groups along the way
+      let selection = parent
+
+      const sanitizedParent = quantum.select(quantum.clone(parent.entity()))
+      qversion.processVersioned(sanitizedParent.entity(), version, versions)
+      sanitizedParent.removeAllChildOfType(tags)
+
+      let entity = undefined
+      while (selection.parent() && selection.type() !== 'api') {
+        if (selection.type() === 'group') {
+          selection = selection.parent()
+        } else {
+          // If we hit something that is not supported by the language, then quit
+          if (entityTypeToLanguage[selection.type()] !== language) {
+            return
+          }
+          entity = {
+            type: selection.type(),
+            params: selection.params().slice(),
+            content: entity ? [entity] : sanitizedParent.content()
+          }
+          selection = selection.parent()
+        }
+      }
+
+      if (language) {
+        const header = {
+          type: 'header',
+          params: [language.name],
+          content: [entity]
+        }
+
+        res.push({
+          type: 'entry',
+          params: [],
+          content: [header].concat(tagSelections.map(tag => {
+            const content = tag.content()
+            if (!tag.has('description') && parent.has('description') && tag.type() === 'added') {
+              content.push(quantum.clone(parent.select('description').entity()))
+            }
+            return {
+              type: 'change',
+              params: [tag.type()],
+              content: content
+            }
+          }))
+        })
+      }
+    }
+  })
+
+  return res
+}
+
 module.exports = {
-  fileTransform: fileTransform,
-  process: process,
-  processChangelogList: processChangelogList,
-  extractApis: extractApis,
-  buildChangelogEntries: buildChangelogEntries,
-  buildAllChangelogEntries: buildAllChangelogEntries,
-  buildChangelogAST: buildChangelogAST
+  fileTransform,
+  processChangelogList,
+  buildChangelogs,
+  buildChangelog,
+  buildGroups,
+  buildEntries
 }

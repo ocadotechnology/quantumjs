@@ -36,40 +36,12 @@ describe('header', () => {
     header(type, headerContent, selection).should.eql(
       dom.create('div')
         .class('qm-api-item-header qm-api-' + type + '-header')
-        .add(headerContent.class('qm-api-header-details'))
-        .add(dom.create('span')
-          .class('qm-api-header-tags')
+        .add(headerContent.classed('qm-api-header-details qm-api-added qm-api-updated qm-api-deprecated qm-api-removed', true))
+        .add(dom.create('span').class('qm-api-header-tags')
           .add(dom.create('span').class('qm-api-tag qm-api-tag-added').text('added'))
+          .add(dom.create('span').class('qm-api-tag qm-api-tag-updated').text('updated'))
           .add(dom.create('span').class('qm-api-tag qm-api-tag-deprecated').text('deprecated'))
-          .add(dom.create('span').class('qm-api-tag qm-api-tag-removed').text('removed'))
-          .add(dom.create('span').class('qm-api-tag qm-api-tag-updated').text('updated')))
-    )
-  })
-
-  it('should add the updated tag when a child is changed in some way', () => {
-    const type = 'test-type'
-    const headerContent = dom.create('span').class('test-header-content')
-    const selection = quantum.select({
-      type: '',
-      params: [],
-      content: [
-        {
-          type: 'function',
-          params: [],
-          content: [
-            {type: 'removed', params: [], content: []}
-          ]
-        }
-      ]
-    })
-
-    header(type, headerContent, selection).should.eql(
-      dom.create('div')
-        .class('qm-api-item-header qm-api-' + type + '-header')
-        .add(headerContent.class('qm-api-header-details'))
-        .add(dom.create('span')
-          .class('qm-api-header-tags')
-          .add(dom.create('span').class('qm-api-tag qm-api-tag-updated').text('updated')))
+          .add(dom.create('span').class('qm-api-tag qm-api-tag-removed').text('removed')))
     )
   })
 })

@@ -1,7 +1,0 @@
-#! /bin/bash
-
-# This script removes all the node_modules, target and coverage folders
-
-rm -r */target
-rm -r */coverage
-rm -r */node_modules

@@ -5,12 +5,11 @@
   @input
     @changelogList
       @process
-        @version 0.1.0
-          @api ApiName
-            @function test
-              @added
-                @description: Function added
-              @param arg0 [String]
+        @api ApiName
+          @function test
+            @added 0.1.0
+              @description: Function added
+            @param arg0 [String]
       @version 0.1.0
   @output
     @changelogList

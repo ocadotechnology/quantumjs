@@ -21,7 +21,7 @@ const path = require('path')
 
 const dom = require('quantum-dom')
 const html = require('quantum-html')
-
+const tags = require('../tags')
 const utils = require('../utils')
 
 function domAsset (filename) {
@@ -71,12 +71,11 @@ function label (tagType, iconClass, count) {
     .add(dom.create('span').text(count))
 }
 
-function changeDom (selection, transforms, tagsByName, issueUrl) {
+function changeDom (selection, transforms, issueUrl) {
   const changeType = selection.param(0)
-  const tagByName = tagsByName[changeType]
+  const tagDisplayName = tags.displayName[changeType]
 
-  const iconClass = tagByName ? tagByName.iconClass ? tagByName.iconClass + ' ' : '' : ''
-  const displayName = tagByName ? tagByName.displayName : undefined
+  const displayName = tagDisplayName || undefined
 
   const issues = selection.has('issue') ?
     dom.create('span').class('qm-changelog-change-issues')
@@ -87,8 +86,8 @@ function changeDom (selection, transforms, tagsByName, issueUrl) {
           .text('#' + issue.ps())
       })) : undefined
 
-  const icon = tagByName ? dom.create('i')
-    .class(iconClass + 'qm-changelog-text-' + changeType)
+  const icon = tagDisplayName ? dom.create('i')
+    .class('qm-changelog-icon-' + changeType + ' qm-changelog-text-' + changeType)
     .attr('title', displayName) : undefined
 
   return dom.create('div').class('qm-changelog-change')
@@ -103,11 +102,11 @@ function changeDom (selection, transforms, tagsByName, issueUrl) {
 
 /* Creates a single changelog entry */
 function entry (selection, transforms, options) {
-  const language = options.languages.find(language => language.changelog.name === selection.select('header').ps())
+  const language = options.languages.find(language => language.name === selection.select('header').ps())
   const headerSelection = selection.select('header')
   const header = language ? language.changelog.createHeaderDom(headerSelection, transforms) : undefined
   const changes = selection.selectAll('change')
-    .map(change => changeDom(change, transforms, options.tags, options.issueUrl))
+    .map(change => changeDom(change, transforms, options.issueUrl))
 
   return dom.create('div').class('qm-changelog-entry')
     .add(dom.create('div').class('qm-changelog-entry-header').add(header))
@@ -130,7 +129,7 @@ function group (selection, transforms, options) {
     .map(change => {
       return dom.create('div')
         .class('qm-changelog-entry')
-        .add(changeDom(change, transforms, options.tags, options.issueUrl))
+        .add(changeDom(change, transforms, options.issueUrl))
     })
 
   const entries = dom.create('div').class('qm-changelog-group-entries')

@@ -26,7 +26,7 @@ function highlightCode (code, language) {
 function code (selection, transform) {
   const language = selection.ps()
   return dom.create('code')
-    .class('quantum-code-highlight-code' + (language ? ' language-' + language : ''))
+    .class('qm-code-highlight-code' + (language ? ' language-' + language : ''))
     .text(selection.cs(), {escape: true})
     .add(stylesheetAsset)
 }
@@ -34,7 +34,7 @@ function code (selection, transform) {
 function codeblock (selection, transform) {
   const language = selection.ps()
   return dom.create('div')
-    .class('quantum-code-highlight-codeblock' + (language && language !== 'nohighlight' ? ' language-' + language : ''))
+    .class('qm-code-highlight-codeblock' + (language && language !== 'nohighlight' ? ' language-' + language : ''))
     .add(dom.create('pre')
       .add(dom.create('code')
         .text(highlightCode(selection.cs(), language), {escape: false})))

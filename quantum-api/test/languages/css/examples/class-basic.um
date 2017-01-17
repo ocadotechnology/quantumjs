@@ -5,11 +5,10 @@
   @input
     @changelogList
       @process
-        @version 0.1.0
-          @api ApiName
-            @class test
-              @added
-                @description: Class added
+        @api ApiName
+          @class test
+            @added 0.1.0
+              @description: Class added
       @version 0.1.0
   @output
     @changelogList
