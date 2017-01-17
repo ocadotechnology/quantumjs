@@ -1,5 +1,8 @@
 @inline ../../../templates/sidebar-page.um
 
+@versionedPage
+  @version 2.0.0
+
 @topSection
   @title QuantumJS
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
@@ -13,13 +16,15 @@
     a parser for the markup language, a selection api for working with the parsed
     AST (abstract syntax tree) and an api for watching quantum files for changes.
 
+    This is module contains all the low level stuff that makes everything else work.
+
   @topic Command Line Interface
     The best way to use quantum is with the command line interface (CLI). There are more
     details on how to use it on these pages:
 
     @list
-      @item: @hyperlink(/docs/cli)[Using the CLI]
-      @item: @hyperlink(/docs/config)[Configuring the CLI]
+      @item: @hyperlink(/docs/cli/)[Using the CLI]
+      @item: @hyperlink(/docs/config-file/)[Configuring the CLI]
 
     The CLI is bundled with this module - so if you install this globally, you should
     have access to the @code(bash)[quantum] command. Or you can install it for a npm project
@@ -37,10 +42,13 @@
     @inline api.um
 
   @topic Parsing
-    This section explores how to parse a quantum markup.
+    Parsing is the act of converting a quantum markup string into a collection of
+    JavaScript objects. Using quantum-js, this can be done in a single function
+    call.
 
     @section String Parsing
-      Quantum markup can be parsed as a string using the @code[quantum.parse] function:
+      Quantum markup can be parsed as a string using the @code[quantum.parse()]
+      function:
 
       @@codeblock js
         const quantum = require('quantum-js')
@@ -69,8 +77,8 @@
         */
 
     @section File Parsing
-      Quantum markup can be read and parsed from a file using the @code[quantum.read]
-      function:
+      Quantum markup can be read and parsed from a file using the
+      @code[quantum.read()] function:
 
       @subsection example.um
         @@codeblock um

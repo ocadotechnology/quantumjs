@@ -1,8 +1,5 @@
 @function stringify
   @added 2.0.0
-    @description
-      A function for turning quantum AST back into markup - does the opposite
-      to @code[parse]
 
   @description
     Converts AST back into quantum markdown. Does the opposite to @code[parse]

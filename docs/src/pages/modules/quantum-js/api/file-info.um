@@ -28,10 +28,6 @@
 
 @prototype FileInfo
   @added 2.0.0
-    @description
-      An object which holds filename information. Each @api.type[File] instance
-      has one of these. The @api.type[FileInfo] object contains information on where
-      the file came from and where it is going to be written to.
 
   @description
     An object which holds filename information. Chances are this object is
@@ -70,6 +66,7 @@
       dest property:
 
       @codeblock js
+        const quantum = require('quantum-js')
 
         const fileInfo = new quantum.FileInfo({
           src: "src/content/about.um",
@@ -103,6 +100,8 @@
       replaced. The value returned from this function is a new @type[FileInfo] instance.
 
       @codeblock js
+        const quantum = require('quantum-js')
+        
         const fileInfo = new quantum.FileInfo({
           src: "src/content/about.um",
           resolved: "about.um",

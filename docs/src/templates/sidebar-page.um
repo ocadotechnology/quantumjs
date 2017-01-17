@@ -1,10 +1,9 @@
 @template
   @contentEntityName templateContent
   @content
-    @inline resources.um
-
-    @versionedPage
-      @version 2.0.0
+    @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:700,400,100|Roboto+Slab:400,700]
+    @stylesheet [/resources/quantum-site.css]
+    @inline favicons.um
 
     @header
       @icon [/resources/logo.svg] [/]

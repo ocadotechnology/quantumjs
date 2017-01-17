@@ -1,8 +1,5 @@
 @function json
   @added 2.0.0
-    @description
-      Added a page transform that converts a file with AST content into one with
-      a JSON string as its content. This is mainly useful for debugging.
 
   @description
     A page transform that converts a file with AST content into one with
@@ -10,14 +7,15 @@
 
     @bold[quantum.config.js]
     @@codeblock js
-      const json = require('quantum-json')
+      const quantum = require('quantum-js')
 
       module.exports = {
         pipeline: [
-          json()
+          quantum.json()
         ],
         files: '**/index.um'
       }
 
   @returns Function
-    A file transform function.
+    @description
+      A file transform function.

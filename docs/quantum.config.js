@@ -16,9 +16,11 @@ const typeLinks = {
   'Number': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number',
   'Object': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object',
   'String': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
+  'Promise': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise',
   'File': '/modules/quantum-js/#file',
   'FileInfo': '/modules/quantum-js/#fileinfo',
   'Selection': '/modules/quantum-js/#selection',
+  'Element': '/modules/quantum-dom/#element'
 }
 
 const htmlOptions = {

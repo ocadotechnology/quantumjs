@@ -1,4 +1,4 @@
-@function read
+@function readAsFile
   @added 2.0.0
 
   @description
@@ -8,8 +8,8 @@
       @@codeblock js
         const quantum = require('quantum-js')
 
-        quantum.read('some/file.um').then(parsed => {
-          console.log(parsed)
+        quantum.readAsFile('some/file.um').then(file => {
+          console.log(file)
         })
 
   @param filename [String]: The filename of the file to load and parse.
@@ -35,6 +35,6 @@
       @description
         The base of the glob path that should be ignored when writing to the
         target.
-  @returns [Promise[Object]]
+  @returns [Promise[File]]
     @description
-      A promise that yields the parsed AST.
+      A promise that yields the parsed AST wrapped up into a @type[File].

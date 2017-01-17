@@ -6,7 +6,10 @@
   "scripts": {
     "start": "quantum watch"
   },
-  "author": "james.smyth@ocado.com",
+  "contributors": [
+    "James Smyth <james.smyth@ocado.com>",
+    "Charlie Frater <charlie.frater@ocado.com>"
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "bluebird": "^3.1.1",

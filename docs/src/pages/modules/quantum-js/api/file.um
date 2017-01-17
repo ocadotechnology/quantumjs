@@ -1,7 +1,9 @@
 @define fileProperties
   @property info [FileInfo]
     @description
-      Contains the source and destination filenames for this file.
+      A @type[FileInfo] instance which contains filename information for this
+      file, including where the file was read from, and where it is going to be
+      written to once fully transformed.
 
   @property content [Any]
     @description
@@ -52,9 +54,6 @@
 
 @prototype File
   @added 2.0.0
-    @description
-      An object which represents a html page, css file or javascript file (or
-      any other type of file that a transform decides to export)
 
   @description
     An object which represents a html page, css file or javascript file (or

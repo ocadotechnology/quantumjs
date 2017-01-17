@@ -10,50 +10,43 @@
 
 @contentSection
   @topic About
-    This module provides the @code(um)[@markdown] transform for rendering using @hyperlink(https://github.com/chjj/marked)[marked] to parse the markdown to HTML which can then be rendered by quantum.
+    This module provides the @code[@markdown] transform for including markdown
+    snippets in a quantum site.
 
-    The features available are defined by their support in the marked module.
+  @topic Example
 
-  @topic Inline Example
-    To render markdown in quantum inline, you need to escape the @code(um)[#] character as Quantum treats these as comments.
-
-    This can be done in two ways, either using @code(um)[\#], or by escaping the entire block using @code(um)[@@markdown]
-
-    Without this, lines with the @code(um)[#] at the start will not be rendered.
-
-    @section Example Code
-      @@codeblock markdown
-        @markdown
-          \### Escaped Heading
-          ### Quantum Comment (will not show)
-
-          Some text
-
+    @subsection Input
+      @@codeblock um
         @@markdown
           ### Example heading
 
           Example _italic_ or **bold** text.
 
-    @section Example Result
-      @markdown
-        \### Escaped Heading
-        ### Quantum Comment (will not show)
+    @subsection Result
+      @@codeblock html
+        <div class="qm-markdown">
+          <h3 id="example-heading">Example heading</h3>
+          <p>Example <em>italic</em> or <strong>bold</strong> text.</p>
+        </div>
 
-        Some text
+    @notice [Note]
+      Always use @code[@@markdown] instead of @code[@markdown] for markdown blocks.
+      Using @code[@@markdown] prevents the @code[#] character being treated as a
+      quantum comment. Since @code[#] is used for headings in markdown it is
+      important to do this otherwise they will not show up in the final page!
 
-      @@markdown
-        ### Example heading
-
-        Example _italic_ or **bold** text.
 
   @topic Markdown File Example
-    It is also possible to include markdown inline directly from @code(nohighlight)[.md] files:
+    It is also possible to include markdown inline directly from @code[.md] files
+    using @code[@inline]
 
-    When inlining using this method, you should use @code(um)[@markdown] instead of @code(um)[@@markdown]
+    @subsection Example
+      @@codeblock um
+        @markdown: @inline path/to/file.md
 
-    Example code:
-    @@codeblock um
-      @markdown: @inline path/to/file.md
+    When inlining using this method, its fine to use @code[@markdown] instead of
+    @code[@@markdown], since when inlining non quantum files, no text is passed
+    through the quantum parser.
 
-  @topic Api and Entities
+  @topic Api
     @inline api.um

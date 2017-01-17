@@ -1,7 +1,5 @@
 @function select
   @added 2.0.0
-    @description
-      A utility for manipulating parsed quantum objects.
   @description
     A helper api for extracting values from parsed AST. Pass in parsed
     AST, and use the methods on Selection to make working with the AST easier.
