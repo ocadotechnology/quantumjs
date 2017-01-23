@@ -19,7 +19,8 @@
     "quantum-dom": "^2.0.0-rc.2",
     "quantum-html": "^2.0.0-rc.2",
     "quantum-template": "^2.0.0-rc.2",
-    "quantum-version": "^2.0.0-rc.2"
+    "quantum-version": "^2.0.0-rc.2",
+    "quantum-diagram": "^2.0.0-rc.2"
   },
   "private": true
 }
