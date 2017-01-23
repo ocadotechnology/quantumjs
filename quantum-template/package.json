@@ -1,11 +1,12 @@
 {
   "name": "quantum-template",
-  "version": "0.11.0",
+  "version": "2.0.0-rc.2",
   "description": "Basic templating (ast -> ast) transform for quantum.js",
-  "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
+    "James Smyth <james.smyth@ocado.com>",
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
+  "engines" : { "node" : ">=4.0.0" },
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -14,21 +15,27 @@
   "bugs": {
     "url": "https://github.com/ocadotechnology/quantumjs/issues"
   },
-  "homepage": "https://quantum.hexagonjs.io",
-  "main": "index.js",
+  "homepage": "",
+  "main": "lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test && npm run lint",
+    "lint": "eslint lib/*.js test/*.js",
+    "fix-lint-issues": "eslint --fix lib/*.js test/*.js"
   },
   "dependencies": {
-    "quantum-js": "^1.2.0"
+    "quantum-js": "^2.0.0-rc.2"
   },
   "devDependencies": {
-    "istanbul": "^0.4.0",
-    "chai": "^2.3.0",
-    "html-file-cov": "^1.0.0",
-    "mocha": "^2.2.5"
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "eslint": "^3.3.1",
+    "eslint-config-standard": "^6.0.0-beta.3",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2"
   }
 }

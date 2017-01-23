@@ -1,15 +1,14 @@
 {
   "name": "quantum-api-example",
-  "version": "0.1.0",
-  "description": "",
-  "main": "build.js",
+  "version": "2.0.0",
+  "description": "An example api page for testing out quantum-api",
   "private": true,
   "scripts": {
-    "start": "node build.js"
+    "start": "quantum watch"
   },
-  "license": "MIT",
-  "dependencies": {
-    "quantum-html": "^1.0.0",
-    "quantum-api": "^1.0.0"
+  "devDependencies": {
+    "quantum-js": "^2.0.0-rc.2",
+    "quantum-html": "^2.0.0-rc.2",
+    "quantum-api": "^2.0.0-rc.2"
   }
 }

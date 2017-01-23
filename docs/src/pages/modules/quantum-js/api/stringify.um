@@ -1,0 +1,36 @@
+@function stringify
+  @added 2.0.0
+
+  @description
+    Converts AST back into quantum markdown. Does the opposite to @code[parse]
+
+    @@codeblock js
+      const quantum = require('quantum-js')
+
+      quantum.stringify({
+        type: 'example',
+        params: ['param1', 'param2'],
+        content: [
+          'Some Content',
+          {
+            type: 'child',
+            params: ['child-param'],
+            content: []
+          }
+        ]
+      })
+
+      /*
+        Returns this string:
+
+        @example param1 param2
+          Some content
+          @child child-param
+      */
+
+  @param ast [Object]
+    @description
+      The quantum objects (AST) to turn into a markup string.
+  @returns String
+    @description
+      The markup string

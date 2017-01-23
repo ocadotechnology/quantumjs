@@ -1,0 +1,42 @@
+/*XXX: sort out naming to be qm-api-css-xxx*/
+
+
+.qm-api-class {}
+
+.qm-api-childclass {
+  border-color: #D8942A;
+}
+
+.qm-api-childclass > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #D8942A;
+}
+
+.qm-api-extraclass {
+  border-color: #98b313;
+}
+
+.qm-api-extraclass > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background-color: #98b313;
+}
+
+.qm-api-childclass {}
+
+
+
+
+.qm-changelog-css-header {
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.qm-changelog-css-class:before {
+  content: ' .';
+}
+
+.qm-changelog-css-childclass:before {
+  content: ' > .';
+}
+
+.qm-changelog-css-extraclass:before {
+  content: '.';
+}

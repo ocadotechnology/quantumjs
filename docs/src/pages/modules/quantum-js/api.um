@@ -1,0 +1,13 @@
+@api quantum-js
+  @inline api/file-info.um
+  @inline api/file.um
+  @inline api/selection.um
+
+  @inline api/parse.um
+  @inline api/read.um
+  @inline api/read-as-file.um
+  @inline api/clone.um
+  @inline api/stringify.um
+  @inline api/json.um
+  @inline api/select.um
+  # @inline api/watch.um XXX: should this be exposed?

@@ -1,0 +1,19 @@
+@inline ../../templates/sidebar-page.um
+
+@topSection
+  @title The Markup Language
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    This page explains the markup language and how it works
+
+@contentSection
+  @topic Language Overview
+    Content is written using the quantum markup language. Here is an overview of
+    the entire language:
+
+    @codeblock um: @inline language.um [text]
+
+    That all there is to it! You can now add another language to your resumé!
+
+    The language itself is purposefully simple. Many features can be built on top
+    of this structure, mainly enabled by the fact that entities can have @italic[types].

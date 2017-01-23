@@ -1,0 +1,121 @@
+@define fileProperties
+  @property info [FileInfo]
+    @description
+      A @type[FileInfo] instance which contains filename information for this
+      file, including where the file was read from, and where it is going to be
+      written to once fully transformed.
+
+  @property content [Any]
+    @description
+      Contains the contents of the file - this depends on the type of the file.
+      So this could be a string, or could be quantum AST, or could be virtual dom.
+      It depends on which bit of the pipeline you are in.
+
+  @property meta [Object]
+    @description
+      An object that can contain extra information that a file transform wants
+      to export. For example, the version transform adds the current `version` to
+      this object after processing the file - so that other transforms can make
+      use of that information.
+
+  @property warnings [Array[Object]]
+    @description
+      An array of objects that describe warnings for issues found on the page. New
+      warnings can be added with the @code[warning()] method.
+
+      Warnings are issued when the page still is able to be rendered, but likely
+      has some issues with it, like misuse of an entity that will cause content
+      not to appear as expected.
+
+      The warning objects take the following form:
+
+      @@codeblock js
+        {
+          module: 'quantum-changelog',
+          problem: 'An @updated entity found with description content, but no @description section was found',
+          resolution: 'use a @description block inside the @updated tag'
+        }
+
+  @property errors [Array[Object]]
+    @description
+      An array of objects that describe errors that occurred when transforming the
+      page. New errors can be added with the @code[error()] method.
+
+      Errors are issued when the page is not able to be rendered for some reason.
+
+      The error objects take the following form:
+
+      @@codeblock js
+        {
+          module: 'quantum-js',
+          problem: 'Parse error: unexpected dedent',
+          resolution: 'Fix indentation'
+        }
+
+@prototype File
+  @added 2.0.0
+
+  @description
+    An object which represents a html page, css file or javascript file (or
+    any other file type that a transform decides to export)
+
+  @fileProperties
+
+  @method clone
+    @description
+      Creates a new @type[File] instance with some or all of the properties changed.
+
+    @param? changes [Object]
+      @description
+        Provide any properties to override
+      @fileProperties
+
+    @returns File
+      @description
+        A new @type[File] instance with the specified properties changed.
+
+  @method warning
+    @description
+      Warnings are issued when the page still is able to be rendered, but likely
+      has some issues with it, like misuse of an entity that will cause content
+      not to appear as expected.
+
+      The warning object takes the following form:
+
+      @@codeblock js
+        {
+          module: 'quantum-changelog',
+          problem: 'An @updated entity found with description content, but no @description section was found',
+          resolution: 'use a @description block inside the @updated tag'
+        }
+
+    @param warning [Object]
+      @property module [String]: The module that raised the warning
+      @property problem [String]: A description of the issue
+      @property resolution [String]: How to fix the issue
+
+    @returns File
+      @description
+        This @type[File] instance
+
+  @method error
+    @description
+      Errors are issued when the page is not able to be rendered for some reason.
+
+      The error object takes the following form:
+
+      @@codeblock js
+        {
+          module: 'quantum-js',
+          problem: 'Parse error: unexpected dedent',
+          resolution: 'Fix indentation'
+        }
+
+    @param error [Object]
+      @property module [String]: The module that raised the error
+      @property problem [String]: A description of the issue
+      @property resolution [String]: How to fix the issue
+
+    @returns File
+      @description
+        This @type[File] instance

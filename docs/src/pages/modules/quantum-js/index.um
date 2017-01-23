@@ -1,0 +1,243 @@
+@inline ../../../templates/sidebar-page.um
+
+@versionedPage
+  @version 2.0.0
+
+@topSection
+  @title QuantumJS
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    The CLI and low level apis for parsing, manipulating AST, and watching
+    quantum source files.
+
+@contentSection
+  @topic About
+    The core quantum module (quantum-js) consists of a cli (command line interface),
+    a parser for the markup language, a selection api for working with the parsed
+    AST (abstract syntax tree) and an api for watching quantum files for changes.
+
+    This is module contains all the low level stuff that makes everything else work.
+
+  @topic Command Line Interface
+    The best way to use quantum is with the command line interface (CLI). There are more
+    details on how to use it on these pages:
+
+    @list
+      @item: @hyperlink(/docs/cli/)[Using the CLI]
+      @item: @hyperlink(/docs/config-file/)[Configuring the CLI]
+
+    The CLI is bundled with this module - so if you install this globally, you should
+    have access to the @code(bash)[quantum] command. Or you can install it for a npm project
+    and then your npm scripts will have access to the quantum command.
+
+    One way to find out more about the cli is to run @code(bash)[quantum help].
+
+  @topic Api
+    @notice Note
+      Most of this page goes into low level apis that you most likely won't have
+      to worry about if you are just using quantum as a tool.
+      This page documents some of the parts of quantum that are interesting when
+      developing your own transforms.
+
+    @inline api.um
+
+  @topic Parsing
+    Parsing is the act of converting a quantum markup string into a collection of
+    JavaScript objects. Using quantum-js, this can be done in a single function
+    call.
+
+    @section String Parsing
+      Quantum markup can be parsed as a string using the @code[quantum.parse()]
+      function:
+
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const markup = `
+          @example param1 params2
+            Content 1
+            Content 2
+        `
+
+        console.log(quantum.parse(markup))
+
+        // Prints this:
+        /*
+          {
+            type: '',
+            params: [],
+            content: [
+              {
+                type: 'example',
+                params: ['param1', 'param2'],
+                content: ['Content 1', 'Content 2']
+              }
+            ]
+          }
+        */
+
+    @section File Parsing
+      Quantum markup can be read and parsed from a file using the
+      @code[quantum.read()] function:
+
+      @subsection example.um
+        @@codeblock um
+          @example param1 params2
+            Content 1
+            Content 2
+
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        quantum.read('example.um').then((parsed) => {
+          console.log(parsed)
+        })
+
+        // Prints this:
+        /*
+          {
+            type: '',
+            params: [],
+            content: [
+              {
+                type: 'example',
+                params: ['param1', 'param2'],
+                content: ['Content 1', 'Content 2']
+              }
+            ]
+          }
+        */
+
+  @topic Selection Api
+    The selection api allows the selection and manipulation of quantum AST:
+
+    @codeblock js
+      const quantum = require('quantum-js')
+
+      quantum.read('example.um').then((parsed) => {
+        const selection = quantum.select(parsed)
+        selection.ps()                      // extract the parameter string from an entity
+        selection.cs()                      // extract the content string from an entity (ignores all sub-entities)
+        selection.select('banana')          // selects the first child entity called banana
+        selection.selectAll('kiwi')         // selects all the child entities called kiwi (returns an array)
+        selection.select('lemon').param(2)  // gets the second parameter from the first lemon entity in the selection
+      })
+
+    Lets go into more detail to explain various parts of the selection api.
+
+    @section Selecting, querying and modifying an entity
+      An entity, when parsed looks like this:
+
+      @@codeblock js
+        {
+          type: 'fruits',
+          params: ['kiwi', 'lime', 'grapes'],
+          content: ['Some fruits that are green']
+        }
+
+      An entity can be wrapped in a selection to make it easier to query:
+
+      @@codeblock js
+        const entity = {
+          type: 'fruits',
+          params: ['kiwi', 'lime', 'grapes'],
+          content: [
+            'Some fruits that are green'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.type()   // 'fruits'
+        selection.params() // ['kiwi', 'lime', 'grapes']
+        selection.param(1) // 'lime'
+        selection.param(2) // 'grapes'
+        selection.ps()     // 'kiwi lime grapes'
+
+        selection.content() // ['Some fruits that are green']
+        selection.cs()      // 'Some fruits that are green'
+
+      A selection can also be used to modify an entity:
+
+      @@codeblock js
+        const entity = {
+          type: 'fruits',
+          params: ['kiwi', 'lime', 'grapes'],
+          content: [
+            'Some fruits that are green'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.type('fruitSalad')       // sets entity.type to 'fruitSalad'
+        selection.param(1, 'apple')        // changes the 2nd parameter to 'apple'
+        selection.content(['New content']) // replaces entity.content
+        selection.add('More content')      // pushes more content into entity.content
+
+      Of course, you can also poke around the @code(js)[entity] object instead of wrapping
+      it in a selection if you prefer. The selection api is merely a simple wrapper
+      that makes some tasks easier.
+
+    @section Selecting child entities
+      Child entities can be selected by type:
+
+      @@codeblock js
+        const entity = {
+          type: 'fruits',
+          params: [],
+          content: [
+            { type: 'apple', params: ['red'], content: [] },
+            { type: 'banana', params: ['yellow'], content: [] },
+            { type: 'banana', params: ['brown'], content: [] }
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        // select the first child of type 'apple' and get it's first parameter
+        selection.select('apple').param(0) // is 'red'
+
+        // selecting multiple children of the same type
+        const bananas = selection.selectAll('banana')
+        bananas[0].param(0) // is 'yellow'
+        bananas[1].param(0) // is 'brown'
+
+    @section Recursively selecting child entities
+      Sometimes you need to select all the entities of a particular type recursively
+      down the tree. To do that just set the @code[resursive] option to @code[true]:
+
+      @@codeblock js
+        const entity = {
+          type: 'fruits',
+          params: [],
+          content: [
+            {
+              type: 'tag',
+              params: ['red'],
+              content: [
+                {
+                  type: 'tag',
+                  params: ['orange'],
+                  content: [
+                    {
+                      type: 'tag',
+                      params: ['yellow'],
+                      content: []
+                    }
+                  ]
+                }
+              ]
+            },
+            { type: 'tag', params: ['green'], content: [] },
+            { type: 'tag', params: ['blue'], content: [] }
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        // returns three 'tag' selections ('red', 'green' and 'blue')
+        selection.selectAll('tag')
+
+        // returns five 'tag' selections ('red', 'orange', 'yellow', 'green', 'blue')
+        selection.selectAll('tag', {recursive: true})

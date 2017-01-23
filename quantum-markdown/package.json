@@ -1,0 +1,50 @@
+{
+  "name": "quantum-markdown",
+  "version": "2.0.0-rc.2",
+  "description": "A markdown transform for QuantumJS",
+  "contributors": [
+    "Charlie Frater <charlie.frater@ocado.com>"
+  ],
+  "contributors": [],
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ocadotechnology/quantumjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ocadotechnology/quantumjs/issues"
+  },
+  "homepage": "",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd --recursive -R spec test && npm run lint",
+    "lint": "eslint lib/**/*.js test/**/*.js",
+    "fix-lint-issues": "eslint --fix lib/**/*.js test/**/*.js",
+    "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"
+  },
+  "dependencies": {
+    "marked": "^0.3.6",
+    "quantum-js": "^2.0.0-rc.2",
+    "quantum-code-highlight": "^2.0.0-rc.2",
+    "quantum-dom": "^2.0.0-rc.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.4.1",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "eslint": "^3.3.1",
+    "eslint-config-standard": "^6.0.0-beta.3",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2",
+    "postcss-cli": "^2.6.0",
+    "quantum-js": "^2.0.0-rc.2"
+  }
+}

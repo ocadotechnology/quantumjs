@@ -1,11 +1,5 @@
+'use strict'
 /*
-
-     ____                    __                      _
-    / __ \__  ______ _____  / /___  ______ ___      (_)____
-   / / / / / / / __ `/ __ \/ __/ / / / __ `__ \    / / ___/
-  / /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / /   / (__  )
-  \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
-                                              /___/
 
   Read
   ====
@@ -15,16 +9,15 @@
 
 */
 
-var Promise = require('bluebird')
-var merge = require('merge')
-var path = require('path')
-var fs = Promise.promisifyAll(require('fs'))
-var glob = Promise.promisify(require('glob'))
-var parse = require('./parse')
-var globBase = require('glob-base')
-var flatten = require('flatten')
+const Promise = require('bluebird')
+const path = require('path')
+const fs = Promise.promisifyAll(require('fs'))
+const globby = require('globby')
+const parse = require('./parse')
+const File = require('./file')
+const FileInfo = require('./file-info')
 
-function defaultLoader (filename) {
+function defaultLoader (filename, parentFilename) {
   return fs.readFileAsync(filename, 'utf-8')
 }
 
@@ -32,114 +25,86 @@ function flatten (arrays) {
   return Array.prototype.concat.apply([], arrays)
 }
 
-function inline (parsed, currentDir, options, parentFile) {
-  var promises = []
-
-  parsed.content.forEach(function (entity, i) {
+const inline = Promise.coroutine(function * (parsed, currentDir, options, parentFile) {
+  const content = parsed.content
+  let i = 0
+  while (i < content.length) {
+    const entity = content[i]
     if (entity.type === options.inlineEntityType) {
-      var doParse = undefined
+      const doParse = entity.params[1] === 'parse' ? true : entity.params[1] === 'text' ? false : undefined
 
-      if (!doParse && entity.params.length > 1 && entity.params[1] === 'parse') {
-        doParse = true
-      }
+      const globStrings = entity.params.filter(p => p).map(p => path.join(currentDir, p))
+      const parsedFiles = yield parseFiles(globStrings, doParse, options, parentFile)
+      const newContent = flatten(parsedFiles.map(f => f.content))
 
-      if (!doParse && entity.params.length > 1 && entity.params[1] === 'text') {
-        doParse = false
-      }
-
-      var filename = path.join(currentDir, entity.params[0])
-      var promise = parseFiles(filename, doParse, options, parentFile)
-        .then(function (res) {
-          var newContent = flatten(res.map(function (d) { return d.content }))
-          return parsed.content.splice.apply(parsed.content, [i, 1].concat(newContent))
-        })
-      promises.push(promise)
+      content.splice.apply(content, [i, 1].concat(newContent))
+      i += newContent.length - 1
     } else if (entity.type !== undefined) {
-      promises.push(inline(entity, currentDir, options, parentFile))
+      yield inline(entity, currentDir, options, parentFile)
     }
-  })
 
-  return Promise.all(promises).then(function () { return parsed })
-}
+    i += 1
+  }
+
+  return parsed
+})
 
 function parseFile (filename, doParse, options, parentFile) {
   if (doParse || doParse === undefined && path.extname(filename) === '.um') {
-    var currentDir = path.dirname(filename)
+    const currentDir = path.dirname(filename)
     return options.loader(filename, parentFile)
-      .then(function (input) { return parse(input, options) })
-      .then(function (parsed) { return inline(parsed, currentDir, options, filename) })
-      .catch(function (e) {
-        throw new Error('quantum: ' + filename + ': ' + e)
+      .then(input => parse(input, options))
+      .then(parsed => inline(parsed, currentDir, options, filename))
+      .catch(e => {
+        if (e instanceof parse.ParseError) {
+          e.filename = e.filename || filename
+          throw e
+        } else {
+          throw new Error('quantum: ' + filename + ': ' + e)
+        }
       })
   } else {
-    return options.loader(filename).then(function (input) {
-      return { content: input.split('\n') }
-    })
+    return options.loader(filename, parentFile).then((input) => ({
+      content: input.split('\n')
+    }))
   }
 }
 
-function parseFiles (globString, doParse, options, parentFile) {
-  return glob(globString).map(function (filename) {
-    return parseFile(filename, doParse, options, parentFile)
-  })
+function parseFiles (globStrings, doParse, options, parentFile) {
+  return Promise.resolve(globby(globStrings))
+    .map(filename => parseFile(filename, doParse, options, parentFile))
 }
 
-function readSingle (filename, options) {
-  var options = merge({
-    inlineEntityType: 'inline',
-    inline: true,
-    loader: defaultLoader,
-    base: undefined
-  }, options)
+function read (filename, opts) {
+  const {
+    inlineEntityType = 'inline',
+    inline = true,
+    loader = defaultLoader,
+    base = undefined
+  } = opts || {}
 
-  var relativeFilename = options.base ? path.relative(options.base, filename) : filename
+  const options = { inlineEntityType, inline, loader, base }
 
   if (options.inline) {
     return parseFile(filename, true, options)
-      .then(function (res) {
-        return {
-          filename: relativeFilename,
-          content: res
-        }
-      })
   } else {
-    return options.loader(filename, undefined)
-      .then(parse)
-      .then(function (res) {
-        return {
-          filename: relativeFilename,
-          content: res
-        }
-      })
+    return options.loader(filename, undefined).then(parse)
   }
 }
 
-module.exports = function (globString, options) {
-  var base = undefined
-
-  var globDetails = globBase(globString)
-  if (globDetails.isGlob) {
-    base = globDetails.base
-  }
-
-  var options = merge({
-    base: base
-  }, options)
-
-  return enhancePromise(glob(globString).map(function (filename) {
-    return readSingle(filename, options)
-  }))
+function readAsFile (filename, options) {
+  return read(filename, options).then(content => {
+    return new File({
+      info: new FileInfo({
+        src: filename,
+        dest: filename
+      }),
+      content: content
+    })
+  })
 }
 
-// turns map into a flatmap
-function enhancePromise (promise) {
-  var oldMap = promise.map
-  promise.map = function (f) {
-    return enhancePromise(oldMap.call(promise, f).then(flatten))
-  }
-  return promise
-}
-
-module.exports.single = function (filename, options) {
-  return readSingle(filename, options)
+module.exports = {
+  read,
+  readAsFile
 }

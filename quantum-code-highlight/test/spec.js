@@ -1,4 +1,10 @@
-var chai = require('chai')
-var dom = require('quantum-dom')
-var html = require('..')
-var should = chai.should()
+'use strict'
+require('chai').should()
+const codeHighlight = require('..')
+
+describe('pipeline', () => {
+  it('should export the correct things', () => {
+    codeHighlight.should.be.an('object')
+    codeHighlight.transforms.should.be.a('function')
+  })
+})

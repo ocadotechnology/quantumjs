@@ -1,238 +1,344 @@
+'use strict'
 /*
-     ____                    __                      _
-    / __ \__  ______ _____  / /___  ______ ___      (_)____
-   / / / / / / / __ `/ __ \/ __/ / / / __ `__ \    / / ___/
-  / /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / /   / (__  )
-  \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
-                                              /___/
 
   Select
   ======
 
-  An api for working with entities, which makes it easier to extract information from them.
-  It is possible to work with the parsed ast without the use of this api -- this api
-  simply makes some things easier.
+  An api for manipulating quantum ast.
 
 */
 
-var merge = require('merge')
-var Promise = require('bluebird')
-
 // utils
-function isString (x) {
+function isText (x) {
   return typeof (x) === 'string' || x instanceof String
 }
 
 // duck type check for an entity
-function looksLikeAnEntity (d) {
-  return isString(d.type) && Array.isArray(d.params) && Array.isArray(d.content)
+function isEntity (d) {
+  return isText(d.type) && Array.isArray(d.params) && Array.isArray(d.content)
 }
 
-// A small selection api for making building renderers easier
-function Selection (type, params, content, original, parent) {
-  this.type = type
-  this.params = params
-  this.content = content
-  this.original = original
-  this.parent = parent
+function isSelection (d) {
+  return d instanceof Selection
 }
 
-Selection.prototype.select = function (type, options) {
-  return this.selectAll(type, options)[0] || select(undefined)
+function Selection (entity, parent, isFiltered, renderContext) {
+  this._entity = entity
+  this._parent = parent
+  this._isFiltered = isFiltered
+  this._renderContext = renderContext
 }
 
-// options.required: Boolean (default: false) (throws an error if the type is required and is not there)
-// options.recursive: Boolean (default: false) (search recursively for the type specified)
-Selection.prototype.selectAll = function (type, options) {
-  var parent = this
-  var res = undefined
-  if (Array.isArray(type)) {
-    var types = type
-    res = this.content.filter(function (d) { return types.indexOf(d.type) > -1 }).map(function (obj) {
-      return select(obj, parent)
-    })
-  } else {
-    res = this.content.filter(function (d) { return d.type === type }).map(function (obj) {
-      return select(obj, parent)
-    })
-  }
-
-  if (options && options.recursive) {
-    this.content.forEach(function (r) {
-      res = res.concat(select(r, parent).selectAll(type, options))
-    })
-  }
-
-  if (options && options.required && res.length === 0) {
-    throw new Error('the field ' + type + ' is options (and missing)')
-  }
-
-  return res
-}
-
-Selection.prototype.param = function (i) {
-  return i === undefined ? this.params[0] : this.params[i]
-}
-
-Selection.prototype.empty = function () {
-  return !this.content.some(function (d) {
-    return looksLikeAnEntity(d) || d.trim() !== ''
-  })
-}
-
-Selection.prototype.nonEmpty = function () {
-  return this.filter(function (d) {
-    return looksLikeAnEntity(d) || d.trim() !== ''
-  })
-}
-
-Selection.prototype.entityContent = function () {
-  return this.filter(function (d) {
-    return looksLikeAnEntity(d)
-  })
-}
-
-Selection.prototype.textContent = function () {
-  return this.filter(function (d) {
-    return !looksLikeAnEntity(d)
-  })
-}
-
-// get the parameter string
-Selection.prototype.ps = function (joinWith) {
-  if (joinWith === undefined) {
-    return this.params.join(' ')
-  } else {
-    return this.params.join(joinWith)
+function checkNotFiltered (selection) {
+  if (selection._isFiltered) {
+    throw new Error('Filtered selections cannot be mutated. This means that .filter was called on this selection, which creates a filtered selection.')
   }
 }
 
-// get the content string
-Selection.prototype.cs = function (joinWith) {
-  if (joinWith === undefined) {
-    return this.content.filter(isString).join('\n')
-  } else {
-    return this.content.filter(isString).join(joinWith)
-  }
+function maybePromiseAll (arr) {
+  return arr.some(x => x ? x.then : false) ? select.Promise.all(arr) : arr
 }
 
-// returns true if the selection has content
-Selection.prototype.hasContent = function () {
-  return this.content.length > 0
-}
-
-// transforms the content to some other form - depends entirely on the transform function - returns a promise
-Selection.prototype.transform = function (transform) {
-  var parent = this
-  return select.Promise.all(this.content.map(function (obj) {
-    return maybeSelect(obj, parent)
-  }).map(transform))
-}
-
-Selection.prototype.filter = function (f) {
-  if (Array.isArray(f)) {
-    return this.filter(function (entity) {
-      return f.indexOf(entity.type) > -1
-    })
-  } else if (isString(f)) {
-    return this.filter(function (entity) {
-      return entity.type === f
-    })
-  } else {
-    return new Selection(this.type, this.params, this.content.filter(f), this.original)
-  }
-}
-
-Selection.prototype.clone = function () {
-  return select(merge(true, this), this.parent)
-}
-
-Selection.prototype.has = function (type, options) {
-  if (Array.isArray(type)) {
-    var self = this
-    return type.some(function (t) { return self.has(t, options) })
-  } else {
-    if (options && options.recursive) {
-      return this.content.some(function (d) { return d.type == type }) || this.content.some(function (r) {
-        return select(r).has(type, options)
-      })
+Selection.prototype = {
+  entity: function () {
+    return this._entity
+  },
+  type: function (type) {
+    if (arguments.length > 0) {
+      checkNotFiltered(this)
+      this._entity.type = type
+      return this
     } else {
-      return this.content.some(function (d) { return d.type == type })
+      return this._entity.type
     }
-  }
-}
-
-Selection.prototype.json = function () {
-  return JSON.stringify(this, null, 2)
-}
-
-Selection.prototype.replaceContent = function (content) {
-  Array.prototype.splice.apply(this.content, [0, this.content.length].concat(content))
-  return this
-}
-
-Selection.prototype.replaceParams = function (params) {
-  Array.prototype.splice.apply(this.params, [0, this.params.length].concat(params))
-  return this
-}
-
-Selection.prototype.remove = function (type) {
-  if (Array.isArray(type)) {
-    var self = this
-    return type.map(function (t) {
-      return self.remove(t)
-    })
-  } else {
-    var i = 0
-    while(i < this.content.length) {
-      var entity = this.content[i]
-      if (looksLikeAnEntity(entity) && entity.type === type) {
-        this.content.splice(i, 1)
-        return entity
+  },
+  param: function (i, param) {
+    if (arguments.length > 1) {
+      checkNotFiltered(this)
+      this._entity.params[i] = param
+      return this
+    } else {
+      return this._entity.params[i]
+    }
+  },
+  params: function (params) {
+    if (arguments.length > 0) {
+      checkNotFiltered(this)
+      this._entity.params = params
+      return this
+    } else {
+      return this._entity.params
+    }
+  },
+  addParam: function (param) {
+    checkNotFiltered(this)
+    this._entity.params.push(param)
+    return this
+  },
+  content: function (content) {
+    if (arguments.length > 0) {
+      checkNotFiltered(this)
+      this._entity.content = content
+      return this
+    } else {
+      return this._entity.content
+    }
+  },
+  add: function (content) {
+    checkNotFiltered(this)
+    this._entity.content.push(content)
+    return this
+  },
+  addAfter: function (content) {
+    if (this._parent) {
+      const parentContent = this._parent.content()
+      const index = parentContent.indexOf(this._entity)
+      if (index > -1) {
+        if (Array.isArray(content)) {
+          parentContent.splice.apply(parentContent, [index + 1, 0].concat(content))
+        } else {
+          parentContent.splice(index + 1, 0, content)
+        }
       }
-      i++
+      return this
+    } else {
+      throw new Error("Can't add content after this element - it has no parent")
     }
-  }
-}
-
-Selection.prototype.removeAll = function (type) {
-  if (Array.isArray(type)) {
-    var self = this
-    return type.map(function (t) {
-      return self.removeAll(t)
+  },
+  append: function (content) {
+    checkNotFiltered(this)
+    this._entity.content.push(content)
+    return select(content, this)
+  },
+  ps: function (ps) {
+    if (arguments.length > 0) {
+      checkNotFiltered(this)
+      this._entity.params = ps.split(' ')
+      return this
+    } else {
+      return this._entity.params.join(' ')
+    }
+  },
+  cs: function (cs) {
+    if (arguments.length > 0) {
+      checkNotFiltered(this)
+      this._entity.content = cs.split('\n')
+      return this
+    } else {
+      return this._entity.content.filter(isText).join('\n')
+    }
+  },
+  has: function (type, options) {
+    if (options && options.recursive) {
+      const parent = this
+      return this._entity.content.some((child) => child.type === type) ||
+        this._entity.content.some((child) => {
+          return isEntity(child) && select(child, parent).has(type, options)
+        })
+    } else {
+      return this._entity.content.some((child) => child.type === type)
+    }
+  },
+  hasParams: function () {
+    return this._entity.params.length > 0
+  },
+  hasContent: function () {
+    return this._entity.content.length > 0
+  },
+  isEmpty: function () {
+    return !this._entity.content.some((d) => {
+      return isEntity(d) || d.trim() !== ''
     })
-  } else {
-    var result = []
-    var i = 0
-    while(i < this.content.length) {
-      var entity = this.content[i]
-      if (looksLikeAnEntity(entity) && entity.type === type) {
-        this.content.splice(i, 1)
-        result.push(entity)
-      } else {
+  },
+  parent: function () {
+    return this._parent
+  },
+  select: function (type, options) {
+    return this.selectAll(type, options)[0] || emptySelection()
+  },
+  selectAll: function (type, options) {
+    const parent = this
+    const res = []
+    if (Array.isArray(type)) {
+      const types = type
+      const a = this._entity.content
+      const l = a.length
+      for (let i = 0; i < l; i++) {
+        const child = a[i]
+        if (types.indexOf(child.type) > -1) {
+          res.push(select(child, parent))
+        }
+      }
+    } else {
+      const a = this._entity.content
+      const l = a.length
+      for (let i = 0; i < l; i++) {
+        const child = a[i]
+        if (child.type === type) {
+          res.push(select(child, parent))
+        }
+      }
+    }
+
+    if (options && options.recursive) {
+      const a = this._entity.content
+      const l = a.length
+      for (let i = 0; i < l; i++) {
+        const child = a[i]
+        if (isEntity(child)) {
+          // OPTIM: do this without the recursion
+          select(child, parent).selectAll(type, options).forEach(d => res.push(d))
+        }
+      }
+    }
+
+    if (options && options.required && res.length === 0) {
+      throw new Error('the field ' + type + ' is options (and missing)')
+    }
+
+    return res
+  },
+  selectUpwards: function (type) {
+    let s = this
+    while (s.parent()) {
+      s = s.parent()
+      if (s.type() === type) {
+        return s
+      }
+    }
+  },
+  filter: function (f) {
+    if (Array.isArray(f)) {
+      return this.filter((entity) => f.indexOf(entity.type) > -1)
+    } else if (isText(f)) {
+      return this.filter((entity) => entity.type === f)
+    } else {
+      const filteredEntity = {
+        type: this._entity.type,
+        params: this._entity.params,
+        content: this._entity.content.filter(f)
+      }
+      return new Selection(filteredEntity, this._parent, true, this._renderContext)
+    }
+  },
+  remove: function () {
+    if (this._parent) {
+      if (this._parent.removeChild(this._entity)) {
+        this._parent = undefined
+      }
+    } else {
+      throw new Error("An entity with no parent can't be removed")
+    }
+  },
+  removeChild: function (childEntity) {
+    const childIndex = this._entity.content.indexOf(childEntity)
+    if (childIndex > -1) {
+      this._entity.content.splice(childIndex, 1)
+      return true
+    } else {
+      return false
+    }
+  },
+  removeChildOfType: function (type, options) {
+    if (Array.isArray(type)) {
+      const self = this
+      // OPTIM: remove the use of map
+      return type.map((t) => self.removeChildOfType(t, options))
+    } else {
+      let i = 0
+      const content = this._entity.content
+      while (i < content.length) {
+        const entity = content[i]
+        if (isEntity(entity) && entity.type === type) {
+          content.splice(i, 1)
+          return entity
+        }
         i++
       }
+
+      if (options && options.recursive) {
+        i = 0
+        while (i < content.length) {
+          const child = content[i]
+          if (isEntity(child)) {
+            const removed = select(child).removeChildOfType(type, options)
+            if (removed) {
+              return removed
+            }
+          }
+          i++
+        }
+      }
     }
-    return result
+  },
+  removeAllChildOfType: function (type, options) {
+    if (Array.isArray(type)) {
+      const self = this
+      // OPTIM: remove the use of map
+      return type.map((t) => self.removeAllChildOfType(t, options))
+    } else {
+      const result = []
+      let i = 0
+      const content = this._entity.content
+      while (i < content.length) {
+        const entity = content[i]
+        if (isEntity(entity) && entity.type === type) {
+          content.splice(i, 1)
+          result.push(entity)
+        } else {
+          i++
+        }
+      }
+
+      if (options && options.recursive) {
+        i = 0
+        while (i < content.length) {
+          const child = content[i]
+          if (isEntity(child)) {
+            select(child).removeAllChildOfType(type, options).forEach((removed) => {
+              result.push(removed)
+            })
+          }
+          i++
+        }
+      }
+
+      return result
+    }
+  },
+  transformContext: function (obj) {
+    if (arguments.length > 0) {
+      this._renderContext = obj
+      return this
+    } else {
+      return this._renderContext
+    }
+  },
+  transform: function (transformer) {
+    return maybePromiseAll(this._entity.content.map((child) => {
+      return transformer(isEntity(child) ? select(child, this) : child)
+    }))
   }
 }
 
-function select (item, parent) {
-  if (item) {
-    var params = item.params !== undefined ? item.params : []
-    var content = item.content !== undefined ? item.content : []
-    return new Selection(item.type, params, content, item, parent)
+function emptySelection () {
+  return new Selection({type: '', params: [], content: []}, undefined, false, {})
+}
+
+function select (entity, parent) {
+  if (Array.isArray(entity.content)) {
+    return new Selection(entity, parent, false, {})
+  } else if (entity instanceof Selection) {
+    return entity
   } else {
-    return new Selection(undefined, [], [], undefined)
+    throw new Error("Something that doesn't look like an entity was selected")
   }
 }
 
-function maybeSelect (item, parent) {
-  return looksLikeAnEntity(item) ? select(item, parent) : item
-}
-
-// allows swapping out the promise implementation (if wanted)
-select.Promise = Promise
+select.Promise = Promise // interchangeable promise implementation
 
 module.exports = select
-module.exports.isEntity = looksLikeAnEntity
+module.exports.isEntity = isEntity
+module.exports.isSelection = isSelection
+module.exports.isText = isText
+module.exports.Selection = Selection

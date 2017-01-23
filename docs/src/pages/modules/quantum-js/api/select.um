@@ -1,0 +1,23 @@
+@function select
+  @added 2.0.0
+  @description
+    A helper api for extracting values from parsed AST. Pass in parsed
+    AST, and use the methods on Selection to make working with the AST easier.
+
+    @@codeblock js
+      const quantum = require('quantum-js')
+
+      const ast = {
+        type: 'params',
+        params: ['param1', 'param2'],
+        content: [
+          'Some Content'
+        ]
+      }
+
+      quantum.select(ast) // returns a Selection
+
+  @param entity [Object]
+    @description: An entity object to select.
+  @returns Selection
+    A Selection instance which wraps the passed in AST

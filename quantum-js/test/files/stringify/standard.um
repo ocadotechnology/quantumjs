@@ -1,0 +1,32 @@
+@about
+  When passing the contents of this file through parsing and restringifying the
+  contents should be the same, eg:
+
+  @code js
+    const parsed = quantum.parse("standard.um")
+    const stringified = quantum.stringify(parsed)
+
+    // standard.um and stringified should look the same
+
+@entity param1 param2
+  Some content
+
+  @subentity param: Single line strings should go on one line
+
+  @multipleLineStringHandling param
+    This content should remain
+    as multiple lines when parsed
+    and stringified
+
+  @sameLineContent: Same line content
+
+  @tag
+  @entities
+  @should
+  @not
+  @have
+  @trailing
+  @colons
+  @even with params
+
+Standalone text at the top level should be fine

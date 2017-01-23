@@ -1,0 +1,38 @@
+@spec function (return type change)
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @api ApiName
+          @function test
+            # @added 0.1.0
+            #   @description: Return type starts as Number
+            @updated 0.2.0
+              @description: Return type changed to String
+            @param arg0 [String]
+            @versioned
+              @version 0.1.0
+                @returns Number
+              @version 0.2.0
+                @returns String
+
+        @api ApiName
+          @function test
+            @param arg0 [String]
+            @returns String
+
+      @version 0.1.0
+      @version 0.2.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+      @changelog 0.2.0
+        @entry
+          @header javascript
+            @function test
+              @param arg0 [String]
+              @returns String
+          @change updated
+            @description: Return type changed to String

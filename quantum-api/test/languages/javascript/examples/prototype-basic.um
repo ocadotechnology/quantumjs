@@ -1,0 +1,20 @@
+@spec prototype
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @api ApiName
+          @prototype test
+            @added 0.1.0
+              @description: Prototype added
+      @version 0.1.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @entry
+          @header javascript
+            @prototype test
+          @change added
+            @description: Prototype added

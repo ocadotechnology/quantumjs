@@ -1,3 +1,6 @@
 /node_modules
 /example/target
 /example/node_modules
+/coverage
+.DS_Store
+npm-debug.log

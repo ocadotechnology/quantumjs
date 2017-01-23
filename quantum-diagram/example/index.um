@@ -7,7 +7,7 @@
     @item rest-api-2 [Rest Api]
     @item rest-api-3 [Rest Api]
     @item redis [Redis]: Cache for performance
-    @item cassandra [BeverageDB]: Persistence for orders
+    @item beverage [BeverageDB]: Persistence for orders
 
   @link user -> load-balancer: HTTP
   @link load-balancer -> rest-api-1: Link 1 that is really really long
@@ -18,4 +18,4 @@
   @link rest-api-2 -> redis
   @link rest-api-3 -> redis
 
-  @link redis -> cassandra
+  @link redis -> beverage

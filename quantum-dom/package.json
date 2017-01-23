@@ -1,11 +1,12 @@
 {
   "name": "quantum-dom",
-  "version": "0.10.0",
+  "version": "2.0.0-rc.2",
   "description": "A virtual dom builder",
-  "author": "James Smyth <james.smyth@ocado.com>",
   "contributors": [
+    "James Smyth <james.smyth@ocado.com>",
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
+  "engines" : { "node" : ">=4.0.0" },
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -14,13 +15,15 @@
   "bugs": {
     "url": "https://github.com/ocadotechnology/quantumjs/issues"
   },
-  "homepage": "https://quantum.hexagonjs.io",
-  "main": "index.js",
+  "homepage": "",
+  "main": "lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test"
+    "test": "./node_modules/istanbul/lib/cli.js cover --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test && npm run lint",
+    "lint": "eslint lib/*.js test/*.js",
+    "fix-lint-issues": "eslint --fix lib/*.js test/*.js"
   },
   "config": {
     "blanket": {
@@ -29,13 +32,16 @@
     }
   },
   "dependencies": {
-    "bluebird": "^2.9.30",
-    "chai-as-promised": "^5.2.0",
-    "merge": "^1.2.0"
+    "bluebird": "^3.4.6"
   },
   "devDependencies": {
-    "chai": "^2.3.0",
-    "istanbul": "^0.4.0",
-    "mocha": "^2.2.5"
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "eslint": "^3.3.1",
+    "eslint-config-standard": "^6.0.0-beta.3",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2"
   }
 }

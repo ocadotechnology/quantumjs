@@ -1,0 +1,171 @@
+.qm-markdown * {
+  box-sizing: border-box;
+}
+
+.qm-markdown > :first-child {
+  margin-top: 0 !important
+}
+
+.qm-markdown > :last-child {
+  margin-bottom: 0 !important
+}
+
+.qm-markdown a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.qm-markdown p,
+.qm-markdown blockquote,
+.qm-markdown ul,
+.qm-markdown ol,
+.qm-markdown table,
+.qm-markdown pre {
+  margin-bottom: 1em;
+  margin-top: 0;
+}
+
+.qm-markdown hr {
+  background-color: #e7e7e7;
+  border: 0;
+  height: 0.25em;
+  margin: 1.5em 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.qm-markdown blockquote {
+  padding: 0 1em;
+  margin-left: 0;
+  color: #777;
+  border-left: 0.25em solid #ddd;
+}
+
+.qm-markdown blockquote > :first-child {
+  margin-top: 0;
+}
+
+.qm-markdown blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.qm-markdown h1,
+.qm-markdown h2 {
+  border-bottom: 1px solid #eee;
+}
+
+.qm-markdown ul,
+.qm-markdown ol {
+  padding-left: 2em;
+}
+
+.qm-markdown ul.no-list,
+.qm-markdown ol.no-list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.qm-markdown ul ul,
+.qm-markdown ul ol,
+.qm-markdown ol ol,
+.qm-markdown ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.qm-markdown li > p {
+  margin-top: 1em;
+}
+
+.qm-markdown li + li {
+  margin-top: 0.25em;
+}
+
+.qm-markdown dl {
+  padding: 0;
+}
+
+.qm-markdown dl dt {
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+  margin-top: 1em;
+  padding: 0;
+}
+
+.qm-markdown dl dd {
+  margin-bottom: 1em;
+  margin-left: 0;
+  padding: 0 1em;
+}
+
+.qm-markdown table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: block;
+  overflow: auto;
+  width: 100%;
+}
+
+.qm-markdown table th {
+  font-weight: bold
+}
+
+.qm-markdown table th,
+.qm-markdown table td {
+  border: 1px solid #ddd;
+  padding: 0.4em 0.8em;
+}
+
+.qm-markdown table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.qm-markdown table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.qm-markdown img {
+  background-color: #fff;
+  box-sizing: content-box;
+  max-width: 100%;
+}
+
+.qm-markdown code {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 0.2em 0.4em;
+}
+
+
+.qm-markdown pre {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+  margin: 0.5em 0;
+  overflow: auto;
+  padding: 1em;
+  word-break: normal;
+}
+
+.qm-markdown pre code {
+  background: transparent;
+  border: 0;
+  display: inline;
+  font-size: 100%;
+  line-height: inherit;
+  margin: 0;
+  max-width: auto;
+  overflow: visible;
+  padding: 0;
+  white-space: pre;
+  word-break: normal;
+  word-wrap: normal;
+}
+
+.qm-markdown pre code::before,
+.qm-markdown pre code::after {
+  content: normal;
+}

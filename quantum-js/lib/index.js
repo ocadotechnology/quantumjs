@@ -1,11 +1,5 @@
+'use strict'
 /*
-
-     ____                    __                      _
-    / __ \__  ______ _____  / /___  ______ ___      (_)____
-   / / / / / / / __ `/ __ \/ __/ / / / __ `__ \    / / ___/
-  / /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / /   / (__  )
-  \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
-                                              /___/
 
   Main
   ====
@@ -16,11 +10,18 @@
 */
 
 module.exports = {
+  File: require('./file'),
+  FileInfo: require('./file-info'),
+  Selection: require('./select').Selection,
   parse: require('./parse'),
-  select: require('./select'),
-  read: require('./read'),
+  stringify: require('./stringify'),
+  read: require('./read').read,
+  readAsFile: require('./read').readAsFile,
   write: require('./write'),
-  create: require('./create'),
+  select: require('./select'),
   json: require('./json'),
-  stringify: require('./stringify')
+  // fileOptions: require('./file-options'),
+  watch: require('./watch'),
+  cli: require('./cli'),
+  clone: require('./clone')
 }

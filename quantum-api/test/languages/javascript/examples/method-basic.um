@@ -1,0 +1,24 @@
+@spec method
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @api ApiName
+          @method test
+            @added 0.1.0
+              @description: Method added
+            @param arg0 [String]
+            @returns Number
+      @version 0.1.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @entry
+          @header javascript
+            @method test
+              @param arg0 [String]
+              @returns Number
+          @change added
+            @description: Method added

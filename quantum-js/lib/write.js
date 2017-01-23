@@ -1,31 +1,20 @@
+'use strict'
 /*
 
-     ____                    __                      _
-    / __ \__  ______ _____  / /___  ______ ___      (_)____
-   / / / / / / / __ `/ __ \/ __/ / / / __ `__ \    / / ___/
-  / /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / /   / (__  )
-  \___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_(_)_/ /____/
-                                              /___/
-
   Write
-  =====
+  ====
 
-  Writes a string to file. This doesn't do anything special, it just
-  provides some symmetry when using the read api:
-
-    quantum.read('file.um')
-      .map(html())
-      .map(html.stringify())
-      .map(quantum.write('target'))
+  Writes a page or an array of files.
 
 */
 
-var Promise = require('bluebird')
-var fs = Promise.promisifyAll(require('fs-extra'))
-var path = require('path')
+const Promise = require('bluebird')
+const fs = Promise.promisifyAll(require('fs-extra'))
+const flatten = require('flatten')
 
-module.exports = function (directory) {
-  return function (data) {
-    return fs.outputFileAsync(path.join(directory, data.filename), data.content)
-  }
+function write (files) {
+  return Promise.all(Array.isArray(files) ? flatten(files) : [files])
+    .map((file) => fs.outputFileAsync(file.info.dest, file.content).then(() => file))
 }
+
+module.exports = write

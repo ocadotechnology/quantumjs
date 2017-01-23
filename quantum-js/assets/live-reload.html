@@ -1,0 +1,18 @@
+<!-- Injected by quantum watch -->
+<script>
+  function startWebsocket () {
+    var ws = new WebSocket('ws://' + window.location.host)
+    ws.onopen = function () {
+      console.log('Connected to live reload')
+    }
+    ws.onmessage = function (data) {
+      window.location.reload()
+    }
+    ws.onclose = function () {
+      console.log('Lost WebSocket connection - retrying in 1 second')
+      setTimeout(startWebsocket, 1000)
+    }
+  }
+
+  startWebsocket()
+</script>

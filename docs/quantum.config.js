@@ -1,57 +1,87 @@
-var Promise = require('bluebird')
+const Promise = require('bluebird')
 
-var html = require('quantum-html')
-var api = require('quantum-api')
-var version = require('quantum-version')
-var template = require('quantum-template')
-var changelog = require('quantum-changelog')
-var diagram = require('quantum-diagram')
-var codeHighlight = require('quantum-code-highlight')
-var docs = require('quantum-docs')
-var quantumSite = require('./transforms/transforms')
+const html = require('quantum-html')
+const api = require('quantum-api')
+const version = require('quantum-version')
+const template = require('quantum-template')
+const diagram = require('quantum-diagram')
+const markdown = require('quantum-markdown')
+const codeHighlight = require('quantum-code-highlight')
+const docs = require('quantum-docs')
 
-function pipeline () {
-  var htmlOptions = {
-    embedAssets: false,
-    assetPath: '/assets'
+const typeLinks = {
+  'Array': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array',
+  'Boolean': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean',
+  'Function': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function',
+  'Number': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number',
+  'Object': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object',
+  'String': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
+  'Promise': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise',
+  'File': '/modules/quantum-js/#file',
+  'FileInfo': '/modules/quantum-js/#fileinfo',
+  'Selection': '/modules/quantum-js/#selection',
+  'Element': '/modules/quantum-dom/#element'
+}
+
+const htmlOptions = {
+  embedAssets: false,
+  assetPath: '/resources',
+  transforms: {
+    html: html.transforms(),
+    api: api.transforms({
+      languages: [
+        api.languages.javascript({
+          typeLinks: typeLinks
+        })
+      ]
+    }),
+    diagram: diagram.transforms(),
+    markdown: markdown.transforms(),
+    docs: docs.transforms(),
+    highlight: codeHighlight.transforms()
   }
+}
 
-  var htmlTransforms = {
-    html: html.transforms,
-    api: api(),
-    changelog: changelog.transforms(),
-    diagram: diagram(),
-    docs: docs(),
-    highlight: codeHighlight(),
-    site: quantumSite
-  }
-
-  var templateVariables = {
+function customizedTemplate (file) {
+  const templateVariables = {
     examples: {
       exampleList: [1, 2, 3],
       exampleObject: {
         name: 'Dave',
         age: 25
       }
-    }
+    },
+    filename: file.info.src
   }
 
-  // returns a function that compiles a page out to html
-  return function (obj) {
-    return Promise.resolve(obj)
-      .then(template({ variables: templateVariables }))
-      .then(changelog())
-      .then(version())
-      .map(docs.populateTableOfContents())
-      .map(html({ transforms: htmlTransforms }))
-      .map(html.stringify(htmlOptions))
-      .map(html.htmlRenamer())
-  }
+  return template({ variables: templateVariables })(file)
 }
 
 module.exports = {
-  pipeline: pipeline,
-  pages: 'content/pages/**/*.um',
-  base: 'content/pages',
-  resourceDir: 'content/resources'
+  pipeline: [
+    customizedTemplate,
+    version(),
+    api(),
+    docs(),
+    html(htmlOptions)
+  ],
+  pages: 'src/pages/**/*.um',
+  resources: [
+    {
+      files: [
+        'node_modules/hexagon-js/dist/hexagon-light/**/*',
+        '!node_modules/hexagon-js/dist/hexagon-light/favicon/*',
+        '!node_modules/hexagon-js/dist/hexagon-light/hexagon.variables*',
+        '!node_modules/hexagon-js/dist/hexagon-light/hexagon.print*'
+      ],
+      base: 'node_modules/hexagon-js/dist/hexagon-light',
+      dest: 'resources/hexagon-js',
+      watch: false
+    },
+    {
+      files: 'src/resources/**/*',
+      dest: 'resources',
+      watch: true
+    }
+  ]
 }

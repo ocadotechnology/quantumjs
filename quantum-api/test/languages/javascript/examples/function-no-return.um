@@ -1,0 +1,22 @@
+@spec function (basic)
+  @options
+    @groupByApi false
+    @reverseVisibleList false
+  @input
+    @changelogList
+      @process
+        @api ApiName
+          @function test
+            @added 0.1.0
+              @description: Function added
+            @param arg0 [String]
+      @version 0.1.0
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @entry
+          @header javascript
+            @function test
+              @param arg0 [String]
+          @change added
+            @description: Function added

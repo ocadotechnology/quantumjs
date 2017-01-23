@@ -1,0 +1,8 @@
+@inline ../../templates/sidebar-page.um
+
+@topSection
+  @title Modules Documentation
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+
+@contentSection

@@ -1,0 +1,35 @@
+@inline ../../../templates/sidebar-page.um
+
+@versionList
+  @version 2.0.0
+
+@topSection
+  @title Quantum Code Highlight
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+
+@contentSection
+  @topic About
+    This module provides the transforms for @code(um)[@code] and @code(um)[@codeblock] entities.
+    The code and codeblock entities render highlighted code blocks.
+
+  @topic Example
+    @section Example Code
+      @@codeblock um
+        Inline code @code(js)[var inlineJS = true;] with text
+
+        @codeblock css
+          .class {
+            background: #FFF;
+          }
+
+    @section Example Result
+      Inline code @code(js)[var inlineJS = true;] with text
+
+      @codeblock css
+        .class {
+          background: #FFF;
+        }
+
+  @topic Api and Entities
+    @inline api.um

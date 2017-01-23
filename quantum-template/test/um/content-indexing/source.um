@@ -1,0 +1,8 @@
+@define bob
+  @div
+    {{content[1]}}
+    {{content[0]}}
+    {{content[2]}}
+@bob
+  Barry
+  Bob
