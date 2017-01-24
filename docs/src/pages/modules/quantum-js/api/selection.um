@@ -178,10 +178,16 @@
       @description
         This @type[Selection] instance
 
-  @method addParam (param)
-    checkNotFiltered(this)
-    this._entity.params.push(param)
-    return this
+  @method addParam
+    @description
+      Adds a new parameter to the end of the parameters list
+
+    @param param [String]
+      The parameter value to add
+
+    @returns Selection
+      @description
+        This @type[Selection] instance
 
   @method content (content)
     if (arguments.length > 0) {
