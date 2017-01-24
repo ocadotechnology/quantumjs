@@ -1,0 +1,62 @@
+@function write
+  @added 2.0.0
+  @description
+    Writes a @type[File] to disk.
+
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        quantum.readAsFile('some/file.um')
+          .then(file => {
+            return file.clone({
+              info: file.info.clone({ dest: 'target/file.um'
+              })
+            })
+          })
+          .then(quantum.write)
+
+  @param file [File]
+    @description
+      The @type[File] to write to disk. @code[file.dest] is the location where the
+      file will be saved
+
+  @returns [Promise[File]]
+    @description
+      A promise that settles once the contents of the file has been written
+
+@function write
+  @added 2.0.0
+  @description
+    Writes an array of @type[File] to disk.
+
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const files = Promise.all([
+          quantum.readAsFile('some/file1.um'),
+          quantum.readAsFile('some/file2.um'),
+          quantum.readAsFile('some/file3.um')
+        ])
+
+        files.then(files => {
+          return files.map(file => {
+            return file.clone({
+              info: file.info.clone({
+                dest: file.info.target.replace('some', 'target')
+              })
+            })
+          })
+        })
+        .then(quantum.write)
+
+  @param file [Array[File]]
+    @description
+      The @type[File]s to save. @code[file.dest] is the location where the file
+      will be saved
+
+  @returns [Promise[Array[File]]]
+    @description
+      A promise that settles once the contents of all the files have been written
+      to disk

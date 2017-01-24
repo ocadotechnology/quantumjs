@@ -410,7 +410,7 @@ describe('watch', () => {
       }
     }
 
-    watch(specs, options, handler).then((res) => {
+    watch(specs, handler, options).then((res) => {
       res.build().then(() => {
         fs.writeFileAsync('target/test/watch-change-inline-test/inlined.um', 'Content 3')
       })
@@ -447,7 +447,7 @@ describe('watch', () => {
       }
     }
 
-    watch(specs, undefined, handler).then((res) => {
+    watch(specs, handler).then((res) => {
       res.build().then(() => {
         fs.writeFileAsync('target/test/watch-change-inline-default-test/inlined.um', 'Content 3')
       })
@@ -486,7 +486,7 @@ describe('watch', () => {
       }
     }
 
-    watch(specs, options, handler).then((res) => {
+    watch(specs, handler, options).then((res) => {
       res.build().then(() => {
         fs.writeFileAsync('target/test/watch-change-deep-inline-test/inlined-2.um', 'Content 3')
       })
@@ -525,7 +525,7 @@ describe('watch', () => {
       }
     }
 
-    watch(specs, options, handler).then((res) => {
+    watch(specs, handler, options).then((res) => {
       res.build().then(() => {
         fs.writeFileAsync('target/test/watch-change-base-inline-test/index.um', 'Content 0\n@inline inlined.um')
       })
@@ -564,7 +564,7 @@ describe('watch', () => {
       }
     }
 
-    watch(specs, options, handler).then((res) => {
+    watch(specs, handler, options).then((res) => {
       res.build().then(() => {
         fs.removeAsync('target/test/watch-change-remove-inline-test/inlined.um')
       })
@@ -594,7 +594,7 @@ describe('watch', () => {
       }
     }
 
-    watch(specs, options, handler).then((res) => {
+    watch(specs, handler, options).then((res) => {
       res.events.on('error', (err) => {
         errors.push(err)
       })
@@ -637,7 +637,7 @@ describe('watch', () => {
       }
     }
 
-    watch(specs, options, handler).then((res) => {
+    watch(specs, handler, options).then((res) => {
       res.events.on('error', (err) => {
         errors.push(err)
       })
@@ -686,7 +686,7 @@ describe('watch', () => {
       }
     }
 
-    watch(specs, options, handler).then((res) => {
+    watch(specs, handler, options).then((res) => {
       res.build().then(() => {
         fs.writeFileAsync('target/test/watch-change-non-quantum-inline-test/inlined.txt', 'Content 3')
       })
@@ -698,16 +698,14 @@ describe('watch', () => {
       files: {},
       base: 'target/test/watch-change-inline-test',
       watch: true
-    }, {dest: 'target2'}, () => {
-    }).catch((err) => {
+    }, () => {}, {dest: 'target2'}).catch((err) => {
       should.exist(err)
       done()
     })
   })
 
   it('should yield an error when an invalid spec is passed in 2', (done) => {
-    watch({}, {dest: 'target2'}, () => {
-    }).catch((err) => {
+    watch({}, () => {} {dest: 'target2'}).catch((err) => {
       should.exist(err)
       done()
     })
@@ -733,7 +731,7 @@ describe('watch', () => {
       }
     }
 
-    watch(specs, options, handler).then((res) => {
+    watch(specs, handler, options).then((res) => {
       res.events.on('error', (err) => {
         err.should.equal(error)
         done()
@@ -759,6 +757,6 @@ describe('watch', () => {
       done()
     }
 
-    watch(specs, options, handler)
+    watch(specs, handler, options)
   })
 })
