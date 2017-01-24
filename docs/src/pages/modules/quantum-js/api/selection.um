@@ -466,17 +466,55 @@
       @description
         The content joined with new line characters into a single string
 
+  @method has
+    @description
+      Checks if an entity has a child entity of a particular type
 
-  @method has (type, options)
-    if (options && options.recursive) {
-      const parent = this
-      return this._entity.content.some((child) => child.type === type) ||
-        this._entity.content.some((child) => {
-          return isEntity(child) && select(child, parent).has(type, options)
-        })
-    } else {
-      return this._entity.content.some((child) => child.type === type)
-    }
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            {
+              type: 'child1',
+              params: [],
+              content: []
+            },
+            {
+              type: 'child2',
+              params: [],
+              content: [
+                type: 'child3',
+                params: [],
+                content: [
+
+                ]
+              ]
+            }
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.has('child1') // true
+        selection.has('child2') // true
+        selection.has('child3') // false
+        selection.has('child3', {recursive: true}) // true
+        selection.has('child4', {recursive: true}) // false
+
+    @param type [String]
+      @description
+        The entity type to look for
+    @param? options [Object]
+      @property recursive [Boolean]
+        @description
+          True to do a recursive search down the tree for the type
+        @default false
+    @returns Boolean
+      @description
+        Returns true if the selected entity has a child entity of type @code[type]
 
   @method hasParams ()
     return this._entity.params.length > 0
