@@ -258,10 +258,42 @@
       @description
         This @type[Selection] instance
 
-  @method add (content)
-    checkNotFiltered(this)
-    this._entity.content.push(content)
-    return this
+  @method add
+    @description
+      Adds a new entry to the entities content array
+
+      @codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+        selection.content() // ['Blah blah blah']
+
+        selection.add('Second line')
+        selection.content() // ['Blah blah blah', 'Second line']
+
+        // Entities can also be added
+        selection.add({
+          type: 'tagline',
+          params: [],
+          content: []
+        })
+
+    @param content [String/Object]
+      @description
+        The content to add to the end of the content array. Can either be a
+        string, or an entity object.
+
+    @returns Selection
+      @description
+        This @type[Selection] instance
 
   @method addAfter (content)
     if (this._parent) {
