@@ -70,14 +70,64 @@
         This @type[Selection] for further chaining
 
 
-  @method param (i, param)
-    if (arguments.length > 1) {
-      checkNotFiltered(this)
-      this._entity.params[i] = param
-      return this
-    } else {
-      return this._entity.params[i]
-    }
+  @method param
+    @description
+      Gets the nth entity parameter.
+
+      @codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'blogEntry',
+          params: ['10/12/17'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.param(0) // '10/12/17'
+        selection.param(1) // undefined
+
+    @param index [Number]
+      @description: The index of the parameter to get
+    @returns String
+      @description
+        The parameter that was as position index. Will be
+        @code[undefined] if an out of bounds parameter is accessed.
+
+  @method param
+    @description
+      Sets the nth entity parameter.
+
+      @codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'blogEntry',
+          params: ['10/12/17'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        // get the current parameter value
+        selection.param(0) // '10/12/17'
+
+        // set the parameter and observe the change
+        selection.param(0, "11/12/17")
+        selection.param(0) // "11/12/17"
+
+    @param index [Number]
+      @description: The index of the parameter to get
+    @param param [String]
+      @description: The parameter value to set
+    @returns Selection
+      @description
+        This @type[Selection] instance
 
   @method params (params)
     if (arguments.length > 0) {
