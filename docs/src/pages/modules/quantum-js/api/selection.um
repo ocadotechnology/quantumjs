@@ -129,14 +129,54 @@
       @description
         This @type[Selection] instance
 
-  @method params (params)
-    if (arguments.length > 0) {
-      checkNotFiltered(this)
-      this._entity.params = params
-      return this
-    } else {
-      return this._entity.params
-    }
+  @method params
+    @description
+      Gets the parameters as an array.
+
+      @codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.params() // ['param1', 'param2']
+
+    @returns [Array[String]]
+      @description
+        The parameters of the selected entity
+
+  @method params
+    @description
+      Sets the parameters as an array.
+
+      @codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.params() // ['param1', 'param2']
+
+        selection.params(['p1', 'p2'])
+        selection.params() // ['p1', 'p2']
+
+    @returns Selection
+      @description
+        This @type[Selection] instance
 
   @method addParam (param)
     checkNotFiltered(this)
