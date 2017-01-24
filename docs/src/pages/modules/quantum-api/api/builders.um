@@ -1,0 +1,61 @@
+@object builders
+  @added 2.0.0
+
+  @property header [Object]
+    @property nameHeaderDetails [Function]
+      @param selection [Selection]
+      @param typeLinks [Object]
+      @returns Selection
+
+    @property typeHeaderDetails [Function]
+      @param selection [Selection]
+      @param typeLinks [Object]
+      @returns Selection
+
+    @property propertyHeaderDetails [Function]
+      @param selection [Selection]
+      @param typeLinks [Object]
+      @returns Selection
+
+    @property functionHeaderDetails [Function]
+      @param selection [Selection]
+      @param typeLinks [Object]
+      @returns Selection
+
+    @property prototypeHeaderDetails [Function]
+      @param selection [Selection]
+      @param typeLinks [Object]
+      @returns Selection
+
+    @property nameHeader [Function]
+      @param? options [Object]
+      @returns Transform
+
+    @property typeHeader [Function]
+      @param? options [Object]
+      @returns Transform
+
+    @property propertyHeader [Function]
+      @param? options [Object]
+      @returns Transform
+
+    @property functionHeader [Function]
+      @param? options [Object]
+      @returns Transform
+
+    @property prototypeHeader [Function]
+      @param? options [Object]
+      @returns Transform
+
+  @property body [Object]
+    @property description [Transform]
+    @property groups [Transform]
+    @property extras [Transform]
+    @property default [Transform]
+
+  @property item [Function]
+    @param? options [Object]
+      @property renderAsOther [Object]
+      @property content [Array[Builder]]
+      @property class [String]
+      @property header [Transform]

@@ -1,46 +1,17 @@
 @inline ../../../templates/sidebar-page.um
 
+@versionedPage
+  @version 2.0.0
+
 @topSection
-  @title Quantum Api
+  @title Quantum API
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
+    ......
 
 @contentSection
   @topic About
-    @sheet
-      This module provides a set of transforms for writing api docs
-      for a JavaScript, CSS or quantum api.
 
-      It can be customised to support other structures / langauges,
-      but these are the ones supported out of the box.
-
-      The api renderers work well with the @hyperlink(../version/)[version transform] (
-      added, updated, deprecated and removed tags affect the rendered html)
-
-  @topic Example
-    @p: Using the api renderers is simple - just add them to the html transforms:
-
-    @codeblock js
-      var quantum = require('quantum-js')
-      var api     = require('quantum-api')
-      var html    = require('quantum-html')
-
-      var htmlTransforms = {
-        html: html.transforms,
-        api: api()              // this is the bit that includes the api renderers
-      }
-
-      quantum.read('index.um')
-        .map(html(htmlTransforms))
-        .map(html.stringify())
-        .map(quantum.write('target'))
-
-    @p: Example markup
-    @codeblock um: @inline markup-example.um [text]
-
-    @p: Example result
-    @sheet
-      @inline markup-example.um
-
-  @topic Api and Entities
+  @topic API
+    @hyperlink(/modules/quantum-api/changelog/)[Quantum API Changelog]
     @inline api.um

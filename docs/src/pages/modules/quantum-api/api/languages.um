@@ -1,0 +1,9 @@
+@object languages
+  @added 2.0.0
+  @property javascript [Language]
+    @param? options [Object]
+      @property typeLinks [Object]
+        # Type: 'URL'
+
+
+  @property css [Language]
