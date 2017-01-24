@@ -24,9 +24,8 @@ function highlightCode (code, language) {
 }
 
 function code (selection, transform) {
-  const language = selection.ps()
   return dom.create('code')
-    .class('qm-code-highlight-code' + (language ? ' language-' + language : ''))
+    .class('qm-code-highlight-code')
     .text(selection.cs(), {escape: true})
     .add(stylesheetAsset)
 }
@@ -48,6 +47,8 @@ function transforms (opts) {
   })
 }
 
-module.exports.highlightCode = highlightCode
-module.exports.stylesheetAsset = stylesheetAsset
-module.exports.transforms = transforms
+module.exports = {
+  highlightCode,
+  stylesheetAsset,
+  transforms
+}
