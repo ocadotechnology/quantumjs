@@ -61,7 +61,7 @@ module.exports = {
   pipeline: [
     customizedTemplate,
     version(),
-    api(),
+    api.fileTransform(),
     docs(),
     html(htmlOptions)
   ],

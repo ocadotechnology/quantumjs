@@ -32,7 +32,7 @@ module.exports = function itemBuilder (options) {
 
     for (let i = 0; i < otherKeys.length; i++) {
       const name = otherKeys[i]
-      if (selection.param(1) === name) {
+      if (selection.param(0) === name || selection.param(1) === name) {
         selection.transformContext({class: itemClass})
         return others[name](selection, transforms)
       }

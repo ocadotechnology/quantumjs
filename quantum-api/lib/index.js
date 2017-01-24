@@ -48,8 +48,7 @@ function transforms (options) {
   return Object.freeze(transforms)
 }
 
-// The file transform
-module.exports = function (options) {
+function fileTransform (options) {
   const opts = config.resolve(options)
   return (file) => {
     if (opts.processChangelogs) {
@@ -60,16 +59,19 @@ module.exports = function (options) {
   }
 }
 
-module.exports.transforms = transforms
-module.exports.fileTransform = {
-  changelog: changelogFileTransform
-}
-module.exports.languages = {
-  javascript,
-  css
-}
-module.exports.builders = {
-  header,
-  body,
-  item
+module.exports = {
+  transforms,
+  fileTransform,
+  fileTransforms: {
+    changelog: changelogFileTransform
+  },
+  languages: {
+    javascript,
+    css
+  },
+  builders: {
+    header,
+    body,
+    item
+  }
 }
