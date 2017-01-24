@@ -10,4 +10,5 @@
   @inline api/stringify.um
   @inline api/json.um
   @inline api/select.um
+  @inline api/write.um
   # @inline api/watch.um XXX: should this be exposed?

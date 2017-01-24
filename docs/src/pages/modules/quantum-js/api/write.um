@@ -1,0 +1,26 @@
+@function write
+  @added 2.0.0
+  @description
+    Writes a @type[File] to disk
+
+  @param file [File]
+    The @type[File] to write to disk. @code[file.dest] is the location where the
+    file will be saved
+
+  @returns Promise[File]
+    @description
+      A promise that settles once the contents of the file has been written
+
+@function write
+  @added 2.0.0
+  @description
+    Writes an array of @type[File] to disk
+
+  @param file [Array[File]]
+    The @type[File]s to save. @code[file.dest] is the location where the file
+    will be saved
+
+  @returns Promise[Array[File]]
+    @description
+      A promise that settles once the contents of all the files have been written
+      to disk
