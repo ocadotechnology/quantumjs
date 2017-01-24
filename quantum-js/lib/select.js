@@ -105,11 +105,6 @@ Selection.prototype = {
       throw new Error("Can't add content after this element - it has no parent")
     }
   },
-  append: function (content) {
-    checkNotFiltered(this)
-    this._entity.content.push(content)
-    return select(content, this)
-  },
   ps: function (ps) {
     if (arguments.length > 0) {
       checkNotFiltered(this)

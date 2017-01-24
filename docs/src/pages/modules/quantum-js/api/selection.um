@@ -295,69 +295,373 @@
       @description
         This @type[Selection] instance
 
-  @method addAfter (content)
-    if (this._parent) {
-      const parentContent = this._parent.content()
-      const index = parentContent.indexOf(this._entity)
-      if (index > -1) {
-        if (Array.isArray(content)) {
-          parentContent.splice.apply(parentContent, [index + 1, 0].concat(content))
-        } else {
-          parentContent.splice(index + 1, 0, content)
+  @method addAfter
+    @description
+      If this selection has a parent, this method can be used to add content
+      after this one in the parent's content.
+
+      @codeblock js
+
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            {
+              type: "child",
+              params: [],
+              content: []
+            },
+            "End content"
+          ]
         }
-      }
-      return this
-    } else {
-      throw new Error("Can't add content after this element - it has no parent")
-    }
 
-  @method append (content)
-    checkNotFiltered(this)
-    this._entity.content.push(content)
-    return select(content, this)
+        const selection = quantum.select(entity)
+        selection.content()
+        /*
+          [
+            {
+              type: "child",
+              params: [],
+              content: []
+            },
+            "End content"
+          ]
+        */
 
-  @method ps (ps)
-    if (arguments.length > 0) {
-      checkNotFiltered(this)
-      this._entity.params = ps.split(' ')
-      return this
-    } else {
-      return this._entity.params.join(' ')
-    }
+        const child = selection.select('child')
+        child.addAfter('New line')
 
-  @method cs (cs)
-    if (arguments.length > 0) {
-      checkNotFiltered(this)
-      this._entity.content = cs.split('\n')
-      return this
-    } else {
-      return this._entity.content.filter(isText).join('\n')
-    }
+        selection.content()
+        /*
+          [
+            {
+              type: "child",
+              params: [],
+              content: []
+            },
+            "New line",
+            "End content"
+          ]
+        */
 
-  @method has (type, options)
-    if (options && options.recursive) {
-      const parent = this
-      return this._entity.content.some((child) => child.type === type) ||
-        this._entity.content.some((child) => {
-          return isEntity(child) && select(child, parent).has(type, options)
-        })
-    } else {
-      return this._entity.content.some((child) => child.type === type)
-    }
+    @param content [String/Object]
+      @description
+        The content to add to the end of the content array. Can either be a
+        string, or an entity object.
 
-  @method hasParams ()
-    return this._entity.params.length > 0
+    @returns Selection
+      @description
+        This @type[Selection] instance
 
-  @method hasContent ()
-    return this._entity.content.length > 0
+  @method ps
+    @description
+      Gets the parameters as a string
 
-  @method isEmpty ()
-    return !this._entity.content.some((d) => {
-      return isEntity(d) || d.trim() !== ''
-    })
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-  @method parent ()
-    return this._parent
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.ps() // param1 param2
+
+    @returns String
+      @description
+        The parameters joined with spaces into a single string
+
+  @method ps
+    @description
+      Sets the parameters as a string
+
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.ps() // param1 param2
+
+        selection.ps('p1 p2')
+        selection.params() // ['p1', 'p2']
+
+    @param ps [String]
+      @description
+        A string that should be split on spaces, the result of which will become
+        the params array for the entity.
+
+    @returns String
+      @description
+        The parameters joined with spaces into a single string
+
+  @method cs
+    @description
+      Gets the parameters as a string
+
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Line 1',
+            'Line 2'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.cs() // 'Line1\nLine2'
+
+    @returns String
+      @description
+        The content array joined with newline characters into a single string.
+        Any entity objects will be ignored.
+
+  @method cs
+    @description
+      Sets the parameters as a string
+
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Line 1',
+            'Line 2'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.cs() // 'Line1\nLine2'
+
+        selection.cs('Line1\nLine2\nLine3')
+        selection.content() // ['Line 1', 'Line 2', 'Line 3']
+
+    @param cs [String]
+      @description
+        A string that should be split on new lines, the result of which will become
+        the content array for the entity.
+
+    @returns String
+      @description
+        The content joined with new line characters into a single string
+
+  @method has
+    @description
+      Checks if an entity has a child entity of a particular type
+
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            {
+              type: 'child1',
+              params: [],
+              content: []
+            },
+            {
+              type: 'child2',
+              params: [],
+              content: [
+                type: 'child3',
+                params: [],
+                content: [
+
+                ]
+              ]
+            }
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.has('child1') // true
+        selection.has('child2') // true
+        selection.has('child3') // false
+        selection.has('child3', {recursive: true}) // true
+        selection.has('child4', {recursive: true}) // false
+
+    @param type [String]
+      @description
+        The entity type to look for
+    @param? options [Object]
+      @property recursive [Boolean]
+        @description
+          True to do a recursive search down the tree for the type
+        @default false
+    @returns Boolean
+      @description
+        Returns true if the selected entity has a child entity of type @code[type]
+
+  @method hasParams
+    @description
+      Returns true if the selected entity has any parameters
+
+      @codeblock js
+        const quantum = require('quantum-js')
+
+        const entity1 = {
+          type: 'example',
+          params: [],
+          content: []
+        }
+
+        const entity2 = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: []
+        }
+
+        const selection1 = quantum.select(entity1)
+        selection1.hasParams() // false
+
+        const selection2 = quantum.select(entity2)
+        selection2.hasParams() // true
+
+    @returns Boolean
+      @description
+        Returns true if the entity has 1 or more parameters, false otherwise
+
+  @method hasContent
+    @description
+      Returns true if the selected entity has any content
+
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity1 = {
+          type: 'example',
+          params: [],
+          content: []
+        }
+
+        const entity2 = {
+          type: 'example',
+          params: [],
+          content: [
+            'Line 1',
+            {
+              type: 'child',
+              params: [],
+              content: []
+            }
+          ]
+        }
+
+        const selection1 = quantum.select(entity1)
+        selection1.hasContent() // false
+
+        const selection2 = quantum.select(entity2)
+        selection2.hasContent() // true
+
+    @returns Boolean
+      @description
+        Returns true if the entity has content, false otherwise
+
+  @method isEmpty
+    @description
+      Returns true if the selected component has either no content or all the
+      content line are empty strings.
+
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity1 = {
+          type: 'example',
+          params: [],
+          content: []
+        }
+
+        const entity2 = {
+          type: 'example',
+          params: [],
+          content: [
+            "",
+            ""
+          ]
+        }
+
+        const entity3 = {
+          type: 'example',
+          params: [],
+          content: [
+            'Line 1',
+            {
+              type: 'child',
+              params: [],
+              content: []
+            }
+          ]
+        }
+
+        const selection1 = quantum.select(entity1)
+        selection1.isEmpty() // true
+
+        const selection2 = quantum.select(entity2)
+        selection2.isEmpty() // true
+
+        const selection3 = quantum.select(entity3)
+        selection3.isEmpty() // true
+
+    @returns Boolean
+      @description
+        Returns true if there is no content, the content is made up of empty
+        strings.
+
+  @method parent
+    @description
+      Gets the parent entity wrapped in a selection. This only works if
+      @code[Selection::select] has been used to select 'down' the tree:
+
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'parent',
+          params: [],
+          content: [
+            {
+              type: 'childExample',
+              params: [],
+              content: [
+
+              ]
+            }
+          ]
+        }
+
+        const parentSelection = quantum.select(entity)
+        const childSelection = quantum.select('childExample')
+
+        parentSelection.parent() // undefined
+        childSelection.parent() // == parentSelection
+
+    @returns Selection
+      Returns the parent @type[Selection] if it exists, otherwise @code[undefined]
+
 
   @method select (type, options)
     return this.selectAll(type, options)[0] || emptySelection()

@@ -705,7 +705,7 @@ describe('watch', () => {
   })
 
   it('should yield an error when an invalid spec is passed in 2', (done) => {
-    watch({}, () => {} {dest: 'target2'}).catch((err) => {
+    watch({}, () => {}, {dest: 'target2'}).catch((err) => {
       should.exist(err)
       done()
     })
