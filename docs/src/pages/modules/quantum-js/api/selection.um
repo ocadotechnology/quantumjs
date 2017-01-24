@@ -182,6 +182,24 @@
     @description
       Adds a new parameter to the end of the parameters list
 
+      @codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.params() // ['param1', 'param2']
+
+        selection.addParam(['param3'])
+        selection.params() // ['param1', 'param2', 'param3']
+
     @param param [String]
       The parameter value to add
 
@@ -189,14 +207,56 @@
       @description
         This @type[Selection] instance
 
-  @method content (content)
-    if (arguments.length > 0) {
-      checkNotFiltered(this)
-      this._entity.content = content
-      return this
-    } else {
-      return this._entity.content
-    }
+  @method content
+    @description
+      Gets the content of this entity as an array
+
+      @codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+        selection.content() // ['Blah blah blah']
+
+    @returns Selection
+      @description
+        This @type[Selection] instance
+
+  @method content
+    @description
+      Sets the content of this entity as an array
+
+      @codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+        selection.content() // ['Blah blah blah']
+
+        selection.content(['New Content', 'Second line'])
+        selection.content() // ['New Content', 'Second line']
+
+    @param content [Array[String/Object]]
+      @description
+        The content to give the selected entity
+
+    @returns Selection
+      @description
+        This @type[Selection] instance
 
   @method add (content)
     checkNotFiltered(this)
