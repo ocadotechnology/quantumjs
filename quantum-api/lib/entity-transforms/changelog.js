@@ -137,7 +137,7 @@ function group (selection, transforms, options) {
     .add(entryEntities.map(ent => entry(ent, transforms, options)))
 
   const labels = dom.create('div').class('qm-changelog-group-labels')
-    .add(Object.keys(options.tags).map(tagType => {
+    .add(Object.keys(tags).map(tagType => {
       const topLevelCount = selection.selectAll('change').reduce((acc, change) => {
         return change.param(0) === tagType ? acc + 1 : acc
       }, 0)
@@ -148,7 +148,7 @@ function group (selection, transforms, options) {
         return total + subtotal
       }, 0)
       const count = topLevelCount + entrySubCount
-      return count > 0 ? label(tagType, options.tags[tagType].iconClass, count) : undefined
+      return count > 0 ? label(tagType, tags[tagType].iconClass, count) : undefined
     }))
 
   const header = dom.create('div').class('qm-changelog-group-head')

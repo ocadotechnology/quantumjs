@@ -1,0 +1,95 @@
+@entity api
+  @added 2.0.0
+
+@entity group
+  @added 2.0.0
+
+@entity changelogList
+  @added 2.0.0
+
+@entity changelog
+  @added 2.0.0
+
+@function transforms
+  @added 2.0.0
+  @description
+    TODO: make sure Transforms page/link is sensible
+
+    A function that returns a set of @hyperlink(/docs/core-concepts/#entity-transforms)[Transforms] for use in @code[quantum-html].
+
+  @param? options [Object]
+    @description
+      The options to use when creating the set of transforms.
+
+    @property apiBuilders [Array[Transform]]
+      @description
+        TODO: what does this let you do?
+
+        The default set of @code[apiBuilders] are available as properties of this module under @hyperlink(#builders)[builders], @hyperlink(#languages)[languages]
+
+      @default
+        @codeblock js
+          [
+            builders.body.description,
+            builders.body.extras,
+            builders.body.groups,
+            languages.javascript.properties,
+            languages.javascript.prototypes,
+            languages.javascript.objects,
+            languages.javascript.functions,
+            languages.css.classes
+          ]
+
+    @property groupBuilders [Array[Transform]]
+      @description
+        TODO: what does this let you do?
+
+        The default set of @code[groupBuilders] are available as properties of this module under @hyperlink(#builders)[builders], @hyperlink(#languages)[languages]
+
+      @default
+        @codeblock js
+          [
+            builders.body.description,
+            builders.body.extras,
+            builders.body.groups,
+            languages.javascript.params,
+            languages.javascript.properties,
+            languages.javascript.prototypes,
+            languages.javascript.objects,
+            languages.javascript.functions,
+            languages.javascript.methods,
+            languages.javascript.events,
+            languages.css.classes
+          ]
+
+    @property languages [Array[Language]]
+      @default
+        @codeblock js
+          [
+            languages.javascript(),
+            languages.css()
+          ]
+
+    @property issueUrl [Function]
+      @param issueNumber [String]
+      @default
+        @codeblock js
+          function issueUrl (issueNumber) {
+            return undefined
+          }
+
+    @property changelogGroupByApi [Boolean]
+      @default: false
+
+    @property changelogReverseVisibleList [Boolean]
+      @default: false
+
+  @returns Object
+    @description
+      The transforms to use in @code[quantum-html] to define the entities that can be rendered.
+
+    @property api [Transform]
+    @property group [Transform]
+    @property changelogList [Transform]
+    @property changelog [Transform]
+
