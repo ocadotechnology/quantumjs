@@ -1,0 +1,69 @@
+@entity code
+  @added 2.0.0
+  @description
+    Creates an inline code section without code highlighting
+
+    Example Code:
+
+    @@codeblock um
+      @code[some.code = 3]
+
+      # Javascript example
+      @code[var a = true]
+
+    Example Result:
+
+    @code[some.code = 3]
+
+    @code[var a = true]
+
+# Should render as @@codeblock
+@entity @codeblock
+  @added 2.0.0
+  @params language: The language to use for code highlighting
+  @description
+    Creates an inline code section with highlighting using @hyperlink(https://highlightjs.org/usage/)[highlight.js].
+
+    Example Code:
+
+    @@codeblock um
+      # Syntax Guessing
+      @@codeblock
+        some.code = 3
+
+      # Set the syntax to javascript
+      @@codeblock js
+        var a = true
+
+      # Create a code section with no highlighting
+      @@codeblock nohighlight
+        some code without highlighting
+
+    Example Result:
+
+    @@codeblock
+      some.code = 3
+
+    @@codeblock js
+      var a = true
+
+    @@codeblock nohighlight
+      some code without highlighting
+
+@function transforms
+  @added 2.0.0
+  @description
+    TODO: make sure Transforms page/link is sensible
+
+    A function that returns a set of @hyperlink(/docs/core-concepts/#entity-transforms)[Transforms] for use in @code[quantum-html].
+
+  @param? options [Object]
+    @description
+      The options to use when creating the set of transforms.
+
+  @returns Object
+    @description
+      The transforms to use in @code[quantum-html] to define the entities that can be rendered.
+
+    @property code [Transform]
+    @property codeblock [Transform]

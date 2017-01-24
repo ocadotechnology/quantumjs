@@ -1,10 +1,10 @@
 @inline ../../../templates/sidebar-page.um
 
 @topSection
-  @title QuantumJS changelog
+  @title Code Highlight Changelog
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    What has changed in quantum-js for each release.
+    What has changed in @code[quantum-code-highlight] for each release.
 
 @contentSection
   @changelogList
@@ -13,9 +13,9 @@
     @process
       @inline api.um
     @version 2.0.0
-      @link /modules/quantum-js/2.0.0
+      @link /modules/quantum-code-highlight/2.0.0
       @description
-        Initial public release of quantum-js.
+        Initial public release of quantum-code-highlight.
     @version 1.0.0
       @description
         Version 1.0.0 is an unsupported version of the library.

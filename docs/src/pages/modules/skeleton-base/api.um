@@ -1,3 +1,8 @@
 @api quantum-{module}
+  @description
+    Below are all the properties of the object returned from @code[require('quantum-{module}')].
+
+    For information about different versions, see the @hyperlink(/modules/quantum-{module}/changelog/)[Changelog]
+
   @inline api/transforms.um
   @inline api/fileTransform.um

@@ -4,7 +4,7 @@
   @version 2.0.0
 
 @topSection
-  @title Quantum API
+  @title API
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     ......
@@ -13,5 +13,4 @@
   @topic About
 
   @topic API
-    @hyperlink(/modules/quantum-api/changelog/)[Quantum API Changelog]
     @inline api.um

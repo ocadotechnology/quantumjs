@@ -1,69 +1,8 @@
-@version 2.0.0
-  @api quantum-code-highlight
-    @group Api
-      @function transforms
-        @description
-          The function for adding the transforms to the quantum pipeline.
+@api quantum-code-highlight
+  @description
+    Below are all the properties of the object returned from @code[require('quantum-code-highlight')].
 
-          This is the function returned from @code[require('quantum-code-highlight')]
+    For information about different versions, see the @hyperlink(/modules/quantum-code-highlight/changelog/)[Changelog]
 
-          See the @hyperlink(/docs/api/)[Using the CLI] and @hyperlink(/docs/api/)[Using the API] page for more information about how to use transforms
-
-    @group Entities
-      @object @code
-        @params language: The language to use for code highlighting
-        @description
-          Creates an inline code section with highlighting
-
-          Example Code:
-
-          @@codeblock um
-            # Syntax Guessing
-            @code[some.code = 3]
-
-            # Set the syntax to javascript
-            @code(js)[var a = true]
-
-            # Create a code section with no highlighting
-            @code(nohighlight)[some code without highlighting]
-
-          Example Result:
-
-          @code[some.code = 3]
-
-          @code(js)[var a = true]
-
-          @code(nohighlight)[some code without highlighting]
-
-
-      @object @codeblock
-        @params language: The language to use for code highlighting
-        @description
-          Creates an inline code section with highlighting
-
-          Example Code:
-
-          @@codeblock um
-            # Syntax Guessing
-            @codeblock
-              some.code = 3
-
-            # Set the syntax to javascript
-            @codeblock js
-              var a = true
-
-            # Create a code section with no highlighting
-            @codeblock nohighlight
-              some code without highlighting
-
-          Example Result:
-
-          @codeblock
-            some.code = 3
-
-          @codeblock js
-            var a = true
-
-          @codeblock nohighlight
-            some code without highlighting
-
+  @inline api/transforms.um
+  @inline api/highlightCode.um

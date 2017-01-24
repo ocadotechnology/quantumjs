@@ -1,10 +1,10 @@
 @inline ../../../templates/sidebar-page.um
 
 @topSection
-  @title Quantum API Change Log
+  @title API changelog
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    What has changed in quantum-api for each release.
+    What has changed in @code[quantum-api] for each release.
 
 @contentSection
   @changelogList

@@ -1,0 +1,23 @@
+@function highlightCode
+  @added 2.0.0
+  @description
+    A function that takes a chunk of code and applies @hyperlink(https://highlightjs.org/usage/)[highlight.js] highlighting, returining the html with highlight classes applied.
+
+    This function is used in the @code[@@codeblock] entity but can be used within custom transforms if required.
+
+    If using this directly, you must add the @code[stylesheetAsset] in the transform or the highlight colours will not be applied.
+
+  @param code [String]
+    @description
+      The code to highlight
+
+  @param? language [String]
+    @description
+      The language to use for the highlighting.
+
+      If this is not defined, it uses the automatic highlighting and attempts to guess the language.
+
+      If highlight.js does not know the language, it does not apply highlighting and returns the code it was passed.
+
+  @returns String
+    @description: The HTML string with highlighting applied
