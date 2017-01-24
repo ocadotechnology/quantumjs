@@ -355,11 +355,6 @@
       @description
         This @type[Selection] instance
 
-  @method append (content)
-    checkNotFiltered(this)
-    this._entity.content.push(content)
-    return select(content, this)
-
   @method ps (ps)
     if (arguments.length > 0) {
       checkNotFiltered(this)

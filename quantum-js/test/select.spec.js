@@ -823,28 +823,6 @@ describe('select', () => {
     })
   })
 
-  describe('Selection::append', () => {
-    it('should add entity content', () => {
-      const entity = {
-        type: 'tag',
-        params: [],
-        content: []
-      }
-
-      const selection = select(entity)
-
-      const child1 = {type: 'type1', params: [], content: []}
-      const child2 = {type: 'type2', params: [], content: []}
-
-      selection.append(child1).should.eql(select(child1, selection))
-      selection.append(child2).should.eql(select(child2, selection))
-      entity.content.should.eql([
-        {type: 'type1', params: [], content: []},
-        {type: 'type2', params: [], content: []}
-      ])
-    })
-  })
-
   describe('Selection::addParam', () => {
     it('should add params to the underlying entity', () => {
       const entity = {
