@@ -2,4 +2,228 @@
   @added 2.0.0
 
   @description
-    
+    Watches a collection of files for changes. This also detects changes when
+    inlined files are changed.
+
+    @codeblock js
+      quantum.watch("src/**/*.um", (err, file, cause) => {
+        // Example use: apply some transformation and write the file to disk
+        return transformAndWrite(file)
+      })
+
+
+  @param specs [String/Object/Array]
+    @description
+      This describes the files to watch.
+
+      It can be a single file:
+      @@codeblock js
+        quantum.watch("src/file.um", handler, options)
+
+      Or a glob:
+      @@codeblock js
+        quantum.watch("src/**/*.um", handler, options)
+
+      Or an array of globs:
+      @@codeblock js
+        quantum.watch(["src/**/*.um", "src2/**/index.um"], handler, options)
+
+      Or an array of globs:
+      @@codeblock js
+        quantum.watch(["src/**/*.um", "src2/**/index.um"], handler, options)
+
+      Or a more structured object:
+      @@codeblock js
+        quantum.watch({
+          files: 'src/**/*.um',
+          base: 'src'
+        }, handler, options)
+
+      Or an array of these objects:
+      @@codeblock js
+        quantum.watch([
+          {
+            files: 'src/**/*.um',
+            base: 'src'
+          },
+          {
+            files: 'src2/**/index.um',
+            base: 'src2'
+          }
+        ], handler, options)
+
+  @param handler [Function]
+    @description
+      A callback that transforms a page. If this does anything asynchronous, it
+      should return a @type[Promise]
+
+    @param error [Error]
+      @description
+        This will be defined if there was an error when parsing the file. The
+        handler has the option to handle this case if it wants to.
+    @param page [Page]
+      @description
+        The page that has been loaded. This is the page that the handler should
+        process / transform.
+    @param cause [String]
+      @description
+        The reason this page is being transformed. Can be one of @code['build'],
+        @code['add'] or @code['change']
+
+    @returns [Page]
+      @description
+        The transformed page
+
+
+  @param options [Object]
+    @property dir [String]
+      @description
+        The working directory for the watcher to work in
+      @default: '.'
+    @property dest [String]
+      @description
+        The default destination directory to write the files to
+      @default: 'target'
+    @property loader [Function]
+      @description
+        A function which loads files from disk, returning a @type[Promise]
+      @param filename [String]
+        @description
+          The filename of the file to load
+      @param parentFilename [String]
+        @description
+          The filename of the parent file - ie if this file is being loaded as the
+          result of an @code[@inline] include, the parent file will be the one
+          doing the inlining.
+      @returns [Promise[String]]
+        @description
+          A promise yielding the contents of the file
+      @default
+        @codeblock js
+          const Promise = require('bluebird')
+          const fs = Promise.promisifyAll(require('fs-extra'))
+
+          function (filename, parentFilename) {
+            return fs.readFileAsync(filename, 'utf-8')
+          }
+    @property buildConcurrency [Number]
+      @description
+        The number of files to build concurrently
+      @default: 1
+
+
+  @returns [Promise[Object]]
+    @description
+      Returns a @type[Promise] that contains an object. The promise will settle
+      once all the watchers have been set up.
+
+      The object the @type[Promise] yields looks like this:
+
+      @@codeblock js
+        {
+          build: Function,
+          events: EventEmitter
+        }
+
+      The @code[build] function will trigger a full build of the watched files
+      when called.
+
+      @code[events] gives you a way to listen for changes
+      that are made to files.
+
+      The possible events that can be emitted by this event emitter are:
+      @code['error'], @code['add'], @code['change'], @code['delete'].
+
+@function watch.watcher
+  @added 2.0.0
+
+  @description
+    Watches files for changes (but does not detect changes from inlined files)
+
+  @param specs [String/Object/Array]
+    @description
+      This describes the files to watch.
+
+      It can be a single file:
+      @@codeblock js
+        quantum.watch("src/file.um", handler, options)
+
+      Or a glob:
+      @@codeblock js
+        quantum.watch("src/**/*.um", handler, options)
+
+      Or an array of globs:
+      @@codeblock js
+        quantum.watch(["src/**/*.um", "src2/**/index.um"], handler, options)
+
+      Or an array of globs:
+      @@codeblock js
+        quantum.watch(["src/**/*.um", "src2/**/index.um"], handler, options)
+
+      Or a more structured object:
+      @@codeblock js
+        quantum.watch({
+          files: 'src/**/*.um',
+          base: 'src'
+        }, handler, options)
+
+      Or an array of these objects:
+      @@codeblock js
+        quantum.watch([
+          {
+            files: 'src/**/*.um',
+            base: 'src'
+          },
+          {
+            files: 'src2/**/index.um',
+            base: 'src2'
+          }
+        ], handler, options)
+
+  @param options [Object]
+    @property dir [String]
+      @description
+        The working directory for the watcher to work in
+      @default: '.'
+    @property dest [String]
+      @description
+        The default destination directory to write the files to
+      @default: 'target'
+
+  @returns Watcher
+
+@prototype Watcher
+  @extends EventEmitter
+
+  @added 2.0.0
+
+  @description
+    An instance of one of these is returned by @code[quantum.watch.watcher]. It
+    provides a way to stop watching the files.
+
+  @event add [FileInfo]
+    @description
+      Emitted when a new file is added / starts being watched. The data with the
+      event is a @type[FileInfo] instance with information about the file being
+      watched.
+
+  @event change [FileInfo]
+    @description
+      Emitted when a file is changed. The data with the event is a
+      @type[FileInfo] instance with information about the file that was changed.
+
+  @event remove [FileInfo]
+    @description
+      Emitted when a file is removed. The data with the event is a
+      @type[FileInfo] instance with information about the file that was removed.
+
+  @method stop
+    @description
+      Stops watching the files
+
+  @method files
+    @description
+      Gets a list of the watched files
+    @returns [Array[String]]
+      @description
+        All the files currently being watched by this @type[Watcher]

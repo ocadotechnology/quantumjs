@@ -11,4 +11,4 @@
   @inline api/json.um
   @inline api/select.um
   @inline api/write.um
-  # @inline api/watch.um XXX: should this be exposed?
+  @inline api/watch.um

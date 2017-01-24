@@ -95,7 +95,7 @@ function defaultLoader (filename, parentFilename) {
 }
 
 // watches quantum files and follows inline links
-function watch (specs, options, handler) {
+function watch (specs, handler, options) {
   const err = fileOptions.validate(specs)
   if (err) {
     return Promise.reject(err)
@@ -179,8 +179,8 @@ function watch (specs, options, handler) {
     fileInfos[work.fileInfo.src] = work.fileInfo
     return read(work.fileInfo.src, {loader: linkingLoader})
       .then((content) => {
-        const page = new File({info: work.fileInfo, content: content})
-        return handler(undefined, page, work.cause)
+        const file = new File({info: work.fileInfo, content: content})
+        return handler(undefined, file, work.cause)
       })
       .catch((err) => {
         if (err instanceof parse.ParseError) {

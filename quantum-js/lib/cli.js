@@ -231,7 +231,8 @@ function watch (config) {
 
   copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Site'})
-    qwatch(config.pages, options, (err, file) => {
+
+    function watchHandler (err, file) {
       if (err) {
         logger({type: 'page-load-error', fileInfo: file.info.src, error: err})
       } else {
@@ -240,7 +241,9 @@ function watch (config) {
             files.forEach(file => triggerReload(file.info.dest))
           })
       }
-    })
+    }
+
+    qwatch(config.pages, watchHandler, options)
 
     if (config.resources) {
       qwatch.watcher(config.resources, options).then((watcher) => {

@@ -17,9 +17,11 @@ const typeLinks = {
   'Object': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object',
   'String': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
   'Promise': 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise',
+  'EventEmitter': 'https://nodejs.org/api/events.html',
   'File': '/modules/quantum-js/#file',
   'FileInfo': '/modules/quantum-js/#fileinfo',
   'Selection': '/modules/quantum-js/#selection',
+  'Watcher': '/modules/quantum-js/#watcher',
   'Element': '/modules/quantum-dom/#element'
 }
 
