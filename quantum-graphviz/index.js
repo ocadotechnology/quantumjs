@@ -1,6 +1,6 @@
-const bluebird = require('bluebird')
-const childProcess = bluebird.promisifyAll(require('child_process'))
-const streamToBuffer = bluebird.promisify(require('stream-to-buffer'))
+const Promise = require('bluebird')
+const childProcess = Promise.promisifyAll(require('child_process'))
+const streamToBuffer = Promise.promisify(require('stream-to-buffer'))
 const dom = require('quantum-dom')
 
 function gv(quantumSelection, transform) {
@@ -10,6 +10,7 @@ function gv(quantumSelection, transform) {
   return new Promise((resolve, reject) => {
     const graphViz = childProcess.spawn('dot', [typeArg])
     graphViz.stdin.end(content)
+    graphViz.on('error', reject)
     graphViz.on('exit', (code) => handleExit(graphViz, code, mimeType).then(resolve).catch(reject))
   })
 }
