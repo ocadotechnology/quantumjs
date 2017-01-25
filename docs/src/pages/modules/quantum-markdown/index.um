@@ -10,7 +10,7 @@
 
 @contentSection
   @topic About
-    This module provides the @code[@markdown] transform for including markdown
+    This module provides the @code[@@markdown] transform for including markdown
     snippets in a quantum site.
 
   @topic Example
@@ -22,31 +22,36 @@
 
           Example _italic_ or **bold** text.
 
-    @subsection Result
+    @subsection Result HTML
       @@codeblock html
         <div class="qm-markdown">
           <h3 id="example-heading">Example heading</h3>
           <p>Example <em>italic</em> or <strong>bold</strong> text.</p>
         </div>
 
-    @notice [Note]
-      Always use @code[@@markdown] instead of @code[@markdown] for markdown blocks.
-      Using @code[@@markdown] prevents the @code[#] character being treated as a
-      quantum comment. Since @code[#] is used for headings in markdown it is
-      important to do this otherwise they will not show up in the final page!
+    @subsection Result
+      @@markdown
+        ### Example heading
+
+        Example _italic_ or **bold** text.
 
 
   @topic Markdown File Example
     It is also possible to include markdown inline directly from @code[.md] files
-    using @code[@inline]
+    using @code[@markdown] and @code[@inline]
 
     @subsection Example
       @@codeblock um
         @markdown: @inline path/to/file.md
 
-    When inlining using this method, its fine to use @code[@markdown] instead of
-    @code[@@markdown], since when inlining non quantum files, no text is passed
-    through the quantum parser.
+    Inlining files in this way uses @code[@markdown] as non-quantum files are not parsed by quantum when using @code[@inline] (so all the @code[#] for headings are retained)
+
+  @notice [Note]
+    Always use @code[@@markdown] for markdown blocks and @code[@markdown] when inlining markdown files.
+
+    Using @code[@@markdown] prevents the @code[#] character being treated as a
+    quantum comment. Since @code[#] is used for headings in markdown it is
+    important to do this otherwise they will not show up in the rendered page!
 
   @topic Api
     @inline api.um

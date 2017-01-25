@@ -1,35 +1,7 @@
-@version 2.0.0
-  @api quantum-markdown
-    @group Api
-      @function transforms
-        @description
-          The function for adding the transforms to the quantum pipeline.
+@api quantum-markdown
+  @description
+    Below are all the properties of the object returned from @code[require('quantum-markdown')].
 
-          This is the function returned from @code[require('quantum-markdown')]
+    For information about different versions, see the @hyperlink(/modules/quantum-markdown/changelog/)[Changelog]
 
-          See the @hyperlink(/docs/api/)[Using the CLI] and @hyperlink(/docs/api/)[Using the API] page for more information about how to use transforms
-
-    @group Entities
-      @object @markdown
-        @description
-          A renderer for rendering @code(nohighlight)[markdown] using quantum
-
-          Example Code:
-          @@codeblock markdown
-            @@markdown
-              # Example heading
-
-              Example _italic_ or **bold** text.
-
-
-          Example Result:
-          @@markdown
-            # Example heading
-            Example _italic_ or **bold** text.
-
-
-          @code(um)[@inline] can also be used:
-          @@codeblock um
-            @markdown: @inline path/to/file.md
-
-
+  @inline api/transforms.um
