@@ -1,8 +1,7 @@
 @function fileTransform
   @added 2.0.0
   @param? options [Object]
-    @property processChangelogs [Boolean]
-      @default: true
+
   @returns Function
     @param file [File]
 

@@ -1,19 +1,17 @@
 @inline ../../../templates/sidebar-page.um
 
-@versionList
-  @version 1.0.0
+@versionedPage
+  @version 2.0.0
 
 @topSection
-  @title Quantum Docs
+  @title Docs
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
+    TODO
 
 @contentSection
   @topic About
     TODO
 
-  @topic Example
-    TODO
-
-  @topic Api
-    TODO
+  @topic API
+    @inline api.um

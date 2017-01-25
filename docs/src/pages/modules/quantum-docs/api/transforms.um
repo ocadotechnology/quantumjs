@@ -1,0 +1,159 @@
+@entity topic
+  @added 2.0.0
+  @description
+    TODO
+
+@entity section
+  @added 2.0.0
+  @description
+    TODO
+
+@entity subsection
+  @added 2.0.0
+  @description
+    TODO
+
+@entity notice
+  @added 2.0.0
+  @description
+    TODO
+
+@entity list
+  @added 2.0.0
+  @description
+    TODO
+
+@entity bold
+  @added 2.0.0
+  @description
+    TODO
+
+@entity italic
+  @added 2.0.0
+  @description
+    TODO
+
+@entity strikethrough
+  @added 2.0.0
+  @description
+    TODO
+
+@entity image
+  @added 2.0.0
+  @description
+    TODO
+
+@entity summary
+  @added 2.0.0
+  @description
+    TODO
+
+@entity group
+  @added 2.0.0
+  @description
+    TODO
+
+@entity versionSelector
+  @added 2.0.0
+  @description
+    TODO
+
+@entity sidebarPage
+  @added 2.0.0
+  @description
+    TODO
+
+@entity sidebar
+  @added 2.0.0
+  @description
+    TODO
+
+@entity tableOfContents
+  @added 2.0.0
+  @description
+    TODO
+
+@entity navigationMenu
+  @added 2.0.0
+  @description
+    TODO
+
+@entity header
+  @added 2.0.0
+  @description
+    TODO
+
+@entity breadcrumb
+  @added 2.0.0
+  @description
+    TODO
+
+@entity topSection
+  @added 2.0.0
+  @description
+    TODO
+
+@entity contentSection
+  @added 2.0.0
+  @description
+    TODO
+
+@entity fullWidth
+  @added 2.0.0
+  @description
+    TODO
+
+@entity bottomSection
+  @added 2.0.0
+  @description
+    TODO
+
+@entity relatedButtons
+  @added 2.0.0
+  @description
+    TODO
+
+@entity table
+  @added 2.0.0
+  @description
+    TODO
+
+@function transforms
+  @added 2.0.0
+  @description
+    TODO: make sure Transforms page/link is sensible
+
+    A function that returns a set of @hyperlink(/docs/core-concepts/#entity-transforms)[Transforms] for use in @code[quantum-html].
+
+  # @param? options [Object]
+  #   @description
+  #     The options to use when creating the set of transforms.
+
+  @returns Object
+    @description
+      The transforms to use in @code[quantum-html] to define the entities that can be rendered.
+
+    @property topic [Transform]
+    @property section [Transform]
+    @property subsection [Transform]
+    @property notice [Transform]
+    @property list [Transform]
+    @property bold [Transform]
+    @property italic [Transform]
+    @property strikethrough [Transform]
+    @property image [Transform]
+    @property summary [Transform]
+    @property group [Transform]
+    @property versionSelector [Transform]
+    @property sidebarPage [Transform]
+    @property sidebar [Transform]
+    @property tableOfContents [Transform]
+    @property navigationMenu [Transform]
+    @property header [Transform]
+    @property breadcrumb [Transform]
+    @property topSection [Transform]
+    @property contentSection [Transform]
+    @property fullWidth [Transform]
+    @property bottomSection [Transform]
+    @property relatedButtons [Transform]
+    @property table [Transform]
