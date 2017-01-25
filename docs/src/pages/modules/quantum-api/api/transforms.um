@@ -10,6 +10,50 @@
 @entity changelog
   @added 2.0.0
 
+@group [Language: Javascript]
+  @entity function
+    @added 2.0.0
+
+  @entity object
+    @added 2.0.0
+
+  @entity event
+    @added 2.0.0
+
+  @entity default
+    @added 2.0.0
+
+  @entity returns
+    @added 2.0.0
+
+  @entity param
+    @added 2.0.0
+
+  @entity param?
+    @added 2.0.0
+
+  @entity property
+    @added 2.0.0
+
+  @entity prototype
+    @added 2.0.0
+
+  @entity constructor
+    @added 2.0.0
+
+  @entity method
+    @added 2.0.0
+
+@group [Language: CSS]
+  @entity class
+    @added 2.0.0
+
+  @entity extraclass
+    @added 2.0.0
+
+  @entity childclass
+    @added 2.0.0
+
 @function transforms
   @added 2.0.0
   @description
@@ -92,4 +136,3 @@
     @property group [Transform]
     @property changelogList [Transform]
     @property changelog [Transform]
-
