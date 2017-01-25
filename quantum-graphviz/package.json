@@ -6,6 +6,7 @@
   "main": "index.js",
   "dependencies": {
     "bluebird": "^3.4.7",
-    "stream-to-buffer": "^0.1.0"
+    "stream-to-buffer": "^0.1.0",
+    "quantum-dom": "^2.0.0-rc.2"
   }
 }
