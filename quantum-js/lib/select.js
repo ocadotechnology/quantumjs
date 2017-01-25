@@ -326,7 +326,6 @@ function select (entity, parent) {
   } else if (entity instanceof Selection) {
     return entity
   } else {
-    console.log('OOPS', entity)
     throw new Error("Something that doesn't look like an entity was selected")
   }
 }
