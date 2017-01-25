@@ -1,0 +1,98 @@
+@entity diagram
+  @added 2.0.0
+  @description
+    TODO
+
+  @entity hideDescriptions
+    @description
+      If this entity is provided inside an @code[@diagram] entity, the descriptions for that diagram will be hidden.
+
+      @h3: Example
+      @@codeblock um
+        @p: With Description:
+        @diagram
+          @item user [User]
+            Description of user
+
+        @p: Without description:
+        @diagram
+          @hideDescriptions
+          @item user [User]
+            Description of user
+
+      @h3: Example Result
+      @p: With Description:
+      @diagram
+        @item user [User]
+          Description of user
+
+      @p: Without description:
+      @diagram
+        @hideDescriptions
+        @item user [User]
+          Description of user
+          With multiple lines
+
+  @entity item
+    @param id
+      @description
+        The id of the item. Used when linking and is not displayed on screen.
+
+    @param label
+      @description
+        The label to display on the item
+
+    @description
+      Displays a box with text/description in the diagram.
+
+      @h3: Example
+      @@codeblock
+        @diagram
+          @item itemid [Item 1]
+            Description Line 1
+            Long description line with lots of text to illustrate that lines don't wrap
+
+      @h3: Example Result
+      @diagram
+        @item itemid [Item 1]
+          Description Line 1
+          Long description line with lots of text to illustrate that lines don't wrap
+
+
+  @entity link
+    @param leftId
+      @description
+        The @code[id] of an item to link
+
+    @param linkType
+      @description
+        @list
+          @item: @b[-]: Line between the two ids
+          @item: @b[--]: Dashed line between the two ids
+          @item: @b[->]: Line with arrow towards rightId
+          @item: @b[<-]: Line with arrow towards leftId
+          @item: @b[<->]: Double ended arrow with line
+          @item: @b[-->]: Dashed line with arrow towards rightId
+          @item: @b[<--]: Dashed line with arrow towards leftId
+          @item: @b[<-->]: Double ended arrow with dashed line
+
+    @param rightId
+      @description
+        The @code[id] of an item to link
+
+@function transforms
+  @added 2.0.0
+  @description
+    TODO: make sure Transforms page/link is sensible
+
+    A function that returns a set of @hyperlink(/docs/core-concepts/#entity-transforms)[Transforms] for use in @code[quantum-html].
+
+  # @param? options [Object]
+  #   @description
+  #     The options to use when creating the set of transforms.
+
+  @returns Object
+    @description
+      The transforms to use in @code[quantum-html] to define the entities that can be rendered.
+
+    @property diagram [Transform]
