@@ -64,7 +64,7 @@ module.exports = {
     customizedTemplate,
     version(),
     api.fileTransform(),
-    docs(),
+    docs.fileTransform(),
     html(htmlOptions)
   ],
   pages: 'src/pages/**/*.um',

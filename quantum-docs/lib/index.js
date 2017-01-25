@@ -324,30 +324,30 @@ function table (selection, transforms) {
 
 function transforms (opts) {
   return Object.freeze({
-    topic: topic,
-    section: section,
-    subsection: subsection,
-    notice: notice,
-    list: list,
-    bold: bold,
-    italic: italic,
-    strikethrough: strikethrough,
-    image: image,
-    summary: summary,
-    group: group,
-    versionSelector: versionSelector,
-    sidebarPage: sidebarPage,
-    sidebar: sidebar,
-    tableOfContents: tableOfContents,
-    navigationMenu: navigationMenu,
-    header: header,
-    breadcrumb: breadcrumb,
-    topSection: topSection,
-    contentSection: contentSection,
-    fullWidth: fullWidth,
-    bottomSection: bottomSection,
-    relatedButtons: relatedButtons,
-    table: table
+    topic,
+    section,
+    subsection,
+    notice,
+    list,
+    bold,
+    italic,
+    strikethrough,
+    image,
+    summary,
+    group,
+    versionSelector,
+    sidebarPage,
+    sidebar,
+    tableOfContents,
+    navigationMenu,
+    header,
+    breadcrumb,
+    topSection,
+    contentSection,
+    fullWidth,
+    bottomSection,
+    relatedButtons,
+    table
   })
 }
 
@@ -370,7 +370,7 @@ function populateTableOfContents (page) {
   })
 }
 
-function pipeline (options) {
+function fileTransform (options) {
   const opts = options || {}
   const populateTableOfContentsOptions = opts.populateTableOfContents || {}
   const populateTableOfContentsEnabled = (populateTableOfContentsOptions.enabled !== false)
@@ -382,5 +382,7 @@ function pipeline (options) {
   }
 }
 
-module.exports = pipeline
-module.exports.transforms = transforms
+module.exports = {
+  fileTransform,
+  transforms
+}
