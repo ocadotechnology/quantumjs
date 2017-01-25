@@ -3,7 +3,7 @@ const childProcess = bluebird.promisifyAll(require('child_process'))
 const streamToBuffer = bluebird.promisify(require('stream-to-buffer'))
 const dom = require('quantum-dom')
 
-function dot(quantumSelection, transform) {
+function gv(quantumSelection, transform) {
   const typeArg = '-Tsvg'
   const mimeType = 'image/svg+xml'
   const content = quantumSelection.cs()
@@ -28,4 +28,4 @@ function handleExit(graphViz, code, mimeType) {
   }
 }
 
-module.exports.transforms = (options) => Object.freeze({ dot })
+module.exports.transforms = (options) => Object.freeze({ gv })
