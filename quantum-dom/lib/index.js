@@ -360,10 +360,11 @@ function stringify (elements, options) {
 
   return Promise.all([stylesheets, scripts])
     .spread((stylesheets, scripts) => {
-      const head = '<head>' + stylesheets.join('') + headElements + '</head>'
-      const openBodyTag = bodyClass ? '<body class="' + bodyClass + '">' : '<body>'
-      const body = openBodyTag + bodyElements + scripts.join('') + '</body>'
-      const html = '<!DOCTYPE html>\n' + '<html>' + head + body + '</html>'
+      const head = `<head>${stylesheets.join('')}${headElements}</head>`
+      const bodyClasses = `qm-body-font${bodyClass ? ` ${bodyClass}` : ''}`
+      const openBodyTag = `<body class="${bodyClasses}">`
+      const body = `${openBodyTag}${bodyElements}${scripts.join('')}</body>`
+      const html = `<!DOCTYPE html>\n<html>\n${head}\n${body}</html>`
       return {
         html: html,
         assets: exportAssets

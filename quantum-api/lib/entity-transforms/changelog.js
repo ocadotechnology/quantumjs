@@ -114,7 +114,7 @@ function entry (selection, transforms, options) {
     .map(change => changeDom(change, transforms, options.issueUrl))
 
   return dom.create('div').class('qm-changelog-entry')
-    .add(dom.create('div').class('qm-changelog-entry-header').add(header))
+    .add(dom.create('div').class('qm-changelog-entry-header qm-code-font').add(header))
     .add(dom.create('div').class('qm-changelog-entry-content').add(changes))
 }
 
@@ -194,7 +194,7 @@ module.exports = function changelog (options) {
       return dom.create('div').class('qm-changelog')
         .add(assets)
         .add(options.languages.map(l => l.changelog.assets))
-        .add(dom.create('div').class('qm-changelog-head').add(title))
+        .add(dom.create('div').class('qm-changelog-head qm-header-font').add(title))
         .add(dom.create('div').class('qm-changelog-body')
           .add(description)
           .add(groups)

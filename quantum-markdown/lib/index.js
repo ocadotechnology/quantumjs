@@ -24,8 +24,11 @@ marked.setOptions({
 })
 
 function markdown (selection, transform) {
+  const parsedMarkdown = marked(selection.cs())
+    .split('<code>')
+    .join('<code class="qm-code-font">')
   return dom.create('div').class('qm-markdown')
-    .add(marked(selection.cs()))
+    .add(parsedMarkdown)
     .add(stylesheetAsset)
     .add(codeHighlight.stylesheetAsset)
 }

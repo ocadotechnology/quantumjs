@@ -84,10 +84,6 @@ p:last-child {
   margin-bottom: 0;
 }
 
-.codeblock * {
-  font-family: 'Inconsolata', monospace;
-}
-
 .qm-docs-list-bullet {
   font-size: 0.4em;
   margin: 1.05em;

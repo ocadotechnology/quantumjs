@@ -35,7 +35,7 @@ function topic (selection, transforms) {
     .class('qm-docs-topic')
     .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-anchor').id(spinalCase(selection.ps()))
-      .add(dom.create('div').class('qm-docs-topic-header')
+      .add(dom.create('div').class('qm-docs-topic-header qm-header-font')
         .text(selection.ps())
         .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(selection.ps())))))
     .add(dom.create('div').class('qm-docs-topic-body').add(html.paragraphTransform(selection, transforms)))
@@ -46,7 +46,7 @@ function section (selection, transforms) {
     .class('qm-docs-section')
     .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-anchor').id(spinalCase(selection.ps()))
-      .add(dom.create('div').class('qm-docs-section-header')
+      .add(dom.create('div').class('qm-docs-section-header qm-header-font')
         .text(selection.ps())
         .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(selection.ps())))))
     .add(dom.create('div').class('qm-docs-section-body').add(html.paragraphTransform(selection, transforms)))
@@ -56,7 +56,7 @@ function subsection (selection, transforms) {
   return dom.create('div')
     .class('qm-docs-subsection')
     .add(stylesheetAsset)
-    .add(dom.create('div').class('qm-docs-subsection-header').text(selection.ps()))
+    .add(dom.create('div').class('qm-docs-subsection-header qm-header-font').text(selection.ps()))
     .add(dom.create('div').class('qm-docs-subsection-body').add(html.paragraphTransform(selection, transforms)))
 }
 
@@ -65,7 +65,7 @@ function notice (selection, transforms) {
   return dom.create('div')
     .class('qm-docs-notice' + (contextClass ? ' ' + contextClass : ''))
     .add(stylesheetAsset)
-    .add(dom.create('div').class('qm-docs-notice-header').text(selection.param(0) || ''))
+    .add(dom.create('div').class('qm-docs-notice-header qm-header-font').text(selection.param(0) || ''))
     .add(dom.create('div').class('qm-docs-notice-body').add(html.paragraphTransform(selection, transforms)))
 }
 
@@ -103,7 +103,7 @@ function summary (selection, transforms) {
   return dom.create('div')
     .class('qm-docs-summary')
     .add(stylesheetAsset)
-    .add(dom.create('div').text(selection.ps()).class('qm-docs-summary-header'))
+    .add(dom.create('div').text(selection.ps()).class('qm-docs-summary-header qm-header-font'))
     .add(dom.create('div').class('qm-docs-summary-body').add(selection.select('description').transform(transforms)))
     .add(selection.selectAll('link').map(link => {
       return dom.create('a').class('qm-docs-summary-link').attr('href', link.ps())
@@ -223,7 +223,7 @@ function header (selection, transforms) {
     .add(dom.create('div').class('qm-docs-centered')
       .add(dom.create('div').class('qm-docs-header-wrapper')
         .add(selection.has('icon') ? makeHeaderIcon(selection.select('icon')) : undefined)
-        .add(dom.create('div').class('qm-docs-header-title').text(selection.select('title').ps()))
+        .add(dom.create('div').class('qm-docs-header-title qm-header-font').text(selection.select('title').ps()))
         .add(selection.selectAll('link').map((e) => {
           return dom.create('a')
             .class('qm-docs-header-link')
@@ -264,7 +264,7 @@ function topSection (selection, transforms) {
     .add(breadcrumb(selection.select('breadcrumb'), transforms))
     .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
       .add(source ? dom.create('a').class('qm-docs-top-section-source').attr('href', source.ps()).text(source.cs()) : undefined)
-      .add(dom.create('div').class('qm-docs-top-section-title').text(pageTitle))
+      .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text(pageTitle))
       .add(dom.create('div').class('qm-docs-top-section-description')
         .add(html.paragraphTransform(selection.select('description'), transforms))))
 }
@@ -310,7 +310,7 @@ function table (selection, transforms) {
     .class('qm-docs-table')
 
   if (selection.has('header')) {
-    table.add(dom.create('thead')
+    table.add(dom.create('thead').class('qm-header-font')
       .add(selection.selectAll('header').map(createRow)))
   }
   if (selection.has('row')) {

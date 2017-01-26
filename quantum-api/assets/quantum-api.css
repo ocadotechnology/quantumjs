@@ -5,7 +5,6 @@
 }
 
 .qm-api-type-standalone {
-  font-family: monospace;
   font-size: 14px;
   padding: 0.2em 0.4em;
   background: rgba(0, 0, 0, 0.05);
@@ -55,10 +54,10 @@
 
 .qm-api-collapsible-heading {
   display: -ms-flexbox;
-  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
   -ms-flex-align: flex-start;
-  -webkit-box-align: flex-start;
+          -webkit-align-items: flex-start;
           align-items: flex-start;
   background: #ffffff;
   height: 2em;
@@ -73,9 +72,13 @@
   padding: 0.5em;
   text-align: center;
   cursor: pointer;
-  align-self: stretch;
+  -webkit-align-self: stretch;
+      -ms-flex-item-align: stretch;
+              -ms-grid-row-align: stretch;
+          align-self: stretch;
   -ms-flex-negative: 0;
-      flex-shrink: 0;
+      -webkit-flex-shrink: 0;
+          flex-shrink: 0;
 }
 
 .qm-api-chevron-icon:before {
@@ -86,7 +89,6 @@
 
 .qm-api-collapsible-toggle .qm-api-chevron-icon:before; {
   transition: -webkit-transform 0.2s;
-  -webkit-transition: -webkit-transform 0.2s;
   transition: transform 0.2s;
   transition: transform 0.2s, -webkit-transform 0.2s;
 }
@@ -100,10 +102,11 @@
   padding: 0.5em;
   line-height: 1em;
   -ms-flex-positive: 1;
-  -webkit-box-flex: 1;
+          -webkit-flex-grow: 1;
           flex-grow: 1;
   -ms-flex-negative: 1;
-  flex-shrink: 1;
+  -webkit-flex-shrink: 1;
+          flex-shrink: 1;
   min-height: 1em;
   overflow-x: auto;
   overflow-y: hidden;
@@ -156,20 +159,26 @@
 
 .qm-api-item-header {
   display: -ms-flexbox;
-  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
 }
 
 .qm-api-header-details {
-  font-family: monospace;
   -ms-flex-negative: 1;
-  flex-shrink: 1;
+  -webkit-flex-shrink: 1;
+          flex-shrink: 1;
   -ms-flex-positive: 1;
-  -webkit-box-flex: 1;
+          -webkit-flex-grow: 1;
           flex-grow: 1;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-flex-wrap: nowrap;
+      -ms-flex-wrap: nowrap;
+          flex-wrap: nowrap;
 }
 
 .qm-api-header-details.qm-api-deprecated {
@@ -183,9 +192,10 @@
 
 .qm-api-header-tags {
   -ms-flex-negative: 1;
-  flex-shrink: 1;
+  -webkit-flex-shrink: 1;
+          flex-shrink: 1;
   -ms-flex-positive: 0;
-  -webkit-box-flex: 0;
+          -webkit-flex-grow: 0;
           flex-grow: 0;
 }
 
@@ -247,10 +257,18 @@
 .qm-api-header-function-name {}
 
 .qm-api-header-function-params {
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
     display: inline-flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+        -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
 }
 
 .qm-api-header-function-params:before {
@@ -262,9 +280,15 @@
 }
 
 .qm-api-header-function-param {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+      -ms-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
 }
 
 .qm-api-header-function-param:after {

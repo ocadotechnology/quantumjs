@@ -125,7 +125,7 @@ function constructGroupDom (node, layout) {
   const rect = createRect(layout, 'qm-diagram-group', 1)
 
   const text = node.label ? dom.create('text')
-    .class('qm-diagram-text qm-group-label')
+    .class('qm-diagram-text qm-group-label qm-code-font')
     .attr('x', layout.x - layout.width / 2 + padding)
     .attr('y', layout.y - layout.height / 2 + textHeight / 2)
     .text(node.label) : undefined
@@ -137,7 +137,7 @@ function constructNodeDom (node, layout) {
   const rect = createRect(layout, 'qm-diagram-rectangle', 1)
 
   const text = node.label ? dom.create('text')
-    .class('qm-diagram-text')
+    .class('qm-diagram-text qm-code-font')
     .attr('x', layout.x)
     .attr('y', layout.y - layout.height / 2 + textHeight / 2)
     .text(node.label) : undefined
@@ -153,7 +153,7 @@ function constructNodeDom (node, layout) {
       .attr('d', svgPath(linePoints, false))
 
     const text = dom.create('text')
-      .class('qm-diagram-row-text')
+      .class('qm-diagram-row-text qm-code-font')
       .attr('x', layout.x)
       .attr('y', layout.y - layout.height / 2 + textHeight / 2 + textHeight * (i + 1))
       .text(row)
@@ -206,7 +206,7 @@ function constructEdgeDom (edge, layout) {
   const labelRect = edge.label ? createRect(layout, 'qm-diagram-edge-label-rect', 5) : undefined
 
   const label = edge.label ? dom.create('text')
-    .class('qm-diagram-edge-label-text')
+    .class('qm-diagram-edge-label-text qm-code-font')
     .attr('x', layout.x)
     .attr('y', layout.y - layout.height / 2 + textHeight / 2)
     .text(edge.label) : undefined

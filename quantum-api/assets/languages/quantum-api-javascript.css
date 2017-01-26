@@ -81,7 +81,6 @@
 
 .qm-changelog-javascript-header {
   font-weight: bold;
-  font-family: monospace;
 }
 
 .qm-changelog-javascript-object + .qm-changelog-javascript-object:before,
