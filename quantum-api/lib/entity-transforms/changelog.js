@@ -54,6 +54,7 @@ function linkEntity (cls, url, text) {
 
 /* Given header and content elements, this wraps them up into a collapsible */
 function createCollapsible (header, content) {
+  // XXX: duplicated
   return dom.create('div').class('qm-changelog-collapsible')
     .add(dom.create('div').class('qm-changelog-collapsible-heading')
       .add(dom.create('div').class('qm-changelog-collapsible-toggle')

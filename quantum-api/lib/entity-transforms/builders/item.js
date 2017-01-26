@@ -45,13 +45,15 @@ module.exports = function itemBuilder (options) {
     if (options.header) {
       const type = selection.type()
       const isOptional = type[type.length - 1] === '?'
+      const isCollapsible = selection.select('collapsible').ps() !== 'false'
+      const isCollapsed = selection.select('collapsed').ps() !== 'false'
 
       const header = dom.create('div')
         .class('qm-api-item-head')
         .classed('qm-api-optional', isOptional)
         .add(options.header(selection, transforms))
 
-      return collapsible(itemClass, header, content)
+      return collapsible(itemClass, header, content, isCollapsible, isCollapsed)
     } else {
       return content
     }

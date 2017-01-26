@@ -65,6 +65,11 @@
 }
 
 .qm-api-collapsible-toggle {
+  display: none;
+}
+
+.qm-api-collapsible > .qm-api-collapsible-heading > .qm-api-collapsible-toggle {
+  display: block;
   padding: 0.5em;
   text-align: center;
   cursor: pointer;
