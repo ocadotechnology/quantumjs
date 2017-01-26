@@ -17,15 +17,9 @@ function gv(quantumSelection, transform) {
 
 function handleExit(graphViz, code, mimeType) {
   if (code) {
-    return streamToBuffer(graphViz.stderr).then((buffer) => {
-      Promise.reject(new Error(buffer.toString()))
-    })
+    return streamToBuffer(graphViz.stderr).then((buffer) => Promise.reject(new Error(buffer.toString())))
   } else {
-    return streamToBuffer(graphViz.stdout).then((buffer) => {
-      const readable = buffer.toString('base64')
-      const url = `data:${mimeType};base64,${readable}`
-      return dom.create('img').attr('src', url)
-    })
+    return streamToBuffer(graphViz.stdout).then((buffer) => dom.create('div').add(buffer.toString()))
   }
 }
 
