@@ -1,0 +1,4 @@
+@function wrapper
+  @added 2.0.0
+  @param pageContent [Array[Entity]]
+  @param? wrapperOptions [Object]

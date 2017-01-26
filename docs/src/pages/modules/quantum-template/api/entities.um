@@ -1,0 +1,8 @@
+@entity template
+  @added 2.0.0
+
+@entity contentEntityName
+  @added 2.0.0
+
+@entity content
+  @added 2.0.0
