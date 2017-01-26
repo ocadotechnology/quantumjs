@@ -11,7 +11,7 @@ describe('pipeline', () => {
 
   function compare (input, source, expected) {
     return quantum.readAsFile(source)
-      .then(template({variables: input}))
+      .then(template.fileTransform({variables: input}))
       .then((result) => {
         return quantum.read(expected)
           .then((expct) => {
@@ -23,8 +23,8 @@ describe('pipeline', () => {
   describe('Api', () => {
     it('should return a function when just the options are passed in', () => {
       const options = {}
-      template({}).should.not.equal(options)
-      template({}).should.be.a.function
+      template.fileTransform(options).should.not.equal(options)
+      template.fileTransform(options).should.be.a.function
     })
   })
 
@@ -106,7 +106,7 @@ describe('pipeline', () => {
 
     it('should throw when the wrong syntax is used', () => {
       return quantum.read('test/um/for-loop/source-incomplete.um')
-        .then(template({}))
+        .then(template.fileTransform({}))
         .then((res) => {
           should.not.exist(res)
         })

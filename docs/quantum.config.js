@@ -56,7 +56,7 @@ function customizedTemplate (file) {
     filename: file.info.src
   }
 
-  return template({ variables: templateVariables })(file)
+  return template.fileTransform({ variables: templateVariables })(file)
 }
 
 module.exports = {

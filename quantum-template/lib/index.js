@@ -254,18 +254,20 @@ function wrapper (pageContent, wrapperOptions) {
   }
 }
 
-function pipeline (options) {
+function fileTransform (options) {
   const variables = prepareVariables(options ? options.variables : {})
   const wrapperOptions = {}
 
-  return (page) => {
-    const definitions = digestDefinitions(page.content)
+  return (file) => {
+    const definitions = digestDefinitions(file.content)
 
-    return page.clone({
-      content: applyVariables(applyDefinitions(wrapper(page.content, wrapperOptions), definitions), variables)
+    return file.clone({
+      content: applyVariables(applyDefinitions(wrapper(file.content, wrapperOptions), definitions), variables)
     })
   }
 }
 
-module.exports = pipeline
-module.exports.wrapper = wrapper
+module.exports = {
+  fileTransform,
+  wrapper
+}
