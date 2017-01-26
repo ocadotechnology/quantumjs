@@ -1,0 +1,25 @@
+@entity added
+  @added 2.0.0
+  @param version
+
+@entity removed
+  @added 2.0.0
+  @param version
+
+@entity deprecated
+  @added 2.0.0
+  @param version
+
+@entity updated
+  @added 2.0.0
+  @param version
+
+@entity versionedPage
+  @added 2.0.0
+
+@entity version
+  @added 2.0.0
+  @param version
+
+@entity versioned
+  @added 2.0.0

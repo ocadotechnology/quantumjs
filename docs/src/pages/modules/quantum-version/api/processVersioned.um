@@ -1,0 +1,7 @@
+@function processVersioned
+  @added 2.0.0
+
+  @param content [Object]
+    @property content [Array[Entity]]
+  @param version [String]
+  @param versions [Array[String]]

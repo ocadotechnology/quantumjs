@@ -1,8 +1,8 @@
-const { fileTransform, processTags, processVersioned, processChangelogList } = require('./lib')
+const { fileTransform, processTags, processVersioned, processVersionLists } = require('./lib')
 
 module.exports = {
   fileTransform,
   processTags,
   processVersioned,
-  processChangelogList
+  processVersionLists
 }
