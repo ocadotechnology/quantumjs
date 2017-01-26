@@ -31,23 +31,11 @@ describe('changelog', () => {
   }
 
   const options = {
-    languages: [],
-    tags: {
-      updated: {
-        displayName: 'Updated',
-        iconClass: 'qm-changelog-icon-updated'
-      }
-    }
+    languages: []
   }
 
   const optionsWithLanguage = {
-    languages: [testLanguage],
-    tags: {
-      updated: {
-        displayName: 'Updated',
-        iconClass: 'qm-changelog-icon-updated'
-      }
-    }
+    languages: [testLanguage]
   }
 
   it('should return undefined if there is no content', () => {
@@ -342,7 +330,7 @@ describe('changelog', () => {
       const header = dom.create('div').class('qm-changelog-group-head')
         .add(dom.create('div').class('qm-changelog-group-title').text('GroupName'))
         .add(dom.create('div').class('qm-changelog-group-labels')
-        .add(changelog.label('updated', 'qm-changelog-icon-updated', 1)))
+        .add(changelog.label('updated', 1)))
 
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries')
@@ -399,7 +387,7 @@ describe('changelog', () => {
       const header = dom.create('div').class('qm-changelog-group-head')
         .add(dom.create('div').class('qm-changelog-group-title').text('GroupName'))
         .add(dom.create('div').class('qm-changelog-group-labels')
-        .add(changelog.label('updated', 'qm-changelog-icon-updated', 1)))
+        .add(changelog.label('updated', 1)))
 
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries')
@@ -469,7 +457,7 @@ describe('changelog', () => {
       const header = dom.create('div').class('qm-changelog-group-head')
         .add(dom.create('div').class('qm-changelog-group-title').text('GroupName'))
         .add(dom.create('div').class('qm-changelog-group-labels')
-        .add(changelog.label('updated', 'qm-changelog-icon-updated', 1)))
+        .add(changelog.label('updated', 1)))
 
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries')

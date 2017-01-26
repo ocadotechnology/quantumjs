@@ -99,7 +99,7 @@ function versionABeforeVersionB (versionA, versionB, versions) {
 
 /* Processes all @added, @updated, @deprecated and @removed tags for a file */
 function processTags (content, version, versions, file) {
-  const tags = quantum.select(file.content)
+  const tags = quantum.select(content)
     .selectAll(['added', 'updated', 'deprecated', 'removed'], {recursive: true})
     .filter(tag => {
       const tagHasKnownVersion = versions.indexOf(tag.ps()) > -1

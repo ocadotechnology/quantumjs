@@ -45,7 +45,7 @@ describe('populateTableOfContents', () => {
       }
     })
 
-    docs()(page).should.eql(new File({
+    docs.fileTransform()(page).should.eql(new File({
       info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
@@ -117,7 +117,7 @@ describe('populateTableOfContents', () => {
       }
     })
 
-    docs({populateTableOfContents: {enabled: true}})(page).should.eql(new File({
+    docs.fileTransform({populateTableOfContents: {enabled: true}})(page).should.eql(new File({
       info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
@@ -189,7 +189,7 @@ describe('populateTableOfContents', () => {
       }
     })
 
-    docs({populateTableOfContents: {enabled: false}})(page).should.eql(new File({
+    docs.fileTransform({populateTableOfContents: {enabled: false}})(page).should.eql(new File({
       info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'

@@ -53,7 +53,7 @@ function checkSpec (spec) {
     changelogReverseVisibleList: spec.select('options').select('reverseVisibleList').ps() === 'true'
   }
 
-  api(options)(inputFile).should.eql(outputFile)
+  api.fileTransform(options)(inputFile).should.eql(outputFile)
 }
 
 describe('fileTransform', () => {

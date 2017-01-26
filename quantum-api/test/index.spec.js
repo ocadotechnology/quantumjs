@@ -8,7 +8,8 @@ chai.should()
 
 describe('quantum-api', () => {
   it('should export the correct things', () => {
-    api.should.be.a('function')
+    api.should.be.a('object')
+    api.fileTransform.should.be.a('function')
     api.transforms.should.be.a('function')
   })
 
@@ -95,6 +96,6 @@ describe('quantum-api', () => {
         ]
       }
     })
-    api({processChangelogs: false})(file).should.eql(file)
+    api.fileTransform({processChangelogs: false})(file).should.eql(file)
   })
 })

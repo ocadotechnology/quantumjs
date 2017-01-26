@@ -65,9 +65,13 @@ function createCollapsible (header, content) {
 }
 
 /* Creates a label element - for showing the number of updates, additions removals, etc.. */
-function label (tagType, iconClass, count) {
+function label (tagType, count) {
+  const icon = tagType ? dom.create('i')
+    .class('qm-changelog-icon-' + tagType + ' qm-changelog-text-' + tagType)
+    .attr('title', tags.displayName[tagType]) : undefined
+
   return dom.create('div').class('qm-changelog-label ' + 'qm-changelog-label-' + tagType)
-    .add(dom.create('i').class(iconClass))
+    .add(icon)
     .add(dom.create('span').text(count))
 }
 
@@ -137,7 +141,7 @@ function group (selection, transforms, options) {
     .add(entryEntities.map(ent => entry(ent, transforms, options)))
 
   const labels = dom.create('div').class('qm-changelog-group-labels')
-    .add(Object.keys(tags).map(tagType => {
+    .add(tags.map(tagType => {
       const topLevelCount = selection.selectAll('change').reduce((acc, change) => {
         return change.param(0) === tagType ? acc + 1 : acc
       }, 0)
@@ -148,7 +152,7 @@ function group (selection, transforms, options) {
         return total + subtotal
       }, 0)
       const count = topLevelCount + entrySubCount
-      return count > 0 ? label(tagType, tags[tagType].iconClass, count) : undefined
+      return count > 0 ? label(tagType, count) : undefined
     }))
 
   const header = dom.create('div').class('qm-changelog-group-head')

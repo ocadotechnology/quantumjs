@@ -6,26 +6,7 @@ const dom = require('quantum-dom')
 const codeHighlight = require('..').transforms
 
 describe('transforms', () => {
-  it('highlight some inline code', () => {
-    const selection = quantum.select({
-      type: 'code',
-      params: ['js'],
-      content: ['function (x) { return x * x }']
-    })
-
-    codeHighlight().code(selection).should.eql(
-      dom.create('code')
-        .class('qm-code-highlight-code language-js')
-        .text('function (x) { return x * x }', {escape: false})
-        .add(dom.asset({
-          url: '/quantum-code-highlight.css',
-          file: path.join(__dirname, '../assets/quantum-code-highlight.css'),
-          shared: true
-        }))
-    )
-  })
-
-  it('highlight some inline code', () => {
+  it('not highlight some inline code', () => {
     const selection = quantum.select({
       type: 'code',
       params: [],
