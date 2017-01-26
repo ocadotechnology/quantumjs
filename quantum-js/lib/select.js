@@ -188,7 +188,7 @@ Selection.prototype = {
     }
 
     if (options && options.required && res.length === 0) {
-      throw new Error('the field ' + type + ' is options (and missing)')
+      throw new Error(`the field ${type} is options (and missing)`)
     }
 
     return res

@@ -125,10 +125,10 @@ function tokenize (str) {
 
     const indentSpaces = (new Array(col)).join(' ')
 
-    const message = 'Syntax error at line ' + row + ', col ' + col + ': ' + msg
-    const context = str.substring(start, errorLineEnd) + '\n' + indentSpaces + '^^^^^^^^\n' + str.substring(errorLineEnd + 1, end)
+    const message = `Syntax error at line ${row}, col ${col}: ${msg}`
+    const context = `${str.substring(start, errorLineEnd)}\n${indentSpaces}^^^^^^^^\n${str.substring(errorLineEnd + 1, end)}`
 
-    throw new ParseError(message + '\n' + context, context, str, row, col, msg, pos)
+    throw new ParseError(`${message}\n${context}`, context, str, row, col, msg, pos)
   }
 
   while (pos < str.length) {
@@ -161,7 +161,7 @@ function tokenize (str) {
             }
 
             if (indent.length > 0 && (indent[indent.length - 1] !== ind)) {
-              err('indentation mismatch: this line dedents with an indentation of ' + ind + ' spaces, but an indentation of ' + indent[indent.length - 1] + ' spaces was expected')
+              err(`indentation mismatch: this line dedents with an indentation of ${ind} spaces, but an indentation of ${indent[indent.length - 1]} spaces was expected`)
             }
           }
           pos += ind
@@ -434,7 +434,7 @@ function ast (tokens) {
             current.content.push(token.value)
             notCreatedInlineContent = false
           } else {
-            current.content[current.content.length - 1] += ' ' + token.value
+            current.content[current.content.length - 1] += ` ${token.value}`
           }
         } else {
           let ex = ''

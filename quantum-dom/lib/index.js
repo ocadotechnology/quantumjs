@@ -107,7 +107,7 @@ Element.prototype.classed = function (cls, add) {
     if (add) {
       if (!hasClass) {
         const hasNoClasses = this.class() === ''
-        this.class(hasNoClasses ? cls : this.class() + ' ' + cls)
+        this.class(hasNoClasses ? cls : `${this.class()} ${cls}`)
       }
     } else {
       if (hasClass) {
@@ -178,13 +178,13 @@ Element.prototype.remove = function () {
 
 // turns the element into an html string
 Element.prototype.stringify = function () {
-  let res = '<' + this.type
+  let res = `<${this.type}`
   const attrs = this.attrs
   const attrKeys = Object.keys(attrs)
   const attrKeysL = attrKeys.length
   for (let i = 0; i < attrKeysL; i++) {
     const k = attrKeys[i]
-    res += ' ' + k + '="' + attrs[k] + '"'
+    res += ` ${k}="${attrs[k]}"`
   }
 
   res += '>'
@@ -203,7 +203,7 @@ Element.prototype.stringify = function () {
     res += d.stringify ? d.stringify() : (isString(d) ? d : '')
   }
 
-  res += '</' + this.type + '>'
+  res += `</${this.type}>`
 
   return res
 }
@@ -334,20 +334,20 @@ function stringify (elements, options) {
   const stylesheets = Promise.all(uniqueAssets.filter(a => a.url.endsWith('.css')).map(s => {
     if (embedAssets) {
       // XXX: make this loader configurable so that assets can be cached
-      return fs.readFileAsync(s.filename, 'utf-8').then(content => '<style>' + content + '</style>')
+      return fs.readFileAsync(s.filename, 'utf-8').then(content => `<style>${content}</style>`)
     } else {
       exportAssets.push(s)
-      return '<link rel="stylesheet" href="' + assetPath + s.url + '"></link>'
+      return `<link rel="stylesheet" href="${assetPath}${s.url}"></link>`
     }
   }))
 
   const scripts = Promise.all(uniqueAssets.filter(a => a.url.endsWith('.js')).map(s => {
     if (embedAssets) {
       // XXX: make this loader configurable so that assets can be cached
-      return fs.readFileAsync(s.filename, 'utf-8').then(content => '<script>' + content + '</script>')
+      return fs.readFileAsync(s.filename, 'utf-8').then(content => `<script>${content}</script>`)
     } else {
       exportAssets.push(s)
-      return '<script src="' + assetPath + s.url + '"></script>'
+      return `<script src="${assetPath}${s.url}"></script>`
     }
   }))
 

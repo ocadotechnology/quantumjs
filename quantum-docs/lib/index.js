@@ -18,7 +18,7 @@ const scriptAsset = dom.asset({
 })
 
 function toContextClass (context) {
-  return context ? 'qm-docs-' + context : ''
+  return context ? `qm-docs-${context}` : ''
 }
 
 function spinalCase (string) {
@@ -37,7 +37,7 @@ function topic (selection, transforms) {
     .add(dom.create('div').class('qm-docs-anchor').id(spinalCase(selection.ps()))
       .add(dom.create('div').class('qm-docs-topic-header qm-header-font')
         .text(selection.ps())
-        .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(selection.ps())))))
+        .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', `#${spinalCase(selection.ps())}`))))
     .add(dom.create('div').class('qm-docs-topic-body').add(html.paragraphTransform(selection, transforms)))
 }
 
@@ -48,7 +48,7 @@ function section (selection, transforms) {
     .add(dom.create('div').class('qm-docs-anchor').id(spinalCase(selection.ps()))
       .add(dom.create('div').class('qm-docs-section-header qm-header-font')
         .text(selection.ps())
-        .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(selection.ps())))))
+        .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', `#${spinalCase(selection.ps())}`))))
     .add(dom.create('div').class('qm-docs-section-body').add(html.paragraphTransform(selection, transforms)))
 }
 
@@ -63,7 +63,7 @@ function subsection (selection, transforms) {
 function notice (selection, transforms) {
   const contextClass = toContextClass(selection.param(1))
   return dom.create('div')
-    .class('qm-docs-notice' + (contextClass ? ' ' + contextClass : ''))
+    .class(`qm-docs-notice${contextClass ? ` ${contextClass}` : ''}`)
     .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-notice-header qm-header-font').text(selection.param(0) || ''))
     .add(dom.create('div').class('qm-docs-notice-body').add(html.paragraphTransform(selection, transforms)))
@@ -126,7 +126,7 @@ function versionSelector (selection, transforms) {
   if (versions.length > 0) {
     const id = dom.randomId()
 
-    const script = 'window.quantum.docs.createDropdown("' + id + '", [' + versions.map(v => '"' + v + '"').join(', ') + '], "' + current + '");'
+    const script = `window.quantum.docs.createDropdown("${id}", [${versions.map(v => `"${v}"`).join(', ')}], "${current}");`
 
     return dom.create('button')
       .id(id)
@@ -162,13 +162,13 @@ function tableOfContents (selection, transforms) {
       return dom.create('li').add(
         dom.create('a')
           .class('qm-docs-table-of-contents-section')
-          .attr('href', '#' + spinalCase(section.ps()))
+          .attr('href', `#${spinalCase(section.ps())}`)
           .text(section.ps())
       )
     })
 
     return dom.create('li').class('qm-docs-table-of-contents-topic-container')
-      .add(dom.create('a').class('qm-docs-table-of-contents-topic').attr('href', '#' + spinalCase(topic.ps())).text(topic.ps()))
+      .add(dom.create('a').class('qm-docs-table-of-contents-topic').attr('href', `#${spinalCase(topic.ps())}`).text(topic.ps()))
       .add(dom.create('ul').add(sections))
   })
 

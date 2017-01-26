@@ -148,7 +148,7 @@ function createChangelogHeaderDom (selection, transform) {
       const baseType = current.type().replace('?', '')
 
       const section = dom.create('span')
-        .class('qm-changelog-javascript-' + baseType)
+        .class(`qm-changelog-javascript-${baseType}`)
         .add(dom.create('span').class('qm-changelog-javascript-name').text(current.param(0)))
 
       if (type === 'function' || type === 'method' || type === 'constructor') {

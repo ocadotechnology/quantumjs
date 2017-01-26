@@ -31,11 +31,11 @@ function resolveOptions (options) {
 function defaultFilenameModifier (fileInfo, version) {
   if (fileInfo.dest.endsWith('index.um')) {
     return fileInfo.clone({
-      dest: fileInfo.dest.replace('index.um', version) + '/' + 'index.um'
+      dest: `${fileInfo.dest.replace('index.um', version)}/` + `index.um`
     })
   } else {
     return fileInfo.clone({
-      dest: fileInfo.dest.replace('.um', '') + '/' + version + '.um'
+      dest: `${fileInfo.dest.replace('.um', '')}/${version}.um`
     })
   }
 }
@@ -107,8 +107,8 @@ function processTags (content, version, versions, file) {
       if (!tagHasKnownVersion) {
         file.warning({
           module: 'quantum-version',
-          problem: 'Unexpected version "' + tag.ps() + '" found in @' + tag.type(),
-          resolution: 'Correct the versions list, or the tag version. The versions list for this page is [' + versions.join(', ') + ']'
+          problem: `Unexpected version "${tag.ps()}" found in @${tag.type()}`,
+          resolution: `Correct the versions list, or the tag version. The versions list for this page is [${versions.join(', ')}]`
         })
         tag.remove()
       }

@@ -17,7 +17,7 @@ const textHeight = 35
 const labelTextHeight = 24
 
 function svgPath (points, close) {
-  return 'M' + points.map(d => d.x + ',' + d.y).join(',') + (close ? 'z' : '')
+  return `M${points.map(d => `${d.x},${d.y}`).join(',')}${close ? 'z' : ''}`
 }
 
 function createRect (layout, cls, radius) {
@@ -95,7 +95,7 @@ function extractEdges (selection) {
 
   const edgeMap = {}
   edges.forEach(edge => {
-    edgeMap[edge.sourceName + ':' + edge.destName] = edge
+    edgeMap[`${edge.sourceName}:${edge.destName}`] = edge
   })
 
   return {edges, edgeMap}
@@ -166,7 +166,7 @@ function constructNodeDom (node, layout) {
 
 function constructEdgeDefs (edge) {
   const markerStart = dom.create('marker')
-    .attr('id', 'arrow-start-' + edge.id)
+    .attr('id', `arrow-start-${edge.id}`)
     .attr('orient', 'auto')
     .attr('markerWidth', 4)
     .attr('markerHeight', 4)
@@ -178,7 +178,7 @@ function constructEdgeDefs (edge) {
     .class('qm-diagram-arrow')
 
   const markerEnd = dom.create('marker')
-    .attr('id', 'arrow-end-' + edge.id)
+    .attr('id', `arrow-end-${edge.id}`)
     .attr('orient', 'auto')
     .attr('markerWidth', 4)
     .attr('markerHeight', 4)
@@ -200,8 +200,8 @@ function constructEdgeDom (edge, layout) {
     .classed('qm-diagram-path-dashed', joinType.indexOf('--') > -1)
     .attr('d', svgPath(layout.points))
     .attr('stroke', edge.color)
-    .attr('marker-start', joinType[0] === '<' ? 'url(#arrow-start-' + edge.id + ')' : undefined)
-    .attr('marker-end', joinType[joinType.length - 1] === '>' ? 'url(#arrow-end-' + edge.id + ')' : undefined)
+    .attr('marker-start', joinType[0] === '<' ? `url(#arrow-start-${edge.id})` : undefined)
+    .attr('marker-end', joinType[joinType.length - 1] === '>' ? `url(#arrow-end-${edge.id})` : undefined)
 
   const labelRect = edge.label ? createRect(layout, 'qm-diagram-edge-label-rect', 5) : undefined
 
@@ -222,12 +222,12 @@ function constructDom (graph, graphOptions, nodeMap, edgeMap) {
   })
 
   const edgeDefs = graph.edges().map(e => {
-    const edge = edgeMap[e.v + ':' + e.w]
+    const edge = edgeMap[`${e.v}:${e.w}`]
     return constructEdgeDefs(edge)
   })
 
   const edges = graph.edges().map(e => {
-    const edge = edgeMap[e.v + ':' + e.w]
+    const edge = edgeMap[`${e.v}:${e.w}`]
     const nodeV = nodeMap[e.v]
     const nodeW = nodeMap[e.w]
     const layout = graph.edge(e)
@@ -242,7 +242,7 @@ function constructDom (graph, graphOptions, nodeMap, edgeMap) {
     .add(stylesheetAsset)
     .add(dom.create('svg').class('qm-diagram-svg')
       .attr('width', Math.ceil(graphOptions.width))
-      .attr('viewBox', '0 0 ' + Math.ceil(graphOptions.width) + ' ' + Math.ceil(graphOptions.height))
+      .attr('viewBox', `0 0 ${Math.ceil(graphOptions.width)} ${Math.ceil(graphOptions.height)}`)
       .add(dom.create('defs').add(edgeDefs))
       .add(nodes)
       .add(edges))

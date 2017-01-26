@@ -78,7 +78,7 @@ function buildPage (sourceFile, pipeline, config, logger, addLiveReload) {
     .map((file) => {
       let content = file.content
       if (addLiveReload && file.info.dest.indexOf('.html') === file.info.dest.length - 5) {
-        content = content.replace('</body>', liveReloadScriptTag + '</body>')
+        content = content.replace('</body>', `${liveReloadScriptTag}</body>`)
       }
       return fs.outputFileAsync(file.info.dest, content).then(() => file)
     })
@@ -195,7 +195,7 @@ function startServer (options) {
   server.on('request', app)
   server.listen(options.port, '0.0.0.0', (err) => {
     if (err) {
-      console.error('Unable to start server: ' + err)
+      console.error(`Unable to start server: ${err}`)
     }
   })
 
@@ -226,7 +226,7 @@ function watch (config) {
   const pipeline = createPipeline(config.pipeline)
 
   logger({type: 'header', message: 'Starting Server'})
-  logger({type: 'message', message: 'http://0.0.0.0:' + options.port})
+  logger({type: 'message', message: `http://0.0.0.0:${options.port}`})
   const triggerReload = startServer(options)
 
   copyResources(config, options, logger).then(() => {
@@ -263,7 +263,7 @@ function list (config) {
     Object.keys(entityTransforms).forEach((namespace) => {
       console.log(chalk.yellow(namespace))
       Object.keys(entityTransforms[namespace]).forEach((entity) => {
-        console.log(chalk.cyan('  @' + entity) + chalk.gray(' (@' + namespace + '.' + entity + ')'))
+        console.log(chalk.cyan(`  @${entity}`) + chalk.gray(` (@${namespace}.${entity})`))
       })
     })
   } else {
@@ -279,16 +279,16 @@ const commands = {
 
 function defaultLogger (evt) {
   if (evt.type === 'header') {
-    console.log(chalk.underline('\n' + evt.message))
+    console.log(chalk.underline(`\n${evt.message}`))
   } else if (evt.type === 'message') {
     console.log(evt.message)
   } else if (evt.type === 'build-page') {
-    console.log(evt.sourceFile.info.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.gray(' -> ' + evt.destFiles.length + ' page' + (evt.destFiles.length > 1 ? 's' : '')))
+    console.log(evt.sourceFile.info.src + chalk.magenta(` [${evt.timeTaken} ms]`) + chalk.gray(` -> ${evt.destFiles.length} page${evt.destFiles.length > 1 ? 's' : ''}`))
     evt.sourceFile.warnings.forEach((warning) => {
-      console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
+      console.log(`${chalk.yellow('  [warning] ') + chalk.cyan(warning.module)}: ${chalk.yellow(warning.problem)}.  ${warning.resolution}`)
     })
     evt.sourceFile.errors.forEach((error) => {
-      console.log(chalk.red('  [error] ') + chalk.cyan(error.module) + ': ' + chalk.yellow(error.problem) + '.  ' + error.resolution)
+      console.log(`${chalk.red('  [error] ') + chalk.cyan(error.module)}: ${chalk.yellow(error.problem)}.  ${error.resolution}`)
     })
     // if(evt.destFiles.length < 4) {
     //   evt.destFiles.forEach((page) => {
@@ -303,16 +303,16 @@ function defaultLogger (evt) {
     // }
   } else if (evt.type === 'page-load-error') {
     console.log(evt.file)
-    const context = evt.file !== evt.error.filename ? 'in inlined file ' + chalk.cyan(evt.error.filename) + ': ' : ''
+    const context = evt.file !== evt.error.filename ? `in inlined file ${chalk.cyan(evt.error.filename)}: ` : ''
     const errorMessage = evt.error.toString().split('\n').map((line, i) => (i > 0 ? '  ' : '') + line).join('\n')
-    console.log(chalk.red('  [error] ' + context + errorMessage))
+    console.log(chalk.red(`  [error] ${context}${errorMessage}`))
   } else if (evt.type === 'copy-resource') {
-    console.log(evt.fileInfo.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.gray(' -> ' + evt.fileInfo.dest))
+    console.log(evt.fileInfo.src + chalk.magenta(` [${evt.timeTaken} ms]`) + chalk.gray(` -> ${evt.fileInfo.dest}`))
   } else if (evt.type === 'error') {
     console.error(evt.error.stack || evt.error)
   } else if (evt.type === 'end') {
     console.log()
-    console.log('Built ' + evt.builtCount + ' pages ' + chalk.magenta('[' + (evt.timeTaken / 1000).toFixed(2) + ' s]'))
+    console.log(`Built ${evt.builtCount} pages ${chalk.magenta(`[${(evt.timeTaken / 1000).toFixed(2)} s]`)}`)
   }
 }
 

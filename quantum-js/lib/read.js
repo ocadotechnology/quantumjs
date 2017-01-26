@@ -60,7 +60,7 @@ function parseFile (filename, doParse, options, parentFile) {
           e.filename = e.filename || filename
           throw e
         } else {
-          throw new Error('quantum: ' + filename + ': ' + e)
+          throw new Error(`quantum: ${filename}: ${e}`)
         }
       })
   } else {

@@ -130,7 +130,7 @@ describe('versionTransform', () => {
     it('filenameModifier: function() {...}', () => {
       function filenameModifier (fileInfo, version) {
         return fileInfo.clone({
-          dest: fileInfo.dest + '-' + version
+          dest: `${fileInfo.dest}-${version}`
         })
       }
       const tranformedFiles = lib.fileTransform({filenameModifier})(file)
