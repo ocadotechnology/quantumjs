@@ -14,11 +14,11 @@
     that convert quantum into html. This tutorial explores what a transform is,
     and how to define your own.
 
-  @topic Entity transforms vs Pipeline transform
+  @topic Entity transforms vs File transform
     An @bold[entity transform] is a transform that converts an entity into a
     piece of html.
 
-    A @bold[pipeline transform] is a transform that takes an entire page and
+    A @bold[file transform] is a transform that takes an entire page and
     reshapes it in some way.
 
     Entity transforms do the conversion from quantum objects into html, whereas

@@ -24,7 +24,7 @@
             @page /docs/markup/: The Markup Language
             @page /docs/ast/: The AST
             @page /docs/core-concepts/: Core Concepts
-            @page /docs/page-transforms/: Page Transforms
+            @page /docs/file-transforms/: File Transforms
             @page /docs/entity-transforms/: Entity Transforms
 
           @section Tutorials

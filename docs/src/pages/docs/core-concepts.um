@@ -5,7 +5,7 @@
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     This page explains some of the concepts used in quantumjs, including the pipeline,
-    pipeline transforms and entity html transforms.
+    file transforms and entity html transforms.
 
 @contentSection
   @topic The Pipeline
@@ -34,20 +34,20 @@
 
 
 
-  @topic Page Transforms
+  @topic File Transforms
 
-    A @bold[page transform] lets you @bold[mess with the parsed AST] of an
-    entire page before it is rendered out to HTML. A page transform is
+    A @bold[file transform] lets you @bold[mess with the parsed AST] of an
+    entire page before it is rendered out to HTML. A file transform is
     simply a function.
 
-    Here is a page transform that does absolutely nothing:
+    Here is a file transform that does absolutely nothing:
 
     @codeblock js
       function identityTransform (page) {
         return page.clone()
       }
 
-    A @bold[page transform] is a function that takes an object of the form
+    A @bold[file transform] is a function that takes an object of the form
     @code(js)[{filename, content}] that returns an object also of the form
     @code(js)[{filename, content}].
 

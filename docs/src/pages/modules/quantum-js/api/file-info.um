@@ -31,7 +31,7 @@
 
   @description
     An object which holds filename information. Chances are this object is
-    something you'll never have to use, unless writing a page transform which
+    something you'll never have to use, unless writing a file transform which
     needs to modify the output filename.
 
     Every @api.type[File] instance has a @code[info] property, which is one of these guys.
@@ -101,7 +101,7 @@
 
       @codeblock js
         const quantum = require('quantum-js')
-        
+
         const fileInfo = new quantum.FileInfo({
           src: "src/content/about.um",
           resolved: "about.um",
