@@ -1,0 +1,120 @@
+@entity topic
+  @added 2.0.0
+  @description
+    TODO
+
+@entity section
+  @added 2.0.0
+  @description
+    TODO
+
+@entity subsection
+  @added 2.0.0
+  @description
+    TODO
+
+@entity notice
+  @added 2.0.0
+  @description
+    TODO
+
+@entity list
+  @added 2.0.0
+  @description
+    TODO
+
+@entity bold
+  @added 2.0.0
+  @description
+    TODO
+
+@entity italic
+  @added 2.0.0
+  @description
+    TODO
+
+@entity strikethrough
+  @added 2.0.0
+  @description
+    TODO
+
+@entity image
+  @added 2.0.0
+  @description
+    TODO
+
+@entity summary
+  @added 2.0.0
+  @description
+    TODO
+
+@entity group
+  @added 2.0.0
+  @description
+    TODO
+
+@entity versionSelector
+  @added 2.0.0
+  @description
+    TODO
+
+@entity sidebarPage
+  @added 2.0.0
+  @description
+    TODO
+
+@entity sidebar
+  @added 2.0.0
+  @description
+    TODO
+
+@entity tableOfContents
+  @added 2.0.0
+  @description
+    TODO
+
+@entity navigationMenu
+  @added 2.0.0
+  @description
+    TODO
+
+@entity header
+  @added 2.0.0
+  @description
+    TODO
+
+@entity breadcrumb
+  @added 2.0.0
+  @description
+    TODO
+
+@entity topSection
+  @added 2.0.0
+  @description
+    TODO
+
+@entity contentSection
+  @added 2.0.0
+  @description
+    TODO
+
+@entity fullWidth
+  @added 2.0.0
+  @description
+    TODO
+
+@entity bottomSection
+  @added 2.0.0
+  @description
+    TODO
+
+@entity relatedButtons
+  @added 2.0.0
+  @description
+    TODO
+
+@entity table
+  @added 2.0.0
+  @description
+    TODO
+

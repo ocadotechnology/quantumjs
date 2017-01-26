@@ -1,0 +1,91 @@
+@entity api
+  @added 2.0.0
+  @description
+    TODO
+
+@entity group
+  @added 2.0.0
+  @description
+    TODO
+
+@entity changelogList
+  @added 2.0.0
+  @description
+    TODO
+
+@entity changelog
+  @added 2.0.0
+  @description
+    TODO
+
+@group [Language: Javascript]
+  @entity function
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity object
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity event
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity default
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity returns
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity param
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity param?
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity property
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity prototype
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity constructor
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity method
+    @added 2.0.0
+    @description
+      TODO
+
+@group [Language: CSS]
+  @entity class
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity extraclass
+    @added 2.0.0
+    @description
+      TODO
+
+  @entity childclass
+    @added 2.0.0
+    @description
+      TODO

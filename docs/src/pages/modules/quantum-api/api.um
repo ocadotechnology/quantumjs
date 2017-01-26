@@ -4,6 +4,7 @@
 
     For information about different versions, see the @hyperlink(/modules/quantum-api/changelog/)[Changelog]
 
+  @inline api/entities.um
   @inline api/fileTransform.um
   @inline api/transforms.um
   @inline api/languages.um

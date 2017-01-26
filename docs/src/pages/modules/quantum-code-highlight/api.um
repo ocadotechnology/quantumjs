@@ -4,5 +4,7 @@
 
     For information about different versions, see the @hyperlink(/modules/quantum-code-highlight/changelog/)[Changelog]
 
+  @inline api/entities.um
   @inline api/transforms.um
   @inline api/highlightCode.um
+  @inline api/stylesheetAsset.um

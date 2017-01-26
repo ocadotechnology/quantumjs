@@ -1,27 +1,3 @@
-@entity markdown
-  @added 2.0.0
-  @description
-    A renderer for rendering @code[markdown] using quantum
-
-    Example Code:
-    @@codeblock markdown
-      @@markdown
-        # Example heading
-
-        Example _italic_ or **bold** text.
-
-
-    Example Result:
-    @@markdown
-      # Example heading
-      Example _italic_ or **bold** text.
-
-
-    @code(um)[@inline] can also be used:
-    @@codeblock um
-      @markdown: @inline path/to/file.md
-
-
 @function transforms
   @added 2.0.0
   @description
