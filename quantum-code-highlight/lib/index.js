@@ -33,9 +33,9 @@ function code (selection, transform) {
 function codeblock (selection, transform) {
   const language = selection.ps()
   return dom.create('div')
-    .class(`qm-code-highlight-codeblock qm-code-font${language && language !== 'nohighlight' ? ` language-${language}` : ''}`)
+    .class(`qm-code-highlight-codeblock${language && language !== 'nohighlight' ? ` language-${language}` : ''}`)
     .add(dom.create('pre')
-      .add(dom.create('code')
+      .add(dom.create('code').class('qm-code-font')
         .text(highlightCode(selection.cs(), language), {escape: false})))
     .add(stylesheetAsset)
 }
