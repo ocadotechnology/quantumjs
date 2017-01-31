@@ -31,11 +31,11 @@ function resolveOptions (options) {
 function defaultFilenameModifier (fileInfo, version) {
   if (fileInfo.dest.endsWith('index.um')) {
     return fileInfo.clone({
-      dest: `${fileInfo.dest.replace('index.um', version)}/` + `index.um`
+      dest: fileInfo.dest.replace('index.um', version) + '/' + 'index.um'
     })
   } else {
     return fileInfo.clone({
-      dest: `${fileInfo.dest.replace('.um', '')}/${version}.um`
+      dest: fileInfo.dest.replace('.um', '') + '/' + version + '.um'
     })
   }
 }

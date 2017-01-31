@@ -5,7 +5,7 @@ function replacer (variables, str) {
   let res = str
   variables.forEach((v) => {
     const val = (typeof (v.value) === 'object') ? JSON.stringify(v.value) : v.value
-    res = res.replace(`{{${v.key}}}`, val)
+    res = res.replace('{{' + v.key + '}}', val)
   })
   return res
 }
@@ -35,7 +35,7 @@ function template (entity, variables) {
     let variable = undefined
     if (entity.type === 'for') {
       if (entity.params.length < 3) {
-        throw new Error(`for loop has wrong arguments: for ${entity.params.join(' ')}`)
+        throw new Error('for loop has wrong arguments: for ' + entity.params.join(' '))
       }
 
       const usesIndex = entity.params[1] !== 'in'
@@ -129,12 +129,12 @@ function prepareVariables (variables, prefix) {
         key: resolvedPrefix + key,
         value: value
       })
-      keys = keys.concat(prepareVariables(value, `${resolvedPrefix + key}.`))
+      keys = keys.concat(prepareVariables(value, resolvedPrefix + key + '.'))
     } else {
       if (Array.isArray(value)) {
         value.forEach((v, i) => {
           keys.push({
-            key: `${resolvedPrefix + key}[${i}]`,
+            key: resolvedPrefix + key + '[' + i + ']',
             value: v
           })
         })

@@ -73,7 +73,7 @@ describe('write', () => {
         file.should.eql(index === 0 ? file2 : file3)
 
         return fs.readFileAsync(file.info.dest, 'utf-8')
-          .then(res => res.should.equal(`some content ${index + 2}`))
+          .then(res => res.should.equal('some content ' + (index + 2)))
       })
   })
 })

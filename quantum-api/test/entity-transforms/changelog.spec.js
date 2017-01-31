@@ -485,7 +485,7 @@ describe('changelog', () => {
 
 describe('changeDom', () => {
   function issueUrl (id) {
-    return `/link/to/issue/${id}`
+    return '/link/to/issue/' + id
   }
 
   it('should create a basic change section', () => {

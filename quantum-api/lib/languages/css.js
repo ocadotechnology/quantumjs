@@ -73,7 +73,7 @@ function createChangelogHeaderDom (selection) {
     while (changelogEntityTypes.some(entityType => current.has(entityType))) {
       current = current.select(changelogEntityTypes)
       header.add(dom.create('span')
-        .class(`qm-changelog-css-${current.type()}`)
+        .class('qm-changelog-css-' + current.type())
         .text(current.ps()))
     }
     return header

@@ -152,7 +152,7 @@ function prepareTransforms (transforms, namespace, target) {
       resolvedTarget[resolvedNamespace + d] = transforms[d]
       resolvedTarget[d] = transforms[d]
     } else {
-      prepareTransforms(transforms[d], `${resolvedNamespace + d}.`, resolvedTarget)
+      prepareTransforms(transforms[d], resolvedNamespace + d + '.', resolvedTarget)
     }
   }
 
@@ -280,7 +280,7 @@ function paragraphTransform (selection, transform) {
           .add(dom.textNode(' '))
       } else {
         currentParagraph = currentParagraph
-          .add(dom.textNode(`${e} `))
+          .add(dom.textNode(e + ' '))
       }
     }
   })

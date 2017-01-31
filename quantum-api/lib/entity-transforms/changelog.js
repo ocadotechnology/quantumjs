@@ -26,8 +26,8 @@ const utils = require('../utils')
 
 function domAsset (filename) {
   return dom.asset({
-    url: `/${filename}`,
-    file: path.join(__dirname, `../../assets/${filename}`),
+    url: '/' + filename,
+    file: path.join(__dirname, '../../assets/' + filename),
     shared: true
   })
 }
@@ -71,7 +71,7 @@ function label (tagType, count) {
     .class(`qm-changelog-icon-${tagType} qm-changelog-text-${tagType}`)
     .attr('title', tags.displayName[tagType]) : undefined
 
-  return dom.create('div').class(`${'qm-changelog-label qm-changelog-label-'}${tagType}`)
+  return dom.create('div').class('qm-changelog-label ' + 'qm-changelog-label-' + tagType)
     .add(icon)
     .add(dom.create('span').text(count))
 }
@@ -88,7 +88,7 @@ function changeDom (selection, transforms, issueUrl) {
         return dom.create('a')
           .class('qm-changelog-change-issue')
           .attr('href', issueUrl(issue.ps()))
-          .text(`#${issue.ps()}`)
+          .text('#' + issue.ps())
       })) : undefined
 
   const icon = tagDisplayName ? dom.create('i')

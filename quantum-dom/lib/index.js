@@ -107,7 +107,7 @@ Element.prototype.classed = function (cls, add) {
     if (add) {
       if (!hasClass) {
         const hasNoClasses = this.class() === ''
-        this.class(hasNoClasses ? cls : `${this.class()} ${cls}`)
+        this.class(hasNoClasses ? cls : this.class() + ' ' + cls)
       }
     } else {
       if (hasClass) {
@@ -178,13 +178,13 @@ Element.prototype.remove = function () {
 
 // turns the element into an html string
 Element.prototype.stringify = function () {
-  let res = `<${this.type}`
+  let res = '<' + this.type
   const attrs = this.attrs
   const attrKeys = Object.keys(attrs)
   const attrKeysL = attrKeys.length
   for (let i = 0; i < attrKeysL; i++) {
     const k = attrKeys[i]
-    res += ` ${k}="${attrs[k]}"`
+    res += ' ' + k + '="' + attrs[k] + '"'
   }
 
   res += '>'
