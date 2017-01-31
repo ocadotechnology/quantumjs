@@ -16,7 +16,6 @@
       "allowNamedFunctions": false,
       "allowUnboundThis": true
     }],
-    "prefer-template": "error",
     "no-param-reassign": ["error"],
     "curly": ["error", "all"],
     "init-declarations": ["error", "always"],
