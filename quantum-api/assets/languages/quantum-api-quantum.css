@@ -1,0 +1,9 @@
+.qm-api-entity {}
+
+.qm-changelog-quantum-header {
+  font-weight: bold;
+}
+
+.qm-changelog-quantum-entity:before {
+  content: ' @';
+}

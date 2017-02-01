@@ -6,16 +6,11 @@
     Example Code:
 
     @@codeblock um
-      @code[some.code = 3]
-
-      # Javascript example
-      @code[var a = true]
+      @code[some.code = 3] @code[var a = true]
 
     Example Result:
 
-    @code[some.code = 3]
-
-    @code[var a = true]
+    @code[some.code = 3] @code[var a = true]
 
 # Should render as @@codeblock
 @entity @codeblock

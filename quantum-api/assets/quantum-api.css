@@ -368,6 +368,10 @@
   display: none;
 }
 
+.qm-api-header-entity-name:before {
+  content: '@';
+}
+
 .qm-api-type-name {}
 
 .qm-api-group-content > .qm-api-description {

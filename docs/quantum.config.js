@@ -34,7 +34,8 @@ const htmlOptions = {
       languages: [
         api.languages.javascript({
           typeLinks: typeLinks
-        })
+        }),
+        api.languages.quantum()
       ]
     }),
     diagram: diagram.transforms(),

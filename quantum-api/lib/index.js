@@ -22,6 +22,7 @@ const changelogList = require('./entity-transforms/changelog-list')
 const changelog = require('./entity-transforms/changelog')
 
 // languages
+const quantum = require('./languages/quantum')
 const javascript = require('./languages/javascript')
 const css = require('./languages/css')
 
@@ -66,6 +67,7 @@ module.exports = {
     changelog: changelogFileTransform
   },
   languages: {
+    quantum,
     javascript,
     css
   },

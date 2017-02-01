@@ -3,6 +3,7 @@
 const body = require('./entity-transforms/builders/body')
 const javascript = require('./languages/javascript')
 const css = require('./languages/css')
+const quantum = require('./languages/quantum')
 
 function defaultIssueUrl () {
   return undefined
@@ -18,7 +19,8 @@ const defaultOptions = {
     javascript.prototypes,
     javascript.objects,
     javascript.functions,
-    css.classes
+    css.classes,
+    quantum.entities
   ],
   // Defines what the default group looks like
   groupBuilders: [
@@ -38,7 +40,8 @@ const defaultOptions = {
   targetVersions: undefined,
   languages: [
     javascript(),
-    css()
+    css(),
+    quantum()
   ],
   changelogReverseVisibleList: false,
   changelogGroupByApi: false,
