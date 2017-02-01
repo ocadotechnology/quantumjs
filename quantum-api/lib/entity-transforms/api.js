@@ -18,10 +18,10 @@ const assets = [
 
 module.exports = function group (options) {
   const builders = (options || {}).builders || []
-  return (selection, transforms) => {
+  return (selection, transformer) => {
     return dom.create('div')
       .class('qm-api')
-      .add(builders.map(builder => builder(selection, transforms)))
+      .add(builders.map(builder => builder(selection, transformer)))
       .add(assets)
   }
 }

@@ -50,7 +50,7 @@ describe('transforms', () => {
 
     markdown().markdown(selection).should.eql(
       dom.create('div').class('qm-markdown')
-        .add('<p><code>inline code</code></p>\n<pre><code class="lang-js"><span class="hljs-keyword">const</span> thing = <span class="hljs-number">1</span>;\n</code></pre>\n')
+        .add('<p><code class="qm-code-font">inline code</code></p>\n<pre><code class="lang-js"><span class="hljs-keyword">const</span> thing = <span class="hljs-number">1</span>;\n</code></pre>\n')
         .add(dom.asset({
           url: '/quantum-markdown.css',
           file: path.join(__dirname, '../assets/quantum-markdown.css'),

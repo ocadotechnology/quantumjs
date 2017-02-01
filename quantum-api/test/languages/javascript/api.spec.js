@@ -23,7 +23,7 @@ describe('api', () => {
 
     javascript({typeLinks}).api.type(selection).should.eql(
       dom.create('span')
-        .class('qm-api-type-standalone')
+        .class('qm-api-type-standalone qm-code-font')
         .add(type(selection.cs(), typeLinks))
     )
   })

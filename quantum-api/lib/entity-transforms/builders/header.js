@@ -86,9 +86,9 @@ function prototypeHeaderDetails (selection, typeLinks) {
 
 /* Wraps a details section in a header */
 function createHeader (type, detailsBuilder, typeLinks) {
-  return (selection, transforms) => {
+  return (selection, transformer) => {
     const details = detailsBuilder(selection, typeLinks)
-    return header(type, details, selection, transforms)
+    return header(type, details, selection, transformer)
   }
 }
 

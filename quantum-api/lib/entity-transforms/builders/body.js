@@ -6,11 +6,11 @@ const itemGroupBuilder = require('./item-group')
 const html = require('quantum-html')
 const utils = require('../../utils')
 
-function description (selection, transforms) {
+function description (selection, transformer) {
   if (selection.has('description')) {
     return dom.create('div')
       .class('qm-api-description')
-      .add(html.paragraphTransform(selection.select('description'), transforms))
+      .add(html.paragraphTransform(selection.select('description'), transformer))
   } else if (selection.hasContent()) {
     return dom.create('div')
       .class('qm-api-description')
@@ -19,7 +19,7 @@ function description (selection, transforms) {
 }
 
 /* Creates a custom group of entries (rather than the natural grouping things fall into) */
-function groups (selection, transforms) {
+function groups (selection, transformer) {
   if (selection.has('group')) {
     const sortedEntity = selection.filter('group')
     return dom.create('div').class('qm-api-groups')
@@ -27,28 +27,28 @@ function groups (selection, transforms) {
         return dom.create('div').class('qm-api-group')
           .add(dom.create('h2').text(groupSelection.ps()))
           .add(dom.create('div').class('qm-api-group-content')
-            .add(description(groupSelection, transforms))
+            .add(description(groupSelection, transformer))
             .add(groupSelection
               .filter(entity => quantum.select.isEntity(entity) && entity.type !== 'description')
-              .transform(transforms)))
+              .transform(transformer)))
       }))
   }
 }
 
-function defaultValue (selection, transforms) {
+function defaultValue (selection, transformer) {
   if (selection.has('default')) {
     return dom.create('div').class('qm-api-default')
       .add(dom.create('span').class('qm-api-default-key').text('Default: '))
-      .add(dom.create('span').class('qm-api-default-value').add(selection.select('default').transform(transforms)))
+      .add(dom.create('span').class('qm-api-default-value').add(selection.select('default').transform(transformer)))
   }
 }
 
-function extras (selection, transforms) {
+function extras (selection, transformer) {
   if (selection.has('extra')) {
     return dom.create('div').class('qm-api-extras').add(
       selection.selectAll('extra').map((e) => {
         return dom.create('div').class('qm-api-extra')
-          .add(html.paragraphTransform(e, transforms))
+          .add(html.paragraphTransform(e, transformer))
       }))
   }
 }

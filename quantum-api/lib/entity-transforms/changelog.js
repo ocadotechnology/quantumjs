@@ -39,10 +39,10 @@ const assets = [
 ]
 
 /* Creates a paragraph section wrapped in a div */
-function wrappedParagraph (cls, selection, transforms) {
+function wrappedParagraph (cls, selection, transformer) {
   return dom.create('div')
     .class(cls)
-    .add(html.paragraphTransform(selection, transforms))
+    .add(html.paragraphTransform(selection, transformer))
 }
 
 /* Creates a link entity wrapped in a div */
@@ -76,7 +76,7 @@ function label (tagType, count) {
     .add(dom.create('span').text(count))
 }
 
-function changeDom (selection, transforms, issueUrl) {
+function changeDom (selection, transformer, issueUrl) {
   const changeType = selection.param(0)
   const tagDisplayName = tags.displayName[changeType]
 
@@ -102,16 +102,16 @@ function changeDom (selection, transforms, issueUrl) {
       .add(dom.create('div').class('qm-changelog-change-type').text(displayName))
       .add(issues))
     .add(dom.create('div').class('qm-changelog-change-body')
-      .add(selection.has('description') ? html.paragraphTransform(selection.select('description'), transforms) : undefined))
+      .add(selection.has('description') ? html.paragraphTransform(selection.select('description'), transformer) : undefined))
 }
 
 /* Creates a single changelog entry */
-function entry (selection, transforms, options) {
+function entry (selection, transformer, options) {
   const language = options.languages.find(language => language.name === selection.select('header').ps())
   const headerSelection = selection.select('header')
-  const header = language ? language.changelog.createHeaderDom(headerSelection, transforms) : undefined
+  const header = language ? language.changelog.createHeaderDom(headerSelection, transformer) : undefined
   const changes = selection.selectAll('change')
-    .map(change => changeDom(change, transforms, options.issueUrl))
+    .map(change => changeDom(change, transformer, options.issueUrl))
 
   return dom.create('div').class('qm-changelog-entry')
     .add(dom.create('div').class('qm-changelog-entry-header qm-code-font').add(header))
@@ -119,7 +119,7 @@ function entry (selection, transforms, options) {
 }
 
 /* Creates a group of entries displayed as a collapsible */
-function group (selection, transforms, options) {
+function group (selection, transformer, options) {
   const link = selection.has('link') ?
     linkEntity('qm-changelog-group-link', selection.select('link').ps(), selection.ps()) :
     undefined
@@ -134,12 +134,12 @@ function group (selection, transforms, options) {
     .map(change => {
       return dom.create('div')
         .class('qm-changelog-entry')
-        .add(changeDom(change, transforms, options.issueUrl))
+        .add(changeDom(change, transformer, options.issueUrl))
     })
 
   const entries = dom.create('div').class('qm-changelog-group-entries')
     .add(topLevelChanges)
-    .add(entryEntities.map(ent => entry(ent, transforms, options)))
+    .add(entryEntities.map(ent => entry(ent, transformer, options)))
 
   const labels = dom.create('div').class('qm-changelog-group-labels')
     .add(tags.map(tagType => {
@@ -161,7 +161,7 @@ function group (selection, transforms, options) {
     .add(labels)
 
   const description = selection.has('description') ?
-    wrappedParagraph('qm-changelog-description', selection.select('description'), transforms) :
+    wrappedParagraph('qm-changelog-description', selection.select('description'), transformer) :
     undefined
 
   const content = dom.create('div').class('qm-changelog-group-body')
@@ -173,16 +173,16 @@ function group (selection, transforms, options) {
 }
 
 module.exports = function changelog (options) {
-  return (selection, transforms) => {
+  return (selection, transformer) => {
     const description = selection.has('description') ?
-      wrappedParagraph('qm-changelog-description', selection.select('description'), transforms) :
+      wrappedParagraph('qm-changelog-description', selection.select('description'), transformer) :
       undefined
 
     const groups = selection.selectAll('group')
-      .map(grp => group(grp, transforms, options))
+      .map(grp => group(grp, transformer, options))
 
     const entries = selection.selectAll('entry')
-      .map(ent => entry(ent, transforms, options))
+      .map(ent => entry(ent, transformer, options))
 
     if (description || groups.length > 0 || entries.length > 0) {
       const link = selection.has('link') ?

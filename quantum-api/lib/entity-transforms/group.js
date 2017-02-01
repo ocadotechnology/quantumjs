@@ -4,9 +4,9 @@ const dom = require('quantum-dom')
 
 module.exports = function group (options) {
   const builders = (options || {}).builders || []
-  return (selection, transforms) => {
+  return (selection, transformer) => {
     return dom.create('div')
       .class('qm-api-group')
-      .add(builders.map(builder => builder(selection, transforms)))
+      .add(builders.map(builder => builder(selection, transformer)))
   }
 }
