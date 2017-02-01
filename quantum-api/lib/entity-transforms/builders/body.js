@@ -2,7 +2,6 @@
 
 const dom = require('quantum-dom')
 const quantum = require('quantum-js')
-const itemGroupBuilder = require('./item-group')
 const html = require('quantum-html')
 const utils = require('../../utils')
 
@@ -57,5 +56,5 @@ module.exports = {
   description,
   groups,
   extras,
-  default: defaultValue,
+  default: defaultValue
 }

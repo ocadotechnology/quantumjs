@@ -18,10 +18,12 @@ const assets = [
 
 module.exports = function group (options) {
   const builders = (options || {}).builders || []
+  const languages = (options || {}).languages || []
   return (selection, transformer) => {
     return dom.create('div')
       .class('qm-api')
       .add(builders.map(builder => builder(selection, transformer)))
       .add(assets)
+      .add(languages.map(l => l.assets))
   }
 }

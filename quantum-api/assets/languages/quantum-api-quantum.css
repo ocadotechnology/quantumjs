@@ -1,9 +1,30 @@
-.qm-api-entity {}
+.qm-api-quantum-entity {}
 
-.qm-changelog-quantum-header {
-  font-weight: bold;
+
+.qm-api-quantum-entity-name {}
+
+.qm-api-quantum-entity-params {
+  margin-left: 0.25em;
 }
 
-.qm-changelog-quantum-entity:before {
-  content: ' @';
+.qm-api-quantum-entity-params:empty {
+  margin-left: 0;
+}
+
+.qm-api-quantum-entity-content:before {
+  content: ":";
+  margin-right: 0.25em;
+}
+
+.qm-api-quantum-entity-content:empty {
+  content: none;
+  display: none;
+}
+
+.qm-api-quantum-entity-header-name:before {
+  content: '@';
+}
+
+.qm-api-quantum-entity-header-name {
+  font-weight: bold;
 }

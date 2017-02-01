@@ -23,6 +23,7 @@ const dom = require('quantum-dom')
 const html = require('quantum-html')
 const tags = require('../tags')
 const utils = require('../utils')
+const quantum = require('quantum-js')
 
 function domAsset (filename) {
   return dom.asset({
@@ -33,6 +34,7 @@ function domAsset (filename) {
 }
 
 const assets = [
+  domAsset('quantum-api.css'),
   domAsset('quantum-changelog.css'),
   domAsset('quantum-changelog.js'),
   domAsset('quantum-changelog-icons.css')
@@ -108,8 +110,9 @@ function changeDom (selection, transformer, issueUrl) {
 /* Creates a single changelog entry */
 function entry (selection, transformer, options) {
   const language = options.languages.find(language => language.name === selection.select('header').ps())
-  const headerSelection = selection.select('header')
-  const header = language ? language.changelog.createHeaderDom(headerSelection, transformer) : undefined
+  const headerSelection = quantum.select(selection.select('header').content()[0])
+  const type = headerSelection.type()
+  const header = language ? language.changelog[type](headerSelection, transformer) : undefined
   const changes = selection.selectAll('change')
     .map(change => changeDom(change, transformer, options.issueUrl))
 
@@ -193,7 +196,7 @@ module.exports = function changelog (options) {
 
       return dom.create('div').class('qm-changelog')
         .add(assets)
-        .add(options.languages.map(l => l.changelog.assets))
+        .add(options.languages.map(l => l.assets))
         .add(dom.create('div').class('qm-changelog-head qm-header-font').add(title))
         .add(dom.create('div').class('qm-changelog-body')
           .add(description)

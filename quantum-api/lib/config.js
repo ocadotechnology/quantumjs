@@ -39,9 +39,7 @@ const defaultOptions = {
   processChangelogs: true,
   targetVersions: undefined,
   languages: [
-    javascript(),
-    css(),
-    quantum()
+    javascript()
   ],
   changelogReverseVisibleList: false,
   changelogGroupByApi: false,
@@ -49,7 +47,7 @@ const defaultOptions = {
 }
 
 function resolveOption (options, name) {
-  return options && options.hasOwnProperty(name) ? options[name] : defaultOptions[name]
+  return (options && options.hasOwnProperty(name)) ? options[name] : defaultOptions[name]
 }
 
 /*

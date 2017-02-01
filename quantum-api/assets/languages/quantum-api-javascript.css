@@ -78,7 +78,13 @@
   background-color: #757575;
 }
 
+.qm-api-header-property-name,
+.qm-api-header-function-name,
+.qm-api-header-type-name {
+  font-weight: bold;
+}
 
+/*
 .qm-changelog-javascript-header {
   font-weight: bold;
 }
@@ -148,3 +154,4 @@
 .qm-changelog-javascript-type:before {
   content: ': ';
 }
+ */

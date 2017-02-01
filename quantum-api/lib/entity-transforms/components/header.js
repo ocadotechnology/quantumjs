@@ -20,7 +20,7 @@ module.exports = function header (type, headerContent, selection) {
   const sortedTags = tags.sortByTags(foundTags, (x) => x)
   const tagClasses = foundTags.map((name) => 'qm-api-' + name).join(' ')
 
-  return dom.create('div').class('qm-api-item-header qm-api-' + type + '-header')
+  return dom.create('div').class(`qm-api-item-header qm-api-item-header-${type}`)
     .add(headerContent.classed('qm-api-header-details qm-code-font', true).classed(tagClasses, true))
     .add(createHeaderTags(sortedTags))
 }

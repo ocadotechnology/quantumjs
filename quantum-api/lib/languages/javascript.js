@@ -7,6 +7,7 @@ const header = require('../entity-transforms/builders/header')
 const body = require('../entity-transforms/builders/body')
 const item = require('../entity-transforms/builders/item')
 const itemGroup = require('../entity-transforms/builders/item-group')
+const createLanguage = require('../create-language.js')
 
 /*
   The assets that should be included on the page for this language
@@ -33,159 +34,199 @@ const events = itemGroup('event', 'Events')
 const functions = itemGroup('function', 'Functions')
 const returns = itemGroup('returns', 'Returns')
 
-/* The config for building javascript api docs */
-function api (typeLinks) {
-  const propertyHeader = header.propertyHeader({typeLinks: typeLinks})
-  const prototypeHeader = header.prototypeHeader({typeLinks: typeLinks})
-  const functionHeader = header.functionHeader({typeLinks: typeLinks})
-  const typeHeader = header.typeHeader({typeLinks: typeLinks})
-
-  function typeBuilder (selection) {
+function typeBuilder (typeLinks) {
+  return (selection, transformer) => {
     return dom.create('span')
       .class('qm-api-type-standalone qm-code-font')
       .add(type(selection.cs(), typeLinks))
   }
+}
+
+function propertyHeaderDetails (typeLinks) {
+  return (selection, transformer) => {
+    return dom.create('span')
+      .class('qm-api-javascript-header-property')
+      .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
+      .add(dom.create('span').class('qm-api-javascript-header-property-name').text(selection.param(0) || ''))
+      .add(dom.create('span').class('qm-api-javascript-header-property-type').add(type(selection.param(1), typeLinks)))
+  }
+}
+
+function typeHeaderDetails (typeLinks) {
+  return (selection, transformer) => {
+    return dom.create('span')
+      .class('qm-api-javascript-header-type')
+      .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
+      .add(type(selection.param(0), typeLinks))
+  }
+}
+
+function functionHeaderDetails (typeLinks) {
+  return (selection, transformer) => {
+    const name = dom.create('span')
+      .class('qm-api-javascript-header-function-name')
+      .text(selection.type() === 'constructor' ? 'constructor' : selection.param(0))
+
+    const params = selection.selectAll(['param', 'param?']).map((param) => {
+      const isOptional = param.type()[param.type().length - 1] === '?'
+      return dom.create('span')
+        .class(isOptional ? 'qm-api-javascript-header-function-param qm-api-optional' : 'qm-api-javascript-header-function-param')
+        .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text(param.param(0)))
+        .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type(param.param(1), typeLinks)))
+    })
+
+    const returnsSelection = selection
+      .selectAll('returns')
+      .filter(sel => !sel.has('removed'))[0]
+
+    const retns = returnsSelection ?
+      dom.create('span')
+        .class('qm-api-javascript-header-function-returns')
+        .add(type(returnsSelection.ps(), typeLinks)) :
+      undefined
+
+    return dom.create('span')
+      .class('qm-api-javascript-header-function')
+      .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
+      .add(name)
+      .add(dom.create('span').class('qm-api-javascript-header-function-params').add(params))
+      .add(retns)
+  }
+}
+
+function prototypeHeaderDetails (typeLinks) {
+  return (selection, transformer) => {
+    let details = dom.create('span')
+      .class('qm-api-javascript-header-prototype')
+      .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
+      .add(dom.create('span').class('qm-api-prototype-name').text(selection.param(0) || ''))
+
+    const extendsEntities = selection.selectAll('extends')
+
+    if (extendsEntities.length > 0) {
+      details = details.add(dom.create('span').class('qm-api-prototype-extends').text('extends'))
+
+      extendsEntities.forEach((ent) => {
+        const extender = dom.create('span')
+          .class('qm-api-prototype-extender')
+          .add(type(ent.ps(), typeLinks))
+        details = details.add(extender)
+      })
+    }
+
+    return details
+  }
+}
+
+/* The config for building javascript api docs */
+function getTransforms (options) {
+  const typeLinks = (options || {}).typeLinks || {}
+  const propertyHeader = header('property', propertyHeaderDetails(typeLinks), typeLinks)
+  const prototypeHeader = header('prototype', prototypeHeaderDetails(typeLinks), typeLinks)
+  const functionHeader = header('function', functionHeaderDetails(typeLinks), typeLinks)
+  const typeHeader = header('type', typeHeaderDetails(typeLinks), typeLinks)
+
+  const typeHeaderBuilders = {
+    constructor: functionHeader,
+    event: propertyHeader,
+    function: functionHeader,
+    method: propertyHeader,
+    object: functionHeader,
+    param: propertyHeader,
+    property: propertyHeader,
+    prototype: prototypeHeader,
+    returns: typeHeader,
+    type: typeHeader
+  }
+
+  const constructorBuilder = item({
+    class: 'qm-api-constructor',
+    header: typeHeaderBuilders.constructor,
+    content: [ description, extras, params ]
+  })
 
   const prototypeBuilder = item({
     class: 'qm-api-prototype',
-    header: prototypeHeader,
+    header: typeHeaderBuilders.prototype,
     content: [ description, extras, defaultValue, constructors, groups, properties, events, methods, functions ]
   })
 
   const functionBuilder = item({
     class: 'qm-api-function',
-    header: functionHeader,
+    header: typeHeaderBuilders.function,
     content: [ description, extras, defaultValue, params, groups, events, returns ]
   })
 
   const objectBuilder = item({
     class: 'qm-api-object',
-    header: propertyHeader,
+    header: typeHeaderBuilders.object,
     content: [ description, extras, defaultValue, groups, properties, events, prototypes, functions ]
   })
 
   const methodBuilder = item({
     class: 'qm-api-method',
-    header: functionHeader,
+    header: typeHeaderBuilders.method,
     content: [ description, extras, defaultValue, params, groups, events, returns ]
-  })
-
-  const constructorBuilder = item({
-    class: 'qm-api-constructor',
-    header: functionHeader,
-    content: [ description, extras, params ]
   })
 
   const propertyBuilder = item({
     class: 'qm-api-property',
-    header: propertyHeader,
+    header: typeHeaderBuilders.property,
     content: [ description, extras, defaultValue ],
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
   const paramBuilder = item({
     class: 'qm-api-param',
-    header: propertyHeader,
+    header: typeHeaderBuilders.param,
     content: [ description, extras, defaultValue ],
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
   const eventBuilder = item({
     class: 'qm-api-event',
-    header: propertyHeader,
+    header: typeHeaderBuilders.event,
     content: [ description, extras, defaultValue ],
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
   const returnsBuilder = item({
     class: 'qm-api-returns',
-    header: typeHeader,
+    header: typeHeaderBuilders.returns,
     content: [ description, extras ],
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
   return {
-    'type': typeBuilder,
-    'prototype': prototypeBuilder,
-    'object': objectBuilder,
-    'method': methodBuilder,
-    'function': functionBuilder,
-    'constructor': constructorBuilder,
-    'param': paramBuilder,
-    'param?': paramBuilder,
-    'property': propertyBuilder,
-    'property?': propertyBuilder,
-    'event': eventBuilder,
-    'returns': returnsBuilder
-  }
-}
-
-/*
-  The entity types this language handles - these entites can be represented as
-  changelog entries by this language.
-*/
-const changelogEntityTypes = [
-  'object',
-  'prototype',
-  'event',
-  'constructor',
-  'function',
-  'method',
-  'property',
-  'property?'
-]
-
-function createChangelogHeaderDom (selection, transform) {
-  if (changelogEntityTypes.some(entityType => selection.has(entityType))) {
-    const header = dom.create('span')
-      .class('qm-changelog-javascript-header')
-
-    let current = selection
-    while (changelogEntityTypes.some(entityType => current.has(entityType))) {
-      current = current.select(changelogEntityTypes)
-
-      const type = current.type()
-      const baseType = current.type().replace('?', '')
-
-      const section = dom.create('span')
-        .class(`qm-changelog-javascript-${baseType}`)
-        .add(dom.create('span').class('qm-changelog-javascript-name').text(current.param(0)))
-
-      if (type === 'function' || type === 'method' || type === 'constructor') {
-        const params = dom.create('span').class('qm-changelog-javascript-params')
-          .add(current.selectAll(['param', 'param?']).map(param => {
-            return dom.create('span').class('qm-changelog-javascript-param')
-              .add(dom.create('span').class('qm-changelog-javascript-param-name').text(param.param(0)))
-              .add(dom.create('span').class('qm-changelog-javascript-param-type').text(param.param(1)))
-          }))
-
-        section.add(params)
-        if (current.has('returns')) {
-          section.add(dom.create('span').class('qm-changelog-javascript-type').text(current.select('returns').ps()))
-        }
-      } else if (type === 'property' || type === 'property?' || type === 'event') {
-        section.add(dom.create('span').class('qm-changelog-javascript-type').text(current.param(1)))
-      }
-
-      header.add(section)
+    api: {
+      'type': typeBuilder,
+      'prototype': prototypeBuilder,
+      'object': objectBuilder,
+      'method': methodBuilder,
+      'function': functionBuilder,
+      'constructor': constructorBuilder,
+      'param': paramBuilder,
+      'param?': paramBuilder,
+      'property': propertyBuilder,
+      'property?': propertyBuilder,
+      'event': eventBuilder,
+      'returns': returnsBuilder
+    },
+    changelog: {
+      'object': typeHeaderBuilders.object,
+      'prototype': typeHeaderBuilders.prototype,
+      'event': typeHeaderBuilders.event,
+      'constructor': typeHeaderBuilders.constructor,
+      'function': typeHeaderBuilders.function,
+      'method': typeHeaderBuilders.method,
+      'property': typeHeaderBuilders.property,
+      'property?': typeHeaderBuilders.property
     }
-
-    return header
   }
 }
 
 module.exports = (options) => {
-  const typeLinks = (options || {}).typeLinks || {}
-
-  return {
-    name: 'javascript',
-    api: api(typeLinks),
-    changelog: {
-      entityTypes: changelogEntityTypes,
-      assets: assets,
-      createHeaderDom: createChangelogHeaderDom
-    }
-  }
+  return createLanguage('javascript', getTransforms, options, assets)
 }
 
 module.exports.prototypes = prototypes

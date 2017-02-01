@@ -2,10 +2,11 @@
 
 const path = require('path')
 const dom = require('quantum-dom')
-const header = require('../entity-transforms/components/header')
+const header = require('../entity-transforms/builders/header')
 const body = require('../entity-transforms/builders/body')
 const item = require('../entity-transforms/builders/item')
 const itemGroup = require('../entity-transforms/builders/item-group')
+const createLanguage = require('../create-language.js')
 
 /*
   The assets that should be included on the page for this language
@@ -18,70 +19,52 @@ const assets = [
   })
 ]
 
-function entityHeaderDetails (selection) {
-  return dom.create('span')
-    .class('qm-api-header-entity-name')
-    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
-    .add(selection.param(0))
+function nameHeaderDetails (type) {
+  return (selection, transformer) => {
+    return dom.create('span')
+      .class(`qm-api-quantum-${type}-header-name`)
+      .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
+      .add(selection.param(0))
+  }
 }
 
-function entityHeader (selection, transforms) {
-  const details = entityHeaderDetails(selection)
-  return header(selection.type(), details, selection, transforms)
-}
+const entityHeader = header('entity', nameHeaderDetails('entity'))
+const assetHeader = header('asset', nameHeaderDetails('extra-class'))
 
 const description = body.description
 const extras = body.extras
 const groups = body.groups
 const entities = itemGroup('entity', 'Entities')
+const params = itemGroup('param', 'Parameters')
 
 const entityBuilder = item({
   class: 'qm-api-quantum-entity',
   header: entityHeader,
-  content: [ description, extras, groups, entities ]
+  content: [ description, extras, groups, entities, params ]
+})
+
+const paramBuilder = item({
+  class: 'qm-api-quantum-asset',
+  header: assetHeader,
+  content: [ description, extras, groups ]
 })
 
 /* The config for building css api docs */
-function api () {
+function getTransforms (options) {
   return {
-    entity: entityBuilder
-  }
-}
-
-/*
-  The entity types this language handles - these entites can be represented as
-  changelog entries by this language.
-*/
-const changelogEntityTypes = [
-  'entity'
-]
-
-function createChangelogHeaderDom (selection) {
-  if (changelogEntityTypes.some(entityType => selection.has(entityType))) {
-    const header = dom.create('span')
-      .class('qm-changelog-quantum-header')
-
-    let current = selection
-    while (changelogEntityTypes.some(entityType => current.has(entityType))) {
-      current = current.select(changelogEntityTypes)
-      header.add(dom.create('span')
-        .class(`qm-changelog-quantum-${current.type()}`)
-        .text(current.ps()))
+    api: {
+      entity: entityBuilder,
+      param: paramBuilder
+    },
+    changelog: {
+      entity: entityHeader,
+      param: assetHeader
     }
-    return header
   }
 }
 
 module.exports = (options) => {
-  return {
-    name: 'quantum',
-    api: api(),
-    changelog: {
-      assets,
-      entityTypes: changelogEntityTypes,
-      createHeaderDom: createChangelogHeaderDom
-    }
-  }
+  return createLanguage('quantum', getTransforms, options, assets)
 }
 
 module.exports.entities = entities

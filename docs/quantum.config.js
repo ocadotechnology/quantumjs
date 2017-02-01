@@ -25,19 +25,21 @@ const typeLinks = {
   'Element': '/modules/quantum-dom/#element'
 }
 
+const apiOptions = {
+  languages: [
+    api.languages.javascript({
+      typeLinks: typeLinks
+    }),
+    api.languages.quantum()
+  ]
+}
+
 const htmlOptions = {
   embedAssets: false,
   assetPath: '/resources',
   transforms: {
     html: html.transforms(),
-    api: api.transforms({
-      languages: [
-        api.languages.javascript({
-          typeLinks: typeLinks
-        }),
-        api.languages.quantum()
-      ]
-    }),
+    api: api.transforms(apiOptions),
     diagram: diagram.transforms(),
     markdown: markdown.transforms(),
     docs: docs.transforms(),
@@ -64,11 +66,11 @@ module.exports = {
   pipeline: [
     customizedTemplate,
     version.fileTransform(),
-    api.fileTransform(),
+    api.fileTransform(apiOptions),
     docs.fileTransform(),
     html(htmlOptions)
   ],
-  pages: 'src/pages/**/*.um',
+  pages: ['src/pages/**/*.um', '!src/pages/modules/**/api/*.um'],
   resources: [
     {
       files: [

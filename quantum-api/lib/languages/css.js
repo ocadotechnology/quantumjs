@@ -6,6 +6,7 @@ const header = require('../entity-transforms/builders/header')
 const body = require('../entity-transforms/builders/body')
 const item = require('../entity-transforms/builders/item')
 const itemGroup = require('../entity-transforms/builders/item-group')
+const createLanguage = require('../create-language.js')
 
 /*
   The assets that should be included on the page for this language
@@ -18,7 +19,16 @@ const assets = [
   })
 ]
 
-const nameHeader = header.nameHeader()
+function nameHeaderDetails (selection, transformer) {
+  return dom.create('span')
+    .class(`qm-api-css-header-name`)
+    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
+    .add(selection.param(0))
+}
+
+const classHeader = header('class', nameHeaderDetails)
+const extraClassHeader = header('extra-class', nameHeaderDetails)
+const childClassHeader = header('child-class', nameHeaderDetails)
 
 const description = body.description
 const extras = body.extras
@@ -29,67 +39,40 @@ const childClasses = itemGroup('childclass', 'Child Classes')
 
 const classBuilder = item({
   class: 'qm-api-class',
-  header: nameHeader,
+  header: classHeader,
   content: [ description, extras, groups, classes, extraClasses, childClasses ]
 })
 
 const extraclassBuilder = item({
   class: 'qm-api-extraclass',
-  header: nameHeader,
+  header: extraClassHeader,
   content: [ description, extras, groups, classes, extraClasses, childClasses ]
 })
 
 const childclassBuilder = item({
   class: 'qm-api-childclass',
-  header: nameHeader,
+  header: childClassHeader,
   content: [ description, extras, groups, classes, extraClasses, childClasses ]
 })
 
 /* The config for building css api docs */
-function api () {
+function getTransforms (options) {
   return {
-    class: classBuilder,
-    extraclass: extraclassBuilder,
-    childclass: childclassBuilder
-  }
-}
-
-/*
-  The entity types this language handles - these entites can be represented as
-  changelog entries by this language.
-*/
-const changelogEntityTypes = [
-  'class',
-  'childclass',
-  'extraclass'
-]
-
-function createChangelogHeaderDom (selection) {
-  if (changelogEntityTypes.some(entityType => selection.has(entityType))) {
-    const header = dom.create('span')
-      .class('qm-changelog-css-header')
-
-    let current = selection
-    while (changelogEntityTypes.some(entityType => current.has(entityType))) {
-      current = current.select(changelogEntityTypes)
-      header.add(dom.create('span')
-        .class('qm-changelog-css-' + current.type())
-        .text(current.ps()))
+    api: {
+      class: classBuilder,
+      extraclass: extraclassBuilder,
+      childclass: childclassBuilder
+    },
+    changelog: {
+      class: classHeader,
+      childclass: extraClassHeader,
+      extraclass: childClassHeader
     }
-    return header
   }
 }
 
 module.exports = (options) => {
-  return {
-    name: 'css',
-    api: api(),
-    changelog: {
-      entityTypes: changelogEntityTypes,
-      assets: assets, // XXX bump up
-      createHeaderDom: createChangelogHeaderDom
-    }
-  }
+  return createLanguage('css', getTransforms, options, assets)
 }
 
 module.exports.classes = classes
