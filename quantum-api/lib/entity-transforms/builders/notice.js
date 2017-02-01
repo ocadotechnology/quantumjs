@@ -4,7 +4,7 @@ const dom = require('quantum-dom')
 
 /* Creates a new notice builder */
 module.exports = function createNoticeBuilder (type, title) {
-  return (selection, transforms) => {
+  return (selection, transformer) => {
     if (selection.has(type)) {
       const notice = selection.select(type)
 
@@ -14,7 +14,7 @@ module.exports = function createNoticeBuilder (type, title) {
           .add(dom.create('div').class('qm-api-notice-body')
             .add(notice
               .filter(t => t.type !== 'issue')
-              .transform(transforms))
+              .transform(transformer))
         )
       }
     }

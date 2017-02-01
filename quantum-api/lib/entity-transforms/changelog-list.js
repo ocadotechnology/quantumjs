@@ -7,8 +7,8 @@ const dom = require('quantum-dom')
   place to generate @changelog entries in.
 */
 module.exports = function changelogList (options) {
-  return (selection, transforms) => {
+  return (selection, transformer) => {
     return dom.create('div').class('qm-changelog-list')
-      .add(selection.filter('changelog').transform(transforms))
+      .add(selection.filter('changelog').transform(transformer))
   }
 }

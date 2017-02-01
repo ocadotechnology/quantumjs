@@ -9,7 +9,7 @@ const html = require('quantum-html')
 
 const should = chai.should()
 
-function transforms (selection) {
+function transformer (selection) {
   return dom.create('div').text(selection.cs ? selection.cs() : selection)
 }
 
@@ -35,15 +35,15 @@ describe('@topic', () => {
       ]
     })
 
-    docs.transforms().topic(selection, transforms).should.eql(
+    docs.transforms().topic(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-topic')
         .add(stylesheetAsset)
         .add(dom.create('div').class('qm-docs-anchor').id('my-topic')
-          .add(dom.create('div').class('qm-docs-topic-header')
+          .add(dom.create('div').class('qm-docs-topic-header qm-header-font')
             .text('My Topic')
             .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', '#my-topic'))))
-        .add(dom.create('div').class('qm-docs-topic-body').add(html.paragraphTransform(selection, transforms)))
+        .add(dom.create('div').class('qm-docs-topic-body').add(html.paragraphTransform(selection, transformer)))
     )
   })
 })
@@ -58,15 +58,15 @@ describe('@section', () => {
       ]
     })
 
-    docs.transforms().section(selection, transforms).should.eql(
+    docs.transforms().section(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-section')
         .add(stylesheetAsset)
         .add(dom.create('div').class('qm-docs-anchor').id('my-section')
-          .add(dom.create('div').class('qm-docs-section-header')
+          .add(dom.create('div').class('qm-docs-section-header qm-header-font')
             .text('My Section')
             .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', '#my-section'))))
-        .add(dom.create('div').class('qm-docs-section-body').add(html.paragraphTransform(selection, transforms)))
+        .add(dom.create('div').class('qm-docs-section-body').add(html.paragraphTransform(selection, transformer)))
     )
   })
 })
@@ -81,12 +81,12 @@ describe('@subsection', () => {
       ]
     })
 
-    docs.transforms().subsection(selection, transforms).should.eql(
+    docs.transforms().subsection(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-subsection')
         .add(stylesheetAsset)
-        .add(dom.create('div').class('qm-docs-subsection-header').text('My Sub Section'))
-        .add(dom.create('div').class('qm-docs-subsection-body').add(html.paragraphTransform(selection, transforms)))
+        .add(dom.create('div').class('qm-docs-subsection-header qm-header-font').text('My Sub Section'))
+        .add(dom.create('div').class('qm-docs-subsection-body').add(html.paragraphTransform(selection, transformer)))
     )
   })
 })
@@ -101,12 +101,12 @@ describe('@notice', () => {
       ]
     })
 
-    docs.transforms().notice(selection, transforms).should.eql(
+    docs.transforms().notice(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-notice qm-docs-info')
         .add(stylesheetAsset)
-        .add(dom.create('div').class('qm-docs-notice-header').text('My Notice'))
-        .add(dom.create('div').class('qm-docs-notice-body').add(html.paragraphTransform(selection, transforms)))
+        .add(dom.create('div').class('qm-docs-notice-header qm-header-font').text('My Notice'))
+        .add(dom.create('div').class('qm-docs-notice-body').add(html.paragraphTransform(selection, transformer)))
     )
   })
 
@@ -119,12 +119,12 @@ describe('@notice', () => {
       ]
     })
 
-    docs.transforms().notice(selection, transforms).should.eql(
+    docs.transforms().notice(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-notice')
         .add(stylesheetAsset)
-        .add(dom.create('div').class('qm-docs-notice-header').text(''))
-        .add(dom.create('div').class('qm-docs-notice-body').add(html.paragraphTransform(selection, transforms)))
+        .add(dom.create('div').class('qm-docs-notice-header qm-header-font').text(''))
+        .add(dom.create('div').class('qm-docs-notice-body').add(html.paragraphTransform(selection, transformer)))
     )
   })
 })
@@ -142,12 +142,12 @@ describe('@list', () => {
       ]
     })
 
-    docs.transforms().list(selection, transforms).should.eql(
+    docs.transforms().list(selection, transformer).should.eql(
       dom.create('ul')
         .class('qm-docs-list')
         .add(stylesheetAsset)
-        .add(dom.create('li').add(html.paragraphTransform(quantum.select(selection.content()[1]), transforms)))
-        .add(dom.create('li').add(html.paragraphTransform(quantum.select(selection.content()[3]), transforms)))
+        .add(dom.create('li').add(html.paragraphTransform(quantum.select(selection.content()[1]), transformer)))
+        .add(dom.create('li').add(html.paragraphTransform(quantum.select(selection.content()[3]), transformer)))
     )
   })
 
@@ -163,12 +163,12 @@ describe('@list', () => {
       ]
     })
 
-    docs.transforms().list(selection, transforms).should.eql(
+    docs.transforms().list(selection, transformer).should.eql(
       dom.create('ol')
         .class('qm-docs-list')
         .add(stylesheetAsset)
-        .add(dom.create('li').add(html.paragraphTransform(quantum.select(selection.content()[1]), transforms)))
-        .add(dom.create('li').add(html.paragraphTransform(quantum.select(selection.content()[3]), transforms)))
+        .add(dom.create('li').add(html.paragraphTransform(quantum.select(selection.content()[1]), transformer)))
+        .add(dom.create('li').add(html.paragraphTransform(quantum.select(selection.content()[3]), transformer)))
     )
   })
 })
@@ -183,7 +183,7 @@ describe('@bold', () => {
       ]
     })
 
-    docs.transforms().bold(selection, transforms).should.eql(
+    docs.transforms().bold(selection, transformer).should.eql(
       dom.create('b').add(dom.create('div').text('Content'))
     )
   })
@@ -199,7 +199,7 @@ describe('@italic', () => {
       ]
     })
 
-    docs.transforms().italic(selection, transforms).should.eql(
+    docs.transforms().italic(selection, transformer).should.eql(
       dom.create('i').add(dom.create('div').text('Content'))
     )
   })
@@ -215,7 +215,7 @@ describe('@strikethrough', () => {
       ]
     })
 
-    docs.transforms().strikethrough(selection, transforms).should.eql(
+    docs.transforms().strikethrough(selection, transformer).should.eql(
       dom.create('del').add(dom.create('div').text('Content'))
     )
   })
@@ -231,7 +231,7 @@ describe('@image', () => {
       ]
     })
 
-    docs.transforms().image(selection, transforms).should.eql(
+    docs.transforms().image(selection, transformer).should.eql(
       dom.create('img')
         .attr('src', 'path/image.png')
         .attr('alt', 'Content')
@@ -248,11 +248,11 @@ describe('@summary', () => {
       content: []
     })
 
-    docs.transforms().summary(selection, transforms).should.eql(
+    docs.transforms().summary(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-summary')
         .add(stylesheetAsset)
-        .add(dom.create('div').text('Title').class('qm-docs-summary-header'))
+        .add(dom.create('div').text('Title').class('qm-docs-summary-header qm-header-font'))
         .add(dom.create('div').class('qm-docs-summary-body'))
     )
   })
@@ -266,11 +266,11 @@ describe('@summary', () => {
       ]
     })
 
-    docs.transforms().summary(selection, transforms).should.eql(
+    docs.transforms().summary(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-summary')
         .add(stylesheetAsset)
-        .add(dom.create('div').text('Title').class('qm-docs-summary-header'))
+        .add(dom.create('div').text('Title').class('qm-docs-summary-header qm-header-font'))
         .add(dom.create('div').class('qm-docs-summary-body')
           .add(dom.create('div').text('Description')))
     )
@@ -285,11 +285,11 @@ describe('@summary', () => {
       ]
     })
 
-    docs.transforms().summary(selection, transforms).should.eql(
+    docs.transforms().summary(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-summary')
         .add(stylesheetAsset)
-        .add(dom.create('div').text('Title').class('qm-docs-summary-header'))
+        .add(dom.create('div').text('Title').class('qm-docs-summary-header qm-header-font'))
         .add(dom.create('div').class('qm-docs-summary-body'))
         .add(dom.create('a').class('qm-docs-summary-link').attr('href', '/link/somewhere')
           .add(dom.create('span').text('Text'))
@@ -308,7 +308,7 @@ describe('@group', () => {
       ]
     })
 
-    docs.transforms().group(selection, transforms).should.eql(
+    docs.transforms().group(selection, transformer).should.eql(
       dom.create('div')
         .add(stylesheetAsset)
         .class('qm-docs-group')
@@ -325,7 +325,7 @@ describe('@versionSelector', () => {
       content: []
     })
 
-    should.not.exist(docs.transforms().versionSelector(selection, transforms))
+    should.not.exist(docs.transforms().versionSelector(selection, transformer))
   })
 
   it('should render as expected', () => {
@@ -351,7 +351,7 @@ describe('@versionSelector', () => {
       return 'fixed-id'
     }
 
-    docs.transforms().versionSelector(selection, transforms).should.eql(
+    docs.transforms().versionSelector(selection, transformer).should.eql(
       dom.create('button')
         .id('fixed-id')
         .class('qm-docs-version-selector hx-btn')
@@ -375,12 +375,12 @@ describe('@sidebar', () => {
       ]
     })
 
-    docs.transforms().sidebar(selection, transforms).should.eql(
+    docs.transforms().sidebar(selection, transformer).should.eql(
       dom.create('div')
         .add(stylesheetAsset)
         .add(scriptAsset)
         .class('qm-docs-sidebar')
-        .add(selection.transform(transforms))
+        .add(selection.transform(transformer))
     )
   })
 })
@@ -408,16 +408,16 @@ describe('@sidebarPage', () => {
       ]
     })
 
-    function transformer (selection) {
+    function innerTransformer (selection) {
       const type = quantum.select.isSelection(selection) ? selection.type() : undefined
       if (type === 'sidebar') {
-        return docs.transforms().sidebar(selection, transforms)
+        return docs.transforms().sidebar(selection, transformer)
       } else {
-        return transforms(selection)
+        return transformer(selection)
       }
     }
 
-    docs.transforms().sidebarPage(selection, transformer).should.eql(
+    docs.transforms().sidebarPage(selection, innerTransformer).should.eql(
       dom.create('div').class('qm-docs-sidebar-page')
         .add(stylesheetAsset)
         .add(dom.create('div')
@@ -440,7 +440,7 @@ describe('@tableOfContents', () => {
       content: []
     })
 
-    docs.transforms().tableOfContents(selection, transforms).should.eql(
+    docs.transforms().tableOfContents(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-table-of-contents')
         .add(stylesheetAsset)
@@ -455,7 +455,7 @@ describe('@tableOfContents', () => {
       content: []
     })
 
-    docs.transforms().tableOfContents(selection, transforms).should.eql(
+    docs.transforms().tableOfContents(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-table-of-contents')
         .add(stylesheetAsset)
@@ -487,7 +487,7 @@ describe('@tableOfContents', () => {
       ]
     })
 
-    docs.transforms().tableOfContents(selection, transforms).should.eql(
+    docs.transforms().tableOfContents(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-table-of-contents')
         .add(stylesheetAsset)
@@ -535,7 +535,7 @@ describe('@navigationMenu', () => {
       content: []
     })
 
-    docs.transforms().navigationMenu(selection, transforms).should.eql(
+    docs.transforms().navigationMenu(selection, transformer).should.eql(
       dom.create('div')
         .add(stylesheetAsset)
         .class('qm-docs-navigation-menu-wrapper')
@@ -566,7 +566,7 @@ describe('@navigationMenu', () => {
       ]
     })
 
-    docs.transforms().navigationMenu(selection, transforms).should.eql(
+    docs.transforms().navigationMenu(selection, transformer).should.eql(
       dom.create('div')
         .add(stylesheetAsset)
         .class('qm-docs-navigation-menu-wrapper')
@@ -606,12 +606,12 @@ describe('@header', () => {
       ]
     })
 
-    docs.transforms().header(selection, transforms).should.eql(
+    docs.transforms().header(selection, transformer).should.eql(
       dom.create('div').class('qm-docs-header')
         .add(stylesheetAsset)
         .add(dom.create('div').class('qm-docs-centered')
           .add(dom.create('div').class('qm-docs-header-wrapper')
-            .add(dom.create('div').class('qm-docs-header-title').text(selection.select('title').ps()))
+            .add(dom.create('div').class('qm-docs-header-title qm-header-font').text(selection.select('title').ps()))
             .add(dom.create('a')
               .class('qm-docs-header-link')
               .attr('href', '/link/one')
@@ -635,13 +635,13 @@ describe('@header', () => {
       ]
     })
 
-    docs.transforms().header(selection, transforms).should.eql(
+    docs.transforms().header(selection, transformer).should.eql(
       dom.create('div').class('qm-docs-header')
         .add(stylesheetAsset)
         .add(dom.create('div').class('qm-docs-centered')
           .add(dom.create('div').class('qm-docs-header-wrapper')
             .add(dom.create('image').class('qm-docs-header-logo').attr('src', selection.select('icon').ps()))
-            .add(dom.create('div').class('qm-docs-header-title').text(selection.select('title').ps()))
+            .add(dom.create('div').class('qm-docs-header-title qm-header-font').text(selection.select('title').ps()))
             .add(dom.create('a')
               .class('qm-docs-header-link')
               .attr('href', '/link/one')
@@ -663,7 +663,7 @@ describe('@breadcrumb', () => {
       content: []
     })
 
-    should.not.exist(docs.transforms().breadcrumb(selection, transforms))
+    should.not.exist(docs.transforms().breadcrumb(selection, transformer))
   })
 
   it('should render correctly', () => {
@@ -676,7 +676,7 @@ describe('@breadcrumb', () => {
       ]
     })
 
-    docs.transforms().breadcrumb(selection, transforms).should.eql(
+    docs.transforms().breadcrumb(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-breadcrumb')
         .add(stylesheetAsset)
@@ -697,14 +697,14 @@ describe('@topSection', () => {
       content: []
     })
 
-    docs.transforms().topSection(selection, transforms).should.eql(
+    docs.transforms().topSection(selection, transformer).should.eql(
       dom.create('div').class('qm-docs-top-section')
         .add(stylesheetAsset)
-        .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transforms))
+        .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transformer))
         .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
-          .add(dom.create('div').class('qm-docs-top-section-title').text(''))
+          .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text(''))
           .add(dom.create('div').class('qm-docs-top-section-description')
-            .add(html.paragraphTransform(selection.select('description'), transforms))))
+            .add(html.paragraphTransform(selection.select('description'), transformer))))
     )
   })
 
@@ -717,15 +717,15 @@ describe('@topSection', () => {
       ]
     })
 
-    docs.transforms().topSection(selection, transforms).should.eql(
+    docs.transforms().topSection(selection, transformer).should.eql(
       dom.create('div').class('qm-docs-top-section')
         .add(dom.head(dom.create('title').text('Title'), {id: 'title'}))
         .add(stylesheetAsset)
-        .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transforms))
+        .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transformer))
         .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
-          .add(dom.create('div').class('qm-docs-top-section-title').text('Title'))
+          .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text('Title'))
           .add(dom.create('div').class('qm-docs-top-section-description')
-            .add(html.paragraphTransform(selection.select('description'), transforms))))
+            .add(html.paragraphTransform(selection.select('description'), transformer))))
     )
   })
 
@@ -738,15 +738,15 @@ describe('@topSection', () => {
       ]
     })
 
-    docs.transforms().topSection(selection, transforms).should.eql(
+    docs.transforms().topSection(selection, transformer).should.eql(
       dom.create('div').class('qm-docs-top-section')
         .add(stylesheetAsset)
-        .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transforms))
+        .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transformer))
         .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
           .add(dom.create('a').class('qm-docs-top-section-source').attr('href', '/source/link').text('Suggest edit'))
-          .add(dom.create('div').class('qm-docs-top-section-title').text(''))
+          .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text(''))
           .add(dom.create('div').class('qm-docs-top-section-description')
-            .add(html.paragraphTransform(selection.select('description'), transforms))))
+            .add(html.paragraphTransform(selection.select('description'), transformer))))
     )
   })
 
@@ -759,14 +759,14 @@ describe('@topSection', () => {
       ]
     })
 
-    docs.transforms().topSection(selection, transforms).should.eql(
+    docs.transforms().topSection(selection, transformer).should.eql(
       dom.create('div').class('qm-docs-top-section')
         .add(stylesheetAsset)
-        .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transforms))
+        .add(docs.transforms().breadcrumb(selection.select('breadcrumb'), transformer))
         .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
-          .add(dom.create('div').class('qm-docs-top-section-title').text(''))
+          .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text(''))
           .add(dom.create('div').class('qm-docs-top-section-description')
-            .add(html.paragraphTransform(selection.select('description'), transforms))))
+            .add(html.paragraphTransform(selection.select('description'), transformer))))
     )
   })
 })
@@ -781,11 +781,11 @@ describe('@contentSection', () => {
       ]
     })
 
-    docs.transforms().contentSection(selection, transforms).should.eql(
+    docs.transforms().contentSection(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-content-section')
         .add(stylesheetAsset)
-        .add(selection.transform(transforms))
+        .add(selection.transform(transformer))
     )
   })
 })
@@ -800,10 +800,10 @@ describe('@bottomSection', () => {
       ]
     })
 
-    docs.transforms().bottomSection(selection, transforms).should.eql(
+    docs.transforms().bottomSection(selection, transformer).should.eql(
       dom.create('div').class('qm-docs-bottom-section')
         .add(stylesheetAsset)
-        .add(selection.transform(transforms))
+        .add(selection.transform(transformer))
     )
   })
 })
@@ -833,7 +833,7 @@ describe('@relatedButtons', () => {
       ]
     })
 
-    docs.transforms().relatedButtons(selection, transforms).should.eql(
+    docs.transforms().relatedButtons(selection, transformer).should.eql(
       dom.create('div')
         .class('qm-docs-related-buttons')
         .add(stylesheetAsset)
@@ -889,23 +889,23 @@ describe('@table', () => {
       ]
     })
 
-    docs.transforms().table(selection, transforms).should.eql(
+    docs.transforms().table(selection, transformer).should.eql(
       dom.create('table')
         .class('qm-docs-table')
-        .add(dom.create('thead')
+        .add(dom.create('thead').class('qm-header-font')
           .add(dom.create('tr')
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell1']}), transforms)))
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell2']}), transforms)))
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell3']}), transforms))))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell1']}), transformer)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell2']}), transformer)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell3']}), transformer))))
           .add(dom.create('tr')
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell7']}), transforms)))
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell8']}), transforms)))
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell9']}), transforms)))))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell7']}), transformer)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell8']}), transformer)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell9']}), transformer)))))
         .add(dom.create('tbody')
           .add(dom.create('tr')
-            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell4']}), transforms)))
-            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell5']}), transforms)))
-            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell6']}), transforms)))))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell4']}), transformer)))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell5']}), transformer)))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell6']}), transformer)))))
         .add(stylesheetAsset)
     )
   })
@@ -936,18 +936,18 @@ describe('@table', () => {
       ]
     })
 
-    docs.transforms().table(selection, transforms).should.eql(
+    docs.transforms().table(selection, transformer).should.eql(
       dom.create('table')
         .class('qm-docs-table')
-        .add(dom.create('thead')
+        .add(dom.create('thead').class('qm-header-font')
           .add(dom.create('tr')
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell1']}), transforms)))
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell2']}), transforms)))
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell3']}), transforms))))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell1']}), transformer)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell2']}), transformer)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell3']}), transformer))))
           .add(dom.create('tr')
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell7']}), transforms)))
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell8']}), transforms)))
-            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell9']}), transforms)))))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell7']}), transformer)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell8']}), transformer)))
+            .add(dom.create('th').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell9']}), transformer)))))
         .add(stylesheetAsset)
     )
   })
@@ -969,14 +969,14 @@ describe('@table', () => {
       ]
     })
 
-    docs.transforms().table(selection, transforms).should.eql(
+    docs.transforms().table(selection, transformer).should.eql(
       dom.create('table')
         .class('qm-docs-table')
         .add(dom.create('tbody')
           .add(dom.create('tr')
-            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell4']}), transforms)))
-            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell5']}), transforms)))
-            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell6']}), transforms)))))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell4']}), transformer)))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell5']}), transformer)))
+            .add(dom.create('td').add(html.paragraphTransform(quantum.select({type: 'cell', params: [], content: ['Cell6']}), transformer)))))
         .add(stylesheetAsset)
     )
   })

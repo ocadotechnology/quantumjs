@@ -45,11 +45,11 @@
     transforms function:
 
     @@codeblock js
-      function post (selection, transforms) {
+      function post (selection, transformer) {
         return dom.create('div').class('post')
           .add(dom.create('post-title').text(selection.ps()))
           .add(dom.create('post-content')
-            .add(selection.select('content').transform(transforms)))
+            .add(selection.select('content').transform(transformer)))
       }
 
     This function takes an entity, and returns some virtual dom which represents
@@ -63,11 +63,11 @@
         const dom = require('quantum-dom')
 
         exports.transforms = () => {
-          function post (selection, transforms) {
+          function post (selection, transformer) {
             return dom.create('div').class('post')
               .add(dom.create('post-title').text(selection.ps()))
               .add(dom.create('post-content')
-                .add(selection.select('content').transform(transforms)))
+                .add(selection.select('content').transform(transformer)))
           }
 
           return {

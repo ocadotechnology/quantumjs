@@ -273,7 +273,7 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify()
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head></head><body><div id="strawberry" class="banana"></div></body></html>',
+          html: '<!DOCTYPE html>\n<html>\n<head></head>\n<body class="qm-body-font"><div id="strawberry" class="banana"></div></body></html>',
           assets: []
         })
       })
@@ -287,7 +287,7 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify()
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><link id="strawberry" class="banana"></link></head><body></body></html>',
+          html: '<!DOCTYPE html>\n<html>\n<head><link id="strawberry" class="banana"></link></head>\n<body class="qm-body-font"></body></html>',
           assets: []
         })
       })
@@ -301,7 +301,7 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify()
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><style>.red {background: red;}\n</style></head><body></body></html>',
+          html: '<!DOCTYPE html>\n<html>\n<head><style>.red {background: red;}\n</style></head>\n<body class="qm-body-font"></body></html>',
           assets: []
         })
       })
@@ -317,7 +317,7 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify()
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head></head><body class="class-2"></body></html>',
+          html: '<!DOCTYPE html>\n<html>\n<head></head>\n<body class="qm-body-font class-2"></body></html>',
           assets: []
         })
       })
@@ -331,7 +331,7 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify({embedAssets: true})
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><style>.red {background: red;}\n</style></head><body></body></html>',
+          html: '<!DOCTYPE html>\n<html>\n<head><style>.red {background: red;}\n</style></head>\n<body class="qm-body-font"></body></html>',
           assets: []
         })
       })
@@ -345,7 +345,7 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify({embedAssets: false})
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="test.css"></link></head><body></body></html>',
+          html: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="test.css"></link></head>\n<body class="qm-body-font"></body></html>',
           assets: [
             dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
           ]
@@ -361,7 +361,7 @@ describe('HTMLPage::stringify', () => {
     return htmlPage.stringify({embedAssets: false, assetPath: '/bob'})
       .then(result => {
         result.should.eql({
-          html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/bob/assets/test.css"></link></head><body></body></html>',
+          html: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="/bob/assets/test.css"></link></head>\n<body class="qm-body-font"></body></html>',
           assets: [
             dom.asset({url: '/assets/test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
           ]
@@ -392,7 +392,7 @@ describe('buildHTML', () => {
               src: 'filename.um',
               dest: 'filename.html'
             }),
-            content: '<!DOCTYPE html>\n<html><head><style>.red {background: red;}\n</style></head><body></body></html>'
+            content: '<!DOCTYPE html>\n<html>\n<head><style>.red {background: red;}\n</style></head>\n<body class="qm-body-font"></body></html>'
           })
         ])
       })
@@ -419,7 +419,7 @@ describe('buildHTML', () => {
               src: 'filename.um',
               dest: 'filename.html'
             }),
-            content: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="test.css"></link></head><body></body></html>'
+            content: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="test.css"></link></head>\n<body class="qm-body-font"></body></html>'
           }),
           new File({
             info: new FileInfo({
@@ -458,7 +458,7 @@ describe('buildHTML', () => {
               dest: 'filename.html',
               destBase: 'target'
             }),
-            content: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/bob/assets/test.css"></link></head><body></body></html>'
+            content: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="/bob/assets/test.css"></link></head>\n<body class="qm-body-font"></body></html>'
           }),
           new File({
             info: new FileInfo({

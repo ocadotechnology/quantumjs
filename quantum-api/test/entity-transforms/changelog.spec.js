@@ -9,7 +9,7 @@ const changelog = require('../../lib/entity-transforms/changelog')
 
 const should = chai.should()
 
-function transform (selection) {
+function transformer (selection) {
   return dom.create('div').text(selection.type())
 }
 
@@ -24,7 +24,7 @@ describe('changelog', () => {
     entityTypes: [],
     changelog: {
       assets: [],
-      createHeaderDom (headerSelection, transforms) {
+      createHeaderDom (headerSelection, transformer) {
         return dom.create('div').class('test-header').text(headerSelection.select('name').ps())
       }
     }
@@ -45,7 +45,7 @@ describe('changelog', () => {
       content: []
     })
 
-    should.not.exist(changelog()(selection, transform))
+    should.not.exist(changelog()(selection, transformer))
   })
 
   it('should display a description', () => {
@@ -61,9 +61,9 @@ describe('changelog', () => {
       ]
     })
 
-    changelog(options)(selection, transform).should.eql(
+    changelog(options)(selection, transformer).should.eql(
       changelogBlock()
-        .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+        .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
         .add(dom.create('div').class('qm-changelog-body')
           .add(dom.create('div').class('qm-changelog-description')
             .add(html.paragraphTransform(quantum.select({type: '', params: [], content: ['some description']})))))
@@ -96,13 +96,13 @@ describe('changelog', () => {
       }
     }
 
-    changelog({languages: [testLanguage]})(selection, transform).should.eql(
+    changelog({languages: [testLanguage]})(selection, transformer).should.eql(
       changelogBlock()
         .add(dom.asset({
           url: '/some-url',
           file: '/some-file'
         }))
-        .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+        .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
         .add(dom.create('div').class('qm-changelog-body')
           .add(dom.create('div').class('qm-changelog-description')
             .add(html.paragraphTransform(quantum.select({type: '', params: [], content: ['some description']})))))
@@ -127,9 +127,9 @@ describe('changelog', () => {
       ]
     })
 
-    changelog(options)(selection, transform).should.eql(
+    changelog(options)(selection, transformer).should.eql(
       changelogBlock()
-        .add(dom.create('div').class('qm-changelog-head')
+        .add(dom.create('div').class('qm-changelog-head qm-header-font')
           .add(dom.create('div').class('qm-changelog-link')
             .add(dom.create('a').attr('href', 'link/to/0.1.0').text('0.1.0'))))
         .add(dom.create('div').class('qm-changelog-body')
@@ -151,12 +151,12 @@ describe('changelog', () => {
       ]
     })
 
-    changelog(options)(selection, transform).should.eql(
+    changelog(options)(selection, transformer).should.eql(
       changelogBlock()
-        .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+        .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
         .add(dom.create('div').class('qm-changelog-body')
           .add(dom.create('div').class('qm-changelog-entry')
-            .add(dom.create('div').class('qm-changelog-entry-header'))
+            .add(dom.create('div').class('qm-changelog-entry-header qm-code-font'))
             .add(dom.create('div').class('qm-changelog-entry-content'))))
     )
   })
@@ -182,19 +182,19 @@ describe('changelog', () => {
       ]
     })
 
-    const header = dom.create('div').class('qm-changelog-entry-header')
+    const header = dom.create('div').class('qm-changelog-entry-header qm-code-font')
 
     const body = dom.create('div').class('qm-changelog-entry-content')
-      .add(changelog.changeDom(quantum.select(change), transform, {
+      .add(changelog.changeDom(quantum.select(change), transformer, {
         updated: {
           displayName: 'Updated',
           iconClass: 'qm-changelog-icon-updated'
         }
       }))
 
-    changelog(options)(selection, transform).should.eql(
+    changelog(options)(selection, transformer).should.eql(
       changelogBlock()
-        .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+        .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
         .add(dom.create('div').class('qm-changelog-body')
           .add(dom.create('div').class('qm-changelog-entry')
             .add(header)
@@ -223,9 +223,9 @@ describe('changelog', () => {
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries'))
 
-      changelog(options)(selection, transform).should.eql(
+      changelog(options)(selection, transformer).should.eql(
         changelogBlock()
-          .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+          .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
           .add(dom.create('div').class('qm-changelog-body')
             .add(dom.create('div').class('qm-changelog-group')
               .add(changelog.createCollapsible(header, body))))
@@ -260,9 +260,9 @@ describe('changelog', () => {
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries'))
 
-      changelog(options)(selection, transform).should.eql(
+      changelog(options)(selection, transformer).should.eql(
         changelogBlock()
-          .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+          .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
           .add(dom.create('div').class('qm-changelog-body')
             .add(dom.create('div').class('qm-changelog-group')
               .add(changelog.createCollapsible(header, body))))
@@ -297,9 +297,9 @@ describe('changelog', () => {
           .add(html.paragraphTransform(quantum.select({type: '', params: [], content: ['some description']}))))
         .add(dom.create('div').class('qm-changelog-group-entries'))
 
-      changelog(options)(selection, transform).should.eql(
+      changelog(options)(selection, transformer).should.eql(
         changelogBlock()
-          .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+          .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
           .add(dom.create('div').class('qm-changelog-body')
             .add(dom.create('div').class('qm-changelog-group')
               .add(changelog.createCollapsible(header, body))))
@@ -335,16 +335,16 @@ describe('changelog', () => {
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries')
           .add(dom.create('div').class('qm-changelog-entry')
-            .add(changelog.changeDom(quantum.select(change), transform, {
+            .add(changelog.changeDom(quantum.select(change), transformer, {
               updated: {
                 displayName: 'Updated',
                 iconClass: 'qm-changelog-icon-updated'
               }
             }))))
 
-      changelog(options)(selection, transform).should.eql(
+      changelog(options)(selection, transformer).should.eql(
         changelogBlock()
-          .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+          .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
           .add(dom.create('div').class('qm-changelog-body')
             .add(dom.create('div').class('qm-changelog-group')
               .add(changelog.createCollapsible(header, body))))
@@ -392,18 +392,18 @@ describe('changelog', () => {
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries')
           .add(dom.create('div').class('qm-changelog-entry')
-            .add(dom.create('div').class('qm-changelog-entry-header'))
+            .add(dom.create('div').class('qm-changelog-entry-header qm-code-font'))
             .add(dom.create('div').class('qm-changelog-entry-content')
-              .add(changelog.changeDom(quantum.select(change), transform, {
+              .add(changelog.changeDom(quantum.select(change), transformer, {
                 updated: {
                   displayName: 'Updated',
                   iconClass: 'qm-changelog-icon-updated'
                 }
               })))))
 
-      changelog(options)(selection, transform).should.eql(
+      changelog(options)(selection, transformer).should.eql(
         changelogBlock()
-          .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+          .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
           .add(dom.create('div').class('qm-changelog-body')
             .add(dom.create('div').class('qm-changelog-group')
               .add(changelog.createCollapsible(header, body))))
@@ -462,19 +462,19 @@ describe('changelog', () => {
       const body = dom.create('div').class('qm-changelog-group-body')
         .add(dom.create('div').class('qm-changelog-group-entries')
           .add(dom.create('div').class('qm-changelog-entry')
-            .add(dom.create('div').class('qm-changelog-entry-header')
+            .add(dom.create('div').class('qm-changelog-entry-header qm-code-font')
               .add(dom.create('div').class('test-header').text('EntryName')))
             .add(dom.create('div').class('qm-changelog-entry-content')
-              .add(changelog.changeDom(quantum.select(change), transform, {
+              .add(changelog.changeDom(quantum.select(change), transformer, {
                 updated: {
                   displayName: 'Updated',
                   iconClass: 'qm-changelog-icon-updated'
                 }
               })))))
 
-      changelog(optionsWithLanguage)(selection, transform).should.eql(
+      changelog(optionsWithLanguage)(selection, transformer).should.eql(
         changelogBlock()
-          .add(dom.create('div').class('qm-changelog-head').text('0.1.0'))
+          .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
           .add(dom.create('div').class('qm-changelog-body')
             .add(dom.create('div').class('qm-changelog-group')
               .add(changelog.createCollapsible(header, body))))
@@ -495,7 +495,7 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transformer, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon'))
@@ -511,7 +511,7 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transformer, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon'))
@@ -527,7 +527,7 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transformer, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon')
@@ -552,7 +552,7 @@ describe('changeDom', () => {
       ]
     })
 
-    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transformer, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon')
@@ -576,7 +576,7 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transformer, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon')
@@ -595,7 +595,7 @@ describe('changeDom', () => {
       content: []
     })
 
-    changelog.changeDom(changeSelection, transform, issueUrl).should.eql(
+    changelog.changeDom(changeSelection, transformer, issueUrl).should.eql(
       dom.create('div').class('qm-changelog-change')
         .add(dom.create('div').class('qm-changelog-change-header')
           .add(dom.create('div').class('qm-changelog-change-icon')

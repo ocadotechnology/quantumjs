@@ -27,20 +27,20 @@ module.exports = function itemBuilder (options) {
 
   const builders = standardBuilders.concat(options.content || [])
 
-  return (selection, transforms) => {
+  return (selection, transformer) => {
     const itemClass = selection.transformContext().class || options.class || ''
 
     for (let i = 0; i < otherKeys.length; i++) {
       const name = otherKeys[i]
       if (selection.param(0) === name || selection.param(1) === name) {
         selection.transformContext({class: itemClass})
-        return others[name](selection, transforms)
+        return others[name](selection, transformer)
       }
     }
 
     const content = dom.create('div')
       .class('qm-api-item-content')
-      .add(builders.map(builder => builder(selection, transforms)))
+      .add(builders.map(builder => builder(selection, transformer)))
 
     if (options.header) {
       const type = selection.type()
@@ -51,7 +51,7 @@ module.exports = function itemBuilder (options) {
       const header = dom.create('div')
         .class('qm-api-item-head')
         .classed('qm-api-optional', isOptional)
-        .add(options.header(selection, transforms))
+        .add(options.header(selection, transformer))
 
       return collapsible(itemClass, header, content, isCollapsible, isCollapsed)
     } else {

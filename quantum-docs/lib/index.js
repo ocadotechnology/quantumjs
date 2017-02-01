@@ -25,12 +25,12 @@ function spinalCase (string) {
   return string.toLowerCase().split(' ').join('-')
 }
 
-function fullWidth (selection, transforms) {
+function fullWidth (selection, transformer) {
   return dom.create('div').class('qm-docs-full-width')
-    .add(selection.transform(transforms))
+    .add(selection.transform(transformer))
 }
 
-function topic (selection, transforms) {
+function topic (selection, transformer) {
   return dom.create('div')
     .class('qm-docs-topic')
     .add(stylesheetAsset)
@@ -38,10 +38,10 @@ function topic (selection, transforms) {
       .add(dom.create('div').class('qm-docs-topic-header qm-header-font')
         .text(selection.ps())
         .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(selection.ps())))))
-    .add(dom.create('div').class('qm-docs-topic-body').add(html.paragraphTransform(selection, transforms)))
+    .add(dom.create('div').class('qm-docs-topic-body').add(html.paragraphTransform(selection, transformer)))
 }
 
-function section (selection, transforms) {
+function section (selection, transformer) {
   return dom.create('div')
     .class('qm-docs-section')
     .add(stylesheetAsset)
@@ -49,62 +49,62 @@ function section (selection, transforms) {
       .add(dom.create('div').class('qm-docs-section-header qm-header-font')
         .text(selection.ps())
         .add(dom.create('a').class('qm-docs-anchor-icon').attr('href', '#' + spinalCase(selection.ps())))))
-    .add(dom.create('div').class('qm-docs-section-body').add(html.paragraphTransform(selection, transforms)))
+    .add(dom.create('div').class('qm-docs-section-body').add(html.paragraphTransform(selection, transformer)))
 }
 
-function subsection (selection, transforms) {
+function subsection (selection, transformer) {
   return dom.create('div')
     .class('qm-docs-subsection')
     .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-subsection-header qm-header-font').text(selection.ps()))
-    .add(dom.create('div').class('qm-docs-subsection-body').add(html.paragraphTransform(selection, transforms)))
+    .add(dom.create('div').class('qm-docs-subsection-body').add(html.paragraphTransform(selection, transformer)))
 }
 
-function notice (selection, transforms) {
+function notice (selection, transformer) {
   const contextClass = toContextClass(selection.param(1))
   return dom.create('div')
     .class('qm-docs-notice' + (contextClass ? ' ' + contextClass : ''))
     .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-notice-header qm-header-font').text(selection.param(0) || ''))
-    .add(dom.create('div').class('qm-docs-notice-body').add(html.paragraphTransform(selection, transforms)))
+    .add(dom.create('div').class('qm-docs-notice-body').add(html.paragraphTransform(selection, transformer)))
 }
 
-function list (selection, transforms) {
+function list (selection, transformer) {
   const ordered = selection.ps() === 'ordered'
   return dom.create(ordered ? 'ol' : 'ul')
     .class('qm-docs-list')
     .add(stylesheetAsset)
     .add(selection.selectAll('item').map((e) => {
       return dom.create('li')
-        .add(html.paragraphTransform(e, transforms))
+        .add(html.paragraphTransform(e, transformer))
     }))
 }
 
-function bold (selection, transforms) {
-  return dom.create('b').add(selection.transform(transforms))
+function bold (selection, transformer) {
+  return dom.create('b').add(selection.transform(transformer))
 }
 
-function italic (selection, transforms) {
-  return dom.create('i').add(selection.transform(transforms))
+function italic (selection, transformer) {
+  return dom.create('i').add(selection.transform(transformer))
 }
 
-function strikethrough (selection, transforms) {
-  return dom.create('del').add(selection.transform(transforms))
+function strikethrough (selection, transformer) {
+  return dom.create('del').add(selection.transform(transformer))
 }
 
-function image (selection, transforms) {
+function image (selection, transformer) {
   return dom.create('img')
     .attr('src', selection.ps())
     .attr('alt', selection.cs())
     .attr('title', selection.cs())
 }
 
-function summary (selection, transforms) {
+function summary (selection, transformer) {
   return dom.create('div')
     .class('qm-docs-summary')
     .add(stylesheetAsset)
     .add(dom.create('div').text(selection.ps()).class('qm-docs-summary-header qm-header-font'))
-    .add(dom.create('div').class('qm-docs-summary-body').add(selection.select('description').transform(transforms)))
+    .add(dom.create('div').class('qm-docs-summary-body').add(selection.select('description').transform(transformer)))
     .add(selection.selectAll('link').map(link => {
       return dom.create('a').class('qm-docs-summary-link').attr('href', link.ps())
         .add(dom.create('span').text(link.cs()))
@@ -112,14 +112,14 @@ function summary (selection, transforms) {
     }))
 }
 
-function group (selection, transforms) {
+function group (selection, transformer) {
   return dom.create('div')
     .add(stylesheetAsset)
     .class('qm-docs-group')
-    .add(selection.transform(transforms))
+    .add(selection.transform(transformer))
 }
 
-function versionSelector (selection, transforms) {
+function versionSelector (selection, transformer) {
   const current = selection.select('versionList').select('current').ps()
   const versions = selection.select('versionList').selectAll('version').map(e => e.ps())
 
@@ -138,25 +138,25 @@ function versionSelector (selection, transforms) {
   }
 }
 
-function sidebar (selection, transforms) {
+function sidebar (selection, transformer) {
   return dom.create('div')
     .add(stylesheetAsset)
     .add(scriptAsset)
     .class('qm-docs-sidebar')
-    .add(selection.transform(transforms))
+    .add(selection.transform(transformer))
 }
 
-function sidebarPage (selection, transforms) {
+function sidebarPage (selection, transformer) {
   return dom.create('div')
     .add(stylesheetAsset)
     .class('qm-docs-sidebar-page')
-    .add(selection.filter('sidebar').transform(transforms))
+    .add(selection.filter('sidebar').transform(transformer))
     .add(dom.create('div').class('qm-docs-content-section-container')
-      .add(selection.select('content').transform(transforms)))
+      .add(selection.select('content').transform(transformer)))
     .add(dom.bodyClassed('qm-docs-sidebar-page', true))
 }
 
-function tableOfContents (selection, transforms) {
+function tableOfContents (selection, transformer) {
   const topics = selection.selectAll('topic', {recursive: true}).map((topic) => {
     const sections = topic.selectAll('section').map((section) => {
       return dom.create('li').add(
@@ -196,7 +196,7 @@ function makeNavigationMenuPage (pageEntity) {
     .text(pageEntity.cs())
 }
 
-function navigationMenu (selection, transforms) {
+function navigationMenu (selection, transformer) {
   const pages = selection.selectAll('page').map(makeNavigationMenuPage)
   const sections = selection.selectAll('section').map(makeNavigationMenuSection)
 
@@ -217,7 +217,7 @@ function makeHeaderIcon (icon) {
   }
 }
 
-function header (selection, transforms) {
+function header (selection, transformer) {
   return dom.create('div').class('qm-docs-header')
     .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-centered')
@@ -233,7 +233,7 @@ function header (selection, transforms) {
     ))
 }
 
-function breadcrumb (selection, transforms) {
+function breadcrumb (selection, transformer) {
   if (selection.selectAll('item').length === 0) {
     return
   }
@@ -254,34 +254,34 @@ function breadcrumb (selection, transforms) {
   )
 }
 
-function topSection (selection, transforms) {
+function topSection (selection, transformer) {
   const pageTitle = selection.select('title').ps()
   const source = selection.has('source') ? selection.select('source') : undefined
 
   return dom.create('div').class('qm-docs-top-section')
     .add(pageTitle ? dom.head(dom.create('title').text(pageTitle), {id: 'title'}) : undefined)
     .add(stylesheetAsset)
-    .add(breadcrumb(selection.select('breadcrumb'), transforms))
+    .add(breadcrumb(selection.select('breadcrumb'), transformer))
     .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
       .add(source ? dom.create('a').class('qm-docs-top-section-source').attr('href', source.ps()).text(source.cs()) : undefined)
       .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text(pageTitle))
       .add(dom.create('div').class('qm-docs-top-section-description')
-        .add(html.paragraphTransform(selection.select('description'), transforms))))
+        .add(html.paragraphTransform(selection.select('description'), transformer))))
 }
 
-function contentSection (selection, transforms) {
+function contentSection (selection, transformer) {
   return dom.create('div').class('qm-docs-content-section')
     .add(stylesheetAsset)
-    .add(selection.transform(transforms))
+    .add(selection.transform(transformer))
 }
 
-function bottomSection (selection, transforms) {
+function bottomSection (selection, transformer) {
   return dom.create('div').class('qm-docs-bottom-section')
     .add(stylesheetAsset)
-    .add(selection.transform(transforms))
+    .add(selection.transform(transformer))
 }
 
-function relatedButtons (selection, transforms) {
+function relatedButtons (selection, transformer) {
   const buttons = selection.selectAll('button').map((e) => {
     return dom.create('a')
       .attr('href', e.ps())
@@ -297,12 +297,12 @@ function relatedButtons (selection, transforms) {
     .add(buttons)
 }
 
-function table (selection, transforms) {
+function table (selection, transformer) {
   function createRow (row) {
     const isHeader = row.type() === 'header'
     return dom.create('tr').add(row.selectAll('cell').map(cell => {
       return dom.create(isHeader ? 'th' : 'td')
-        .add(html.paragraphTransform(cell, transforms))
+        .add(html.paragraphTransform(cell, transformer))
     }))
   }
 

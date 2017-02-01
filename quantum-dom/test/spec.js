@@ -302,7 +302,7 @@ describe('dom', () => {
   describe('stringify', () => {
     it('should stringify an empty page', () => {
       return dom.stringify([]).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head></head><body></body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head></head>\n<body class="qm-body-font"></body></html>',
         assets: []
       })
     })
@@ -311,7 +311,7 @@ describe('dom', () => {
       return dom.stringify([
         dom.create('div')
       ]).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head></head><body><div></div></body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head></head>\n<body class="qm-body-font"><div></div></body></html>',
         assets: []
       })
     })
@@ -321,7 +321,7 @@ describe('dom', () => {
         'Some content',
         {ignore: 'this'}
       ]).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head></head><body>Some content</body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head></head>\n<body class="qm-body-font">Some content</body></html>',
         assets: []
       })
     })
@@ -330,7 +330,7 @@ describe('dom', () => {
       return dom.stringify([
         dom.head(dom.create('title').text('title'))
       ]).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head><title>title</title></head><body></body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head><title>title</title></head>\n<body class="qm-body-font"></body></html>',
         assets: []
       })
     })
@@ -339,7 +339,7 @@ describe('dom', () => {
       return dom.stringify([
         dom.head('Some content')
       ]).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head>Some content</head><body></body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head>Some content</head>\n<body class="qm-body-font"></body></html>',
         assets: []
       })
     })
@@ -348,7 +348,7 @@ describe('dom', () => {
       return dom.stringify([
         dom.head({not: 'an element'})
       ]).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head></head><body></body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head></head>\n<body class="qm-body-font"></body></html>',
         assets: []
       })
     })
@@ -358,7 +358,7 @@ describe('dom', () => {
         dom.head(dom.create('title').text('title'), {id: 'title'}),
         dom.head(dom.create('title').text('title2'), {id: 'title'})
       ]).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head><title>title2</title></head><body></body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head><title>title2</title></head>\n<body class="qm-body-font"></body></html>',
         assets: []
       })
     })
@@ -368,7 +368,7 @@ describe('dom', () => {
         dom.asset({url: '/assets/site.js', file: path.join(__dirname, 'assets/test.js'), shared: true}),
         dom.asset({url: '/assets/site.css', file: path.join(__dirname, 'assets/test.css'), shared: true})
       ], {embedAssets: true}).should.eventually.eql({
-        html: "<!DOCTYPE html>\n<html><head><style>.div{ color: red; }\n</style></head><body><script>console.log(window.querySelectorAll('div'))\n</script></body></html>",
+        html: '<!DOCTYPE html>\n<html>\n<head><style>.div{ color: red; }\n</style></head>\n<body class="qm-body-font"><script>console.log(window.querySelectorAll(\'div\'))\n</script></body></html>',
         assets: []
       })
     })
@@ -379,7 +379,7 @@ describe('dom', () => {
         dom.asset({url: '/assets/site.js', file: 'src/assets/site.js', shared: true})
       ]
       return dom.stringify(elements, {embedAssets: false}).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/assets/site.css"></link></head><body><script src="/assets/site.js"></script></body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="/assets/site.css"></link></head>\n<body class="qm-body-font"><script src="/assets/site.js"></script></body></html>',
         assets: elements
       })
     })
@@ -390,7 +390,7 @@ describe('dom', () => {
         dom.asset({url: '/assets/site.js', file: 'src/assets/site.js', shared: true})
       ]
       return dom.stringify(elements, {embedAssets: false, assetPath: '/resources'}).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head><link rel="stylesheet" href="/resources/assets/site.css"></link></head><body><script src="/resources/assets/site.js"></script></body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="/resources/assets/site.css"></link></head>\n<body class="qm-body-font"><script src="/resources/assets/site.js"></script></body></html>',
         assets: elements
       })
     })
@@ -399,7 +399,7 @@ describe('dom', () => {
       return dom.stringify([
         dom.bodyClassed('my-class', true)
       ]).should.eventually.eql({
-        html: '<!DOCTYPE html>\n<html><head></head><body class="my-class"></body></html>',
+        html: '<!DOCTYPE html>\n<html>\n<head></head>\n<body class="qm-body-font my-class"></body></html>',
         assets: []
       })
     })

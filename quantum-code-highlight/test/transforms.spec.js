@@ -15,7 +15,7 @@ describe('transforms', () => {
 
     codeHighlight().code(selection).should.eql(
       dom.create('code')
-        .class('qm-code-highlight-code')
+        .class('qm-code-highlight-code qm-code-font')
         .text('function (x) { return x * x }', {escape: false})
         .add(dom.asset({
           url: '/quantum-code-highlight.css',
@@ -36,7 +36,7 @@ describe('transforms', () => {
       dom.create('div')
         .class('qm-code-highlight-codeblock language-js')
         .add(dom.create('pre')
-          .add(dom.create('code')
+          .add(dom.create('code').class('qm-code-font')
             .text('<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">x</span>) </span>{ <span class="hljs-keyword">return</span> x * x }', {escape: false})))
         .add(dom.asset({
           url: '/quantum-code-highlight.css',
@@ -57,7 +57,7 @@ describe('transforms', () => {
       dom.create('div')
         .class('qm-code-highlight-codeblock language-notalanguage')
         .add(dom.create('pre')
-          .add(dom.create('code')
+          .add(dom.create('code').class('qm-code-font')
             .text('function (x) { return x * x }', {escape: false})))
         .add(dom.asset({
           url: '/quantum-code-highlight.css',
@@ -78,7 +78,7 @@ describe('transforms', () => {
       dom.create('div')
         .class('qm-code-highlight-codeblock')
         .add(dom.create('pre')
-            .add(dom.create('code')
+            .add(dom.create('code').class('qm-code-font')
               .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false})))
         .add(dom.asset({
           url: '/quantum-code-highlight.css',

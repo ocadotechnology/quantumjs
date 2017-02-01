@@ -5,7 +5,7 @@ const utils = require('../../utils')
 
 /* Creates a group of items (like all the methods on a prototype, or all the properties on an object) */
 module.exports = function itemGroupBuilder (type, title, options) {
-  return (selection, transforms) => {
+  return (selection, transformer) => {
     const hasType = Array.isArray(type) ? type.some(t => selection.has(t)) : selection.has(type)
 
     if (hasType) {
@@ -17,7 +17,7 @@ module.exports = function itemGroupBuilder (type, title, options) {
 
       return dom.create('div').class('qm-api-' + firstType + '-group')
         .add(dom.create('h2').text(title))
-        .add(organised.transform(transforms))
+        .add(organised.transform(transformer))
     }
   }
 }

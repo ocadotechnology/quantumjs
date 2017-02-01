@@ -84,11 +84,11 @@ function hyperlink (selection, transform) {
     .attr('href', selection.ps())
 }
 
-function js (selection, transforms) {
+function js (selection, transformer) {
   return dom.create('script').text(selection.cs(), {escape: false})
 }
 
-function css (selection, transforms) {
+function css (selection, transformer) {
   return dom.head(dom.create('style').text(selection.cs(), {escape: false}))
 }
 
