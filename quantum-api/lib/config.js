@@ -42,7 +42,6 @@ function resolveOption (options, name) {
 function resolve (options) {
   return {
     apiBuilders: resolveOption(options, 'apiBuilders'),
-    groupBuilders: resolveOption(options, 'groupBuilders'),
     languages: resolveOption(options, 'languages'),
     targetVersions: resolveOption(options, 'targetVersions'),
     issueUrl: resolveOption(options, 'issueUrl'),
