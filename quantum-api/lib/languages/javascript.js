@@ -121,10 +121,10 @@ function prototypeHeaderDetails (typeLinks) {
 /* The config for building javascript api docs */
 function getTransforms (options) {
   const typeLinks = (options || {}).typeLinks || {}
-  const propertyHeader = header('property', propertyHeaderDetails(typeLinks), typeLinks)
-  const prototypeHeader = header('prototype', prototypeHeaderDetails(typeLinks), typeLinks)
-  const functionHeader = header('function', functionHeaderDetails(typeLinks), typeLinks)
-  const typeHeader = header('type', typeHeaderDetails(typeLinks), typeLinks)
+  const propertyHeader = header('property', propertyHeaderDetails(typeLinks))
+  const prototypeHeader = header('prototype', prototypeHeaderDetails(typeLinks))
+  const functionHeader = header('function', functionHeaderDetails(typeLinks))
+  const typeHeader = header('type', typeHeaderDetails(typeLinks))
 
   const typeHeaderBuilders = {
     constructor: functionHeader,

@@ -39,7 +39,8 @@ const defaultOptions = {
   processChangelogs: true,
   targetVersions: undefined,
   languages: [
-    javascript()
+    javascript(),
+    css()
   ],
   changelogReverseVisibleList: false,
   changelogGroupByApi: false,

@@ -193,7 +193,6 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
         }
       }
 
-      // console.log(entity.type, language)
       if (language) {
         const header = {
           type: 'header',
