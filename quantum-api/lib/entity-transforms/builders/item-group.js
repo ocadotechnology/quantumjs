@@ -8,12 +8,13 @@ function typeFilter (language, type) {
     const entityType = entity.type
     if (entityType) {
       const dotIndex = entityType.indexOf('.')
-      if (Array.isArray(type) && dotIndex > -1) {
+      const isArray = Array.isArray(type)
+      if (isArray && dotIndex > -1) {
         return type.map(t => `${language}.${t}`).includes(entityType.slice(dotIndex + 1))
       } else if (dotIndex > -1) {
         return entityType.slice(dotIndex + 1) === `${language}.${type}`
       } else {
-        return type.includes(entityType)
+        return isArray ? type.includes(entityType) : type === entityType
       }
     }
   }

@@ -260,10 +260,9 @@ function logKeys (entity, entityName, entityNamespace, indent = 0) {
   if (typeof entity === 'function') {
     console.log(chalk.cyan(' '.repeat(indent) + '@' + entityName) + chalk.gray(' (@' + entityNamespace + ')'))
   } else {
-    console.log(' '.repeat(indent) + chalk.yellow(entityName))
     Object.keys(entity).forEach((key) => {
       const newNamespace = entityNamespace + '.' + key
-      logKeys(entity[key], key, newNamespace, indent + 2)
+      logKeys(entity[key], key, newNamespace, indent)
     })
   }
 }
@@ -272,7 +271,8 @@ function list (config) {
   const entityTransforms = config.pipeline.map(x => x.entityTransforms).filter(x => x !== undefined)[0]
   if (entityTransforms) {
     Object.keys(entityTransforms).forEach(entityName => {
-      logKeys(entityTransforms[entityName], entityName, entityName)
+      console.log(chalk.yellow(entityName))
+      logKeys(entityTransforms[entityName], entityName, entityName, 2)
     })
   } else {
     console.log(chalk.yellow('No entity transforms are present in your pipeline'))
