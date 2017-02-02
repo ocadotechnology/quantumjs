@@ -6,7 +6,6 @@ const header = require('../entity-transforms/builders/header')
 const body = require('../entity-transforms/builders/body')
 const item = require('../entity-transforms/builders/item')
 const itemGroup = require('../entity-transforms/builders/item-group')
-const createLanguage = require('../create-language.js')
 
 /*
   The assets that should be included on the page for this language
@@ -49,9 +48,10 @@ const paramBuilder = item({
   content: [ description, extras, groups ]
 })
 
-/* The config for building css api docs */
-function getTransforms (options) {
+module.exports = (options) => {
   return {
+    assets,
+    name: 'quantum',
     transforms: {
       entity: entityBuilder,
       param: paramBuilder
@@ -63,8 +63,5 @@ function getTransforms (options) {
   }
 }
 
-module.exports = (options) => {
-  return createLanguage('quantum', getTransforms, options, assets)
-}
-
 module.exports.entities = entities
+module.exports.params = params

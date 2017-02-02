@@ -6,7 +6,6 @@ const header = require('../entity-transforms/builders/header')
 const body = require('../entity-transforms/builders/body')
 const item = require('../entity-transforms/builders/item')
 const itemGroup = require('../entity-transforms/builders/item-group')
-const createLanguage = require('../create-language.js')
 
 /*
   The assets that should be included on the page for this language
@@ -55,9 +54,10 @@ const childclassBuilder = item({
   content: [ description, extras, groups, classes, extraClasses, childClasses ]
 })
 
-/* The config for building css api docs */
-function getTransforms (options) {
+module.exports = (options) => {
   return {
+    assets,
+    name: 'css',
     transforms: {
       class: classBuilder,
       extraclass: extraclassBuilder,
@@ -69,10 +69,6 @@ function getTransforms (options) {
       extraclass: childClassHeader
     }
   }
-}
-
-module.exports = (options) => {
-  return createLanguage('css', getTransforms, options, assets)
 }
 
 module.exports.classes = classes

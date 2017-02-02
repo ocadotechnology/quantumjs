@@ -7,7 +7,6 @@ const header = require('../entity-transforms/builders/header')
 const body = require('../entity-transforms/builders/body')
 const item = require('../entity-transforms/builders/item')
 const itemGroup = require('../entity-transforms/builders/item-group')
-const createLanguage = require('../create-language.js')
 
 /*
   The assets that should be included on the page for this language
@@ -118,8 +117,7 @@ function prototypeHeaderDetails (typeLinks) {
   }
 }
 
-/* The config for building javascript api docs */
-function getTransforms (options) {
+module.exports = (options) => {
   const typeLinks = (options || {}).typeLinks || {}
   const propertyHeader = header('property', propertyHeaderDetails(typeLinks))
   const prototypeHeader = header('prototype', prototypeHeaderDetails(typeLinks))
@@ -198,6 +196,8 @@ function getTransforms (options) {
   })
 
   return {
+    assets,
+    name: 'javascript',
     transforms: {
       'type': typeBuilder,
       'prototype': prototypeBuilder,
@@ -223,10 +223,6 @@ function getTransforms (options) {
       'property?': typeHeaderBuilders.property
     }
   }
-}
-
-module.exports = (options) => {
-  return createLanguage('javascript', getTransforms, options, assets)
 }
 
 module.exports.prototypes = prototypes
