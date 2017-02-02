@@ -123,6 +123,17 @@
 
 .qm-api-groups {}
 
+.qm-api-groups .qm-api-groups {
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
+  padding: 0.5em;
+  background: #fff;
+}
+
+.qm-api-groups .qm-api-groups h2 {
+  font-size: 1.1em;
+  margin-top: 0;
+}
+
 .qm-api-group {}
 
 .qm-api-group-content {}

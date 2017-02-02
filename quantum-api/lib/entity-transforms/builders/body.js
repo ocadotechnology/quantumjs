@@ -24,13 +24,15 @@ function groups (selection, transformer) {
     const sortedEntity = selection.filter('group')
     return dom.create('div').class('qm-api-groups')
       .add(sortedEntity.selectAll('group').map(utils.organisedEntity).map((groupSelection) => {
+        const nestedGroups = groupSelection.filter('group')
         return dom.create('div').class('qm-api-group')
           .add(dom.create('h2').text(groupSelection.ps()))
           .add(dom.create('div').class('qm-api-group-content')
             .add(description(groupSelection, transformer))
             .add(groupSelection
-              .filter(entity => quantum.select.isEntity(entity) && entity.type !== 'description')
-              .transform(transformer)))
+              .filter(entity => quantum.select.isEntity(entity) && entity.type !== 'description' && entity.type !== 'group')
+              .transform(transformer))
+            .add(groups(nestedGroups, transformer)))
       }))
   }
 }

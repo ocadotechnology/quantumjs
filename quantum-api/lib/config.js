@@ -20,20 +20,6 @@ const defaultOptions = {
     javascript.functions,
     css.classes
   ],
-  // Defines what the default group looks like
-  groupBuilders: [
-    body.description,
-    body.extras,
-    body.groups,
-    javascript.params,
-    javascript.properties,
-    javascript.prototypes,
-    javascript.objects,
-    javascript.functions,
-    javascript.methods,
-    javascript.events,
-    css.classes
-  ],
   processChangelogs: true,
   targetVersions: undefined,
   languages: [
