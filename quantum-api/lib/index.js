@@ -40,8 +40,7 @@ function transforms (options) {
   }
 
   opts.languages.forEach(language => {
-    const apiBuilders = language.apiBuilders
-    transforms[language.name] = apiBuilders
+    transforms[language.name] = language.transforms
   })
 
   return Object.freeze(transforms)
