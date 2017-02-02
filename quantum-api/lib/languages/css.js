@@ -33,8 +33,8 @@ const description = body.description
 const extras = body.extras
 const groups = body.groups
 const classes = itemGroup('class', 'Classes')
-const extraClasses = itemGroup('extraclass', 'Extra Classes')
-const childClasses = itemGroup('childclass', 'Child Classes')
+const extraClasses = itemGroup('extraClass', 'Extra Classes')
+const childClasses = itemGroup('childClass', 'Child Classes')
 
 const classBuilder = item({
   class: 'qm-api-class',
@@ -42,14 +42,14 @@ const classBuilder = item({
   content: [ description, extras, groups, classes, extraClasses, childClasses ]
 })
 
-const extraclassBuilder = item({
-  class: 'qm-api-extraclass',
+const extraClassBuilder = item({
+  class: 'qm-api-extra-class',
   header: extraClassHeader,
   content: [ description, extras, groups, classes, extraClasses, childClasses ]
 })
 
-const childclassBuilder = item({
-  class: 'qm-api-childclass',
+const childClassBuilder = item({
+  class: 'qm-api-child-class',
   header: childClassHeader,
   content: [ description, extras, groups, classes, extraClasses, childClasses ]
 })
@@ -60,13 +60,13 @@ module.exports = (options) => {
     name: 'css',
     transforms: {
       class: classBuilder,
-      extraclass: extraclassBuilder,
-      childclass: childclassBuilder
+      extraClass: extraClassBuilder,
+      childClass: childClassBuilder
     },
     changelogHeaderTransforms: {
       class: classHeader,
-      childclass: extraClassHeader,
-      extraclass: childClassHeader
+      childClass: extraClassHeader,
+      extraClass: childClassHeader
     }
   }
 }
