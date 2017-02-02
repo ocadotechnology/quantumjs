@@ -17,7 +17,6 @@ const item = require('./entity-transforms/builders/item')
 
 // entity transforms
 const api = require('./entity-transforms/api')
-const group = require('./entity-transforms/group')
 const changelogList = require('./entity-transforms/changelog-list')
 const changelog = require('./entity-transforms/changelog')
 
@@ -34,7 +33,6 @@ function transforms (options) {
 
   const transforms = {
     api: api({ builders: opts.apiBuilders, languages: opts.languages }),
-    group: group({ builders: opts.groupBuilders }),
     changelogList: changelogList(),
     changelog: changelog(opts)
   }

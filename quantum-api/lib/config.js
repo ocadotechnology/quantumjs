@@ -22,20 +22,6 @@ const defaultOptions = {
     css.classes,
     quantum.entities
   ],
-  // Defines what the default group looks like
-  groupBuilders: [
-    body.description,
-    body.extras,
-    body.groups,
-    javascript.params,
-    javascript.properties,
-    javascript.prototypes,
-    javascript.objects,
-    javascript.functions,
-    javascript.methods,
-    javascript.events,
-    css.classes
-  ],
   processChangelogs: true,
   targetVersions: undefined,
   languages: [
@@ -58,7 +44,6 @@ function resolveOption (options, name) {
 function resolve (options) {
   return {
     apiBuilders: resolveOption(options, 'apiBuilders'),
-    groupBuilders: resolveOption(options, 'groupBuilders'),
     languages: resolveOption(options, 'languages'),
     targetVersions: resolveOption(options, 'targetVersions'),
     issueUrl: resolveOption(options, 'issueUrl'),
