@@ -52,7 +52,7 @@ const params = itemGroup('quantum', 'param', 'Parameters')
 const entityBuilder = item({
   class: 'qm-api-quantum-entity',
   header: entityHeader,
-  content: [ description, extras, groups, entities, params ]
+  content: [ description, extras, params, groups, entities ]
 })
 
 const paramBuilder = item({
