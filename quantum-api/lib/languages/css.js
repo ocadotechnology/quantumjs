@@ -32,9 +32,9 @@ const childClassHeader = header('child-class', nameHeaderDetails)
 const description = body.description
 const extras = body.extras
 const groups = body.groups
-const classes = itemGroup('class', 'Classes')
-const extraClasses = itemGroup('extraClass', 'Extra Classes')
-const childClasses = itemGroup('childClass', 'Child Classes')
+const classes = itemGroup('css', 'class', 'Classes')
+const extraClasses = itemGroup('css', 'extraClass', 'Extra Classes')
+const childClasses = itemGroup('css', 'childClass', 'Child Classes')
 
 const classBuilder = item({
   class: 'qm-api-class',

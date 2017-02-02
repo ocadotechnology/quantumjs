@@ -27,10 +27,10 @@ const typeLinks = {
 
 const apiOptions = {
   languages: [
+    api.languages.quantum(),
     api.languages.javascript({
       typeLinks: typeLinks
-    }),
-    api.languages.quantum()
+    })
   ]
 }
 

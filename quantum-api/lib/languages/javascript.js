@@ -23,15 +23,15 @@ const description = body.description
 const groups = body.groups
 const extras = body.extras
 const defaultValue = body.default
-const prototypes = itemGroup('prototype', 'Prototypes')
-const constructors = itemGroup('constructor', 'Constructors')
-const objects = itemGroup('object', 'Objects')
-const params = itemGroup(['param', 'param?'], 'Arguments', { noSort: true })
-const properties = itemGroup(['property', 'property?'], 'Properties')
-const methods = itemGroup('method', 'Methods')
-const events = itemGroup('event', 'Events')
-const functions = itemGroup('function', 'Functions')
-const returns = itemGroup('returns', 'Returns')
+const prototypes = itemGroup('javascript', 'prototype', 'Prototypes')
+const constructors = itemGroup('javascript', 'constructor', 'Constructors')
+const objects = itemGroup('javascript', 'object', 'Objects')
+const params = itemGroup('javascript', ['param', 'param?'], 'Arguments', { noSort: true })
+const properties = itemGroup('javascript', ['property', 'property?'], 'Properties')
+const methods = itemGroup('javascript', 'method', 'Methods')
+const events = itemGroup('javascript', 'event', 'Events')
+const functions = itemGroup('javascript', 'function', 'Functions')
+const returns = itemGroup('javascript', 'returns', 'Returns')
 
 function typeBuilder (typeLinks) {
   return (selection, transformer) => {

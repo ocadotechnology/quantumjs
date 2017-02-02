@@ -33,8 +33,8 @@ const paramHeader = header('param', nameHeaderDetails('param'))
 const description = body.description
 const extras = body.extras
 const groups = body.groups
-const entities = itemGroup('entity', 'Entities')
-const params = itemGroup('param', 'Parameters')
+const entities = itemGroup('quantum', 'entity', 'Entities')
+const params = itemGroup('quantum', 'param', 'Parameters')
 
 const entityBuilder = item({
   class: 'qm-api-quantum-entity',
