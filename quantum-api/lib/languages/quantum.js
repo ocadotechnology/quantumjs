@@ -29,7 +29,7 @@ function nameHeaderDetails (type) {
 }
 
 const entityHeader = header('entity', nameHeaderDetails('entity'))
-const assetHeader = header('asset', nameHeaderDetails('extra-class'))
+const paramHeader = header('param', nameHeaderDetails('param'))
 
 const description = body.description
 const extras = body.extras
@@ -44,21 +44,21 @@ const entityBuilder = item({
 })
 
 const paramBuilder = item({
-  class: 'qm-api-quantum-asset',
-  header: assetHeader,
+  class: 'qm-api-quantum-param',
+  header: paramHeader,
   content: [ description, extras, groups ]
 })
 
 /* The config for building css api docs */
 function getTransforms (options) {
   return {
-    api: {
+    transforms: {
       entity: entityBuilder,
       param: paramBuilder
     },
-    changelog: {
+    changelogHeaderTransforms: {
       entity: entityHeader,
-      param: assetHeader
+      param: paramHeader
     }
   }
 }

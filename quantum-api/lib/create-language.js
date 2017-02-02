@@ -1,11 +1,11 @@
 'use strict'
 
 module.exports = function createLanguage (name, getTransforms, options, assets) {
-  const { api, changelog } = getTransforms(options)
+  const { transforms, changelogHeaderTransforms } = getTransforms(options)
   return {
     name,
-    api,
-    changelog,
+    transforms,
+    changelogHeaderTransforms,
     assets
   }
 }

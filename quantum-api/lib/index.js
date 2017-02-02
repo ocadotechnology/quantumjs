@@ -33,17 +33,15 @@ function transforms (options) {
   const opts = config.resolve(options)
 
   const transforms = {
-    api: api({ builders: opts.apiBuilders }),
+    api: api({ builders: opts.apiBuilders, languages: opts.languages }),
     group: group({ builders: opts.groupBuilders }),
     changelogList: changelogList(),
     changelog: changelog(opts)
   }
 
   opts.languages.forEach(language => {
-    const api = language.api
-    Object.keys(api).map(k => {
-      transforms[k] = api[k]
-    })
+    const apiBuilders = language.apiBuilders
+    transforms[language.name] = apiBuilders
   })
 
   return Object.freeze(transforms)

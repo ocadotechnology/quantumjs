@@ -140,65 +140,65 @@ function getTransforms (options) {
   }
 
   const constructorBuilder = item({
-    class: 'qm-api-constructor',
+    class: 'qm-api-javascript-constructor',
     header: typeHeaderBuilders.constructor,
     content: [ description, extras, params ]
   })
 
   const prototypeBuilder = item({
-    class: 'qm-api-prototype',
+    class: 'qm-api-javascript-prototype',
     header: typeHeaderBuilders.prototype,
     content: [ description, extras, defaultValue, constructors, groups, properties, events, methods, functions ]
   })
 
   const functionBuilder = item({
-    class: 'qm-api-function',
+    class: 'qm-api-javascript-function',
     header: typeHeaderBuilders.function,
     content: [ description, extras, defaultValue, params, groups, events, returns ]
   })
 
   const objectBuilder = item({
-    class: 'qm-api-object',
+    class: 'qm-api-javascript-object',
     header: typeHeaderBuilders.object,
     content: [ description, extras, defaultValue, groups, properties, events, prototypes, functions ]
   })
 
   const methodBuilder = item({
-    class: 'qm-api-method',
+    class: 'qm-api-javascript-method',
     header: typeHeaderBuilders.method,
     content: [ description, extras, defaultValue, params, groups, events, returns ]
   })
 
   const propertyBuilder = item({
-    class: 'qm-api-property',
+    class: 'qm-api-javascript-property',
     header: typeHeaderBuilders.property,
     content: [ description, extras, defaultValue ],
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
   const paramBuilder = item({
-    class: 'qm-api-param',
+    class: 'qm-api-javascript-param',
     header: typeHeaderBuilders.param,
     content: [ description, extras, defaultValue ],
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
   const eventBuilder = item({
-    class: 'qm-api-event',
+    class: 'qm-api-javascript-event',
     header: typeHeaderBuilders.event,
     content: [ description, extras, defaultValue ],
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
   const returnsBuilder = item({
-    class: 'qm-api-returns',
+    class: 'qm-api-javascript-returns',
     header: typeHeaderBuilders.returns,
     content: [ description, extras ],
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
   return {
-    api: {
+    transforms: {
       'type': typeBuilder,
       'prototype': prototypeBuilder,
       'object': objectBuilder,
@@ -212,7 +212,7 @@ function getTransforms (options) {
       'event': eventBuilder,
       'returns': returnsBuilder
     },
-    changelog: {
+    changelogHeaderTransforms: {
       'object': typeHeaderBuilders.object,
       'prototype': typeHeaderBuilders.prototype,
       'event': typeHeaderBuilders.event,

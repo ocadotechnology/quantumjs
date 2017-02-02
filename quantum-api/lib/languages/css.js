@@ -58,12 +58,12 @@ const childclassBuilder = item({
 /* The config for building css api docs */
 function getTransforms (options) {
   return {
-    api: {
+    transforms: {
       class: classBuilder,
       extraclass: extraclassBuilder,
       childclass: childclassBuilder
     },
-    changelog: {
+    changelogHeaderTransforms: {
       class: classHeader,
       childclass: extraClassHeader,
       extraclass: childClassHeader

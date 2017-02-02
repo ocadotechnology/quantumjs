@@ -112,7 +112,7 @@ function entry (selection, transformer, options) {
   const language = options.languages.find(language => language.name === selection.select('header').ps())
   const headerSelection = quantum.select(selection.select('header').content()[0])
   const type = headerSelection.type()
-  const header = language ? language.changelog[type](headerSelection, transformer) : undefined
+  const header = language ? language.changelogHeaderTransforms[type](headerSelection, transformer) : undefined
   const changes = selection.selectAll('change')
     .map(change => changeDom(change, transformer, options.issueUrl))
 
@@ -177,6 +177,7 @@ function group (selection, transformer, options) {
 
 module.exports = function changelog (options) {
   return (selection, transformer) => {
+    const languages = (options || {}).languages || []
     const description = selection.has('description') ?
       wrappedParagraph('qm-changelog-description', selection.select('description'), transformer) :
       undefined
@@ -196,7 +197,7 @@ module.exports = function changelog (options) {
 
       return dom.create('div').class('qm-changelog')
         .add(assets)
-        .add(options.languages.map(l => l.assets))
+        .add(languages.map(l => l.assets))
         .add(dom.create('div').class('qm-changelog-head qm-header-font').add(title))
         .add(dom.create('div').class('qm-changelog-body')
           .add(description)
