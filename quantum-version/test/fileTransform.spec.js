@@ -1,7 +1,7 @@
 describe('fileTransform', () => {
   const { select, File, FileInfo } = require('quantum-js')
   const { fileTransform } = require('..')
-  it('should do nothing if there is no @versionedPage entity', () => {
+  it('does nothing if there is no @versionedPage entity', () => {
     const file = new File({
       info: new FileInfo({
         dest: 'test.um'
@@ -143,7 +143,7 @@ describe('fileTransform', () => {
       }
     })
 
-    it('should populate multiple versionLists', () => {
+    it('populates multiple versionLists', () => {
       const tranformedFiles = fileTransform()(file)
       tranformedFiles.length.should.equal(3)
       tranformedFiles
@@ -160,7 +160,7 @@ describe('fileTransform', () => {
         })
     })
 
-    it('should populate multiple versionLists (override versions in options)', () => {
+    it('populates multiple versionLists (override versions in options)', () => {
       const tranformedFiles = fileTransform({versions: ['1.0.0']})(file)
       tranformedFiles.length.should.equal(2)
       tranformedFiles
@@ -260,7 +260,7 @@ describe('fileTransform', () => {
       }
     })
 
-    it('should populate multiple versioned sections', () => {
+    it('populates multiple versioned sections', () => {
       const tranformedFiles = fileTransform({outputLatest: false})(file)
       tranformedFiles.length.should.equal(3)
       tranformedFiles
@@ -348,7 +348,7 @@ describe('fileTransform', () => {
       }
     })
 
-    it('should do the complete flow for the tags', () => {
+    it('does the complete flow for the tags', () => {
       const tranformedFiles = fileTransform({outputLatest: false})(file)
       tranformedFiles.length.should.equal(8)
 

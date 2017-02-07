@@ -1,6 +1,6 @@
 describe('module', () => {
   const template = require('..')
-  it('should export the correct things', () => {
+  it('exports the correct things', () => {
     template.should.be.an('object')
     template.should.have.keys(['fileTransform', 'wrapper'])
     template.fileTransform.should.be.a('function')

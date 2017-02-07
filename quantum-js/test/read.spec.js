@@ -257,7 +257,7 @@ describe('read', () => {
 describe('readAsFile', () => {
   const { readAsFile, File, FileInfo } = require('..')
   const filename = 'test/files/read/source1.um'
-  it('readAsFile should work', () => {
+  it('readAsFile works', () => {
     const expected = new File({
       info: new FileInfo({
         src: filename,

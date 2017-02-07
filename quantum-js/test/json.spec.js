@@ -1,6 +1,6 @@
 describe('json', () => {
   const { json, File, FileInfo } = require('..')
-  it('should convert a page to json', () => {
+  it('converts a page to json', () => {
     const file = new File({
       info: new FileInfo({
         src: 'src/page.um',

@@ -1,7 +1,7 @@
 describe('defaultFilenameModifier', () => {
   const { FileInfo } = require('quantum-js')
   const { defaultFilenameModifier } = require('../lib/lib')
-  it('should add a version number to the filename', () => {
+  it('adds a version number to the filename', () => {
     const fileInfo = new FileInfo({
       dest: 'test.um'
     })
@@ -12,7 +12,7 @@ describe('defaultFilenameModifier', () => {
     }))
   })
 
-  it('should do special handling for index files', () => {
+  it('special handling for index files', () => {
     const fileInfo = new FileInfo({
       dest: 'test/index.um'
     })

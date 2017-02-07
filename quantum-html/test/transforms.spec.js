@@ -33,7 +33,7 @@ describe('transforms', () => {
 
   function elementSpec (type) {
     describe(type, () => {
-      it('should the correct element', () => {
+      it('renders the correct element', () => {
         const selection = quantum.select({
           type: type,
           params: [],

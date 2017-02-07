@@ -286,7 +286,7 @@ describe('select', () => {
       selection.select('tagA').parent().should.equal(selection)
     })
 
-    it('should keep track of parents when doing deep selections', () => {
+    it('keeps track of parents when doing deep selections', () => {
       const entity = {type: 'tag', content: [{type: 'tagA', content: [{type: 'tagB', params: [], content: []}], params: []}], params: []}
       const selection = select(entity)
       selection.select('tagB', {recursive: true}).parent().parent().should.equal(selection)

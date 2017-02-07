@@ -246,7 +246,7 @@ describe('parse', () => {
       }).to.throw()
     })
 
-    it('messed up indentation throws an error (should show the surrounding lines)', () => {
+    it('messed up indentation throws an error (shows the surrounding lines)', () => {
       expect(() => {
         tokenize('@fruits\n  indent\n    indent\n       alsoindent\n dedent\ndedent\ndedent\ndedent\ndedent')
       }).to.throw()
@@ -270,7 +270,7 @@ describe('parse', () => {
       ])
     })
 
-    it('comment escaping should work correctly', () => {
+    it('comment escaping works correctly', () => {
       tokenize('@fruits\n  \\#content\n  indent').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -342,7 +342,7 @@ describe('parse', () => {
       ])
     })
 
-    it('escaped mode should exit when dedenting', () => {
+    it('escaped mode exits when dedenting', () => {
       tokenize('content\n  @@thing\n@outdented').should.eql([
         { type: 'CONTENT', value: 'content' },
         { type: 'INDENT', value: 2 },
