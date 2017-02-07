@@ -373,13 +373,13 @@ function stringify (elements, options) {
 }
 
 module.exports = {
-  create: create,
-  textNode: textNode,
-  bodyClassed: bodyClassed,
-  asset: asset,
-  head: head,
-  stringify: stringify,
-  randomId: randomId,
-  escapeHTML: escapeHTML,
-  Element: Element
+  asset,
+  bodyClassed,
+  create,
+  Element,
+  escapeHTML,
+  head,
+  randomId,
+  stringify,
+  textNode
 }
