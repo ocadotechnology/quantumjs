@@ -29,7 +29,8 @@ function entityHeaderDetails (selection, transformer) {
   const params = selection.selectAll(['param', 'param?']).map((param) => {
     const isOptional = param.type()[param.type().length - 1] === '?'
     return dom.create('span')
-      .class(isOptional ? 'qm-api-quantum-header-entity-param qm-api-optional' : 'qm-api-quantum-header-entity-param')
+      .class('qm-api-quantum-param-header-name')
+      .classed('qm-api-optional', isOptional)
       .add(dom.create('span').class('qm-api-quantum-header-entity-param-name').text(param.param(0)))
   })
 
@@ -47,7 +48,7 @@ const description = body.description
 const extras = body.extras
 const groups = body.groups
 const entities = itemGroup('quantum', 'entity', 'Entities')
-const params = itemGroup('quantum', 'param', 'Parameters')
+const params = itemGroup('quantum', ['param', 'param?'], 'Parameters')
 
 const entityBuilder = item({
   class: 'qm-api-quantum-entity',
