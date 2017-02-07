@@ -4,7 +4,16 @@ describe('transforms', () => {
   const dom = require('quantum-dom')
   const { transforms } = require('..')
 
-  it('not highlight some inline code', () => {
+  it('provides the correct transforms', () => {
+    transforms().should.have.keys([
+      'code',
+      'codeblock'
+    ])
+    transforms().code.should.be.a('function')
+    transforms().codeblock.should.be.a('function')
+  })
+
+  it('doesnt highlight inline code', () => {
     const selection = quantum.select({
       type: 'code',
       params: [],
@@ -23,7 +32,7 @@ describe('transforms', () => {
     )
   })
 
-  it('highlight a codeblock', () => {
+  it('highlights a codeblock', () => {
     const selection = quantum.select({
       type: 'codeblock',
       params: ['js'],
@@ -44,7 +53,7 @@ describe('transforms', () => {
     )
   })
 
-  it('highlight a codeblock (invalid language)', () => {
+  it('highlights a codeblock (invalid language)', () => {
     const selection = quantum.select({
       type: 'codeblock',
       params: ['notalanguage'],
@@ -65,7 +74,7 @@ describe('transforms', () => {
     )
   })
 
-  it('highlight a codeblock (auto highlight)', () => {
+  it('highlights a codeblock (auto highlight)', () => {
     const selection = quantum.select({
       type: 'codeblock',
       params: [],

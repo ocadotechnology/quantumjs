@@ -1,7 +1,10 @@
 describe('transforms', () => {
-  const { transforms } = require('../')
+  const { transforms } = require('..')
 
-  it('placeholder', () => {
-    transforms.should.be.a('function')
+  it('provides the correct transforms', () => {
+    transforms().should.have.keys([
+      'diagram'
+    ])
+    transforms().diagram.should.be.a('function')
   })
 })
