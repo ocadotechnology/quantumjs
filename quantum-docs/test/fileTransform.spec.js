@@ -1,23 +1,8 @@
-'use strict'
+describe('fileTransform', () => {
+  const { fileTransform } = require('..')
+  const { File, FileInfo } = require('quantum-js')
 
-const chai = require('chai')
-const docs = require('../')
-const quantum = require('quantum-js')
-
-const File = quantum.File
-const FileInfo = quantum.FileInfo
-
-chai.should()
-
-describe('pipeline', () => {
-  it('should export the correct things', () => {
-    docs.should.be.a.function
-    docs.transforms.should.be.a.function
-  })
-})
-
-describe('populateTableOfContents', () => {
-  it('should populate a table of contents (default options)', () => {
+  it('populates a table of contents (default options)', () => {
     const page = new File({
       info: new FileInfo({
         src: 'filename.um',
@@ -45,7 +30,7 @@ describe('populateTableOfContents', () => {
       }
     })
 
-    docs.fileTransform()(page).should.eql(new File({
+    fileTransform()(page).should.eql(new File({
       info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
@@ -89,7 +74,7 @@ describe('populateTableOfContents', () => {
     }))
   })
 
-  it('should populate a table of contents (explicitly enabled)', () => {
+  it('populates a table of contents (explicitly enabled)', () => {
     const page = new File({
       info: new FileInfo({
         src: 'filename.um',
@@ -117,7 +102,7 @@ describe('populateTableOfContents', () => {
       }
     })
 
-    docs.fileTransform({populateTableOfContents: {enabled: true}})(page).should.eql(new File({
+    fileTransform({populateTableOfContents: {enabled: true}})(page).should.eql(new File({
       info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
@@ -161,7 +146,7 @@ describe('populateTableOfContents', () => {
     }))
   })
 
-  it('should populate a table of contents (explicitly disabled)', () => {
+  it('doesnt populate a table of contents (explicitly disabled)', () => {
     const page = new File({
       info: new FileInfo({
         src: 'filename.um',
@@ -189,7 +174,7 @@ describe('populateTableOfContents', () => {
       }
     })
 
-    docs.fileTransform({populateTableOfContents: {enabled: false}})(page).should.eql(new File({
+    fileTransform({populateTableOfContents: {enabled: false}})(page).should.eql(new File({
       info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
