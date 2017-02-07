@@ -1,0 +1,10 @@
+'use strict'
+require('chai').should()
+require('./module.spec.js')
+require('./defaultFilenameModifier.spec')
+require('./fileTransform.spec')
+require('./mostRecentVersion.spec')
+require('./processTags.spec')
+require('./processVersioned.spec')
+require('./processVersionLists.spec')
+require('./resolveOptions.spec')
