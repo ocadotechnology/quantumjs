@@ -6,6 +6,47 @@ const api = require('..')
 
 chai.should()
 
+function checkTransforms (options, props) {
+  const transforms = api.transforms(options)
+  transforms.should.be.an('object')
+
+  // Sorted because object order doesn't matter
+  const transformFunctionNames = Object.keys(transforms).sort()
+  transformFunctionNames.should.eql(props.sort())
+
+  transformFunctionNames.forEach(name => {
+    // Make sure each transform is a function
+    transforms[name].should.be.a('function');
+    // check that the signature of each transform is (selection, transformer)
+    (`${name} ${transforms[name].length}`).should.equal(`${name} 2`)
+  })
+}
+
+const topLevelProps = [
+  'api',
+  'changelogList',
+  'changelog'
+]
+const cssProps = [
+  'class',
+  'childclass',
+  'extraclass'
+]
+const jsProps = [
+  'type',
+  'prototype',
+  'object',
+  'method',
+  'function',
+  'constructor',
+  'param',
+  'param?',
+  'property',
+  'property?',
+  'event',
+  'returns'
+]
+
 describe('quantum-api', () => {
   it('should export the correct things', () => {
     api.should.be.a('object')
@@ -14,65 +55,17 @@ describe('quantum-api', () => {
   })
 
   it('should return an object with the javascript and css languages by default', () => {
-    api.transforms().should.be.an('object')
-    api.transforms()['api'].should.be.a('function')
-    api.transforms()['group'].should.be.a('function')
-
-    api.transforms()['prototype'].should.be.a('function')
-    api.transforms()['function'].should.be.a('function')
-    api.transforms()['method'].should.be.a('function')
-    api.transforms()['event'].should.be.a('function')
-    api.transforms()['property'].should.be.a('function')
-    api.transforms()['param'].should.be.a('function')
-    api.transforms()['param?'].should.be.a('function')
-    api.transforms()['returns'].should.be.a('function')
-    api.transforms()['object'].should.be.a('function')
-
-    api.transforms()['class'].should.be.a('function')
-    api.transforms()['extraclass'].should.be.a('function')
-    api.transforms()['childclass'].should.be.a('function')
+    checkTransforms({}, [...topLevelProps, ...jsProps, ...cssProps])
   })
 
   it('should be possible to specify the languages (javascript only)', () => {
     const javascript = api.languages.javascript()
-    api.transforms({languages: [javascript]}).should.be.an('object')
-    api.transforms({languages: [javascript]})['api'].should.be.a('function')
-    api.transforms({languages: [javascript]})['group'].should.be.a('function')
-
-    api.transforms({languages: [javascript]})['prototype'].should.be.a('function')
-    api.transforms({languages: [javascript]})['function'].should.be.a('function')
-    api.transforms({languages: [javascript]})['method'].should.be.a('function')
-    api.transforms({languages: [javascript]})['event'].should.be.a('function')
-    api.transforms({languages: [javascript]})['property'].should.be.a('function')
-    api.transforms({languages: [javascript]})['param'].should.be.a('function')
-    api.transforms({languages: [javascript]})['param?'].should.be.a('function')
-    api.transforms({languages: [javascript]})['returns'].should.be.a('function')
-    api.transforms({languages: [javascript]})['object'].should.be.a('function')
-
-    api.transforms({languages: [javascript]}).should.not.have.property('class')
-    api.transforms({languages: [javascript]}).should.not.have.property('extraclass')
-    api.transforms({languages: [javascript]}).should.not.have.property('childclass')
+    checkTransforms({languages: [ javascript ]}, [...topLevelProps, ...jsProps])
   })
 
   it('should be possible to specify the languages (css only)', () => {
     const css = api.languages.css()
-    api.transforms({languages: [css]}).should.be.an('object')
-    api.transforms({languages: [css]})['api'].should.be.a('function')
-    api.transforms({languages: [css]})['group'].should.be.a('function')
-
-    api.transforms({languages: [css]}).should.not.have.property('prototype')
-    api.transforms({languages: [css]}).should.not.have.property('function')
-    api.transforms({languages: [css]}).should.not.have.property('method')
-    api.transforms({languages: [css]}).should.not.have.property('event')
-    api.transforms({languages: [css]}).should.not.have.property('property')
-    api.transforms({languages: [css]}).should.not.have.property('param')
-    api.transforms({languages: [css]}).should.not.have.property('param?')
-    api.transforms({languages: [css]}).should.not.have.property('returns')
-    api.transforms({languages: [css]}).should.not.have.property('object')
-
-    api.transforms({languages: [css]})['class'].should.be.a('function')
-    api.transforms({languages: [css]})['extraclass'].should.be.a('function')
-    api.transforms({languages: [css]})['childclass'].should.be.a('function')
+    checkTransforms({languages: [ css ]}, [...topLevelProps, ...cssProps])
   })
 
   it('should do nothing when options.processChangelogs is false', () => {

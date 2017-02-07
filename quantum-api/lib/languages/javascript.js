@@ -40,7 +40,7 @@ function api (typeLinks) {
   const functionHeader = header.functionHeader({typeLinks: typeLinks})
   const typeHeader = header.typeHeader({typeLinks: typeLinks})
 
-  function typeBuilder (selection) {
+  function typeBuilder (selection, transformer) {
     return dom.create('span')
       .class('qm-api-type-standalone qm-code-font')
       .add(type(selection.cs(), typeLinks))
