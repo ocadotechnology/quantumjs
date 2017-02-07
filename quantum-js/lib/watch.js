@@ -18,9 +18,9 @@ const flatten = require('flatten')
 const fs = Promise.promisifyAll(require('fs-extra'))
 
 const parse = require('./parse')
-const read = require('./read').read
 const File = require('./file')
 const fileOptions = require('./file-options')
+const { defaultLoader, readAsFile } = require('./read')
 
 /* Watches some glob specs for changes */
 function Watcher (specs, options) {
@@ -90,10 +90,6 @@ function watcher (specs, options) {
   return w._promise.then(() => w)
 }
 
-function defaultLoader (filename, parentFilename) {
-  return fs.readFileAsync(filename, 'utf-8')
-}
-
 // watches quantum files and follows inline links
 function watch (specs, handler, options) {
   const err = fileOptions.validate(specs)
@@ -106,6 +102,7 @@ function watch (specs, handler, options) {
   // Option resolving
   const opts = options || {}
   const dir = opts.dir || '.'
+  const fileReader = opts.fileReader || readAsFile
   const loader = opts.loader || defaultLoader
   const buildConcurrency = opts.concurrency || 1
 
@@ -177,11 +174,8 @@ function watch (specs, handler, options) {
 
   function workHandler (work) {
     fileInfos[work.fileInfo.src] = work.fileInfo
-    return read(work.fileInfo.src, {loader: linkingLoader})
-      .then((content) => {
-        const file = new File({info: work.fileInfo, content: content})
-        return handler(undefined, file, work.cause)
-      })
+    return fileReader(work.fileInfo, { loader: linkingLoader })
+      .then(file => handler(undefined, file, work.cause))
       .catch((err) => {
         if (err instanceof parse.ParseError) {
           return handler(err, new File({info: work.fileInfo, content: undefined}), work.cause)
