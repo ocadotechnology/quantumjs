@@ -1,19 +1,8 @@
-'use strict'
-
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
-
-const quantum = require('../lib')
-const read = quantum.read
-const readAsFile = quantum.readAsFile
-
-chai.use(chaiAsPromised)
-chai.should()
-
 describe('read', () => {
+  const { read } = require('..')
   const filename = 'test/files/read/source1.um'
 
-  it('should work', () => {
+  it('works', () => {
     const expected = {
       type: '',
       params: [],
@@ -103,7 +92,7 @@ describe('read', () => {
     return read(filename, { inlineEntityType: 'altinline' }).should.eventually.eql(expected)
   })
 
-  it('should read non um files as content', () => {
+  it('reads non um files as content', () => {
     const filename = 'test/files/read/source4.um'
 
     const expected = {
@@ -135,7 +124,7 @@ describe('read', () => {
     return read(filename).should.eventually.eql(expected)
   })
 
-  it('should be able to read non um files as um files with parse specified as the second parameter', () => {
+  it('reads non um files as um files with parse specified as the second parameter', () => {
     const filename = 'test/files/read/source7.um'
 
     const expected = {
@@ -177,11 +166,11 @@ describe('read', () => {
     return read(filename).should.eventually.eql(expected)
   })
 
-  it('should return an error when a file is not found', () => {
+  it('returns an error when a file is not found', () => {
     return read('test/files/read/not-a-source.um').should.be.rejected
   })
 
-  it('should not inline if inline is false', () => {
+  it('doesnt inline if inline is false', () => {
     const filename = 'test/files/read/source2.um'
 
     const expected = {
@@ -210,7 +199,7 @@ describe('read', () => {
     return read(filename, {inline: false}).should.eventually.eql(expected)
   })
 
-  it('should inline multiple files', () => {
+  it('inlines multiple files', () => {
     const filename = 'test/files/read/source9.um'
 
     const expected = {
@@ -259,9 +248,18 @@ describe('read', () => {
     return read(filename).should.eventually.eql(expected)
   })
 
-  it('readAsFile should work', () => {
-    const expected = new quantum.File({
-      info: new quantum.FileInfo({
+  it('yields an error when parsing fails', () => {
+    const filename = 'test/files/read/invalid.um'
+    return read(filename).should.eventually.be.rejected
+  })
+})
+
+describe('readAsFile', () => {
+  const { readAsFile, File, FileInfo } = require('..')
+  const filename = 'test/files/read/source1.um'
+  it('readAsFile works', () => {
+    const expected = new File({
+      info: new FileInfo({
         src: filename,
         dest: filename
       }),
@@ -307,10 +305,5 @@ describe('read', () => {
     })
 
     return readAsFile(filename).should.eventually.eql(expected)
-  })
-
-  it('should yield an error when parsing fails', () => {
-    const filename = 'test/files/read/invalid.um'
-    return read(filename).should.eventually.be.rejected
   })
 })

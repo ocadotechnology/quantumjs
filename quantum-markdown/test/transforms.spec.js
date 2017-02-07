@@ -1,15 +1,15 @@
-'use strict'
-
-const chai = require('chai')
-const path = require('path')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
-const codeHighlight = require('quantum-code-highlight')
-const markdown = require('..').transforms
-
-chai.should()
-
 describe('transforms', () => {
+  const path = require('path')
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
+  const { stylesheetAsset } = require('quantum-code-highlight')
+  const { transforms } = require('..')
+
+  it('provides the correct transforms', () => {
+    transforms().should.have.keys(['markdown'])
+    transforms().markdown.should.be.a('function')
+  })
+
   it('render some basic markdown', () => {
     const selection = quantum.select({
       type: 'markdown',
@@ -24,7 +24,7 @@ describe('transforms', () => {
       ]
     })
 
-    markdown().markdown(selection).should.eql(
+    transforms().markdown(selection).should.eql(
       dom.create('div').class('qm-markdown')
         .add('<h1 id="h1">H1</h1>\n<h2 id="h2">H2</h2>\n<h3 id="h3">H3</h3>\n<h4 id="h4">H4</h4>\n<h5 id="h5">H5</h5>\n<h6 id="h6">H6</h6>\n')
         .add(dom.asset({
@@ -32,7 +32,7 @@ describe('transforms', () => {
           file: path.join(__dirname, '../assets/quantum-markdown.css'),
           shared: true
         }))
-        .add(codeHighlight.stylesheetAsset)
+        .add(stylesheetAsset)
     )
   })
 
@@ -48,7 +48,7 @@ describe('transforms', () => {
       ]
     })
 
-    markdown().markdown(selection).should.eql(
+    transforms().markdown(selection).should.eql(
       dom.create('div').class('qm-markdown')
         .add('<p><code class="qm-code-font">inline code</code></p>\n<pre><code class="lang-js"><span class="hljs-keyword">const</span> thing = <span class="hljs-number">1</span>;\n</code></pre>\n')
         .add(dom.asset({
@@ -56,7 +56,7 @@ describe('transforms', () => {
           file: path.join(__dirname, '../assets/quantum-markdown.css'),
           shared: true
         }))
-        .add(codeHighlight.stylesheetAsset)
+        .add(stylesheetAsset)
     )
   })
 })

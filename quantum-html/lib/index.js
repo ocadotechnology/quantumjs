@@ -310,7 +310,7 @@ function htmlRenamer () {
   }
 }
 
-module.exports = function (options) {
+function fileTransform (options) {
   const domBuilder = buildDOM(options)
   const htmlBuilder = buildHTML(options)
   const renamer = htmlRenamer()
@@ -328,12 +328,13 @@ module.exports = function (options) {
   return transformer
 }
 
-module.exports.HTMLPage = HTMLPage
-
-module.exports.prepareTransforms = prepareTransforms
-module.exports.transforms = transforms
-module.exports.paragraphTransform = paragraphTransform
-
-module.exports.buildDOM = buildDOM
-module.exports.buildHTML = buildHTML
-module.exports.htmlRenamer = htmlRenamer
+module.exports = {
+  buildDOM,
+  buildHTML,
+  fileTransform,
+  HTMLPage,
+  htmlRenamer,
+  paragraphTransform,
+  prepareTransforms,
+  transforms
+}

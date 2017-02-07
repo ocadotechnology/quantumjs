@@ -1,37 +1,33 @@
-'use strict'
-const chai = require('chai')
-const should = chai.should()
-const expect = chai.expect
-
-const quantum = require('../')
-const select = quantum.select
-
 describe('select', () => {
-  it('should throw an error when something that is not an entity is passed in', () => {
+  const chai = require('chai')
+  const should = chai.should()
+  const expect = chai.expect
+  const { select } = require('..')
+  it('throws an error when something that is not an entity is passed in', () => {
     expect(() => {
       select(123)
     }).to.throw()
   })
 
-  it('should return a Selection', () => {
+  it('returns a Selection', () => {
     select({type: 'tag', params: [], content: []}).should.be.an.instanceof(select.Selection)
   })
 
-  it('isSelection should work', () => {
+  it('isSelection works', () => {
     select.isSelection(new select.Selection()).should.equal(true)
     select.isSelection({}).should.equal(false)
   })
 
-  it('should flatten', () => {
+  it('flattens', () => {
     select(select({type: 'tag', params: [], content: []})).should.be.an.instanceof(select.Selection)
   })
 
   describe('select.isEntity', () => {
-    it('should return true for an object that looks like an entity', () => {
+    it('returns true for an object that looks like an entity', () => {
       select.isEntity({type: 'tag', params: [], content: []}).should.equal(true)
     })
 
-    it('should return false for an object has missing or incorrect type field', () => {
+    it('returns false for an object has missing or incorrect type field', () => {
       select.isEntity({params: [], content: []}).should.equal(false)
       select.isEntity({type: 123, params: [], content: []}).should.equal(false)
       select.isEntity({type: () => 0, params: [], content: []}).should.equal(false)
@@ -42,7 +38,7 @@ describe('select', () => {
       select.isEntity({type: true, params: [], content: []}).should.equal(false)
     })
 
-    it('should return false for an object has missing or incorrect params field', () => {
+    it('returns false for an object has missing or incorrect params field', () => {
       select.isEntity({type: 'tag', content: []}).should.equal(false)
       select.isEntity({type: 'tag', params: 123, content: []}).should.equal(false)
       select.isEntity({type: 'tag', params: () => 0, content: []}).should.equal(false)
@@ -53,7 +49,7 @@ describe('select', () => {
       select.isEntity({type: 'tag', params: true, content: []}).should.equal(false)
     })
 
-    it('should return false for an object has missing or incorrect content field', () => {
+    it('returns false for an object has missing or incorrect content field', () => {
       select.isEntity({type: 'tag', params: []}).should.equal(false)
       select.isEntity({type: 'tag', params: [], content: 123}).should.equal(false)
       select.isEntity({type: 'tag', params: [], content: () => 0}).should.equal(false)
@@ -66,11 +62,11 @@ describe('select', () => {
   })
 
   describe('select.isText', () => {
-    it('should return true for a string', () => {
+    it('returns true for a string', () => {
       select.isText('some text').should.equal(true)
     })
 
-    it('should return false for things that are not strings', () => {
+    it('returns false for things that are not strings', () => {
       select.isText(null).should.equal(false)
       select.isText(undefined).should.equal(false)
       select.isText({}).should.equal(false)
@@ -83,19 +79,19 @@ describe('select', () => {
   })
 
   describe('Selection::entity', () => {
-    it('should return the original entity', () => {
+    it('returns the original entity', () => {
       const entity = {type: 'tag', params: [], content: []}
       select(entity).entity().should.equal(entity)
     })
   })
 
   describe('Selection::type', () => {
-    it('should get the type correctly', () => {
+    it('gets the type correctly', () => {
       const entity = {type: 'tag', params: [], content: []}
       select(entity).type().should.equal('tag')
     })
 
-    it('should set the type correctly', () => {
+    it('sets the type correctly', () => {
       const entity = {type: 'tag', params: [], content: []}
       const selection = select(entity)
       selection.type().should.equal('tag')
@@ -104,7 +100,7 @@ describe('select', () => {
       entity.type.should.equal('name')
     })
 
-    it('should throw an error when modifying a filtered selection', () => {
+    it('throws an error when modifying a filtered selection', () => {
       const entity = {type: 'tag', params: [], content: []}
       const selection = select(entity).filter('whatever')
       selection.type().should.equal('tag')
@@ -115,12 +111,12 @@ describe('select', () => {
   })
 
   describe('Selection::params', () => {
-    it('should get the params correctly', () => {
+    it('gets the params correctly', () => {
       const entity = {type: 'tag', params: ['one', 'two', 'three'], content: []}
       select(entity).params().should.eql(['one', 'two', 'three'])
     })
 
-    it('should set the params correctly', () => {
+    it('sets the params correctly', () => {
       const entity = {type: 'tag', params: ['one', 'two', 'three'], content: []}
       const selection = select(entity)
       selection.params().should.eql(['one', 'two', 'three'])
@@ -130,7 +126,7 @@ describe('select', () => {
       entity.params.should.equal(newParams)
     })
 
-    it('should throw an error when modifying a filtered selection', () => {
+    it('throws an error when modifying a filtered selection', () => {
       const entity = {type: 'tag', params: [], content: []}
       const selection = select(entity).filter('whatever')
       selection.params().should.eql([])
@@ -141,12 +137,12 @@ describe('select', () => {
   })
 
   describe('Selection::param', () => {
-    it('should get the param correctly', () => {
+    it('gets the param correctly', () => {
       const entity = {type: 'tag', params: ['one', 'two', 'three'], content: []}
       select(entity).param(2).should.eql('three')
     })
 
-    it('should set the param correctly', () => {
+    it('sets the param correctly', () => {
       const entity = {type: 'tag', params: ['one', 'two', 'three'], content: []}
       const selection = select(entity)
       selection.params().should.eql(['one', 'two', 'three'])
@@ -156,7 +152,7 @@ describe('select', () => {
       entity.params.should.eql(['one', 'two', 'four'])
     })
 
-    it('should throw an error when modifying a filtered selection', () => {
+    it('throws an error when modifying a filtered selection', () => {
       const entity = {type: 'tag', params: [], content: []}
       const selection = select(entity).filter('whatever')
       selection.params().should.eql([])
@@ -167,12 +163,12 @@ describe('select', () => {
   })
 
   describe('Selection::content', () => {
-    it('should get the content correctly', () => {
+    it('gets the content correctly', () => {
       const entity = {type: 'tag', content: ['one', 'two', 'three'], params: []}
       select(entity).content().should.eql(['one', 'two', 'three'])
     })
 
-    it('should set the content correctly', () => {
+    it('sets the content correctly', () => {
       const entity = {type: 'tag', content: ['one', 'two', 'three'], params: []}
       const selection = select(entity)
       selection.content().should.eql(['one', 'two', 'three'])
@@ -182,7 +178,7 @@ describe('select', () => {
       entity.content.should.equal(newContent)
     })
 
-    it('should throw an error when modifying a filtered selection', () => {
+    it('throws an error when modifying a filtered selection', () => {
       const entity = {type: 'tag', params: [], content: []}
       const selection = select(entity).filter('whatever')
       selection.content().should.eql([])
@@ -193,7 +189,7 @@ describe('select', () => {
   })
 
   describe('Selection::has', () => {
-    it('should check if an entity has a direct child correctly', () => {
+    it('checks if an entity has a direct child correctly', () => {
       const entity = {
         type: 'tag',
         content: [
@@ -220,7 +216,7 @@ describe('select', () => {
       select(entity).has('tagB', {recursive: true}).should.equal(true)
     })
 
-    it('should check if an entity has a child using the recursive option correctly', () => {
+    it('checks if an entity has a child using the recursive option correctly', () => {
       const entity = {
         type: 'tag',
         content: [
@@ -249,54 +245,54 @@ describe('select', () => {
   })
 
   describe('Selection::hasParam', () => {
-    it('should check if an entity has params correctly', () => {
+    it('checks if an entity has params correctly', () => {
       const entity = {type: 'tag', content: [], params: ['Param']}
       select(entity).hasParams().should.equal(true)
     })
 
-    it('should check if an entity has no params correctly', () => {
+    it('checks if an entity has no params correctly', () => {
       const entity = {type: 'tag', content: [], params: []}
       select(entity).hasParams().should.equal(false)
     })
   })
 
   describe('Selection::hasContent', () => {
-    it('should check if an entity has content correctly', () => {
+    it('checks if an entity has content correctly', () => {
       const entity = {type: 'tag', content: ['Content'], params: []}
       select(entity).hasContent().should.equal(true)
     })
 
-    it('should check if an entity has no content correctly', () => {
+    it('checks if an entity has no content correctly', () => {
       const entity = {type: 'tag', content: [], params: []}
       select(entity).hasContent().should.equal(false)
     })
   })
 
   describe('Selection::parent', () => {
-    it('should return undefined when the parent is unknown', () => {
+    it('returns undefined when the parent is unknown', () => {
       const entity = {type: 'tag', content: [], params: []}
       should.not.exist(select(entity).parent())
     })
 
-    it('should return the parent when known', () => {
+    it('returns the parent when known', () => {
       const child = {type: 'tag', content: [], params: []}
       const parent = {type: 'tag', content: [child], params: []}
       select(child, parent).parent().should.equal(parent)
     })
 
-    it('should know the parent when a subselection is performed', () => {
+    it('knows the parent when a subselection is performed', () => {
       const entity = {type: 'tag', content: [{type: 'tagA', content: [], params: []}], params: []}
       const selection = select(entity)
       selection.select('tagA').parent().should.equal(selection)
     })
 
-    it('should keep track of parents when doing deep selections', () => {
+    it('keeps track of parents when doing deep selections', () => {
       const entity = {type: 'tag', content: [{type: 'tagA', content: [{type: 'tagB', params: [], content: []}], params: []}], params: []}
       const selection = select(entity)
       selection.select('tagB', {recursive: true}).parent().parent().should.equal(selection)
     })
 
-    it('should know the parent when a multiple subselection is performed', () => {
+    it('knows the parent when a multiple subselection is performed', () => {
       const entity = {
         type: 'tag',
         content: [
@@ -313,7 +309,7 @@ describe('select', () => {
       })
     })
 
-    it('should refer to the filtered parent for selections after filtering', () => {
+    it('refers to the filtered parent for selections after filtering', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -332,19 +328,19 @@ describe('select', () => {
   })
 
   describe('Selection::ps', () => {
-    it('should convert the parameter array to a string for single parameter', () => {
+    it('converts the parameter array to a string for single parameter', () => {
       select({type: 'tag', params: ['one'], content: []}).ps().should.equal('one')
     })
 
-    it('should convert the parameter array to a string for multiple parameters', () => {
+    it('converts the parameter array to a string for multiple parameters', () => {
       select({type: 'tag', params: ['one', 'two', 'three'], content: []}).ps().should.equal('one two three')
     })
 
-    it('should set the parameter array', () => {
+    it('sets the parameter array', () => {
       select({type: 'tag', params: [], content: []}).ps('one two three').params().should.eql(['one', 'two', 'three'])
     })
 
-    it('should throw an error when modifying a filtered selection', () => {
+    it('throws an error when modifying a filtered selection', () => {
       const entity = {type: 'tag', params: [], content: []}
       const selection = select(entity).filter('whatever')
       selection.ps().should.eql('')
@@ -355,19 +351,19 @@ describe('select', () => {
   })
 
   describe('Selection::cs', () => {
-    it('should convert the content array to a string for single content', () => {
+    it('converts the content array to a string for single content', () => {
       select({type: 'tag', params: [], content: ['one']}).cs().should.equal('one')
     })
 
-    it('should convert the content array to a string for multiple contents', () => {
+    it('converts the content array to a string for multiple contents', () => {
       select({type: 'tag', params: [], content: ['one', 'two', 'three']}).cs().should.equal('one\ntwo\nthree')
     })
 
-    it('should set the content array', () => {
+    it('sets the content array', () => {
       select({type: 'tag', params: [], content: []}).cs('one\ntwo\nthree').content().should.eql(['one', 'two', 'three'])
     })
 
-    it('should throw an error when modifying a filtered selection', () => {
+    it('throws an error when modifying a filtered selection', () => {
       const entity = {type: 'tag', params: [], content: []}
       const selection = select(entity).filter('whatever')
       selection.cs().should.eql('')
@@ -378,7 +374,7 @@ describe('select', () => {
   })
 
   describe('Selection::select', () => {
-    it('should be able to select items by tag', () => {
+    it('selects items by tag', () => {
       const entity = {content: [{type: 'tag', params: [], content: [{type: 'tagA', params: [], content: []}]}]}
       select(entity).select('tag').type().should.equal('tag')
       select(entity).select('tag').params().should.eql([])
@@ -391,7 +387,7 @@ describe('select', () => {
       ])
     })
 
-    it('should be able to select items by tag with required equal to true (and no error should be thrown)', () => {
+    it('selects items by tag with required equal to true (and no error should be thrown)', () => {
       const entity = {content: [{type: 'tag', params: [], content: [{type: 'tagA', params: [], content: []}]}]}
       select(entity).select('tag', {required: true}).type().should.equal('tag')
       select(entity).select('tag', {required: true}).params().should.eql([])
@@ -404,7 +400,7 @@ describe('select', () => {
       ])
     })
 
-    it('should throw error when selected required tag that does not exist', () => {
+    it('throws error when selected required tag that does not exist', () => {
       const entity = {content: [{type: 'tag', params: [], content: [{type: 'tagA', params: [], content: []}]}]}
       const selection = select(entity)
       expect(() => {
@@ -412,7 +408,7 @@ describe('select', () => {
       }).to.throw()
     })
 
-    it("should return the empty selection when something is selected that doesn't exist", () => {
+    it("returns the empty selection when something is selected that doesn't exist", () => {
       const selection = select({type: 'tag', params: [], content: []})
       selection.select('tagA').entity().should.eql({
         type: '',
@@ -423,7 +419,7 @@ describe('select', () => {
   })
 
   describe('Selection::selectUpwards', () => {
-    it('should selectAll correctly', () => {
+    it('selects all entities correctly', () => {
       const entity = {
         content: [
           {
@@ -457,7 +453,7 @@ describe('select', () => {
   })
 
   describe('Selection::selectAll', () => {
-    it('should selectAll correctly', () => {
+    it('selects all entities correctly', () => {
       const entity = {
         content: [
           {
@@ -479,7 +475,7 @@ describe('select', () => {
       ])
     })
 
-    it('should return an empty array when nothing can be found', () => {
+    it('returns an empty array when nothing can be found', () => {
       const entity = {
         content: [
           {
@@ -498,7 +494,7 @@ describe('select', () => {
       select(entity).selectAll(['tagD'], {recursive: true}).should.eql([])
     })
 
-    it('should selectAll for an array of types correctly', () => {
+    it('selects all entities for an array of types correctly', () => {
       const entity = {
         content: [
           {
@@ -522,21 +518,21 @@ describe('select', () => {
   })
 
   describe('Selection::isEmpty', () => {
-    it('should return true when the content array is empty', () => {
+    it('returns true when the content array is empty', () => {
       select({type: 'tag', params: [], content: []}).isEmpty().should.equal(true)
     })
 
-    it('should return true when the content array has whitespace only strings', () => {
+    it('returns true when the content array has whitespace only strings', () => {
       select({type: 'tag', params: [], content: ['', '   ', '   ']}).isEmpty().should.equal(true)
     })
 
-    it('should return false when the content array not empty', () => {
+    it('returns false when the content array not empty', () => {
       select({type: 'tag', params: [], content: ['content']}).isEmpty().should.equal(false)
     })
   })
 
   describe('Selection::filter', () => {
-    it('should return a new selection with some of the children kept', () => {
+    it('returns a new selection with some of the children kept', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -548,7 +544,7 @@ describe('select', () => {
       }).content().should.eql(['two'])
     })
 
-    it('should filter by type (keep none)', () => {
+    it('filters by type (keep none)', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -563,7 +559,7 @@ describe('select', () => {
       select(entity).filter('four').content().should.eql([])
     })
 
-    it('should filter by type (keep one)', () => {
+    it('filters by type (keep one)', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -580,7 +576,7 @@ describe('select', () => {
       ])
     })
 
-    it('should filter by type (keep multiple)', () => {
+    it('filters by type (keep multiple)', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -598,7 +594,7 @@ describe('select', () => {
       ])
     })
 
-    it('should filter by an array of types (keep multiple)', () => {
+    it('filters by an array of types (keep multiple)', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -616,7 +612,7 @@ describe('select', () => {
       ])
     })
 
-    it('should filter by an array of types (empty query)', () => {
+    it('filters by an array of types (empty query)', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -631,7 +627,7 @@ describe('select', () => {
       select(entity).filter([]).content().should.eql([])
     })
 
-    it('should filter by an array of types (keep none)', () => {
+    it('filters by an array of types (keep none)', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -648,7 +644,7 @@ describe('select', () => {
   })
 
   describe('Selection::add', () => {
-    it('should add text content', () => {
+    it('adds text content', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -661,7 +657,7 @@ describe('select', () => {
       entity.content.should.eql(['text'])
     })
 
-    it('should add entity content', () => {
+    it('adds entity content', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -680,7 +676,7 @@ describe('select', () => {
   })
 
   describe('Selection::addAfter', () => {
-    it('should throw an error if there is no parent', () => {
+    it('throws an error if there is no parent', () => {
       const childEntity = {
         type: 'child',
         params: [],
@@ -690,7 +686,7 @@ describe('select', () => {
       should.throw(() => selection.addAfter('added after'))
     })
 
-    it('should do nothing if the child no longer exists in the parent', () => {
+    it('does nothing if the child no longer exists in the parent', () => {
       const childEntity = {
         type: 'child',
         params: [],
@@ -718,7 +714,7 @@ describe('select', () => {
       ])
     })
 
-    it('should add text content', () => {
+    it('adds text content', () => {
       const childEntity = {
         type: 'child',
         params: [],
@@ -746,7 +742,7 @@ describe('select', () => {
       ])
     })
 
-    it('should add entity content', () => {
+    it('adds entity content', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -780,7 +776,7 @@ describe('select', () => {
       ])
     })
 
-    it('should add array content', () => {
+    it('adds array content', () => {
       const entity1 = {
         type: 'tag1',
         params: [],
@@ -824,7 +820,7 @@ describe('select', () => {
   })
 
   describe('Selection::addParam', () => {
-    it('should add params to the underlying entity', () => {
+    it('adds params to the underlying entity', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -840,7 +836,7 @@ describe('select', () => {
   })
 
   describe('Selection::removeChild', () => {
-    it('should return true when it removes a child', () => {
+    it('returns true when it removes a child', () => {
       const childEntity = {
         type: 'child',
         params: [],
@@ -862,7 +858,7 @@ describe('select', () => {
       parentEntity.content.should.eql(['Surrounding', 'Content'])
     })
 
-    it('should remove string content', () => {
+    it('removes string content', () => {
       const parentEntity = {
         type: 'parent',
         params: [],
@@ -878,7 +874,7 @@ describe('select', () => {
       parentEntity.content.should.eql(['Surrounding', 'Content'])
     })
 
-    it('should return false when the entity being removed is not a child', () => {
+    it('returns false when the entity being removed is not a child', () => {
       const childEntity = {
         type: 'child',
         params: [],
@@ -901,7 +897,7 @@ describe('select', () => {
   })
 
   describe('Selection::remove', () => {
-    it('should return true when it removes the content', () => {
+    it('returns true when it removes the content', () => {
       const childEntity = {
         type: 'child',
         params: [],
@@ -925,7 +921,7 @@ describe('select', () => {
       should.throw(() => childSelection.remove())
     })
 
-    it('should handle the case where one selection removes and one still references', () => {
+    it('handles the case where one selection removes and one still references', () => {
       const childEntity = {
         type: 'child',
         params: [],
@@ -952,7 +948,7 @@ describe('select', () => {
   })
 
   describe('Selection::removeChildOfType', () => {
-    it('should remove entities by type', () => {
+    it('removes entities by type', () => {
       const child1 = {type: 'child1', params: [], content: []}
       const child2 = {type: 'child2', params: [], content: []}
       const child3 = {type: 'child1', params: [], content: []}
@@ -977,7 +973,7 @@ describe('select', () => {
       entity.content.should.eql([child2])
     })
 
-    it('should remove a single entities by type recursively', () => {
+    it('removes a single entities by type recursively', () => {
       const child3 = {type: 'child3', params: [], content: []}
       const child4 = {type: 'child4', params: [], content: []}
       const child5 = {type: 'child5', params: [], content: []}
@@ -1007,7 +1003,7 @@ describe('select', () => {
       should.not.exist(selection.removeChildOfType('child4', {recursive: true}))
     })
 
-    it('should remove multiple entities by type', () => {
+    it('removes multiple entities by type', () => {
       const child1 = {type: 'child1', params: [], content: []}
       const child2 = {type: 'child2', params: [], content: []}
       const child3 = {type: 'child1', params: [], content: []}
@@ -1032,7 +1028,7 @@ describe('select', () => {
       entity.content.should.eql([])
     })
 
-    it('should remove multiple entities by type recursively', () => {
+    it('removes multiple entities by type recursively', () => {
       const child3 = {type: 'child3', params: [], content: []}
       const child4 = {type: 'child4', params: [], content: []}
       const child5 = {type: 'child5', params: [], content: []}
@@ -1063,7 +1059,7 @@ describe('select', () => {
   })
 
   describe('Selection::removeAllChildOfType', () => {
-    it('should remove entities by type', () => {
+    it('removes entities by type', () => {
       const child1 = {type: 'child1', params: [], content: []}
       const child2 = {type: 'child2', params: [], content: []}
       const child3 = {type: 'child1', params: [], content: []}
@@ -1086,7 +1082,7 @@ describe('select', () => {
       entity.content.should.eql([child2])
     })
 
-    it('should remove a single entities by type recursively', () => {
+    it('removes a single entities by type recursively', () => {
       const child3 = {type: 'child3', params: [], content: []}
       const child4 = {type: 'child4', params: [], content: []}
       const child5 = {type: 'child4', params: [], content: []}
@@ -1115,7 +1111,7 @@ describe('select', () => {
       selection.removeAllChildOfType('child4', {recursive: true}).should.eql([])
     })
 
-    it('should remove multiple entities by type', () => {
+    it('removes multiple entities by type', () => {
       const child1 = {type: 'child1', params: [], content: []}
       const child2 = {type: 'child2', params: [], content: []}
       const child3 = {type: 'child3', params: [], content: []}
@@ -1146,7 +1142,7 @@ describe('select', () => {
       entity.content.should.eql([])
     })
 
-    it('should remove multiple entities by type recursively', () => {
+    it('removes multiple entities by type recursively', () => {
       const child3 = {type: 'child3', params: [], content: []}
       const child4 = {type: 'child4', params: [], content: []}
       const child5 = {type: 'child4', params: [], content: []}
@@ -1176,19 +1172,19 @@ describe('select', () => {
   })
 
   describe('Selection::transformContext', () => {
-    it('should return an object by default', () => {
+    it('returns an object by default', () => {
       select({type: '', params: [], content: []})
         .transformContext().should.eql({})
     })
 
-    it('should store and get the transformContext', () => {
+    it('stores and get the transformContext', () => {
       const obj = {}
       select({type: '', params: [], content: []})
         .transformContext(obj)
         .transformContext().should.equal(obj)
     })
 
-    it('should be retained when filtering', () => {
+    it('is when filtering', () => {
       const obj = {}
       select({type: '', params: [], content: []})
         .transformContext(obj)
@@ -1198,7 +1194,7 @@ describe('select', () => {
   })
 
   describe('Selection::transform', () => {
-    it('should act on each of the child elements', () => {
+    it('acts on each of the child elements', () => {
       const entity = {
         type: 'tag',
         params: [],
@@ -1214,7 +1210,7 @@ describe('select', () => {
       })
     })
 
-    it('should act on each of the child (non promise)', () => {
+    it('acts on each of the child (non promise)', () => {
       const entity = {
         type: 'tag',
         params: [],

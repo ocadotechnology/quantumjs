@@ -193,11 +193,11 @@ function processVersionLists (content, version, versions) {
 }
 
 module.exports = {
-  resolveOptions,
   defaultFilenameModifier,
   fileTransform,
   mostRecentVersion,
   processTags,
   processVersioned,
-  processVersionLists
+  processVersionLists,
+  resolveOptions
 }

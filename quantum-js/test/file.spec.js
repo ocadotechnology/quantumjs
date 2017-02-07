@@ -1,11 +1,6 @@
-'use strict'
-require('chai').should()
-
-const quantum = require('../')
-const FileInfo = quantum.FileInfo
-const File = quantum.File
-
 describe('File', () => {
+  const { File, FileInfo } = require('..')
+
   const fileInfo1 = new FileInfo({
     src: 'src/content/a1.um',
     resolved: 'a1.um',
@@ -28,7 +23,7 @@ describe('File', () => {
   const meta2 = { key: { innerKey: 'value' } }
   const meta3 = { key: { innerKey2: 'value2' } }
 
-  it('should use the options to set up the properties', () => {
+  it('uses the options to set up the properties', () => {
     const file = new File({
       info: fileInfo1,
       content: content1,
@@ -40,7 +35,7 @@ describe('File', () => {
     file.meta.should.equal(meta1)
   })
 
-  it('should use defaults for content and meta', () => {
+  it('uses defaults for content and meta', () => {
     const file = new File({
       info: fileInfo1
     })
@@ -51,7 +46,7 @@ describe('File', () => {
   })
 
   describe('File::warning', () => {
-    it('should store warnings', () => {
+    it('stores warnings', () => {
       const file = new File({
         info: fileInfo1
       })
@@ -73,7 +68,7 @@ describe('File', () => {
   })
 
   describe('File::error', () => {
-    it('should store errors', () => {
+    it('stores errors', () => {
       const file = new File({
         info: fileInfo1
       })
@@ -101,11 +96,11 @@ describe('File', () => {
       meta: meta1
     })
 
-    it('should look the same after cloning', () => {
+    it('looks the same after cloning', () => {
       file.clone().should.eql(file)
     })
 
-    it('should change the file property', () => {
+    it('changes the file property', () => {
       file.clone({info: fileInfo2}).should.eql(new File({
         info: fileInfo2,
         content: content1,
@@ -120,7 +115,7 @@ describe('File', () => {
       }))
     })
 
-    it('should change the content property', () => {
+    it('changes the content property', () => {
       file.clone({content: content2}).should.eql(new File({
         info: fileInfo1,
         content: content2,
@@ -135,7 +130,7 @@ describe('File', () => {
       }))
     })
 
-    it('should change the meta property', () => {
+    it('changes the meta property', () => {
       file.clone({meta: meta2}).should.eql(new File({
         info: fileInfo1,
         content: content1,
@@ -150,7 +145,7 @@ describe('File', () => {
       }))
     })
 
-    it('should merge changes into the meta property', () => {
+    it('merges changes into the meta property', () => {
       file.clone({meta: meta2}).clone({meta: meta3}).should.eql(new File({
         info: fileInfo1,
         content: content1,
@@ -170,7 +165,7 @@ describe('File', () => {
       }))
     })
 
-    it('should clone warnings and errors', () => {
+    it('clones warnings and errors', () => {
       const clone = file.clone()
       clone.warning({
         module: 'quantum-js',
@@ -203,7 +198,7 @@ describe('File', () => {
       }))
     })
 
-    it('should allow changes to warnings and errors when cloning', () => {
+    it('allows changes to warnings and errors when cloning', () => {
       file.clone({
         warnings: [{
           module: 'quantum-js',

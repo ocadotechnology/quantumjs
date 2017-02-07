@@ -13,7 +13,7 @@ const Promise = require('bluebird')
 const globby = require('globby')
 const flatten = require('flatten')
 
-const FileInfo = require('./file-info')
+const FileInfo = require('./FileInfo')
 
 function isString (str) {
   return typeof str === 'string' || str instanceof String
@@ -116,8 +116,8 @@ function resolve (specs, opts) {
 }
 
 module.exports = {
-  resolve: resolve,
-  validate: validate,
-  createFileUsingSpec: createFileUsingSpec,
-  normalize: normalize
+  createFileUsingSpec,
+  normalize,
+  resolve,
+  validate
 }

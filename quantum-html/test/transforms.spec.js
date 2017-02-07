@@ -1,26 +1,16 @@
-'use strict'
-
-const html = require('../')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
-const path = require('path')
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
-
 describe('transforms', () => {
-  before(() => {
-    chai.use(chaiAsPromised)
-    chai.should()
-  })
+  const html = require('..')
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
 
   function transformEntity () {
     function defaultTransform (selection) {
       return dom.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection)
     }
     return function transformer (selection) {
-      const type = quantum.select.isSelection(selection) ? selection.type() : undefined
-      if (type in html.transforms()) {
-        return html.transforms()[type](selection, transformer)
+      const t = quantum.select.isSelection(selection) ? selection.type() : undefined
+      if (t in html.transforms()) {
+        return html.transforms()[t](selection, transformer)
       } else {
         return defaultTransform(selection)
       }
@@ -32,9 +22,9 @@ describe('transforms', () => {
       return Promise.resolve(dom.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection))
     }
     return function transformer (selection) {
-      const type = quantum.select.isSelection(selection) ? selection.type() : undefined
-      if (type in html.transforms()) {
-        return Promise.resolve(html.transforms()[type](selection, transformer))
+      const t = quantum.select.isSelection(selection) ? selection.type() : undefined
+      if (t in html.transforms()) {
+        return Promise.resolve(html.transforms()[t](selection, transformer))
       } else {
         return defaultTransform(selection)
       }
@@ -43,7 +33,7 @@ describe('transforms', () => {
 
   function elementSpec (type) {
     describe(type, () => {
-      it('should the correct element', () => {
+      it('renders the correct element', () => {
         const selection = quantum.select({
           type: type,
           params: [],
@@ -54,7 +44,7 @@ describe('transforms', () => {
           .should.eql(dom.create(type))
       })
 
-      it('should parse the parameter string correctly (id only)', () => {
+      it('parses the parameter string correctly (id only)', () => {
         const selection = quantum.select({
           type: type,
           params: ['#id'],
@@ -65,7 +55,7 @@ describe('transforms', () => {
           .should.eql(dom.create(type).id('id').add(dom.textNode('content')))
       })
 
-      it('should parse the parameter string correctly (class only)', () => {
+      it('parses the parameter string correctly (class only)', () => {
         const selection = quantum.select({
           type: type,
           params: ['.class.class2'],
@@ -76,7 +66,7 @@ describe('transforms', () => {
           .should.eql(dom.create(type).class('class class2').add(dom.textNode('content')))
       })
 
-      it('should parse the parameter string correctly (id+class)', () => {
+      it('parses the parameter string correctly (id+class)', () => {
         const selection = quantum.select({
           type: type,
           params: ['.class#id.class2'],
@@ -87,7 +77,7 @@ describe('transforms', () => {
           .should.eql(dom.create(type).class('class class2').id('id').add(dom.textNode('content')))
       })
 
-      it('should use the attr property', () => {
+      it('uses the attr property', () => {
         const selection = quantum.select({
           type: type,
           params: [],
@@ -102,7 +92,7 @@ describe('transforms', () => {
           .should.eql(dom.create(type).attr('x', '0'))
       })
 
-      it('should use the id property', () => {
+      it('uses the id property', () => {
         const selection = quantum.select({
           type: type,
           params: [],
@@ -117,7 +107,7 @@ describe('transforms', () => {
           .should.eql(dom.create(type).id('id'))
       })
 
-      it('should use the class property', () => {
+      it('uses the class property', () => {
         const selection = quantum.select({
           type: type,
           params: [],
@@ -132,7 +122,7 @@ describe('transforms', () => {
           .should.eql(dom.create(type).class('class'))
       })
 
-      it('should render children', () => {
+      it('renders children', () => {
         const selection = quantum.select({
           type: type,
           params: [],
@@ -190,41 +180,43 @@ describe('transforms', () => {
 
   elementTypes.forEach(elementSpec)
 
-  it('bodyClassed should add a class to the body (default to true)', () => {
-    const selection = quantum.select({
-      type: 'bodyClassed',
-      params: ['body-class'],
-      content: []
+  describe('bodyClassed', () => {
+    it('adds a class to the body (default to true)', () => {
+      const selection = quantum.select({
+        type: 'bodyClassed',
+        params: ['body-class'],
+        content: []
+      })
+
+      html.transforms().bodyClassed(selection, transformEntity())
+        .should.eql(dom.bodyClassed('body-class', true))
     })
 
-    html.transforms().bodyClassed(selection, transformEntity())
-      .should.eql(dom.bodyClassed('body-class', true))
-  })
+    it('adds a class to the body', () => {
+      const selection = quantum.select({
+        type: 'bodyClassed',
+        params: ['body-class'],
+        content: ['true']
+      })
 
-  it('bodyClassed should add a class to the body', () => {
-    const selection = quantum.select({
-      type: 'bodyClassed',
-      params: ['body-class'],
-      content: ['true']
+      html.transforms().bodyClassed(selection, transformEntity())
+        .should.eql(dom.bodyClassed('body-class', true))
     })
 
-    html.transforms().bodyClassed(selection, transformEntity())
-      .should.eql(dom.bodyClassed('body-class', true))
-  })
+    it('removes a class from the body', () => {
+      const selection = quantum.select({
+        type: 'bodyClassed',
+        params: ['body-class'],
+        content: ['false']
+      })
 
-  it('bodyClassed should be able to remove a class from the body', () => {
-    const selection = quantum.select({
-      type: 'bodyClassed',
-      params: ['body-class'],
-      content: ['false']
+      html.transforms().bodyClassed(selection, transformEntity())
+        .should.eql(dom.bodyClassed('body-class', false))
     })
-
-    html.transforms().bodyClassed(selection, transformEntity())
-      .should.eql(dom.bodyClassed('body-class', false))
   })
 
   describe('hyperlink', () => {
-    it('should the correct element', () => {
+    it('renders the correct element', () => {
       const selection = quantum.select({
         type: 'hyperlink',
         params: ['my-link'],
@@ -235,7 +227,7 @@ describe('transforms', () => {
         .should.eql(dom.create('a').attr('href', 'my-link').add(dom.textNode('Text')))
     })
 
-    it('should use the attr property', () => {
+    it('uses the attr property', () => {
       const selection = quantum.select({
         type: 'hyperlink',
         params: [],
@@ -250,7 +242,7 @@ describe('transforms', () => {
         .should.eql(dom.create('a').attr('x', '0').attr('href', ''))
     })
 
-    it('should use the id property', () => {
+    it('uses the id property', () => {
       const selection = quantum.select({
         type: 'hyperlink',
         params: [],
@@ -265,7 +257,7 @@ describe('transforms', () => {
         .should.eql(dom.create('a').id('id').attr('href', ''))
     })
 
-    it('should use the class property', () => {
+    it('uses the class property', () => {
       const selection = quantum.select({
         type: 'hyperlink',
         params: [],
@@ -280,7 +272,7 @@ describe('transforms', () => {
         .should.eql(dom.create('a').class('class').attr('href', ''))
     })
 
-    it('should render children', () => {
+    it('renders children', () => {
       const selection = quantum.select({
         type: 'hyperlink',
         params: [],
@@ -297,7 +289,7 @@ describe('transforms', () => {
   })
 
   describe('title', () => {
-    it('should create a title element in the head', () => {
+    it('creates a title element in the head', () => {
       const selection = quantum.select({
         type: 'title',
         params: ['My Title'],
@@ -310,7 +302,7 @@ describe('transforms', () => {
   })
 
   describe('head', () => {
-    it('should add elements to the head', () => {
+    it('adds elements to the head', () => {
       const selection = quantum.select({
         type: 'head',
         params: ['My Title'],
@@ -342,7 +334,7 @@ describe('transforms', () => {
       ])
     })
 
-    it('should add elements to the head (promise)', () => {
+    it('adds elements to the head (promise)', () => {
       const selection = quantum.select({
         type: 'head',
         params: ['My Title'],
@@ -376,7 +368,7 @@ describe('transforms', () => {
   })
 
   describe('html', () => {
-    it('should become an unescaped text node', () => {
+    it('becomes a unescaped text node', () => {
       const selection = quantum.select({
         type: 'html',
         params: [],
@@ -390,7 +382,7 @@ describe('transforms', () => {
   })
 
   describe('script', () => {
-    it('should become an script node', () => {
+    it('becomes a script node', () => {
       const selection = quantum.select({
         type: 'script',
         params: ['/content/file.js'],
@@ -404,7 +396,7 @@ describe('transforms', () => {
   })
 
   describe('stylesheet', () => {
-    it('should create a link tag', () => {
+    it('creates a link tag', () => {
       const selection = quantum.select({
         type: 'stylesheet',
         params: ['/content/file.css'],
@@ -418,7 +410,7 @@ describe('transforms', () => {
   })
 
   describe('js', () => {
-    it('should become an script node', () => {
+    it('becomes a script node', () => {
       const selection = quantum.select({
         type: 'js',
         params: [],
@@ -432,7 +424,7 @@ describe('transforms', () => {
   })
 
   describe('css', () => {
-    it('should become an style node', () => {
+    it('becomes a style node', () => {
       const selection = quantum.select({
         type: 'css',
         params: [],
@@ -442,86 +434,6 @@ describe('transforms', () => {
       html.transforms().css(selection, transformEntity()).should.eql(
         dom.head(dom.create('style').text('.class { color: red; }', {escape: false}))
       )
-    })
-  })
-
-  describe('prepareTransforms', () => {
-    function f1 () {}
-    function f2 () {}
-    function f3 () {}
-    function f4 () {}
-    function f5 () {}
-
-    html.prepareTransforms({
-      html: {
-        div: f1,
-        span: f2
-      },
-      docs: {
-        div: f3,
-        title: f4
-      },
-      override: {
-        docs: {
-          div: f5
-        }
-      }
-    }).should.eql({
-      'html.div': f1,
-      'html.span': f2,
-      'docs.div': f3,
-      'override.docs.div': f5,
-      'docs.title': f4,
-      'div': f5,
-      'span': f2,
-      'title': f4
-    })
-  })
-
-  describe('paragraphTransform', () => {
-    it('no content should be fine', () => {
-      const selection = quantum.select({
-        type: 'whatever',
-        params: [],
-        content: []
-      })
-
-      return html.paragraphTransform(selection, transformEntity()).should.eql([
-        dom.asset({url: '/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true})
-      ])
-    })
-
-    it('split paragraphs on double newlines', () => {
-      const selection = quantum.select({
-        type: 'whatever',
-        params: [],
-        content: [
-          '',
-          'some text',
-          'some more text',
-          {type: 'b', params: [], content: ['bold text']},
-          'more text',
-          '',
-          {type: 'b', params: [], content: ['new paragraph']},
-          'new paragraph'
-        ]
-      })
-
-      return Promise.all(html.paragraphTransform(selection, transformEntity())).then(res => {
-        res.should.eql([
-          dom.asset({url: '/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true}),
-          dom.create('div').class('qm-html-paragraph')
-            .add(dom.textNode('some text '))
-            .add(dom.textNode('some more text '))
-            .add(dom.create('b').add(dom.textNode('bold text')))
-            .add(dom.textNode(' '))
-            .add(dom.textNode('more text ')),
-          dom.create('div').class('qm-html-paragraph')
-            .add(dom.create('b').add(dom.textNode('new paragraph')))
-            .add(dom.textNode(' '))
-            .add(dom.textNode('new paragraph '))
-        ])
-      })
     })
   })
 })

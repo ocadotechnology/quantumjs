@@ -1,11 +1,6 @@
-'use strict'
-require('chai').should()
-
-const quantum = require('../')
-const FileInfo = quantum.FileInfo
-
 describe('FileInfo', () => {
-  it('should use the options to set up the properties', () => {
+  const { FileInfo } = require('..')
+  it('uses the options to set up the properties', () => {
     const file = new FileInfo({
       src: 'src/content/a.um',
       resolved: 'a.um',
@@ -22,7 +17,7 @@ describe('FileInfo', () => {
   })
 
   describe('FileInfo::clone', () => {
-    it('should clone', () => {
+    it('clones', () => {
       const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
@@ -40,7 +35,7 @@ describe('FileInfo', () => {
       }))
     })
 
-    it('should change src', () => {
+    it('changes src', () => {
       const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
@@ -60,7 +55,7 @@ describe('FileInfo', () => {
       }))
     })
 
-    it('should change resolved', () => {
+    it('changes resolved', () => {
       const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
@@ -80,7 +75,7 @@ describe('FileInfo', () => {
       }))
     })
 
-    it('should change base', () => {
+    it('changes base', () => {
       const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
@@ -100,7 +95,7 @@ describe('FileInfo', () => {
       }))
     })
 
-    it('should change base', () => {
+    it('changes base', () => {
       const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
@@ -122,7 +117,7 @@ describe('FileInfo', () => {
       }))
     })
 
-    it('should change dest', () => {
+    it('changes dest', () => {
       const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
@@ -142,7 +137,7 @@ describe('FileInfo', () => {
       }))
     })
 
-    it('should change watch', () => {
+    it('changes watch', () => {
       const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',
@@ -164,7 +159,7 @@ describe('FileInfo', () => {
   })
 
   describe('FileInfo::withExtension', () => {
-    it('should change the extension', () => {
+    it('changes the extension', () => {
       const file = new FileInfo({
         src: 'src/content/a.um',
         resolved: 'a.um',

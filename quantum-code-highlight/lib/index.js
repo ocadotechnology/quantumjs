@@ -42,8 +42,8 @@ function codeblock (selection, transform) {
 
 function transforms (opts) {
   return Object.freeze({
-    code: code,
-    codeblock: codeblock
+    code,
+    codeblock
   })
 }
 

@@ -1,18 +1,12 @@
-'use strict'
-const should = require('chai').should()
-const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs-extra'))
-const chokidar = require('chokidar')
-const EventEmitter = require('events')
-const util = require('util')
-
-const quantum = require('../')
-const watch = quantum.watch
-const FileInfo = quantum.FileInfo
-const File = quantum.File
-
 describe('watcher', () => {
-  it('should watch the right files for change', () => {
+  const should = require('chai').should()
+  const Promise = require('bluebird')
+  const fs = Promise.promisifyAll(require('fs-extra'))
+  const chokidar = require('chokidar')
+  const EventEmitter = require('events')
+  const util = require('util')
+  const { watch, FileInfo } = require('..')
+  it('watches the right files for change', () => {
     return watch.watcher('target/test/watch-test/*').then((watcher) => {
       return watcher.files().then((fileInfos) => {
         fileInfos.should.eql([
@@ -47,7 +41,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should watch the right files for change (negative globs)', () => {
+  it('watches the right files for change (negative globs)', () => {
     return watch.watcher({
       files: ['target/test/watch-test/*', '!**/*.um'],
       base: 'target/test/watch-test',
@@ -69,7 +63,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should use the dest directory from the spec', () => {
+  it('uses the dest directory from the spec', () => {
     return watch.watcher({
       files: ['target/test/watch-test/*', '!**/*.um'],
       base: 'target/test/watch-test',
@@ -92,7 +86,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should watch the right files for change (multiple simple specs)', () => {
+  it('watches the right files for change (multiple simple specs)', () => {
     return watch.watcher(['target/test/files1/*.um', 'target/test/files2/*.um'], {dest: 'target2'}).then((watcher) => {
       return watcher.files().then((fileInfos) => {
         fileInfos.should.eql([
@@ -134,7 +128,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should watch the right files for change (multiple full specs)', () => {
+  it('watches the right files for change (multiple full specs)', () => {
     return watch.watcher([{
       files: 'target/test/files1/*.um',
       base: 'target/test/files1',
@@ -184,7 +178,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should watch the right files for change (multiple full specs with negative globs)', () => {
+  it('watches the right files for change (multiple full specs with negative globs)', () => {
     return watch.watcher([{
       files: ['target/test/files1/*.um', '!target/test/files1/b.um'],
       base: 'target/test/files1',
@@ -218,7 +212,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should only watch specs with watch: true', () => {
+  it('only watches specs with watch: true', () => {
     return watch.watcher([{
       files: 'target/test/files1/*.um',
       base: 'target/test/files1',
@@ -252,7 +246,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should emit an event when a file is added', (done) => {
+  it('emits an event when a file is added', (done) => {
     watch.watcher({
       files: 'target/test/watch-change-test/**/*.add',
       base: 'target/test/watch-change-test',
@@ -275,7 +269,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should emit an event when a file changes', (done) => {
+  it('emits an event when a file changes', (done) => {
     watch.watcher({
       files: 'target/test/watch-change-test/*.um',
       base: 'target/test/watch-change-test',
@@ -298,7 +292,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should emit an event when a file is removed', (done) => {
+  it('emits an event when a file is removed', (done) => {
     fs.outputFileAsync('target/test/watch-change-test/subdir/index.remove', 'Content 2').then(() => {
       watch.watcher({
         files: 'target/test/watch-change-test/**/*.remove',
@@ -323,7 +317,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should yield an error when an invalid spec is passed in', (done) => {
+  it('yields an error when an invalid spec is passed in', (done) => {
     watch.watcher({
       files: {},
       base: 'target/test/watch-change-inline-test',
@@ -334,7 +328,7 @@ describe('watcher', () => {
     })
   })
 
-  it('should yield an error when an invalid spec is passed in 2', (done) => {
+  it('yields an error when an invalid spec is passed in 2', (done) => {
     watch.watcher({}, {dest: 'target2'}).catch((err) => {
       should.exist(err)
       done()
@@ -360,7 +354,7 @@ describe('watcher', () => {
       chokidar.watch = cwatch
     })
 
-    it('should yield an error when chokidar emits an error', (done) => {
+    it('yields an error when chokidar emits an error', (done) => {
       const error = new Error('some error')
 
       watch.watcher(['target/**.um'], {dest: 'target2'}).catch((err) => {
@@ -378,7 +372,11 @@ describe('watcher', () => {
 })
 
 describe('watch', () => {
-  it('should watch inline files', (done) => {
+  const should = require('chai').should()
+  const Promise = require('bluebird')
+  const fs = Promise.promisifyAll(require('fs-extra'))
+  const { watch, File, FileInfo, parse } = require('..')
+  it('watches inline files', (done) => {
     const specs = {
       files: 'target/test/watch-change-inline-test/index.um',
       base: 'target/test/watch-change-inline-test',
@@ -417,7 +415,7 @@ describe('watch', () => {
     })
   })
 
-  it('should watch with the default options', (done) => {
+  it('watches with the default options', (done) => {
     const specs = {
       files: 'target/test/watch-change-inline-default-test/index.um',
       base: 'target/test/watch-change-inline-default-test',
@@ -454,7 +452,7 @@ describe('watch', () => {
     })
   })
 
-  it('should watch inline files several levels deep', (done) => {
+  it('watches inline files several levels deep', (done) => {
     const specs = {
       files: 'target/test/watch-change-deep-inline-test/index.um',
       base: 'target/test/watch-change-deep-inline-test',
@@ -493,7 +491,7 @@ describe('watch', () => {
     })
   })
 
-  it('a change in the base file should result in the handler being called', (done) => {
+  it('changing the base file results in the handler being called', (done) => {
     const specs = {
       files: 'target/test/watch-change-base-inline-test/index.um',
       base: 'target/test/watch-change-base-inline-test',
@@ -532,7 +530,7 @@ describe('watch', () => {
     })
   })
 
-  it('a file being removed should result in the handler being called', (done) => {
+  it('removing a file results in the handler being called', (done) => {
     const specs = {
       files: 'target/test/watch-change-remove-inline-test/index.um',
       base: 'target/test/watch-change-remove-inline-test',
@@ -571,7 +569,7 @@ describe('watch', () => {
     })
   })
 
-  it('should not error when a base file is removed, then a previously linked file is changed', (done) => {
+  it('doesnt error when a base file is removed, then a previously linked file is changed', (done) => {
     const specs = {
       files: 'target/test/watch-change-base-delete-inline-test/index*.um',
       base: 'target/test/watch-change-base-delete-inline-test',
@@ -611,7 +609,7 @@ describe('watch', () => {
     })
   })
 
-  it('should not error when the middle file in a chain is deleted, and the leaf is changed', (done) => {
+  it('doesnt error when the middle file in a chain is deleted, and the leaf is changed', (done) => {
     const specs = [
       {
         files: 'target/test/watch-change-middle-delete-inline-test/index.um',
@@ -654,7 +652,7 @@ describe('watch', () => {
     })
   })
 
-  it('should watch non quantum inline files', (done) => {
+  it('watches non quantum inline files', (done) => {
     const specs = {
       files: 'target/test/watch-change-non-quantum-inline-test/index.um',
       base: 'target/test/watch-change-non-quantum-inline-test',
@@ -693,7 +691,7 @@ describe('watch', () => {
     })
   })
 
-  it('should yield an error when an invalid spec is passed in', (done) => {
+  it('yields an error when an invalid spec is passed in', (done) => {
     watch({
       files: {},
       base: 'target/test/watch-change-inline-test',
@@ -704,14 +702,14 @@ describe('watch', () => {
     })
   })
 
-  it('should yield an error when an invalid spec is passed in 2', (done) => {
+  it('yields an error when an invalid spec is passed in 2', (done) => {
     watch({}, () => {}, {dest: 'target2'}).catch((err) => {
       should.exist(err)
       done()
     })
   })
 
-  it('should emit an error when the the file handler returns an error', (done) => {
+  it('emits an error when the the file handler returns an error', (done) => {
     const specs = {
       files: 'target/test/watch-change-error-test/index.um',
       base: 'target/test/watch-change-error-test',
@@ -743,7 +741,7 @@ describe('watch', () => {
     })
   })
 
-  it('should emit an error when the the file handler returns a parse error', (done) => {
+  it('emits an error when the the file handler returns a parse error', (done) => {
     const specs = {
       files: 'target/test/watch-invalid/index.um',
       base: 'target/test/watch-invalid',
@@ -753,7 +751,7 @@ describe('watch', () => {
     const options = {dest: 'target2'}
 
     function handler (err, parsed, details) {
-      err.should.be.an.instanceof(quantum.parse.ParseError)
+      err.should.be.an.instanceof(parse.ParseError)
       done()
     }
 

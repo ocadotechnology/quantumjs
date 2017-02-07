@@ -1,15 +1,12 @@
-'use strict'
-require('chai').should()
-const quantum = require('../')
-
 describe('clone', () => {
-  it('should clone an entity', () => {
+  const { clone } = require('..')
+  it('clones an entity', () => {
     const entity = {type: 'tag', params: [], content: []}
-    quantum.clone(entity).should.eql(entity)
-    quantum.clone(entity).should.not.equal(entity)
+    clone(entity).should.eql(entity)
+    clone(entity).should.not.equal(entity)
   })
 
-  it('should clone an entity with children and params', () => {
+  it('clones an entity with children and params', () => {
     const entity = {
       type: 'tag',
       params: ['one', 'two', 'three'],
@@ -19,7 +16,7 @@ describe('clone', () => {
       ]
     }
 
-    quantum.clone(entity).should.eql(entity)
-    quantum.clone(entity).should.not.equal(entity)
+    clone(entity).should.eql(entity)
+    clone(entity).should.not.equal(entity)
   })
 })

@@ -266,4 +266,6 @@ function transforms (opts) {
   })
 }
 
-module.exports.transforms = transforms
+module.exports = {
+  transforms
+}

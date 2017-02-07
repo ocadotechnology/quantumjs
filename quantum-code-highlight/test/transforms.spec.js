@@ -1,19 +1,26 @@
-'use strict'
-require('chai').should()
-const path = require('path')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
-const codeHighlight = require('..').transforms
-
 describe('transforms', () => {
-  it('not highlight some inline code', () => {
+  const path = require('path')
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
+  const { transforms } = require('..')
+
+  it('provides the correct transforms', () => {
+    transforms().should.have.keys([
+      'code',
+      'codeblock'
+    ])
+    transforms().code.should.be.a('function')
+    transforms().codeblock.should.be.a('function')
+  })
+
+  it('doesnt highlight inline code', () => {
     const selection = quantum.select({
       type: 'code',
       params: [],
       content: ['function (x) { return x * x }']
     })
 
-    codeHighlight().code(selection).should.eql(
+    transforms().code(selection).should.eql(
       dom.create('code')
         .class('qm-code-highlight-code qm-code-font')
         .text('function (x) { return x * x }', {escape: false})
@@ -25,14 +32,14 @@ describe('transforms', () => {
     )
   })
 
-  it('highlight a codeblock', () => {
+  it('highlights a codeblock', () => {
     const selection = quantum.select({
       type: 'codeblock',
       params: ['js'],
       content: ['function (x) { return x * x }']
     })
 
-    codeHighlight().codeblock(selection).should.eql(
+    transforms().codeblock(selection).should.eql(
       dom.create('div')
         .class('qm-code-highlight-codeblock language-js')
         .add(dom.create('pre')
@@ -46,14 +53,14 @@ describe('transforms', () => {
     )
   })
 
-  it('highlight a codeblock (invalid language)', () => {
+  it('highlights a codeblock (invalid language)', () => {
     const selection = quantum.select({
       type: 'codeblock',
       params: ['notalanguage'],
       content: ['function (x) { return x * x }']
     })
 
-    codeHighlight().codeblock(selection).should.eql(
+    transforms().codeblock(selection).should.eql(
       dom.create('div')
         .class('qm-code-highlight-codeblock language-notalanguage')
         .add(dom.create('pre')
@@ -67,14 +74,14 @@ describe('transforms', () => {
     )
   })
 
-  it('highlight a codeblock (auto highlight)', () => {
+  it('highlights a codeblock (auto highlight)', () => {
     const selection = quantum.select({
       type: 'codeblock',
       params: [],
       content: ['function (x) { return x * x }']
     })
 
-    codeHighlight().codeblock(selection).should.eql(
+    transforms().codeblock(selection).should.eql(
       dom.create('div')
         .class('qm-code-highlight-codeblock')
         .add(dom.create('pre')

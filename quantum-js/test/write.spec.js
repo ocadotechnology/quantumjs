@@ -1,16 +1,10 @@
-'use strict'
-const chai = require('chai')
-const path = require('path')
-const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs-extra'))
-
-const quantum = require('../lib')
-
-const write = quantum.write
-const FileInfo = quantum.FileInfo
-const File = quantum.File
 
 describe('write', () => {
+  const path = require('path')
+  const Promise = require('bluebird')
+  const fs = Promise.promisifyAll(require('fs-extra'))
+  const { write, FileInfo, File } = require('..')
+
   const fileInfo1 = new FileInfo({
     src: 'src/content/a1.um',
     resolved: 'a1.um',
@@ -52,12 +46,11 @@ describe('write', () => {
 
   const currDir = process.cwd()
   before(() => {
-    chai.should()
     process.chdir(path.join(__dirname, '../'))
   })
   after(() => process.chdir(currDir))
 
-  it('should write a file', () => {
+  it('writes a file', () => {
     return write(file1)
       .map((file) => {
         file.should.eql(file1)
@@ -67,7 +60,7 @@ describe('write', () => {
       })
   })
 
-  it('should write an array of files', () => {
+  it('writes an array of files', () => {
     return write([ file2, file3 ])
       .map((file, index) => {
         file.should.eql(index === 0 ? file2 : file3)
