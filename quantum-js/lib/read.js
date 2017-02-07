@@ -93,18 +93,25 @@ function read (filename, opts) {
 }
 
 function readAsFile (filename, options) {
-  return read(filename, options).then(content => {
-    return new File({
-      info: new FileInfo({
-        src: filename,
-        dest: filename
-      }),
-      content: content
+  if (filename instanceof FileInfo) {
+    const fileInfo = filename
+    return read(fileInfo.src, options)
+      .then(content => new File({ info: fileInfo, content }))
+  } else {
+    return read(filename, options).then(content => {
+      return new File({
+        info: new FileInfo({
+          src: filename,
+          dest: filename
+        }),
+        content
+      })
     })
-  })
+  }
 }
 
 module.exports = {
   read,
-  readAsFile
+  readAsFile,
+  defaultLoader
 }

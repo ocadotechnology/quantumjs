@@ -20,7 +20,7 @@ body, html {
 }
 
 a {
-  color: #0a70a2;
+  color: #0965dc;
   text-decoration: none;
   cursor: pointer;
 }
@@ -215,7 +215,11 @@ a:hover {
 }
 
 .qm-docs-notice-header {
-  background: #f69c26;
+  background: #2680f6;
+}
+
+.qm-docs-notice-body {
+  background: #e7f1fe;
 }
 
 .qm-changelog-head {
