@@ -6,8 +6,7 @@ const api = require('..')
 
 chai.should()
 
-function checkTransforms (options, props) {
-  const transforms = api.transforms(options)
+function checkProps (transforms, props) {
   transforms.should.be.an('object')
 
   // Sorted because object order doesn't matter
@@ -49,23 +48,30 @@ const jsProps = [
 
 describe('quantum-api', () => {
   it('should export the correct things', () => {
-    api.should.be.a('object')
+    api.should.be.an('object')
     api.fileTransform.should.be.a('function')
     api.transforms.should.be.a('function')
   })
 
   it('should return an object with the javascript and css languages by default', () => {
-    checkTransforms({}, [...topLevelProps, ...jsProps, ...cssProps])
+    const transforms = api.transforms()
+    checkProps(transforms, [...topLevelProps, 'javascript', 'css'])
+    checkProps(transforms.javascript, jsProps)
+    checkProps(transforms.css, cssProps)
   })
 
   it('should be possible to specify the languages (javascript only)', () => {
     const javascript = api.languages.javascript()
-    checkTransforms({languages: [ javascript ]}, [...topLevelProps, ...jsProps])
+    const transforms = api.transforms({languages: [ javascript ]})
+    checkProps(transforms, [...topLevelProps, 'javascript'])
+    checkProps(transforms.javascript, jsProps)
   })
 
   it('should be possible to specify the languages (css only)', () => {
     const css = api.languages.css()
-    checkTransforms({languages: [ css ]}, [...topLevelProps, ...cssProps])
+    const transforms = api.transforms({languages: [ css ]})
+    checkProps(transforms, [...topLevelProps, 'css'])
+    checkProps(transforms.css, cssProps)
   })
 
   it('should do nothing when options.processChangelogs is false', () => {
