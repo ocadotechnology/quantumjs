@@ -18,9 +18,10 @@ const flatten = require('flatten')
 const fs = Promise.promisifyAll(require('fs-extra'))
 
 const parse = require('./parse')
-const read = require('./read').read
 const File = require('./file')
 const fileOptions = require('./file-options')
+const { defaultFileReader } = require('./read')
+const { defaultFileLoader } = require('./util')
 
 /* Watches some glob specs for changes */
 function Watcher (specs, options) {
@@ -90,10 +91,6 @@ function watcher (specs, options) {
   return w._promise.then(() => w)
 }
 
-function defaultLoader (filename, parentFilename) {
-  return fs.readFileAsync(filename, 'utf-8')
-}
-
 // watches quantum files and follows inline links
 function watch (specs, handler, options) {
   const err = fileOptions.validate(specs)
@@ -106,7 +103,8 @@ function watch (specs, handler, options) {
   // Option resolving
   const opts = options || {}
   const dir = opts.dir || '.'
-  const loader = opts.loader || defaultLoader
+  const fileReader = opts.fileReader || defaultFileReader
+  const fileLoader = opts.fileLoader || defaultFileLoader
   const buildConcurrency = opts.concurrency || 1
 
   // State that is maintained by watching for file changes
@@ -114,7 +112,7 @@ function watch (specs, handler, options) {
   const affectedFiles = {}
   const affectedFilesInverse = {}
 
-  function linkingLoader (filename, parentFilename) {
+  function linkingFileReader (filename, parentFilename) {
     if (parentFilename) {
       affectedFiles[filename] = affectedFiles[filename] || new Set()
       affectedFiles[filename].add(parentFilename)
@@ -123,7 +121,7 @@ function watch (specs, handler, options) {
       affectedFilesInverse[parentFilename].add(filename)
       watchFile(filename)
     }
-    return loader(filename, parentFilename)
+    return fileReader(filename, parentFilename)
   }
 
   function unlinkFile (filename) {
@@ -177,11 +175,8 @@ function watch (specs, handler, options) {
 
   function workHandler (work) {
     fileInfos[work.fileInfo.src] = work.fileInfo
-    return read(work.fileInfo.src, {loader: linkingLoader})
-      .then((content) => {
-        const file = new File({info: work.fileInfo, content: content})
-        return handler(undefined, file, work.cause)
-      })
+    return fileLoader(work.fileInfo, linkingFileReader)
+      .then(file => handler(undefined, file, work.cause))
       .catch((err) => {
         if (err instanceof parse.ParseError) {
           return handler(err, new File({info: work.fileInfo, content: undefined}), work.cause)

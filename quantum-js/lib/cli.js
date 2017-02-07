@@ -19,10 +19,10 @@ const ws = require('ws')
 
 const qwatch = require('./watch')
 const parse = require('./parse')
-const read = require('./read').read
-const File = require('./file')
 const fileOptions = require('./file-options')
 const version = require('../package.json').version
+const { defaultFileReader } = require('./read')
+const { defaultFileLoader } = require('./util')
 
 const liveReloadScriptTag = fs.readFileSync(path.join(__dirname, '..', 'assets', 'live-reload.html'))
 
@@ -149,24 +149,20 @@ function build (config) {
   const logger = getLoggerWrapper(config)(config.logger || defaultLogger)
   const options = {concurrency: config.concurrency || 1, dest: config.dest}
   const pipeline = createPipeline(config.pipeline)
+  const fileReader = config.fileReader || defaultFileReader
+  const fileLoader = config.fileLoader || defaultFileLoader
 
   let builtCount = 0
   const startTime = Date.now()
   return copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Pages'})
     return fileOptions.resolve(config.pages, options).map((fileInfo) => {
-      return read(fileInfo.src)
-        .then((content) => {
-          const file = new File({
-            info: fileInfo,
-            content: content
-          })
-          return buildPage(file, pipeline, config, logger, false)
-            .then(files => {
-              builtCount += files.length
-              return files
-            })
-        })
+      return fileLoader(fileInfo, fileReader)
+        .then(file => buildPage(file, pipeline, config, logger, false)
+          .then(files => {
+            builtCount += files.length
+            return files
+          }))
         .catch((err) => {
           if (err instanceof parse.ParseError) {
             logger({type: 'page-load-error', fileInfo: fileInfo.src, error: err})
@@ -222,7 +218,13 @@ function startServer (options) {
 
 function watch (config) {
   const logger = getLoggerWrapper(config)(config.logger || defaultLogger)
-  const options = {concurrency: config.concurrency || 1, dest: config.dest || 'target', port: config.port || 8080}
+  const options = {
+    concurrency: config.concurrency || 1,
+    dest: config.dest || 'target',
+    port: config.port || 8080,
+    fileReader: config.fileReader || defaultFileReader,
+    fileLoader: config.fileLoader || defaultFileLoader
+  }
   const pipeline = createPipeline(config.pipeline)
 
   logger({type: 'header', message: 'Starting Server'})
