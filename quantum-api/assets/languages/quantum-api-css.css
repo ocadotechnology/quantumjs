@@ -23,14 +23,14 @@
   font-weight: bold;
 }
 
-.qm-api-css-class:before {
+.qm-api-item-header-class > .qm-api-css-header-name:before {
   content: ' .';
 }
 
-.qm-api-css-child-class:before {
+.qm-api-item-header-child-class > .qm-api-css-header-name:before {
   content: ' > .';
 }
 
-.qm-api-css-extra-class:before {
+.qm-api-item-header-extra-class > .qm-api-css-header-name:before {
   content: '.';
 }
