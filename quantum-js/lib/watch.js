@@ -18,8 +18,8 @@ const flatten = require('flatten')
 const fs = Promise.promisifyAll(require('fs-extra'))
 
 const parse = require('./parse')
-const File = require('./file')
-const fileOptions = require('./file-options')
+const File = require('./File')
+const fileOptions = require('./fileOptions')
 const { defaultLoader, readAsFile } = require('./read')
 
 /* Watches some glob specs for changes */

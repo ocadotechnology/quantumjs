@@ -14,8 +14,8 @@ const path = require('path')
 const fs = Promise.promisifyAll(require('fs'))
 const globby = require('globby')
 const parse = require('./parse')
-const File = require('./file')
-const FileInfo = require('./file-info')
+const File = require('./File')
+const FileInfo = require('./FileInfo')
 
 function defaultLoader (filename, parentFilename) {
   return fs.readFileAsync(filename, 'utf-8')

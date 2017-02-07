@@ -10,8 +10,8 @@
 */
 
 module.exports = {
-  File: require('./file'),
-  FileInfo: require('./file-info'),
+  File: require('./File'),
+  FileInfo: require('./FileInfo'),
   Selection: require('./select').Selection,
   parse: require('./parse'),
   stringify: require('./stringify'),
@@ -20,7 +20,7 @@ module.exports = {
   write: require('./write'),
   select: require('./select'),
   json: require('./json'),
-  // fileOptions: require('./file-options'),
+  // fileOptions: require('./fileOptions'),
   watch: require('./watch'),
   cli: require('./cli'),
   clone: require('./clone')

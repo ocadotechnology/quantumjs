@@ -1,28 +1,22 @@
-'use strict'
-const chai = require('chai')
-chai.should()
-
-const quantum = require('../')
-const parse = quantum.parse
-const tokenize = parse.tokenize
-const ast = parse.ast
-
 describe('parse', () => {
+  const expect = require('chai').expect
+  const { parse } = require('..')
+  const { ast, tokenize } = parse
   describe('tokenize', () => {
-    it('should detect a type correctly', () => {
+    it('detects a type correctly', () => {
       tokenize('@type').should.eql([
         { type: 'TYPE', value: 'type' }
       ])
     })
 
-    it('should detect a type with params', () => {
+    it('detects a type with params', () => {
       tokenize('@fruits apple kiwi cherry lime').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: 'apple kiwi cherry lime' }
       ])
     })
 
-    it('should detect a type with params (followed by colon)', () => {
+    it('detects a type with params (followed by colon)', () => {
       tokenize('@fruits apple kiwi cherry:').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: 'apple kiwi cherry' },
@@ -30,7 +24,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should detect a type with params (followed by colon)', () => {
+    it('detects a type with params (followed by colon)', () => {
       tokenize('@fruits apple kiwi cherry:\n@veg').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: 'apple kiwi cherry' },
@@ -40,27 +34,27 @@ describe('parse', () => {
       ])
     })
 
-    it('should detect a type with params (followed by newline)', () => {
+    it('detects a type with params (followed by newline)', () => {
       tokenize('@fruits apple kiwi cherry\n').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: 'apple kiwi cherry' }
       ])
     })
 
-    it('should detect a type with params (in parenths)', () => {
+    it('detects a type with params (in parenths)', () => {
       tokenize('@fruits(apple kiwi cherry)').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: 'apple kiwi cherry' }
       ])
     })
 
-    it('should throw an error for incomplete param brackets', () => {
-      chai.expect(() => {
+    it('throws an error for incomplete param brackets', () => {
+      expect(() => {
         tokenize('@fruits(apple kiwi cherry')
       }).to.throw()
     })
 
-    it('should detect a type with content (in parenths)', () => {
+    it('detects a type with content (in parenths)', () => {
       tokenize('@fruits[apple kiwi cherry]').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'START_INLINE_CONTENT' },
@@ -69,7 +63,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should detect a type with content (in parenths)', () => {
+    it('detects a type with content (in parenths)', () => {
       tokenize('@fruits[apple kiwi cherry]  @fruits[apple kiwi cherry]').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'START_INLINE_CONTENT' },
@@ -83,25 +77,61 @@ describe('parse', () => {
       ])
     })
 
-    it('inline should ignore @', () => {
-      tokenize('@fruits[apple kiwi cherry @fruits]').should.eql([
-        { type: 'TYPE', value: 'fruits' },
-        { type: 'START_INLINE_CONTENT' },
-        { type: 'CONTENT', value: 'apple kiwi cherry @fruits' },
-        { type: 'END_INLINE_CONTENT' }
-      ])
+    describe('inline', () => {
+      it('ignore @', () => {
+        tokenize('@fruits[apple kiwi cherry @fruits]').should.eql([
+          { type: 'TYPE', value: 'fruits' },
+          { type: 'START_INLINE_CONTENT' },
+          { type: 'CONTENT', value: 'apple kiwi cherry @fruits' },
+          { type: 'END_INLINE_CONTENT' }
+        ])
+      })
+
+      it('handles escaped brackets in content', () => {
+        tokenize('@fruits[apple kiwi cherry @fruits\\[apple kiwi cherry\\]]').should.eql([
+          { type: 'TYPE', value: 'fruits' },
+          { type: 'START_INLINE_CONTENT' },
+          { type: 'CONTENT', value: 'apple kiwi cherry @fruits[apple kiwi cherry]' },
+          { type: 'END_INLINE_CONTENT' }
+        ])
+      })
+
+      it('inlines followed by a newline', () => {
+        tokenize('@fruits: @ripe[banana]\n  @veg: parsnip').should.eql([
+          { type: 'TYPE', value: 'fruits' },
+          { type: 'START_SAME_LINE_CONTENT' },
+          { type: 'TYPE', value: 'ripe' },
+          { type: 'START_INLINE_CONTENT' },
+          { type: 'CONTENT', value: 'banana' },
+          { type: 'END_INLINE_CONTENT' },
+          { type: 'END_SAME_LINE_CONTENT' },
+          { type: 'INDENT', value: 2 },
+          { type: 'TYPE', value: 'veg' },
+          { type: 'START_SAME_LINE_CONTENT' },
+          { type: 'CONTENT', value: 'parsnip' }
+        ])
+      })
+
+      it('inlines followed by a newline', () => {
+        tokenize('@container\n  @fruits: @ripe[banana]\n    @veg: parsnip').should.eql([
+          { type: 'TYPE', value: 'container' },
+          { type: 'INDENT', value: 2 },
+          { type: 'TYPE', value: 'fruits' },
+          { type: 'START_SAME_LINE_CONTENT' },
+          { type: 'TYPE', value: 'ripe' },
+          { type: 'START_INLINE_CONTENT' },
+          { type: 'CONTENT', value: 'banana' },
+          { type: 'END_INLINE_CONTENT' },
+          { type: 'END_SAME_LINE_CONTENT' },
+          { type: 'INDENT', value: 2 },
+          { type: 'TYPE', value: 'veg' },
+          { type: 'START_SAME_LINE_CONTENT' },
+          { type: 'CONTENT', value: 'parsnip' }
+        ])
+      })
     })
 
-    it('inline should handle escaped brackets in content', () => {
-      tokenize('@fruits[apple kiwi cherry @fruits\\[apple kiwi cherry\\]]').should.eql([
-        { type: 'TYPE', value: 'fruits' },
-        { type: 'START_INLINE_CONTENT' },
-        { type: 'CONTENT', value: 'apple kiwi cherry @fruits[apple kiwi cherry]' },
-        { type: 'END_INLINE_CONTENT' }
-      ])
-    })
-
-    it('should detect a type with content (in parenths)', () => {
+    it('detects a type with content (in parenths)', () => {
       tokenize('@fruits(lemon lime)[apple kiwi cherry]').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: 'lemon lime' },
@@ -111,19 +141,19 @@ describe('parse', () => {
       ])
     })
 
-    it('should throw an error for incomplete content brackets', () => {
-      chai.expect(() => {
+    it('throws an error for incomplete content brackets', () => {
+      expect(() => {
         tokenize('@fruits[juice')
       }).to.throw()
     })
 
-    it('should throw an error for incomplete content brackets', () => {
-      chai.expect(() => {
+    it('throws an error for incomplete content brackets', () => {
+      expect(() => {
         tokenize('@fruits(apple)[juice')
       }).to.throw()
     })
 
-    it('should detect an indent after an entity', () => {
+    it('detects an indent after an entity', () => {
       tokenize('@fruits\n  @veg').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -131,7 +161,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should detect a dedent after an entity', () => {
+    it('detects a dedent after an entity', () => {
       tokenize('@fruits\n  @veg\n@pudding').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -141,7 +171,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should not mind how much indentation is used', () => {
+    it('doesnt mind how much indentation is used', () => {
       tokenize('@fruits\n        @veg\n@pudding').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 8 },
@@ -151,7 +181,7 @@ describe('parse', () => {
       ])
     })
 
-    it('when indentation stays the same, no INDENT or DEDENT should be emitted', () => {
+    it('doesnt emit INDENT or DEDENT when indentation stays the same', () => {
       tokenize('@fruits\n  @veg\n  @veg\n@pudding').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -162,7 +192,7 @@ describe('parse', () => {
       ])
     })
 
-    it('the correct number of dedents should be emitted when dropping back multiple levels', () => {
+    it('emits the correct number of dedents when dropping back multiple levels', () => {
       tokenize('@fruits\n  @veg\n    @veg\n@pudding').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -175,52 +205,54 @@ describe('parse', () => {
       ])
     })
 
-    it('indent should not be called for non entity content (except when directly following an entity tag)', () => {
-      tokenize('@fruits\n  indent\n    indent\n       alsoindent\n  dedent\ndedent').should.eql([
-        { type: 'TYPE', value: 'fruits' },
-        { type: 'INDENT', value: 2 },
-        { type: 'CONTENT', value: 'indent' },
-        { type: 'INDENT', value: 2 },
-        { type: 'CONTENT', value: 'indent' },
-        { type: 'INDENT', value: 3 },
-        { type: 'CONTENT', value: 'alsoindent' },
-        { type: 'DEDENT', value: 3 },
-        { type: 'DEDENT', value: 2 },
-        { type: 'CONTENT', value: 'dedent' },
-        { type: 'DEDENT', value: 2 },
-        { type: 'CONTENT', value: 'dedent' }
-      ])
+    describe('indent', () => {
+      it('isnt called for non entity content (except when directly following an entity tag)', () => {
+        tokenize('@fruits\n  indent\n    indent\n       alsoindent\n  dedent\ndedent').should.eql([
+          { type: 'TYPE', value: 'fruits' },
+          { type: 'INDENT', value: 2 },
+          { type: 'CONTENT', value: 'indent' },
+          { type: 'INDENT', value: 2 },
+          { type: 'CONTENT', value: 'indent' },
+          { type: 'INDENT', value: 3 },
+          { type: 'CONTENT', value: 'alsoindent' },
+          { type: 'DEDENT', value: 3 },
+          { type: 'DEDENT', value: 2 },
+          { type: 'CONTENT', value: 'dedent' },
+          { type: 'DEDENT', value: 2 },
+          { type: 'CONTENT', value: 'dedent' }
+        ])
+      })
+
+      it('drops back through multiple indent levels', () => {
+        tokenize('@fruits\n  indent\n    indent\n       alsoindent\ndedent').should.eql([
+          { type: 'TYPE', value: 'fruits' },
+          { type: 'INDENT', value: 2 },
+          { type: 'CONTENT', value: 'indent' },
+          { type: 'INDENT', value: 2 },
+          { type: 'CONTENT', value: 'indent' },
+          { type: 'INDENT', value: 3 },
+          { type: 'CONTENT', value: 'alsoindent' },
+          { type: 'DEDENT', value: 3 },
+          { type: 'DEDENT', value: 2 },
+          { type: 'DEDENT', value: 2 },
+          { type: 'CONTENT', value: 'dedent' }
+        ])
+      })
     })
 
-    it('indent should be able to drop back through multiple indent levels', () => {
-      tokenize('@fruits\n  indent\n    indent\n       alsoindent\ndedent').should.eql([
-        { type: 'TYPE', value: 'fruits' },
-        { type: 'INDENT', value: 2 },
-        { type: 'CONTENT', value: 'indent' },
-        { type: 'INDENT', value: 2 },
-        { type: 'CONTENT', value: 'indent' },
-        { type: 'INDENT', value: 3 },
-        { type: 'CONTENT', value: 'alsoindent' },
-        { type: 'DEDENT', value: 3 },
-        { type: 'DEDENT', value: 2 },
-        { type: 'DEDENT', value: 2 },
-        { type: 'CONTENT', value: 'dedent' }
-      ])
-    })
-
-    it('messed up indentation should throw an error', () => {
-      chai.expect(() => {
+    it('messed up indentation throws an error', () => {
+      expect(() => {
         tokenize('@fruits\n  indent\n    indent\n       alsoindent\n dedent\ndedent\ndedent\ndedent')
       }).to.throw()
     })
 
-    it('messed up indentation should throw an error (should show the surrounding lines)', () => {
-      chai.expect(() => {
+    it('messed up indentation throws an error (should show the surrounding lines)', () => {
+      expect(() => {
         tokenize('@fruits\n  indent\n    indent\n       alsoindent\n dedent\ndedent\ndedent\ndedent\ndedent')
       }).to.throw()
     })
 
-    it('should parse comments correctly', () => {
+    it('parses comments correctly', () => {
       tokenize('@fruits\n  #comment\n  indent').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'COMMENT', value: 'comment' },
@@ -229,7 +261,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should not parse comments inside escaped blocks', () => {
+    it('doesnt parse comments inside escaped blocks', () => {
       tokenize('@@fruits\n  #comment\n  indent').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -247,14 +279,14 @@ describe('parse', () => {
       ])
     })
 
-    it('at this stage should not care about parameter grouping', () => {
+    it('at this stage doesnt care about parameter grouping', () => {
       tokenize('@fruits [one two three] four').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: '[one two three] four' }
       ])
     })
 
-    it('should handle same line content', () => {
+    it('handles same line content', () => {
       tokenize('@fruits: kiwi lemon orange').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'START_SAME_LINE_CONTENT' },
@@ -262,7 +294,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle same line content', () => {
+    it('handles same line content', () => {
       tokenize('@fruits: orange\n  quince').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'START_SAME_LINE_CONTENT' },
@@ -273,41 +305,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should inline followed by a newline', () => {
-      tokenize('@fruits: @ripe[banana]\n  @veg: parsnip').should.eql([
-        { type: 'TYPE', value: 'fruits' },
-        { type: 'START_SAME_LINE_CONTENT' },
-        { type: 'TYPE', value: 'ripe' },
-        { type: 'START_INLINE_CONTENT' },
-        { type: 'CONTENT', value: 'banana' },
-        { type: 'END_INLINE_CONTENT' },
-        { type: 'END_SAME_LINE_CONTENT' },
-        { type: 'INDENT', value: 2 },
-        { type: 'TYPE', value: 'veg' },
-        { type: 'START_SAME_LINE_CONTENT' },
-        { type: 'CONTENT', value: 'parsnip' }
-      ])
-    })
-
-    it('should inline followed by a newline', () => {
-      tokenize('@container\n  @fruits: @ripe[banana]\n    @veg: parsnip').should.eql([
-        { type: 'TYPE', value: 'container' },
-        { type: 'INDENT', value: 2 },
-        { type: 'TYPE', value: 'fruits' },
-        { type: 'START_SAME_LINE_CONTENT' },
-        { type: 'TYPE', value: 'ripe' },
-        { type: 'START_INLINE_CONTENT' },
-        { type: 'CONTENT', value: 'banana' },
-        { type: 'END_INLINE_CONTENT' },
-        { type: 'END_SAME_LINE_CONTENT' },
-        { type: 'INDENT', value: 2 },
-        { type: 'TYPE', value: 'veg' },
-        { type: 'START_SAME_LINE_CONTENT' },
-        { type: 'CONTENT', value: 'parsnip' }
-      ])
-    })
-
-    it('should handle empty lines correctly', () => {
+    it('handles empty lines correctly', () => {
       tokenize('@fruits ripe\n\n  @banana\n  \n  @lychee').should.eql([
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: 'ripe' },
@@ -319,14 +317,14 @@ describe('parse', () => {
       ])
     })
 
-    it('should emit the correct type for escaping', () => {
+    it('emits the correct type for escaping', () => {
       tokenize('@(@escaped)').should.eql([
         { type: 'TYPE', value: '' },
         { type: 'PARAMS', value: '@escaped' }
       ])
     })
 
-    it('should emit the correct type for escaping', () => {
+    it('emits the correct type for escaping', () => {
       tokenize('person@(@example).com').should.eql([
         { type: 'CONTENT', value: 'person' },
         { type: 'TYPE', value: '' },
@@ -335,7 +333,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should emit the correct type for escaping', () => {
+    it('emits the correct type for escaping', () => {
       tokenize('person@(@example)\n.com').should.eql([
         { type: 'CONTENT', value: 'person' },
         { type: 'TYPE', value: '' },
@@ -406,7 +404,7 @@ describe('parse', () => {
       ])
     })
 
-    it('@@ should not parse any of the content', () => {
+    it('@@ doesnt parse any of the content', () => {
       tokenize('@@one\n  @two').should.eql([
         { type: 'TYPE', value: 'one' },
         { type: 'INDENT', value: 2 },
@@ -414,7 +412,7 @@ describe('parse', () => {
       ])
     })
 
-    it('it should resume parsing like normal after an @@ block', () => {
+    it('resumes parsing like normal after an @@ block', () => {
       tokenize('@@one\n  @two\n@three').should.eql([
         { type: 'TYPE', value: 'one' },
         { type: 'INDENT', value: 2 },
@@ -424,7 +422,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle a multiline @@ block followed by a single line one', () => {
+    it('handles a multiline @@ block followed by a single line one', () => {
       tokenize('@@codeblock js\n  () => { return 0 }\n@@codeblock js: () => { return 0 }\n').should.eql([
         { type: 'TYPE', value: 'codeblock' },
         { type: 'PARAMS', value: 'js' },
@@ -439,7 +437,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle multiple single line @@ blocks', () => {
+    it('handles multiple single line @@ blocks', () => {
       tokenize('@@codeblock js: () => { return 0 }\n@@codeblock js: () => { return 0 }\n').should.eql([
         { type: 'TYPE', value: 'codeblock' },
         { type: 'PARAMS', value: 'js' },
@@ -454,7 +452,7 @@ describe('parse', () => {
       ])
     })
 
-    it('it should emit the right tokens for parsing nested square brackets', () => {
+    it('emits the right tokens for parsing nested square brackets', () => {
       tokenize('@thing[[1, 2, 3]]').should.eql([
         { type: 'TYPE', value: 'thing' },
         { type: 'START_INLINE_CONTENT' },
@@ -463,7 +461,7 @@ describe('parse', () => {
       ])
     })
 
-    it('it should escape within inline content correctly ([)', () => {
+    it('escapes within inline content correctly ([)', () => {
       tokenize('@thing[\\[1, 2, 3] bob').should.eql([
         { type: 'TYPE', value: 'thing' },
         { type: 'START_INLINE_CONTENT' },
@@ -473,7 +471,7 @@ describe('parse', () => {
       ])
     })
 
-    it('it should escape within inline content correctly (])', () => {
+    it('escapes within inline content correctly (])', () => {
       tokenize('@thing[\\]1, 2, 3] bob').should.eql([
         { type: 'TYPE', value: 'thing' },
         { type: 'START_INLINE_CONTENT' },
@@ -483,7 +481,7 @@ describe('parse', () => {
       ])
     })
 
-    it('newlines should be allowed in inline content', () => {
+    it('allows newlines in inline content', () => {
       tokenize('@thing[very\nlong\ncontent]').should.eql([
         { type: 'TYPE', value: 'thing' },
         { type: 'START_INLINE_CONTENT' },
@@ -494,7 +492,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle newlines after inline content correctly', () => {
+    it('handles newlines after inline content correctly', () => {
       tokenize('Some @thing[content]\nSome more content').should.eql([
         { type: 'CONTENT', value: 'Some ' },
         { type: 'TYPE', value: 'thing' },
@@ -505,7 +503,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle newlines after inline content correctly', () => {
+    it('handles newlines after inline content correctly', () => {
       tokenize('@container\n  Some @thing[content]\n  Some more content').should.eql([
         { type: 'TYPE', value: 'container' },
         { type: 'INDENT', value: 2 },
@@ -518,7 +516,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle inline content in same line content (ending on a newline)', () => {
+    it('handles inline content in same line content (ending on a newline)', () => {
       tokenize('@italic: @bold[test]\nContent').should.eql([
         { type: 'TYPE', value: 'italic' },
         { type: 'START_SAME_LINE_CONTENT' },
@@ -531,7 +529,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle inline and sameline content that end at a newline with indentations', () => {
+    it('handles inline and sameline content that end at a newline with indentations', () => {
       tokenize('@container\n  @italic: @bold[test]\nContent').should.eql([
         { type: 'TYPE', value: 'container' },
         { type: 'INDENT', value: 2 },
@@ -549,7 +547,7 @@ describe('parse', () => {
   })
 
   describe('ast', () => {
-    it('should build a basic type entity', () => {
+    it('builds a basic type entity', () => {
       const tokens = [
         { type: 'TYPE', value: 'fruits' }
       ]
@@ -594,7 +592,7 @@ describe('parse', () => {
       }])
     })
 
-    it('escaped params should work', () => {
+    it('handles escaped params', () => {
       const tokens = [
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: '[one two three] four' }
@@ -652,7 +650,7 @@ describe('parse', () => {
       ])
     })
 
-    it('non type indentations should be ignored', () => {
+    it('ignores non type indentations', () => {
       const tokens = [
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -689,7 +687,7 @@ describe('parse', () => {
       ])
     })
 
-    it('non type indentations should be ignored', () => {
+    it('ignores non type indentations', () => {
       const tokens = [
         { type: 'TYPE', value: 'fruits' },
         { type: 'START_SAME_LINE_CONTENT' },
@@ -773,7 +771,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should emit the correct tokens for escaping', () => {
+    it('emits the correct tokens for escaping', () => {
       const tokens = [
         { type: 'TYPE', value: '' },
         { type: 'PARAMS', value: '@escaped' }
@@ -784,7 +782,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle a more complex escaping', () => {
+    it('handles a more complex escaping', () => {
       const tokens = [
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -805,7 +803,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle empty excaped sections', () => {
+    it('handles empty escaped sections', () => {
       const tokens = [
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -825,7 +823,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle a more escaping that ends on a newline', () => {
+    it('handles a more escaping that ends on a newline', () => {
       const tokens = [
         { type: 'TYPE', value: 'fruits' },
         { type: 'INDENT', value: 2 },
@@ -848,7 +846,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle inline and sameline content that end at a newline', () => {
+    it('handles inline and sameline content that end at a newline', () => {
       const tokens = [
         { type: 'TYPE', value: 'italic' },
         { type: 'START_SAME_LINE_CONTENT' },
@@ -878,7 +876,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle inline and sameline content that end at a newline with indentations', () => {
+    it('handles inline and sameline content that end at a newline with indentations', () => {
       const tokens = [
         { type: 'TYPE', value: 'container' },
         { type: 'INDENT', value: 2 },
@@ -992,7 +990,7 @@ describe('parse', () => {
       ])
     })
 
-    it('should handle empty lines correctly', () => {
+    it('handles empty lines correctly', () => {
       const tokens = [
         { type: 'TYPE', value: 'fruits' },
         { type: 'PARAMS', value: 'ripe' },
@@ -1025,7 +1023,7 @@ describe('parse', () => {
       ])
     })
 
-    it('newlines should be allowed in inline content', () => {
+    it('allows newlines in inline content', () => {
       const tokens = [
         { type: 'TYPE', value: 'thing' },
         { type: 'START_INLINE_CONTENT' },
@@ -1054,7 +1052,7 @@ describe('parse', () => {
       }
     }
 
-    it('should parse a tag with no parameters', () => {
+    it('parses a tag with no parameters', () => {
       const source = '@button'
       const expected = selection([
         {
@@ -1063,10 +1061,10 @@ describe('parse', () => {
           content: []
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should include whitespace only lines when parsing', () => {
+    it('includes whitespace only lines when parsing', () => {
       const source = '@button\n\n@button'
       const expected = selection([
         {
@@ -1079,10 +1077,10 @@ describe('parse', () => {
           content: []
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse a single paramter correctly', () => {
+    it('parses a single paramter correctly', () => {
       const source = '@button positive'
       const expected = selection([
         {
@@ -1091,10 +1089,10 @@ describe('parse', () => {
           content: []
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse a multiple paramters correctly', () => {
+    it('parses a multiple paramters correctly', () => {
       const source = '@tags bug enhancement feature-request'
       const expected = selection([
         {
@@ -1103,16 +1101,16 @@ describe('parse', () => {
           content: []
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should ignore lines starting with # (by default)', () => {
+    it('ignores lines starting with # (by default)', () => {
       const source = '# @tags bug enhancement feature-request'
       const expected = selection([])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse text as text', () => {
+    it('parses text as text', () => {
       const source = '@tags\n  line 1\n    line 2\n  line 3'
       const expected = selection([
         {
@@ -1121,10 +1119,10 @@ describe('parse', () => {
           content: ['line 1', '  line 2', 'line 3']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse nested types', () => {
+    it('parses nested types', () => {
       const source = '@tags\n  @tag a\n    line 1\n  @tag b'
       const expected = selection([
         {
@@ -1143,10 +1141,10 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse nested types with inconsistent indentation levels', () => {
+    it('parses nested types with inconsistent indentation levels', () => {
       const source = '@tags\n  @tag a\n          @tag b\n            bcontent\n          @tag c\n              content1\n                content2\n              content3'
       const expected = selection([
         {
@@ -1171,10 +1169,10 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse single line content', () => {
+    it('parses single line content', () => {
       const source = '@tags: content'
       const expected = selection([
         {
@@ -1183,10 +1181,10 @@ describe('parse', () => {
           content: ['content']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse single line content a parameter', () => {
+    it('parses single line content a parameter', () => {
       const source = '@tags param: content'
       const expected = selection([
         {
@@ -1195,10 +1193,10 @@ describe('parse', () => {
           content: ['content']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse single line content with parameters', () => {
+    it('parses single line content with parameters', () => {
       const source = '@tags param1 param2: content'
       const expected = selection([
         {
@@ -1207,10 +1205,10 @@ describe('parse', () => {
           content: ['content']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse multiple parameters', () => {
+    it('parses multiple parameters', () => {
       const source = '@tags [[param1] [param2 param3]]'
       const expected = selection([
         {
@@ -1219,10 +1217,10 @@ describe('parse', () => {
           content: []
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should ignore whitespace between type and params', () => {
+    it('ignores whitespace between type and params', () => {
       const source = '@tags     param'
       const expected = selection([
         {
@@ -1231,10 +1229,10 @@ describe('parse', () => {
           content: []
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse mixed single line content and multiple line content', () => {
+    it('parses mixed single line content and multiple line content', () => {
       const source = '@tags: content1\n  content2'
       const expected = selection([
         {
@@ -1243,10 +1241,10 @@ describe('parse', () => {
           content: ['content1', 'content2']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should pass the mega test', () => {
+    it('passes the mega test', () => {
       const source = '@tags\n  @tag a\n    line 1\n    @t a\n    @t: b\n  @tag b\n    @x y z: a\n      b\n        c\n      d\n\n          e'
       const expected = selection([
         {
@@ -1281,7 +1279,7 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
     it('multiple tags at the same level', () => {
@@ -1311,10 +1309,10 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse multiple entities that start on the same line', () => {
+    it('parses multiple entities that start on the same line', () => {
       const source = '@button: @tag: content'
       const expected = selection([
         {
@@ -1329,10 +1327,10 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse multiple entities that start on the same line, then continue parsing content on the next line', () => {
+    it('parses multiple entities that start on the same line, then continue parsing content on the next line', () => {
       const source = '@button: @tag: content\n  @tag2: content2'
       const expected = selection([
         {
@@ -1353,10 +1351,10 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse an inline entity, followed by a new line entity correctly', () => {
+    it('parses an inline entity, followed by a new line entity correctly', () => {
       const source = '@button: @tag[content]\n  @tag2: content2'
       const expected = selection([
         {
@@ -1375,10 +1373,10 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse inline entities (just single param)', () => {
+    it('parses inline entities (just single param)', () => {
       const source = "@button: Click this: @button(positive) Or don't."
       const expected = selection([
         {
@@ -1393,10 +1391,10 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse inline entities (multiple params)', () => {
+    it('parses inline entities (multiple params)', () => {
       const source = "@button: Click this: @button(positive inverse) Or don't."
       const expected = selection([
         {
@@ -1411,10 +1409,10 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse inline entities', () => {
+    it('parses inline entities', () => {
       const source = "@button: Click this: @button(positive)[content] Or don't."
       const expected = selection([
         {
@@ -1429,10 +1427,10 @@ describe('parse', () => {
           ]
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse array parameters', () => {
+    it('parses array parameters', () => {
       const source = '@button a [b c] d [e f g]'
       const expected = selection([
         {
@@ -1441,17 +1439,17 @@ describe('parse', () => {
           content: []
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should throw warning when the indentation is messed up', () => {
+    it('throws warning when the indentation is messed up', () => {
       const source = '@button\n      @button\n    @button\n  @button\n@button'
-      chai.expect(() => {
+      expect(() => {
         return parse(source)
       }).to.throw()
     })
 
-    it('should handle dropping back indentation before an entity with newlines', () => {
+    it('handles dropping back indentation before an entity with newlines', () => {
       const source = '@button\n\n  some content\n\nmore content'
       const expected = selection([
         {
@@ -1460,10 +1458,10 @@ describe('parse', () => {
           content: ['', 'some content']
         }, '', 'more content'
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should handle escaping', () => {
+    it('handles escaping', () => {
       const source = '@fruits\n  @(@escaped)'
       const expected = selection([
         {
@@ -1472,10 +1470,10 @@ describe('parse', () => {
           content: ['@escaped']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should detect newlines after inline entities', () => {
+    it('detects newlines after inline entities', () => {
       const source = '@titlebar: @title(Test)\n\n@js\n  hx.notify().info("Hi");'
       const expected = selection([
         {
@@ -1494,16 +1492,16 @@ describe('parse', () => {
           content: ['hx.notify().info("Hi");']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should handle content with square bracket followed by non whitespace', () => {
+    it('handles content with square bracket followed by non whitespace', () => {
       const source = '[] this is fine'
       const expected = selection(['[] this is fine'])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should handle content with square bracket followed by non whitespace', () => {
+    it('handles content with square bracket followed by non whitespace', () => {
       const source = '@content\n  [] this is fine'
       const expected = selection([
         {
@@ -1512,16 +1510,16 @@ describe('parse', () => {
           content: ['[] this is fine']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should handle content with square bracket followed by non whitespace', () => {
+    it('handles content with square bracket followed by non whitespace', () => {
       const source = '] ;'
       const expected = selection(['] ;'])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('inline should work with square brackets after', () => {
+    it('inline works with square brackets after', () => {
       const source = '@type[content] []'
       const expected = selection([
         {
@@ -1531,10 +1529,10 @@ describe('parse', () => {
         },
         ' []'
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('colon in an escaped parameter should be fine', () => {
+    it('colon in an escaped parameter works', () => {
       const source = '@link [http://example.com]: example.com'
       const expected = selection([
         {
@@ -1543,10 +1541,10 @@ describe('parse', () => {
           content: ['example.com']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('colon in an escaped parameter should be fine (newline content)', () => {
+    it('colon in an escaped parameter works (newline content)', () => {
       const source = '@link [http://example.com]\n  example.com'
       const expected = selection([
         {
@@ -1555,10 +1553,10 @@ describe('parse', () => {
           content: ['example.com']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('colon in an inline escaped parameter should be fine', () => {
+    it('colon in an inline escaped parameter works', () => {
       const source = '@link([http://example.com])[example.com]'
       const expected = selection([
         {
@@ -1567,10 +1565,10 @@ describe('parse', () => {
           content: ['example.com']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('empty inline parameter should be fine', () => {
+    it('empty inline parameter works', () => {
       const source = '@link()[example.com]'
       const expected = selection([
         {
@@ -1579,10 +1577,10 @@ describe('parse', () => {
           content: ['example.com']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('colon in an inline parameter list should be fine', () => {
+    it('colon in an inline parameter list works', () => {
       const source = '@link(http://example.com)[example.com]'
       const expected = selection([
         {
@@ -1591,10 +1589,10 @@ describe('parse', () => {
           content: ['example.com']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should be able to parse parameter strings containing brackets', () => {
+    it('parses parameter strings containing brackets', () => {
       const source = '@default [rgba(255, 255, 255, 0.5)]: Content'
       const expected = selection([
         {
@@ -1603,10 +1601,10 @@ describe('parse', () => {
           content: ['Content']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should be able to parse parameter strings containing brackets', () => {
+    it('parses parameter strings containing brackets', () => {
       const source = '@default rgba(255, 255, 255, 0.5): Content'
       const expected = selection([
         {
@@ -1615,10 +1613,10 @@ describe('parse', () => {
           content: ['Content']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('escaping should work for nested closing square brackets', () => {
+    it('escapes nested closing square brackets', () => {
       const source = '@thing[\\[1, 2, 3\\]]'
       const expected = selection([
         {
@@ -1627,10 +1625,10 @@ describe('parse', () => {
           content: ['[1, 2, 3]']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should parse nested square brackets correctly for inline content', () => {
+    it('parses nested square brackets correctly for inline content', () => {
       const source = '@thing[[1, 2, 3]]'
       const expected = selection([
         {
@@ -1639,10 +1637,10 @@ describe('parse', () => {
           content: ['[1, 2, 3]']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('nested square brackets should be allowed', () => {
+    it('nested square brackets work', () => {
       const source = '@thing: [1, 2, 3]'
       const expected = selection([
         {
@@ -1651,10 +1649,10 @@ describe('parse', () => {
           content: ['[1, 2, 3]']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('square brackets should be allowed in regular content', () => {
+    it('square brackets work in regular content', () => {
       const source = '@thing: 1, [2, 3]'
       const expected = selection([
         {
@@ -1663,7 +1661,7 @@ describe('parse', () => {
           content: ['1, [2, 3]']
         }
       ])
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
     it('deal with empty newlines', () => {
@@ -1689,10 +1687,10 @@ describe('parse', () => {
         }
       ])
 
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('should have correct indentation when multiple entities on the same line are followed by another line', () => {
+    it('has correct indentation when multiple entities on the same line are followed by another line', () => {
       const source = '@one: @two\n@three'
       const expected = selection([
         {
@@ -1713,10 +1711,10 @@ describe('parse', () => {
         }
       ])
 
-      chai.expect(parse(source)).to.eql(expected)
+      expect(parse(source)).to.eql(expected)
     })
 
-    it('newlines should be allowed in inline content', () => {
+    it('newlines work in inline content', () => {
       parse('@thing[very\nlong\ncontent]').should.eql(selection([
         {
           type: 'thing',

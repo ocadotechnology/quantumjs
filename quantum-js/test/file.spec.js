@@ -1,11 +1,6 @@
-'use strict'
-require('chai').should()
-
-const quantum = require('../')
-const FileInfo = quantum.FileInfo
-const File = quantum.File
-
 describe('File', () => {
+  const { File, FileInfo } = require('..')
+
   const fileInfo1 = new FileInfo({
     src: 'src/content/a1.um',
     resolved: 'a1.um',
