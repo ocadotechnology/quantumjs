@@ -1,10 +1,9 @@
-'use strict'
-require('chai').should()
-const diagram = require('../')
+describe('module', () => {
+  const diagram = require('../')
 
-describe('pipeline', () => {
   it('should export the correct things', () => {
     diagram.should.be.an('object')
+    diagram.should.have.keys('transforms')
     diagram.transforms.should.be.a('function')
   })
 })
