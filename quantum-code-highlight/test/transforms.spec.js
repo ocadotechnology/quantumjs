@@ -1,11 +1,9 @@
-'use strict'
-require('chai').should()
-const path = require('path')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
-const codeHighlight = require('..').transforms
-
 describe('transforms', () => {
+  const path = require('path')
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
+  const { transforms } = require('..')
+
   it('not highlight some inline code', () => {
     const selection = quantum.select({
       type: 'code',
@@ -13,7 +11,7 @@ describe('transforms', () => {
       content: ['function (x) { return x * x }']
     })
 
-    codeHighlight().code(selection).should.eql(
+    transforms().code(selection).should.eql(
       dom.create('code')
         .class('qm-code-highlight-code qm-code-font')
         .text('function (x) { return x * x }', {escape: false})
@@ -32,7 +30,7 @@ describe('transforms', () => {
       content: ['function (x) { return x * x }']
     })
 
-    codeHighlight().codeblock(selection).should.eql(
+    transforms().codeblock(selection).should.eql(
       dom.create('div')
         .class('qm-code-highlight-codeblock language-js')
         .add(dom.create('pre')
@@ -53,7 +51,7 @@ describe('transforms', () => {
       content: ['function (x) { return x * x }']
     })
 
-    codeHighlight().codeblock(selection).should.eql(
+    transforms().codeblock(selection).should.eql(
       dom.create('div')
         .class('qm-code-highlight-codeblock language-notalanguage')
         .add(dom.create('pre')
@@ -74,7 +72,7 @@ describe('transforms', () => {
       content: ['function (x) { return x * x }']
     })
 
-    codeHighlight().codeblock(selection).should.eql(
+    transforms().codeblock(selection).should.eql(
       dom.create('div')
         .class('qm-code-highlight-codeblock')
         .add(dom.create('pre')
