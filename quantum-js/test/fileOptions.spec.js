@@ -20,11 +20,11 @@ describe('fileOptions', () => {
   })
 
   describe('createFileUsingSpec', () => {
-    it('cant work out what this does but it should be tested', () => true.should.equal('false'))
+    it('placeholder', () => true.should.equal(false))
   })
 
   describe('normalize', () => {
-    it('cant work out what this does but it should be tested', () => true.should.equal('false'))
+    it('placeholder', () => true.should.equal(false))
   })
 
   describe('resolve', () => {
