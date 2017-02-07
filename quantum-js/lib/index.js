@@ -23,6 +23,5 @@ module.exports = {
   // fileOptions: require('./file-options'),
   watch: require('./watch'),
   cli: require('./cli'),
-  clone: require('./clone'),
-  util: require('./util')
+  clone: require('./clone')
 }
