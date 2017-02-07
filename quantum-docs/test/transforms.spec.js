@@ -681,6 +681,38 @@ describe('transforms', () => {
           ))
       )
     })
+
+    it('renders with an icon and icon link', () => {
+      const selection = quantum.select({
+        type: 'header',
+        params: [],
+        content: [
+          { type: 'link', params: ['/link/one'], content: ['Link One'] },
+          { type: 'link', params: ['/link/two'], content: ['Link Two'] },
+          { type: 'icon', params: ['/path/to/icon.png', '/somewhere.html'], content: [] }
+        ]
+      })
+
+      transforms().header(selection, transformer).should.eql(
+        dom.create('div').class('qm-docs-header')
+          .add(stylesheetAsset)
+          .add(dom.create('div').class('qm-docs-centered')
+            .add(dom.create('div').class('qm-docs-header-wrapper')
+              .add(dom.create('a').class('qm-docs-header-logo-link')
+                .attr('href', selection.select('icon').param(1))
+                .add(dom.create('image').class('qm-docs-header-logo').attr('src', selection.select('icon').param(0))))
+              .add(dom.create('div').class('qm-docs-header-title qm-header-font').text(selection.select('title').ps()))
+              .add(dom.create('a')
+                .class('qm-docs-header-link')
+                .attr('href', '/link/one')
+                .text('Link One'))
+              .add(dom.create('a')
+                .class('qm-docs-header-link')
+                .attr('href', '/link/two')
+                .text('Link Two'))
+          ))
+      )
+    })
   })
 
   describe('@breadcrumb', () => {
@@ -815,6 +847,23 @@ describe('transforms', () => {
           .add(stylesheetAsset)
           .add(selection.transform(transformer))
       )
+    })
+  })
+
+  describe('@fullWidth', () => {
+    it('renders as expected', () => {
+      const selection = quantum.select({
+        type: 'fullWidth',
+        params: [],
+        content: [
+          'Content'
+        ]
+      })
+
+      transforms().fullWidth(selection, transformer).should.eql(
+        dom.create('div')
+          .class('qm-docs-full-width')
+          .add(selection.transform(transformer)))
     })
   })
 
