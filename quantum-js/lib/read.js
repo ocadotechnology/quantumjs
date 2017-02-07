@@ -17,7 +17,7 @@ const parse = require('./parse')
 const File = require('./file')
 const FileInfo = require('./file-info')
 
-function defaultFileReader (filename, parentFilename) {
+function defaultLoader (filename, parentFilename) {
   return fs.readFileAsync(filename, 'utf-8')
 }
 
@@ -52,7 +52,7 @@ const inline = Promise.coroutine(function * (parsed, currentDir, options, parent
 function parseFile (filename, doParse, options, parentFile) {
   if (doParse || doParse === undefined && path.extname(filename) === '.um') {
     const currentDir = path.dirname(filename)
-    return options.fileReader(filename, parentFile)
+    return options.loader(filename, parentFile)
       .then(input => parse(input, options))
       .then(parsed => inline(parsed, currentDir, options, filename))
       .catch(e => {
@@ -64,7 +64,7 @@ function parseFile (filename, doParse, options, parentFile) {
         }
       })
   } else {
-    return options.fileReader(filename, parentFile).then((input) => ({
+    return options.loader(filename, parentFile).then((input) => ({
       content: input.split('\n')
     }))
   }
@@ -79,33 +79,39 @@ function read (filename, opts) {
   const {
     inlineEntityType = 'inline',
     inline = true,
-    fileReader = defaultFileReader,
+    loader = defaultLoader,
     base = undefined
   } = opts || {}
 
-  const options = { inlineEntityType, inline, fileReader, base }
+  const options = { inlineEntityType, inline, loader, base }
 
   if (options.inline) {
     return parseFile(filename, true, options)
   } else {
-    return options.fileReader(filename, undefined).then(parse)
+    return options.loader(filename, undefined).then(parse)
   }
 }
 
 function readAsFile (filename, options) {
-  return read(filename, options).then(content => {
-    return new File({
-      info: new FileInfo({
-        src: filename,
-        dest: filename
-      }),
-      content: content
+  if (filename instanceof FileInfo) {
+    const fileInfo = filename
+    return read(fileInfo.src, options)
+      .then(content => new File({ info: fileInfo, content }))
+  } else {
+    return read(filename, options).then(content => {
+      return new File({
+        info: new FileInfo({
+          src: filename,
+          dest: filename
+        }),
+        content
+      })
     })
-  })
+  }
 }
 
 module.exports = {
   read,
   readAsFile,
-  defaultFileReader
+  defaultLoader
 }

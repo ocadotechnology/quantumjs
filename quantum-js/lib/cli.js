@@ -21,8 +21,7 @@ const qwatch = require('./watch')
 const parse = require('./parse')
 const fileOptions = require('./file-options')
 const version = require('../package.json').version
-const { defaultFileReader } = require('./read')
-const { defaultFileLoader } = require('./util')
+const { defaultLoader, readAsFile } = require('./read')
 
 const liveReloadScriptTag = fs.readFileSync(path.join(__dirname, '..', 'assets', 'live-reload.html'))
 
@@ -147,17 +146,20 @@ function getLoggerWrapper (config) {
 
 function build (config) {
   const logger = getLoggerWrapper(config)(config.logger || defaultLogger)
-  const options = {concurrency: config.concurrency || 1, dest: config.dest}
+  const options = {
+    concurrency: config.concurrency || 1,
+    dest: config.dest
+  }
   const pipeline = createPipeline(config.pipeline)
-  const fileReader = config.fileReader || defaultFileReader
-  const fileLoader = config.fileLoader || defaultFileLoader
+  const fileReader = config.fileReader || readAsFile
+  const loader = config.loader || defaultLoader
 
   let builtCount = 0
   const startTime = Date.now()
   return copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Pages'})
     return fileOptions.resolve(config.pages, options).map((fileInfo) => {
-      return fileLoader(fileInfo, fileReader)
+      return fileReader(fileInfo, { loader })
         .then(file => buildPage(file, pipeline, config, logger, false)
           .then(files => {
             builtCount += files.length
@@ -222,8 +224,8 @@ function watch (config) {
     concurrency: config.concurrency || 1,
     dest: config.dest || 'target',
     port: config.port || 8080,
-    fileReader: config.fileReader || defaultFileReader,
-    fileLoader: config.fileLoader || defaultFileLoader
+    fileReader: config.fileReader || readAsFile,
+    loader: config.loader || defaultLoader
   }
   const pipeline = createPipeline(config.pipeline)
 

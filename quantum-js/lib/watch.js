@@ -20,8 +20,7 @@ const fs = Promise.promisifyAll(require('fs-extra'))
 const parse = require('./parse')
 const File = require('./file')
 const fileOptions = require('./file-options')
-const { defaultFileReader } = require('./read')
-const { defaultFileLoader } = require('./util')
+const { defaultLoader, readAsFile } = require('./read')
 
 /* Watches some glob specs for changes */
 function Watcher (specs, options) {
@@ -103,8 +102,8 @@ function watch (specs, handler, options) {
   // Option resolving
   const opts = options || {}
   const dir = opts.dir || '.'
-  const fileReader = opts.fileReader || defaultFileReader
-  const fileLoader = opts.fileLoader || defaultFileLoader
+  const fileReader = opts.fileReader || readAsFile
+  const loader = opts.loader || defaultLoader
   const buildConcurrency = opts.concurrency || 1
 
   // State that is maintained by watching for file changes
@@ -112,7 +111,7 @@ function watch (specs, handler, options) {
   const affectedFiles = {}
   const affectedFilesInverse = {}
 
-  function linkingFileReader (filename, parentFilename) {
+  function linkingLoader (filename, parentFilename) {
     if (parentFilename) {
       affectedFiles[filename] = affectedFiles[filename] || new Set()
       affectedFiles[filename].add(parentFilename)
@@ -121,7 +120,7 @@ function watch (specs, handler, options) {
       affectedFilesInverse[parentFilename].add(filename)
       watchFile(filename)
     }
-    return fileReader(filename, parentFilename)
+    return loader(filename, parentFilename)
   }
 
   function unlinkFile (filename) {
@@ -175,7 +174,7 @@ function watch (specs, handler, options) {
 
   function workHandler (work) {
     fileInfos[work.fileInfo.src] = work.fileInfo
-    return fileLoader(work.fileInfo, linkingFileReader)
+    return fileReader(work.fileInfo, { loader: linkingLoader })
       .then(file => handler(undefined, file, work.cause))
       .catch((err) => {
         if (err instanceof parse.ParseError) {
