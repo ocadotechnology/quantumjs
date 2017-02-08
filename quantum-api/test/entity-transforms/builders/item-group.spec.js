@@ -1,13 +1,15 @@
-const chai = require('chai')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
-const itemGroup = require('../../../lib/entity-transforms/builders/item-group')
-const utils = require('../../../lib/utils')
+describe('item-group', () => {
+  const should = require('chai').should()
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
+  const itemGroup = require('../../../lib/entity-transforms/builders/item-group')
+  const utils = require('../../../lib/utils')
 
-const should = chai.should()
+  function transformer (selection) {
+    return dom.create('div')
+  }
 
-describe('item-group-builder', () => {
-  it('should render nothing if there is no item group to render', () => {
+  it('renders nothing if there is no item group to render', () => {
     const selection = quantum.select({
       type: '',
       params: [],
@@ -17,7 +19,7 @@ describe('item-group-builder', () => {
     should.not.exist(itemGroup()(selection))
   })
 
-  it('should render something if the type is present (type and title should be passed through properly)', () => {
+  it('renders something if the type is present (type and title should be passed through properly)', () => {
     const selection = quantum.select({
       type: '',
       params: [],
@@ -28,18 +30,14 @@ describe('item-group-builder', () => {
       ]
     })
 
-    function transform (selection) {
-      return dom.create('div')
-    }
-
-    itemGroup('function', 'Functions')(selection, transform).should.eql(
+    itemGroup('something', 'function', 'Functions')(selection, transformer).should.eql(
       dom.create('div').class('qm-api-function-group')
         .add(dom.create('h2').text('Functions'))
-        .add(utils.organisedEntity(selection.filter('function')).transform(transform))
+        .add(utils.organisedEntity(selection.filter('function')).transform(transformer))
     )
   })
 
-  it('should render something if the type is present (array type) (type and title should be passed through properly)', () => {
+  it('renders something if the type is present (array type) (type and title should be passed through properly)', () => {
     const selection = quantum.select({
       type: '',
       params: [],
@@ -50,14 +48,10 @@ describe('item-group-builder', () => {
       ]
     })
 
-    function transform (selection) {
-      return dom.create('div')
-    }
-
-    itemGroup(['function', 'notfunction'], 'Functions and more')(selection, transform).should.eql(
+    itemGroup('something', ['function', 'notfunction'], 'Functions and more')(selection, transformer).should.eql(
       dom.create('div').class('qm-api-function-group')
         .add(dom.create('h2').text('Functions and more'))
-        .add(utils.organisedEntity(selection).transform(transform))
+        .add(utils.organisedEntity(selection).transform(transformer))
     )
   })
 })
