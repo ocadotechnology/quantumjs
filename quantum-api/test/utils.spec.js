@@ -1,14 +1,24 @@
-'use strict'
-
-const chai = require('chai')
-const quantum = require('quantum-js')
-const utils = require('../lib/utils')
-
-chai.should()
-
 describe('utils', () => {
+  const quantum = require('quantum-js')
+  const utils = require('../lib/utils')
+
+  it('provides the correct things', () => {
+    utils.should.be.an('object')
+    utils.should.have.keys([
+      'compareEntities',
+      'organisedEntity',
+      'semanticVersionComparator',
+      'compareEntrySelections'
+    ])
+    utils.compareEntities.should.be.a('function')
+    utils.organisedEntity.should.be.a('function')
+    utils.semanticVersionComparator.should.be.a('function')
+    utils.compareEntrySelections.should.be.a('function')
+  })
+
   describe('compareEntities', () => {
-    it('should return -1 when the first object should be sorted before the second object', () => {
+    const { compareEntities } = utils
+    it('returns -1 when the first object should be sorted before the second object', () => {
       const entity1 = {
         type: 'method',
         params: ['aaa'],
@@ -19,10 +29,10 @@ describe('utils', () => {
         params: ['bbb'],
         content: []
       }
-      utils.compareEntities(entity1, entity2).should.equal(-1)
+      compareEntities(entity1, entity2).should.equal(-1)
     })
 
-    it('should return 1 when the first object should be sorted before the second object', () => {
+    it('returns 1 when the first object should be sorted before the second object', () => {
       const entity1 = {
         type: 'method',
         params: ['bbb'],
@@ -33,10 +43,10 @@ describe('utils', () => {
         params: ['aaa'],
         content: []
       }
-      utils.compareEntities(entity1, entity2).should.equal(1)
+      compareEntities(entity1, entity2).should.equal(1)
     })
 
-    it('should return 0 when the objects can be sorted either way', () => {
+    it('returns 0 when the objects can be sorted either way', () => {
       const entity1 = {
         type: 'method',
         params: ['aaa'],
@@ -47,12 +57,13 @@ describe('utils', () => {
         params: ['aaa'],
         content: []
       }
-      utils.compareEntities(entity1, entity2).should.equal(0)
+      compareEntities(entity1, entity2).should.equal(0)
     })
   })
 
   describe('organisedEntity', () => {
-    it('should sort entries alphabetically', () => {
+    const { organisedEntity } = utils
+    it('sorts entries alphabetically', () => {
       const selection = quantum.select({
         type: 'whatever',
         params: [],
@@ -75,7 +86,7 @@ describe('utils', () => {
         ]
       })
 
-      utils.organisedEntity(selection).should.eql(
+      organisedEntity(selection).should.eql(
         quantum.select({
           type: 'whatever',
           params: [],
@@ -100,7 +111,7 @@ describe('utils', () => {
       )
     })
 
-    it('should float added entries to the top', () => {
+    it('floats added entries to the top', () => {
       const selection = quantum.select({
         type: 'whatever',
         params: [],
@@ -127,7 +138,7 @@ describe('utils', () => {
         ]
       })
 
-      utils.organisedEntity(selection).should.eql(
+      organisedEntity(selection).should.eql(
         quantum.select({
           type: 'whatever',
           params: [],
@@ -156,7 +167,7 @@ describe('utils', () => {
       )
     })
 
-    it('should float updated entries to the top (after added)', () => {
+    it('floats updated entries to the top (after added)', () => {
       const selection = quantum.select({
         type: 'whatever',
         params: [],
@@ -187,7 +198,7 @@ describe('utils', () => {
         ]
       })
 
-      utils.organisedEntity(selection).should.eql(
+      organisedEntity(selection).should.eql(
         quantum.select({
           type: 'whatever',
           params: [],
@@ -220,7 +231,7 @@ describe('utils', () => {
       )
     })
 
-    it('should float deprecated entries to the top (after updated)', () => {
+    it('floats deprecated entries to the top (after updated)', () => {
       const selection = quantum.select({
         type: 'whatever',
         params: [],
@@ -251,7 +262,7 @@ describe('utils', () => {
         ]
       })
 
-      utils.organisedEntity(selection).should.eql(
+      organisedEntity(selection).should.eql(
         quantum.select({
           type: 'whatever',
           params: [],
@@ -284,7 +295,7 @@ describe('utils', () => {
       )
     })
 
-    it('should float removed entries to the top (after deprecated)', () => {
+    it('floats removed entries to the top (after deprecated)', () => {
       const selection = quantum.select({
         type: 'whatever',
         params: [],
@@ -315,7 +326,7 @@ describe('utils', () => {
         ]
       })
 
-      utils.organisedEntity(selection).should.eql(
+      organisedEntity(selection).should.eql(
         quantum.select({
           type: 'whatever',
           params: [],
@@ -348,7 +359,7 @@ describe('utils', () => {
       )
     })
 
-    it('should not sort if the noSort option is set to true', () => {
+    it('doesnt sort if the noSort option is set to true', () => {
       const selection = quantum.select({
         type: 'whatever',
         params: [],
@@ -366,7 +377,7 @@ describe('utils', () => {
         ]
       })
 
-      utils.organisedEntity(selection, { noSort: true }).should.eql(
+      organisedEntity(selection, { noSort: true }).should.eql(
         quantum.select({
           type: 'whatever',
           params: [],
@@ -388,9 +399,10 @@ describe('utils', () => {
   })
 
   describe('semanticVersionComparator', () => {
-    it('should sort correctly', () => {
+    const { semanticVersionComparator } = utils
+    it('sorts correctly', () => {
       const versions = ['2.0.0', '0.3.2', '0.3.1', '0.3.0', '0.2.0', '0.5.0', '0.1.0', '0.1.1', '1.0.0', '0.1.1']
-      versions.sort(utils.semanticVersionComparator).should.eql([
+      versions.sort(semanticVersionComparator).should.eql([
         '0.1.0',
         '0.1.1',
         '0.1.1',
@@ -406,7 +418,8 @@ describe('utils', () => {
   })
 
   describe('compareEntrySelections', () => {
-    it('should sort correctly', () => {
+    const { compareEntrySelections } = utils
+    it('sorts correctly', () => {
       function entrySelection (name) {
         return quantum.select({
           type: 'entry',
@@ -423,7 +436,7 @@ describe('utils', () => {
         entrySelection('bbb')
       ]
 
-      entrySelections.sort(utils.compareEntrySelections).should.eql([
+      entrySelections.sort(compareEntrySelections).should.eql([
         entrySelection('aaa'),
         entrySelection('bbb'),
         entrySelection('bbb'),

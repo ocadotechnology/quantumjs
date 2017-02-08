@@ -96,8 +96,8 @@ function organisedEntity (selection, opts) {
 }
 
 module.exports = {
-  compareEntities: compareEntities,
-  organisedEntity: organisedEntity,
-  semanticVersionComparator: semanticVersionComparator,
-  compareEntrySelections: compareEntrySelections
+  compareEntities,
+  organisedEntity,
+  semanticVersionComparator,
+  compareEntrySelections
 }
