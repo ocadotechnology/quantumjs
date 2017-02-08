@@ -65,7 +65,7 @@ module.exports = {
     version.fileTransform(),
     api.fileTransform(),
     docs.fileTransform(),
-    html(htmlOptions)
+    html.fileTransform(htmlOptions)
   ],
   pages: 'src/pages/**/*.um',
   resources: [
