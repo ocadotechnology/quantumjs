@@ -1,15 +1,12 @@
-const chai = require('chai')
-const path = require('path')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
-const html = require('quantum-html')
-const api = require('../../lib/entity-transforms/api')
-const body = require('../../lib/entity-transforms/builders/body')
-
-chai.should()
-
 describe('api', () => {
-  it('should work with defaults', () => {
+  const path = require('path')
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
+  const html = require('quantum-html')
+  const api = require('../../lib/entity-transforms/api')
+  const body = require('../../lib/entity-transforms/builders/body')
+
+  it('works with defaults', () => {
     const selection = quantum.select({
       type: 'api',
       params: [],
@@ -38,7 +35,7 @@ describe('api', () => {
     )
   })
 
-  it('should work with custom builders', () => {
+  it('works with custom builders', () => {
     const selection = quantum.select({
       type: 'api',
       params: [],

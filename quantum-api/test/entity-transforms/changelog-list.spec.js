@@ -1,19 +1,14 @@
-'use strict'
-const chai = require('chai')
+describe('changelogList', () => {
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
 
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
+  const changelogList = require('../../lib/entity-transforms/changelog-list')
 
-const changelogList = require('../../lib/entity-transforms/changelog-list')
+  function transform (selection) {
+    return dom.create('div').text(selection.type())
+  }
 
-chai.should()
-
-function transform (selection) {
-  return dom.create('div').text(selection.type())
-}
-
-describe('entity-transforms/changelogList', () => {
-  it('should only transform changelog entries', () => {
+  it('only transforms changelog entries', () => {
     const selection = quantum.select({
       type: 'changelogList',
       params: [],

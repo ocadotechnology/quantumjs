@@ -19,11 +19,11 @@
 
 const path = require('path')
 
+const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const html = require('quantum-html')
 const tags = require('../tags')
 const utils = require('../utils')
-const quantum = require('quantum-js')
 
 function domAsset (filename) {
   return dom.asset({
@@ -109,10 +109,17 @@ function changeDom (selection, transformer, issueUrl) {
 
 /* Creates a single changelog entry */
 function entry (selection, transformer, options) {
-  const language = options.languages.find(language => language.name === selection.select('header').ps())
-  const headerSelection = quantum.select(selection.select('header').content()[0])
-  const type = headerSelection.type()
-  const header = language ? language.changelogHeaderTransforms[type](headerSelection, transformer) : undefined
+  const languageTransforms = (options.languages.find(language => language.name === selection.select('header').ps()) || {}).changelogHeaderTransforms
+
+  let header = undefined
+  if (languageTransforms) {
+    const headerSel = quantum.select(selection.select('header').content()[0])
+    const headerItemType = headerSel.type()
+    if (languageTransforms[headerItemType]) {
+      header = languageTransforms[headerItemType](headerSel, transformer)
+    }
+  }
+
   const changes = selection.selectAll('change')
     .map(change => changeDom(change, transformer, options.issueUrl))
 
