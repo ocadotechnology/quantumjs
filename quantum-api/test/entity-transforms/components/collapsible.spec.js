@@ -1,12 +1,8 @@
-const chai = require('chai')
-const dom = require('quantum-dom')
-const collapsible = require('../../../lib/entity-transforms/components/collapsible')
-
-chai.should()
-
 describe('collapsible', () => {
+  const dom = require('quantum-dom')
+  const collapsible = require('../../../lib/entity-transforms/components/collapsible')
   // more of a regression test than anything
-  it('should use the passed in collapsibleClass, header and content', () => {
+  it('uses the passed in collapsibleClass, header and content', () => {
     const collapsibleClass = 'extra-class'
     const header = dom.create('div').class('header')
     const content = dom.create('div').class('content')

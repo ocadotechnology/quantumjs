@@ -1,25 +1,24 @@
-const chai = require('chai')
-const dom = require('quantum-dom')
-const type = require('../../../lib/entity-transforms/components/type')
-
-const should = chai.should()
 
 describe('type', () => {
-  it('should return undefined for an undefined typeString', () => {
+  const should = require('chai').should()
+  const dom = require('quantum-dom')
+  const type = require('../../../lib/entity-transforms/components/type')
+
+  it('returns undefined for an undefined typeString', () => {
     should.not.exist(type(undefined, {}))
   })
 
-  it('should return undefined for an empty typeString', () => {
+  it('returns undefined for an empty typeString', () => {
     should.not.exist(type('', {}))
   })
 
-  it('should create a span for basic non linked types', () => {
+  it('creates a span for basic non linked types', () => {
     type('Type', {}).should.eql(
       dom.create('span').class('qm-api-type').add('Type')
     )
   })
 
-  it('should handle parameterised types', () => {
+  it('handles parameterised types', () => {
     type('Type[A]', {}).should.eql(
       dom.create('span')
         .class('qm-api-type')
@@ -30,7 +29,7 @@ describe('type', () => {
     )
   })
 
-  it('should handle multiple types', () => {
+  it('handles multiple types', () => {
     type('Type1/Type2', {}).should.eql(
       dom.create('span')
         .class('qm-api-type')
@@ -40,7 +39,7 @@ describe('type', () => {
     )
   })
 
-  it('should create a link in a span for linked types', () => {
+  it('creates a link in a span for linked types', () => {
     type('Type', {Type: '/some/link'}).should.eql(
       dom.create('span')
         .class('qm-api-type')
@@ -51,7 +50,7 @@ describe('type', () => {
     )
   })
 
-  it('should handle parameterised types', () => {
+  it('handles parameterised types', () => {
     type('Promise[Array[A]]', {Promise: '/promise/docs', Array: '/array/docs'}).should.eql(
       dom.create('span')
         .class('qm-api-type')
@@ -71,7 +70,7 @@ describe('type', () => {
     )
   })
 
-  it('should handle multiple linked types', () => {
+  it('handles multiple linked types', () => {
     type('Type1/Type2', {Type1: '/type-1/docs', Type2: '/type-2/docs'}).should.eql(
       dom.create('span')
         .class('qm-api-type')
