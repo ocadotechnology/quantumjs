@@ -199,7 +199,7 @@ module.exports = (options) => {
     assets,
     name: 'javascript',
     transforms: {
-      'type': typeBuilder,
+      'type': typeBuilder(typeLinks),
       'prototype': prototypeBuilder,
       'object': objectBuilder,
       'method': methodBuilder,

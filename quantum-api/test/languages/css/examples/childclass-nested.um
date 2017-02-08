@@ -1,4 +1,4 @@
-@spec childclass-nested
+@spec childClass-nested
   @options
     @groupByApi false
     @reverseVisibleList false
@@ -6,9 +6,9 @@
     @changelogList
       @process
         @api ApiName
-          @childclass test1
-            @childclass test2
-              @childclass test3
+          @childClass test1
+            @childClass test2
+              @childClass test3
                 @added 0.1.0
                   @description: Child class added
       @version 0.1.0
@@ -17,8 +17,8 @@
       @changelog 0.1.0
         @entry
           @header css
-            @childclass test1
-              @childclass test2
-                @childclass test3
+            @childClass test1
+              @childClass test2
+                @childClass test3
           @change added
             @description: Child class added

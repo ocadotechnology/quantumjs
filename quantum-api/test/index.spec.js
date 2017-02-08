@@ -1,6 +1,7 @@
 'use strict'
 require('chai').should()
-require('./module.spec.js')
-require('./config.spec.js')
-require('./utils.spec.js')
-require('./transforms.spec.js')
+require('./module.spec')
+require('./config.spec')
+require('./utils.spec')
+require('./transforms.spec')
+require('./languages/index.spec')
