@@ -1,11 +1,18 @@
 describe('item', () => {
   const quantum = require('quantum-js')
   const dom = require('quantum-dom')
-  const header = require('../../../lib/entity-transforms/components/header')
   const collapsible = require('../../../lib/entity-transforms/components/collapsible')
   const item = require('../../../lib/entity-transforms/builders/item')
-  const headerBuilders = require('../../../lib/entity-transforms/builders/header')
+  const headerBuilder = require('../../../lib/entity-transforms/builders/header')
   const notice = require('../../../lib/entity-transforms/builders/notice')
+
+  function transformer (selection) {
+    return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
+  }
+
+  function headerDetails (selection) {
+    return dom.create('div').class('test').text(selection.cs())
+  }
 
   it('returns a function', () => {
     item({}).should.be.a('function')
@@ -57,12 +64,12 @@ describe('item', () => {
 
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
-      .add(header('name', headerBuilders.nameHeaderDetails(selection), selection))
+      .add(headerBuilder('name', headerDetails)(selection, transformer))
     const contentBlock = dom.create('div')
       .class('qm-api-item-content')
 
     item({
-      header: headerBuilders.nameHeader()
+      header: headerBuilder('name', headerDetails)
     })(selection, transformer).should.eql(
       collapsible('', headerBlock, contentBlock)
     )
@@ -83,12 +90,12 @@ describe('item', () => {
 
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
-      .add(header('name', headerBuilders.nameHeaderDetails(selection), selection))
+      .add(headerBuilder('name', headerDetails)(selection, transformer))
     const contentBlock = dom.create('div')
       .class('qm-api-item-content')
 
     item({
-      header: headerBuilders.nameHeader()
+      header: headerBuilder('name', headerDetails)
     })(selection, transformer).should.eql(
       collapsible('', headerBlock, contentBlock)
     )
@@ -107,17 +114,17 @@ describe('item', () => {
 
     const headerBlock = dom.create('div')
       .class('qm-api-item-head qm-api-optional')
-      .add(header('name', headerBuilders.nameHeaderDetails(selection), selection))
+      .add(headerBuilder('other', headerDetails)(selection, transformer))
     const contentBlock = dom.create('div')
       .class('qm-api-item-content')
 
     const other = item({
       class: 'other',
-      header: headerBuilders.typeHeader()
+      header: headerBuilder('other', headerDetails)
     })
 
     item({
-      header: headerBuilders.nameHeader(),
+      header: headerBuilder('other', headerDetails),
       renderAsOther: {
         Other: other
       }
@@ -133,24 +140,20 @@ describe('item', () => {
       content: []
     })
 
-    function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
-    }
-
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
-      .add(headerBuilders.typeHeader()(selection, transformer))
+      .add(headerBuilder('other', headerDetails)(selection, transformer))
     const contentBlock = dom.create('div')
       .class('qm-api-item-content')
 
     const other = item({
       class: 'other',
-      header: headerBuilders.typeHeader()
+      header: headerBuilder('other', headerDetails)
     })
 
     item({
       class: 'function',
-      header: headerBuilders.nameHeader(),
+      header: headerBuilder('function', headerDetails),
       renderAsOther: {
         Other: other
       }

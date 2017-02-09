@@ -1,4 +1,3 @@
-
 describe('type', () => {
   const should = require('chai').should()
   const dom = require('quantum-dom')

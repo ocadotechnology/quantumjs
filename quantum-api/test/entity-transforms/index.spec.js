@@ -7,7 +7,7 @@ describe('entity-transforms', () => {
     require('./builders/body.spec')
     require('./builders/header.spec')
     require('./builders/item-group.spec')
-    // require('./builders/item.spec')
+    require('./builders/item.spec')
     require('./builders/notice.spec')
   })
 
