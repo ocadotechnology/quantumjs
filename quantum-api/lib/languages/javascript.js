@@ -41,35 +41,38 @@ function typeBuilder (typeLinks) {
   }
 }
 
-function propertyHeaderDetails (typeLinks) {
+function typeHeaderDetails (typeLinks) {
   return (selection, transformer) => {
+    const name = selection.param(0)
     return dom.create('span')
-      .class('qm-api-javascript-header-property')
-      .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
-      .add(dom.create('span').class('qm-api-javascript-header-property-name').text(selection.param(0) || ''))
-      .add(dom.create('span').class('qm-api-javascript-header-property-type').add(type(selection.param(1), typeLinks)))
+      .class('qm-api-javascript-header-type')
+      .attr('id', name ? name.toLowerCase() : undefined)
+      .add(type(name, typeLinks))
   }
 }
 
-function typeHeaderDetails (typeLinks) {
+function propertyHeaderDetails (typeLinks) {
   return (selection, transformer) => {
+    const name = selection.param(0)
     return dom.create('span')
-      .class('qm-api-javascript-header-type')
-      .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
-      .add(type(selection.param(0), typeLinks))
+      .class('qm-api-javascript-header-property')
+      .attr('id', name ? name.toLowerCase() : undefined)
+      .add(dom.create('span').class('qm-api-javascript-header-property-name').text(name || ''))
+      .add(dom.create('span').class('qm-api-javascript-header-property-type').add(type(selection.param(1), typeLinks)))
   }
 }
 
 function functionHeaderDetails (typeLinks) {
   return (selection, transformer) => {
+    const functionName = selection.param(0)
     const name = dom.create('span')
       .class('qm-api-javascript-header-function-name')
-      .text(selection.type() === 'constructor' ? 'constructor' : selection.param(0))
+      .text(selection.type() === 'constructor' ? 'constructor' : functionName)
 
     const params = selection.selectAll(['param', 'param?']).map((param) => {
       const isOptional = param.type()[param.type().length - 1] === '?'
-      return dom.create('span')
-        .class(isOptional ? 'qm-api-javascript-header-function-param qm-api-optional' : 'qm-api-javascript-header-function-param')
+      return dom.create('span').class('qm-api-javascript-header-function-param')
+        .classed('qm-api-optional', isOptional)
         .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text(param.param(0)))
         .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type(param.param(1), typeLinks)))
     })
@@ -86,7 +89,7 @@ function functionHeaderDetails (typeLinks) {
 
     return dom.create('span')
       .class('qm-api-javascript-header-function')
-      .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
+      .attr('id', functionName ? functionName.toLowerCase() : undefined)
       .add(name)
       .add(dom.create('span').class('qm-api-javascript-header-function-params').add(params))
       .add(retns)
@@ -95,10 +98,11 @@ function functionHeaderDetails (typeLinks) {
 
 function prototypeHeaderDetails (typeLinks) {
   return (selection, transformer) => {
+    const name = selection.param(0)
     let details = dom.create('span')
       .class('qm-api-javascript-header-prototype')
-      .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
-      .add(dom.create('span').class('qm-api-prototype-name').text(selection.param(0) || ''))
+      .attr('id', name ? name.toLowerCase() : undefined)
+      .add(dom.create('span').class('qm-api-prototype-name').text(name || ''))
 
     const extendsEntities = selection.selectAll('extends')
 

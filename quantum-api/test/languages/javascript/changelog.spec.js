@@ -1,43 +1,254 @@
 describe('changelog', () => {
   const path = require('path')
+  const dom = require('quantum-dom')
   const quantum = require('quantum-js')
+  const header = require('../../../lib/entity-transforms/builders/header')
+  const type = require('../../../lib/entity-transforms/components/type')
   const changelogFileTransform = require('../../../lib/file-transforms/changelog')
   const javascript = require('../../../lib/languages/javascript')
 
-  function checkSpec (spec) {
-    const fileInfo = new quantum.FileInfo({
-      src: 'src/content/a1.um',
-      resolved: 'a1.um',
-      base: 'src/content',
-      dest: 'target/a1.um',
-      watch: true
+  const typeLinks = {}
+
+  function transformer () {}
+
+  describe('changelogHeaderTransforms', () => {
+    const { changelogHeaderTransforms } = javascript({ typeLinks })
+    const keys = [
+      'object',
+      'prototype',
+      'event',
+      'constructor',
+      'function',
+      'method',
+      'property',
+      'property?'
+    ]
+
+    it('has the right properties', () => {
+      changelogHeaderTransforms.should.have.keys(keys)
     })
 
-    const inputFile = new quantum.File({
-      info: fileInfo,
-      content: {
-        type: '',
-        params: [],
-        content: spec.select('input').content()
+    keys.forEach(entityType => {
+      it(`${entityType}' looks like a transform`, () => {
+        changelogHeaderTransforms[entityType].should.be.a('function')
+        changelogHeaderTransforms[entityType].length.should.equal(2)
+      })
+    })
+
+    const typesThatUsePropertyHeader = [
+      'property',
+      'object',
+      'event',
+      'property?'
+    ]
+
+    typesThatUsePropertyHeader.forEach(entityType => {
+      describe(entityType, () => {
+        it('renders correctly', () => {
+          function testPropertHeaderDetails (selection) {
+            return dom.create('span')
+              .class('qm-api-javascript-header-property')
+              .attr('id', 'someprop')
+              .add(dom.create('span').class('qm-api-javascript-header-property-name').text('someProp'))
+              .add(dom.create('span').class('qm-api-javascript-header-property-type').add(type('Type', typeLinks)))
+          }
+          const selection = quantum.select({
+            type: entityType,
+            params: ['someProp', 'Type'],
+            content: []
+          })
+          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('property', testPropertHeaderDetails)(selection, transformer))
+        })
+
+        it('handles not having params', () => {
+          function testPropertHeaderDetails (selection) {
+            return dom.create('span')
+              .class('qm-api-javascript-header-property')
+              .add(dom.create('span').class('qm-api-javascript-header-property-name').text(''))
+              .add(dom.create('span').class('qm-api-javascript-header-property-type').add(type(undefined, typeLinks)))
+          }
+          const selection = quantum.select({
+            type: entityType,
+            params: [],
+            content: []
+          })
+          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('property', testPropertHeaderDetails)(selection, transformer))
+        })
+      })
+    })
+
+    const typesThatUseFunctionHeader = [
+      'function',
+      'method',
+      'constructor'
+    ]
+
+    typesThatUseFunctionHeader.forEach((entityType) => {
+      describe(entityType, () => {
+        it('renders correctly', () => {
+          function testFunctionHeaderDetails (selection) {
+            return dom.create('span').class('qm-api-javascript-header-function')
+              .attr('id', entityType === 'constructor' ? undefined : 'somefunction')
+              .add(dom.create('span').class('qm-api-javascript-header-function-name').text(entityType === 'constructor' ? 'constructor' : 'someFunction'))
+              .add(dom.create('span').class('qm-api-javascript-header-function-params')
+                .add(dom.create('span').class('qm-api-javascript-header-function-param')
+                  .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text('param1'))
+                  .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type('param1Type', typeLinks)))))
+          }
+          const selection = quantum.select({
+            type: entityType,
+            params: entityType === 'constructor' ? [] : ['someFunction'],
+            content: [{
+              type: 'param',
+              params: ['param1', 'param1Type'],
+              content: []
+            }]
+          })
+          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('function', testFunctionHeaderDetails)(selection, transformer))
+        })
+
+        it('renders optional params correctly', () => {
+          function testFunctionHeaderDetails (selection) {
+            return dom.create('span').class('qm-api-javascript-header-function')
+              .attr('id', entityType === 'constructor' ? undefined : 'somefunction')
+              .add(dom.create('span').class('qm-api-javascript-header-function-name').text(entityType === 'constructor' ? 'constructor' : 'someFunction'))
+              .add(dom.create('span').class('qm-api-javascript-header-function-params')
+                .add(dom.create('span').class('qm-api-javascript-header-function-param qm-api-optional')
+                  .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text('param1'))
+                  .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type('param1Type', typeLinks)))))
+          }
+          const selection = quantum.select({
+            type: entityType,
+            params: entityType === 'constructor' ? [] : ['someFunction'],
+            content: [{
+              type: 'param?',
+              params: ['param1', 'param1Type'],
+              content: []
+            }]
+          })
+          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('function', testFunctionHeaderDetails)(selection, transformer))
+        })
+
+        it('renders returns correctly', () => {
+          function testFunctionHeaderDetails (selection) {
+            return dom.create('span').class('qm-api-javascript-header-function')
+              .attr('id', entityType === 'constructor' ? undefined : 'somefunction')
+              .add(dom.create('span').class('qm-api-javascript-header-function-name').text(entityType === 'constructor' ? 'constructor' : 'someFunction'))
+              .add(dom.create('span').class('qm-api-javascript-header-function-params')
+                .add(dom.create('span').class('qm-api-javascript-header-function-param')
+                  .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text('param1'))
+                  .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type('param1Type', typeLinks)))))
+              .add(dom.create('span').class('qm-api-javascript-header-function-returns').add(type('Type', typeLinks)))
+          }
+          const selection = quantum.select({
+            type: entityType,
+            params: entityType === 'constructor' ? [] : ['someFunction'],
+            content: [{
+              type: 'param',
+              params: ['param1', 'param1Type'],
+              content: []
+            }, {
+              type: 'returns',
+              params: ['Type'],
+              content: []
+            }]
+          })
+          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('function', testFunctionHeaderDetails)(selection, transformer))
+        })
+      })
+    })
+
+    describe('prototype', () => {
+      it('renders correctly', () => {
+        const { prototype } = changelogHeaderTransforms
+        function testPrototypeHeader (selection) {
+          return dom.create('span')
+            .class('qm-api-javascript-header-prototype')
+            .attr('id', 'protoname1')
+            .add(dom.create('span').class('qm-api-prototype-name').text('ProtoName1'))
+        }
+        const selection = quantum.select({
+          type: 'prototype',
+          params: ['ProtoName1'],
+          content: []
+        })
+        prototype(selection, transformer).should.eql(header('prototype', testPrototypeHeader)(selection, transformer))
+      })
+
+      it('renders extended entites correctly', () => {
+        const { prototype } = changelogHeaderTransforms
+        function testPrototypeHeader (selection) {
+          return dom.create('span')
+            .class('qm-api-javascript-header-prototype')
+            .attr('id', 'protoname1')
+            .add(dom.create('span').class('qm-api-prototype-name').text('ProtoName1'))
+            .add(dom.create('span').class('qm-api-prototype-extends').text('extends'))
+            .add(dom.create('span').class('qm-api-prototype-extender').add(type('ProtoName2', typeLinks)))
+        }
+        const selection = quantum.select({
+          type: 'prototype',
+          params: ['ProtoName1'],
+          content: [{
+            type: 'extends',
+            params: ['ProtoName2'],
+            content: []
+          }]
+        })
+        prototype(selection, transformer).should.eql(header('prototype', testPrototypeHeader)(selection, transformer))
+      })
+
+      it('handles not having params', () => {
+        const { prototype } = changelogHeaderTransforms
+        function testPrototypeHeader (selection) {
+          return dom.create('span')
+            .class('qm-api-javascript-header-prototype')
+            .add(dom.create('span').class('qm-api-prototype-name').text(''))
+        }
+        const selection = quantum.select({
+          type: 'prototype',
+          params: [],
+          content: []
+        })
+        prototype(selection, transformer).should.eql(header('prototype', testPrototypeHeader)(selection, transformer))
+      })
+    })
+  })
+
+  describe('examples', () => {
+    function checkSpec (spec) {
+      const fileInfo = new quantum.FileInfo({
+        src: 'src/content/a1.um',
+        resolved: 'a1.um',
+        base: 'src/content',
+        dest: 'target/a1.um',
+        watch: true
+      })
+
+      const inputFile = new quantum.File({
+        info: fileInfo,
+        content: {
+          type: '',
+          params: [],
+          content: spec.select('input').content()
+        }
+      })
+
+      const outputFile = new quantum.File({
+        info: fileInfo,
+        content: {
+          type: '',
+          params: [],
+          content: spec.select('output').content()
+        }
+      })
+
+      const options = {
+        languages: [javascript()]
       }
-    })
 
-    const outputFile = new quantum.File({
-      info: fileInfo,
-      content: {
-        type: '',
-        params: [],
-        content: spec.select('output').content()
-      }
-    })
-
-    const options = {
-      languages: [javascript()]
+      changelogFileTransform.fileTransform(inputFile, options).should.eql(outputFile)
     }
 
-    changelogFileTransform.fileTransform(inputFile, options).should.eql(outputFile)
-  }
-  describe('examples', () => {
     function testExample (filename) {
       it(filename, () => {
         return quantum.read(path.join(__dirname, filename))
@@ -58,145 +269,4 @@ describe('changelog', () => {
     testExample('examples/prototype-basic.um')
     testExample('examples/property-on-object.um')
   })
-
-  // describe('createHeaderDom', () => {
-  //   function transform () {
-  //     return dom.create('div')
-  //   }
-
-  //   it('should return undefined if there is no content', () => {
-  //     const selection = quantum.select({
-  //       type: 'header',
-  //       params: ['javascript'],
-  //       content: []
-  //     })
-
-  //     should.not.exist(javascript().changelog.createHeaderDom(selection, transform))
-  //   })
-
-  //   it('should return a virtual dom element', () => {
-  //     const selection = quantum.select({
-  //       type: 'header',
-  //       params: ['javascript'],
-  //       content: [
-  //         {
-  //           type: 'function',
-  //           params: ['name'],
-  //           content: []
-  //         }
-  //       ]
-  //     })
-
-  //     javascript().changelog.createHeaderDom(selection, transform).should.be.an.instanceof(dom.Element)
-  //     javascript().changelog.createHeaderDom(selection, transform).class().should.equal('qm-changelog-javascript-header')
-  //   })
-
-  //   describe('should render object types correctly', () => {
-  //     function test (type) {
-  //       it(type, () => {
-  //         const selection = quantum.select({
-  //           type: 'header',
-  //           params: ['javascript'],
-  //           content: [
-  //             {
-  //               type: type,
-  //               params: ['name'],
-  //               content: []
-  //             }
-  //           ]
-  //         })
-
-  //         function transform () {
-  //           return dom.create('div')
-  //         }
-
-  //         javascript().changelog.createHeaderDom(selection, transform).should.eql(
-  //           dom.create('span').class('qm-changelog-javascript-header')
-  //             .add(dom.create('span').class('qm-changelog-javascript-' + type)
-  //               .add(dom.create('span').class('qm-changelog-javascript-name').text('name'))
-  //             )
-  //         )
-  //       })
-  //     }
-
-  //     test('object')
-  //     test('prototype')
-  //   })
-
-  //   describe('should render function types correctly', () => {
-  //     function test (type) {
-  //       it(type, () => {
-  //         const selection = quantum.select({
-  //           type: 'header',
-  //           params: ['javascript'],
-  //           content: [
-  //             {
-  //               type: type,
-  //               params: ['name'],
-  //               content: [
-  //                 {
-  //                   type: 'param',
-  //                   params: ['param1', 'String'],
-  //                   content: []
-  //                 }
-  //               ]
-  //             }
-  //           ]
-  //         })
-
-  //         function transform () {
-  //           return dom.create('div')
-  //         }
-
-  //         javascript().changelog.createHeaderDom(selection, transform).should.eql(
-  //           dom.create('span').class('qm-changelog-javascript-header')
-  //             .add(dom.create('span').class('qm-changelog-javascript-' + type)
-  //               .add(dom.create('span').class('qm-changelog-javascript-name').text('name'))
-  //               .add(dom.create('span').class('qm-changelog-javascript-params')
-  //                 .add(dom.create('span').class('qm-changelog-javascript-param')
-  //                   .add(dom.create('span').class('qm-changelog-javascript-param-name').text('param1'))
-  //                   .add(dom.create('span').class('qm-changelog-javascript-param-type').text('String')))))
-  //         )
-  //       })
-  //     }
-
-  //     test('function')
-  //     test('method')
-  //     test('constructor')
-  //   })
-
-  //   describe('should render property types correctly', () => {
-  //     function test (type) {
-  //       it(type, () => {
-  //         const selection = quantum.select({
-  //           type: 'header',
-  //           params: ['javascript'],
-  //           content: [
-  //             {
-  //               type: type,
-  //               params: ['name', 'type'],
-  //               content: []
-  //             }
-  //           ]
-  //         })
-
-  //         function transform () {
-  //           return dom.create('div')
-  //         }
-
-  //         javascript().changelog.createHeaderDom(selection, transform).should.eql(
-  //           dom.create('span').class('qm-changelog-javascript-header')
-  //             .add(dom.create('span').class('qm-changelog-javascript-' + type.replace('?', ''))
-  //               .add(dom.create('span').class('qm-changelog-javascript-name').text('name'))
-  //               .add(dom.create('span').class('qm-changelog-javascript-type').text('type'))
-  //             )
-  //         )
-  //       })
-  //     }
-
-  //     test('property')
-  //     test('event')
-  //     test('property?')
-  //   })
-  // })
 })
