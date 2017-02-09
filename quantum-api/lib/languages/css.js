@@ -19,39 +19,32 @@ const assets = [
 ]
 
 function nameHeaderDetails (selection, transformer) {
+  const name = selection.param(0)
   return dom.create('span')
     .class(`qm-api-css-header-name`)
-    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
-    .add(selection.param(0))
+    .attr('id', name ? name.toLowerCase() : undefined)
+    .add(name)
 }
 
 const classHeader = header('class', nameHeaderDetails)
 const extraClassHeader = header('extra-class', nameHeaderDetails)
-const childClassHeader = header('child-class', nameHeaderDetails)
 
 const description = body.description
 const extras = body.extras
 const groups = body.groups
 const classes = itemGroup('css', 'class', 'Classes')
 const extraClasses = itemGroup('css', 'extraClass', 'Extra Classes')
-const childClasses = itemGroup('css', 'childClass', 'Child Classes')
 
 const classBuilder = item({
   class: 'qm-api-class',
   header: classHeader,
-  content: [ description, extras, groups, classes, extraClasses, childClasses ]
+  content: [ description, extras, groups, classes, extraClasses ]
 })
 
 const extraClassBuilder = item({
   class: 'qm-api-extra-class',
   header: extraClassHeader,
-  content: [ description, extras, groups, classes, extraClasses, childClasses ]
-})
-
-const childClassBuilder = item({
-  class: 'qm-api-child-class',
-  header: childClassHeader,
-  content: [ description, extras, groups, classes, extraClasses, childClasses ]
+  content: [ description, extras, groups, classes, extraClasses ]
 })
 
 module.exports = (options) => {
@@ -60,17 +53,14 @@ module.exports = (options) => {
     name: 'css',
     transforms: {
       class: classBuilder,
-      extraClass: extraClassBuilder,
-      childClass: childClassBuilder
+      extraClass: extraClassBuilder
     },
     changelogHeaderTransforms: {
       class: classHeader,
-      childClass: extraClassHeader,
-      extraClass: childClassHeader
+      extraClass: extraClassHeader
     }
   }
 }
 
 module.exports.classes = classes
 module.exports.extraClasses = extraClasses
-module.exports.childClasses = childClasses

@@ -4,7 +4,6 @@ describe('css', () => {
     css.should.be.a('function')
     const keys = [
       'classes',
-      'childClasses',
       'extraClasses'
     ]
     css.should.have.keys(keys)

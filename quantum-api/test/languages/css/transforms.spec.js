@@ -6,8 +6,7 @@ describe('transforms', () => {
   const { transforms } = css({typeLinks})
   const keys = [
     'class',
-    'extraClass',
-    'childClass'
+    'extraClass'
   ]
   it('has the right properties', () => {
     transforms.should.have.keys(keys)

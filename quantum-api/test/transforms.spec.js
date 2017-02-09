@@ -8,7 +8,6 @@ describe('transforms', () => {
   ]
   const cssProps = [
     'class',
-    'childClass',
     'extraClass'
   ]
   const javascriptProps = [
