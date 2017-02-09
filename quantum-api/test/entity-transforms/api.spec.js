@@ -75,4 +75,50 @@ describe('api', () => {
 
     )
   })
+
+  it('adds the language assets correctly', () => {
+    const selection = quantum.select({
+      type: 'api',
+      params: [],
+      content: [
+        {
+          type: 'description',
+          params: [],
+          content: ['Some description']
+        }
+      ]
+    })
+
+    const languages = [
+      {
+        assets: [
+          dom.asset({
+            url: '/language.css',
+            file: 'some-path.css',
+            shared: true
+          })
+        ]
+      }
+    ]
+
+    api({languages})(selection).should.eql(
+      dom.create('div')
+        .class('qm-api')
+        .add(dom.asset({
+          url: '/quantum-api.css',
+          file: path.join(__dirname, '../../assets/quantum-api.css'),
+          shared: true
+        }))
+        .add(dom.asset({
+          url: '/quantum-api.js',
+          file: path.join(__dirname, '../../assets/quantum-api.js'),
+          shared: true
+        }))
+        .add(dom.asset({
+          url: '/language.css',
+          file: 'some-path.css',
+          shared: true
+        }))
+    )
+  })
 })

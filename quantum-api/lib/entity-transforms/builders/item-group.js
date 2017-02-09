@@ -9,10 +9,13 @@ function typeFilter (language, type) {
     if (entityType) {
       const dotIndex = entityType.indexOf('.')
       const isArray = Array.isArray(type)
-      if (isArray && dotIndex > -1) {
-        return type.map(t => `${language}.${t}`).includes(entityType.slice(dotIndex + 1))
-      } else if (dotIndex > -1) {
-        return entityType.slice(dotIndex + 1) === `${language}.${type}`
+      if (dotIndex > -1) {
+        const nameWithoutRoot = entityType.slice(dotIndex + 1)
+        if (isArray) {
+          return type.map(t => `${language}.${t}`).includes(nameWithoutRoot)
+        } else {
+          return nameWithoutRoot === `${language}.${type}`
+        }
       } else {
         return isArray ? type.includes(entityType) : type === entityType
       }

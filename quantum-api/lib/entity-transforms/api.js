@@ -16,7 +16,7 @@ const assets = [
   })
 ]
 
-module.exports = function group (options) {
+module.exports = function transforms (options) {
   const builders = (options || {}).builders || []
   const languages = (options || {}).languages || []
   return (selection, transformer) => {
