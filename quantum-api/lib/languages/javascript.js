@@ -137,8 +137,7 @@ module.exports = (options) => {
     param: propertyHeader,
     property: propertyHeader,
     prototype: prototypeHeader,
-    returns: typeHeader,
-    type: typeHeader
+    returns: typeHeader
   }
 
   const constructorBuilder = item({
