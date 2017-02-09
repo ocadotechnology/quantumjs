@@ -4,6 +4,24 @@ describe('changelog', () => {
   const changelogFileTransform = require('../../../lib/file-transforms/changelog')
   const css = require('../../../lib/languages/css')
 
+  describe('changelogHeaderTransforms', () => {
+    const { changelogHeaderTransforms } = css()
+    const keys = [
+      'class',
+      'childClass',
+      'extraClass'
+    ]
+    it('has the right properties', () => {
+      changelogHeaderTransforms.should.have.keys(keys)
+    })
+    keys.forEach(k => {
+      it(`'${k}' looks like a transform`, () => {
+        changelogHeaderTransforms[k].should.be.a('function')
+        changelogHeaderTransforms[k].length.should.equal(2)
+      })
+    })
+  })
+
   function checkSpec (spec) {
     const fileInfo = new quantum.FileInfo({
       src: 'src/content/a1.um',

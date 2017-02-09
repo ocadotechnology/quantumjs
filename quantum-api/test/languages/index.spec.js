@@ -1,5 +1,5 @@
 describe('languages', () => {
-  require('./css/index.spec.js')
-  require('./javascript/index.spec.js')
-  // require('quantum/index.spec.js')
+  require('./css/index.spec')
+  require('./javascript/index.spec')
+  require('./quantum/index.spec')
 })

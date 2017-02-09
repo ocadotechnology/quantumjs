@@ -26,11 +26,11 @@ describe('javascript', () => {
       'transforms'
     ])
     language.assets.should.be.an('array')
-    language.name.should.be.a('string')
+    language.name.should.equal('javascript')
     language.transforms.should.be.an('object')
     language.changelogHeaderTransforms.should.be.an('object')
   })
 
-  require('./api.spec.js')
-  require('./changelog.spec.js')
+  require('./transforms.spec')
+  require('./changelog.spec')
 })
