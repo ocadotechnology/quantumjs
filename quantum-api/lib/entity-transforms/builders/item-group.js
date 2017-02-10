@@ -32,7 +32,7 @@ module.exports = function itemGroupBuilder (language, type, title, options) {
       const firstType = Array.isArray(type) ? type[0] : type
       const organised = utils.organisedEntity(filtered, options)
       return dom.create('div').class('qm-api-' + firstType + '-group')
-        .add(dom.create('h2').text(title))
+        .add(dom.create('h2').class('qm-header-font').text(title))
         .add(organised.transform(transformer))
     }
   }

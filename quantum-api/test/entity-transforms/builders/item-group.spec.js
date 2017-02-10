@@ -32,7 +32,7 @@ describe('item-group', () => {
 
     itemGroup('something', 'function', 'Functions')(selection, transformer).should.eql(
       dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').text('Functions'))
+        .add(dom.create('h2').class('qm-header-font').text('Functions'))
         .add(utils.organisedEntity(selection.filter('function')).transform(transformer)))
   })
 
@@ -49,7 +49,7 @@ describe('item-group', () => {
 
     itemGroup('something', ['function', 'notfunction'], 'Functions and more')(selection, transformer).should.eql(
       dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').text('Functions and more'))
+        .add(dom.create('h2').class('qm-header-font').text('Functions and more'))
         .add(utils.organisedEntity(selection).transform(transformer)))
   })
 
@@ -77,7 +77,7 @@ describe('item-group', () => {
 
     itemGroup('something', ['function', 'notfunction'], 'Functions and more')(selection, transformer).should.eql(
       dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').text('Functions and more'))
+        .add(dom.create('h2').class('qm-header-font').text('Functions and more'))
         .add(utils.organisedEntity(expected).transform(transformer)))
   })
 
@@ -103,7 +103,7 @@ describe('item-group', () => {
 
     itemGroup('something', 'function', 'Functions')(selection, transformer).should.eql(
       dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').text('Functions'))
+        .add(dom.create('h2').class('qm-header-font').text('Functions'))
         .add(utils.organisedEntity(expected).transform(transformer)))
   })
 
@@ -120,7 +120,7 @@ describe('item-group', () => {
 
     itemGroup('something', ['function', 'notfunction'], 'Functions and more')(selection, transformer).should.eql(
       dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').text('Functions and more'))
+        .add(dom.create('h2').class('qm-header-font').text('Functions and more'))
         .add(utils.organisedEntity(selection).transform(transformer)))
   })
 })

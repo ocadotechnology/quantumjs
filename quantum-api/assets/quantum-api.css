@@ -131,6 +131,9 @@
 
 .qm-api-groups .qm-api-groups h2 {
   font-size: 1.1em;
+}
+
+.qm-api-groups .qm-api-groups .qm-api-group:first-child h2 {
   margin-top: 0;
 }
 
