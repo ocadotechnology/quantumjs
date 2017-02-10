@@ -4,7 +4,7 @@ describe('changelog', () => {
   const html = require('quantum-html')
 
   const changelog = require('../../lib/entity-transforms/changelog')
-  const { changeDom, createCollapsible, label } = changelog
+  const { changeDom, createCollapsible } = changelog
   const should = require('chai').should()
 
   function transformer (selection) {
@@ -153,6 +153,37 @@ describe('changelog', () => {
     )
   })
 
+  it('displays an entry with a language and unsupported type', () => {
+    const selection = quantum.select({
+      type: 'changelog',
+      params: ['0.1.0'],
+      content: [
+        {
+          type: 'entry',
+          params: ['EntryName'],
+          content: [{
+            type: 'header',
+            params: ['test-language'],
+            content: [{
+              type: 'randomUnsupportedType',
+              params: [],
+              content: []
+            }]
+          }]
+        }
+      ]
+    })
+
+    changelog(optionsWithLanguage)(selection, transformer).should.eql(
+      changelogBlock()
+        .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
+        .add(dom.create('div').class('qm-changelog-body')
+          .add(dom.create('div').class('qm-changelog-entry')
+            .add(dom.create('div').class('qm-changelog-entry-header qm-code-font'))
+            .add(dom.create('div').class('qm-changelog-entry-content'))))
+    )
+  })
+
   it('displays an entry with changes', () => {
     const change = {
       type: 'change',
@@ -195,6 +226,7 @@ describe('changelog', () => {
   })
 
   describe('group', () => {
+    const { label } = changelog
     it('displays a group', () => {
       const selection = quantum.select({
         type: 'changelog',
@@ -597,6 +629,14 @@ describe('changelog', () => {
             .add(dom.create('div').class('qm-changelog-change-type').text('Removed')))
           .add(dom.create('div').class('qm-changelog-change-body'))
       )
+    })
+  })
+
+  describe('label', () => {
+    const { label } = changelog
+    it('handles undefined tag type', () => {
+      label(undefined, 1).should.eql(dom.create('div').class('qm-changelog-label qm-changelog-label-undefined')
+        .add(dom.create('span').text(1)))
     })
   })
 })

@@ -73,7 +73,7 @@ function label (tagType, count) {
     .class(`qm-changelog-icon-${tagType} qm-changelog-text-${tagType}`)
     .attr('title', tags.displayName[tagType]) : undefined
 
-  return dom.create('div').class('qm-changelog-label ' + 'qm-changelog-label-' + tagType)
+  return dom.create('div').class('qm-changelog-label qm-changelog-label-' + tagType)
     .add(icon)
     .add(dom.create('span').text(count))
 }

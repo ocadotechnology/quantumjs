@@ -1,11 +1,13 @@
 describe('changelog', () => {
   const path = require('path')
-  const { File, FileInfo, read, select } = require('quantum-js')
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
+  const header = require('../../../lib/entity-transforms/builders/header')
   const changelogFileTransform = require('../../../lib/file-transforms/changelog')
-  const quantum = require('../../../lib/languages/quantum')
+  const umLanguage = require('../../../lib/languages/quantum')
 
   describe('changelogHeaderTransforms', () => {
-    const { changelogHeaderTransforms } = quantum()
+    const { changelogHeaderTransforms } = umLanguage()
     const keys = [
       'entity',
       'param'
@@ -19,10 +21,106 @@ describe('changelog', () => {
         changelogHeaderTransforms[k].length.should.equal(2)
       })
     })
+
+    function transformer () {}
+
+    describe('entity', () => {
+      const { entity } = changelogHeaderTransforms
+      it('renders correctly', () => {
+        function testEntityDetails (selection) {
+          return dom.create('span')
+            .class('qm-api-quantum-header-entity-name')
+            .attr('id', 'someentity')
+            .add('someEntity')
+        }
+        const selection = quantum.select({
+          type: 'entity',
+          params: ['someEntity'],
+          content: []
+        })
+        entity(selection, transformer).should.eql(header('entity', testEntityDetails)(selection, transformer))
+      })
+
+      it('renders @param correctly', () => {
+        function testEntityDetails (selection) {
+          return dom.create('span')
+            .class('qm-api-quantum-header-entity-name')
+            .attr('id', 'someentity')
+            .add('someEntity')
+            .add(dom.create('span').class('qm-api-quantum-header-entity-params')
+              .add(dom.create('span')
+                .class('qm-api-quantum-header-entity-param')
+                .add(dom.create('span').class('qm-api-quantum-header-entity-param-name').text('param1')))
+              .add(dom.create('span')
+                .class('qm-api-quantum-header-entity-param qm-api-optional')
+                .add(dom.create('span').class('qm-api-quantum-header-entity-param-name').text('param2'))))
+        }
+        const selection = quantum.select({
+          type: 'entity',
+          params: ['someEntity', 'Type'],
+          content: [{
+            type: 'param',
+            params: ['param1'],
+            content: []
+          }, {
+            type: 'param?',
+            params: ['param2'],
+            content: []
+          }]
+        })
+        entity(selection, transformer).should.eql(header('entity', testEntityDetails)(selection, transformer))
+      })
+
+      it('handles no param string', () => {
+        function testEntityDetails (selection) {
+          return dom.create('span')
+            .class('qm-api-quantum-header-entity-name')
+            .add('')
+        }
+        const selection = quantum.select({
+          type: 'entity',
+          params: [],
+          content: []
+        })
+        entity(selection, transformer).should.eql(header('entity', testEntityDetails)(selection, transformer))
+      })
+    })
+
+    describe('param', () => {
+      const { param } = changelogHeaderTransforms
+      it('renders correctly', () => {
+        function testParamDetails (selection) {
+          return dom.create('span')
+            .class('qm-api-quantum-header-param-name')
+            .attr('id', 'someparam')
+            .add('someParam')
+        }
+        const selection = quantum.select({
+          type: 'param',
+          params: ['someParam'],
+          content: []
+        })
+        param(selection, transformer).should.eql(header('param', testParamDetails)(selection, transformer))
+      })
+
+      it('handles no params', () => {
+        function testParamDetails (selection) {
+          return dom.create('span')
+            .class('qm-api-quantum-header-param-name')
+            .add('')
+        }
+        const selection = quantum.select({
+          type: 'param',
+          params: [],
+          content: []
+        })
+        param(selection, transformer).should.eql(header('param', testParamDetails)(selection, transformer))
+      })
+    })
   })
 
   function checkSpec (spec) {
-    const fileInfo = new FileInfo({
+    const fileInfo = new quantum.FileInfo({
       src: 'src/content/a1.um',
       resolved: 'a1.um',
       base: 'src/content',
@@ -30,7 +128,7 @@ describe('changelog', () => {
       watch: true
     })
 
-    const inputFile = new File({
+    const inputFile = new quantum.File({
       info: fileInfo,
       content: {
         type: '',
@@ -39,7 +137,7 @@ describe('changelog', () => {
       }
     })
 
-    const outputFile = new File({
+    const outputFile = new quantum.File({
       info: fileInfo,
       content: {
         type: '',
@@ -49,7 +147,7 @@ describe('changelog', () => {
     })
 
     const options = {
-      languages: [quantum()]
+      languages: [umLanguage()]
     }
 
     changelogFileTransform.fileTransform(inputFile, options).should.eql(outputFile)
@@ -58,9 +156,9 @@ describe('changelog', () => {
   describe('examples', () => {
     function testExample (filename) {
       it(filename, () => {
-        return read(path.join(__dirname, filename))
+        return quantum.read(path.join(__dirname, filename))
           .then(parsed => {
-            checkSpec(select(parsed).select('spec'))
+            checkSpec(quantum.select(parsed).select('spec'))
           })
       })
     }

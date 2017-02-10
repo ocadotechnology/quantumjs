@@ -19,26 +19,32 @@ const assets = [
 ]
 
 function paramHeaderDetails (selection, transformer) {
+  const name = selection.param(0)
   return dom.create('span')
-    .class(`qm-api-quantum-param-header-name`)
-    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
-    .add(selection.param(0))
+    .class('qm-api-quantum-header-param-name')
+    .attr('id', name ? name.toLowerCase() : undefined)
+    .add(name || '')
 }
 
 function entityHeaderDetails (selection, transformer) {
+  const name = selection.param(0)
   const params = selection.selectAll(['param', 'param?']).map((param) => {
     const isOptional = param.type()[param.type().length - 1] === '?'
     return dom.create('span')
-      .class('qm-api-quantum-param-header-name')
+      .class('qm-api-quantum-header-entity-param')
       .classed('qm-api-optional', isOptional)
       .add(dom.create('span').class('qm-api-quantum-header-entity-param-name').text(param.param(0)))
   })
 
+  const paramsContent = params.length ?
+    dom.create('span').class('qm-api-quantum-header-entity-params').add(params) :
+    undefined
+
   return dom.create('span')
-    .class(`qm-api-quantum-header-entity-name`)
-    .attr('id', selection.param(0) ? selection.param(0).toLowerCase() : undefined)
-    .add(selection.param(0))
-    .add(dom.create('span').class('qm-api-quantum-header-entity-params').add(params))
+    .class('qm-api-quantum-header-entity-name')
+    .attr('id', name ? name.toLowerCase() : undefined)
+    .add(name || '')
+    .add(paramsContent)
 }
 
 const entityHeader = header('entity', entityHeaderDetails)
