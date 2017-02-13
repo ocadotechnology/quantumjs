@@ -1,2 +1,69 @@
 #!/usr/bin/env node
-require('../lib/cli')()
+'use strict'
+/*
+
+  CLI
+  ===
+
+  A command line interface for quantum.
+
+*/
+const chalk = require('chalk')
+const path = require('path')
+const { readConfig, build, watch, list } = require('../lib/api')
+
+const aliases = {
+  cfg: 'config'
+}
+
+function removeAliases (apiFn) {
+  return (cmdOpts) => {
+    const convertedOpts = Object.keys(cmdOpts).reduce((converted, key) => {
+      converted[aliases[key] || key] = cmdOpts[key]
+      return converted
+    }, {})
+    return apiFn(readConfig(convertedOpts))
+  }
+}
+
+require('yargs')
+  .usage('quantum <cmd> [args]')
+  .command({
+    command: 'build',
+    desc: 'Builds the quantum site in the current folder',
+    handler: removeAliases(build)
+  })
+  .command({
+    command: 'watch',
+    desc: 'Build and watch the quantum site in the current folder',
+    handler: removeAliases(watch)
+  })
+  .command({
+    command: 'list',
+    desc: 'Lists the available entities in the current config file',
+    handler: removeAliases(list)
+  })
+  .options({
+    config:{
+      alias: 'cfg',
+      default: 'quantum.config.js',
+      desc: 'Sets the config file to use to build the site in the current directory'
+    },
+    port: {
+      desc: 'Specify the port to use when watching',
+      default: 8080
+    },
+    logLevel: {
+      desc: 'Specify the level of logging to use when building',
+      choices: [
+        'none',
+        'error',
+        'default'
+      ]
+    }
+  })
+  .version()
+  .demandCommand(1, 'Please use one of the available commands')
+  .help('help', 'Show help. For command help use <cmd> --help')
+  .argv
+
