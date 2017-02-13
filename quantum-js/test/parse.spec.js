@@ -1,7 +1,9 @@
+const chai = require('chai')
+const { parse, tokenize, ast } = require('..')
+
+const expect = chai.expect
+
 describe('parse', () => {
-  const expect = require('chai').expect
-  const { parse } = require('..')
-  const { ast, tokenize } = parse
   describe('tokenize', () => {
     it('detects a type correctly', () => {
       tokenize('@type').should.eql([

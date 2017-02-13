@@ -1,5 +1,6 @@
+const { clone } = require('..')
+
 describe('clone', () => {
-  const { clone } = require('..')
   it('clones an entity', () => {
     const entity = {type: 'tag', params: [], content: []}
     clone(entity).should.eql(entity)

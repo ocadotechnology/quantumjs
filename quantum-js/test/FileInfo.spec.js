@@ -1,5 +1,6 @@
+const { FileInfo } = require('..')
+
 describe('FileInfo', () => {
-  const { FileInfo } = require('..')
   it('uses the options to set up the properties', () => {
     const file = new FileInfo({
       src: 'src/content/a.um',

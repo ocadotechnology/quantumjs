@@ -502,7 +502,9 @@ function parse (str) {
   }
 }
 
-module.exports = parse
-module.exports.tokenize = tokenize
-module.exports.ast = ast
-module.exports.ParseError = ParseError
+module.exports = {
+  parse,
+  tokenize,
+  ast,
+  ParseError
+}

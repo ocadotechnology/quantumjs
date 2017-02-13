@@ -1,6 +1,6 @@
-describe('File', () => {
-  const { File, FileInfo } = require('..')
+const { File, FileInfo } = require('..')
 
+describe('File', () => {
   const fileInfo1 = new FileInfo({
     src: 'src/content/a1.um',
     resolved: 'a1.um',

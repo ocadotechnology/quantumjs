@@ -30,7 +30,7 @@ function groups (selection, transformer) {
           .add(dom.create('div').class('qm-api-group-content')
             .add(description(groupSelection, transformer))
             .add(groupSelection
-              .filter(entity => quantum.select.isEntity(entity) && entity.type !== 'description' && entity.type !== 'group')
+              .filter(entity => quantum.isEntity(entity) && entity.type !== 'description' && entity.type !== 'group')
               .transform(transformer))
             .add(groups(nestedGroups, transformer)))
       }))

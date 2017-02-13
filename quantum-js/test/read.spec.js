@@ -1,7 +1,7 @@
-describe('read', () => {
-  const { read } = require('..')
-  const filename = 'test/files/read/source1.um'
+const { read, readAsFile, File, FileInfo } = require('..')
 
+describe('read', () => {
+  const filename = 'test/files/read/source1.um'
   it('works', () => {
     const expected = {
       type: '',
@@ -255,7 +255,6 @@ describe('read', () => {
 })
 
 describe('readAsFile', () => {
-  const { readAsFile, File, FileInfo } = require('..')
   const filename = 'test/files/read/source1.um'
   it('readAsFile works', () => {
     const expected = new File({

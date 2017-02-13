@@ -1,5 +1,6 @@
+const { json, File, FileInfo } = require('..')
+
 describe('json', () => {
-  const { json, File, FileInfo } = require('..')
   it('converts a page to json', () => {
     const file = new File({
       info: new FileInfo({

@@ -1,8 +1,10 @@
+const chai = require('chai')
+const { select, Selection, isSelection, isEntity, isText } = require('..')
+
+const should = chai.should()
+const expect = chai.expect
+
 describe('select', () => {
-  const chai = require('chai')
-  const should = chai.should()
-  const expect = chai.expect
-  const { select } = require('..')
   it('throws an error when something that is not an entity is passed in', () => {
     expect(() => {
       select(123)
@@ -10,71 +12,71 @@ describe('select', () => {
   })
 
   it('returns a Selection', () => {
-    select({type: 'tag', params: [], content: []}).should.be.an.instanceof(select.Selection)
+    select({type: 'tag', params: [], content: []}).should.be.an.instanceof(Selection)
   })
 
   it('isSelection works', () => {
-    select.isSelection(new select.Selection()).should.equal(true)
-    select.isSelection({}).should.equal(false)
+    isSelection(new Selection()).should.equal(true)
+    isSelection({}).should.equal(false)
   })
 
   it('flattens', () => {
-    select(select({type: 'tag', params: [], content: []})).should.be.an.instanceof(select.Selection)
+    select(select({type: 'tag', params: [], content: []})).should.be.an.instanceof(Selection)
   })
 
-  describe('select.isEntity', () => {
+  describe('isEntity', () => {
     it('returns true for an object that looks like an entity', () => {
-      select.isEntity({type: 'tag', params: [], content: []}).should.equal(true)
+      isEntity({type: 'tag', params: [], content: []}).should.equal(true)
     })
 
     it('returns false for an object has missing or incorrect type field', () => {
-      select.isEntity({params: [], content: []}).should.equal(false)
-      select.isEntity({type: 123, params: [], content: []}).should.equal(false)
-      select.isEntity({type: () => 0, params: [], content: []}).should.equal(false)
-      select.isEntity({type: {}, params: [], content: []}).should.equal(false)
-      select.isEntity({type: [], params: [], content: []}).should.equal(false)
-      select.isEntity({type: undefined, params: [], content: []}).should.equal(false)
-      select.isEntity({type: null, params: [], content: []}).should.equal(false)
-      select.isEntity({type: true, params: [], content: []}).should.equal(false)
+      isEntity({params: [], content: []}).should.equal(false)
+      isEntity({type: 123, params: [], content: []}).should.equal(false)
+      isEntity({type: () => 0, params: [], content: []}).should.equal(false)
+      isEntity({type: {}, params: [], content: []}).should.equal(false)
+      isEntity({type: [], params: [], content: []}).should.equal(false)
+      isEntity({type: undefined, params: [], content: []}).should.equal(false)
+      isEntity({type: null, params: [], content: []}).should.equal(false)
+      isEntity({type: true, params: [], content: []}).should.equal(false)
     })
 
     it('returns false for an object has missing or incorrect params field', () => {
-      select.isEntity({type: 'tag', content: []}).should.equal(false)
-      select.isEntity({type: 'tag', params: 123, content: []}).should.equal(false)
-      select.isEntity({type: 'tag', params: () => 0, content: []}).should.equal(false)
-      select.isEntity({type: 'tag', params: {}, content: []}).should.equal(false)
-      select.isEntity({type: 'tag', params: '', content: []}).should.equal(false)
-      select.isEntity({type: 'tag', params: undefined, content: []}).should.equal(false)
-      select.isEntity({type: 'tag', params: null, content: []}).should.equal(false)
-      select.isEntity({type: 'tag', params: true, content: []}).should.equal(false)
+      isEntity({type: 'tag', content: []}).should.equal(false)
+      isEntity({type: 'tag', params: 123, content: []}).should.equal(false)
+      isEntity({type: 'tag', params: () => 0, content: []}).should.equal(false)
+      isEntity({type: 'tag', params: {}, content: []}).should.equal(false)
+      isEntity({type: 'tag', params: '', content: []}).should.equal(false)
+      isEntity({type: 'tag', params: undefined, content: []}).should.equal(false)
+      isEntity({type: 'tag', params: null, content: []}).should.equal(false)
+      isEntity({type: 'tag', params: true, content: []}).should.equal(false)
     })
 
     it('returns false for an object has missing or incorrect content field', () => {
-      select.isEntity({type: 'tag', params: []}).should.equal(false)
-      select.isEntity({type: 'tag', params: [], content: 123}).should.equal(false)
-      select.isEntity({type: 'tag', params: [], content: () => 0}).should.equal(false)
-      select.isEntity({type: 'tag', params: [], content: {}}).should.equal(false)
-      select.isEntity({type: 'tag', params: [], content: ''}).should.equal(false)
-      select.isEntity({type: 'tag', params: [], content: undefined}).should.equal(false)
-      select.isEntity({type: 'tag', params: [], content: null}).should.equal(false)
-      select.isEntity({type: 'tag', params: [], content: true}).should.equal(false)
+      isEntity({type: 'tag', params: []}).should.equal(false)
+      isEntity({type: 'tag', params: [], content: 123}).should.equal(false)
+      isEntity({type: 'tag', params: [], content: () => 0}).should.equal(false)
+      isEntity({type: 'tag', params: [], content: {}}).should.equal(false)
+      isEntity({type: 'tag', params: [], content: ''}).should.equal(false)
+      isEntity({type: 'tag', params: [], content: undefined}).should.equal(false)
+      isEntity({type: 'tag', params: [], content: null}).should.equal(false)
+      isEntity({type: 'tag', params: [], content: true}).should.equal(false)
     })
   })
 
-  describe('select.isText', () => {
+  describe('isText', () => {
     it('returns true for a string', () => {
-      select.isText('some text').should.equal(true)
+      isText('some text').should.equal(true)
     })
 
     it('returns false for things that are not strings', () => {
-      select.isText(null).should.equal(false)
-      select.isText(undefined).should.equal(false)
-      select.isText({}).should.equal(false)
-      select.isText([]).should.equal(false)
-      select.isText(23).should.equal(false)
-      select.isText(() => 0).should.equal(false)
-      select.isText(false).should.equal(false)
-      select.isText(true).should.equal(false)
+      isText(null).should.equal(false)
+      isText(undefined).should.equal(false)
+      isText({}).should.equal(false)
+      isText([]).should.equal(false)
+      isText(23).should.equal(false)
+      isText(() => 0).should.equal(false)
+      isText(false).should.equal(false)
+      isText(true).should.equal(false)
     })
   })
 

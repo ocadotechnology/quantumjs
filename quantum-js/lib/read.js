@@ -13,7 +13,7 @@ const Promise = require('bluebird')
 const path = require('path')
 const fs = Promise.promisifyAll(require('fs'))
 const globby = require('globby')
-const parse = require('./parse')
+const { parse, ParseError } = require('./parse')
 const File = require('./File')
 const FileInfo = require('./FileInfo')
 
@@ -56,7 +56,7 @@ function parseFile (filename, doParse, options, parentFile) {
       .then(input => parse(input, options))
       .then(parsed => inline(parsed, currentDir, options, filename))
       .catch(e => {
-        if (e instanceof parse.ParseError) {
+        if (e instanceof ParseError) {
           e.filename = e.filename || filename
           throw e
         } else {

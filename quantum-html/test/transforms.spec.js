@@ -5,10 +5,10 @@ describe('transforms', () => {
 
   function transformEntity () {
     function defaultTransform (selection) {
-      return dom.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection)
+      return dom.textNode(quantum.isSelection(selection) ? selection.cs() : selection)
     }
     return function transformer (selection) {
-      const t = quantum.select.isSelection(selection) ? selection.type() : undefined
+      const t = quantum.isSelection(selection) ? selection.type() : undefined
       if (t in html.transforms()) {
         return html.transforms()[t](selection, transformer)
       } else {
@@ -19,10 +19,10 @@ describe('transforms', () => {
 
   function promiseTransformEntity () {
     function defaultTransform (selection) {
-      return Promise.resolve(dom.textNode(quantum.select.isSelection(selection) ? selection.cs() : selection))
+      return Promise.resolve(dom.textNode(quantum.isSelection(selection) ? selection.cs() : selection))
     }
     return function transformer (selection) {
-      const t = quantum.select.isSelection(selection) ? selection.type() : undefined
+      const t = quantum.isSelection(selection) ? selection.type() : undefined
       if (t in html.transforms()) {
         return Promise.resolve(html.transforms()[t](selection, transformer))
       } else {

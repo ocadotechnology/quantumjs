@@ -57,7 +57,7 @@ function organisedEntity (selection, opts) {
     const removed = []
 
     selection.content().forEach(entity => {
-      if (quantum.select.isEntity(entity)) {
+      if (quantum.isEntity(entity)) {
         const selection = quantum.select(entity)
         if (selection.has('removed')) {
           removed.push(entity)

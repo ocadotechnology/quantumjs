@@ -181,7 +181,6 @@ Selection.prototype = {
       for (let i = 0; i < l; i++) {
         const child = a[i]
         if (isEntity(child)) {
-          // OPTIM: do this without the recursion
           select(child, parent).selectAll(type, options).forEach(d => res.push(d))
         }
       }
@@ -332,7 +331,7 @@ function select (entity, parent) {
 
 select.Promise = Promise // interchangeable promise implementation
 
-module.exports = select
+module.exports.select = select
 module.exports.isEntity = isEntity
 module.exports.isSelection = isSelection
 module.exports.isText = isText

@@ -36,7 +36,7 @@ describe('item-builder', () => {
     })
 
     function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
+      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
     }
 
     const deprecatedNoticeBuilder = notice('deprecated', 'Deprecated')
@@ -55,7 +55,7 @@ describe('item-builder', () => {
     })
 
     function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
+      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
     }
 
     const headerBlock = dom.create('div')
@@ -81,7 +81,7 @@ describe('item-builder', () => {
     })
 
     function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
+      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
     }
 
     const headerBlock = dom.create('div')
@@ -105,7 +105,7 @@ describe('item-builder', () => {
     })
 
     function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
+      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
     }
 
     const headerBlock = dom.create('div')
@@ -137,7 +137,7 @@ describe('item-builder', () => {
     })
 
     function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
+      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
     }
 
     const headerBlock = dom.create('div')

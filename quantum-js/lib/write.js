@@ -14,7 +14,7 @@ const flatten = require('flatten')
 
 function write (files) {
   return Promise.all(Array.isArray(files) ? flatten(files) : [files])
-    .map((file) => fs.outputFileAsync(file.info.dest, file.content).then(() => file))
+    .map(file => fs.outputFileAsync(file.info.dest, file.content).then(() => file))
 }
 
 module.exports = write
