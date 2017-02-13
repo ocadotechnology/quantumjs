@@ -11,31 +11,21 @@
       @description
         The type of the header to build, for instance @code[function] or @code[object] that will be used to class the header.
 
-        Headers are given the @code[qm-api-item-header] and @code[qm-api-item-header-<type>] classes.
+        # Headers are given the @code[qm-api-item-header] and @code[qm-api-item-header-<type>] classes.
 
-    @param detailsBuilder [Function]
+    @param detailsBuilder [Transform]
       @description
-        The transform for creating the text to display in the header from an entity.
+        The @type[Transform] for creating the text to display in the header from an entity.
 
-        It receives an entire api entity  including children.
-
-      @param selection [Selection]
-        @description
-          The API entity as a selection (e.g. @code[@function]).
-
-      @param transformer [Transformer]
-        @description
-          See @hyperlink(#TODO: Fix this link)[Transformer] for more details.
-
-      @returns Element
-        @description
-          An element (or array of elements) containing the header information for an api entity
+        It receives an entire api entity including children and should return an element (or array of elements) containing the header information for an api entity.
 
     @returns Transform
+      @description
+        A @type[Transform] for creating an api/changelog header for a selection.
 
   @property body [Object]
     @description
-      Provides @hyperlink(#TODO: Fix this link)[Transforms] for building the content of entities, such as descriptions or children.
+      Provides a set of @type[Transform] functions for building the content of entities, such as descriptions or children.
 
     @property description [Transform]
       @description
@@ -58,9 +48,86 @@
       Provides a transform for rendering an api item, such as @code[@function], by providing a header and a set of transforms to apply to content.
 
     @param? options [Object]
-      @property renderAsOther [Object]
-      @property content [Array[Transform]]
       @property class [String]
+        @description
+          An additional class to give to api section if it has a header
+
+      @property content [Array[Transform]]
+        @description
+          The transforms to apply to the content of the item in the order they should be displayed
+
+        @extra
+          @example
+            @noBackground
+            @file
+              @noOutput
+              @js
+                const item = require('quantum-api').builders.body.item
+                const itemGroup = require('quantum-api').builders.body.itemGroup
+                const descriptions = itemGroup
+
+                const functionBuilder = item({
+                  ..., // Other options
+                  content: [ descriptions, params, returns ]
+                })
+
+                module.exports = () => ({
+                  transforms: {
+                    function: functionBuilder
+                  }
+                })
+
+            @file
+              @@um
+                @function something
+                  # Display order is determined by item, not by order in file
+                  @returns Boolean
+                  @param a [String]
+                  @description: Description goes first
+
+
       @property header [Transform]
+        @description
+          The transform that will be used to render the header
+
+      @property renderAsOther [Object]
+        @description
+          A mapping of @code[Type: Item] for rendering an item as a different type of item when it is given a type
+
+        @extra
+          @example
+            @noBackground
+            @file
+              @noOutput
+              @js
+                const item = require('quantum-api').builders.body.item
+                const functionBuilder = item({
+                  ... // Define a function builder
+                })
+
+                const propertyBuilder = item({
+                  ..., // Other options
+                  renderAsOther: { Function: functionBuilder }
+                })
+
+                module.exports = () => ({
+                  transforms: {
+                    function: functionBuilder,
+                    property: propertyBuilder
+                  }
+                })
+
+            @file
+              @@um
+                @property property [String]
+
+                @property something [Function]
+                  @param p1 [String]
+
+
 
     @returns Transform
+
+  @property itemGroup
+    @description
+      TODO

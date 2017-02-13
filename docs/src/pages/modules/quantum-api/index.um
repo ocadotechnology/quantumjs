@@ -10,8 +10,7 @@
     Transforms for writing API documentation and building changelogs.
 
 @contentSection
-  @topic Contents
-    @tableOfContents
+  @tableOfContents Contents
 
   @topic About
     This module provides transforms for writing the API documentation that you can see in the @hyperlink(/modules/quantum-api/#api)[API] section of this and the other module pages.
@@ -32,6 +31,7 @@
 
       @example
         @file quantum.config.js
+          @noOutput
           @js
             const html = require('quantum-html')
             const api = require('quantum-api')
