@@ -1,0 +1,6 @@
+@method entity
+  @description
+    Returns the underlying entity this @type[Selection] wraps
+  @returns Object
+    @description
+      The entity this selection wraps

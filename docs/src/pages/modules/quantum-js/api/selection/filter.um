@@ -1,0 +1,148 @@
+@method filter
+  @description
+    Creates a new @type[Selection] with some of the child entities filtered out.
+    Only entities with the type provided are kept.
+
+    @@codeblock js
+      const quantum = require('quantum-js')
+
+      const entity = {
+        type: 'example',
+        params: [],
+        content: [
+          {
+            type: 'childA',
+            params: [],
+            content: []
+          },
+          {
+            type: 'childA',
+            params: [],
+            content: []
+          },
+          {
+            type: 'childB',
+            params: [],
+            content: []
+          },
+          {
+            type: 'childC',
+            params: [],
+            content: []
+          }
+        ]
+      }
+
+      const selection = quantum.select(entity)
+      const filteredSelection = selection.filter('childA')
+
+      // filteredSelection does not have 'childB' or 'childC' type entities as
+      // children
+
+  @param types [String]
+    @description
+      The type of children to keep.
+  @returns Selection
+    @description
+      A new @type[Selection] that only has childen of the type specified.
+
+
+@method filter
+  @description
+    Creates a new @type[Selection] with some of the child entities filtered out.
+    Only entities with the types provided are kept.
+
+    @@codeblock js
+      const quantum = require('quantum-js')
+
+      const entity = {
+        type: 'example',
+        params: [],
+        content: [
+          {
+            type: 'childA',
+            params: [],
+            content: []
+          },
+          {
+            type: 'childA',
+            params: [],
+            content: []
+          },
+          {
+            type: 'childB',
+            params: [],
+            content: []
+          },
+          {
+            type: 'childC',
+            params: [],
+            content: []
+          }
+        ]
+      }
+
+      const selection = quantum.select(entity)
+      const filteredSelection = selection.filter(['childA', 'childB'])
+
+      // filteredSelection does not have 'childC' as a child
+
+  @param types [Array[String]]
+    @description
+      The children types to keep.
+  @returns Selection
+    @description
+      A new @type[Selection] that only has childen of the types specified.
+
+@method filter
+  @description
+    Creates a new @type[Selection] with some of the child entities filtered out.
+    Only entities with the types provided are kept.
+
+    @@codeblock js
+      const quantum = require('quantum-js')
+
+      const entity = {
+        type: 'example',
+        params: [],
+        content: [
+          {
+            type: 'childA',
+            params: [],
+            content: []
+          },
+          {
+            type: 'childA',
+            params: [],
+            content: []
+          },
+          {
+            type: 'childB',
+            params: [],
+            content: []
+          },
+          {
+            type: 'childC',
+            params: [],
+            content: []
+          }
+        ]
+      }
+
+      const selection = quantum.select(entity)
+      const filteredSelection = selection.filter(entity => entity.type !== 'childA')
+
+      // filteredSelection does not have any 'childA' type children
+
+  @param types [Function]
+    @description
+      An indicator function which should return true for the childen to keep in
+      the filtered selection, false for children that should be excluded.
+    @param entity [Object]
+      @description
+        The child entity to check
+    @returns Boolean
+      Return true to keep the child in the filtered selection, false to exclude.
+  @returns Selection
+    @description
+      A new filtered @type[Selection] that only has some of the children.
