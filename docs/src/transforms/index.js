@@ -4,7 +4,7 @@ function um (selection, transformer) {
   return quantum.select(quantum.parse(selection.cs())).transform(transformer)
 }
 
-function example (selection, transformer) {
+function exampleFile (selection, transformer, fileName) {
   function addCodeSection (type, title) {
     if (selection.has(type)) {
       const subEntity = selection.select(type)
@@ -12,18 +12,18 @@ function example (selection, transformer) {
       const fake = quantum.select({
         content: [{
           type: 'codeblock',
-          params: [type],
+          params: [type === 'config' ? 'js' : type],
           content: subEntity.content()
         }]
       })
 
-      return dom.create('div').class('docs-example-code-type')
-        .add(dom.create('div').class('docs-example-code-heading').text(title))
+      return dom.create('div').class('docs-example-code-section')
+        .add(dom.create('div').class('docs-example-code-heading').text(fileName ? `${fileName} (${title})` : title))
         .add(fake.transform(transformer))
     }
   }
 
-  const codeBody = dom.create('div').class('docs-example-code-body')
+  const code = dom.create('div').class('docs-example-code-body')
     .add([
       addCodeSection('html', 'HTML'),
       addCodeSection('um', 'Quantum'),
@@ -33,15 +33,34 @@ function example (selection, transformer) {
       addCodeSection('json', 'JSON')
     ])
 
+  const result = selection.has('noOutput') ? undefined :
+    selection.has('output') ?
+      selection.select('output').transform(transformer) :
+      selection.transform(transformer)
+
+  return { code, result }
+}
+
+function example (selection, transformer) {
+  const { code: codeBody, result: resultBody } = !selection.has('file') ? exampleFile(selection, transformer) :
+    selection.selectAll('file').map(s => exampleFile(s, transformer, s.ps()))
+      .reduce(({ code, result }, { code: newCode, result: newResult }) => {
+        return { code: [...code, newCode], result: [...result, newResult] }
+      }, { code: [], result: [] })
+
+  const code = [
+    dom.create('div').class('docs-example-heading qm-header-font').text('Example Markup'),
+    dom.create('div').class('docs-example-code').add(codeBody)
+  ]
+
+  const result = selection.has('noOutput') ? undefined : [
+    dom.create('div').class('docs-example-heading qm-header-font').text('Example Result'),
+    dom.create('div').class('docs-example-body').add(selection.has('output') ? selection.select('output').transform(transformer) : resultBody)
+  ]
+
   return dom.create('div').class('docs-example')
-    .add(dom.create('div').class('docs-example-heading qm-header-font')
-      .text('Example Markup'))
-    .add(dom.create('div').class('docs-example-code')
-      .add(codeBody))
-    .add(dom.create('div').class('docs-example-heading qm-header-font')
-      .text('Example Result'))
-    .add(dom.create('div').class('docs-example-body')
-      .add(selection.transform(transformer)))
+      .add(code)
+      .add(result)
 }
 
 function transforms () {

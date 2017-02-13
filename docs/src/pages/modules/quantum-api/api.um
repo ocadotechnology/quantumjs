@@ -8,5 +8,3 @@
   @inline api/transforms.um
   @inline api/languages.um
   @inline api/builders.um
-  @group Entities
-    @inline api/entities.um
