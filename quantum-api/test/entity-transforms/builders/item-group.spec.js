@@ -31,8 +31,8 @@ describe('item-group', () => {
     })
 
     itemGroup('something', 'function', 'Functions')(selection, transformer).should.eql(
-      dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').class('qm-header-font').text('Functions'))
+      dom.create('div').class('qm-api-group qm-api-function-group')
+        .add(dom.create('div').class('qm-api-group-header qm-api-function-group-header qm-header-font').text('Functions'))
         .add(utils.organisedEntity(selection.filter('function')).transform(transformer)))
   })
 
@@ -48,8 +48,8 @@ describe('item-group', () => {
     })
 
     itemGroup('something', ['function', 'notfunction'], 'Functions and more')(selection, transformer).should.eql(
-      dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').class('qm-header-font').text('Functions and more'))
+      dom.create('div').class('qm-api-group qm-api-function-group')
+        .add(dom.create('div').class('qm-api-group-header qm-api-function-group-header qm-header-font').text('Functions and more'))
         .add(utils.organisedEntity(selection).transform(transformer)))
   })
 
@@ -76,8 +76,8 @@ describe('item-group', () => {
     })
 
     itemGroup('something', ['function', 'notfunction'], 'Functions and more')(selection, transformer).should.eql(
-      dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').class('qm-header-font').text('Functions and more'))
+      dom.create('div').class('qm-api-group qm-api-function-group')
+        .add(dom.create('div').class('qm-api-group-header qm-api-function-group-header qm-header-font').text('Functions and more'))
         .add(utils.organisedEntity(expected).transform(transformer)))
   })
 
@@ -102,8 +102,8 @@ describe('item-group', () => {
     })
 
     itemGroup('something', 'function', 'Functions')(selection, transformer).should.eql(
-      dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').class('qm-header-font').text('Functions'))
+      dom.create('div').class('qm-api-group qm-api-function-group')
+        .add(dom.create('div').class('qm-api-group-header qm-api-function-group-header qm-header-font').text('Functions'))
         .add(utils.organisedEntity(expected).transform(transformer)))
   })
 
@@ -119,8 +119,8 @@ describe('item-group', () => {
     })
 
     itemGroup('something', ['function', 'notfunction'], 'Functions and more')(selection, transformer).should.eql(
-      dom.create('div').class('qm-api-function-group')
-        .add(dom.create('h2').class('qm-header-font').text('Functions and more'))
+      dom.create('div').class('qm-api-group qm-api-function-group')
+        .add(dom.create('div').class('qm-api-group-header qm-api-function-group-header qm-header-font').text('Functions and more'))
         .add(utils.organisedEntity(selection).transform(transformer)))
   })
 })

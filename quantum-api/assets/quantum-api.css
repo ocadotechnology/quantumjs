@@ -11,6 +11,11 @@
   border-radius: 3px;
 }
 
+.qm-api-group-header {
+  font-size: 18px;
+  margin: 1em 0 0.5em;
+}
+
 .qm-api-notice-header {
   color: white;
   padding: 0.5em;
@@ -123,25 +128,35 @@
 
 .qm-api-groups {}
 
-.qm-api-groups .qm-api-groups {
+.qm-api-groups .qm-api-groups > .qm-api-group {
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
   padding: 0.5em;
   background: #fff;
+  margin-bottom: 0.5em;
 }
 
-.qm-api-groups .qm-api-groups h2 {
+.qm-api-groups .qm-api-groups .qm-api-group-header {
   font-size: 1.1em;
 }
 
-.qm-api-groups .qm-api-groups .qm-api-group:first-child h2 {
+.qm-api-groups .qm-api-groups .qm-api-group > .qm-api-group-header {
   margin-top: 0;
+}
+.qm-api-groups .qm-api-groups .qm-api-group > .qm-api-group-content :last-child {
+  margin-bottom: 0;
 }
 
 .qm-api-group {}
 
 .qm-api-group-content {}
 
-.qm-api-group > h2 {
+.qm-api-group-content > .qm-api-description {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.qm-api-group > .qm-api-group-header {
   margin-bottom: 0.5em;
 }
 
