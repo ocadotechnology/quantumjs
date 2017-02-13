@@ -268,7 +268,7 @@ function readConfig ({ config, port, logLevel }) {
     configFromFile.logLevel = logLevel || configFromFile.logLevel
     return configFromFile
   } catch (e) {
-    throw new Error(`No config file found, expected:: ${path.resolve(configPath)}`)
+    throw new Error(`No config file found, expected: ${path.resolve(configPath)}`)
   }
 }
 
