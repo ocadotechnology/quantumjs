@@ -75,7 +75,7 @@
         The transformed page
 
 
-  @param options [Object]
+  @param? options [Object]
     @property dir [String]
       @description
         The working directory for the watcher to work in
@@ -110,6 +110,27 @@
       @description
         The number of files to build concurrently
       @default: 1
+
+    @property fileReader [Function]
+      @description
+        The function for reading a file and converting it to a @type[File].
+
+        It is called internally with the same set of options that @hyperlink(#read)[read] and @hyperlink(#read)[readAsFile] support.
+
+      @param file [String/FileInfo]
+        @description
+          The filename string or FileInfo to load
+
+      @param? options [Object]
+        @description
+          The options to pass to the reader.
+
+          See @hyperlink(#read)[read] and @hyperlink(#read)[readAsFile] options for more information on what should be supported.
+
+      @default: @hyperlink(#read)[readAsFile]
+      @returns [Promise[File]]
+        @description
+          A promise that yields the parsed AST wrapped up into a @type[File].
 
 
   @returns [Promise[Object]]

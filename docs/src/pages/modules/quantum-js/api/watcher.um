@@ -44,7 +44,7 @@
           }
         ], handler, options)
 
-  @param options [Object]
+  @param? options [Object]
     @property dir [String]
       @description
         The working directory for the watcher to work in

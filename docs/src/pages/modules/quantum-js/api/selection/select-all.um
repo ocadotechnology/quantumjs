@@ -81,7 +81,7 @@
   @param type [String]
     @description
       The type of entity to select
-  @param options [Object]
+  @param? options [Object]
     @property recursive [Boolean]
       @description
         Set to true to search recursively down the child entities to search
@@ -197,7 +197,7 @@
   @param types [Array[String]]
     @description
       The types of entities to select
-  @param options [Object]
+  @param? options [Object]
     @property recursive [Boolean]
       @description
         Set to true to search recursively down the child entities to search

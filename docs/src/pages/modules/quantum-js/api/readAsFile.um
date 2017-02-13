@@ -12,7 +12,25 @@
           console.log(file)
         })
 
-  @param filename [String]: The filename of the file to load and parse.
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const fileInfo = new quantum.FileInfo({
+          src: "src/content/about.um",
+          resolved: "about.um",
+          base: "src/content",
+          dest: "target/about.um",
+          destBase: "target",
+          watch: true
+        })
+
+        quantum.readAsFile(fileInfo).then(file => {
+          console.log(file)
+        })
+
+  @param file [String/FileInfo]
+    @description
+      The filename string or FileInfo to load
   @param? options [Object]
     @property inlineEntityType [String]
       @description
