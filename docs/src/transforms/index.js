@@ -27,7 +27,7 @@ function exampleFile (selection, transformer, fileName) {
     .add([
       addCodeSection('html', 'HTML'),
       addCodeSection('um', 'Quantum'),
-      addCodeSection('js', 'JavaScript'),
+      addCodeSection('js', 'Javascript'),
       addCodeSection('coffee', 'CoffeeScript'),
       addCodeSection('css', 'CSS'),
       addCodeSection('json', 'JSON')
@@ -48,12 +48,14 @@ function example (selection, transformer) {
         return { code: [...code, newCode], result: [...result, newResult] }
       }, { code: [], result: [] })
 
+  const noOutput = selection.has('noOutput')
+
   const code = [
-    dom.create('div').class('docs-example-heading qm-header-font').text('Example Markup'),
+    dom.create('div').class('docs-example-heading qm-header-font').text(noOutput ? 'Example' : 'Example Markup'),
     dom.create('div').class('docs-example-code').add(codeBody)
   ]
 
-  const result = selection.has('noOutput') ? undefined : [
+  const result = noOutput ? undefined : [
     dom.create('div').class('docs-example-heading qm-header-font').text('Example Result'),
     dom.create('div').class('docs-example-body').add(selection.has('output') ? selection.select('output').transform(transformer) : resultBody)
   ]
