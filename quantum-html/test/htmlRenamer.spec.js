@@ -1,7 +1,6 @@
-const { File, FileInfo } = require('quantum-js')
-const { htmlRenamer } = require('..')
-
 describe('htmlRenamer', () => {
+  const { File, FileInfo } = require('quantum-js')
+  const { htmlRenamer } = require('..')
   it('renames a file', () => {
     const file = new File({
       info: new FileInfo({

@@ -1,13 +1,11 @@
-const chai = require('chai')
-const path = require('path')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
-const html = require('quantum-html')
-const { transforms } = require('..')
-
-const should = chai.should()
-
 describe('transforms', () => {
+  const path = require('path')
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
+  const html = require('quantum-html')
+  const { transforms } = require('..')
+  const should = require('chai').should()
+
   function transformer (selection) {
     return dom.create('div').text(selection.cs ? selection.cs() : selection)
   }

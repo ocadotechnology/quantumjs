@@ -1,6 +1,5 @@
-const { asset } = require('..')
-
 describe('asset', () => {
+  const { asset } = require('..')
   it('defaults to the correct values', () => {
     const assetObj = asset()
     assetObj.url.should.equal('')

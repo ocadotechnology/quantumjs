@@ -1,7 +1,6 @@
-const chai = require('chai')
-const { Element } = require('..')
-
 describe('Element', () => {
+  const chai = require('chai')
+  const { Element } = require('..')
   it('gets the right type', () => {
     new Element('div').type.should.equal('div')
   })

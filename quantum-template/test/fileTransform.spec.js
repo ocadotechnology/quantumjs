@@ -1,10 +1,7 @@
-const chai = require('chai')
-const quantum = require('quantum-js')
-const { fileTransform } = require('..')
-
-const should = chai.should()
-
 describe('fileTransform', () => {
+  const should = require('chai').should()
+  const quantum = require('quantum-js')
+  const { fileTransform } = require('..')
   function compare (input, source, expected) {
     return quantum.readAsFile(source)
       .then(fileTransform({variables: input}))

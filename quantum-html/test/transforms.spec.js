@@ -1,8 +1,8 @@
-const html = require('..')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
-
 describe('transforms', () => {
+  const html = require('..')
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
+
   function transformEntity () {
     function defaultTransform (selection) {
       return dom.textNode(quantum.isSelection(selection) ? selection.cs() : selection)

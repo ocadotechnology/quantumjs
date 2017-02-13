@@ -1,6 +1,6 @@
-const { transforms } = require('..')
-
 describe('transforms', () => {
+  const { transforms } = require('..')
+
   it('provides the correct transforms', () => {
     transforms().should.have.keys([
       'diagram'

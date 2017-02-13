@@ -1,8 +1,7 @@
-const dom = require('quantum-dom')
-const path = require('path')
-const { HTMLPage } = require('..')
-
 describe('HTMLPage', () => {
+  const dom = require('quantum-dom')
+  const path = require('path')
+  const { HTMLPage } = require('..')
   describe('stringify', () => {
     it('stringifies a file with a div element', () => {
       const htmlPage = new HTMLPage([
