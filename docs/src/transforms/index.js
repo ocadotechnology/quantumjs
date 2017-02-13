@@ -41,6 +41,36 @@ function exampleFile (selection, transformer, fileName) {
   return { code, result }
 }
 
+/*
+Mutli-file and language example transform
+
+@example
+  @noOutput       - Hide all output from example (e.g remove the Example Result section)
+
+  @<type>         - langauge type, displays with '<Type>' heading (e.g. @js)) can have multiple types at once
+    ...           - Code for example
+
+  @file filename  - Define a file section, shows with <filename> (<Type>) instead of just <Type> heading
+    @noOutput     - Don't output for this file (e.g. for JS with 'require' in it)
+    @output       - Set the output of this file
+    @<type>       - Code for file
+
+  @output         - Set the output of this example section
+
+
+e.g.
+@example
+  @file quantum.config.js
+    @noOutput
+    @js
+      <insert generic pipeline here>
+
+  @file index.um
+    @@um
+      @h1: Heading
+
+Outputs a block with rendered 'index.um' as well as codeblocks for the 'quantum.config.js' and 'index.um'
+*/
 function example (selection, transformer) {
   const { code: codeBody, result: resultBody } = !selection.has('file') ? exampleFile(selection, transformer) :
     selection.selectAll('file').map(s => exampleFile(s, transformer, s.ps()))
@@ -57,7 +87,9 @@ function example (selection, transformer) {
 
   const result = noOutput ? undefined : [
     dom.create('div').class('docs-example-heading qm-header-font').text('Example Result'),
-    dom.create('div').class('docs-example-body').add(selection.has('output') ? selection.select('output').transform(transformer) : resultBody)
+    dom.create('div').class('docs-example-body').add(selection.has('output') ?
+      selection.select('output').transform(transformer) :
+      resultBody)
   ]
 
   return dom.create('div').class('docs-example')
