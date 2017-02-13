@@ -1,7 +1,8 @@
+const Promise = require('bluebird')
+const fs = Promise.promisifyAll(require('fs-extra'))
+const { stringify, parse } = require('..')
+
 describe('stringify', () => {
-  const Promise = require('bluebird')
-  const fs = Promise.promisifyAll(require('fs-extra'))
-  const { stringify, parse } = require('..')
   it('stringifies as expected for the default settings (standard)', () => {
     return fs.readFileAsync('test/files/stringify/standard.um', 'utf8')
       .then((markup) => {

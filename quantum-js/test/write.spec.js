@@ -1,10 +1,9 @@
+const path = require('path')
+const Promise = require('bluebird')
+const fs = Promise.promisifyAll(require('fs-extra'))
+const { write, FileInfo, File } = require('..')
 
 describe('write', () => {
-  const path = require('path')
-  const Promise = require('bluebird')
-  const fs = Promise.promisifyAll(require('fs-extra'))
-  const { write, FileInfo, File } = require('..')
-
   const fileInfo1 = new FileInfo({
     src: 'src/content/a1.um',
     resolved: 'a1.um',

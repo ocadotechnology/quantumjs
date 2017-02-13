@@ -1,0 +1,56 @@
+@method cs
+  @description
+    Gets the parameters as a string
+
+    @@codeblock js
+      const quantum = require('quantum-js')
+
+      const entity = {
+        type: 'example',
+        params: ['param1', 'param2'],
+        content: [
+          'Line 1',
+          'Line 2'
+        ]
+      }
+
+      const selection = quantum.select(entity)
+
+      selection.cs() // 'Line1\nLine2'
+
+  @returns String
+    @description
+      The content array joined with newline characters into a single string.
+      Any entity objects will be ignored.
+
+@method cs
+  @description
+    Sets the parameters as a string
+
+    @@codeblock js
+      const quantum = require('quantum-js')
+
+      const entity = {
+        type: 'example',
+        params: ['param1', 'param2'],
+        content: [
+          'Line 1',
+          'Line 2'
+        ]
+      }
+
+      const selection = quantum.select(entity)
+
+      selection.cs() // 'Line1\nLine2'
+
+      selection.cs('Line1\nLine2\nLine3')
+      selection.content() // ['Line 1', 'Line 2', 'Line 3']
+
+  @param cs [String]
+    @description
+      A string that should be split on new lines, the result of which will become
+      the content array for the entity.
+
+  @returns String
+    @description
+      The content joined with new line characters into a single string

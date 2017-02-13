@@ -161,7 +161,7 @@ function prepareTransforms (transforms, namespace, target) {
 
 // the default transform just makes a text node
 function standardDefaultTransform (selection) {
-  return quantum.select.isSelection(selection) ? selection.cs() : selection
+  return quantum.isSelection(selection) ? selection.cs() : selection
 }
 
 /*
@@ -182,7 +182,7 @@ function buildDOM (options) {
 
   // renders an selection by looking at its type and selecting the transform from the list
   function transformer (selection) {
-    const type = quantum.select.isSelection(selection) ? selection.type() : undefined
+    const type = quantum.isSelection(selection) ? selection.type() : undefined
     const entityTransform = transformMap[type] || defaultTransform
     return entityTransform(selection, transformer, meta) // bootstrap to itself to  make the transformer accessible to children
   }
@@ -274,7 +274,7 @@ function paragraphTransform (selection, transform) {
         currentParagraph = dom.create('div').class('qm-html-paragraph')
       }
 
-      if (quantum.select.isEntity(e)) {
+      if (quantum.isEntity(e)) {
         currentParagraph = currentParagraph
           .add(transform(quantum.select(e)))
           .add(dom.textNode(' '))

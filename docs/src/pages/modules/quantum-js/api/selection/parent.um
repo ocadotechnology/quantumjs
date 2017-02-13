@@ -1,0 +1,30 @@
+@method parent
+  @description
+    Gets the parent entity wrapped in a selection. This only works if
+    @code[Selection::select] has been used to select 'down' the tree:
+
+    @@codeblock js
+      const quantum = require('quantum-js')
+
+      const entity = {
+        type: 'parent',
+        params: [],
+        content: [
+          {
+            type: 'childExample',
+            params: [],
+            content: [
+
+            ]
+          }
+        ]
+      }
+
+      const parentSelection = quantum.select(entity)
+      const childSelection = quantum.select('childExample')
+
+      parentSelection.parent() // undefined
+      childSelection.parent() // == parentSelection
+
+  @returns Selection
+    Returns the parent @type[Selection] if it exists, otherwise @code[undefined]

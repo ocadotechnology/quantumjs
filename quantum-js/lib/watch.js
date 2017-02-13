@@ -17,9 +17,9 @@ const chokidar = require('chokidar')
 const flatten = require('flatten')
 const fs = Promise.promisifyAll(require('fs-extra'))
 
-const parse = require('./parse')
+const { ParseError } = require('./parse')
 const File = require('./File')
-const fileOptions = require('./fileOptions')
+const fileOptions = require('./file-options')
 const { defaultLoader, readAsFile } = require('./read')
 
 /* Watches some glob specs for changes */
@@ -177,7 +177,7 @@ function watch (specs, handler, options) {
     return fileReader(work.fileInfo, { loader: linkingLoader })
       .then(file => handler(undefined, file, work.cause))
       .catch((err) => {
-        if (err instanceof parse.ParseError) {
+        if (err instanceof ParseError) {
           return handler(err, new File({info: work.fileInfo, content: undefined}), work.cause)
         } else {
           throw err
@@ -249,7 +249,7 @@ WorkQueue.prototype = {
 
     this.queue.push(work)
 
-    // check if we can start up another concurrent piece or work
+    // check if we can start up another concurrent piece of work
     if (this.activeWorkerCount < this.concurrency) {
       this.activeWorkerCount++
       process()
@@ -257,5 +257,8 @@ WorkQueue.prototype = {
   }
 }
 
-module.exports = watch
-module.exports.watcher = watcher
+module.exports = {
+  watch,
+  watcher,
+  Watcher
+}

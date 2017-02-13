@@ -7,7 +7,7 @@ describe('item', () => {
   const notice = require('../../../lib/entity-transforms/builders/notice')
 
   function transformer (selection) {
-    return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
+    return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
   }
 
   function headerDetails (selection) {
@@ -39,10 +39,6 @@ describe('item', () => {
       ]
     })
 
-    function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
-    }
-
     const deprecatedNoticeBuilder = notice('deprecated', 'Deprecated')
 
     item({})(selection, transformer).should.eql(
@@ -57,10 +53,6 @@ describe('item', () => {
       params: ['Name'],
       content: []
     })
-
-    function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
-    }
 
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
@@ -84,10 +76,6 @@ describe('item', () => {
       ]
     })
 
-    function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
-    }
-
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
       .add(headerBuilder('name', headerDetails)(selection, transformer))
@@ -107,10 +95,6 @@ describe('item', () => {
       params: ['Name'],
       content: []
     })
-
-    function transformer (selection) {
-      return dom.create('div').text(quantum.select.isEntity(selection) ? selection.cs() : selection)
-    }
 
     const headerBlock = dom.create('div')
       .class('qm-api-item-head qm-api-optional')

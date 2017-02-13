@@ -437,7 +437,7 @@ describe('transforms', () => {
       })
 
       function innerTransformer (selection) {
-        const type = quantum.select.isSelection(selection) ? selection.type() : undefined
+        const type = quantum.isSelection(selection) ? selection.type() : undefined
         if (type === 'sidebar') {
           return transforms().sidebar(selection, transformer)
         } else {

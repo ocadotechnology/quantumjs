@@ -111,7 +111,7 @@ function resolve (specs, opts) {
   return Promise.all(normalize(specs))
     .map((spec) => {
       return Promise.resolve(globby(spec.files, { cwd: dir, nodir: true }))
-        .map((file) => createFileUsingSpec(file, spec, dest))
+        .map(filename => createFileUsingSpec(filename, spec, dest))
     }).then(flatten)
 }
 

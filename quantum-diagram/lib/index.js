@@ -47,7 +47,7 @@ function extractNodes (selection, showDescriptions) {
 
   selection.selectAll('item', {recursive: true}).forEach(item => {
     const parent = item.parent()
-    const rows = showDescriptions ? item.filter(quantum.select.isText).content() : []
+    const rows = showDescriptions ? item.filter(quantum.isText).content() : []
     let maxWidth = item.param(1).length
     rows.forEach(row => {
       maxWidth = Math.max(row.length, maxWidth)

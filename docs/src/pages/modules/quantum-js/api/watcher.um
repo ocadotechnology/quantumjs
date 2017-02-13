@@ -1,0 +1,93 @@
+@function watcher
+  @added 2.0.0
+
+  @description
+    Watches files for changes (but does not detect changes from inlined files)
+
+  @param specs [String/Object/Array]
+    @description
+      This describes the files to watch.
+
+      It can be a single file:
+      @@codeblock js
+        quantum.watch("src/file.um", handler, options)
+
+      Or a glob:
+      @@codeblock js
+        quantum.watch("src/**/*.um", handler, options)
+
+      Or an array of globs:
+      @@codeblock js
+        quantum.watch(["src/**/*.um", "src2/**/index.um"], handler, options)
+
+      Or an array of globs:
+      @@codeblock js
+        quantum.watch(["src/**/*.um", "src2/**/index.um"], handler, options)
+
+      Or a more structured object:
+      @@codeblock js
+        quantum.watch({
+          files: 'src/**/*.um',
+          base: 'src'
+        }, handler, options)
+
+      Or an array of these objects:
+      @@codeblock js
+        quantum.watch([
+          {
+            files: 'src/**/*.um',
+            base: 'src'
+          },
+          {
+            files: 'src2/**/index.um',
+            base: 'src2'
+          }
+        ], handler, options)
+
+  @param options [Object]
+    @property dir [String]
+      @description
+        The working directory for the watcher to work in
+      @default: '.'
+    @property dest [String]
+      @description
+        The default destination directory to write the files to
+      @default: 'target'
+
+  @returns Watcher
+
+@prototype Watcher
+  @extends EventEmitter
+
+  @added 2.0.0
+
+  @description
+    An instance of one of these is returned by @code[quantum.watcher]. It
+    provides a way to stop watching the files.
+
+  @event add [FileInfo]
+    @description
+      Emitted when a new file is added / starts being watched. The data with the
+      event is a @type[FileInfo] instance with information about the file being
+      watched.
+
+  @event change [FileInfo]
+    @description
+      Emitted when a file is changed. The data with the event is a
+      @type[FileInfo] instance with information about the file that was changed.
+
+  @event remove [FileInfo]
+    @description
+      Emitted when a file is removed. The data with the event is a
+      @type[FileInfo] instance with information about the file that was removed.
+
+  @method stop
+    @description
+      Stops watching the files
+
+  @method files
+    @description
+      Gets a list of the watched files
+    @returns [Array[String]]
+      @description
+        All the files currently being watched by this @type[Watcher]
