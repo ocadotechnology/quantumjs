@@ -253,8 +253,12 @@ a:hover {
 
 .docs-example-body,
 .docs-example-code {
-  padding: 0.5em;
   margin-bottom: 1em;
+}
+
+.docs-example:not(.docs-example-no-background) .docs-example-body,
+.docs-example:not(.docs-example-no-background) .docs-example-code {
+  padding: 0.5em;
   /*box-shadow: 0 0 5px -1px rgba(0,0,0,0.3);*/
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
   background: #FFF;

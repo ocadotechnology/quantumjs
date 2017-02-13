@@ -45,6 +45,7 @@ function exampleFile (selection, transformer, fileName) {
 Mutli-file and language example transform
 
 @example
+  @noBackground   - Hide the background for the sections
   @noOutput       - Hide all output from example (e.g remove the Example Result section)
 
   @<type>         - langauge type, displays with '<Type>' heading (e.g. @js)) can have multiple types at once
@@ -93,6 +94,7 @@ function example (selection, transformer) {
   ]
 
   return dom.create('div').class('docs-example')
+      .classed('docs-example-no-background', selection.has('noBackground'))
       .add(code)
       .add(result)
 }
