@@ -115,8 +115,6 @@
       @description
         The function for reading a file and converting it to a @type[File].
 
-        It is called internally with the same set of options that @hyperlink(#read)[read] and @hyperlink(#read)[readAsFile] support.
-
       @param file [String/FileInfo]
         @description
           The filename string or FileInfo to load
@@ -125,7 +123,17 @@
         @description
           The options to pass to the reader.
 
-          See @hyperlink(#read)[read] and @hyperlink(#read)[readAsFile] options for more information on what should be supported.
+        @property loader [Function]
+          @description
+            A function for loading a file from disk, returning a @type[Promise] that
+            contains the contents of the file as a string that can be passed to the
+            parser.
+
+            This is the loader passed in as an option to the @hyperlink(#watch)[watch] function.
+
+          @param filename [String]: The file/resource to load.
+          @returns [Promise[String]]
+            A promise that yields the contents of the file as a string.
 
       @default: @hyperlink(#read)[readAsFile]
       @returns [Promise[File]]
