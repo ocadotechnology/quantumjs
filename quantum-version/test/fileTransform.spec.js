@@ -1,6 +1,7 @@
+const { select, File, FileInfo } = require('quantum-js')
+const { fileTransform } = require('..')
+
 describe('fileTransform', () => {
-  const { select, File, FileInfo } = require('quantum-js')
-  const { fileTransform } = require('..')
   it('does nothing if there is no @versionedPage entity', () => {
     const file = new File({
       info: new FileInfo({

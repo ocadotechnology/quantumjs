@@ -1,9 +1,9 @@
-describe('paragraphTransform', () => {
-  const quantum = require('quantum-js')
-  const dom = require('quantum-dom')
-  const path = require('path')
-  const { paragraphTransform } = require('..')
+const quantum = require('quantum-js')
+const dom = require('quantum-dom')
+const path = require('path')
+const { paragraphTransform } = require('..')
 
+describe('paragraphTransform', () => {
   function transformer (selection) {
     return dom.create(selection.type() || 'div').text(selection.cs ? selection.cs() : selection)
   }

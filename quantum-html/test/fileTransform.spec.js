@@ -1,6 +1,7 @@
+const { File, FileInfo } = require('quantum-js')
+const { fileTransform } = require('..')
+
 describe('fileTransform', () => {
-  const { File, FileInfo } = require('quantum-js')
-  const { fileTransform } = require('..')
   it('transforms a file', () => {
     const file = new File({
       info: new FileInfo({

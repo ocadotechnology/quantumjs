@@ -1,8 +1,9 @@
+const { File, FileInfo } = require('quantum-js')
+const dom = require('quantum-dom')
+const path = require('path')
+const { buildHTML, HTMLPage } = require('..')
+
 describe('buildHTML', () => {
-  const { File, FileInfo } = require('quantum-js')
-  const dom = require('quantum-dom')
-  const path = require('path')
-  const { buildHTML, HTMLPage } = require('..')
   it('builds a file with an asset element (embedAssets: true)', () => {
     const htmlPage = new HTMLPage([
       dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})

@@ -1,5 +1,6 @@
+const { textNode } = require('..')
+
 describe('textNode', () => {
-  const { textNode } = require('..')
   it('escapes html be default', () => {
     textNode('<some text>').stringify().should.equal('&lt;some text&gt;')
   })

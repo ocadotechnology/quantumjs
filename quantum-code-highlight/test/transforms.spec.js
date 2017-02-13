@@ -1,9 +1,9 @@
-describe('transforms', () => {
-  const path = require('path')
-  const quantum = require('quantum-js')
-  const dom = require('quantum-dom')
-  const { transforms } = require('..')
+const path = require('path')
+const quantum = require('quantum-js')
+const dom = require('quantum-dom')
+const { transforms } = require('..')
 
+describe('transforms', () => {
   it('provides the correct transforms', () => {
     transforms().should.have.keys([
       'code',

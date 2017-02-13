@@ -1,5 +1,6 @@
+const { prepareTransforms } = require('..')
+
 describe('prepareTransforms', () => {
-  const { prepareTransforms } = require('..')
   it('flattens transforms into a single namespaced object', () => {
     function t1 () {}
     function t2 () {}

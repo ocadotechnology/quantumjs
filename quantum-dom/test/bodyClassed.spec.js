@@ -1,5 +1,6 @@
+const { bodyClassed } = require('..')
+
 describe('bodyClassed', () => {
-  const { bodyClassed } = require('..')
   it('creates the correct object when adding a class', () => {
     bodyClassed('something', true).should.eql({
       options: {

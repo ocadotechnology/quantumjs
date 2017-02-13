@@ -1,5 +1,6 @@
+const { randomId } = require('..')
+
 describe('randomId', () => {
-  const { randomId } = require('..')
   it('returns a 32 character string', () => {
     randomId().should.be.a.string
     randomId().length.should.equal(32)
