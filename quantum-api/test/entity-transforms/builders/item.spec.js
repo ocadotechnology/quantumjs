@@ -1,20 +1,24 @@
-const chai = require('chai')
-const quantum = require('quantum-js')
-const dom = require('quantum-dom')
-const header = require('../../../lib/entity-transforms/components/header')
-const collapsible = require('../../../lib/entity-transforms/components/collapsible')
-const item = require('../../../lib/entity-transforms/builders/item')
-const headerBuilders = require('../../../lib/entity-transforms/builders/header')
-const notice = require('../../../lib/entity-transforms/builders/notice')
+describe('item', () => {
+  const quantum = require('quantum-js')
+  const dom = require('quantum-dom')
+  const collapsible = require('../../../lib/entity-transforms/components/collapsible')
+  const item = require('../../../lib/entity-transforms/builders/item')
+  const headerBuilder = require('../../../lib/entity-transforms/builders/header')
+  const notice = require('../../../lib/entity-transforms/builders/notice')
 
-chai.should()
+  function transformer (selection) {
+    return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
+  }
 
-describe('item-builder', () => {
-  it('should return a function', () => {
+  function headerDetails (selection) {
+    return dom.create('div').class('test').text(selection.cs())
+  }
+
+  it('returns a function', () => {
     item({}).should.be.a('function')
   })
 
-  it('the returned function should return a piece of virtual dom', () => {
+  it('the returned function returns a piece of virtual dom', () => {
     const selection = quantum.select({
       type: 'function',
       params: [],
@@ -26,7 +30,7 @@ describe('item-builder', () => {
     )
   })
 
-  it('should render a notice', () => {
+  it('renders a notice', () => {
     const selection = quantum.select({
       type: 'function',
       params: [],
@@ -34,10 +38,6 @@ describe('item-builder', () => {
         {type: 'deprecated', params: [], content: ['Warning']}
       ]
     })
-
-    function transformer (selection) {
-      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
-    }
 
     const deprecatedNoticeBuilder = notice('deprecated', 'Deprecated')
 
@@ -47,31 +47,27 @@ describe('item-builder', () => {
     )
   })
 
-  it('should render a header', () => {
+  it('renders a header', () => {
     const selection = quantum.select({
       type: 'function',
       params: ['Name'],
       content: []
     })
 
-    function transformer (selection) {
-      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
-    }
-
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
-      .add(header('name', headerBuilders.nameHeaderDetails(selection), selection))
+      .add(headerBuilder('name', headerDetails)(selection, transformer))
     const contentBlock = dom.create('div')
       .class('qm-api-item-content')
 
     item({
-      header: headerBuilders.nameHeader()
+      header: headerBuilder('name', headerDetails)
     })(selection, transformer).should.eql(
       collapsible('', headerBlock, contentBlock)
     )
   })
 
-  it('should add the no description class even when tags are present', () => {
+  it('adds the no description class even when tags are present', () => {
     const selection = quantum.select({
       type: 'function',
       params: ['Name'],
@@ -80,47 +76,39 @@ describe('item-builder', () => {
       ]
     })
 
-    function transformer (selection) {
-      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
-    }
-
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
-      .add(header('name', headerBuilders.nameHeaderDetails(selection), selection))
+      .add(headerBuilder('name', headerDetails)(selection, transformer))
     const contentBlock = dom.create('div')
       .class('qm-api-item-content')
 
     item({
-      header: headerBuilders.nameHeader()
+      header: headerBuilder('name', headerDetails)
     })(selection, transformer).should.eql(
       collapsible('', headerBlock, contentBlock)
     )
   })
 
-  it('should render an optional header', () => {
+  it('renders an optional header', () => {
     const selection = quantum.select({
       type: 'function?',
       params: ['Name'],
       content: []
     })
 
-    function transformer (selection) {
-      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
-    }
-
     const headerBlock = dom.create('div')
       .class('qm-api-item-head qm-api-optional')
-      .add(header('name', headerBuilders.nameHeaderDetails(selection), selection))
+      .add(headerBuilder('other', headerDetails)(selection, transformer))
     const contentBlock = dom.create('div')
       .class('qm-api-item-content')
 
     const other = item({
       class: 'other',
-      header: headerBuilders.typeHeader()
+      header: headerBuilder('other', headerDetails)
     })
 
     item({
-      header: headerBuilders.nameHeader(),
+      header: headerBuilder('other', headerDetails),
       renderAsOther: {
         Other: other
       }
@@ -129,31 +117,27 @@ describe('item-builder', () => {
     )
   })
 
-  it('should render as another thing', () => {
+  it('renders as another thing', () => {
     const selection = quantum.select({
       type: 'function',
       params: ['Name', 'Other'],
       content: []
     })
 
-    function transformer (selection) {
-      return dom.create('div').text(quantum.isEntity(selection) ? selection.cs() : selection)
-    }
-
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
-      .add(headerBuilders.typeHeader()(selection, transformer))
+      .add(headerBuilder('other', headerDetails)(selection, transformer))
     const contentBlock = dom.create('div')
       .class('qm-api-item-content')
 
     const other = item({
       class: 'other',
-      header: headerBuilders.typeHeader()
+      header: headerBuilder('other', headerDetails)
     })
 
     item({
       class: 'function',
-      header: headerBuilders.nameHeader(),
+      header: headerBuilder('function', headerDetails),
       renderAsOther: {
         Other: other
       }

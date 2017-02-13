@@ -1,7 +1,7 @@
 @template
   @contentEntityName templateContent
   @content
-    @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:700,400,100|Roboto+Slab:400,700|Source+Code+Pro:200,400,700]
+    @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:100,400,700|Roboto+Slab:300,400,700|Source+Code+Pro:200,400,700]
     @stylesheet [/resources/quantum-site.css]
     @inline favicons.um
 

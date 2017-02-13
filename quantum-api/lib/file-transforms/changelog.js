@@ -43,7 +43,7 @@ function processChangelogList (page, changelogList, options) {
   const reverseVisibleList = changelogList.has('reverseVisibleList') ? changelogList.select('reverseVisibleList').ps() === 'true' : options.changelogReverseVisibleList
   const entityTypeToLanguage = {}
   options.languages.forEach(language => {
-    language.changelog.entityTypes.forEach(entityType => {
+    Object.keys(language.changelogHeaderTransforms).forEach(entityType => {
       entityTypeToLanguage[entityType] = language
     })
   })

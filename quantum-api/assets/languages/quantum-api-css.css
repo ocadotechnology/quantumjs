@@ -1,41 +1,36 @@
-/*XXX: sort out naming to be qm-api-css-xxx*/
+.qm-api-css-class {}
 
-
-.qm-api-class {}
-
-.qm-api-childclass {
+.qm-api-css-child-class {
   border-color: #D8942A;
 }
 
-.qm-api-childclass > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-css-child-class > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
   background-color: #D8942A;
 }
 
-.qm-api-extraclass {
+.qm-api-css-extra-class {
   border-color: #98b313;
 }
 
-.qm-api-extraclass > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-css-extra-class > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
   background-color: #98b313;
 }
 
-.qm-api-childclass {}
+.qm-api-css-child-class {}
 
 
-
-
-.qm-changelog-css-header {
+.qm-api-css-header {
   font-weight: bold;
 }
 
-.qm-changelog-css-class:before {
+.qm-api-item-header-class > .qm-api-css-header-name:before {
   content: ' .';
 }
 
-.qm-changelog-css-childclass:before {
+.qm-api-item-header-child-class > .qm-api-css-header-name:before {
   content: ' > .';
 }
 
-.qm-changelog-css-extraclass:before {
+.qm-api-item-header-extra-class > .qm-api-css-header-name:before {
   content: '.';
 }

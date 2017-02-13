@@ -1,17 +1,17 @@
-describe('css', () => {
-  const css = require('../../../lib/languages/css')
+describe('quantum', () => {
+  const quantum = require('../../../lib/languages/quantum')
   it('exports the correct things', () => {
-    css.should.be.a('function')
+    quantum.should.be.a('function')
     const keys = [
-      'classes',
-      'extraClasses'
+      'entities',
+      'params'
     ]
-    css.should.have.keys(keys)
-    keys.forEach(k => css[k].should.be.a('function'))
+    quantum.should.have.keys(keys)
+    keys.forEach(k => quantum[k].should.be.a('function'))
   })
 
   it('returns a language', () => {
-    const language = css()
+    const language = quantum()
     language.should.have.keys([
       'assets',
       'changelogHeaderTransforms',
@@ -19,7 +19,7 @@ describe('css', () => {
       'transforms'
     ])
     language.assets.should.be.an('array')
-    language.name.should.equal('css')
+    language.name.should.equal('quantum')
     language.transforms.should.be.an('object')
     language.changelogHeaderTransforms.should.be.an('object')
   })

@@ -1,38 +1,36 @@
-'use strict'
-
-const chai = require('chai')
-const javascript = require('../../../lib/languages/javascript')
-
-const should = chai.should()
-
-describe("javascript", () => {
-  describe('should export the right things', () => {
-    it('prototypes', () => {
-      javascript.prototypes.should.be.a('function')
-    })
-    it('constructors', () => {
-      javascript.constructors.should.be.a('function')
-    })
-    it('objects', () => {
-      javascript.objects.should.be.a('function')
-    })
-    it('params', () => {
-      javascript.params.should.be.a('function')
-    })
-    it('properties', () => {
-      javascript.properties.should.be.a('function')
-    })
-    it('methods', () => {
-      javascript.methods.should.be.a('function')
-    })
-    it('events', () => {
-      javascript.events.should.be.a('function')
-    })
-    it('functions', () => {
-      javascript.functions.should.be.a('function')
-    })
-    it('returns', () => {
-      javascript.returns.should.be.a('function')
-    })
+describe('javascript', () => {
+  const javascript = require('../../../lib/languages/javascript')
+  it('exports the correct things', () => {
+    javascript.should.be.a('function')
+    const keys = [
+      'prototypes',
+      'constructors',
+      'objects',
+      'params',
+      'properties',
+      'methods',
+      'events',
+      'functions',
+      'returns'
+    ]
+    javascript.should.have.keys(keys)
+    keys.forEach(k => javascript[k].should.be.a('function'))
   })
+
+  it('returns a language', () => {
+    const language = javascript()
+    language.should.have.keys([
+      'assets',
+      'changelogHeaderTransforms',
+      'name',
+      'transforms'
+    ])
+    language.assets.should.be.an('array')
+    language.name.should.equal('javascript')
+    language.transforms.should.be.an('object')
+    language.changelogHeaderTransforms.should.be.an('object')
+  })
+
+  require('./transforms.spec')
+  require('./changelog.spec')
 })

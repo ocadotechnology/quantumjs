@@ -3,20 +3,36 @@
 const dom = require('quantum-dom')
 const utils = require('../../utils')
 
+function typeFilter (language, type) {
+  return (entity) => {
+    const entityType = entity.type
+    if (entityType) {
+      const dotIndex = entityType.indexOf('.')
+      const isArray = Array.isArray(type)
+      if (dotIndex > -1) {
+        const nameWithoutRoot = entityType.slice(dotIndex + 1)
+        if (isArray) {
+          return type.map(t => `${language}.${t}`).includes(nameWithoutRoot)
+        } else {
+          return nameWithoutRoot === `${language}.${type}`
+        }
+      } else {
+        return isArray ? type.includes(entityType) : type === entityType
+      }
+    }
+  }
+}
+
 /* Creates a group of items (like all the methods on a prototype, or all the properties on an object) */
-module.exports = function itemGroupBuilder (type, title, options) {
+module.exports = function itemGroupBuilder (language, type, title, options) {
   return (selection, transformer) => {
-    const hasType = Array.isArray(type) ? type.some(t => selection.has(t)) : selection.has(type)
-
-    if (hasType) {
-      const filtered = selection.filter(type)
-      const organised = utils.organisedEntity(filtered, options)
-
-      // deals with optional types  (e.g. ['param', 'param?'])
+    // deals with optional types  (e.g. ['param', 'param?'])
+    const filtered = selection.filter(typeFilter(language, type))
+    if (filtered.hasContent()) {
       const firstType = Array.isArray(type) ? type[0] : type
-
-      return dom.create('div').class('qm-api-' + firstType + '-group')
-        .add(dom.create('h2').text(title))
+      const organised = utils.organisedEntity(filtered, options)
+      return dom.create('div').class(`qm-api-group qm-api-${firstType}-group`)
+        .add(dom.create('div').class(`qm-api-group-header qm-api-${firstType}-group-header qm-header-font`).text(title))
         .add(organised.transform(transformer))
     }
   }

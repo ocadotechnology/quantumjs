@@ -3,6 +3,7 @@
 const body = require('./entity-transforms/builders/body')
 const javascript = require('./languages/javascript')
 const css = require('./languages/css')
+const quantum = require('./languages/quantum')
 
 function defaultIssueUrl () {
   return undefined
@@ -18,7 +19,8 @@ const defaultOptions = {
     javascript.prototypes,
     javascript.objects,
     javascript.functions,
-    css.classes
+    css.classes,
+    quantum.entities
   ],
   processChangelogs: true,
   targetVersions: undefined,
@@ -32,7 +34,7 @@ const defaultOptions = {
 }
 
 function resolveOption (options, name) {
-  return options && options.hasOwnProperty(name) ? options[name] : defaultOptions[name]
+  return (options && options.hasOwnProperty(name)) ? options[name] : defaultOptions[name]
 }
 
 /*

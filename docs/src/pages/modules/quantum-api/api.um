@@ -4,30 +4,7 @@
 
     For information about different versions, see the @hyperlink(/modules/quantum-api/changelog/)[Changelog]
 
-  @inline api/entities.um
   @inline api/fileTransform.um
   @inline api/transforms.um
   @inline api/languages.um
   @inline api/builders.um
-
-  @group Outer Group
-    @description
-      description
-
-    @function a
-      @description: bob
-
-    @group Inner Group
-      @description
-        description
-
-      @function a
-        @description: bob
-
-  @group Outer Group
-    @group Inner Group
-      @description
-        description
-
-      @function a
-        @description: bob

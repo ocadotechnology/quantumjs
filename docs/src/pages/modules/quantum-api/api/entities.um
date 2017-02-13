@@ -19,6 +19,7 @@
     TODO
 
 @group [Language: Javascript]
+  @description: Transforms provided by the javascript @hyperlink(./#languages)[language] when passed in as an option.
   @entity function
     @added 2.0.0
     @description
@@ -75,6 +76,7 @@
       TODO
 
 @group [Language: CSS]
+  @description: Transforms provided by the css @hyperlink(./#languages)[language] when passed in as an option.
   @entity class
     @added 2.0.0
     @description

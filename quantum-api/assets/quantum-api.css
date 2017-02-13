@@ -11,6 +11,11 @@
   border-radius: 3px;
 }
 
+.qm-api-group-header {
+  font-size: 18px;
+  margin: 1em 0 0.5em;
+}
+
 .qm-api-notice-header {
   color: white;
   padding: 0.5em;
@@ -123,22 +128,35 @@
 
 .qm-api-groups {}
 
-.qm-api-groups .qm-api-groups {
+.qm-api-groups .qm-api-groups > .qm-api-group {
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
   padding: 0.5em;
   background: #fff;
+  margin-bottom: 0.5em;
 }
 
-.qm-api-groups .qm-api-groups h2 {
+.qm-api-groups .qm-api-groups .qm-api-group-header {
   font-size: 1.1em;
+}
+
+.qm-api-groups .qm-api-groups .qm-api-group > .qm-api-group-header {
   margin-top: 0;
+}
+.qm-api-groups .qm-api-groups .qm-api-group > .qm-api-group-content :last-child {
+  margin-bottom: 0;
 }
 
 .qm-api-group {}
 
 .qm-api-group-content {}
 
-.qm-api-group > h2 {
+.qm-api-group-content > .qm-api-description {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.qm-api-group > .qm-api-group-header {
   margin-bottom: 0.5em;
 }
 
@@ -265,122 +283,6 @@
   content: "]";
 }
 
-.qm-api-header-function-name {}
-
-.qm-api-header-function-params {
-    display: -webkit-inline-flex;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    -webkit-flex-wrap: nowrap;
-        -ms-flex-wrap: nowrap;
-            flex-wrap: nowrap;
-    -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row;
-}
-
-.qm-api-header-function-params:before {
-  content: "(";
-}
-
-.qm-api-header-function-params:after {
-  content: ")";
-}
-
-.qm-api-header-function-param {
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-flex-wrap: nowrap;
-      -ms-flex-wrap: nowrap;
-          flex-wrap: nowrap;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-}
-
-.qm-api-header-function-param:after {
-  content: ",";
-  margin-right: 4px;
-}
-
-.qm-api-header-function-param:last-child:after {
-  content: none;
-  margin-right: 0;
-}
-
-.qm-api-header-function-param.qm-api-optional:after {
-  content: "],";
-  margin-right: 4px;
-}
-
-.qm-api-header-function-param.qm-api-optional:last-child:after {
-  content: "]";
-  margin-right: 0;
-}
-
-.qm-api-header-function-param-name {}
-
-.qm-api-header-function-param-type:not(:empty) {
-  padding-left: 0.25em;
-}
-
-.qm-api-header-function-returns {}
-
-.qm-api-header-function-returns:not(:empty):before {
-  content: ":";
-  margin-right: 4px;
-}
-
-.qm-api-prototype-name {
-  font-weight: bold;
-}
-
-.qm-api-prototype-extends {
-  font-style: italic;
-  margin-left: 0.25em;
-  margin-right: 0.25em;
-}
-
-.qm-api-property-name {}
-
-.qm-api-header-property-type {}
-
-.qm-api-header-property-type:before {
-  content: ":";
-  margin-right: 4px;
-}
-
-.qm-api-header-property-type:empty:before {
-  content: none;
-  margin-right: 0;
-}
-
-.qm-api-entity-name {}
-
-.qm-api-entity-params {
-  margin-left: 0.25em;
-}
-
-.qm-api-entity-params:empty {
-  margin-left: 0;
-}
-
-.qm-api-entity-content:before {
-  content: ":";
-  margin-right: 0.25em;
-}
-
-.qm-api-entity-content:empty {
-  content: none;
-  display: none;
-}
-
-.qm-api-type-name {}
-
 .qm-api-group-content > .qm-api-description {
   margin-bottom: 1em;
 }
@@ -411,20 +313,6 @@
 
 .qm-api-default-key {
   font-weight: bold;
-}
-
-.qm-api-header-property-name,
-.qm-api-header-function-name,
-.qm-api-header-type-name,
-.qm-api-header-entity-name {
-  font-weight: bold;
-}
-
-.qm-api-header-property-type,
-.qm-api-header-function-type,
-.qm-api-header-function-param-type,
-.qm-api-header-type-type {
-  color: #8C8C8C;
 }
 
 /* Additional */

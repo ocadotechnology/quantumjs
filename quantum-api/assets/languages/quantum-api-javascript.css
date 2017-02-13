@@ -1,150 +1,192 @@
-/*XXX: sort out naming to be qm-api-javascript-xxx*/
-
-.qm-api-type {
+.qm-api-javascript-type {
   display: inline-flex;
   flex-wrap: nowrap;
 }
 
-.qm-api-type-link {}
+.qm-api-javascript-type-link {}
 
-.qm-api-type-link:not(:last-child):after {
+.qm-api-javascript-type-link:not(:last-child):after {
   margin: 0 0.1em;
 }
 
 /* Types */
-.qm-api-prototype {
+.qm-api-javascript-prototype {
   border-color: #AB7BC1;
 }
 
-.qm-api-prototype > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-javascript-prototype > .qm-api-collapsible-heading > .qm-api-collapsible-toggle {
   background-color: #AB7BC1;
 }
 
-.qm-api-object {
+.qm-api-javascript-object {
   border-color: #98b313;
 }
 
-.qm-api-object > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-javascript-object > .qm-api-collapsible-heading > .qm-api-collapsible-toggle {
   background-color: #98b313;
 }
 
-.qm-api-method {
+.qm-api-javascript-method {
   border-color: #98b313;
 }
 
-.qm-api-method > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-javascript-method > .qm-api-collapsible-heading > .qm-api-collapsible-toggle {
   background-color: #98b313;
 }
 
-.qm-api-function {
+.qm-api-javascript-function {
   border-color: #98b313;
 }
 
-.qm-api-function > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-javascript-function > .qm-api-collapsible-heading > .qm-api-collapsible-toggle {
   background-color: #98b313;
 }
 
-.qm-api-constructor {
+.qm-api-javascript-constructor {
   border-color: #98b313;
 }
 
-.qm-api-constructor > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-javascript-constructor > .qm-api-collapsible-heading > .qm-api-collapsible-toggle {
   background-color: #98b313;
 }
 
-.qm-api-property {
+.qm-api-javascript-property {
   border-color: #EEAD2B;
 }
 
-.qm-api-property > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-javascript-property > .qm-api-collapsible-heading > .qm-api-collapsible-toggle {
   background-color: #EEAD2B;
 }
 
-.qm-api-param {}
+.qm-api-javascript-param {}
 
-.qm-api-event {
+.qm-api-javascript-event {
   border-color: #EC3A65;
 }
 
-.qm-api-event > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-javascript-event > .qm-api-collapsible-heading > .qm-api-collapsible-toggle {
   background-color: #EC3A65;
 }
 
-.qm-api-returns {
+.qm-api-javascript-returns {
   border-color: #757575;
 }
 
-.qm-api-returns > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+.qm-api-javascript-returns > .qm-api-collapsible-heading > .qm-api-collapsible-toggle {
   background-color: #757575;
 }
 
-
-.qm-changelog-javascript-header {
+.qm-api-javascript-header-property-name,
+.qm-api-javascript-header-function-name,
+.qm-api-javascript-header-type-name {
   font-weight: bold;
 }
 
-.qm-changelog-javascript-object + .qm-changelog-javascript-object:before,
-.qm-changelog-javascript-object + .qm-changelog-javascript-prototype:before,
-.qm-changelog-javascript-object + .qm-changelog-javascript-function:before,
-.qm-changelog-javascript-object + .qm-changelog-javascript-property:before,
-.qm-changelog-javascript-prototype + .qm-changelog-javascript-function:before,
-.qm-changelog-javascript-prototype + .qm-changelog-javascript-object:before,
-.qm-changelog-javascript-property + .qm-changelog-javascript-property:before,
-.qm-changelog-javascript-property + .qm-changelog-javascript-function:before {
-  content: '.';
-  font-weight: normal;
+.qm-api-javascript-header-function-name {}
+
+.qm-api-javascript-header-function-params {
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-flex-wrap: nowrap;
+        -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
 }
 
-.qm-changelog-javascript-prototype + .qm-changelog-javascript-property:before,
-.qm-changelog-javascript-prototype + .qm-changelog-javascript-method:before {
-  content: '::';
-  font-weight: normal;
-}
-.qm-changelog-javascript-prototype + .qm-changelog-javascript-event:before {
-  content: '~';
-  font-weight: normal;
+.qm-api-javascript-header-function-params:before {
+  content: "(";
 }
 
-.qm-changelog-javascript-property .qm-changelog-javascript-type,
-.qm-changelog-javascript-event .qm-changelog-javascript-type {
-  display: none;
+.qm-api-javascript-header-function-params:after {
+  content: ")";
 }
 
-.qm-changelog-javascript-property:last-child .qm-changelog-javascript-type,
-.qm-changelog-javascript-event:last-child .qm-changelog-javascript-type {
-  display: inline;
+.qm-api-javascript-header-function-param {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-flex-wrap: nowrap;
+      -ms-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
 }
 
-.qm-changelog-javascript-params:before {
-  content: '(';
+.qm-api-javascript-header-function-param:after {
+  content: ",";
+  margin-right: 4px;
 }
 
-.qm-changelog-javascript-params:after {
-  content: ')';
+.qm-api-javascript-header-function-param:last-child:after {
+  content: none;
+  margin-right: 0;
 }
 
-.qm-changelog-javascript-param {
-  font-weight: normal;
+.qm-api-javascript-header-function-param.qm-api-optional:after {
+  content: "],";
+  margin-right: 4px;
 }
 
-.qm-changelog-javascript-param:after {
-  content: ', ';
+.qm-api-javascript-header-function-param.qm-api-optional:last-child:after {
+  content: "]";
+  margin-right: 0;
 }
 
-.qm-changelog-javascript-param:last-child:after {
-  content: '';
+.qm-api-javascript-header-function-param-name {}
+
+.qm-api-javascript-header-function-param-type:not(:empty) {
+  padding-left: 0.25em;
 }
 
-.qm-changelog-javascript-param-name:after {
-  content: ': ';
+.qm-api-javascript-header-function-returns {}
+
+.qm-api-javascript-header-function-returns:not(:empty):before {
+  content: ":";
+  margin-right: 4px;
 }
 
-.qm-changelog-javascript-type,
-.qm-changelog-javascript-param-type {
-  font-weight: normal;
+.qm-api-javascript-prototype-name {
+  font-weight: bold;
+}
+
+.qm-api-javascript-prototype-extends {
+  font-style: italic;
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+}
+
+.qm-api-javascript-property-name {}
+
+.qm-api-javascript-header-property-type {}
+
+.qm-api-javascript-header-property-type:before {
+  content: ":";
+  margin-right: 4px;
+}
+
+.qm-api-javascript-header-property-type:empty:before {
+  content: none;
+  margin-right: 0;
+}
+
+
+.qm-api-javascript-header-property-name,
+.qm-api-javascript-header-function-name,
+.qm-api-javascript-header-type-name,
+.qm-api-javascript-header-entity-name {
+  font-weight: bold;
+}
+
+.qm-api-javascript-header-property-type,
+.qm-api-javascript-header-function-type,
+.qm-api-javascript-header-function-param-type,
+.qm-api-javascript-header-type-type {
   color: #8C8C8C;
-}
-
-.qm-changelog-javascript-type:before {
-  content: ': ';
 }

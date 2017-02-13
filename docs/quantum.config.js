@@ -8,6 +8,7 @@ const diagram = require('quantum-diagram')
 const markdown = require('quantum-markdown')
 const codeHighlight = require('quantum-code-highlight')
 const docs = require('quantum-docs')
+const custom = require('./src/transforms')
 
 const typeLinks = {
   Array: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array',
@@ -22,7 +23,18 @@ const typeLinks = {
   FileInfo: '/modules/quantum-js/#fileinfo',
   Selection: '/modules/quantum-js/#selection',
   Watcher: '/modules/quantum-js/#watcher',
-  Element: '/modules/quantum-dom/#element'
+  Element: '/modules/quantum-dom/#element',
+  // TODO: Fix this link
+  Transform: '/modules/quantum-html/#transform'
+}
+
+const apiOptions = {
+  languages: [
+    api.languages.quantum(),
+    api.languages.javascript({
+      typeLinks: typeLinks
+    })
+  ]
 }
 
 const htmlOptions = {
@@ -30,17 +42,12 @@ const htmlOptions = {
   assetPath: '/resources',
   transforms: {
     html: html.transforms(),
-    api: api.transforms({
-      languages: [
-        api.languages.javascript({
-          typeLinks: typeLinks
-        })
-      ]
-    }),
+    api: api.transforms(apiOptions),
     diagram: diagram.transforms(),
     markdown: markdown.transforms(),
     docs: docs.transforms(),
-    highlight: codeHighlight.transforms()
+    highlight: codeHighlight.transforms(),
+    custom: custom.transforms()
   }
 }
 
@@ -62,12 +69,12 @@ function customizedTemplate (file) {
 module.exports = {
   pipeline: [
     customizedTemplate,
+    api.fileTransform(apiOptions),
     version.fileTransform(),
-    api.fileTransform(),
     docs.fileTransform(),
     html.fileTransform(htmlOptions)
   ],
-  pages: 'src/pages/**/*.um',
+  pages: ['src/pages/**/*.um', '!src/pages/modules/**/api/*.um'],
   resources: [
     {
       files: [

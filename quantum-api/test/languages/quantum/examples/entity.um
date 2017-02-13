@@ -1,4 +1,4 @@
-@spec extraClass
+@spec entity
   @options
     @groupByApi false
     @reverseVisibleList false
@@ -6,15 +6,15 @@
     @changelogList
       @process
         @api ApiName
-          @extraClass test
+          @entity test
             @added 0.1.0
-              @description: extraClass added
+              @description: Entity added
       @version 0.1.0
   @output
     @changelogList
       @changelog 0.1.0
         @entry
-          @header css
-            @extraClass test
+          @header quantum
+            @entity test
           @change added
-            @description: extraClass added
+            @description: Entity added

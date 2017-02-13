@@ -21,6 +21,7 @@ const changelogList = require('./entity-transforms/changelog-list')
 const changelog = require('./entity-transforms/changelog')
 
 // languages
+const quantum = require('./languages/quantum')
 const javascript = require('./languages/javascript')
 const css = require('./languages/css')
 
@@ -31,16 +32,13 @@ function transforms (options) {
   const opts = config.resolve(options)
 
   const transforms = {
-    api: api({ builders: opts.apiBuilders }),
+    api: api({ builders: opts.apiBuilders, languages: opts.languages }),
     changelogList: changelogList(),
     changelog: changelog(opts)
   }
 
   opts.languages.forEach(language => {
-    const api = language.api
-    Object.keys(api).map(k => {
-      transforms[k] = api[k]
-    })
+    transforms[language.name] = language.transforms
   })
 
   return Object.freeze(transforms)
@@ -64,6 +62,7 @@ module.exports = {
     changelog: changelogFileTransform
   },
   languages: {
+    quantum,
     javascript,
     css
   },

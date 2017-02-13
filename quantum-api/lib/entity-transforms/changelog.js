@@ -19,6 +19,7 @@
 
 const path = require('path')
 
+const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 const html = require('quantum-html')
 const tags = require('../tags')
@@ -33,6 +34,7 @@ function domAsset (filename) {
 }
 
 const assets = [
+  domAsset('quantum-api.css'),
   domAsset('quantum-changelog.css'),
   domAsset('quantum-changelog.js'),
   domAsset('quantum-changelog-icons.css')
@@ -71,7 +73,7 @@ function label (tagType, count) {
     .class(`qm-changelog-icon-${tagType} qm-changelog-text-${tagType}`)
     .attr('title', tags.displayName[tagType]) : undefined
 
-  return dom.create('div').class('qm-changelog-label ' + 'qm-changelog-label-' + tagType)
+  return dom.create('div').class('qm-changelog-label qm-changelog-label-' + tagType)
     .add(icon)
     .add(dom.create('span').text(count))
 }
@@ -107,9 +109,17 @@ function changeDom (selection, transformer, issueUrl) {
 
 /* Creates a single changelog entry */
 function entry (selection, transformer, options) {
-  const language = options.languages.find(language => language.name === selection.select('header').ps())
-  const headerSelection = selection.select('header')
-  const header = language ? language.changelog.createHeaderDom(headerSelection, transformer) : undefined
+  const languageTransforms = (options.languages.find(language => language.name === selection.select('header').ps()) || {}).changelogHeaderTransforms
+
+  let header = undefined
+  if (languageTransforms) {
+    const headerSel = quantum.select(selection.select('header').content()[0])
+    const headerItemType = headerSel.type()
+    if (languageTransforms[headerItemType]) {
+      header = languageTransforms[headerItemType](headerSel, transformer)
+    }
+  }
+
   const changes = selection.selectAll('change')
     .map(change => changeDom(change, transformer, options.issueUrl))
 
@@ -174,6 +184,7 @@ function group (selection, transformer, options) {
 
 module.exports = function changelog (options) {
   return (selection, transformer) => {
+    const languages = (options || {}).languages || []
     const description = selection.has('description') ?
       wrappedParagraph('qm-changelog-description', selection.select('description'), transformer) :
       undefined
@@ -193,7 +204,7 @@ module.exports = function changelog (options) {
 
       return dom.create('div').class('qm-changelog')
         .add(assets)
-        .add(options.languages.map(l => l.changelog.assets))
+        .add(languages.map(l => l.assets))
         .add(dom.create('div').class('qm-changelog-head qm-header-font').add(title))
         .add(dom.create('div').class('qm-changelog-body')
           .add(description)
