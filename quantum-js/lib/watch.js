@@ -113,12 +113,13 @@ function watch (specs, handler, options) {
 
   function linkingLoader (filename, parentFilename) {
     if (parentFilename) {
-      affectedFiles[filename] = affectedFiles[filename] || new Set()
-      affectedFiles[filename].add(parentFilename)
+      const file = path.relative(dir, filename)
+      affectedFiles[file] = affectedFiles[file] || new Set()
+      affectedFiles[file].add(parentFilename)
 
       affectedFilesInverse[parentFilename] = affectedFilesInverse[parentFilename] || new Set()
-      affectedFilesInverse[parentFilename].add(filename)
-      watchFile(filename)
+      affectedFilesInverse[parentFilename].add(file)
+      watchFile(file)
     }
     return loader(filename, parentFilename)
   }
