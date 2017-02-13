@@ -260,8 +260,21 @@ function list (config) {
   }
 }
 
+function readConfig ({ config, port, logLevel }) {
+  const configPath = path.relative(__dirname, path.resolve(config || 'quantum.config.js'))
+  try {
+    const configFromFile = require(configPath)
+    configFromFile.port = port || configFromFile.port
+    configFromFile.logLevel = logLevel || configFromFile.logLevel
+    return configFromFile
+  } catch (e) {
+    throw new Error(`No config file found, expected: ${path.resolve(configPath)}`)
+  }
+}
+
 module.exports = {
   build,
   watch,
-  list
+  list,
+  readConfig
 }
