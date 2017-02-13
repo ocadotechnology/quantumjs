@@ -75,6 +75,7 @@ module.exports = {
     html.fileTransform(htmlOptions)
   ],
   pages: ['src/pages/**/*.um', '!src/pages/modules/**/api/*.um'],
+  resolveRoot: 'src',
   resources: [
     {
       files: [

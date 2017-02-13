@@ -1,4 +1,4 @@
-@inline ../../../templates/sidebar-page.um
+@inline /templates/sidebar-page.um
 
 @versionList
   @version 2.0.0

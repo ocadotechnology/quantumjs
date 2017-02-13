@@ -33,7 +33,13 @@ const inline = Promise.coroutine(function * (parsed, currentDir, options, parent
     if (entity.type === options.inlineEntityType) {
       const doParse = entity.params[1] === 'parse' ? true : entity.params[1] === 'text' ? false : undefined
 
-      const globStrings = entity.params.filter(p => p).map(p => path.join(currentDir, p))
+      const globStrings = entity.params.filter(p => p).map(p => {
+        if (p[0] === '/') {
+          return path.join(options.resolveRoot, p)
+        } else {
+          return path.join(currentDir, p)
+        }
+      })
       const parsedFiles = yield parseFiles(globStrings, doParse, options, parentFile)
       const newContent = flatten(parsedFiles.map(f => f.content))
 
@@ -80,10 +86,11 @@ function read (filename, opts) {
     inlineEntityType = 'inline',
     inline = true,
     loader = defaultLoader,
-    base = undefined
+    base = undefined,
+    resolveRoot = process.cwd()
   } = opts || {}
 
-  const options = { inlineEntityType, inline, loader, base }
+  const options = { inlineEntityType, inline, loader, base, resolveRoot }
 
   if (options.inline) {
     return parseFile(filename, true, options)

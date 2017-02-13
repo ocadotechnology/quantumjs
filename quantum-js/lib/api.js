@@ -130,13 +130,14 @@ function build (config) {
   const pipeline = createPipeline(config.pipeline)
   const fileReader = config.fileReader || readAsFile
   const loader = config.loader || defaultLoader
+  const resolveRoot = path.resolve(config.resolveRoot || process.cwd())
 
   let builtCount = 0
   const startTime = Date.now()
   return copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Pages'})
     return fileOptions.resolve(config.pages, options).map((fileInfo) => {
-      return fileReader(fileInfo, { loader })
+      return fileReader(fileInfo, { loader, resolveRoot })
         .then(file => buildPage(file, pipeline, config, logger, false)
           .then(files => {
             builtCount += files.length
@@ -202,7 +203,8 @@ function watch (config) {
     dest: config.dest || 'target',
     port: config.port || 8080,
     fileReader: config.fileReader || readAsFile,
-    loader: config.loader || defaultLoader
+    loader: config.loader || defaultLoader,
+    resolveRoot: path.resolve(config.resolveRoot || process.cwd())
   }
   const pipeline = createPipeline(config.pipeline)
 
