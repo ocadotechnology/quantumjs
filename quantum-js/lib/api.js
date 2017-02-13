@@ -237,31 +237,7 @@ function watch (config) {
   })
 }
 
-function logKeys (entity, entityName, entityNamespace, indent = 0) {
-  if (typeof entity === 'function') {
-    console.log(chalk.cyan(' '.repeat(indent) + '@' + entityName) + chalk.gray(' (@' + entityNamespace + ')'))
-  } else {
-    console.log(' '.repeat(indent) + chalk.yellow(entityName))
-    Object.keys(entity).forEach((key) => {
-      const newNamespace = entityNamespace + '.' + key
-      logKeys(entity[key], key, newNamespace, indent + 2)
-    })
-  }
-}
-
-function list (config) {
-  const entityTransforms = config.pipeline.map(x => x.entityTransforms).filter(x => x !== undefined)[0]
-  if (entityTransforms) {
-    Object.keys(entityTransforms).forEach(entityName => {
-      logKeys(entityTransforms[entityName], entityName, entityName)
-    })
-  } else {
-    console.log(chalk.yellow('No entity transforms are present in your pipeline'))
-  }
-}
-
 module.exports = {
   build,
-  watch,
-  list
+  watch
 }

@@ -14,71 +14,99 @@ const api = require('./api')
 
 const version = require('../package.json').version
 
-function help () {
-  console.log(`
-QuantumJS (${version})
+const {cyan, yellow, green, bold} = chalk
 
-  ${chalk.cyan('Usage:')}
+const helpString = `
+${cyan('Usage:')}
 
-    quantum <command> [options]
+  ${yellow.bold('quantum build')} ${green('--config=<filename> --loglevel=<none|error>')}
+    Builds the quantum site in the current folder. Looks for quantum.config.js
+    in the current directory by default.
 
-  ${chalk.cyan('Commands:')}
+    ${cyan('Examples:')}
+      quantum build
+      quantum build --config=quantum.production.config.js
+      quantum build --loglevel=none
+      quantum build --loglevel=error
 
-    quantum [options] build
-    quantum [options] watch
-    quantum list
+  ${yellow.bold('quantum watch')} ${green('--config=<filename> --loglevel=<none|error> --port=<8080>')}
+    Builds the quantum site in the current folder then watches for changes in
+    the source, rebuilding every time there is a change.
 
-    ${chalk.cyan('Options:')}
+    ${cyan('Examples:')}
+      quantum watch
+      quantum watch --config=quantum.production.config.js
+      quantum watch --loglevel=none
+      quantum watch --loglevel=error
 
-      --config=<filename> - Sets the config file to use to build the site in the current directory.
-                            By default this is "quantum.config.js"
-      -s, --silent        - No logging when building.
+  ${yellow.bold('quantum list')}
+    Lists out the entities available to use
 
-    ${chalk.bold('quantum ')}${chalk.yellow.bold('build ')}${chalk.yellow.green('[options]')}
-      Builds the quantum site in the current folder. By default it expects a config file
-      called quantum.config.js to be in the current folder. The config file that quantum looks
-      for can be configured with the --config option.
+  ${yellow.bold('quantum version')}
+    Prints the quantum-js version
+`
 
-      ${chalk.cyan('Examples:')}
-        quantum build
-        quantum build --config=quantum.config.js
+function logKeys (entity, entityName, entityNamespace, indent = 0) {
+  if (typeof entity === 'function') {
+    console.log(chalk.cyan(' '.repeat(indent) + '@' + entityName) + chalk.gray(' (@' + entityNamespace + ')'))
+  } else {
+    console.log(' '.repeat(indent) + chalk.yellow(entityName))
+    Object.keys(entity).forEach((key) => {
+      const newNamespace = entityNamespace + '.' + key
+      logKeys(entity[key], key, newNamespace, indent + 2)
+    })
+  }
+}
 
-    ${chalk.bold('quantum ')}${chalk.yellow.bold('watch ')}${chalk.yellow.green('[options]')}
-      Builds the quantum site in the current folder then watches for changes in the source,
-      rebuilding every time there is a change. By default it expects a config file
-      called quantum.config.js to be in the current folder. The config file that quantum looks
-      for can be configured with the --config option.
+function list (config) {
+  const entityTransforms = config.pipeline.map(x => x.entityTransforms).filter(x => x !== undefined)[0]
+  if (entityTransforms) {
+    Object.keys(entityTransforms).forEach(entityName => {
+      logKeys(entityTransforms[entityName], entityName, entityName)
+    })
+  } else {
+    console.log(chalk.yellow('No entity transforms are present in your pipeline'))
+  }
+}
 
-      ${chalk.cyan('Examples:')}
-        quantum watch
-        quantum watch --config=quantum.config.js
+function printVersion () {
+  console.log(version)
+}
 
-    ${chalk.bold('quantum ')}${chalk.yellow.bold('list')}
-      Lists out the available entities
-  `)
+function printHelp () {
+  console.log(helpString)
 }
 
 const commands = {
   build: api.build,
   watch: api.watch,
-  list: api.list
+  list: list,
+  version: printVersion
 }
 
-module.exports = () => {
-  const command = process.argv[2]
-  const logLevel = process.argv.find((arg) => arg.startsWith('--loglevel='))
-  const port = process.argv.find((arg) => arg.startsWith('--port='))
+function parseArgs (args) {
+  const command = args[2]
+  const logLevel = args.find((arg) => arg.startsWith('--loglevel='))
+  const port = args.find((arg) => arg.startsWith('--port='))
 
-  const customConfigFile = process.argv.find((arg) => arg.startsWith('--config='))
+  const customConfigFile = args.find((arg) => arg.startsWith('--config='))
   const configFile = customConfigFile ? customConfigFile.slice(9) : 'quantum.config.js'
 
-  if (command in commands) {
-    // XXX: check if the config file exists and print a friendly warning if not
+  if (configFile) {
     const config = require(path.relative(__dirname, path.resolve(configFile)))
     config.port = port ? port.slice(7) : config.port
     config.logLevel = logLevel ? logLevel.slice(11) : config.logLevel
+
+    return { command, config }
+  }
+}
+
+module.exports = () => {
+  const { command, config } = parseArgs(process.argv)
+
+  if (command in commands) {
     commands[command](config)
   } else {
-    help()
+    printHelp()
   }
 }
