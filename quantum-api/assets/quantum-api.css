@@ -4,6 +4,10 @@
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
 }
 
+.qm-api-type {
+  white-space: nowrap;
+}
+
 .qm-api-type-standalone {
   font-size: 14px;
   padding: 0.2em 0.4em;
