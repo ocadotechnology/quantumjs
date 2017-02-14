@@ -45,7 +45,7 @@ function exampleFile (selection, transformer, fileName) {
 Mutli-file and language example transform
 
 @example
-  @noBackground   - Hide the background for the sections
+  @noBackground   - Hide the background for the sections (explicitly true in @extra blocks)
   @noOutput       - Hide all output from example (e.g remove the Example Result section)
 
   @<type>         - langauge type, displays with '<Type>' heading (e.g. @js)) can have multiple types at once
@@ -57,7 +57,6 @@ Mutli-file and language example transform
     @<type>       - Code for file
 
   @output         - Set the output of this example section
-
 
 e.g.
 @example
