@@ -24,8 +24,9 @@ const typeLinks = {
   Selection: '/modules/quantum-js/#selection',
   Watcher: '/modules/quantum-js/#watcher',
   Element: '/modules/quantum-dom/#element',
-  // TODO: Fix this link
-  Transform: '/modules/quantum-html/#transform'
+  // TODO: make these links go somewhere
+  Transform: '/modules/quantum-html/#transform',
+  Asset: '/modules/quantum-dom/#asset'
 }
 
 const apiOptions = {

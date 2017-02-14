@@ -481,3 +481,33 @@
                   @description
                     Makes the text blue on red-background elements
 
+
+@group [Language: Quantum]
+  @description: Transforms provided by the Quantum @hyperlink(./#languages)[language] when passed in as an option.
+  @entity entity
+    @added 2.0.0
+    @description
+      Describes a quantum entity
+
+    @extra
+      @example
+        @@um
+          @api
+            @entity class
+              @description
+                Describes a css class
+
+  @entity param
+    @added 2.0.0
+    @description
+      Describes a quantum entity parameter
+
+    @extra
+      @example
+        @@um
+          @api
+            @entity groupByApi
+              @param boolean
+
+
+
