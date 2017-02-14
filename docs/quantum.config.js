@@ -9,6 +9,7 @@ const markdown = require('quantum-markdown')
 const codeHighlight = require('quantum-code-highlight')
 const docs = require('quantum-docs')
 const custom = require('./src/transforms')
+const customLanguage = require('./src/transforms/custom-language')
 
 const typeLinks = {
   Array: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array',
@@ -31,6 +32,7 @@ const typeLinks = {
 
 const apiOptions = {
   languages: [
+    customLanguage(), // For rendering example content for quantum-api
     api.languages.quantum(),
     api.languages.css(),
     api.languages.javascript({

@@ -3,6 +3,8 @@
   @description
     Provides functions for building transforms for entities in languages.
 
+    See the @hyperlink(./#custom-languages)[Custom Language] example for a complete example.
+
   @property header [Function]
     @description
       Builds a header transform for constructing api/changelog headers for entities from a type and a details builder.
@@ -128,6 +130,26 @@
 
     @returns Transform
 
-  @property itemGroup
+  @property itemGroup [Function]
     @description
-      TODO
+      A function for defining a group of items to be used in an @hyperlink(./#item)[item] content.
+
+    @param language [String]
+      @description
+        The language the item group is part of
+    @param type [String/Array[String]]
+      @description
+        The type or types of entity that are part of this group (e.g. @code['param'] or @code[['param', 'param?']])
+
+    @param title [String]
+      @description
+        The title to display above the group
+
+    @param? options [Object]
+      @description
+        The options to use
+      @property noSort [Boolean]
+        @description
+          Whether to sort entities in this group. Set to true for things like function parameters that have a fixed order.
+        @default false
+

@@ -142,8 +142,6 @@
             @version 1.0.0
               @description: Version 1.0.0 changes
 
-
-
     @section Versioning
       You can use the same versioned api to produce multiple versioned pages that show a single version.
 
@@ -236,8 +234,59 @@
             @param? param3 [Boolean]: Additional Parameter
               @added 2.0.0
 
+    @section Custom Language
+      To define a language to use with quantum api, you can build a custom language
+
+      @example
+        @file custom-language.js
+          @noOutput
+          @js
+            @inline ../../../transforms/custom-language.js
+
+        @file quantum.config.js
+          @noOutput
+          @js
+            // These are additions required to a working quantum.config.js
+
+            const customLanguage = require('./custom-language.js')
+
+            ...
+
+            // Add the new language to the api options
+            const apiOptions = {
+              languages: [
+                customLanguage()
+              ]
+            }
+
+            ...
+
+            // Add the api transforms to htmlTransforms if they weren't there already
+            const htmlTransforms = {
+              api: require('quantum-api').transforms(apiOptions)
+            }
+
+            ...
+
+            // Add the fileTransform for rendering changelog content
+            const pipeline = [
+              api.fileTransform(apiOptions)
+            ]
 
 
+        @file custom-language.css
+          @noOutput
+          @css
+            @inline ../../../transforms/custom-language.css
+
+        @file index.um
+          @@um
+            @custom something
+              @description
+                Description of something
+
+              @thing thing1: Thing 1
+              @thing thing2: Thing 2
 
 
 
