@@ -19,7 +19,7 @@ function exampleFile (selection, transformer, fileName) {
 
       return dom.create('div').class('docs-example-code-section')
         .add(dom.create('div').class('docs-example-code-heading').text(fileName ? `${fileName} (${title})` : title))
-        .add(fake.transform(transformer))
+        .add(dom.create('div').class('docs-example-code-block').add(fake.transform(transformer)))
     }
   }
 
