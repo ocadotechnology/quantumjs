@@ -98,12 +98,12 @@ function parseArgs (args) {
   } else {
     const configPath = path.resolve(findArg(args, 'config') || 'quantum.config.js')
 
-    //
     try {
       const config = require(path.relative(__dirname, configPath))
 
-      config.port = findArg(args, 'loglevel') || config.port
-      config.logLevel = findArg(args, 'port') || config.logLevel
+      // Set options from command line (e.g. --port=)
+      config.port = findArg(args, 'port') || config.port
+      config.logLevel = findArg(args, 'loglevel') || config.logLevel
 
       return { command, config }
     } catch (e) {
