@@ -18,6 +18,7 @@ describe('module', () => {
     const body = require('../lib/entity-transforms/builders/body')
     const header = require('../lib/entity-transforms/builders/header')
     const item = require('../lib/entity-transforms/builders/item')
+    const itemGroup = require('../lib/entity-transforms/builders/item-group')
 
     const { builders } = api
     it('exports the correct things', () => {
@@ -25,7 +26,8 @@ describe('module', () => {
       builders.should.have.keys([
         'body',
         'header',
-        'item'
+        'item',
+        'itemGroup'
       ])
       builders.body.should.be.an('object')
       builders.body.should.equal(body)
@@ -33,6 +35,8 @@ describe('module', () => {
       builders.header.should.equal(header)
       builders.item.should.be.a('function')
       builders.item.should.equal(item)
+      builders.itemGroup.should.be.a('function')
+      builders.itemGroup.should.equal(itemGroup)
     })
   })
 

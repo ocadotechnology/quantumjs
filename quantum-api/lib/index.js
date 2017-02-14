@@ -14,6 +14,7 @@ const config = require('./config')
 const header = require('./entity-transforms/builders/header')
 const body = require('./entity-transforms/builders/body')
 const item = require('./entity-transforms/builders/item')
+const itemGroup = require('./entity-transforms/builders/item-group')
 
 // entity transforms
 const api = require('./entity-transforms/api')
@@ -69,6 +70,7 @@ module.exports = {
   builders: {
     header,
     body,
-    item
+    item,
+    itemGroup
   }
 }
