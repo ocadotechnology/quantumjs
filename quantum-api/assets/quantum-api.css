@@ -139,10 +139,10 @@
   font-size: 1.1em;
 }
 
-.qm-api-groups .qm-api-groups .qm-api-group > .qm-api-group-header {
+.qm-api-groups .qm-api-groups > .qm-api-group > .qm-api-group-header {
   margin-top: 0;
 }
-.qm-api-groups .qm-api-groups .qm-api-group > .qm-api-group-content :last-child {
+.qm-api-groups .qm-api-groups > .qm-api-group > .qm-api-group-content :last-child {
   margin-bottom: 0;
 }
 
