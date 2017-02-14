@@ -1,5 +1,10 @@
 @object languages
   @added 2.0.0
+  @description
+    The languages available in the @code[quantum-api] module.
+
+    It is also possible to define @hyperlink(./#custom-language)[Custom Languages].
+
   @property javascript [Function]
     @description
       A function used to build the javascript language to provide entity transforms.

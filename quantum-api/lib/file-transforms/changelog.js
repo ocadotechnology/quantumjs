@@ -16,17 +16,17 @@ const tags = require('../tags')
 
   If no @changelogList is found, this function does nothing to the page
 */
-function fileTransform (page, options) {
-  const changelogLists = quantum.select(page.content)
+function fileTransform (file, options) {
+  const changelogLists = quantum.select(file.content)
     .selectAll('changelogList', {recursive: true})
 
   if (changelogLists.length > 0) {
     changelogLists.forEach(changelogList => {
-      processChangelogList(page, changelogList, options)
+      processChangelogList(file, changelogList, options)
     })
-    return page.clone({ content: page.content })
+    return file.clone({ content: file.content })
   } else {
-    return page
+    return file
   }
 }
 
