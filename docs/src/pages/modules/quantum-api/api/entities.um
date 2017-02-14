@@ -1,22 +1,96 @@
 @entity api
   @added 2.0.0
   @description
-    TODO
+    The container for api content. All the entities provided by this module should be used inside an @code[@api] entity
+  @param apiName
+    @description
+      The name of the api that is used to group content when generating changelogs from multiple apis
+  @extra
+    @example
+      @noOutput
+      @@um
+        @api apiName
 
 @entity group
   @added 2.0.0
   @description
-    TODO
+    Define a custom group inside an api
+  @param header
+    @description
+      The text to display as the group header.
+  @extra
+    @example
+      @@um
+        @api apiName
+          @group Header
+            @object obj1
+          @group [Multi word header]
+            @object obj2
+
 
 @entity changelogList
   @added 2.0.0
   @description
-    TODO
+    Define a collection of changelogs for multiple versions
+
+  @extra
+    @example
+      @@um
+        @changelogList
+          @changelog 1.0.0
+            @description
+              Description of changes in this version
+
+            @entry
+              @header javascript
+                @function jsFunction1
+              @change added
+                @description: Added jsFunction1
+
+            @group Changelog group
+              @entry
+                @header javascript
+                  @function jsFunction2
+                @change added
+                  @description: Added jsFunction2
+
+          @changelog 2.0.0
+            @description
+              Description of changes in this version
+
+            @entry
+              @header javascript
+                @function jsFunction1
+              @change updated
+                @description: Updated jsFunction1
+
 
 @entity changelog
   @added 2.0.0
   @description
-    TODO
+    Define a changelog for a specific version.
+
+  @extra
+    @example
+      @@um
+        @changelog 1.0.0
+          @description
+            Description of changes in this version
+
+          @entry
+            @header javascript
+              @function jsFunction1
+            @change added
+              @description: Added jsFunction1
+
+          @group Changelog group
+            @entry
+              @header javascript
+                @function jsFunction2
+              @change added
+                @description: Added jsFunction2
+
+
 
 @group [Language: Javascript]
   @description: Transforms provided by the javascript @hyperlink(./#languages)[language] when passed in as an option.
