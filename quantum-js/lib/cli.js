@@ -97,9 +97,10 @@ function parseArgs (args) {
     return {}
   } else {
     const configPath = path.resolve(findArg(args, 'config') || 'quantum.config.js')
+    const relativeConfigPath = path.relative(__dirname, configPath)
 
     try {
-      const config = require(path.relative(__dirname, configPath))
+      const config = require(relativeConfigPath)
 
       // Set options from command line (e.g. --port=)
       config.port = findArg(args, 'port') || config.port
@@ -107,7 +108,12 @@ function parseArgs (args) {
 
       return { command, config }
     } catch (e) {
-      return { error: `Config file not found: ${configPath}` }
+      if (e.message.indexOf(relativeConfigPath) !== -1) {
+        console.error(red('Missing Config File:', configPath))
+      } else {
+        console.error(red(`Error loading config from file: ${configPath}\n  ${e.stack}`))
+      }
+      return { error: true }
     }
   }
 }
@@ -116,10 +122,7 @@ module.exports = () => {
   const { error, command, config } = parseArgs(process.argv)
 
   if (error) {
-    console.error(`
-${red(error)}
-See ${cyan('quantum --help')} for usage information
-    `)
+    console.error(`See ${cyan('quantum --help')} for usage information`)
   } else if (command in commands) {
     commands[command](config)
   } else {
