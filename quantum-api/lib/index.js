@@ -27,7 +27,7 @@ const javascript = require('./languages/javascript')
 const css = require('./languages/css')
 
 // file transforms
-const changelogFileTransform = require('./file-transforms/changelog')
+const changelogFileTransform = require('./file-transforms/changelog').fileTransform
 
 function transforms (options) {
   const opts = config.resolve(options)
@@ -49,7 +49,7 @@ function fileTransform (options) {
   const opts = config.resolve(options)
   return (file) => {
     if (opts.processChangelogs) {
-      return changelogFileTransform.fileTransform(file, opts)
+      return changelogFileTransform(file, opts)
     } else {
       return file
     }

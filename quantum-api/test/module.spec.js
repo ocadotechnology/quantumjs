@@ -41,13 +41,13 @@ describe('module', () => {
   })
 
   describe('fileTransforms', () => {
-    const changelog = require('../lib/file-transforms/changelog')
+    const changelogFileTransform = require('../lib/file-transforms/changelog').fileTransform
     const { fileTransforms } = api
     it('exports the correct things', () => {
       fileTransforms.should.be.an('object')
       fileTransforms.should.have.keys(['changelog'])
-      fileTransforms.changelog.should.be.an('object')
-      fileTransforms.changelog.should.equal(changelog)
+      fileTransforms.changelog.should.be.a('function')
+      fileTransforms.changelog.should.equal(changelogFileTransform)
     })
   })
 
@@ -65,28 +65,4 @@ describe('module', () => {
       languages.quantum.should.be.a('function')
     })
   })
-
-  // it('should do nothing when options.processChangelogs is false', () => {
-  //   const file = new quantum.File({
-  //     info: new quantum.FileInfo({
-  //       src: 'src/content/a1.um',
-  //       resolved: 'a1.um',
-  //       base: 'src/content',
-  //       dest: 'target/a1.um',
-  //       watch: true
-  //     }),
-  //     content: {
-  //       type: '',
-  //       params: [],
-  //       content: [
-  //         {
-  //           type: 'changelogList',
-  //           params: [],
-  //           content: []
-  //         }
-  //       ]
-  //     }
-  //   })
-  //   api.fileTransform({processChangelogs: false})(file).should.eql(file)
-  // })
 })
