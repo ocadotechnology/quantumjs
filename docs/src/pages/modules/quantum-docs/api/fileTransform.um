@@ -1,7 +1,8 @@
 @function fileTransform
   @added 2.0.0
   @param? options [Object]
-    @property tableOfContents [Object]
+    # TODO - this is weird?
+    @property populateTableOfContents [Object]
       @property enabled [Boolean]
         @default true
   @returns Function

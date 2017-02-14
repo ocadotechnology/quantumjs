@@ -102,7 +102,7 @@ describe('fileTransform', () => {
       }
     })
 
-    fileTransform({tableOfContents: {enabled: true}})(page).should.eql(new File({
+    fileTransform({populateTableOfContents: {enabled: true}})(page).should.eql(new File({
       info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'
@@ -174,7 +174,7 @@ describe('fileTransform', () => {
       }
     })
 
-    fileTransform({tableOfContents: {enabled: false}})(page).should.eql(new File({
+    fileTransform({populateTableOfContents: {enabled: false}})(page).should.eql(new File({
       info: new FileInfo({
         src: 'filename.um',
         dest: 'target/filename.um'

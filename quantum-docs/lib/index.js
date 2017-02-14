@@ -351,7 +351,7 @@ function transforms (opts) {
   })
 }
 
-function populateTableOfContents (page, options) {
+function populateTableOfContents (page) {
   const toc = quantum.select(page.content).select('tableOfContents', {recursive: true})
   const topics = quantum.select(page.content).selectAll('topic', {recursive: true})
 
@@ -372,11 +372,11 @@ function populateTableOfContents (page, options) {
 
 function fileTransform (options) {
   const opts = options || {}
-  const tableOfContentsOptions = opts.tableOfContents || {}
-  const populateTableOfContentsEnabled = tableOfContentsOptions.enabled !== false
+  const populateTableOfContentsOptions = opts.populateTableOfContents || {}
+  const populateTableOfContentsEnabled = (populateTableOfContentsOptions.enabled !== false)
   return (page) => {
     if (populateTableOfContentsEnabled) {
-      populateTableOfContents(page, tableOfContentsOptions)
+      populateTableOfContents(page)
     }
     return page
   }
