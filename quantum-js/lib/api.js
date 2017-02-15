@@ -121,6 +121,30 @@ function createFilteredLogger (log, logLevel) {
   }
 }
 
+function buildSpecs (startTime, specs, config, options, pipeline, logger) {
+  const fileReader = config.fileReader || readAsFile
+  const loader = config.loader || defaultLoader
+
+  let builtCount = 0
+
+  return fileOptions.resolve(specs, options).map((fileInfo) => {
+    return fileReader(fileInfo, { loader })
+      .then(file => buildPage(file, pipeline, config, logger, false)
+        .then(files => {
+          builtCount += files.length
+          return files
+        }))
+      .catch((err) => {
+        if (err instanceof ParseError) {
+          logger({type: 'page-load-error', fileInfo: fileInfo.src, error: err})
+        } else {
+          throw err
+        }
+      })
+  }, {concurrency: options.concurrency})
+  .then(() => logger({type: 'end', builtCount: builtCount, timeTaken: Date.now() - startTime}))
+}
+
 function build (config) {
   const logger = createFilteredLogger(config.logger || defaultLogger, config.logLevel)
   const options = {
@@ -128,29 +152,12 @@ function build (config) {
     dest: config.dest
   }
   const pipeline = createPipeline(config.pipeline)
-  const fileReader = config.fileReader || readAsFile
-  const loader = config.loader || defaultLoader
-
-  let builtCount = 0
   const startTime = Date.now()
+
   return copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Pages'})
-    return fileOptions.resolve(config.pages, options).map((fileInfo) => {
-      return fileReader(fileInfo, { loader })
-        .then(file => buildPage(file, pipeline, config, logger, false)
-          .then(files => {
-            builtCount += files.length
-            return files
-          }))
-        .catch((err) => {
-          if (err instanceof ParseError) {
-            logger({type: 'page-load-error', fileInfo: fileInfo.src, error: err})
-          } else {
-            throw err
-          }
-        })
-    }, {concurrency: options.concurrency})
-  }).then(() => logger({type: 'end', builtCount: builtCount, timeTaken: Date.now() - startTime}))
+    return buildSpecs(startTime, config.pages, config, options, pipeline, logger)
+  })
 }
 
 function startServer (options) {
@@ -210,31 +217,47 @@ function watch (config) {
   logger({type: 'message', message: 'http://0.0.0.0:' + options.port})
   const triggerReload = startServer(options)
 
-  copyResources(config, options, logger).then(() => {
-    logger({type: 'header', message: 'Building Site'})
+  return Promise.all(fileOptions.normalize(config.pages))
+    .filter(spec => spec)
+    .then(specs => {
+      const watched = specs.filter(spec => spec.watch !== false)
+      const unwatched = specs.filter(spec => spec.watch === false)
 
-    function watchHandler (err, file) {
-      if (err) {
-        logger({type: 'page-load-error', fileInfo: file.info.src, error: err})
-      } else {
-        return buildPage(file, pipeline, config, logger, true)
-          .then((files) => {
-            files.forEach(file => triggerReload(file.info.dest))
-          })
-      }
-    }
+      return copyResources(config, options, logger).then(() => {
+        return new Promise(resolve => {
+          if (unwatched.length) {
+            const startTime = Date.now()
+            logger({type: 'header', message: 'Building Unwatched Files'})
+            resolve(buildSpecs(startTime, unwatched, config, options, pipeline, logger))
+          } else {
+            resolve()
+          }
+        }).then(() => {
+          logger({type: 'header', message: 'Building Watched Files'})
+          function watchHandler (err, file) {
+            if (err) {
+              logger({type: 'page-load-error', fileInfo: file.info.src, error: err})
+            } else {
+              return buildPage(file, pipeline, config, logger, true)
+                .then((files) => {
+                  files.forEach(file => triggerReload(file.info.dest))
+                })
+            }
+          }
 
-    qwatch.watch(config.pages, watchHandler, options)
+          qwatch.watch(watched, watchHandler, options)
 
-    if (config.resources) {
-      qwatch.watcher(config.resources, options).then((watcher) => {
-        watcher.on('change', (file) => {
-          copyResource(file, logger)
-          triggerReload(file.dest)
+          if (config.resources) {
+            qwatch.watcher(config.resources, options).then((watcher) => {
+              watcher.on('change', (file) => {
+                copyResource(file, logger)
+                triggerReload(file.dest)
+              })
+            })
+          }
         })
       })
-    }
-  })
+    })
 }
 
 module.exports = {
