@@ -79,7 +79,7 @@ module.exports = {
     html.fileTransform(htmlOptions)
   ],
   pages: {
-    files: ['src/pages/**/*.um', '!**/api/**/*.um'],
+    files: ['src/pages/**/*.um', '!**/modules/**/api/**/*.um'],
     base: 'src/pages'
   },
   resources: [
