@@ -1,0 +1,12 @@
+@function fileTransform
+  @added 2.0.0
+  @description
+    Builds a file transform that takes a @type[File], converts it to HTML and then renames files to make a sensible directory structure for the site.
+
+    For example, a file in @code[directory/file.um] would be converted to HTML as @code[directory/file.html] and then be renamed and output to @code[target/directory/file/index.html]
+
+
+  @param? options [Object]
+
+  @returns Function
+    @param file [File]

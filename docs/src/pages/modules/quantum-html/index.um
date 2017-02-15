@@ -1,49 +1,22 @@
 @inline ../../../templates/sidebar-page.um
 
-@versionList
-  @version 1.0.0
+@versionedPage
+  @version 2.0.0
 
 @topSection
-  @title Quantum Html
+  @title HTML
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    Transforms for converting quantum ast to html.
+    TODO
 
 @contentSection
+  @tableOfContents Contents
 
   @topic About
-    This module is used to transform parsed quantum AST objects to virtual
-    dom content and then converting to html.
+    TODO
 
-    The two conversion functions are provided separately to allow additional
-    transforms to be performed between the virtual dom and stringified stage,
-    giving flexibility to convert to formats other than pure html.
+  @topic Entities
+    @inline entities.um
 
-  @topic Config options
-
-    This is the minimal setup for building pages with quantum-html:
-
-    @subsection quantum.config.js
-      @codeblock js
-        const html = require('quantum-html')
-
-        const htmlTransforms = {
-          html: html.transforms
-        }
-
-        function pipeline (page) {
-          return Promise.resolve(page)
-            .map(html({ transforms: htmlTransforms }))
-            .map(html.stringify(htmlOptions))
-            .map(html.htmlRenamer())
-        }
-
-        module.exports = {
-          htmlTransforms: htmlTransforms,
-          pipeline: pipeline,
-          pages: '**/*.um'
-        }
-
-    The
-
+  @topic API
     @inline api.um
