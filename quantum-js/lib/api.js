@@ -31,7 +31,20 @@ function defaultLogger (evt) {
   } else if (evt.type === 'message') {
     console.log(evt.message)
   } else if (evt.type === 'build-page') {
-    console.log(evt.sourceFile.info.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.gray(' -> ' + evt.destFiles.length + ' page' + (evt.destFiles.length > 1 ? 's' : '')))
+    // Pages are html, files are everything else
+    const destPages = evt.destFiles.filter(({info: { dest }}) => path.extname(dest) === '.html')
+    const destFiles = evt.destFiles.filter(({info: { dest }}) => path.extname(dest) !== '.html')
+
+    const pagesString = destPages.length ? destPages.length + ' page' + (destPages.length !== 1 ? 's' : '') : ''
+    const filesString = destFiles.length ? (destPages.length ? ', ' : '') + destFiles.length + ' file' + (destFiles.length !== 1 ? 's' : '') : ''
+
+    console.log(evt.sourceFile.info.src + chalk.magenta(' [' + evt.timeTaken + ' ms]') + chalk.dim(' -> ' + pagesString + filesString))
+    // Added output logging for individual pages
+    if (destPages.length < 5) {
+      destPages.forEach(page => {
+        console.log(chalk.cyan('  +', page.info.dest))
+      })
+    }
     evt.sourceFile.warnings.forEach((warning) => {
       console.log(chalk.yellow('  [warning] ') + chalk.cyan(warning.module) + ': ' + chalk.yellow(warning.problem) + '.  ' + warning.resolution)
     })
