@@ -89,17 +89,6 @@ module.exports = {
   },
   resources: [
     {
-      files: [
-        'node_modules/hexagon-js/dist/hexagon-light/**/*',
-        '!node_modules/hexagon-js/dist/hexagon-light/favicon/*',
-        '!node_modules/hexagon-js/dist/hexagon-light/hexagon.variables*',
-        '!node_modules/hexagon-js/dist/hexagon-light/hexagon.print*'
-      ],
-      base: 'node_modules/hexagon-js/dist/hexagon-light',
-      dest: 'resources/hexagon-js',
-      watch: false
-    },
-    {
       files: 'src/resources/**/*',
       dest: 'resources',
       watch: true
