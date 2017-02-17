@@ -2,21 +2,23 @@
   @description
     Gets the parameters as a string
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: ['param1', 'param2'],
-        content: [
-          'Line 1',
-          'Line 2'
-        ]
-      }
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Line 1',
+            'Line 2'
+          ]
+        }
 
-      const selection = quantum.select(entity)
+        const selection = quantum.select(entity)
 
-      selection.cs() // 'Line1\nLine2'
+        selection.cs() // 'Line1\nLine2'
 
   @returns String
     @description
@@ -27,24 +29,26 @@
   @description
     Sets the parameters as a string
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: ['param1', 'param2'],
-        content: [
-          'Line 1',
-          'Line 2'
-        ]
-      }
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Line 1',
+            'Line 2'
+          ]
+        }
 
-      const selection = quantum.select(entity)
+        const selection = quantum.select(entity)
 
-      selection.cs() // 'Line1\nLine2'
+        selection.cs() // 'Line1\nLine2'
 
-      selection.cs('Line1\nLine2\nLine3')
-      selection.content() // ['Line 1', 'Line 2', 'Line 3']
+        selection.cs('Line1\nLine2\nLine3')
+        selection.content() // ['Line 1', 'Line 2', 'Line 3']
 
   @param cs [String]
     @description

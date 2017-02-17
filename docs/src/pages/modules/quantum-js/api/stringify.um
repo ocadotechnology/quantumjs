@@ -4,29 +4,31 @@
   @description
     Converts AST back into quantum markdown. Does the opposite to @code[parse]
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      quantum.stringify({
-        type: 'example',
-        params: ['param1', 'param2'],
-        content: [
-          'Some Content',
-          {
-            type: 'child',
-            params: ['child-param'],
-            content: []
-          }
-        ]
-      })
+        quantum.stringify({
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Some Content',
+            {
+              type: 'child',
+              params: ['child-param'],
+              content: []
+            }
+          ]
+        })
 
-      /*
-        Returns this string:
+        /*
+          Returns this string:
 
-        @example param1 param2
-          Some content
-          @child child-param
-      */
+          @example param1 param2
+            Some content
+            @child child-param
+        */
 
   @param ast [Object]
     @description

@@ -2,29 +2,31 @@
   @description
     Adds a new entry to the entities content array
 
-    @codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: ['param1', 'param2'],
-        content: [
-          'Blah blah blah'
-        ]
-      }
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
 
-      const selection = quantum.select(entity)
-      selection.content() // ['Blah blah blah']
+        const selection = quantum.select(entity)
+        selection.content() // ['Blah blah blah']
 
-      selection.add('Second line')
-      selection.content() // ['Blah blah blah', 'Second line']
+        selection.add('Second line')
+        selection.content() // ['Blah blah blah', 'Second line']
 
-      // Entities can also be added
-      selection.add({
-        type: 'tagline',
-        params: [],
-        content: []
-      })
+        // Entities can also be added
+        selection.add({
+          type: 'tagline',
+          params: [],
+          content: []
+        })
 
   @param content [String/Object]
     @description

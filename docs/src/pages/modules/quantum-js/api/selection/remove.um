@@ -2,33 +2,35 @@
   @description
     Removes the selected entity from its parent.
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'parent',
-        params: [],
-        content: [
-          {
-            type: 'childExample',
-            params: [],
-            content: [
-
-            ]
-          }
-        ]
-      }
-
-      const parentSelection = quantum.select(entity)
-      const childSelection = quantum.select('childExample')
-
-      childSelection.remove() // == parentSelection
-
-      parentSelection.entity()
-      /*
-        {
+        const entity = {
           type: 'parent',
           params: [],
-          content: []
+          content: [
+            {
+              type: 'childExample',
+              params: [],
+              content: [
+
+              ]
+            }
+          ]
         }
-      */
+
+        const parentSelection = quantum.select(entity)
+        const childSelection = quantum.select('childExample')
+
+        childSelection.remove()
+
+        parentSelection.entity()
+        /*
+          {
+            type: 'parent',
+            params: [],
+            content: []
+          }
+        */

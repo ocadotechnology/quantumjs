@@ -2,26 +2,28 @@
   @description
     Returns true if the selected entity has any parameters
 
-    @codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity1 = {
-        type: 'example',
-        params: [],
-        content: []
-      }
+        const entity1 = {
+          type: 'example',
+          params: [],
+          content: []
+        }
 
-      const entity2 = {
-        type: 'example',
-        params: ['param1', 'param2'],
-        content: []
-      }
+        const entity2 = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: []
+        }
 
-      const selection1 = quantum.select(entity1)
-      selection1.hasParams() // false
+        const selection1 = quantum.select(entity1)
+        selection1.hasParams() // false
 
-      const selection2 = quantum.select(entity2)
-      selection2.hasParams() // true
+        const selection2 = quantum.select(entity2)
+        selection2.hasParams() // true
 
   @returns Boolean
     @description

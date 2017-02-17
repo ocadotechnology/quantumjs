@@ -5,11 +5,13 @@
     Watches a collection of files for changes. This also detects changes when
     inlined files are changed.
 
-    @codeblock js
-      quantum.watch("src/**/*.um", (err, file, cause) => {
-        // Example use: apply some transformation and write the file to disk
-        return transformAndWrite(file)
-      })
+  @extra
+    @subsection Example
+      @codeblock js
+        quantum.watch("src/**/*.um", (err, file, cause) => {
+          // Example use: apply some transformation and write the file to disk
+          return transformAndWrite(file)
+        })
 
 
   @param specs [String/Object/Array]
@@ -23,10 +25,6 @@
       Or a glob:
       @@codeblock js
         quantum.watch("src/**/*.um", handler, options)
-
-      Or an array of globs:
-      @@codeblock js
-        quantum.watch(["src/**/*.um", "src2/**/index.um"], handler, options)
 
       Or an array of globs:
       @@codeblock js
@@ -80,31 +78,40 @@
       @description
         The working directory for the watcher to work in
       @default: '.'
+
     @property dest [String]
       @description
         The default destination directory to write the files to
       @default: 'target'
+
     @property loader [Function]
       @description
         A function which loads files from disk, returning a @type[Promise]
+
       @param filename [String]
         @description
           The filename of the file to load
+
       @param parentFilename [String]
         @description
           The filename of the parent file - ie if this file is being loaded as the
           result of an @code[@inline] include, the parent file will be the one
           doing the inlining.
+
       @returns [Promise[String]]
         @description
           A promise yielding the contents of the file
+
       @default
-        @codeblock js
-          const Promise = require('bluebird')
-          const fs = Promise.promisifyAll(require('fs-extra'))
+        @@codeblock js
+          const fs = require('fs')
 
           function (filename, parentFilename) {
-            return fs.readFileAsync(filename, 'utf-8')
+            return new Promise((resolve, reject) => {
+              return fs.readFile(filename, 'utf-8', (err, data) => {
+                err ? reject(err) : resolve(data)
+              })
+            })
           }
     @property buildConcurrency [Number]
       @description
@@ -115,9 +122,10 @@
       @description
         The function for reading a file and converting it to a @type[File].
 
-      @param file [String/FileInfo]
+      @param fileInfo [FileInfo]
         @description
-          The filename string or FileInfo to load
+          This describes which file to load. The file that is loaded should use
+          this @type[FileInfo] as it's @code[fileInfo] property.
 
       @param? options [Object]
         @description
@@ -125,17 +133,22 @@
 
         @property loader [Function]
           @description
+            @notice Important
+              This loader must be used to read quantum files, in order for watch
+              to function properly. If you want to use an alternative method for
+              loading up files, use the @code[loader] option for the @code[watch]
+              function.
+
             A function for loading a file from disk, returning a @type[Promise] that
             contains the contents of the file as a string that can be passed to the
             parser.
-
-            This is the loader passed in as an option to the @hyperlink(#watch)[watch] function.
 
           @param filename [String]: The file/resource to load.
           @returns [Promise[String]]
             A promise that yields the contents of the file as a string.
 
-      @default: @hyperlink(#read)[readAsFile]
+      @default: @hyperlink(#read-as-file)[readAsFile]
+
       @returns [Promise[File]]
         @description
           A promise that yields the parsed AST wrapped up into a @type[File].

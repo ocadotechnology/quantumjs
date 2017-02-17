@@ -6,8 +6,20 @@
     An object that wraps an entity. This object has useful methods for extracting
     information from, and updating entities.
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'fruit',
+          params: ['apple'],
+          content: []
+        }
+
+        const selection = quantum.select(entity)
+        // selection is a Selection
+
 
   @inline selection/*.um
 

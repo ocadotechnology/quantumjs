@@ -4,18 +4,20 @@
   @description
     Creates a deep clone of some AST:
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'fruit',
-        params: [],
-        content: ['Strawberry', 'Kiwi', 'Cherry']
-      }
+        const entity = {
+          type: 'fruit',
+          params: [],
+          content: ['Strawberry', 'Kiwi', 'Cherry']
+        }
 
-      const cloned = quantum.clone(entity)
-      // cloned will look exactly the same as entity (but will be a copy,
-      // so changes to one will not appear in the other)
+        const cloned = quantum.clone(entity)
+        // cloned will look exactly the same as entity (but will be a copy,
+        // so changes made to the clone will not affect the original)
 
   @param ast [Object]: The AST to clone.
   @returns Object: The cloned AST

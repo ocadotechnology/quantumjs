@@ -3,51 +3,53 @@
     If this selection has a parent, this method can be used to add content
     after this one in the parent's content.
 
-    @codeblock js
+  @extra
+    @subsection Example
+      @@codeblock js
 
-      const quantum = require('quantum-js')
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: ['param1', 'param2'],
-        content: [
-          {
-            type: "child",
-            params: [],
-            content: []
-          },
-          "End content"
-        ]
-      }
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            {
+              type: "child",
+              params: [],
+              content: []
+            },
+            "End content"
+          ]
+        }
 
-      const selection = quantum.select(entity)
-      selection.content()
-      /*
-        [
-          {
-            type: "child",
-            params: [],
-            content: []
-          },
-          "End content"
-        ]
-      */
+        const selection = quantum.select(entity)
+        selection.content()
+        /*
+          [
+            {
+              type: "child",
+              params: [],
+              content: []
+            },
+            "End content"
+          ]
+        */
 
-      const child = selection.select('child')
-      child.addAfter('New line')
+        const child = selection.select('child')
+        child.addAfter('New line')
 
-      selection.content()
-      /*
-        [
-          {
-            type: "child",
-            params: [],
-            content: []
-          },
-          "New line",
-          "End content"
-        ]
-      */
+        selection.content()
+        /*
+          [
+            {
+              type: "child",
+              params: [],
+              content: []
+            },
+            "New line",
+            "End content"
+          ]
+        */
 
   @param content [String/Object]
     @description

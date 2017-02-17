@@ -2,39 +2,41 @@
   @description
     Checks if an entity has a child entity of a particular type
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: ['param1', 'param2'],
-        content: [
-          {
-            type: 'child1',
-            params: [],
-            content: []
-          },
-          {
-            type: 'child2',
-            params: [],
-            content: [
-              type: 'child3',
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            {
+              type: 'child1',
+              params: [],
+              content: []
+            },
+            {
+              type: 'child2',
               params: [],
               content: [
+                type: 'child3',
+                params: [],
+                content: [
 
+                ]
               ]
-            ]
-          }
-        ]
-      }
+            }
+          ]
+        }
 
-      const selection = quantum.select(entity)
+        const selection = quantum.select(entity)
 
-      selection.has('child1') // true
-      selection.has('child2') // true
-      selection.has('child3') // false
-      selection.has('child3', {recursive: true}) // true
-      selection.has('child4', {recursive: true}) // false
+        selection.has('child1') // true
+        selection.has('child2') // true
+        selection.has('child3') // false
+        selection.has('child3', {recursive: true}) // true
+        selection.has('child4', {recursive: true}) // false
 
   @param type [String]
     @description

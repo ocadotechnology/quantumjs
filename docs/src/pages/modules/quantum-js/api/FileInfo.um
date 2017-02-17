@@ -36,18 +36,19 @@
 
     Every @api.type[File] instance has a @code[info] property, which is one of these guys.
 
-    Creating a FileInfo instance:
-    @codeblock js
-      const quantum = require('quantum-js')
+    @extra
+      @subsection Creating a FileInfo instance
+        @@codeblock js
+          const quantum = require('quantum-js')
 
-      const fileInfo = new quantum.FileInfo({
-        src: "src/content/about.um",
-        resolved: "about.um",
-        base: "src/content",
-        dest: "target/about.um",
-        destBase: "target",
-        watch: true
-      })
+          const fileInfo = new quantum.FileInfo({
+            src: "src/content/about.um",
+            resolved: "about.um",
+            base: "src/content",
+            dest: "target/about.um",
+            destBase: "target",
+            watch: true
+          })
 
   @constructor
     @description
@@ -65,21 +66,23 @@
       Returns a new @api.type[FileInfo] instance with the extension changed for the
       dest property:
 
-      @codeblock js
-        const quantum = require('quantum-js')
+    @extra
+      @subsection Example
+        @@codeblock js
+          const quantum = require('quantum-js')
 
-        const fileInfo = new quantum.FileInfo({
-          src: "src/content/about.um",
-          resolved: "about.um",
-          base: "src/content",
-          dest: "target/about.um",
-          destBase: "target",
-          watch: true
-        })
+          const fileInfo = new quantum.FileInfo({
+            src: "src/content/about.um",
+            resolved: "about.um",
+            base: "src/content",
+            dest: "target/about.um",
+            destBase: "target",
+            watch: true
+          })
 
-        const newFileInfo = fileInfo.withExtension('.html')
+          const newFileInfo = fileInfo.withExtension('.html')
 
-        console.log(newFileInfo.dest) // prints "target/about.html"
+          console.log(newFileInfo.dest) // prints "target/about.html"
 
     @param extension [String]
       @description
