@@ -508,6 +508,3 @@
           @api
             @entity groupByApi
               @param boolean
-
-
-

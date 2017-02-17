@@ -56,4 +56,3 @@
           The languages to use to render the changelog headers
 
           This is where @code[changelogHeaderTransforms] are used.
-

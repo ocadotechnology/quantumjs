@@ -1,5 +1,6 @@
 const dom = require('quantum-dom')
 const quantum = require('quantum-js')
+
 function um (selection, transformer) {
   return quantum.select(quantum.parse(selection.cs())).transform(transformer)
 }
