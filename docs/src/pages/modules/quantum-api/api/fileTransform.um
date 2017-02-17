@@ -23,11 +23,11 @@
 
 
 @object fileTransforms
-  @added 2.0.0
   @description
     The available file transforms.
 
-  @property changelog [Function]
+  @function changelog
+    @added 2.0.0
     @description
       The file transform for processing @code[@changelogList] entities.
 
@@ -39,15 +39,18 @@
         @description
           Whether the changelog should be grouped by api.
 
-          Can also be set on a per-@code[@changelogList] basis using @code[@groupByApi true]
+          Can also be set on a per-@code[@changelogList] basis using
+          @code[@groupByApi true]
 
         @default: false
 
       @property changelogReverseVisibleList [Boolean]
         @description
-          Whether to reverse the list of changelog items to put the last one at the top to make it easier to document.
+          Whether to reverse the list of changelog items to put the last one at
+          the top to make it easier to document.
 
-          Can also be set on a per-@code[@changelogList] basis using @code[@reverseVisibleList true]
+          Can also be set on a per-@code[@changelogList] basis using
+          @code[@reverseVisibleList true]
 
         @default: false
 

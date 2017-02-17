@@ -9,12 +9,15 @@
 
     @property apiBuilders [Array[Transform]]
       @description
-        Defines the order @code[itemGroup]s of entities should be displayed in at the top-level.
+        Defines the order @code[itemGroup]s of entities should be displayed in
+        at the top-level.
 
-        The default set of @code[apiBuilders] are available as properties of this module under @hyperlink(#builders)[builders] and @hyperlink(#languages)[languages]
+        The default set of @code[apiBuilders] are available as properties of
+        this module under @hyperlink(#builders)[builders] and
+        @hyperlink(#languages)[languages]
 
       @default
-        @codeblock js
+        @@codeblock js
           [
             builders.body.description,
             builders.body.extras,
@@ -33,7 +36,7 @@
         The languages to use the transforms for. Exposes the Language Entities.
 
       @default
-        @codeblock js
+        @@codeblock js
           [
             languages.javascript(),
             languages.css()
@@ -41,21 +44,29 @@
 
     @property issueUrl [Function]
       @description
-        Builds the issue url from an issue number to display next to a changelog entry.
+        Builds the issue url from an issue number to display next to a changelog
+        entry.
       @param issueNumber [String]
+        @description
+          The issue number
+      @returns String
+        @description
+          The built issue url
       @default
-        @codeblock js
+        @@codeblock js
           function issueUrl (issueNumber) {
             return undefined
           }
 
   @returns Object
     @description
-      The transforms to use in @code[quantum-html] to define the entities that can be rendered.
+      The transforms to use in @code[quantum-html] to define the entities that
+      can be rendered.
 
     @property api [Transform]
     @property changelogList [Transform]
     @property changelog [Transform]
     @property <language> [Object]
       @description
-        An object containing all the transforms for a language is exported for each @code[language] that is defined
+        An object containing all the transforms for a language is exported for
+        each @code[language] that is defined

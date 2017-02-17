@@ -1,10 +1,12 @@
 @entity api
   @added 2.0.0
   @description
-    The container for api content. All the entities provided by this module should be used inside an @code[@api] entity
+    The container for api content. All the entities provided by this module
+    should be used inside an @code[@api] entity
   @param apiName
     @description
-      The name of the api that is used to group content when generating changelogs from multiple apis
+      The name of the api that is used to group content when generating
+      changelogs from multiple apis
   @extra
     @example
       @noOutput
@@ -140,7 +142,8 @@
 
 @group [File Transform Entities]
   @description
-    Entities that are available or behave differently when using the @hyperlink(./#filetransform)[fileTransform].
+    Entities that are available or behave differently when using the
+    @hyperlink(./#filetransform)[fileTransform].
 
   @entity changelogList
     @description
@@ -204,7 +207,10 @@
 
 
 @group [Language: Javascript]
-  @description: Transforms provided by the javascript @hyperlink(./#languages)[language] when passed in as an option.
+  @description
+    Transforms provided by the javascript @hyperlink(./#languages)[language]
+    when passed in as an option.
+
   @entity function
     @added 2.0.0
     @description
@@ -396,7 +402,8 @@
     @description
       Describes a constructor for a Prototype.
 
-      It is rendered in the same way as a function but does not expect a function name.
+      It is rendered in the same way as a function but does not expect a
+      function name.
 
     @extra
       @example
@@ -429,7 +436,10 @@
 
 
 @group [Language: CSS]
-  @description: Transforms provided by the css @hyperlink(./#languages)[language] when passed in as an option.
+  @description
+    Transforms provided by the css @hyperlink(./#languages)[language] when
+    passed in as an option.
+
   @entity class
     @added 2.0.0
     @description
@@ -483,7 +493,10 @@
 
 
 @group [Language: Quantum]
-  @description: Transforms provided by the Quantum @hyperlink(./#languages)[language] when passed in as an option.
+  @description
+    Transforms provided by the Quantum @hyperlink(./#languages)[language] when
+    passed in as an option.
+    
   @entity entity
     @added 2.0.0
     @description

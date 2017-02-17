@@ -2,7 +2,8 @@
   @description
     Below are all the properties of the object returned from @code[require('quantum-api')].
 
-    For information about different versions, see the @hyperlink(/modules/quantum-api/changelog/)[Changelog]
+    For information about different versions, see the
+    @hyperlink(/modules/quantum-api/changelog/)[Changelog]
 
   @inline api/fileTransform.um
   @inline api/transforms.um

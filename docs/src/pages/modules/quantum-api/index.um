@@ -13,9 +13,13 @@
   @tableOfContents Contents
 
   @topic About
-    This module provides transforms for writing the API documentation that you can see in the @hyperlink(/modules/quantum-api/#api)[API] section of this and the other module pages.
+    This module provides transforms for writing the API documentation that you
+    can see in the @hyperlink(/modules/quantum-api/#api)[API] section of this
+    and the other module pages.
 
-    It also provides the ability to generate @hyperlink(./#changelogs)[changelogs] from the api as well as @hyperlink(./#versioning)[versioned pages] when combined with @hyperlink(/modules/quantum-version/)[quantum-version]
+    It also provides the ability to generate @hyperlink(./#changelogs)[changelogs]
+    from the api as well as @hyperlink(./#versioning)[versioned pages] when
+    combined with @hyperlink(/modules/quantum-version/)[quantum-version]
 
   @topic Entities
     @inline entities.um
@@ -27,7 +31,8 @@
     Below are several examples with the code required and their output.
 
     @section Standalone
-      Using the module to provide the transforms provides basic api documentation capabilities:
+      Using the module to provide the transforms provides basic api documentation
+      capabilities:
 
       @example
         @file quantum.config.js
@@ -36,22 +41,22 @@
             const html = require('quantum-html')
             const api = require('quantum-api')
 
-            const apiOptions = { ... }
+            const apiOptions = {
 
-            const htmlTransforms = {
-              html: html.transforms(),
-              // Add the api section renderers to the page
-              api: api.transforms(apiOptions)
             }
 
-            const pipeline = [
-              html({ transforms: htmlTransforms })
-            ]
+            const htmlOptions = {
+              transforms: {
+                html: html.transforms(),
+                api: api.transforms(apiOptions) // Add the api section renderers to the page
+              }
+            }
 
             module.exports = {
-              pipeline: pipeline,
-              htmlTransforms: htmlTransforms,
-              pages: '*.um'
+              pages: '*.um',
+              pipeline: [
+                html.pageTransform(htmlOptions)
+              ]
             }
         @file
           @@um
@@ -67,29 +72,26 @@
       @example
         @file quantum.config.js
           @js
-            const api = require('quantum-api')
-
-            const apiOptions = { ... }
-
             const html = require('quantum-html')
             const api = require('quantum-api')
 
-            const htmlTransforms = {
-              html: html.transforms(),
-              // Add the api section renderers to the page
-              api: api.transforms(apiOptions)
+            const apiOptions = {
+
             }
 
-            const pipeline = [
-              // Parse changelogList entities
-              api.fileTransform(apiOptions),
-              html({ transforms: htmlTransforms })
-            ]
+            const htmlOptions = {
+              transforms: {
+                html: html.transforms(),
+                api: api.transforms(apiOptions) // Add the api section renderers to the page
+              }
+            }
 
             module.exports = {
-              pipeline: pipeline,
-              htmlTransforms: htmlTransforms,
-              pages: '*.um'
+              pages: '*.um',
+              pipeline: [
+                api.fileTransform(apiOptions),
+                html.fileTransform(htmlOptions)
+              ]
             }
 
         @file path/index.um
@@ -143,37 +145,36 @@
               @description: Version 1.0.0 changes
 
     @section Versioning
-      You can use the same versioned api to produce multiple versioned pages that show a single version.
+      You can use the same versioned api to produce multiple versioned pages that
+      show a single version.
 
-      See @hyperlink(/modules/quantum-verision/)[quantum-version] for more information.
+      See @hyperlink(/modules/quantum-verision/)[quantum-version] for more
+      information.
 
       @example
         @file quantum.config.js
           @js
             const version = require('quantum-version')
             const api = require('quantum-api')
-
-            const apiOptions = { ... }
-
             const html = require('quantum-html')
-            const api = require('quantum-api')
 
-            const htmlTransforms = {
-              html: html.transforms(),
-              // Add the api section renderers to the page
-              api: api.transforms(apiOptions)
+            const apiOptions = {
+
             }
 
-            const pipeline = [
-              // Parse the pages to generate versions (e.g. page/1.0.0/index.html)
-              version.fileTransform(versionOptions),
-              html({ transforms: htmlTransforms })
-            ]
+            const htmlOptions = {
+              transforms: {
+                html: html.transforms(),
+                api: api.transforms(apiOptions) // Add the api section renderers to the page
+              }
+            }
 
             module.exports = {
-              pipeline: pipeline,
-              htmlTransforms: htmlTransforms,
-              pages: '*.um'
+              pages: '*.um',
+              pipeline: [
+                version.fileTransform(versionOptions), // Generate versioned pages (e.g. page/1.0.0/index.html)
+                html.pageTransform(htmlOptions)
+              ]
             }
 
         @file path/index.um
@@ -235,7 +236,8 @@
               @added 2.0.0
 
     @section Custom Language
-      To define a language to use with quantum api, you can build a custom language
+      To define a language to use with quantum api, you can build a custom
+      language
 
       @example
         @file custom-language.js
@@ -246,11 +248,9 @@
         @file quantum.config.js
           @noOutput
           @js
-            // These are additions required to a working quantum.config.js
-
+            const html = require('quantum-html')
+            const api = require('quantum-api')
             const customLanguage = require('./custom-language.js')
-
-            ...
 
             // Add the new language to the api options
             const apiOptions = {
@@ -259,19 +259,21 @@
               ]
             }
 
-            ...
-
             // Add the api transforms to htmlTransforms if they weren't there already
-            const htmlTransforms = {
-              api: require('quantum-api').transforms(apiOptions)
+            const htmlOptions = {
+              transforms: {
+                api: api.transforms(apiOptions)
+              }
             }
 
-            ...
-
             // Add the fileTransform for rendering changelog content
-            const pipeline = [
-              api.fileTransform(apiOptions)
-            ]
+            module.exports = {
+              pages: '**/*.um',
+              pipeline: [
+                api.fileTransform(apiOptions),
+                html.fileTransform(htmlOptions)
+              ]
+            }
 
 
         @file custom-language.css
