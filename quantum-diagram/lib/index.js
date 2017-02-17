@@ -7,7 +7,7 @@ const path = require('path')
 
 const stylesheetAsset = dom.asset({
   url: '/quantum-diagram.css',
-  file: path.join(__dirname, '../assets/quantum-diagram.css'),
+  filename: path.join(__dirname, '../assets/quantum-diagram.css'),
   shared: true
 })
 

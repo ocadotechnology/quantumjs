@@ -24,12 +24,12 @@ describe('api', () => {
         .class('qm-api')
         .add(dom.asset({
           url: '/quantum-api.css',
-          file: path.join(__dirname, '../../assets/quantum-api.css'),
+          filename: path.join(__dirname, '../../assets/quantum-api.css'),
           shared: true
         }))
         .add(dom.asset({
           url: '/quantum-api.js',
-          file: path.join(__dirname, '../../assets/quantum-api.js'),
+          filename: path.join(__dirname, '../../assets/quantum-api.js'),
           shared: true
         }))
     )
@@ -64,12 +64,12 @@ describe('api', () => {
           }))))
         .add(dom.asset({
           url: '/quantum-api.css',
-          file: path.join(__dirname, '../../assets/quantum-api.css'),
+          filename: path.join(__dirname, '../../assets/quantum-api.css'),
           shared: true
         }))
         .add(dom.asset({
           url: '/quantum-api.js',
-          file: path.join(__dirname, '../../assets/quantum-api.js'),
+          filename: path.join(__dirname, '../../assets/quantum-api.js'),
           shared: true
         }))
 
@@ -94,7 +94,7 @@ describe('api', () => {
         assets: [
           dom.asset({
             url: '/language.css',
-            file: 'some-path.css',
+            filename: 'some-path.css',
             shared: true
           })
         ]
@@ -106,17 +106,17 @@ describe('api', () => {
         .class('qm-api')
         .add(dom.asset({
           url: '/quantum-api.css',
-          file: path.join(__dirname, '../../assets/quantum-api.css'),
+          filename: path.join(__dirname, '../../assets/quantum-api.css'),
           shared: true
         }))
         .add(dom.asset({
           url: '/quantum-api.js',
-          file: path.join(__dirname, '../../assets/quantum-api.js'),
+          filename: path.join(__dirname, '../../assets/quantum-api.js'),
           shared: true
         }))
         .add(dom.asset({
           url: '/language.css',
-          file: 'some-path.css',
+          filename: 'some-path.css',
           shared: true
         }))
     )

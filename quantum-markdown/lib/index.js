@@ -15,7 +15,7 @@ const codeHighlight = require('quantum-code-highlight')
 
 const stylesheetAsset = dom.asset({
   url: '/quantum-markdown.css',
-  file: path.join(__dirname, '../assets/quantum-markdown.css'),
+  filename: path.join(__dirname, '../assets/quantum-markdown.css'),
   shared: true
 })
 

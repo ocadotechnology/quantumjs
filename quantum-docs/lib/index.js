@@ -7,13 +7,13 @@ const html = require('quantum-html')
 
 const stylesheetAsset = dom.asset({
   url: '/quantum-docs.css',
-  file: path.join(__dirname, '../assets/quantum-docs.css'),
+  filename: path.join(__dirname, '../assets/quantum-docs.css'),
   shared: true
 })
 
 const scriptAsset = dom.asset({
   url: '/quantum-docs.js',
-  file: path.join(__dirname, '../assets/quantum-docs.js'),
+  filename: path.join(__dirname, '../assets/quantum-docs.js'),
   shared: true
 })
 

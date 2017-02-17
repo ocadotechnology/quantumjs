@@ -28,7 +28,7 @@ const utils = require('../utils')
 function domAsset (filename) {
   return dom.asset({
     url: '/' + filename,
-    file: path.join(__dirname, '../../assets/' + filename),
+    filename: path.join(__dirname, '../../assets/' + filename),
     shared: true
   })
 }
@@ -73,7 +73,7 @@ function label (tagType, count) {
     .class(`qm-changelog-icon-${tagType} qm-changelog-text-${tagType}`)
     .attr('title', tags.displayName[tagType]) : undefined
 
-  return dom.create('div').class('qm-changelog-label qm-changelog-label-' + tagType)
+  return dom.create('div').class(`qm-changelog-label qm-changelog-label-${tagType}`)
     .add(icon)
     .add(dom.create('span').text(count))
 }
@@ -101,7 +101,7 @@ function changeDom (selection, transformer, issueUrl) {
     .add(dom.create('div').class('qm-changelog-change-header')
       .add(dom.create('div').class('qm-changelog-change-icon')
         .add(icon))
-      .add(dom.create('div').class('qm-changelog-change-type').text(displayName))
+      .add(dom.create('div').class(`qm-changelog-change-type qm-changelog-text-${changeType}`).text(displayName))
       .add(issues))
     .add(dom.create('div').class('qm-changelog-change-body')
       .add(selection.has('description') ? html.paragraphTransform(selection.select('description'), transformer) : undefined))
@@ -113,10 +113,10 @@ function entry (selection, transformer, options) {
 
   let header = undefined
   if (languageTransforms) {
-    const headerSel = quantum.select(selection.select('header').content()[0])
-    const headerItemType = headerSel.type()
+    const headerSelection = quantum.select(selection.select('header').content()[0])
+    const headerItemType = headerSelection.type()
     if (languageTransforms[headerItemType]) {
-      header = languageTransforms[headerItemType](headerSel, transformer)
+      header = languageTransforms[headerItemType](headerSelection, transformer)
     }
   }
 

@@ -256,7 +256,7 @@ function paragraphTransform (selection, transformer) {
   const paragraphs = [
     dom.asset({
       url: '/quantum-html.css',
-      file: path.join(__dirname, '../assets/quantum-html.css'),
+      filename: path.join(__dirname, '../assets/quantum-html.css'),
       shared: true
     })
   ]

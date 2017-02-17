@@ -14,7 +14,7 @@ const itemGroup = require('../entity-transforms/builders/item-group')
 const assets = [
   dom.asset({
     url: '/quantum-api-javascript.css',
-    file: path.join(__dirname, '../../assets/languages/quantum-api-javascript.css'),
+    filename: path.join(__dirname, '../../assets/languages/quantum-api-javascript.css'),
     shared: true
   })
 ]
@@ -102,16 +102,16 @@ function prototypeHeaderDetails (typeLinks) {
     let details = dom.create('span')
       .class('qm-api-javascript-header-prototype')
       .attr('id', name ? name.toLowerCase() : undefined)
-      .add(dom.create('span').class('qm-api-prototype-name').text(name || ''))
+      .add(dom.create('span').class('qm-api-javascript-prototype-name').text(name || ''))
 
     const extendsEntities = selection.selectAll('extends')
 
     if (extendsEntities.length > 0) {
-      details = details.add(dom.create('span').class('qm-api-prototype-extends').text('extends'))
+      details = details.add(dom.create('span').class('qm-api-javascript-prototype-extends').text('extends'))
 
       extendsEntities.forEach((ent) => {
         const extender = dom.create('span')
-          .class('qm-api-prototype-extender')
+          .class('qm-api-javascript-prototype-extender')
           .add(type(ent.ps(), typeLinks))
         details = details.add(extender)
       })

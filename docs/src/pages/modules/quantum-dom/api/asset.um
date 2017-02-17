@@ -1,0 +1,22 @@
+@prototype Asset
+  @added 2.0.0
+
+  @description
+    Represents a file that should be included with the page (css, javascript or
+    other). This protoype should not be used directly, instead use
+    @code[dom.asset()]
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        dom.asset({
+          url: "/resources/lib.js"
+          filename: 'lib.js',
+          shared: true
+        })
+
+@function asset
+  @description
+    

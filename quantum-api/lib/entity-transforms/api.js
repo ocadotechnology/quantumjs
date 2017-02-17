@@ -6,12 +6,12 @@ const dom = require('quantum-dom')
 const assets = [
   dom.asset({
     url: '/quantum-api.css',
-    file: path.join(__dirname, '../../assets/quantum-api.css'),
+    filename: path.join(__dirname, '../../assets/quantum-api.css'),
     shared: true
   }),
   dom.asset({
     url: '/quantum-api.js',
-    file: path.join(__dirname, '../../assets/quantum-api.js'),
+    filename: path.join(__dirname, '../../assets/quantum-api.js'),
     shared: true
   })
 ]

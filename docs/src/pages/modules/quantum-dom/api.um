@@ -1,32 +1,19 @@
-'use strict'
-/*
+@api quantum-dom
+  # Prototypes
+  @inline api/Asset.um
+  @inline api/TextNode.um
 
-  Dom
-  ====
+  # Functions
+  @inline api/create.um
+  @inline api/head.um
+  @inline api/textNode.um
+  @inline api/escapeHTML.um
 
-  This module provides an api for building up a virtual representation
-  of the dom, which can then be stringifyed out to a html string.
 
-*/
 
-const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs'))
+
 
 // -------- Utils --------
-
-const entityMap = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-  '/': '&#x2F;'
-}
-
-// html entity encoding
-function escapeHTML (text) {
-  return String(text).replace(/[&<>"'/]/g, (s) => entityMap[s])
-}
 
 // creates a random id
 function randomId () {
@@ -38,9 +25,6 @@ function randomId () {
   return res.join('')
 }
 
-function isString (x) {
-  return typeof (x) === 'string' || x instanceof String
-}
 
 // -------- Prototypes --------
 
@@ -52,10 +36,6 @@ function Element (type) {
   this.endContent = []
 }
 
-function elementyPromise (promise) {
-  promise.add = (el, options) => elementyPromise(promise.then(p => p.add(el, options)))
-  return promise
-}
 
 // sets an attribute for the element
 Element.prototype.attr = function (name, value) {
@@ -222,7 +202,7 @@ function Asset (url, filename, shared) {
   this.shared = shared
 }
 
-function HeadWrapper (element, options) {
+function HeadInjectWrapper (element, options) {
   this.element = element
   this.options = options
 }
@@ -232,7 +212,7 @@ function PageModifier (options) {
 }
 
 // extracts 'elements' of particular types from the tree of elements (for
-// extracting HeadWrapper and Asset 'elements')
+// extracting HeadInjectWrapper and Asset 'elements')
 function extractTypes (elements, Types) {
   function inner (elements, res) {
     const l = elements.length
@@ -255,10 +235,6 @@ function extractTypes (elements, Types) {
 
 // -------- Factories --------
 
-// creates an element of the type given
-function create (type) {
-  return new Element(type)
-}
 
 // creates an element of the type given
 function textNode (text, options) {
@@ -274,15 +250,10 @@ function bodyClassed (cls, classed) {
   })
 }
 
-// injects an element into the head element when the page is created
-function head (element, options) {
-  return new HeadWrapper(element, options || {})
-}
-
 // adds an asset to the page - the user can choose to embed or not when stringifying
 function asset (options) {
   const opts = options || {}
-  return new Asset(opts.url || '', opts.filename || '', opts.shared === true)
+  return new Asset(opts.url || '', opts.file || '', opts.shared === true)
 }
 
 // renders the elements given to html
@@ -290,10 +261,10 @@ function stringify (elements, options) {
   const embedAssets = options ? options.embedAssets !== false : true
   const assetPath = options ? options.assetPath || '' : ''
 
-  const [headWrappers, modifiers, assets] = extractTypes(elements, [HeadWrapper, PageModifier, Asset])
+  const [headElementWrappers, modifiers, assets] = extractTypes(elements, [HeadInjectWrapper, PageModifier, Asset])
 
   const latestById = {}
-  headWrappers.forEach(w => {
+  headElementWrappers.forEach(w => {
     if (w.options.id) {
       latestById[w.options.id] = w
     }
@@ -310,7 +281,7 @@ function stringify (elements, options) {
     .filter(c => bodyClassesMap[c])
     .join(' ')
 
-  const headElements = headWrappers
+  const headElements = headElementWrappers
     .filter(w => w.options.id ? w === latestById[w.options.id] : true)
     .map(w => w.element)
     .map(e => e.stringify ? e.stringify() : (isString(e) ? e : ''))
@@ -373,16 +344,13 @@ function stringify (elements, options) {
 }
 
 module.exports = {
-  Element,
-  TextNode,
-  HeadWrapper,
-  Asset,
-  PageModifier,
   asset,
   bodyClassed,
-  create,
-  escapeHTML,
-  head,
+  Element,
+  Asset,
+  TextNode,
+  HeadWrapper,
+  PageModifier,
   randomId,
   stringify,
   textNode

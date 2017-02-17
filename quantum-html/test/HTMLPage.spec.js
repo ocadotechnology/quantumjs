@@ -33,7 +33,7 @@ describe('HTMLPage', () => {
 
     it('stringifies a file with an asset element (embed by default)', () => {
       const htmlPage = new HTMLPage([
-        dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+        dom.asset({url: 'test.css', filename: path.join(__dirname, '/assets/test.css'), shared: true})
       ])
 
       return htmlPage.stringify()
@@ -63,7 +63,7 @@ describe('HTMLPage', () => {
 
     it('stringifies a file with an asset element (embedAssets: true)', () => {
       const htmlPage = new HTMLPage([
-        dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+        dom.asset({url: 'test.css', filename: path.join(__dirname, '/assets/test.css'), shared: true})
       ])
 
       return htmlPage.stringify({embedAssets: true})
@@ -77,7 +77,7 @@ describe('HTMLPage', () => {
 
     it('stringifies a file with an asset element (embedAssets: false)', () => {
       const htmlPage = new HTMLPage([
-        dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+        dom.asset({url: 'test.css', filename: path.join(__dirname, '/assets/test.css'), shared: true})
       ])
 
       return htmlPage.stringify({embedAssets: false})
@@ -85,7 +85,7 @@ describe('HTMLPage', () => {
           result.should.eql({
             html: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="test.css"></link></head>\n<body class="qm-body-font"></body></html>',
             assets: [
-              dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+              dom.asset({url: 'test.css', filename: path.join(__dirname, '/assets/test.css'), shared: true})
             ]
           })
         })
@@ -93,7 +93,7 @@ describe('HTMLPage', () => {
 
     it('uses the assetPath to change root path for the assets', () => {
       const htmlPage = new HTMLPage([
-        dom.asset({url: '/assets/test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+        dom.asset({url: '/assets/test.css', filename: path.join(__dirname, '/assets/test.css'), shared: true})
       ])
 
       return htmlPage.stringify({embedAssets: false, assetPath: '/bob'})
@@ -101,7 +101,7 @@ describe('HTMLPage', () => {
           result.should.eql({
             html: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="/bob/assets/test.css"></link></head>\n<body class="qm-body-font"></body></html>',
             assets: [
-              dom.asset({url: '/assets/test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+              dom.asset({url: '/assets/test.css', filename: path.join(__dirname, '/assets/test.css'), shared: true})
             ]
           })
         })

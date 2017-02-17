@@ -13,7 +13,7 @@ const itemGroup = require('../entity-transforms/builders/item-group')
 const assets = [
   dom.asset({
     url: '/quantum-api-css.css',
-    file: path.join(__dirname, '../../assets/languages/quantum-api-css.css'),
+    filename: path.join(__dirname, '../../assets/languages/quantum-api-css.css'),
     shared: true
   })
 ]

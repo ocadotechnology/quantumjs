@@ -5,7 +5,7 @@ describe('buildHTML', () => {
   const { buildHTML, HTMLPage } = require('..')
   it('builds a file with an asset element (embedAssets: true)', () => {
     const htmlPage = new HTMLPage([
-      dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+      dom.asset({url: 'test.css', filename: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     const file = new File({
@@ -32,7 +32,7 @@ describe('buildHTML', () => {
 
   it('stringifies a file with an asset element (embedAssets: false)', () => {
     const htmlPage = new HTMLPage([
-      dom.asset({url: 'test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+      dom.asset({url: 'test.css', filename: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     const file = new File({
@@ -69,7 +69,7 @@ describe('buildHTML', () => {
 
   it('uses the assetPath to change root path for the assets', () => {
     const htmlPage = new HTMLPage([
-      dom.asset({url: '/assets/test.css', file: path.join(__dirname, '/assets/test.css'), shared: true})
+      dom.asset({url: '/assets/test.css', filename: path.join(__dirname, '/assets/test.css'), shared: true})
     ])
 
     const file = new File({

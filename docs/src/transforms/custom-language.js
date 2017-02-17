@@ -15,7 +15,7 @@ const { builders: { item, itemGroup, header, body: { description } } } = require
 const assets = [
   dom.asset({
     url: '/custom-language.css',
-    file: path.join(__dirname, 'custom-language.css')
+    filename: path.join(__dirname, 'custom-language.css')
   })
 ]
 
