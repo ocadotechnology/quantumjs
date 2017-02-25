@@ -187,7 +187,7 @@ function buildDOM (options) {
     return entityTransform(selection, transformer, meta) // bootstrap to itself to  make the transformer accessible to children
   }
 
-  // the page transform function that turns parsed content into html content
+  // the file transform function that turns parsed content into html content
   return (file) => {
     return Promise.resolve(quantum.select(file.content).transform(transformer))
       .then((elements) => {

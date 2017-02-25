@@ -21,4 +21,22 @@ describe('collapsible', () => {
           .add(content))
     )
   })
+
+  it('renders in @collapsible false mode when there is no content', () => {
+    const collapsibleClass = 'extra-class'
+    const header = dom.create('div').class('header')
+
+    collapsible(collapsibleClass, header, undefined).should.eql(
+      dom.create('div')
+        .class('qm-api-item ' + collapsibleClass)
+        .classed('qm-api-collapsible', false)
+        .classed('qm-api-collapsible-open', false)
+        .add(dom.create('div').class('qm-api-collapsible-heading')
+          .add(dom.create('div').class('qm-api-collapsible-toggle')
+            .add(dom.create('i').class('qm-api-chevron-icon')))
+          .add(dom.create('div').class('qm-api-collapsible-head')
+            .add(header)))
+        .add(dom.create('div').class('qm-api-collapsible-content'))
+    )
+  })
 })
