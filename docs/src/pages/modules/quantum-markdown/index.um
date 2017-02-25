@@ -15,7 +15,6 @@
 
   @topic Example
     @example
-      @noBackground
       @file
         @@um
           @@markdown
@@ -23,15 +22,13 @@
 
             _italic_ or **bold** text.
 
-      @file
-        @output
-          @p
-            @div .docs-example-heading qm-header-font: HTML Output
-            @@codeblock html
-              <div class="qm-markdown">
-                <h3 id="example-heading">Heading</h3>
-                <p><em>italic</em> or <strong>bold</strong> text.</p>
-              </div>
+    @div .docs-example-heading qm-header-font: HTML Output
+    @div .docs-example-body
+      @@codeblock html
+        <div class="qm-markdown">
+          <h3 id="example-heading">Heading</h3>
+          <p><em>italic</em> or <strong>bold</strong> text.</p>
+        </div>
 
 
 

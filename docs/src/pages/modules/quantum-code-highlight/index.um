@@ -15,7 +15,6 @@
 
   @topic Example
     @example
-      @noBackground
       @@um
         Inline code @code[var inlineJS = true;] with text
 
