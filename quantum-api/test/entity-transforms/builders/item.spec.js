@@ -1,4 +1,5 @@
 describe('item', () => {
+  const should = require('chai').should()
   const quantum = require('quantum-js')
   const dom = require('quantum-dom')
   const collapsible = require('../../../lib/entity-transforms/components/collapsible')
@@ -18,15 +19,39 @@ describe('item', () => {
     item({}).should.be.a('function')
   })
 
-  it('the returned function returns a piece of virtual dom', () => {
+  it('the returned function returns undefined when there is no content', () => {
     const selection = quantum.select({
       type: 'function',
       params: [],
       content: []
     })
 
-    item({})(selection).should.eql(
-      dom.create('div').class('qm-api-item-content')
+    should.not.exist(item({})(selection))
+  })
+
+  it('the returned function returns undefined when there are no builders and header is not defined', () => {
+    const selection = quantum.select({
+      type: 'function',
+      params: [],
+      content: [
+        'Content'
+      ]
+    })
+
+    should.not.exist(item({})(selection))
+  })
+
+  it('the returned function returns a piece of virtual dom when content is defined', () => {
+    const selection = quantum.select({
+      type: 'function',
+      params: [],
+      content: [
+        'Content'
+      ]
+    })
+
+    item({content: [ (selection) => selection.cs() ]})(selection).should.eql(
+      dom.create('div').class('qm-api-item-content').text('Content')
     )
   })
 
@@ -57,13 +82,11 @@ describe('item', () => {
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
       .add(headerBuilder('name', headerDetails)(selection, transformer))
-    const contentBlock = dom.create('div')
-      .class('qm-api-item-content')
 
     item({
       header: headerBuilder('name', headerDetails)
     })(selection, transformer).should.eql(
-      collapsible('', headerBlock, contentBlock)
+      collapsible('', headerBlock, undefined)
     )
   })
 
@@ -79,13 +102,11 @@ describe('item', () => {
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
       .add(headerBuilder('name', headerDetails)(selection, transformer))
-    const contentBlock = dom.create('div')
-      .class('qm-api-item-content')
 
     item({
       header: headerBuilder('name', headerDetails)
     })(selection, transformer).should.eql(
-      collapsible('', headerBlock, contentBlock)
+      collapsible('', headerBlock, undefined)
     )
   })
 
@@ -99,8 +120,6 @@ describe('item', () => {
     const headerBlock = dom.create('div')
       .class('qm-api-item-head qm-api-optional')
       .add(headerBuilder('other', headerDetails)(selection, transformer))
-    const contentBlock = dom.create('div')
-      .class('qm-api-item-content')
 
     const other = item({
       class: 'other',
@@ -113,7 +132,7 @@ describe('item', () => {
         Other: other
       }
     })(selection, transformer).should.eql(
-      collapsible('', headerBlock, contentBlock)
+      collapsible('', headerBlock, undefined)
     )
   })
 
@@ -127,8 +146,6 @@ describe('item', () => {
     const headerBlock = dom.create('div')
       .class('qm-api-item-head')
       .add(headerBuilder('other', headerDetails)(selection, transformer))
-    const contentBlock = dom.create('div')
-      .class('qm-api-item-content')
 
     const other = item({
       class: 'other',
@@ -142,7 +159,7 @@ describe('item', () => {
         Other: other
       }
     })(selection, transformer).should.eql(
-      collapsible('function', headerBlock, contentBlock)
+      collapsible('function', headerBlock, undefined)
     )
   })
 })

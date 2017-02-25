@@ -38,9 +38,11 @@ module.exports = function itemBuilder (options) {
       }
     }
 
-    const content = dom.create('div')
+    const builtContent = builders.map(builder => builder(selection, transformer)).filter(x => x)
+
+    const content = builtContent.length ? dom.create('div')
       .class('qm-api-item-content')
-      .add(builders.map(builder => builder(selection, transformer)))
+      .add(builtContent) : undefined
 
     if (options.header) {
       const type = selection.type()
