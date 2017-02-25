@@ -4,43 +4,28 @@
     Creates an inline code section without code highlighting
 
     Example Code:
+  @extra
+    @example
+      @@um
+        @code[some.code = 3] @code[var a = true]
 
-    @@codeblock um
-      @code[some.code = 3] @code[var a = true]
-
-    Example Result:
-
-    @code[some.code = 3] @code[var a = true]
-
-# Should render as @@codeblock
 @entity @codeblock
   @added 2.0.0
   @param? language: The language to use for code highlighting
   @description
     Creates an inline code section with highlighting using @hyperlink(https://highlightjs.org/usage/)[highlight.js].
 
-    Example Code:
+  @extra
+    @example
+      @@um
+        @@codeblock
+          // Syntax Guessing
+          some.code = 3
 
-    @@codeblock um
-      # Syntax Guessing
-      @@codeblock
-        some.code = 3
+        @@codeblock js
+          // Set the language to JS
+          var a = true
 
-      # Set the syntax to javascript
-      @@codeblock js
-        var a = true
-
-      # Create a code section with no highlighting
-      @@codeblock nohighlight
-        some code without highlighting
-
-    Example Result:
-
-    @@codeblock
-      some.code = 3
-
-    @@codeblock js
-      var a = true
-
-    @@codeblock nohighlight
-      some code without highlighting
+        @@codeblock nohighlight
+          // Don't apply highlighting
+          some code without highlighting

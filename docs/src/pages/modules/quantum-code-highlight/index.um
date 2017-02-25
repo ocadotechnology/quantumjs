@@ -14,8 +14,9 @@
     The code and codeblock entities render highlighted code blocks.
 
   @topic Example
-    @section Example Code
-      @@codeblock um
+    @example
+      @noBackground
+      @@um
         Inline code @code[var inlineJS = true;] with text
 
         @@codeblock css
@@ -23,13 +24,6 @@
             background: #FFF;
           }
 
-    @section Example Result
-      Inline code @code[var inlineJS = true;] with text
-
-      @@codeblock css
-        .class {
-          background: #FFF;
-        }
 
   @topic API
     @inline api.um
