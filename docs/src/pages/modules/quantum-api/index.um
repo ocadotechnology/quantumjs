@@ -10,16 +10,28 @@
     Transforms for writing API documentation and building changelogs.
 
 @contentSection
-  @tableOfContents Contents
-
   @topic About
     This module provides transforms for writing the API documentation that you
     can see in the @hyperlink(/modules/quantum-api/#api)[API] section of this
     and the other module pages.
 
-    It also provides the ability to generate @hyperlink(./#changelogs)[changelogs]
-    from the api as well as @hyperlink(./#versioning)[versioned pages] when
+    It also provides the ability to generate @hyperlink(./#rendering-changelogs)[changelogs]
+    from the api as well as @hyperlink(./#versioning-apis)[versioned pages] when
     combined with @hyperlink(/modules/quantum-version/)[quantum-version]
+
+  @topic Example
+    @example
+      @@um
+        @api example-api
+          @function makeCoffee
+            @description
+              A function for making coffee
+            @param sugar [Boolean]
+              @description
+                Whether to add Sugar
+            @param milk [Boolean]
+              @description
+                Whether to add milk
 
   @topic Entities
     @inline entities.um
@@ -27,12 +39,12 @@
   @topic API
     @inline api.um
 
-  @topic Examples
+  @topic Using the module
     Below are several examples with the code required and their output.
 
     @section Standalone
-      Using the module to provide the transforms provides basic api documentation
-      capabilities:
+      Using the module to provide the transforms provides basic api
+      documentation capabilities:
 
       @example
         @file quantum.config.js
@@ -68,7 +80,7 @@
             @object exampleObject
               @description: Object description
 
-    @section Changelogs
+    @section Rendering Changelogs
       @example
         @file quantum.config.js
           @js
@@ -144,7 +156,7 @@
             @version 1.0.0
               @description: Version 1.0.0 changes
 
-    @section Versioning
+    @section Versioning APIs
       You can use the same versioned api to produce multiple versioned pages that
       show a single version.
 
@@ -235,7 +247,7 @@
             @param? param3 [Boolean]: Additional Parameter
               @added 2.0.0
 
-    @section Custom Language
+    @section Creating a Custom Language
       To define a language to use with quantum api, you can build a custom
       language
 

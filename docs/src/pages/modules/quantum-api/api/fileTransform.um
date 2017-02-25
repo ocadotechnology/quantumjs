@@ -14,22 +14,17 @@
         Whether to process changelogs
       @default: true
 
-  @returns Function
-    @description
-      A function for use in a quantum pipeline
-    @param file [File]
-      @description
-        The file currently being processed
+  @returns FileTransform
 
 
 @object fileTransforms
+  @added 2.0.0
   @description
     The available file transforms.
 
   @function changelog
-    @added 2.0.0
     @description
-      The file transform for processing @code[@changelogList] entities.
+      The @type[FileTransform] for processing @code[@changelogList] entities.
 
     @param file [File]
       @description
@@ -58,4 +53,7 @@
         @description
           The languages to use to render the changelog headers
 
-          This is where @code[changelogHeaderTransforms] are used.
+          This is where defined @code[changelogHeaderTransforms] are used from
+          the @hyperlink(./#languages)[languages]
+
+    @returns File

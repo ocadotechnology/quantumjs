@@ -1,92 +1,84 @@
-@entity api
-  @added 2.0.0
+@group [Standard Entities]
   @description
-    The container for api content. All the entities provided by this module
-    should be used inside an @code[@api] entity
-  @param apiName
+    Entities that exist regardless of what languages are used.
+  @entity api
+    @added 2.0.0
     @description
-      The name of the api that is used to group content when generating
-      changelogs from multiple apis
-  @extra
-    @example
-      @noOutput
-      @@um
-        @api apiName
+      The container for api content. All the entities provided by this module
+      should be used inside an @code[@api] entity
+    @param apiName
+      @description
+        The name of the api that is used to group content when generating
+        changelogs from multiple apis
+    @extra
+      @example
+        @noOutput
+        @@um
+          @api apiName
 
-@entity collapsed
-  @added 2.0.0
-  @description
-    Whether an api item should be collapsed when loading the page.
+    @entity group
+      @added 2.0.0
+      @description
+        Define a custom group inside an api
+      @param header
+        @description
+          The text to display as the group header.
+      @extra
+        @example
+          @@um
+            @api apiName
+              @group Header
+                @object obj1
+              @group [Multi word header]
+                @object obj2
 
-    Can be applied to all language entities.
-
-  @param boolean
+  @entity changelogList
+    @added 2.0.0
     @description
-      The value to set
+      Define a collection of changelogs for multiple versions.
 
-  @extra
-    @example
-      @@um
-        @function collapsedFunction
-          @collapsed true
-          @description
-            Collapsed function
+      Behaves differently when using the @hyperlink(./#filetransform)[fileTransform].
 
-        @function openFunction
-          @collapsed false
-          @description
-            Open function
+    @extra
+      @example
+        @@um
+          @changelogList
+            @changelog 1.0.0
+              @description
+                Description of changes in this version
+
+              @entry
+                @header javascript
+                  @function jsFunction1
+                @change added
+                  @description: Added jsFunction1
+
+              @group Changelog group
+                @entry
+                  @header javascript
+                    @function jsFunction2
+                  @change added
+                    @description: Added jsFunction2
+
+            @changelog 2.0.0
+              @description
+                Description of changes in this version
+
+              @entry
+                @header javascript
+                  @function jsFunction1
+                @change updated
+                  @description: Updated jsFunction1
 
 
-@entity collapsible
-  @added 2.0.0
-  @description
-    Whether an api item can be collapsed.
-
-    Can be applied to all language entities.
-
-  @param boolean
+  @entity changelog
+    @added 2.0.0
     @description
-      The value to set
+      Define a changelog for a specific version.
 
-  @extra
-    @example
-      @@um
-        @function collapsedFunction
-          @collapsible true
-          @description
-            Collapsible function
-
-        @function openFunction
-          @collapsible false
-          @description
-            Open function
-
-@entity group
-  @added 2.0.0
-  @description
-    Define a custom group inside an api
-  @param header
-    @description
-      The text to display as the group header.
-  @extra
-    @example
-      @@um
-        @api apiName
-          @group Header
-            @object obj1
-          @group [Multi word header]
-            @object obj2
-
-@entity changelogList
-  @added 2.0.0
-  @description
-    Define a collection of changelogs for multiple versions
-
-  @extra
-    @example
-      @@um
-        @changelogList
+    @extra
+      @example
+        @@um
           @changelog 1.0.0
             @description
               Description of changes in this version
@@ -104,52 +96,17 @@
                 @change added
                   @description: Added jsFunction2
 
-          @changelog 2.0.0
-            @description
-              Description of changes in this version
-
-            @entry
-              @header javascript
-                @function jsFunction1
-              @change updated
-                @description: Updated jsFunction1
-
-
-@entity changelog
-  @added 2.0.0
-  @description
-    Define a changelog for a specific version.
-
-  @extra
-    @example
-      @@um
-        @changelog 1.0.0
-          @description
-            Description of changes in this version
-
-          @entry
-            @header javascript
-              @function jsFunction1
-            @change added
-              @description: Added jsFunction1
-
-          @group Changelog group
-            @entry
-              @header javascript
-                @function jsFunction2
-              @change added
-                @description: Added jsFunction2
-
 @group [File Transform Entities]
   @description
     Entities that are available or behave differently when using the
     @hyperlink(./#filetransform)[fileTransform].
 
   @entity changelogList
+    @added 2.0.0
     @description
       Processes and generates changelogs from content in @code[@api] sections.
 
-      See the @hyperlink(./#changelogs)[Changelogs] example.
+      See the @hyperlink(./#rendering-changelogs)[Rendering Changelogs] example.
 
     @entity groupByApi
       @description
@@ -185,13 +142,23 @@
       @description
         Define the api content to process.
 
-        This is generally in the form of an @code[@inline] file.
+        This is generally in the form of an @code[@inline] file or set of files.
 
     @entity version
       @description
         Define a version to show in the changelog.
 
         Entries tagged with a version will be grouped and shown here.
+
+      @extra
+        @example
+          @noOutput
+          @@um
+            @changelogList
+              @version 1.0.0
+                @link [path/to/version/1.0.0]
+                @description
+                  Description of the changes in version 1
 
       @param versionNumber
         @description
@@ -205,10 +172,106 @@
           @description
             The URL to link to
 
+      @entity description
+        @description
+          A description of the changes in a version.
+
+
+@group [Shared Entities]
+  @description
+    All the entities provided by @hyperlink(./#languages)[languages] support these entities.
+
+  @entity description
+    @added 2.0.0
+    @description
+      The description of an entity.
+
+    @extra
+      @example
+        @@um
+          @property propertyName
+            @description: Description of property
+
+  @entity extra
+    @added 2.0.0
+    @description
+      Extra information that should not be part of the description (e.g examples)
+
+    @extra
+      @example
+        @@um
+          @function functionName
+            @description
+              A function that returns true
+            @extra
+              @bold[Example]:
+              @@codeblock js
+                functionName() // returns true
+
+  @entity collapsed
+    @added 2.0.0
+    @description
+      Whether an api item should be collapsed when loading the page.
+
+    @param boolean
+      @description
+        The value to set
+
+    @extra
+      @example
+        @@um
+          @function collapsedFunction
+            @collapsed true
+            @description
+              Collapsed function
+
+          @function openFunction
+            @collapsed false
+            @description
+              Open function
+
+
+  @entity collapsible
+    @added 2.0.0
+    @description
+      Whether an api item can be collapsed.
+
+    @param boolean
+      @description
+        The value to set
+
+    @extra
+      @example
+        @@um
+          @function collapsedFunction
+            @collapsible true
+            @description
+              Collapsible function
+
+          @function openFunction
+            @collapsible false
+            @description
+              Open function
+
+  @entity group
+    @added 2.0.0
+    @description
+      Define a custom group inside an api
+    @param header
+      @description
+        The text to display as the group header.
+    @extra
+      @example
+        @@um
+          @api apiName
+            @function functionName
+              @group Stuff
+                @object object1
+
 
 @group [Language: Javascript]
   @description
-    Transforms provided by the javascript @hyperlink(./#languages)[language]
+    Transforms provided by the @code[javascript] @hyperlink(./#languages)[language]
     when passed in as an option.
 
   @entity function
@@ -437,7 +500,7 @@
 
 @group [Language: CSS]
   @description
-    Transforms provided by the css @hyperlink(./#languages)[language] when
+    Transforms provided by the @code[css] @hyperlink(./#languages)[language] when
     passed in as an option.
 
   @entity class
@@ -494,9 +557,9 @@
 
 @group [Language: Quantum]
   @description
-    Transforms provided by the Quantum @hyperlink(./#languages)[language] when
+    Transforms provided by the @code[quantum] @hyperlink(./#languages)[language] when
     passed in as an option.
-    
+
   @entity entity
     @added 2.0.0
     @description

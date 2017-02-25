@@ -68,5 +68,5 @@
     @property changelog [EntityTransform]
     @property <language> [Object]
       @description
-        An object containing all the transforms for a language is exported for
-        each @code[language] that is defined
+        An object for each @code[language] passed into the options containing
+        the transforms for that language.

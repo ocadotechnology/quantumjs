@@ -20,8 +20,8 @@
 
     @param detailsBuilder [EntityTransform]
       @description
-        The @type[EntityTransform] for creating the text to display in the header
-        from an entity.
+        The @type[EntityTransform] for creating the text to display in the
+        header from an entity.
 
         It receives an entire api entity including children and should return an
         element (or array of elements) containing the header information for an
@@ -29,12 +29,13 @@
 
     @returns EntityTransform
       @description
-        A @type[EntityTransform] for creating an api/changelog header for a selection.
+        A @type[EntityTransform] for creating an api/changelog header for a
+        selection.
 
   @property body [Object]
     @description
-      Provides a set of @type[EntityTransform] functions for building the content of
-      entities, such as descriptions or children.
+      Provides a set of @type[EntityTransform] functions for building the
+      content of entities, such as descriptions or children.
 
     @property description [EntityTransform]
       @description
@@ -51,8 +52,8 @@
 
     @property default [EntityTransform]
       @description
-        Builds @code[@default] blocks for providing default values for parameters
-        etc.
+        Builds @code[@default] blocks for providing default values for
+        parameters etc.
 
   @property item [Function]
     @description
@@ -160,10 +161,8 @@
         The title to display above the group
 
     @param? options [Object]
-      @description
-        The options to use
       @property noSort [Boolean]
         @description
           Whether to sort entities in this group. Set to true for things like
           function parameters that have a fixed order.
-        @default false
+        @default: false
