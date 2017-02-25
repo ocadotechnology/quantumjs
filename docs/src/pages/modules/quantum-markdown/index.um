@@ -14,26 +14,25 @@
     snippets in a quantum site.
 
   @topic Example
+    @example
+      @noBackground
+      @file
+        @@um
+          @@markdown
+            ### Heading
 
-    @subsection Input
-      @@codeblock um
-        @@markdown
-          ### Example heading
+            _italic_ or **bold** text.
 
-          Example _italic_ or **bold** text.
+      @file
+        @output
+          @p
+            @div .docs-example-heading qm-header-font: HTML Output
+            @@codeblock html
+              <div class="qm-markdown">
+                <h3 id="example-heading">Heading</h3>
+                <p><em>italic</em> or <strong>bold</strong> text.</p>
+              </div>
 
-    @subsection Result HTML
-      @@codeblock html
-        <div class="qm-markdown">
-          <h3 id="example-heading">Example heading</h3>
-          <p>Example <em>italic</em> or <strong>bold</strong> text.</p>
-        </div>
-
-    @subsection Result
-      @@markdown
-        ### Example heading
-
-        Example _italic_ or **bold** text.
 
 
   @topic Markdown File Example

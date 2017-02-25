@@ -3,19 +3,13 @@
   @description
     A renderer for rendering @code[markdown] using quantum
 
-    Example Code:
-    @@codeblock markdown
-      @@markdown
-        # Example heading
+  @extra
+    @example
+      @@um
+        @@markdown
+          ### heading
 
-        Example _italic_ or **bold** text.
-
-
-    Example Result:
-    @@markdown
-      # Example heading
-      Example _italic_ or **bold** text.
-
+          _italic_ or **bold** text.
 
     @code(um)[@inline] can also be used:
     @@codeblock um
