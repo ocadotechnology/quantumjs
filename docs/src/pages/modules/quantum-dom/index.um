@@ -4,7 +4,7 @@
   @version 1.0.0
 
 @topSection
-  @title Quantum DOM
+  @title DOM
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     A minimal virtual dom library used by quantum for building html pages.

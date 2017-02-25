@@ -12,23 +12,26 @@
 
 @contentSection
   @topic About
-    The core quantum module (quantum-js) consists of a cli (command line interface),
-    a parser for the markup language, a selection api for working with the parsed
-    AST (abstract syntax tree) and an api for watching quantum files for changes.
+    The core quantum module (quantum-js) consists of a cli (command line
+    interface), a parser for the markup language, a selection api for working
+    with the parsed AST (abstract syntax tree) and an api for watching quantum
+    files for changes.
 
-    This is module contains all the low level stuff that makes everything else work.
+    This is module contains all the low level stuff that makes everything else
+    work.
 
   @topic Command Line Interface
-    The best way to use quantum is with the command line interface (CLI). There are more
-    details on how to use it on these pages:
+    The best way to use quantum is with the command line interface (CLI). There
+    are more details on how to use it on these pages:
 
     @list
       @item: @hyperlink(/docs/cli/)[Using the CLI]
       @item: @hyperlink(/docs/config-file/)[Configuring the CLI]
 
-    The CLI is bundled with this module - so if you install this globally, you should
-    have access to the @code(bash)[quantum] command. Or you can install it for a npm project
-    and then your npm scripts will have access to the quantum command.
+    The CLI is bundled with this module - so if you install this globally,
+    you should have access to the @code(bash)[quantum] command. Or you can
+    install it for a npm project and then your npm scripts will have access to
+    the quantum command.
 
     One way to find out more about the cli is to run @code(bash)[quantum help].
 
@@ -42,9 +45,9 @@
     @inline api.um
 
   @topic Parsing
-    Parsing is the act of converting a quantum markup string into a collection of
-    JavaScript objects. Using quantum-js, this can be done in a single function
-    call.
+    Parsing is the act of converting a quantum markup string into a collection
+    of JavaScript objects. Using quantum-js, this can be done in a single
+    function call.
 
     @section String Parsing
       Quantum markup can be parsed as a string using the @code[quantum.parse()]
@@ -204,8 +207,9 @@
         bananas[1].param(0) // is 'brown'
 
     @section Recursively selecting child entities
-      Sometimes you need to select all the entities of a particular type recursively
-      down the tree. To do that just set the @code[resursive] option to @code[true]:
+      Sometimes you need to select all the entities of a particular type
+      recursively down the tree. To do that just set the @code[resursive] option
+      to @code[true]:
 
       @@codeblock js
         const entity = {

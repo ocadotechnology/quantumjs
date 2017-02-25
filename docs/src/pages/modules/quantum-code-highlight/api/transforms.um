@@ -1,7 +1,8 @@
 @function transforms
   @added 2.0.0
   @description
-    A function that returns a set of @type[EntityTransform] functions for use in @code[quantum-html].
+    A function that returns a set of @type[EntityTransform] functions for use
+    in @code[quantum-html].
 
   @param? options [Object]
     @description
@@ -9,7 +10,8 @@
 
   @returns Object
     @description
-      The transforms to use in @code[quantum-html] to define the entities that can be rendered.
+      The transforms to use in @code[quantum-html] to define the entities
+      that can be rendered.
 
     @property code [EntityTransform]
     @property codeblock [EntityTransform]

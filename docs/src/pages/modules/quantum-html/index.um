@@ -10,8 +10,6 @@
     A library for converting parsed Quantum AST to HTML.
 
 @contentSection
-  @tableOfContents Contents
-
   @topic About
     This module is used to transform parsed quantum AST objects to virtual dom content using @type[EntityTransform] functions and then converting the output to html.
 

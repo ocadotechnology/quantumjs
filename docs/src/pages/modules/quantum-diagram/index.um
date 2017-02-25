@@ -11,7 +11,8 @@
 
 @contentSection
   @topic About
-    This module provides the @code[@diagram] entity for including flow diagrams in a quantum site.
+    This module provides the @code[@diagram] entity for including flow
+    diagrams in a quantum site.
 
   @topic Example
     @example
@@ -41,9 +42,12 @@
   @topic Ordering of links
     The ordering of links within a diagram affects how it is displayed.
 
-    The flow is calculated from the 'top left' meaning that links defined first will display at the top of the chart on the left, flowing down towards the bottom.
+    The flow is calculated from the 'top left' meaning that links defined
+    first will display at the top of the chart on the left, flowing down
+    towards the bottom.
 
-    Reversing the order the links of the previous example causes the diagram to 'flip':
+    Reversing the order the links of the previous example causes the diagram
+    to 'flip':
 
     @example
       @@um
@@ -58,7 +62,9 @@
           @item cup [Cup]
           @item tasty [Tasty Beverage!]
 
+          # Cup remains at the bottom (as it is the bottom of the chain)
           @link cup -> tasty
+          # Coffee is now the leftmost item
           @link coffee -> cup
           @link kettle -> cup
           @link water -> kettle
