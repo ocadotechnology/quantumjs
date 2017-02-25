@@ -20,6 +20,10 @@
   margin: 1em 0 0.5em;
 }
 
+.qm-api-group:first-child > .qm-api-group-header {
+  margin-top: 0;
+}
+
 .qm-api-notice-header {
   color: white;
   padding: 0.5em;
