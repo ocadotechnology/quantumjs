@@ -17,6 +17,10 @@
   margin-left: 0;
 }
 
+.qm-api-quantum-header-entity-param + .qm-api-quantum-header-entity-param {
+  margin-left: 0.4em;
+}
+
 .qm-api-quantum-entity-content:before {
   content: ":";
   margin-right: 0.4em;

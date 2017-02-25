@@ -1,37 +1,26 @@
 @entity diagram
   @added 2.0.0
   @description
-    TODO
+    Creates a flow diagram based on @code[@item] and @code[@link] entities
 
   @entity hideDescriptions
     @description
       If this entity is provided inside an @code[@diagram] entity, the descriptions for that diagram will be hidden.
 
-      @h3: Example
-      @@codeblock um
-        @p: With Description:
-        @diagram
-          @item user [User]
-            Description of user
+    @extra
+      @example
+        @@um
+          @p: With Description:
+          @diagram
+            @item user [User]
+              Description of user
 
-        @p: Without description:
-        @diagram
-          @hideDescriptions
-          @item user [User]
-            Description of user
+          @p: Without description:
+          @diagram
+            @hideDescriptions
+            @item user [User]
+              Description of user
 
-      @h3: Example Result
-      @p: With Description:
-      @diagram
-        @item user [User]
-          Description of user
-
-      @p: Without description:
-      @diagram
-        @hideDescriptions
-        @item user [User]
-          Description of user
-          With multiple lines
 
   @entity item
     @param id
@@ -45,33 +34,41 @@
     @description
       Displays a box with text/description in the diagram.
 
-      @h3: Example
-      @@codeblock
-        @diagram
-          @item itemid [Item 1]
-            Description Line 1
-            Long description line with lots of text to illustrate that lines don't wrap
-
-      @h3: Example Result
-      @diagram
-        @item itemid [Item 1]
-          Description Line 1
-          Long description line with lots of text to illustrate that lines don't wrap
+    @extra
+      @example
+        @@um
+          @diagram
+            @item itemid [Item 1]
+              Description Line 1
+              Long description with lines that don't wrap
 
 
   @entity link
+    @description
+      Defines a link between two @code[@item] entities.
+
+    @extra
+      @example
+        @@um
+          @diagram
+            @item item1 [Item 1]
+            @item item2 [Item 2]
+
+            @link item1 -> item2
+
     @param leftId
       @description
         The @code[id] of an item to link
 
     @param linkType
       @description
+        The type of link to use:
         @list
-          @item: @b[-]: Line between the two ids
+          @item: @b[-]: Solid line between the two ids
           @item: @b[--]: Dashed line between the two ids
-          @item: @b[->]: Line with arrow towards rightId
-          @item: @b[<-]: Line with arrow towards leftId
-          @item: @b[<->]: Double ended arrow with line
+          @item: @b[->]: Solid line with arrow towards rightId
+          @item: @b[<-]: Solid line with arrow towards leftId
+          @item: @b[<->]: Double ended arrow with solid line
           @item: @b[-->]: Dashed line with arrow towards rightId
           @item: @b[<--]: Dashed line with arrow towards leftId
           @item: @b[<-->]: Double ended arrow with dashed line
