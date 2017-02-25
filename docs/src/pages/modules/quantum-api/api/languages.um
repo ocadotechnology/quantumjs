@@ -16,8 +16,8 @@
     @returns Object
       @description: An object definining how to display javascript documentation.
       @property name [String]: The name of the language
-      @property transforms [Object[Transform]]: The transforms the language exposes
-      @property changelogHeaderTransforms [Object[Transform]]: The header transforms for the changelog to use
+      @property transforms [Object[EntityTransform]]: The transforms the language exposes
+      @property changelogHeaderTransforms [Object[EntityTransform]]: The header transforms for the changelog to use
       @property assets [Array[Asset]]: The assets required to render the language.
 
   @property css [Function]
@@ -26,8 +26,8 @@
     @returns Object
       @description: An object definining how to display javascript documentation.
       @property name [String]: The name of the language
-      @property transforms [Object[Transform]]: The transforms the language exposes
-      @property changelogHeaderTransforms [Object[Transform]]: The header transforms for the changelog to use
+      @property transforms [Object[EntityTransform]]: The transforms the language exposes
+      @property changelogHeaderTransforms [Object[EntityTransform]]: The header transforms for the changelog to use
       @property assets [Array[Asset]]: The assets required to render the language.
 
   @property quantum [Function]
@@ -36,6 +36,6 @@
     @returns Object
       @description: An object definining how to display quantum documentation.
       @property name [String]: The name of the language
-      @property transforms [Object[Transform]]: The transforms the language exposes
-      @property changelogHeaderTransforms [Object[Transform]]: The header transforms for the changelog to use
+      @property transforms [Object[EntityTransform]]: The transforms the language exposes
+      @property changelogHeaderTransforms [Object[EntityTransform]]: The header transforms for the changelog to use
       @property assets [Array[Asset]]: The assets required to render the language.

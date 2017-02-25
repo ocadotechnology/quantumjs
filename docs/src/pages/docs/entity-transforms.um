@@ -8,3 +8,42 @@
 
 @contentSection
   @notice TODO: Write this page...
+
+  @topic Transform Function API
+    @api entity-transforms
+      @group
+        @function EntityTransform
+          @collapsible false
+          @description
+            A function that takes a @type[Selection] and converts it to a dom @type[Element]
+
+          @param selection [Selection]
+            @collapsible false
+            @description
+              The @type[Selection] to transform.
+
+          @param transformer [Function]
+            @collapsible false
+            @description
+              The transformer created in the @hyperlink(/modules/quantum-html/#builddom)[buildDOM] function.
+
+              It is bootstrapped to itself to allow children to be transformed.
+
+            @extra
+              @example
+                @noOutput
+                @js
+                  function customTransform (selection, transformer) {
+                    return dom.create('div').class('custom-class')
+                      // Transform the content of the selection
+                      .add(selection.transform(transformer))
+                  }
+
+            @param selection [Selection]
+              @description
+                The @type[Selection] to transform.
+
+          @param? meta [Object]
+            @collapsible false
+            @description
+              The meta object as defined in@hyperlink(/modules/quantum-html/#builddom)[buildDOM] options. This should only be used in custom transforms.

@@ -55,7 +55,7 @@
             module.exports = {
               pages: '*.um',
               pipeline: [
-                html.pageTransform(htmlOptions)
+                html.fileTransform(htmlOptions)
               ]
             }
         @file

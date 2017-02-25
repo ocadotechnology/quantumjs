@@ -25,8 +25,8 @@ const typeLinks = {
   Selection: '/modules/quantum-js/#selection',
   Watcher: '/modules/quantum-js/#watcher',
   Element: '/modules/quantum-dom/#element',
-  // TODO: make these links go somewhere
-  Transform: '/modules/quantum-html/#transform',
+  FileTransform: '/docs/file-transforms/',
+  EntityTransform: '/docs/entity-transforms/',
   Asset: '/modules/quantum-dom/#asset'
 }
 
