@@ -15,13 +15,13 @@
           @section Introduction
             @page /: About
             @page /docs/quick-start/: Quick Start
-            @page /docs/config-file/: Config file
             @page /docs/cli/: Using the CLI
-            @page /docs/api/: Using the API
+            @page /docs/config-file/: Config file
+            @page /docs/markup/: The Markup Language
             @page /docs/quantum-vs-markdown: Quantum vs Markdown
 
           @section Advanced Topics
-            @page /docs/markup/: The Markup Language
+            @page /docs/api/: Using the API
             @page /docs/ast/: The AST
             @page /docs/core-concepts/: Core Concepts
             @page /docs/file-transforms/: File Transforms
@@ -31,17 +31,19 @@
             @page /tutorials/writing-technical-documentation/: Writing Technical Documentation
             @page /tutorials/creating-a-blog/: Creating a Blog
 
-          @section Module Docs
+          @section Core Modules
             @page /modules/quantum-js/: quantum-js
             @page /modules/quantum-dom/: quantum-dom
             @page /modules/quantum-html/: quantum-html
-            @page /modules/quantum-code-highlight/: quantum-code-highlight
-            @page /modules/quantum-docs/: quantum-docs
+
+          @section Optional Modules
             @page /modules/quantum-api/: quantum-api
-            @page /modules/quantum-template/: quantum-template
+            @page /modules/quantum-code-highlight/: quantum-code-highlight
             @page /modules/quantum-diagram/: quantum-diagram
-            @page /modules/quantum-version/: quantum-version
+            @page /modules/quantum-docs/: quantum-docs
             @page /modules/quantum-markdown/: quantum-markdown
+            @page /modules/quantum-template/: quantum-template
+            @page /modules/quantum-version/: quantum-version
 
       @content
         @templateContent
