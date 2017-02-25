@@ -1,8 +1,6 @@
 @function transforms
   @added 2.0.0
   @description
-    TODO: make sure Transforms page/link is sensible
-
     A function that returns a set of @type[EntityTransform] functions for use in @code[quantum-html].
 
   # @param? options [Object]
