@@ -7,13 +7,13 @@
   @title HTML
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    TODO
+    A library for converting parsed Quantum AST to HTML.
 
 @contentSection
   @tableOfContents Contents
 
   @topic About
-    TODO
+    This module is used to transform parsed quantum AST objects to virtual dom content using @type[EntityTransform] functions and then converting the output to html.
 
   @topic Entities
     @inline entities.um

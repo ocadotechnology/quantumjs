@@ -12,6 +12,7 @@
     @reverseVisibleList true
     @process
       @inline api.um
+      @inline entities.um
     @version 2.0.0
       @link /modules/quantum-html/2.0.0
       @description

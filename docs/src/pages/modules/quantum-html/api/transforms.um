@@ -1,14 +1,57 @@
 @function transforms
   @added 2.0.0
   @description
-    TODO: make sure Transforms page/link is sensible
+    A function that returns a set of @type[EntityTransform] functions for use when rendering a page.
 
-    A function that returns a set of @hyperlink(/docs/core-concepts/#entity-transforms)[Transforms] for use in @code[quantum-html].
-
-  @param? options [Object]
-    @description
-      The options to use when creating the set of transforms.
+  # @param? options [Object]
+  #   @description
+  #     The options to use when creating the set of transforms.
 
   @returns Object
     @description
-      The transforms to use in @code[quantum-html] to define the entities that can be rendered.
+      The transforms to use in @hyperlink(./#filetransform)[fileTransform] to define the entities that can be rendered.
+
+    @property a [EntityTransform]
+    @property b [EntityTransform]
+    @property br [EntityTransform]
+    @property button [EntityTransform]
+    @property css [EntityTransform]
+    @property div [EntityTransform]
+    @property form [EntityTransform]
+    @property h1 [EntityTransform]
+    @property h2 [EntityTransform]
+    @property h3 [EntityTransform]
+    @property h4 [EntityTransform]
+    @property h5 [EntityTransform]
+    @property h6 [EntityTransform]
+    @property hr [EntityTransform]
+    @property html [EntityTransform]
+    @property hyperlink [EntityTransform]
+    @property i [EntityTransform]
+    @property img [EntityTransform]
+    @property input [EntityTransform]
+    @property js [EntityTransform]
+    @property label [EntityTransform]
+    @property li [EntityTransform]
+    @property link [EntityTransform]
+    @property meta [EntityTransform]
+    @property ol [EntityTransform]
+    @property option [EntityTransform]
+    @property p [EntityTransform]
+    @property pre [EntityTransform]
+    @property script [EntityTransform]
+    @property select [EntityTransform]
+    @property span [EntityTransform]
+    @property style [EntityTransform]
+    @property stylesheet [EntityTransform]
+    @property table [EntityTransform]
+    @property tbody [EntityTransform]
+    @property td [EntityTransform]
+    @property textarea [EntityTransform]
+    @property th [EntityTransform]
+    @property thead [EntityTransform]
+    @property title [EntityTransform]
+    @property tr [EntityTransform]
+    @property ul [EntityTransform]
+    @property vr [EntityTransform]
+

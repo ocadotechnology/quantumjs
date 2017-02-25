@@ -1,0 +1,39 @@
+@function paragraphTransform
+  @added 2.0.0
+  @description
+    An @type[EntityTransform] that converts the text in an entity into paragraphs.
+
+    This is mostly useful when writing content with a word-wrap column limit as you can break content onto multiple lines in the source whilst having it render as paragraphs on the page.
+
+  @extra
+    @example
+      @file customTransform.js
+        @noOutput
+        @js
+          const html = require('quantum-html')
+          function customTransform (selection, transformer) {
+            return html.paragraphTransform(selection, transformer)
+          }
+
+      @file
+        @@um
+          @customTransform
+            Content separated with a single
+            newline will
+            be grouped
+            into
+            a single
+            paragraph.
+
+            Whereas content
+
+            Separated by multiple newlines
+
+            Will be made into separate paragraphs
+
+  @param selection
+  @param transformer
+
+  @returns [Array[Element]]
+    @description
+      An array containing an @type[Asset] (for styling the paragraphs) and @code[<p>] elements (represented in @hyperlink(/modules/quantum-dom)[quantum-dom])

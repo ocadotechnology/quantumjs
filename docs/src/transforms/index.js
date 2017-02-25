@@ -99,10 +99,16 @@ function example (selection, transformer) {
       .add(result)
 }
 
+const html = require('quantum-html')
+function customTransform (selection, transformer) {
+  return html.paragraphTransform(selection, transformer)
+}
+
 function transforms () {
   return Object.freeze({
     um,
-    example
+    example,
+    customTransform
   })
 }
 

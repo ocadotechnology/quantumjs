@@ -3,10 +3,21 @@
   @description
     Builds a file transform that takes a @type[File], converts it to HTML and then renames files to make a sensible directory structure for the site.
 
-    For example, a file in @code[directory/file.um] would be converted to HTML as @code[directory/file.html] and then be renamed and output to @code[target/directory/file/index.html]
-
+    It applies the @hyperlink(./#builddom)[buildDOM], the @hyperlink(./#buildhtml)[buildHTML] and then the @hyperlink(./#htmlrenamer)[htmlRenamer] file transforms in sequence.
 
   @param? options [Object]
+    @group [buildDOM Options]
+      @description
+        The options to pass to the @hyperlink(./#builddom)[buildDOM] function.
+      @property meta [Object]
+      @property defaultTransform [EntityTransform]
+      @property transforms [Object]
+      @property includeCommonMetaTags [Boolean]
 
-  @returns Function
-    @param file [File]
+    @group [buildHTML Options]
+      @description
+        The options to pass to the @hyperlink(./#buildhtml)[buildHTML] function.
+      @property embedAssets [Boolean]
+      @property assetPath [String]
+
+  @returns FileTransform

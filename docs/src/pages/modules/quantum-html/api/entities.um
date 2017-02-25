@@ -1,5 +1,6 @@
 @define element-renderer-singular
   @entity {{ps}}
+    @added 2.0.0
     @description
       Adds an @code(html)[<{{ps}}>] element
 
@@ -32,6 +33,7 @@
 
 @define element-renderer
   @entity {{ps}}
+    @added 2.0.0
     @description
       Adds a @code(html)[<{{ps}}>] element
 
@@ -102,6 +104,7 @@
 
 @group Other entites
   @entity html
+    @added 2.0.0
     @description
       Adds some html directly to the page
 
@@ -112,6 +115,7 @@
             <b>Bold</b> <i>Italic</i> <u>Underlined</u>
 
   @entity css
+    @added 2.0.0
     @description
       Adds some styles to be applied to the page (adds a @code(html)[<style>] element to the @code(html)[<head>])
 
@@ -126,6 +130,7 @@
 
 
   @entity js
+    @added 2.0.0
     @description
       Adds some javascript to be executed on the page (adds a @code(html)[<script>] element to the @code(html)[<body>])
 
@@ -138,6 +143,7 @@
             alert(a)
 
   @entity script
+    @added 2.0.0
     @description
       Adds a link to a javascript file to the bottom of the @code(html)[<body>]
     @param link
@@ -153,6 +159,7 @@
           @script [/path/to/script.js]
 
   @entity stylesheet
+    @added 2.0.0
     @description
       Adds a link to a css file to the bottom of the @code(html)[<head>]
     @param link
@@ -168,6 +175,7 @@
           @stylesheet [/path/to/style.css]
 
   @entity hyperlink
+    @added 2.0.0
     @description
       Adds a @code(html)[<a>] element, with the href set to the link
       specified in the parameters.
@@ -182,6 +190,7 @@
 
 
   @entity title
+    @added 2.0.0
     @description
       Sets the page title (adds a @code(html)[<title>] element to the @code(html)[<head>])
     @param title
