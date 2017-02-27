@@ -43,9 +43,12 @@ function processChangelogList (page, changelogList, options) {
   const reverseVisibleList = changelogList.has('reverseVisibleList') ? changelogList.select('reverseVisibleList').ps() === 'true' : options.changelogReverseVisibleList
   const entityTypeToLanguage = {}
   options.languages.forEach(language => {
-    Object.keys(language.changelogHeaderTransforms).forEach(entityType => {
-      entityTypeToLanguage[entityType] = language
-    })
+    const entityTypes = language && language.changelog && language.changelog.entityTypes
+    if (entityTypes) {
+      entityTypes.forEach(entityType => {
+        entityTypeToLanguage[entityType] = language
+      })
+    }
   })
 
   const changelogs = buildChangelogs(changelogList, entityTypeToLanguage, groupByApi)
@@ -180,8 +183,12 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
       const sanitizedParent = quantum.select(quantum.clone(parent.entity()))
       qversion.processVersioned(sanitizedParent.entity(), version, versions)
       sanitizedParent.removeAllChildOfType(tags)
+      sanitizedParent.content(sanitizedParent.content().concat([{
+        type: 'entryEntity',
+        params: [],
+        content: []
+      }]))
 
-      const parents = []
       let entity = undefined
       while (selection.parent() && selection.type() !== 'api') {
         if (selection.type() === 'group') {
@@ -196,7 +203,6 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
             params: selection.params().slice(),
             content: entity ? [entity] : sanitizedParent.content()
           }
-          parents.unshift(entity)
           selection = selection.parent()
         }
       }
@@ -205,7 +211,7 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
         const header = {
           type: 'header',
           params: [language.name],
-          content: parents
+          content: [entity]
         }
 
         res.push({

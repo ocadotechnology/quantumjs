@@ -177,8 +177,10 @@
 }
 
 
+.qm-api-javascript-header-object-name,
 .qm-api-javascript-header-property-name,
 .qm-api-javascript-header-function-name,
+.qm-api-javascript-header-constructor-name,
 .qm-api-javascript-header-type-name,
 .qm-api-javascript-header-entity-name {
   font-weight: bold;
@@ -193,4 +195,29 @@
 
 .qm-api-javascript-header-parent-name:after {
   content: '.';
+}
+
+.qm-api-javascript-header-constructor-name:before {
+  content: 'new';
+  font-weight: normal;
+  margin-right: 0.4em;
+}
+
+/* Changelog */
+.qm-changelog-javascript-prototype + .qm-changelog-javascript-constructor:before,
+.qm-changelog-javascript-prototype + .qm-changelog-javascript-property:before,
+.qm-changelog-javascript-property + .qm-changelog-javascript-property:before,
+.qm-changelog-javascript-object + .qm-changelog-javascript-property:before {
+  content: '.';
+}
+
+.qm-changelog-javascript-prototype + .qm-changelog-javascript-method:before {
+  content: '::';
+}
+
+.qm-changelog-javascript-prototype + .qm-changelog-javascript-event:before {
+  font-family: monospace !important;
+  /* Should probably be an actual icon to prevent fonts breaking it? */
+  content: '\21d2';
+  margin: 0 0.4em;
 }
