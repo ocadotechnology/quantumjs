@@ -96,6 +96,14 @@
                 @change added
                   @description: Added jsFunction2
 
+    @entity link
+      @description
+        A link to add to the version header (e.g. to go to version x of the api)
+
+      @param url
+        @description
+          The URL to link to
+
 @group [File Transform Entities]
   @description
     Entities that are available or behave differently when using the
