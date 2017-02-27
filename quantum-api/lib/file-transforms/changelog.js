@@ -206,7 +206,7 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
         const header = {
           type: 'header',
           params: [language.name],
-          content: [...parents]
+          content: parents
         }
         if (sel.has('debug')) {
           console.log(header.content)
