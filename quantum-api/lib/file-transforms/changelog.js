@@ -208,9 +208,6 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
           params: [language.name],
           content: parents
         }
-        if (sel.has('debug')) {
-          console.log(header.content)
-        }
 
         res.push({
           type: 'entry',
