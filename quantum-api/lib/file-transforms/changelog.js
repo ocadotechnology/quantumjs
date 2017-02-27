@@ -183,7 +183,6 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
 
       const parents = []
       let entity = undefined
-      const sel = selection
       while (selection.parent() && selection.type() !== 'api') {
         if (selection.type() === 'group') {
           selection = selection.parent()
