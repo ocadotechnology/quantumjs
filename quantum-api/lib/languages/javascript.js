@@ -179,9 +179,6 @@ function changelogHeader (typeLinks, changelogHeaders) {
           sections.pop()
         }
         sections.push(section)
-        if (current.has('entryEntity')) {
-          break
-        }
       }
       return dom.create('span')
         .class('qm-changelog-javascript-header')

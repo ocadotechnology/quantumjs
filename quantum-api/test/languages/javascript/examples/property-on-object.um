@@ -18,6 +18,5 @@
           @header javascript
             @object parentObj
               @property test [String]
-            @property test [String]
           @change added
             @description: Property added

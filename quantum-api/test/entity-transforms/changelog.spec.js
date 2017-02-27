@@ -15,12 +15,19 @@ describe('changelog', () => {
     return dom.create('div').class('qm-changelog')
       .add(changelog.assets)
   }
+
+  function changelogHeaderFn (selection, transform) {
+    const headerSel = selection.select('name')
+    return dom.create('div').class('test-header').text(headerSel.ps())
+  }
+
   const testLanguage = {
     name: 'test-language',
-    changelogHeaderTransforms: {
-      name: (headerSelection, transformer) => {
-        return dom.create('div').class('test-header').text(headerSelection.ps())
-      }
+    changelog: {
+      entityTypes: [
+        'name'
+      ],
+      createHeaderDom: changelogHeaderFn
     }
   }
 
@@ -144,37 +151,6 @@ describe('changelog', () => {
     })
 
     changelog(options)(selection, transformer).should.eql(
-      changelogBlock()
-        .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
-        .add(dom.create('div').class('qm-changelog-body')
-          .add(dom.create('div').class('qm-changelog-entry')
-            .add(dom.create('div').class('qm-changelog-entry-header qm-code-font'))
-            .add(dom.create('div').class('qm-changelog-entry-content'))))
-    )
-  })
-
-  it('displays an entry with a language and unsupported type', () => {
-    const selection = quantum.select({
-      type: 'changelog',
-      params: ['0.1.0'],
-      content: [
-        {
-          type: 'entry',
-          params: ['EntryName'],
-          content: [{
-            type: 'header',
-            params: ['test-language'],
-            content: [{
-              type: 'randomUnsupportedType',
-              params: [],
-              content: []
-            }]
-          }]
-        }
-      ]
-    })
-
-    changelog(optionsWithLanguage)(selection, transformer).should.eql(
       changelogBlock()
         .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
         .add(dom.create('div').class('qm-changelog-body')

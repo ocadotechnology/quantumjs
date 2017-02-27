@@ -26,10 +26,13 @@ describe('fileTransform', () => {
     api.fileTransform({processChangelogs: false})(file).should.eql(file)
   })
 
-  const testlanguage = {
+  const testLanguage = {
     name: 'test-language-1',
-    changelogHeaderTransforms: {
-      function: () => {}
+    changelog: {
+      entityTypes: [
+        'function'
+      ],
+      createHeaderDom: () => {}
     }
   }
 
@@ -61,7 +64,7 @@ describe('fileTransform', () => {
     })
 
     const options = {
-      languages: [testlanguage],
+      languages: [testLanguage],
       changelogGroupByApi: spec.select('options').select('groupByApi').ps() === 'true',
       changelogReverseVisibleList: spec.select('options').select('reverseVisibleList').ps() === 'true'
     }

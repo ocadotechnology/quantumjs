@@ -22,11 +22,5 @@
               @extraClass test1
                 @extraClass test2
                   @extraClass test3
-            @extraClass test1
-              @extraClass test2
-                @extraClass test3
-            @extraClass test2
-              @extraClass test3
-            @extraClass test3
           @change added
             @description: Class added

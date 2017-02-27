@@ -183,11 +183,9 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
       const sanitizedParent = quantum.select(quantum.clone(parent.entity()))
       qversion.processVersioned(sanitizedParent.entity(), version, versions)
       sanitizedParent.removeAllChildOfType(tags)
-      sanitizedParent.content(sanitizedParent.content().concat([{
-        type: 'entryEntity',
-        params: [],
-        content: []
-      }]))
+      if (language && language.changelog && language.changelog.entityTypes) {
+        sanitizedParent.removeAllChildOfType(language.changelog.entityTypes)
+      }
 
       let entity = undefined
       while (selection.parent() && selection.type() !== 'api') {
