@@ -56,7 +56,40 @@ const extraClassBuilder = item({
   content: [ description, extras, groups, classes, extraClasses ]
 })
 
+function createHeaderDom (changelogHeaders) {
+  return (selection, transformer) => {
+    const entityTypes = Object.keys(changelogHeaders)
+    if (entityTypes.some(entityType => selection.has(entityType))) {
+      let current = selection
+      const sections = []
+      while (entityTypes.some(entityType => current.has(entityType))) {
+        current = current.select(entityTypes)
+        const type = current.type()
+        const baseType = type.replace('?', '')
+
+        const section = dom.create('span')
+          .class(`qm-changelog-css-${baseType}`)
+          .add(changelogHeaders[type](current, transformer))
+
+        sections.push(section)
+        if (current.has('entryEntity')) {
+          break
+        }
+      }
+      return dom.create('span')
+        .class('qm-changelog-css-header')
+        .add(sections)
+    }
+  }
+}
+
 module.exports = (options) => {
+  const changelogHeaderTransforms = {
+    class: classHeader,
+    extraClass: extraClassHeader,
+    parent: parentHeader
+  }
+
   return {
     assets,
     name: 'css',
@@ -64,10 +97,9 @@ module.exports = (options) => {
       class: classBuilder,
       extraClass: extraClassBuilder
     },
-    changelogHeaderTransforms: {
-      class: classHeader,
-      extraClass: extraClassHeader,
-      parent: parentHeader
+    changelog: {
+      entityTypes: Object.keys(changelogHeaderTransforms),
+      createHeaderDom: createHeaderDom(changelogHeaderTransforms)
     }
   }
 }

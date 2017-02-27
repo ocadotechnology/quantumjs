@@ -140,10 +140,7 @@
 }
 
 .qm-api-javascript-header-function-param-name {}
-
-.qm-api-javascript-header-function-param-type:not(:empty) {
-  padding-left: 0.25em;
-}
+.qm-api-javascript-header-function-param-type {}
 
 .qm-api-javascript-header-function-returns {}
 
@@ -166,6 +163,7 @@
 
 .qm-api-javascript-header-property-type {}
 
+.qm-api-javascript-header-function-param-type:before,
 .qm-api-javascript-header-property-type:before {
   content: ":";
   margin-right: 4px;
@@ -191,10 +189,6 @@
 .qm-api-javascript-header-function-param-type,
 .qm-api-javascript-header-type-type {
   color: #8C8C8C;
-}
-
-.qm-api-javascript-header-parent-name:after {
-  content: '.';
 }
 
 .qm-api-javascript-header-constructor-name:before {

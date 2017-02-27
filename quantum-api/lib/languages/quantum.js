@@ -47,17 +47,8 @@ function entityHeaderDetails (selection, transformer) {
     .add(paramsContent)
 }
 
-function parentHeaderDetails (selection, transformer) {
-  const name = selection.param(0)
-  return dom.create('span')
-    .class('qm-api-quantum-header-parent')
-    .attr('id', name ? name.toLowerCase() : undefined)
-    .add(dom.create('span').class('qm-api-quantum-header-parent-name').text(name || ''))
-}
-
 const entityHeader = header('entity', entityHeaderDetails)
 const paramHeader = header('param', paramHeaderDetails)
-const parentHeader = header('parent', parentHeaderDetails)
 
 const description = body.description
 const extras = body.extras
@@ -77,7 +68,38 @@ const paramBuilder = item({
   content: [ description, extras, groups ]
 })
 
+function createHeaderDom (changelogHeaders) {
+  return (selection, transformer) => {
+    const entityTypes = Object.keys(changelogHeaders)
+    if (entityTypes.some(entityType => selection.has(entityType))) {
+      let current = selection
+      const sections = []
+      while (entityTypes.some(entityType => current.has(entityType))) {
+        current = current.select(entityTypes)
+        const type = current.type()
+        const baseType = type.replace('?', '')
+
+        const section = dom.create('span')
+          .class(`qm-changelog-quantum-${baseType}`)
+          .add(changelogHeaders[type](current, transformer))
+
+        sections.push(section)
+        if (current.has('entryEntity')) {
+          break
+        }
+      }
+      return dom.create('span')
+        .class('qm-changelog-quantum-header')
+        .add(sections)
+    }
+  }
+}
+
 module.exports = (options) => {
+  const changelogHeaderTransforms = {
+    entity: entityHeader
+  }
+
   return {
     assets,
     name: 'quantum',
@@ -85,10 +107,9 @@ module.exports = (options) => {
       entity: entityBuilder,
       param: paramBuilder
     },
-    changelogHeaderTransforms: {
-      entity: entityHeader,
-      param: paramHeader,
-      parent: parentHeader
+    changelog: {
+      entityTypes: Object.keys(changelogHeaderTransforms),
+      createHeaderDom: createHeaderDom(changelogHeaderTransforms)
     }
   }
 }

@@ -4,14 +4,8 @@
   font-weight: bold;
 }
 
-.qm-api-quantum-header-parent-name:before,
 .qm-api-quantum-header-entity-name:before {
   content: '@';
-}
-
-.qm-api-quantum-header-parent .qm-api-quantum-header-parent-name:after {
-  content: ':';
-  margin-right: 0.4em;
 }
 
 .qm-api-quantum-header-entity-params {
@@ -27,18 +21,8 @@
   margin-left: 0.4em;
 }
 
-.qm-api-quantum-entity-content:before {
-  content: ":";
+/* Changelog */
+.qm-changelog-quantum-entity + .qm-changelog-quantum-entity:before {
+  content: ':';
   margin-right: 0.4em;
-}
-
-.qm-api-quantum-entity-content:empty {
-  content: none;
-  display: none;
-}
-
-.qm-api-item-header-parent + .qm-api-item-header-class:before {
-  content: '>';
-  margin: 0 0.4em;
-  opacity: 0.6;
 }
