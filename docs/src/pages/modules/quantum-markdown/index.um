@@ -18,7 +18,7 @@
       @file
         @@um
           @@markdown
-            ### Heading
+            ### Heading Text
 
             _italic_ or **bold** text.
 
@@ -26,7 +26,7 @@
     @div .docs-example-body
       @@codeblock html
         <div class="qm-markdown">
-          <h3 id="example-heading">Heading</h3>
+          <h3 id="heading-text">Heading Text</h3>
           <p><em>italic</em> or <strong>bold</strong> text.</p>
         </div>
 
@@ -51,6 +51,9 @@
     Using @code[@@markdown] prevents the @code[#] character being treated as a
     quantum comment. Since @code[#] is used for headings in markdown it is
     important to do this otherwise they will not show up in the rendered page!
+
+  @topic Entities
+    @inline entities.um
 
   @topic Api
     @inline api.um

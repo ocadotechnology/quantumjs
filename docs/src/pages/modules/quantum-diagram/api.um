@@ -7,5 +7,4 @@
     @hyperlink(/modules/quantum-diagram/changelog/)[Changelog]
 
 
-  @inline api/entities.um
   @inline api/transforms.um

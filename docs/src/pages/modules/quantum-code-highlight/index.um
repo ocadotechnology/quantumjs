@@ -25,5 +25,8 @@
           }
 
 
-  @topic API
+  @topic Entities
+    @inline entities.um
+
+  @topic Api
     @inline api.um

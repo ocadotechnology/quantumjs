@@ -13,5 +13,8 @@
   @topic About
     TODO
 
+  @topic Entities
+    @inline entities.um
+
   @topic API
     @inline api.um

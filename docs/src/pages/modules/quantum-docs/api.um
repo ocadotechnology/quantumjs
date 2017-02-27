@@ -7,6 +7,5 @@
     @hyperlink(/modules/quantum-docs/changelog/)[Changelog]
 
 
-  @inline api/entities.um
   @inline api/transforms.um
   @inline api/fileTransform.um
