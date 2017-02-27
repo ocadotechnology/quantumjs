@@ -30,3 +30,7 @@
 .qm-api-item-header-extra-class > .qm-api-css-header-name:before {
   content: '.';
 }
+
+.qm-api-css-header-parent-name:before {
+  content: '.';
+}

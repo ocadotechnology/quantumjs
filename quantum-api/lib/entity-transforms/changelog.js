@@ -107,19 +107,27 @@ function changeDom (selection, transformer, issueUrl) {
       .add(selection.has('description') ? html.paragraphTransform(selection.select('description'), transformer) : undefined))
 }
 
+function defaultParentTransform (selection, transformer) {
+  return selection.ps()
+}
+
+function headerEntity (headerEntity, isParent, languageTransforms, transformer) {
+  if (languageTransforms) {
+    const headerSelection = quantum.select(headerEntity)
+    const headerItemType = headerSelection.type()
+    if (isParent) {
+      return (languageTransforms.parent || defaultParentTransform)(headerSelection, transformer)
+    } else if (languageTransforms[headerItemType]) {
+      return languageTransforms[headerItemType](headerSelection, transformer)
+    }
+  }
+}
+
 /* Creates a single changelog entry */
 function entry (selection, transformer, options) {
   const languageTransforms = (options.languages.find(language => language.name === selection.select('header').ps()) || {}).changelogHeaderTransforms
-
-  let header = undefined
-  if (languageTransforms) {
-    const headerSelection = quantum.select(selection.select('header').content()[0])
-    const headerItemType = headerSelection.type()
-    if (languageTransforms[headerItemType]) {
-      header = languageTransforms[headerItemType](headerSelection, transformer)
-    }
-  }
-
+  const headerContent = selection.select('header').content()
+  const header = headerContent.map((e, i) => headerEntity(e, (i !== headerContent.length - 1), languageTransforms, transformer))
   const changes = selection.selectAll('change')
     .map(change => changeDom(change, transformer, options.issueUrl))
 

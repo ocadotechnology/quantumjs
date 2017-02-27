@@ -62,6 +62,16 @@ function propertyHeaderDetails (typeLinks) {
   }
 }
 
+function parentHeaderDetails () {
+  return (selection, transformer) => {
+    const name = selection.param(0)
+    return dom.create('span')
+      .class('qm-api-javascript-header-parent')
+      .attr('id', name ? name.toLowerCase() : undefined)
+      .add(dom.create('span').class('qm-api-javascript-header-parent-name').text(name || ''))
+  }
+}
+
 function functionHeaderDetails (typeLinks) {
   return (selection, transformer) => {
     const functionName = selection.param(0)
@@ -127,6 +137,7 @@ module.exports = (options) => {
   const prototypeHeader = header('prototype', prototypeHeaderDetails(typeLinks))
   const functionHeader = header('function', functionHeaderDetails(typeLinks))
   const typeHeader = header('type', typeHeaderDetails(typeLinks))
+  const parentHeader = header('parent', parentHeaderDetails())
 
   const typeHeaderBuilders = {
     constructor: functionHeader,
@@ -223,7 +234,8 @@ module.exports = (options) => {
       'function': typeHeaderBuilders.function,
       'method': typeHeaderBuilders.method,
       'property': typeHeaderBuilders.property,
-      'property?': typeHeaderBuilders.property
+      'property?': typeHeaderBuilders.property,
+      'parent': parentHeader
     }
   }
 }

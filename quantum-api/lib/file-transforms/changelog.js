@@ -181,7 +181,9 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
       qversion.processVersioned(sanitizedParent.entity(), version, versions)
       sanitizedParent.removeAllChildOfType(tags)
 
+      const parents = []
       let entity = undefined
+      const sel = selection
       while (selection.parent() && selection.type() !== 'api') {
         if (selection.type() === 'group') {
           selection = selection.parent()
@@ -195,6 +197,7 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
             params: selection.params().slice(),
             content: entity ? [entity] : sanitizedParent.content()
           }
+          parents.unshift(entity)
           selection = selection.parent()
         }
       }
@@ -203,7 +206,10 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
         const header = {
           type: 'header',
           params: [language.name],
-          content: [entity]
+          content: [...parents]
+        }
+        if (sel.has('debug')) {
+          console.log(header.content)
         }
 
         res.push({

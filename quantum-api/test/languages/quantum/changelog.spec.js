@@ -10,7 +10,8 @@ describe('changelog', () => {
     const { changelogHeaderTransforms } = umLanguage()
     const keys = [
       'entity',
-      'param'
+      'param',
+      'parent'
     ]
     it('has the right properties', () => {
       changelogHeaderTransforms.should.have.keys(keys)

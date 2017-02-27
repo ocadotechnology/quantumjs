@@ -26,8 +26,17 @@ function nameHeaderDetails (selection, transformer) {
     .add(name)
 }
 
+function parentHeaderDetails (selection, transformer) {
+  const name = selection.param(0)
+  return dom.create('span')
+    .class('qm-api-css-header-parent')
+    .attr('id', name ? name.toLowerCase() : undefined)
+    .add(dom.create('span').class('qm-api-css-header-parent-name').text(name || ''))
+}
+
 const classHeader = header('class', nameHeaderDetails)
 const extraClassHeader = header('extra-class', nameHeaderDetails)
+const parentHeader = header('parent', parentHeaderDetails)
 
 const description = body.description
 const extras = body.extras
@@ -57,7 +66,8 @@ module.exports = (options) => {
     },
     changelogHeaderTransforms: {
       class: classHeader,
-      extraClass: extraClassHeader
+      extraClass: extraClassHeader,
+      parent: parentHeader
     }
   }
 }

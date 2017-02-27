@@ -190,3 +190,7 @@
 .qm-api-javascript-header-type-type {
   color: #8C8C8C;
 }
+
+.qm-api-javascript-header-parent-name:after {
+  content: '.';
+}

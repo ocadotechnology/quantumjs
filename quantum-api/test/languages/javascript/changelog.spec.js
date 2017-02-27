@@ -21,7 +21,8 @@ describe('changelog', () => {
       'function',
       'method',
       'property',
-      'property?'
+      'property?',
+      'parent'
     ]
 
     it('has the right properties', () => {

@@ -47,8 +47,17 @@ function entityHeaderDetails (selection, transformer) {
     .add(paramsContent)
 }
 
+function parentHeaderDetails (selection, transformer) {
+  const name = selection.param(0)
+  return dom.create('span')
+    .class('qm-api-quantum-header-parent')
+    .attr('id', name ? name.toLowerCase() : undefined)
+    .add(dom.create('span').class('qm-api-quantum-header-parent-name').text(name || ''))
+}
+
 const entityHeader = header('entity', entityHeaderDetails)
 const paramHeader = header('param', paramHeaderDetails)
+const parentHeader = header('parent', parentHeaderDetails)
 
 const description = body.description
 const extras = body.extras
@@ -78,7 +87,8 @@ module.exports = (options) => {
     },
     changelogHeaderTransforms: {
       entity: entityHeader,
-      param: paramHeader
+      param: paramHeader,
+      parent: parentHeader
     }
   }
 }

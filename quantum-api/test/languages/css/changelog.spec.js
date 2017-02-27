@@ -12,7 +12,8 @@ describe('changelog', () => {
     const { changelogHeaderTransforms } = css()
     const keys = [
       'class',
-      'extraClass'
+      'extraClass',
+      'parent'
     ]
     it('has the right properties', () => {
       changelogHeaderTransforms.should.have.keys(keys)
@@ -24,7 +25,10 @@ describe('changelog', () => {
       })
     })
 
-    const typesThatUseNameHeader = keys
+    const typesThatUseNameHeader = [
+      'class',
+      'extraClass'
+    ]
     const classesForHeaders = [
       'class',
       'extra-class'
@@ -61,6 +65,39 @@ describe('changelog', () => {
           changelogHeaderTransforms[entityType](selection, transformer).should.eql(
             header(classesForHeaders[index], testPropertHeaderDetails)(selection, transformer))
         })
+      })
+    })
+
+    describe('parent', () => {
+      it('renders correctly', () => {
+        function testPropertHeaderDetails (selection) {
+          return dom.create('span')
+            .class('qm-api-css-header-parent')
+            .attr('id', 'someprop')
+            .add(dom.create('span').class('qm-api-css-header-parent-name').text('someProp'))
+        }
+        const selection = quantum.select({
+          type: 'anything',
+          params: ['someProp', 'Type'],
+          content: []
+        })
+        changelogHeaderTransforms.parent(selection, transformer).should.eql(
+          header('parent', testPropertHeaderDetails)(selection, transformer))
+      })
+
+      it('handles not having params', () => {
+        function testPropertHeaderDetails (selection) {
+          return dom.create('span')
+            .class('qm-api-css-header-parent')
+            .add(dom.create('span').class('qm-api-css-header-parent-name').text(''))
+        }
+        const selection = quantum.select({
+          type: 'anything',
+          params: [],
+          content: []
+        })
+        changelogHeaderTransforms.parent(selection, transformer).should.eql(
+          header('parent', testPropertHeaderDetails)(selection, transformer))
       })
     })
   })
