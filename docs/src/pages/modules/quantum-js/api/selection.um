@@ -106,8 +106,3 @@
     } else {
       return this._renderContext
     }
-
-  @method transform (transformer)
-    return maybePromiseAll(this._entity.content.map((child) => {
-      return transformer(isEntity(child) ? select(child, this) : child)
-    }))
