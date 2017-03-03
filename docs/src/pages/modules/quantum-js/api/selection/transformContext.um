@@ -1,0 +1,79 @@
+@method transformContext
+  @description
+    Sets an object that can be used to pass extra information to another transformer
+    that this seletion is passed to.
+
+    If writing a plugin for quantum, be careful about how this is used. It should
+    never be used for the public api - it should only be used to pass information
+    around within your plugin.
+
+  @extra
+    @subsection
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'basket',
+          params: [],
+          content: [
+            {
+              type: 'item',
+              params: ['lemons'],
+              content: []
+            }
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.transformContext({
+          someInformation: "somthing useful"
+        })
+
+        selection.transformContext() // returns { someInformation: "somthing useful" }
+
+
+  @param context [Object]
+    @description
+      The context object to store on the selection.
+
+  @returns [Selection]
+    @description
+      This @type[Selection]
+
+@method transformContext
+  @description
+    Get the context object, which is sometimes used to pass extra information to
+    another transformer by storing it on this @type[Selection].
+
+    If writing a plugin for quantum, be careful about how this is used. It should
+    never be used for the public api - it should only be used to pass information
+    around within your plugin.
+
+  @extra
+    @subsection
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'basket',
+          params: [],
+          content: [
+            {
+              type: 'item',
+              params: ['lemons'],
+              content: []
+            }
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        selection.transformContext({
+          someInformation: "somthing useful"
+        })
+
+        selection.transformContext() // returns { someInformation: "somthing useful" }
+
+  @returns [Object]
+    The context object, or undefined if it is not set.

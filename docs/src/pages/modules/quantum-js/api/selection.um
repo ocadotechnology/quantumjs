@@ -20,7 +20,6 @@
         const selection = quantum.select(entity)
         // selection is a Selection
 
-
   @inline selection/*.um
 
   @method removeChild (childEntity)
@@ -97,12 +96,4 @@
       }
 
       return result
-    }
-
-  @method transformContext (obj)
-    if (arguments.length > 0) {
-      this._renderContext = obj
-      return this
-    } else {
-      return this._renderContext
     }
