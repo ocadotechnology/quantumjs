@@ -26,16 +26,20 @@ function paramHeaderDetails (selection, transformer) {
     .add(name || '')
 }
 
+function entityParamHeaderDetails (selection, transformer) {
+  const name = selection.param(0)
+  const isOptional = selection.type()[selection.type().length - 1] === '?'
+  return dom.create('span')
+    .class('qm-api-quantum-header-entity-param')
+    .classed('qm-api-optional', isOptional)
+    .add(dom.create('span').class('qm-api-quantum-header-entity-param-name')
+      .text(name || ''))
+}
+
+const entityParamHeader = header('entity-param', entityParamHeaderDetails)
 function entityHeaderDetails (selection, transformer) {
   const name = selection.param(0)
-  const params = selection.selectAll(['param', 'param?']).map((param) => {
-    const isOptional = param.type()[param.type().length - 1] === '?'
-    return dom.create('span')
-      .class('qm-api-quantum-header-entity-param')
-      .classed('qm-api-optional', isOptional)
-      .add(dom.create('span').class('qm-api-quantum-header-entity-param-name').text(param.param(0)))
-  })
-
+  const params = selection.selectAll(['param', 'param?']).map((param) => entityParamHeader(param, transformer))
   const paramsContent = params.length ?
     dom.create('span').class('qm-api-quantum-header-entity-params').add(params) :
     undefined
@@ -69,8 +73,8 @@ const paramBuilder = item({
 })
 
 function createHeaderDom (changelogHeaders) {
+  const entityTypes = Object.keys(changelogHeaders)
   return (selection, transformer) => {
-    const entityTypes = Object.keys(changelogHeaders)
     if (entityTypes.some(entityType => selection.has(entityType))) {
       let current = selection
       const sections = []
@@ -84,9 +88,6 @@ function createHeaderDom (changelogHeaders) {
           .add(changelogHeaders[type](current, transformer))
 
         sections.push(section)
-        if (current.has('entryEntity')) {
-          break
-        }
       }
       return dom.create('span')
         .class('qm-changelog-quantum-header')

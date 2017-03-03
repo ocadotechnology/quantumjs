@@ -152,8 +152,8 @@ function prototypeHeaderDetails (typeLinks) {
 }
 
 function changelogHeader (typeLinks, changelogHeaders) {
+  const entityTypes = Object.keys(changelogHeaders)
   return (selection, transformer) => {
-    const entityTypes = Object.keys(changelogHeaders)
     if (entityTypes.some(entityType => selection.has(entityType))) {
       let current = selection
       const sections = []

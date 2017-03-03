@@ -127,8 +127,6 @@ function changeDom (selection, transformer, issueUrl) {
 function entry (selection, transformer, options) {
   const language = (options.languages.find(language => language.name === selection.select('header').ps()) || {})
   const createHeaderDom = language && language.changelog && language.changelog.createHeaderDom
-  // const headerContent = selection.select('header').content()
-  // const header = headerContent.map((e, i) => headerEntity(e, (i !== headerContent.length - 1), languageTransforms, transformer))
   const header = createHeaderDom ? createHeaderDom(selection.select('header'), transformer) : undefined
   const changes = selection.selectAll('change')
     .map(change => changeDom(change, transformer, options.issueUrl))

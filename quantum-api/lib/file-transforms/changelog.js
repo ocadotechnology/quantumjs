@@ -109,13 +109,11 @@ function buildChangelogs (changelogList, entityTypeToLanguage, groupByApi) {
     const changelog = buildChangelog(version, versions, tagSelectionsByVersion[version], entityTypeToLanguage, groupByApi)
     const versionSelection = versionSelectionsByVersion[version]
 
-    if (versionSelection) {
-      if (versionSelection.has('description')) {
-        changelog.content.unshift(versionSelection.select('description').entity())
-      }
-      if (versionSelection.has('link')) {
-        changelog.content.unshift(versionSelection.select('link').entity())
-      }
+    if (versionSelection && versionSelection.has('description')) {
+      changelog.content.unshift(versionSelection.select('description').entity())
+    }
+    if (versionSelection && versionSelection.has('link')) {
+      changelog.content.unshift(versionSelection.select('link').entity())
     }
     return changelog
   })

@@ -601,3 +601,40 @@
   @output
     @changelogList
       @changelog 0.1.0
+
+@spec output version without api content
+  @input
+    @changelogList
+      @process
+      @version 0.1.0
+        @description: Something
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @description: Something
+
+@spec output nothing with no matching versions
+  @input
+    @changelogList
+      @debug
+      @process
+        @api ApiName
+          @nonapithing
+            @function test
+              @description: Function does something
+              @added 0.1.0
+      @version 0.0.1
+  @output
+    @changelogList
+      @changelog 0.0.1
+
+@spec output link to version
+  @input
+    @changelogList
+      @process
+      @version 0.1.0
+        @link [http://example.com]
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @link [http://example.com]
