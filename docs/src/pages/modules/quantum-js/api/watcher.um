@@ -2,7 +2,7 @@
   @added 2.0.0
 
   @description
-    Watches files for changes (but does not detect changes from inlined files)
+    Creates a new @type[Watcher] instance that watches files for changes.
 
   @param specs [String/Object/Array]
     @description
@@ -10,30 +10,30 @@
 
       It can be a single file:
       @@codeblock js
-        quantum.watch("src/file.um", handler, options)
+        quantum.watcher("src/file.um", options)
 
       Or a glob:
       @@codeblock js
-        quantum.watch("src/**/*.um", handler, options)
+        quantum.watcher("src/**/*.um", options)
 
       Or an array of globs:
       @@codeblock js
-        quantum.watch(["src/**/*.um", "src2/**/index.um"], handler, options)
+        quantum.watcher(["src/**/*.um", "src2/**/index.um"], options)
 
       Or an array of globs:
       @@codeblock js
-        quantum.watch(["src/**/*.um", "src2/**/index.um"], handler, options)
+        quantum.watcher(["src/**/*.um", "src2/**/index.um"], options)
 
       Or a more structured object:
       @@codeblock js
-        quantum.watch({
+        quantum.watcher({
           files: 'src/**/*.um',
           base: 'src'
-        }, handler, options)
+        }, options)
 
       Or an array of these objects:
       @@codeblock js
-        quantum.watch([
+        quantum.watcher([
           {
             files: 'src/**/*.um',
             base: 'src'
@@ -42,17 +42,18 @@
             files: 'src2/**/index.um',
             base: 'src2'
           }
-        ], handler, options)
+        ], options)
 
   @param? options [Object]
     @property dir [String]
       @description
         The working directory for the watcher to work in
-      @default: '.'
+      @default: @code['.']
+
     @property dest [String]
       @description
         The default destination directory to write the files to
-      @default: 'target'
+      @default: @code['target']
 
   @returns Watcher
 

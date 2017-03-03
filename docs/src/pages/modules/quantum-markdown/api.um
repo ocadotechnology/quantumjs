@@ -1,8 +1,9 @@
 @api quantum-markdown
   @description
-    Below are all the properties of the object returned from @code[require('quantum-markdown')].
+    Below are all the properties of the object returned from
+    @code[require('quantum-markdown')].
 
-    For information about different versions, see the @hyperlink(/modules/quantum-markdown/changelog/)[Changelog]
+    For information about different versions, see the
+    @hyperlink(/modules/quantum-markdown/changelog/)[Changelog]
 
-  @inline api/entities.um
   @inline api/transforms.um

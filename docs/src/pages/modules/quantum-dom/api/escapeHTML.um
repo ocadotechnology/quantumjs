@@ -1,0 +1,21 @@
+@function escapeHTML
+  @added 2.0.0
+
+  @description
+    Html-escapes the string provided
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        dom.escapeHTML('<div>')
+        // returns '&lt;div&gt;'
+
+  @param string [String]
+    @description
+      The string to be HTML escaped.
+
+  @returns String
+    @description
+      The string with html escaping applied

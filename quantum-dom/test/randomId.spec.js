@@ -1,11 +1,12 @@
+const dom = require('..')
+
 describe('randomId', () => {
-  const { randomId } = require('..')
   it('returns a 32 character string', () => {
-    randomId().should.be.a.string
-    randomId().length.should.equal(32)
+    dom.randomId().should.be.a.string
+    dom.randomId().length.should.equal(32)
   })
 
   it('doesnt return the same id when called twice', () => {
-    randomId().should.not.equal(randomId())
+    dom.randomId().should.not.equal(dom.randomId())
   })
 })

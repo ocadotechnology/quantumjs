@@ -4,6 +4,10 @@
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
 }
 
+.qm-api-type {
+  white-space: nowrap;
+}
+
 .qm-api-type-standalone {
   font-size: 14px;
   padding: 0.2em 0.4em;
@@ -14,6 +18,10 @@
 .qm-api-group-header {
   font-size: 18px;
   margin: 1em 0 0.5em;
+}
+
+.qm-api-item .qm-api-group:first-child > .qm-api-group-header {
+  margin-top: 0;
 }
 
 .qm-api-notice-header {
@@ -139,10 +147,10 @@
   font-size: 1.1em;
 }
 
-.qm-api-groups .qm-api-groups .qm-api-group > .qm-api-group-header {
+.qm-api-groups .qm-api-groups > .qm-api-group > .qm-api-group-header {
   margin-top: 0;
 }
-.qm-api-groups .qm-api-groups .qm-api-group > .qm-api-group-content :last-child {
+.qm-api-groups .qm-api-groups > .qm-api-group > .qm-api-group-content :last-child {
   margin-bottom: 0;
 }
 
@@ -179,6 +187,10 @@
 .qm-api-item .qm-api-collapsible-content {
   padding: 1em 0 0.5em 2em;
   background: transparent;
+}
+
+.qm-api-item .qm-api-collapsible-content:empty {
+  display: none;
 }
 
 .qm-api-item > .qm-api-collapsible-heading .qm-api-collapsible-toggle {

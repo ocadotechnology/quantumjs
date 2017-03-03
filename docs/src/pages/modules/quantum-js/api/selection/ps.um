@@ -2,20 +2,22 @@
   @description
     Gets the parameters as a string
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: ['param1', 'param2'],
-        content: [
-          'Blah blah blah'
-        ]
-      }
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
 
-      const selection = quantum.select(entity)
+        const selection = quantum.select(entity)
 
-      selection.ps() // param1 param2
+        selection.ps() // param1 param2
 
   @returns String
     @description
@@ -25,23 +27,25 @@
   @description
     Sets the parameters as a string
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: ['param1', 'param2'],
-        content: [
-          'Blah blah blah'
-        ]
-      }
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
 
-      const selection = quantum.select(entity)
+        const selection = quantum.select(entity)
 
-      selection.ps() // param1 param2
+        selection.ps() // param1 param2
 
-      selection.ps('p1 p2')
-      selection.params() // ['p1', 'p2']
+        selection.ps('p1 p2')
+        selection.params() // ['p1', 'p2']
 
   @param ps [String]
     @description

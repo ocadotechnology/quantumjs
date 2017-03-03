@@ -3,58 +3,72 @@
   @description
     Provides functions for building transforms for entities in languages.
 
+    See the @hyperlink(./#custom-languages)[Custom Language] example for a
+    complete example.
+
   @property header [Function]
     @description
-      Builds a header transform for constructing api/changelog headers for entities from a type and a details builder.
+      Builds a header transform for constructing api/changelog headers for
+      entities from a type and a details builder.
 
     @param type [String]
       @description
-        The type of the header to build, for instance @code[function] or @code[object] that will be used to class the header.
+        The type of the header to build, for instance @code[function] or
+        @code[object] that will be used to class the header.
 
         # Headers are given the @code[qm-api-item-header] and @code[qm-api-item-header-<type>] classes.
 
-    @param detailsBuilder [Transform]
+    @param detailsBuilder [EntityTransform]
       @description
-        The @type[Transform] for creating the text to display in the header from an entity.
+        The @type[EntityTransform] for creating the text to display in the
+        header from an entity.
 
-        It receives an entire api entity including children and should return an element (or array of elements) containing the header information for an api entity.
+        It receives an entire api entity including children and should return an
+        element (or array of elements) containing the header information for an
+        api entity.
 
-    @returns Transform
+    @returns EntityTransform
       @description
-        A @type[Transform] for creating an api/changelog header for a selection.
+        A @type[EntityTransform] for creating an api/changelog header for a
+        selection.
 
   @property body [Object]
     @description
-      Provides a set of @type[Transform] functions for building the content of entities, such as descriptions or children.
+      Provides a set of @type[EntityTransform] functions for building the
+      content of entities, such as descriptions or children.
 
-    @property description [Transform]
+    @property description [EntityTransform]
       @description
         Builds a @code[@description] block like this block of text.
 
-    @property groups [Transform]
+    @property groups [EntityTransform]
       @description
         Builds @code[@group] blocks inside a selection.
 
-    @property extras [Transform]
+    @property extras [EntityTransform]
       @description
-        Builds @code[@extra] blocks inside a selection for providing information, such as code examples or additional descriptions.
+        Builds @code[@extra] blocks inside a selection for providing information,
+        such as code examples or additional descriptions.
 
-    @property default [Transform]
+    @property default [EntityTransform]
       @description
-        Builds @code[@default] blocks for providing default values for parameters etc.
+        Builds @code[@default] blocks for providing default values for
+        parameters etc.
 
   @property item [Function]
     @description
-      Provides a transform for rendering an api item, such as @code[@function], by providing a header and a set of transforms to apply to content.
+      Provides a transform for rendering an api item, such as @code[@function],
+      by providing a header and a set of transforms to apply to content.
 
     @param? options [Object]
       @property class [String]
         @description
           An additional class to give to api section if it has a header
 
-      @property content [Array[Transform]]
+      @property content [Array[EntityTransform]]
         @description
-          The transforms to apply to the content of the item in the order they should be displayed
+          The transforms to apply to the content of the item in the order they
+          should be displayed
 
         @extra
           @example
@@ -86,13 +100,14 @@
                   @description: Description goes first
 
 
-      @property header [Transform]
+      @property header [EntityTransform]
         @description
           The transform that will be used to render the header
 
       @property renderAsOther [Object]
         @description
-          A mapping of @code[Type: Item] for rendering an item as a different type of item when it is given a type
+          A mapping of @code[Type: Item] for rendering an item as a different
+          type of item when it is given a type
 
         @extra
           @example
@@ -126,8 +141,28 @@
 
 
 
-    @returns Transform
+    @returns EntityTransform
 
-  @property itemGroup
+  @property itemGroup [Function]
     @description
-      TODO
+      A function for defining a group of items to be used in an
+      @hyperlink(./#item)[item] content.
+
+    @param language [String]
+      @description
+        The language the item group is part of
+    @param type [String/Array[String]]
+      @description
+        The type or types of entity that are part of this group (e.g.
+        @code['param'] or @code[['param', 'param?']])
+
+    @param title [String]
+      @description
+        The title to display above the group
+
+    @param? options [Object]
+      @property noSort [Boolean]
+        @description
+          Whether to sort entities in this group. Set to true for things like
+          function parameters that have a fixed order.
+        @default: false

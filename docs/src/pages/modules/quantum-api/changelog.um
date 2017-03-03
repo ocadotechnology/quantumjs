@@ -11,6 +11,7 @@
     @groupByApi false
     @reverseVisibleList true
     @process
+      @inline entities.um
       @inline api.um
     @version 2.0.0
       @link /modules/quantum-api/2.0.0

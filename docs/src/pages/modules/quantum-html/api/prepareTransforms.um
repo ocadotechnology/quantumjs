@@ -1,0 +1,34 @@
+@function prepareTransforms
+  @added 2.0.0
+  @description
+    A function that flattens out namespaced transforms into a single object.
+
+  @extra
+    @example
+      @js
+        const transforms = {
+          aNamespace: {
+            aTransform: aFunction,
+            bNamespace: {
+              bTransform: bFunction
+            }
+          },
+          bTransform: lastDefinedFunction
+        }
+
+        const flattenedTransforms = prepareTransforms(transforms)
+
+      @output
+        @@codeblock js
+          {
+            aTransform: aFunction,
+            'aNamespace.aTransform': aFunction,
+            bTransform: lastDefinedFunction,
+            'bNamespace.bTransform': bFunction
+          }
+
+  @param transforms [Object]
+    @description
+      The object of nested @code[Transform] functions to flatten.
+
+  @returns Object

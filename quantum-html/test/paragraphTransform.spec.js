@@ -10,7 +10,7 @@ describe('paragraphTransform', () => {
 
   const stylesheetAsset = dom.asset({
     url: '/quantum-html.css',
-    file: path.join(__dirname, '../assets/quantum-html.css'),
+    filename: path.join(__dirname, '../assets/quantum-html.css'),
     shared: true
   })
 
@@ -42,7 +42,7 @@ describe('paragraphTransform', () => {
     })
 
     return paragraphTransform(selection, transformer).should.eql([
-      dom.asset({url: '/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true})
+      dom.asset({url: '/quantum-html.css', filename: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true})
     ])
   })
 
@@ -64,7 +64,7 @@ describe('paragraphTransform', () => {
 
     return Promise.all(paragraphTransform(selection, transformer)).then(res => {
       res.should.eql([
-        dom.asset({url: '/quantum-html.css', file: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true}),
+        dom.asset({url: '/quantum-html.css', filename: path.resolve(__dirname, '../assets/quantum-html.css'), shared: true}),
         dom.create('div').class('qm-html-paragraph')
           .add(dom.textNode('some text '))
           .add(dom.textNode('some more text '))

@@ -10,8 +10,10 @@ describe('config', () => {
   })
 
   describe('defaultIssueUrl', () => {
-    // const { defaultIssueUrl } = config
-    it('placeholder', () => true.should.equal(false))
+    const { defaultIssueUrl } = config
+    it('returns undefined', () => {
+      should.not.exist(defaultIssueUrl())
+    })
   })
 
   describe('resolve', () => {

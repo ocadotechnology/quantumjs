@@ -1,3 +1,4 @@
 @asset stylesheetAsset
   @description
-    The asset containing the stylesheet for applying the code highlight colours and styles.
+    The asset containing the stylesheet for applying the code highlight
+    colours and styles.

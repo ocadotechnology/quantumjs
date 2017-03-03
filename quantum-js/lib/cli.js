@@ -14,7 +14,7 @@ const api = require('./api')
 
 const version = require('../package.json').version
 
-const {cyan, yellow, green, bold} = chalk
+const { cyan, yellow, green, red } = chalk
 
 const helpString = `
 ${cyan('Usage:')}
@@ -26,7 +26,6 @@ ${cyan('Usage:')}
     ${cyan('Examples:')}
       quantum build
       quantum build --config=quantum.production.config.js
-      quantum build --loglevel=none
       quantum build --loglevel=error
 
   ${yellow.bold('quantum watch')} ${green('--config=<filename> --loglevel=<none|error> --port=<8080>')}
@@ -36,8 +35,8 @@ ${cyan('Usage:')}
     ${cyan('Examples:')}
       quantum watch
       quantum watch --config=quantum.production.config.js
-      quantum watch --loglevel=none
       quantum watch --loglevel=error
+      quantum watch --port=9000
 
   ${yellow.bold('quantum list')}
     Lists out the entities available to use
@@ -84,27 +83,47 @@ const commands = {
   version: printVersion
 }
 
+function findArg (args, argToFind) {
+  const argString = `--${argToFind}=`
+  const foundArg = args.find(arg => arg.startsWith(argString))
+  return foundArg ? foundArg.slice(argString.length) : undefined
+}
+
 function parseArgs (args) {
   const command = args[2]
-  const logLevel = args.find((arg) => arg.startsWith('--loglevel='))
-  const port = args.find((arg) => arg.startsWith('--port='))
 
-  const customConfigFile = args.find((arg) => arg.startsWith('--config='))
-  const configFile = customConfigFile ? customConfigFile.slice(9) : 'quantum.config.js'
+  // Show help if using `quantum --help` (or options before command)
+  if (command.indexOf('-') === 0) {
+    return {}
+  } else {
+    const configPath = path.resolve(findArg(args, 'config') || 'quantum.config.js')
+    const relativeConfigPath = path.relative(__dirname, configPath)
 
-  if (configFile) {
-    const config = require(path.relative(__dirname, path.resolve(configFile)))
-    config.port = port ? port.slice(7) : config.port
-    config.logLevel = logLevel ? logLevel.slice(11) : config.logLevel
+    try {
+      const config = require(relativeConfigPath)
 
-    return { command, config }
+      // Set options from command line (e.g. --port=)
+      config.port = findArg(args, 'port') || config.port
+      config.logLevel = findArg(args, 'loglevel') || config.logLevel
+
+      return { command, config }
+    } catch (e) {
+      if (e.message.indexOf(relativeConfigPath) !== -1) {
+        console.error(red('Missing Config File:', configPath))
+      } else {
+        console.error(red(`Error loading config from file: ${configPath}\n  ${e.stack}`))
+      }
+      return { error: true }
+    }
   }
 }
 
 module.exports = () => {
-  const { command, config } = parseArgs(process.argv)
+  const { error, command, config } = parseArgs(process.argv)
 
-  if (command in commands) {
+  if (error) {
+    console.error(`See ${cyan('quantum --help')} for usage information`)
+  } else if (command in commands) {
     commands[command](config)
   } else {
     printHelp()

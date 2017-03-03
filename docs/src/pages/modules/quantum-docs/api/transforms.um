@@ -1,9 +1,7 @@
 @function transforms
   @added 2.0.0
   @description
-    TODO: make sure Transforms page/link is sensible
-
-    A function that returns a set of @hyperlink(/docs/core-concepts/#entity-transforms)[Transforms] for use in @code[quantum-html].
+    A function that returns a set of @type[EntityTransform] functions for use in @code[quantum-html].
 
   # @param? options [Object]
   #   @description
@@ -13,27 +11,27 @@
     @description
       The transforms to use in @code[quantum-html] to define the entities that can be rendered.
 
-    @property topic [Transform]
-    @property section [Transform]
-    @property subsection [Transform]
-    @property notice [Transform]
-    @property list [Transform]
-    @property bold [Transform]
-    @property italic [Transform]
-    @property strikethrough [Transform]
-    @property image [Transform]
-    @property summary [Transform]
-    @property group [Transform]
-    @property versionSelector [Transform]
-    @property sidebarPage [Transform]
-    @property sidebar [Transform]
-    @property tableOfContents [Transform]
-    @property navigationMenu [Transform]
-    @property header [Transform]
-    @property breadcrumb [Transform]
-    @property topSection [Transform]
-    @property contentSection [Transform]
-    @property fullWidth [Transform]
-    @property bottomSection [Transform]
-    @property relatedButtons [Transform]
-    @property table [Transform]
+    @property topic [EntityTransform]
+    @property section [EntityTransform]
+    @property subsection [EntityTransform]
+    @property notice [EntityTransform]
+    @property list [EntityTransform]
+    @property bold [EntityTransform]
+    @property italic [EntityTransform]
+    @property strikethrough [EntityTransform]
+    @property image [EntityTransform]
+    @property summary [EntityTransform]
+    @property group [EntityTransform]
+    @property versionSelector [EntityTransform]
+    @property sidebarPage [EntityTransform]
+    @property sidebar [EntityTransform]
+    @property tableOfContents [EntityTransform]
+    @property navigationMenu [EntityTransform]
+    @property header [EntityTransform]
+    @property breadcrumb [EntityTransform]
+    @property topSection [EntityTransform]
+    @property contentSection [EntityTransform]
+    @property fullWidth [EntityTransform]
+    @property bottomSection [EntityTransform]
+    @property relatedButtons [EntityTransform]
+    @property table [EntityTransform]

@@ -18,6 +18,7 @@ describe('module', () => {
     const body = require('../lib/entity-transforms/builders/body')
     const header = require('../lib/entity-transforms/builders/header')
     const item = require('../lib/entity-transforms/builders/item')
+    const itemGroup = require('../lib/entity-transforms/builders/item-group')
 
     const { builders } = api
     it('exports the correct things', () => {
@@ -25,7 +26,8 @@ describe('module', () => {
       builders.should.have.keys([
         'body',
         'header',
-        'item'
+        'item',
+        'itemGroup'
       ])
       builders.body.should.be.an('object')
       builders.body.should.equal(body)
@@ -33,17 +35,19 @@ describe('module', () => {
       builders.header.should.equal(header)
       builders.item.should.be.a('function')
       builders.item.should.equal(item)
+      builders.itemGroup.should.be.a('function')
+      builders.itemGroup.should.equal(itemGroup)
     })
   })
 
   describe('fileTransforms', () => {
-    const changelog = require('../lib/file-transforms/changelog')
+    const changelogFileTransform = require('../lib/file-transforms/changelog').fileTransform
     const { fileTransforms } = api
     it('exports the correct things', () => {
       fileTransforms.should.be.an('object')
       fileTransforms.should.have.keys(['changelog'])
-      fileTransforms.changelog.should.be.an('object')
-      fileTransforms.changelog.should.equal(changelog)
+      fileTransforms.changelog.should.be.a('function')
+      fileTransforms.changelog.should.equal(changelogFileTransform)
     })
   })
 
@@ -61,28 +65,4 @@ describe('module', () => {
       languages.quantum.should.be.a('function')
     })
   })
-
-  // it('should do nothing when options.processChangelogs is false', () => {
-  //   const file = new quantum.File({
-  //     info: new quantum.FileInfo({
-  //       src: 'src/content/a1.um',
-  //       resolved: 'a1.um',
-  //       base: 'src/content',
-  //       dest: 'target/a1.um',
-  //       watch: true
-  //     }),
-  //     content: {
-  //       type: '',
-  //       params: [],
-  //       content: [
-  //         {
-  //           type: 'changelogList',
-  //           params: [],
-  //           content: []
-  //         }
-  //       ]
-  //     }
-  //   })
-  //   api.fileTransform({processChangelogs: false})(file).should.eql(file)
-  // })
 })

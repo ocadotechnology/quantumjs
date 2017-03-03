@@ -1,7 +1,7 @@
 @inline /templates/sidebar-page.um
 
 @topSection
-  @title QuantumJS changelog
+  @title quantum-js changelog
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     What has changed in quantum-js for each release.

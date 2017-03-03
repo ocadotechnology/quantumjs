@@ -3,45 +3,47 @@
     Returns true if the selected component has either no content or all the
     content line are empty strings.
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity1 = {
-        type: 'example',
-        params: [],
-        content: []
-      }
+        const entity1 = {
+          type: 'example',
+          params: [],
+          content: []
+        }
 
-      const entity2 = {
-        type: 'example',
-        params: [],
-        content: [
-          "",
-          ""
-        ]
-      }
+        const entity2 = {
+          type: 'example',
+          params: [],
+          content: [
+            "",
+            ""
+          ]
+        }
 
-      const entity3 = {
-        type: 'example',
-        params: [],
-        content: [
-          'Line 1',
-          {
-            type: 'child',
-            params: [],
-            content: []
-          }
-        ]
-      }
+        const entity3 = {
+          type: 'example',
+          params: [],
+          content: [
+            'Line 1',
+            {
+              type: 'child',
+              params: [],
+              content: []
+            }
+          ]
+        }
 
-      const selection1 = quantum.select(entity1)
-      selection1.isEmpty() // true
+        const selection1 = quantum.select(entity1)
+        selection1.isEmpty() // true
 
-      const selection2 = quantum.select(entity2)
-      selection2.isEmpty() // true
+        const selection2 = quantum.select(entity2)
+        selection2.isEmpty() // true
 
-      const selection3 = quantum.select(entity3)
-      selection3.isEmpty() // true
+        const selection3 = quantum.select(entity3)
+        selection3.isEmpty() // true
 
   @returns Boolean
     @description

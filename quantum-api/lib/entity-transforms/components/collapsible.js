@@ -6,7 +6,7 @@ const dom = require('quantum-dom')
 module.exports = function collapsible (collapsibleClass, header, content, isCollapsible = true, isCollapsed = true) {
   return dom.create('div')
     .class('qm-api-item ' + collapsibleClass)
-    .classed('qm-api-collapsible', isCollapsible)
+    .classed('qm-api-collapsible', isCollapsible && content)
     .classed('qm-api-collapsible-open', !isCollapsed || !isCollapsible)
     .add(dom.create('div').class('qm-api-collapsible-heading')
       .add(dom.create('div').class('qm-api-collapsible-toggle')

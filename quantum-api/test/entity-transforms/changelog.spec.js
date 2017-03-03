@@ -83,7 +83,7 @@ describe('changelog', () => {
       assets: [
         dom.asset({
           url: '/some-url',
-          file: '/some-file'
+          filename: '/some-file'
         })
       ]
     }
@@ -92,7 +92,7 @@ describe('changelog', () => {
       changelogBlock()
         .add(dom.asset({
           url: '/some-url',
-          file: '/some-file'
+          filename: '/some-file'
         }))
         .add(dom.create('div').class('qm-changelog-head qm-header-font').text('0.1.0'))
         .add(dom.create('div').class('qm-changelog-body')
@@ -523,7 +523,7 @@ describe('changelog', () => {
         dom.create('div').class('qm-changelog-change')
           .add(dom.create('div').class('qm-changelog-change-header')
             .add(dom.create('div').class('qm-changelog-change-icon'))
-            .add(dom.create('div').class('qm-changelog-change-type')))
+            .add(dom.create('div').class('qm-changelog-change-type qm-changelog-text-undefined')))
           .add(dom.create('div').class('qm-changelog-change-body'))
       )
     })
@@ -539,7 +539,7 @@ describe('changelog', () => {
         dom.create('div').class('qm-changelog-change')
           .add(dom.create('div').class('qm-changelog-change-header')
             .add(dom.create('div').class('qm-changelog-change-icon'))
-            .add(dom.create('div').class('qm-changelog-change-type')))
+            .add(dom.create('div').class('qm-changelog-change-type qm-changelog-text-invalid')))
           .add(dom.create('div').class('qm-changelog-change-body'))
       )
     })
@@ -558,7 +558,7 @@ describe('changelog', () => {
               .add(dom.create('i')
                 .class('qm-changelog-icon-updated qm-changelog-text-updated')
                 .attr('title', 'Updated')))
-            .add(dom.create('div').class('qm-changelog-change-type').text('Updated')))
+            .add(dom.create('div').class('qm-changelog-change-type qm-changelog-text-updated').text('Updated')))
           .add(dom.create('div').class('qm-changelog-change-body'))
       )
     })
@@ -583,7 +583,7 @@ describe('changelog', () => {
               .add(dom.create('i')
                 .class('qm-changelog-icon-updated qm-changelog-text-updated')
                 .attr('title', 'Updated')))
-            .add(dom.create('div').class('qm-changelog-change-type').text('Updated'))
+            .add(dom.create('div').class('qm-changelog-change-type qm-changelog-text-updated').text('Updated'))
             .add(dom.create('span').class('qm-changelog-change-issues')
               .add(dom.create('a')
                 .class('qm-changelog-change-issue')
@@ -607,7 +607,7 @@ describe('changelog', () => {
               .add(dom.create('i')
                 .class('qm-changelog-icon-added qm-changelog-text-added')
                 .attr('title', 'Added')))
-            .add(dom.create('div').class('qm-changelog-change-type').text('Added')))
+            .add(dom.create('div').class('qm-changelog-change-type qm-changelog-text-added').text('Added')))
           .add(dom.create('div').class('qm-changelog-change-body'))
       )
     })
@@ -626,7 +626,7 @@ describe('changelog', () => {
               .add(dom.create('i')
                 .class('qm-changelog-icon-removed qm-changelog-text-removed')
                 .attr('title', 'Removed')))
-            .add(dom.create('div').class('qm-changelog-change-type').text('Removed')))
+            .add(dom.create('div').class('qm-changelog-change-type qm-changelog-text-removed').text('Removed')))
           .add(dom.create('div').class('qm-changelog-change-body'))
       )
     })

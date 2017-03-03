@@ -3,41 +3,43 @@
     Creates a new @type[Selection] with some of the child entities filtered out.
     Only entities with the type provided are kept.
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: [],
-        content: [
-          {
-            type: 'childA',
-            params: [],
-            content: []
-          },
-          {
-            type: 'childA',
-            params: [],
-            content: []
-          },
-          {
-            type: 'childB',
-            params: [],
-            content: []
-          },
-          {
-            type: 'childC',
-            params: [],
-            content: []
-          }
-        ]
-      }
+        const entity = {
+          type: 'example',
+          params: [],
+          content: [
+            {
+              type: 'childA',
+              params: [],
+              content: []
+            },
+            {
+              type: 'childA',
+              params: [],
+              content: []
+            },
+            {
+              type: 'childB',
+              params: [],
+              content: []
+            },
+            {
+              type: 'childC',
+              params: [],
+              content: []
+            }
+          ]
+        }
 
-      const selection = quantum.select(entity)
-      const filteredSelection = selection.filter('childA')
+        const selection = quantum.select(entity)
+        const filteredSelection = selection.filter('childA')
 
-      // filteredSelection does not have 'childB' or 'childC' type entities as
-      // children
+        // filteredSelection does not have 'childB' or 'childC' type entities as
+        // children
 
   @param types [String]
     @description
@@ -52,40 +54,42 @@
     Creates a new @type[Selection] with some of the child entities filtered out.
     Only entities with the types provided are kept.
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: [],
-        content: [
-          {
-            type: 'childA',
-            params: [],
-            content: []
-          },
-          {
-            type: 'childA',
-            params: [],
-            content: []
-          },
-          {
-            type: 'childB',
-            params: [],
-            content: []
-          },
-          {
-            type: 'childC',
-            params: [],
-            content: []
-          }
-        ]
-      }
+        const entity = {
+          type: 'example',
+          params: [],
+          content: [
+            {
+              type: 'childA',
+              params: [],
+              content: []
+            },
+            {
+              type: 'childA',
+              params: [],
+              content: []
+            },
+            {
+              type: 'childB',
+              params: [],
+              content: []
+            },
+            {
+              type: 'childC',
+              params: [],
+              content: []
+            }
+          ]
+        }
 
-      const selection = quantum.select(entity)
-      const filteredSelection = selection.filter(['childA', 'childB'])
+        const selection = quantum.select(entity)
+        const filteredSelection = selection.filter(['childA', 'childB'])
 
-      // filteredSelection does not have 'childC' as a child
+        // filteredSelection does not have 'childC' as a child
 
   @param types [Array[String]]
     @description
@@ -99,40 +103,42 @@
     Creates a new @type[Selection] with some of the child entities filtered out.
     Only entities with the types provided are kept.
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'example',
-        params: [],
-        content: [
-          {
-            type: 'childA',
-            params: [],
-            content: []
-          },
-          {
-            type: 'childA',
-            params: [],
-            content: []
-          },
-          {
-            type: 'childB',
-            params: [],
-            content: []
-          },
-          {
-            type: 'childC',
-            params: [],
-            content: []
-          }
-        ]
-      }
+        const entity = {
+          type: 'example',
+          params: [],
+          content: [
+            {
+              type: 'childA',
+              params: [],
+              content: []
+            },
+            {
+              type: 'childA',
+              params: [],
+              content: []
+            },
+            {
+              type: 'childB',
+              params: [],
+              content: []
+            },
+            {
+              type: 'childC',
+              params: [],
+              content: []
+            }
+          ]
+        }
 
-      const selection = quantum.select(entity)
-      const filteredSelection = selection.filter(entity => entity.type !== 'childA')
+        const selection = quantum.select(entity)
+        const filteredSelection = selection.filter(entity => entity.type !== 'childA')
 
-      // filteredSelection does not have any 'childA' type children
+        // filteredSelection does not have any 'childA' type children
 
   @param types [Function]
     @description

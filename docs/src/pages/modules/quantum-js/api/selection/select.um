@@ -2,25 +2,27 @@
   @description
     Selects a child entity from the selected entity.
 
-    @@codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'parent',
-        params: [],
-        content: [
-          {
-            type: 'childExample',
-            params: [],
-            content: [
+        const entity = {
+          type: 'parent',
+          params: [],
+          content: [
+            {
+              type: 'childExample',
+              params: [],
+              content: [
 
-            ]
-          }
-        ]
-      }
+              ]
+            }
+          ]
+        }
 
-      const selection = quantum.select(entity)
-      selection.select('childExample') // returns a new selection wrapping the 'childExample' entity
+        const selection = quantum.select(entity)
+        selection.select('childExample') // returns a new selection wrapping the 'childExample' entity
 
   @param type [String]
     @description

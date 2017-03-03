@@ -16,17 +16,17 @@ const tags = require('../tags')
 
   If no @changelogList is found, this function does nothing to the page
 */
-function fileTransform (page, options) {
-  const changelogLists = quantum.select(page.content)
+function fileTransform (file, options) {
+  const changelogLists = quantum.select(file.content)
     .selectAll('changelogList', {recursive: true})
 
   if (changelogLists.length > 0) {
     changelogLists.forEach(changelogList => {
-      processChangelogList(page, changelogList, options)
+      processChangelogList(file, changelogList, options)
     })
-    return page.clone({ content: page.content })
+    return file.clone({ content: file.content })
   } else {
-    return page
+    return file
   }
 }
 
@@ -105,8 +105,14 @@ function buildChangelogs (changelogList, entityTypeToLanguage, groupByApi) {
   return versions.map(version => {
     const changelog = buildChangelog(version, versions, tagSelectionsByVersion[version], entityTypeToLanguage, groupByApi)
     const versionSelection = versionSelectionsByVersion[version]
-    if (versionSelection && versionSelection.has('description')) {
-      changelog.content.unshift(versionSelection.select('description').entity())
+
+    if (versionSelection) {
+      if (versionSelection.has('description')) {
+        changelog.content.unshift(versionSelection.select('description').entity())
+      }
+      if (versionSelection.has('link')) {
+        changelog.content.unshift(versionSelection.select('link').entity())
+      }
     }
     return changelog
   })

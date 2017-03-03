@@ -222,7 +222,7 @@ function Asset (url, filename, shared) {
   this.shared = shared
 }
 
-function HeadInjectWrapper (element, options) {
+function HeadWrapper (element, options) {
   this.element = element
   this.options = options
 }
@@ -232,7 +232,7 @@ function PageModifier (options) {
 }
 
 // extracts 'elements' of particular types from the tree of elements (for
-// extracting HeadInjectWrapper and Asset 'elements')
+// extracting HeadWrapper and Asset 'elements')
 function extractTypes (elements, Types) {
   function inner (elements, res) {
     const l = elements.length
@@ -276,13 +276,13 @@ function bodyClassed (cls, classed) {
 
 // injects an element into the head element when the page is created
 function head (element, options) {
-  return new HeadInjectWrapper(element, options || {})
+  return new HeadWrapper(element, options || {})
 }
 
 // adds an asset to the page - the user can choose to embed or not when stringifying
 function asset (options) {
   const opts = options || {}
-  return new Asset(opts.url || '', opts.file || '', opts.shared === true)
+  return new Asset(opts.url || '', opts.filename || '', opts.shared === true)
 }
 
 // renders the elements given to html
@@ -290,10 +290,10 @@ function stringify (elements, options) {
   const embedAssets = options ? options.embedAssets !== false : true
   const assetPath = options ? options.assetPath || '' : ''
 
-  const [headElementWrappers, modifiers, assets] = extractTypes(elements, [HeadInjectWrapper, PageModifier, Asset])
+  const [headWrappers, modifiers, assets] = extractTypes(elements, [HeadWrapper, PageModifier, Asset])
 
   const latestById = {}
-  headElementWrappers.forEach(w => {
+  headWrappers.forEach(w => {
     if (w.options.id) {
       latestById[w.options.id] = w
     }
@@ -310,7 +310,7 @@ function stringify (elements, options) {
     .filter(c => bodyClassesMap[c])
     .join(' ')
 
-  const headElements = headElementWrappers
+  const headElements = headWrappers
     .filter(w => w.options.id ? w === latestById[w.options.id] : true)
     .map(w => w.element)
     .map(e => e.stringify ? e.stringify() : (isString(e) ? e : ''))
@@ -373,10 +373,14 @@ function stringify (elements, options) {
 }
 
 module.exports = {
+  Element,
+  TextNode,
+  HeadWrapper,
+  Asset,
+  PageModifier,
   asset,
   bodyClassed,
   create,
-  Element,
   escapeHTML,
   head,
   randomId,

@@ -1,10 +1,18 @@
+const dom = require('..')
+
 describe('textNode', () => {
-  const { textNode } = require('..')
+  it('creates a TextNode', () => {
+    dom.textNode('some text')
+      .should.be.an.instanceof(dom.TextNode)
+  })
+
   it('escapes html be default', () => {
-    textNode('<some text>').stringify().should.equal('&lt;some text&gt;')
+    dom.textNode('<some text>').stringify()
+      .should.equal('&lt;some text&gt;')
   })
 
   it('doesnt escape if escape is set to false', () => {
-    textNode('some text', {escape: false}).stringify().should.equal('some text')
+    dom.textNode('some text', {escape: false}).stringify()
+      .should.equal('some text')
   })
 })

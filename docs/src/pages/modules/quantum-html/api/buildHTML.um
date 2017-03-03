@@ -1,0 +1,26 @@
+@function buildHTML
+  @added 2.0.0
+  @description
+    A function for converting the output of the @hyperlink(./#builddom)[buildDOM] function to HTML.
+
+    It converts the file objects @code[content] to an HTML string and gives the @code[dest] of the file the @code[.html] extension
+
+  @param? options [Object]
+    @description
+      The options to use when building the HTML
+
+    @property embedAssets
+      @description
+        Whether to embed assets that are embeddable on the page itself or include them in the @code[assetPath] directory.
+
+        When this is false, all assets will be output to the asset directory and linked.
+
+      @default true
+
+    @property assetPath [String]
+      @description
+        The path to output assets to.
+
+        By default, this will output to the same directory that the file including it was output to.
+
+  @returns FileTransform

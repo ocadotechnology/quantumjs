@@ -1,6 +1,7 @@
+const dom = require('..')
+
 describe('escapeHTML', () => {
-  const { escapeHTML } = require('..')
   it('replaces html entities', () => {
-    escapeHTML('<div>').should.equal('&lt;div&gt;')
+    dom.escapeHTML('<div>').should.equal('&lt;div&gt;')
   })
 })

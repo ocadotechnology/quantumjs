@@ -1,8 +1,11 @@
 @api quantum-template
   @description
-    Below are all the properties of the object returned from @code[require('quantum-template')].
+    Below are all the properties of the object returned from
+    @code[require('quantum-template')].
 
-    For information about different versions, see the @hyperlink(/modules/quantum-template/changelog/)[Changelog]
+    For information about different versions, see the
+    @hyperlink(/modules/quantum-template/changelog/)[Changelog]
+
 
   @inline api/entities.um
   @inline api/fileTransform.um

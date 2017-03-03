@@ -1,0 +1,204 @@
+@define element-renderer-singular
+  @entity {{ps}}
+    @added 2.0.0
+    @description
+      Adds an @code(html)[<{{ps}}>] element
+
+      @@codeblock um
+        \# Create an <{{ps}}> element
+        @{{ps}}
+
+        \# Create an <{{ps}}> element with class='className'
+        @{{ps}} .className
+
+        \# Create an <{{ps}}> element with id='idName'
+        @{{ps}} #idName
+
+        \# Create an <{{ps}}> element with id='idName' and class='className'
+        @{{ps}} #idName.className
+
+        \# Chain multiple classes without spaces
+        @{{ps}} #idName.className.otherClassName
+
+    @group Child Entities
+      @entity id
+        @description: Sets the id attribute property to a value
+        @params: value
+      @entity class
+        @description: Sets the class attribute property to a value
+        @params: value
+      @entity attr
+        @description: Sets an attribute property to a value
+        @params name: value
+
+@define element-renderer
+  @entity {{ps}}
+    @added 2.0.0
+    @description
+      Adds a @code(html)[<{{ps}}>] element
+
+      @@codeblock um
+        \# Create a <{{ps}}> element
+        @{{ps}}
+
+        \# Create a <{{ps}}> element with class='className'
+        @{{ps}} .className
+
+        \# Create a <{{ps}}> element with id='idName'
+        @{{ps}} #idName
+
+        \# Create a <{{ps}}> element with id='idName' and class='className'
+        @{{ps}} #idName.className
+
+        \# Chain multiple classes without spaces
+        @{{ps}} #idName.className.otherClassName
+
+    @group Child Entities
+      @entity id
+        @description: Sets the id attribute property to a value
+        @params: value
+      @entity class
+        @description: Sets the class attribute property to a value
+        @params: value
+      @entity attr
+        @description: Sets an attribute property to a value
+        @params name: value
+
+@group Standard HTML elements
+  @element-renderer b
+  @element-renderer br
+  @element-renderer button
+  @element-renderer div
+  @element-renderer form
+  @element-renderer label
+  @element-renderer link
+  @element-renderer meta
+  @element-renderer p
+  @element-renderer pre
+  @element-renderer select
+  @element-renderer span
+  @element-renderer style
+  @element-renderer table
+  @element-renderer tbody
+  @element-renderer td
+  @element-renderer textarea
+  @element-renderer th
+  @element-renderer thead
+  @element-renderer tr
+  @element-renderer ul
+  @element-renderer vr
+  @element-renderer-singular a
+  @element-renderer-singular h1
+  @element-renderer-singular h2
+  @element-renderer-singular h3
+  @element-renderer-singular h4
+  @element-renderer-singular h5
+  @element-renderer-singular h6
+  @element-renderer-singular hr
+  @element-renderer-singular i
+  @element-renderer-singular img
+  @element-renderer-singular input
+  @element-renderer-singular li
+  @element-renderer-singular ol
+  @element-renderer-singular option
+
+@group Other entites
+  @entity html
+    @added 2.0.0
+    @description
+      Adds some html directly to the page
+
+    @extra
+      @example
+        @@um
+          @html
+            <b>Bold</b> <i>Italic</i> <u>Underlined</u>
+
+  @entity css
+    @added 2.0.0
+    @description
+      Adds some styles to be applied to the page (adds a @code(html)[<style>] element to the @code(html)[<head>])
+
+    @extra
+      @example
+        @noOutput
+        @@um
+          @css
+            .some-class {
+              display: none;
+            }
+
+
+  @entity js
+    @added 2.0.0
+    @description
+      Adds some javascript to be executed on the page (adds a @code(html)[<script>] element to the @code(html)[<body>])
+
+    @extra
+      @example
+        @noOutput
+        @@um
+          @js
+            const a = 1
+            alert(a)
+
+  @entity script
+    @added 2.0.0
+    @description
+      Adds a link to a javascript file to the bottom of the @code(html)[<body>]
+    @param link
+      @description
+        The link to the script to add
+
+    @extra
+      @example
+        @noOutput
+        @@um
+          @script [http://example.com/script.js]
+
+          @script [/path/to/script.js]
+
+  @entity stylesheet
+    @added 2.0.0
+    @description
+      Adds a link to a css file to the bottom of the @code(html)[<head>]
+    @param link
+      @description
+        The link to the stylesheet to add
+
+    @extra
+      @example
+        @noOutput
+        @@um
+          @stylesheet [http://example.com/style.css]
+
+          @stylesheet [/path/to/style.css]
+
+  @entity hyperlink
+    @added 2.0.0
+    @description
+      Adds a @code(html)[<a>] element, with the href set to the link
+      specified in the parameters.
+    @param link
+      @description
+        The link to add
+
+    @extra
+      @example
+        @@um
+          @hyperlink(path/to/somewhere)[Link Text]
+
+
+  @entity title
+    @added 2.0.0
+    @description
+      Sets the page title (adds a @code(html)[<title>] element to the @code(html)[<head>])
+    @param title
+      @description
+        The title to set
+
+    @extra
+      @example
+        @noOutput
+        @@um
+          @title [Page Title]

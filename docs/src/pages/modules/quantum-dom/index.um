@@ -4,7 +4,7 @@
   @version 1.0.0
 
 @topSection
-  @title Quantum DOM
+  @title DOM
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     A minimal virtual dom library used by quantum for building html pages.
@@ -14,44 +14,46 @@
     This is a minimal virtual dom library that is used when defining entity
     transforms which convert entities into snippets of html.
 
-    The Quantum DOM library is primarily used when defining custom @bold[entity
-    transforms]. It provides an api that allows creation of objects that represented
+    The Quantum DOM library is primarily used when defining custom @type[EntityTransform] functions. It provides an api that allows creation of objects that represented
     @hyperlink(https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)[elements]
     on a web page (for example a @code[<div>] or @code[<span>], or any other dom
     element).
 
-    @topic Examples
-      The api allows creation of detached elements. Detached elements can be
-      added to another as children to create small chunks of dom. Here are some
-      examples of how to use the api:
+  @topic Api
+    @inline api.um
 
-      @@codeblock js
-        const dom = require('quantum-dom')
+  @topic Examples
+    The api allows creation of detached elements. Detached elements can be
+    added to another as children to create small chunks of dom. Here are some
+    examples of how to use the api:
 
-        // Creates a <div></div> element
-        dom.create('div')
+    @@codeblock js
+      const dom = require('quantum-dom')
 
-        // Creates a <div id="my-id"></div> element
-        dom.create('div').id('my-id')
+      // Creates a <div></div> element
+      dom.create('div')
 
-        // Creates a <a href="/link/to/somewhere">Link</a> element
-        dom.create('a').attr('href', '/link-to-somewhere').text('Link')
+      // Creates a <div id="my-id"></div> element
+      dom.create('div').id('my-id')
 
-        // Creates a <span class="my-class"></span> element
-        dom.create('span').class('my-class')
+      // Creates a <a href="/link/to/somewhere">Link</a> element
+      dom.create('a').attr('href', '/link-to-somewhere').text('Link')
 
-        // Creates an element that will render out to <h1>My Header</h1>
-        dom.create('h1').text('My Header')
+      // Creates a <span class="my-class"></span> element
+      dom.create('span').class('my-class')
 
-        /*
-          Creates the following dom structure:
+      // Creates an element that will render out to <h1>My Header</h1>
+      dom.create('h1').text('My Header')
 
-          <div class="outer-div">
-            <div class="inner-div"></div>
-          </div>
-        */
-        dom.create('div').class('outer-div')
-          .add(dom.create('div').class('inner-div'))
+      /*
+        Creates the following dom structure:
+
+        <div class="outer-div">
+          <div class="inner-div"></div>
+        </div>
+      */
+      dom.create('div').class('outer-div')
+        .add(dom.create('div').class('inner-div'))
 
   @topic More info
 
@@ -59,8 +61,7 @@
     source file for the page is processed. Once done, the virtual dom is rendererd
     out to a HTML string and written to a file. This two phase process allows each
     entity transform to be a @hyperlink(https://en.wikipedia.org/wiki/Pure_function)[pure function],
-    which makes each entity transform easy to understand, and has nice properties
-    that make caching easier (and thus faster page builds).
+    which has nice properties for caching and speeding up builds.
 
     A quantum entity transform might look something like this:
 
@@ -89,52 +90,3 @@
     @code[@signIn] entity), but this transform is rather simple, and needs no
     information from the entity. See the tutorial on @hyperlink(/tutorials/creating-a-blog/)[creating a blog]
     for how to create more advanced entity transforms.
-
-
-
-  @topic Api
-    @api dom
-      @added 2.0.0
-      @function create
-        @description
-          Creates a dom element of the type provided. The type can be any valid
-          dom element type and should be provided lower case. Ie, use @code['div']
-          not @code['DIV']).
-
-          @subsection Example
-            @@codeblock js
-              const dom = require('quantum-dom')
-
-              const myDiv = dom.create('div')
-
-          No validation is performed on the type, so custom elements can also be
-          created.
-
-        @param type [String]: The type of element to create
-        @returns Element: A newly constructed Element instance.
-
-
-      @function head
-        @description
-          Wraps an @type[Element] in a new type that causes the wrapped element
-          to be placed in the @code[<head>] of the page when the virtual dom is
-          converted to html
-
-          @subsection example
-            @@codeblock js
-              const dom = require('quantum-dom')
-
-              const root = dom.create('div')
-                .add(dom.create('div').class('my-element'))
-                .add(dom.head(dom.create('style').text('.my-element { background: red; }')))
-
-              //XXX: check how this bit works
-              root.stringify()
-
-        @param element [Element]
-
-
-        @returns Element
-          @description
-            An element that will be placed in the @code[<head>] of the page when
-            converted into an html string

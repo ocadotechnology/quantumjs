@@ -1,9 +1,8 @@
+const dom = require('..')
+
 describe('head', () => {
-  const { head } = require('..')
   it('creates the correct object', () => {
-    head('something', true).should.eql({
-      element: 'something',
-      options: true
-    })
+    dom.head('something', true)
+      .should.eql(new dom.HeadWrapper('something', true))
   })
 })

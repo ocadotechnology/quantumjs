@@ -7,11 +7,71 @@
   @title Diagram
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    TODO
+    A module for creating flow diagrams
 
 @contentSection
   @topic About
-    TODO
+    This module provides the @code[@diagram] entity for including flow
+    diagrams in a quantum site.
+
+  @topic Example
+    @example
+      @@um
+        @diagram
+          @item sugar [Sugar]
+            Optional
+          @item milk [Milk]
+            Optional
+          @item coffee [Coffee]
+          @item water [Water]
+          @item kettle [Kettle]
+          @item cup [Cup]
+          @item tasty [Tasty Beverage!]
+
+          @link sugar --> cup
+          @link milk --> cup
+          @link water -> kettle
+          @link kettle -> cup
+          @link coffee -> cup
+          @link cup -> tasty
+
+  @topic Entities
+    @inline entities.um
 
   @topic API
     @inline api.um
+
+  @topic Ordering of links
+    The ordering of links within a diagram affects how it is displayed.
+
+    The flow is calculated from the 'top left' meaning that links defined
+    first will display at the top of the chart on the left, flowing down
+    towards the bottom.
+
+    Reversing the order the links of the previous example causes the diagram
+    to 'flip':
+
+    @example
+      @@um
+        @diagram
+          @item sugar [Sugar]
+            Optional
+          @item milk [Milk]
+            Optional
+          @item coffee [Coffee]
+          @item water [Water]
+          @item kettle [Kettle]
+          @item cup [Cup]
+          @item tasty [Tasty Beverage!]
+
+          # Cup remains at the bottom (as it is the bottom of the chain)
+          @link cup -> tasty
+          # Coffee is now the leftmost item
+          @link coffee -> cup
+          @link kettle -> cup
+          @link water -> kettle
+          # Sugar appears to the left of milk
+          @link sugar --> cup
+          @link milk --> cup
+
+    To ensure correct flow, define links in the order they appear in the chain.

@@ -2,21 +2,23 @@
   @description
     Gets the nth entity parameter.
 
-    @codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'blogEntry',
-        params: ['10/12/17'],
-        content: [
-          'Blah blah blah'
-        ]
-      }
+        const entity = {
+          type: 'blogEntry',
+          params: ['10/12/17'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
 
-      const selection = quantum.select(entity)
+        const selection = quantum.select(entity)
 
-      selection.param(0) // '10/12/17'
-      selection.param(1) // undefined
+        selection.param(0) // '10/12/17'
+        selection.param(1) // undefined
 
   @param index [Number]
     @description: The index of the parameter to get
@@ -29,25 +31,27 @@
   @description
     Sets the nth entity parameter.
 
-    @codeblock js
-      const quantum = require('quantum-js')
+  @extra
+    @subsection Example
+      @codeblock js
+        const quantum = require('quantum-js')
 
-      const entity = {
-        type: 'blogEntry',
-        params: ['10/12/17'],
-        content: [
-          'Blah blah blah'
-        ]
-      }
+        const entity = {
+          type: 'blogEntry',
+          params: ['10/12/17'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
 
-      const selection = quantum.select(entity)
+        const selection = quantum.select(entity)
 
-      // get the current parameter value
-      selection.param(0) // '10/12/17'
+        // get the current parameter value
+        selection.param(0) // '10/12/17'
 
-      // set the parameter and observe the change
-      selection.param(0, "11/12/17")
-      selection.param(0) // "11/12/17"
+        // set the parameter and observe the change
+        selection.param(0, "11/12/17")
+        selection.param(0) // "11/12/17"
 
   @param index [Number]
     @description: The index of the parameter to get

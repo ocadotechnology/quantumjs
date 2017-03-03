@@ -165,7 +165,7 @@ describe('changelog', () => {
           return dom.create('span')
             .class('qm-api-javascript-header-prototype')
             .attr('id', 'protoname1')
-            .add(dom.create('span').class('qm-api-prototype-name').text('ProtoName1'))
+            .add(dom.create('span').class('qm-api-javascript-prototype-name').text('ProtoName1'))
         }
         const selection = quantum.select({
           type: 'prototype',
@@ -181,9 +181,9 @@ describe('changelog', () => {
           return dom.create('span')
             .class('qm-api-javascript-header-prototype')
             .attr('id', 'protoname1')
-            .add(dom.create('span').class('qm-api-prototype-name').text('ProtoName1'))
-            .add(dom.create('span').class('qm-api-prototype-extends').text('extends'))
-            .add(dom.create('span').class('qm-api-prototype-extender').add(type('ProtoName2', typeLinks)))
+            .add(dom.create('span').class('qm-api-javascript-prototype-name').text('ProtoName1'))
+            .add(dom.create('span').class('qm-api-javascript-prototype-extends').text('extends'))
+            .add(dom.create('span').class('qm-api-javascript-prototype-extender').add(type('ProtoName2', typeLinks)))
         }
         const selection = quantum.select({
           type: 'prototype',
@@ -202,7 +202,7 @@ describe('changelog', () => {
         function testPrototypeHeader (selection) {
           return dom.create('span')
             .class('qm-api-javascript-header-prototype')
-            .add(dom.create('span').class('qm-api-prototype-name').text(''))
+            .add(dom.create('span').class('qm-api-javascript-prototype-name').text(''))
         }
         const selection = quantum.select({
           type: 'prototype',

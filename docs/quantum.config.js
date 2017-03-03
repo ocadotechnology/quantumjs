@@ -9,6 +9,7 @@ const markdown = require('quantum-markdown')
 const codeHighlight = require('quantum-code-highlight')
 const docs = require('quantum-docs')
 const custom = require('./src/transforms')
+const customLanguage = require('./src/transforms/custom-language')
 
 const typeLinks = {
   Array: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array',
@@ -24,13 +25,16 @@ const typeLinks = {
   Selection: '/modules/quantum-js/#selection',
   Watcher: '/modules/quantum-js/#watcher',
   Element: '/modules/quantum-dom/#element',
-  // TODO: Fix this link
-  Transform: '/modules/quantum-html/#transform'
+  FileTransform: '/docs/file-transforms/',
+  EntityTransform: '/docs/entity-transforms/',
+  Asset: '/modules/quantum-dom/#asset'
 }
 
 const apiOptions = {
   languages: [
+    customLanguage(), // For rendering example content for quantum-api
     api.languages.quantum(),
+    api.languages.css(),
     api.languages.javascript({
       typeLinks: typeLinks
     })
@@ -74,20 +78,17 @@ module.exports = {
     docs.fileTransform(),
     html.fileTransform(htmlOptions)
   ],
-  pages: ['src/pages/**/*.um', '!src/pages/modules/**/api/*.um'],
+  pages: {
+    files: [
+      'src/pages/**/*.um',
+      '!**/modules/**/api/**/*.um',
+      '!**/modules/**/api.um',
+      '!**/modules/**/entities.um'
+    ],
+    base: 'src/pages'
+  },
   resolveRoot: 'src',
   resources: [
-    {
-      files: [
-        'node_modules/hexagon-js/dist/hexagon-light/**/*',
-        '!node_modules/hexagon-js/dist/hexagon-light/favicon/*',
-        '!node_modules/hexagon-js/dist/hexagon-light/hexagon.variables*',
-        '!node_modules/hexagon-js/dist/hexagon-light/hexagon.print*'
-      ],
-      base: 'node_modules/hexagon-js/dist/hexagon-light',
-      dest: 'resources/hexagon-js',
-      watch: false
-    },
     {
       files: 'src/resources/**/*',
       dest: 'resources',

@@ -1,0 +1,26 @@
+@function create
+  @added 2.0.0
+
+  @description
+    Creates a dom element of the type provided. The type can be any valid
+    dom element type and should be provided lower case. Ie, use
+    @code[dom.create('div')] not @code[dom.create('DIV')]). No validation is
+    performed on the type, so custom elements can also be created.
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div')
+        const span = dom.create('span')
+        const button = dom.create('button')
+
+  @param type [String]
+    @description
+      The type of element to create. This should be a valid lower case html
+      element type.
+
+  @returns Element
+    @description
+      A newly constructed Element instance.

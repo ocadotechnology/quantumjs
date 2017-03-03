@@ -7,6 +7,7 @@
   @title Code Highlight
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
+    A module for providing code highlighting
 
 @contentSection
   @topic About
@@ -14,8 +15,8 @@
     The code and codeblock entities render highlighted code blocks.
 
   @topic Example
-    @section Example Code
-      @@codeblock um
+    @example
+      @@um
         Inline code @code[var inlineJS = true;] with text
 
         @@codeblock css
@@ -23,13 +24,9 @@
             background: #FFF;
           }
 
-    @section Example Result
-      Inline code @code[var inlineJS = true;] with text
 
-      @@codeblock css
-        .class {
-          background: #FFF;
-        }
+  @topic Entities
+    @inline entities.um
 
-  @topic API
+  @topic Api
     @inline api.um

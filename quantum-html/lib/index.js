@@ -8,7 +8,7 @@ const merge = require('merge')
 const quantum = require('quantum-js')
 const dom = require('quantum-dom')
 
-function setupElement (type, selection, transform, parsePs) {
+function setupElement (type, selection, transformer, parsePs) {
   const element = dom.create(type)
   const classId = selection.ps()
 
@@ -37,7 +37,7 @@ function setupElement (type, selection, transform, parsePs) {
     .filter((entity) => {
       return entity.type !== 'attr' && entity.type !== 'class' && entity.type !== 'id'
     })
-    .transform(transform))
+    .transform(transformer))
 }
 
 function elementTransform (type) {
@@ -187,7 +187,7 @@ function buildDOM (options) {
     return entityTransform(selection, transformer, meta) // bootstrap to itself to  make the transformer accessible to children
   }
 
-  // the page transform function that turns parsed content into html content
+  // the file transform function that turns parsed content into html content
   return (file) => {
     return Promise.resolve(quantum.select(file.content).transform(transformer))
       .then((elements) => {
@@ -252,11 +252,11 @@ function buildHTML (opts) {
   }
 }
 
-function paragraphTransform (selection, transform) {
+function paragraphTransform (selection, transformer) {
   const paragraphs = [
     dom.asset({
       url: '/quantum-html.css',
-      file: path.join(__dirname, '../assets/quantum-html.css'),
+      filename: path.join(__dirname, '../assets/quantum-html.css'),
       shared: true
     })
   ]
@@ -276,7 +276,7 @@ function paragraphTransform (selection, transform) {
 
       if (quantum.isEntity(e)) {
         currentParagraph = currentParagraph
-          .add(transform(quantum.select(e)))
+          .add(transformer(quantum.select(e)))
           .add(dom.textNode(' '))
       } else {
         currentParagraph = currentParagraph
@@ -296,7 +296,7 @@ function paragraphTransform (selection, transform) {
 // renames name.html to name/index.html and leaves index.html as it is
 function htmlRenamer () {
   return (file) => {
-    if (file.info.dest.lastIndexOf('.html') === file.info.dest.length - 5) {
+    if (path.extname(file.info.dest) === '.html') {
       const filenameWithoutExtension = path.basename(file.info.dest).replace('.html', '')
       const rootPath = path.dirname(file.info.dest)
       return file.clone({
@@ -315,17 +315,15 @@ function fileTransform (options) {
   const htmlBuilder = buildHTML(options)
   const renamer = htmlRenamer()
 
-  function transformer (page) {
-    return domBuilder(page)
+  function fileTransformer (file) {
+    return domBuilder(file)
       .then(htmlBuilder)
-      .then(pages => {
-        return pages.map(renamer)
-      })
+      .then(files => files.map(renamer))
   }
 
-  transformer.entityTransforms = (options || {}).transforms || transforms()
+  fileTransformer.entityTransforms = (options || {}).transforms || transforms()
 
-  return transformer
+  return fileTransformer
 }
 
 module.exports = {

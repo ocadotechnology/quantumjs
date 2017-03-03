@@ -27,10 +27,6 @@
   content: ' .';
 }
 
-.qm-api-item-header-child-class > .qm-api-css-header-name:before {
-  content: ' > .';
-}
-
 .qm-api-item-header-extra-class > .qm-api-css-header-name:before {
   content: '.';
 }

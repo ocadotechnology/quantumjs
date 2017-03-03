@@ -1,5 +1,6 @@
 const dom = require('quantum-dom')
 const quantum = require('quantum-js')
+
 function um (selection, transformer) {
   return quantum.select(quantum.parse(selection.cs())).transform(transformer)
 }
@@ -19,7 +20,7 @@ function exampleFile (selection, transformer, fileName) {
 
       return dom.create('div').class('docs-example-code-section')
         .add(dom.create('div').class('docs-example-code-heading').text(fileName ? `${fileName} (${title})` : title))
-        .add(fake.transform(transformer))
+        .add(dom.create('div').class('docs-example-code-block').add(fake.transform(transformer)))
     }
   }
 
@@ -45,7 +46,7 @@ function exampleFile (selection, transformer, fileName) {
 Mutli-file and language example transform
 
 @example
-  @noBackground   - Hide the background for the sections
+  @noBackground   - Hide the background for the sections (explicitly true in @extra blocks)
   @noOutput       - Hide all output from example (e.g remove the Example Result section)
 
   @<type>         - langauge type, displays with '<Type>' heading (e.g. @js)) can have multiple types at once
@@ -57,7 +58,6 @@ Mutli-file and language example transform
     @<type>       - Code for file
 
   @output         - Set the output of this example section
-
 
 e.g.
 @example
@@ -99,10 +99,16 @@ function example (selection, transformer) {
       .add(result)
 }
 
+const html = require('quantum-html')
+function customTransform (selection, transformer) {
+  return html.paragraphTransform(selection, transformer)
+}
+
 function transforms () {
   return Object.freeze({
     um,
-    example
+    example,
+    customTransform
   })
 }
 

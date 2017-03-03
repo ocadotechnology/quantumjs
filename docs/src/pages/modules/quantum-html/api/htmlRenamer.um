@@ -1,0 +1,8 @@
+@function htmlRenamer
+  @added 2.0.0
+  @description
+    Returns a file transform that renames @code[name.html] to @code[name/index.html] and leaves @code[index.html] as it is.
+
+    This is to provide a better URL structure for sites so all html files are called @code[index.html] and therefore don't need to be directly referenced (e.g. @code[example.com/my-page/] instead of @code[example.com/my-page.html])
+
+  @returns FileTransform

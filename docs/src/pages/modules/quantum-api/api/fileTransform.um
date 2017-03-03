@@ -1,13 +1,59 @@
 @function fileTransform
   @added 2.0.0
+  @description
+    A wrapper around the exposed file transforms.
+
   @param? options [Object]
+    @description
+      The options to use for the file transform.
+
+      The entire object will be passed to all the lower-level transforms
+
     @property processChangelogs [Boolean]
+      @description
+        Whether to process changelogs
       @default: true
-  @returns Function
-    @param file [File]
+
+  @returns FileTransform
 
 
 @object fileTransforms
   @added 2.0.0
-  @property changelog [FileTransform]
-    # Document what it does here, document FileTransform elsewhere
+  @description
+    The available file transforms.
+
+  @function changelog
+    @description
+      The @type[FileTransform] for processing @code[@changelogList] entities.
+
+    @param file [File]
+      @description
+        The file currently being processed.
+    @param? options [Object]
+      @property changelogGroupByApi [Boolean]
+        @description
+          Whether the changelog should be grouped by api.
+
+          Can also be set on a per-@code[@changelogList] basis using
+          @code[@groupByApi true]
+
+        @default: false
+
+      @property changelogReverseVisibleList [Boolean]
+        @description
+          Whether to reverse the list of changelog items to put the last one at
+          the top to make it easier to document.
+
+          Can also be set on a per-@code[@changelogList] basis using
+          @code[@reverseVisibleList true]
+
+        @default: false
+
+      @property languages [Array[Object]]
+        @description
+          The languages to use to render the changelog headers
+
+          This is where defined @code[changelogHeaderTransforms] are used from
+          the @hyperlink(./#languages)[languages]
+
+    @returns File

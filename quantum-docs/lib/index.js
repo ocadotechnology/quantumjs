@@ -7,13 +7,13 @@ const html = require('quantum-html')
 
 const stylesheetAsset = dom.asset({
   url: '/quantum-docs.css',
-  file: path.join(__dirname, '../assets/quantum-docs.css'),
+  filename: path.join(__dirname, '../assets/quantum-docs.css'),
   shared: true
 })
 
 const scriptAsset = dom.asset({
   url: '/quantum-docs.js',
-  file: path.join(__dirname, '../assets/quantum-docs.js'),
+  filename: path.join(__dirname, '../assets/quantum-docs.js'),
   shared: true
 })
 
@@ -351,7 +351,7 @@ function transforms (opts) {
   })
 }
 
-function populateTableOfContents (page) {
+function populateTableOfContents (page, options) {
   const toc = quantum.select(page.content).select('tableOfContents', {recursive: true})
   const topics = quantum.select(page.content).selectAll('topic', {recursive: true})
 
@@ -372,11 +372,11 @@ function populateTableOfContents (page) {
 
 function fileTransform (options) {
   const opts = options || {}
-  const populateTableOfContentsOptions = opts.populateTableOfContents || {}
-  const populateTableOfContentsEnabled = (populateTableOfContentsOptions.enabled !== false)
+  const tableOfContentsOptions = opts.tableOfContents || {}
+  const populateTableOfContentsEnabled = tableOfContentsOptions.enabled !== false
   return (page) => {
     if (populateTableOfContentsEnabled) {
-      populateTableOfContents(page)
+      populateTableOfContents(page, tableOfContentsOptions)
     }
     return page
   }

@@ -4,7 +4,8 @@
   @description
     Reads and parses the contents of a file
 
-    @subsection
+  @extra
+    @subsection Example
       @@codeblock js
         const quantum = require('quantum-js')
 

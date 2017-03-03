@@ -13,9 +13,9 @@
     "lint:quantum-template": "cd quantum-template && npm run lint",
     "lint:quantum-version": "cd quantum-version && npm run lint",
 
-    "clean-coverage": "rm -r */coverage; true",
+    "clean-coverage": "rm -rf */coverage",
     "combine-coverage": "node scripts/combine-coverage */coverage/coverage.json",
-    "combined-test": "npm run clean-coverage && ./node_modules/istanbul/lib/cli.js cover -x */lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- -g placeholder -i --ui bdd -R spec test/index.spec.js && node scripts/combine-coverage coverage/coverage.json",
+    "combined-test": "npm run clean-coverage && ./node_modules/istanbul/lib/cli.js cover -x */lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test/index.spec.js && node scripts/combine-coverage coverage/coverage.json",
 
     "test": "npm run clean-coverage && npm-run-all test:* && npm run combine-coverage",
     "test:quantum-api": "cd quantum-api && npm test",

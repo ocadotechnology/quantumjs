@@ -1,9 +1,65 @@
 @object languages
   @added 2.0.0
-  @property javascript [Language]
+  @description
+    The languages available in the @code[quantum-api] module.
+
+    It is also possible to define @hyperlink(./#custom-language)[Custom Languages].
+
+  @property javascript [Function]
+    @description
+      A function used to build the javascript language to provide entity transforms.
     @param? options [Object]
       @property typeLinks [Object]
-        # Type: 'URL'
+        @description
+          The type links to use when linking types
 
+    @returns Object
+      @description: An object definining how to display javascript documentation.
+      @property name [String]
+        @description
+          The name of the language
+      @property transforms [Object[EntityTransform]]
+        @description
+          The transforms the language exposes
+      @property changelogHeaderTransforms [Object[EntityTransform]]
+        @description
+          The header transforms for the changelog to use
+      @property assets [Array[Asset]]
+        @description
+          The assets required to render the language.
 
-  @property css [Language]
+  @property css [Function]
+    @description
+      A function used to build the css language to provide entity transforms.
+    @returns Object
+      @description: An object definining how to display javascript documentation.
+      @property name [String]
+        @description
+          The name of the language
+      @property transforms [Object[EntityTransform]]
+        @description
+          The transforms the language exposes
+      @property changelogHeaderTransforms [Object[EntityTransform]]
+        @description
+          The header transforms for the changelog to use
+      @property assets [Array[Asset]]
+        @description
+          The assets required to render the language.
+
+  @property quantum [Function]
+    @description
+      A function used to build the quantum language to provide entity transforms.
+    @returns Object
+      @description: An object definining how to display quantum documentation.
+      @property name [String]
+        @description
+          The name of the language
+      @property transforms [Object[EntityTransform]]
+        @description
+          The transforms the language exposes
+      @property changelogHeaderTransforms [Object[EntityTransform]]
+        @description
+          The header transforms for the changelog to use
+      @property assets [Array[Asset]]
+        @description
+          The assets required to render the language.

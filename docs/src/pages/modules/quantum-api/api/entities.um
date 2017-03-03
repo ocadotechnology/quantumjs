@@ -1,93 +1,594 @@
-@entity api
-  @added 2.0.0
+@group [Standard Entities]
   @description
-    TODO
+    Entities that exist regardless of what languages are used.
+  @entity api
+    @added 2.0.0
+    @description
+      The container for api content. All the entities provided by this module
+      should be used inside an @code[@api] entity
+    @param apiName
+      @description
+        The name of the api that is used to group content when generating
+        changelogs from multiple apis
+    @extra
+      @example
+        @noOutput
+        @@um
+          @api apiName
 
-@entity group
-  @added 2.0.0
-  @description
-    TODO
+    @entity group
+      @added 2.0.0
+      @description
+        Define a custom group inside an api
+      @param header
+        @description
+          The text to display as the group header.
+      @extra
+        @example
+          @@um
+            @api apiName
+              @group Header
+                @object obj1
+              @group [Multi word header]
+                @object obj2
 
-@entity changelogList
-  @added 2.0.0
-  @description
-    TODO
+  @entity changelogList
+    @added 2.0.0
+    @description
+      Define a collection of changelogs for multiple versions.
 
-@entity changelog
-  @added 2.0.0
+      Behaves differently when using the @hyperlink(./#filetransform)[fileTransform].
+
+    @extra
+      @example
+        @@um
+          @changelogList
+            @changelog 1.0.0
+              @description
+                Description of changes in this version
+
+              @entry
+                @header javascript
+                  @function jsFunction1
+                @change added
+                  @description: Added jsFunction1
+
+              @group Changelog group
+                @entry
+                  @header javascript
+                    @function jsFunction2
+                  @change added
+                    @description: Added jsFunction2
+
+            @changelog 2.0.0
+              @description
+                Description of changes in this version
+
+              @entry
+                @header javascript
+                  @function jsFunction1
+                @change updated
+                  @description: Updated jsFunction1
+
+
+  @entity changelog
+    @added 2.0.0
+    @description
+      Define a changelog for a specific version.
+
+    @extra
+      @example
+        @@um
+          @changelog 1.0.0
+            @description
+              Description of changes in this version
+
+            @entry
+              @header javascript
+                @function jsFunction1
+              @change added
+                @description: Added jsFunction1
+
+            @group Changelog group
+              @entry
+                @header javascript
+                  @function jsFunction2
+                @change added
+                  @description: Added jsFunction2
+
+    @entity link
+      @description
+        A link to add to the version header (e.g. to go to version x of the api)
+
+      @param url
+        @description
+          The URL to link to
+
+@group [File Transform Entities]
   @description
-    TODO
+    Entities that are available or behave differently when using the
+    @hyperlink(./#filetransform)[fileTransform].
+
+  @entity changelogList
+    @added 2.0.0
+    @description
+      Processes and generates changelogs from content in @code[@api] sections.
+
+      See the @hyperlink(./#rendering-changelogs)[Rendering Changelogs] example.
+
+    @entity groupByApi
+      @description
+        Whether to group entries by api or render all entries in one set.
+
+      @param boolean
+        @description
+          The value to set
+
+      @extra
+        @example
+          @noOutput
+          @@um
+            @changelogList
+              @groupByApi true
+
+    @entity reverseVisibleList
+      @description
+        Whether to reverse the list of versions so the latest is at the top.
+
+      @param boolean
+        @description
+          The value to set
+
+      @extra
+        @example
+          @noOutput
+          @@um
+            @changelogList
+              @reverseVisibleList true
+
+    @entity process
+      @description
+        Define the api content to process.
+
+        This is generally in the form of an @code[@inline] file or set of files.
+
+    @entity version
+      @description
+        Define a version to show in the changelog.
+
+        Entries tagged with a version will be grouped and shown here.
+
+      @extra
+        @example
+          @noOutput
+          @@um
+            @changelogList
+              @version 1.0.0
+                @link [path/to/version/1.0.0]
+                @description
+                  Description of the changes in version 1
+
+      @param versionNumber
+        @description
+          The version number to show
+
+      @entity link
+        @description
+          A link to add to the version header (e.g. to go to version x of the api)
+
+        @param url
+          @description
+            The URL to link to
+
+      @entity description
+        @description
+          A description of the changes in a version.
+
+
+@group [Shared Entities]
+  @description
+    All the entities provided by @hyperlink(./#languages)[languages] support these entities.
+
+  @entity description
+    @added 2.0.0
+    @description
+      The description of an entity.
+
+    @extra
+      @example
+        @@um
+          @property propertyName
+            @description: Description of property
+
+  @entity extra
+    @added 2.0.0
+    @description
+      Extra information that should not be part of the description (e.g examples)
+
+    @extra
+      @example
+        @@um
+          @function functionName
+            @description
+              A function that returns true
+            @extra
+              @bold[Example]:
+              @@codeblock js
+                functionName() // returns true
+
+  @entity collapsed
+    @added 2.0.0
+    @description
+      Whether an api item should be collapsed when loading the page.
+
+    @param boolean
+      @description
+        The value to set
+
+    @extra
+      @example
+        @@um
+          @function collapsedFunction
+            @collapsed true
+            @description
+              Collapsed function
+
+          @function openFunction
+            @collapsed false
+            @description
+              Open function
+
+
+  @entity collapsible
+    @added 2.0.0
+    @description
+      Whether an api item can be collapsed.
+
+    @param boolean
+      @description
+        The value to set
+
+    @extra
+      @example
+        @@um
+          @function collapsedFunction
+            @collapsible true
+            @description
+              Collapsible function
+
+          @function openFunction
+            @collapsible false
+            @description
+              Open function
+
+  @entity group
+    @added 2.0.0
+    @description
+      Define a custom group inside an api
+    @param header
+      @description
+        The text to display as the group header.
+    @extra
+      @example
+        @@um
+          @api apiName
+            @function functionName
+              @group Stuff
+                @object object1
+
 
 @group [Language: Javascript]
-  @description: Transforms provided by the javascript @hyperlink(./#languages)[language] when passed in as an option.
+  @description
+    Transforms provided by the @code[javascript] @hyperlink(./#languages)[language]
+    when passed in as an option.
+
   @entity function
     @added 2.0.0
     @description
-      TODO
+      Describes a javascript Function
+
+    @extra
+      @example
+        @file Function to document
+          @noOutput
+          @js
+            function something (param1, param2) {
+              param2 = param2 || true
+              ...
+            }
+
+        @file
+          @@um
+            @api
+              @function something
+                @param param1 [String]
+                @param? param2 [Boolean]
+                  @default: true
 
   @entity object
     @added 2.0.0
     @description
-      TODO
+      Describes a javascript object
+
+    @extra
+      @example
+        @file Object to document
+          @noOutput
+          @js
+            const anObject = {
+              prop1: true
+            }
+
+        @file
+          @@um
+            @api
+              @object anObject
+                @property prop1 [Boolean]
+                  @description
+                    The value of this property is @code[true]
+
 
   @entity event
     @added 2.0.0
     @description
-      TODO
+      Describes a javascript event
+
+    @extra
+      @example
+        @file Event to document
+          @noOutput
+          @js
+            window.addEventListener('onchange', (evt) => {
+              ...
+            })
+
+        @file
+          @@um
+            @api
+              @event onchange
+                @description
+                  Description of event
+                @default: Object
+
+
 
   @entity default
     @added 2.0.0
     @description
-      TODO
+      Describes the default value of an optional property or parameter
+
+    @extra
+      @example
+        @@um
+          @api
+            @object objectName
+              @collapsed false
+              @property prop1 [Boolean]
+                @collapsed false
+                @default: False
+
+            @function functionName
+              @collapsed false
+              @param? param1 [Boolean]
+                @collapsed false
+                @default: True
+
 
   @entity returns
     @added 2.0.0
     @description
-      TODO
+      Describes the return type for a javascript function
+
+    @extra
+      @example
+        @@um
+          @api
+            @function functionName
+              @collapsed false
+              @returns Boolean
+                @collapsed false
+                @description: The return value of the function
 
   @entity param
     @added 2.0.0
     @description
-      TODO
+      Describes a function parameter
+
+    @extra
+      @example
+        @@um
+          @api
+            @function functionName
+              @collapsed false
+              @param paramName [ParamType]
+                @description
+                  Param Descripton
 
   @entity param?
     @added 2.0.0
     @description
-      TODO
+      Describes an optional function parameter
+
+    @extra
+      @example
+        @@um
+          @api
+            @function functionName
+              @collapsed false
+              @param? paramName [ParamType]
+                @description
+                  Param Descripton
 
   @entity property
     @added 2.0.0
     @description
-      TODO
+      Describes an object property
+
+    @extra
+      @example
+        @@um
+          @api
+            @object objectName
+              @property propertyName [PropertyType]
+
+  @entity property?
+    @added 2.0.0
+    @description
+      Describes an optional object property
+
+    @extra
+      @example
+        @@um
+          @api
+            @object objectName
+              @property? propertyName [PropertyType]
+
 
   @entity prototype
     @added 2.0.0
     @description
-      TODO
+      Describes a javscript prototype
+
+    @extra
+      @example
+        @@um
+          @api
+            @prototype Array
+              @description
+                The Array prototype
+              @constructor
+                @description
+                  Create an array of @code[undefined] elements
+                @param length
+                  @description: The length of the array to create
+
+              @method fill
+                @description
+                  Fill an array with values
+                @param value [Any]
+                  @description: The value to fill with
 
   @entity constructor
     @added 2.0.0
     @description
-      TODO
+      Describes a constructor for a Prototype.
+
+      It is rendered in the same way as a function but does not expect a
+      function name.
+
+    @extra
+      @example
+        @@um
+          @api
+            @prototype Selection
+              @collapsed false
+              @constructor
+                @param param1 [String]
+                @param? param2 [Boolean]
+                  @default: true
 
   @entity method
     @added 2.0.0
     @description
-      TODO
+      Describes a method for a Prototype.
+
+      It is rendered in the same way as a function.
+
+    @extra
+      @example
+        @@um
+          @api
+            @prototype Selection
+              @collapsed false
+              @method methodName
+                @param param1 [String]
+                @param? param2 [Boolean]
+                  @default: true
+
 
 @group [Language: CSS]
-  @description: Transforms provided by the css @hyperlink(./#languages)[language] when passed in as an option.
+  @description
+    Transforms provided by the @code[css] @hyperlink(./#languages)[language] when
+    passed in as an option.
+
   @entity class
     @added 2.0.0
     @description
-      TODO
+      Describes a css class
 
-  @entity extraclass
+    @extra
+      @example
+        @file Class to document
+          @noOutput
+          @css
+            .red-background {
+              background: red;
+            }
+
+        @file
+          @@um
+            @api
+              @class red-background
+                @description
+                  Makes the background of an element red
+
+
+  @entity extraClass
     @added 2.0.0
     @description
-      TODO
+      Describes a css class applied to a parent css class
 
-  @entity childclass
+    @extra
+      @example
+        @file Class to document
+          @noOutput
+          @css
+            .red-background {
+              background: red;
+            }
+
+            .red-background.blue-text {
+              color: blue;
+            }
+
+        @file
+          @@um
+            @api
+              @class red-background
+                @description
+                  Makes the background of an element red
+
+                @extraClass blue-text
+                  @description
+                    Makes the text blue on red-background elements
+
+
+@group [Language: Quantum]
+  @description
+    Transforms provided by the @code[quantum] @hyperlink(./#languages)[language] when
+    passed in as an option.
+
+  @entity entity
     @added 2.0.0
     @description
-      TODO
+      Describes a quantum entity
+
+    @extra
+      @example
+        @@um
+          @api
+            @entity class
+              @description
+                Describes a css class
+
+  @entity param
+    @added 2.0.0
+    @description
+      Describes a quantum entity parameter
+
+    @extra
+      @example
+        @@um
+          @api
+            @entity groupByApi
+              @param boolean

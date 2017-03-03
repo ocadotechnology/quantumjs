@@ -1,0 +1,4 @@
+@api quantum-code-highlight-entities
+  @description
+    The below entities are provided by the @hyperlink(./#transforms)[transforms] function.
+  @inline api/entities.um

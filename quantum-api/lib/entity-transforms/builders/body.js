@@ -10,7 +10,7 @@ function description (selection, transformer) {
     return dom.create('div')
       .class('qm-api-description')
       .add(html.paragraphTransform(selection.select('description'), transformer))
-  } else if (selection.hasContent()) {
+  } else if (selection.hasContent() && selection.cs().trim()) {
     return dom.create('div')
       .class('qm-api-description')
       .text(selection.cs().trim())

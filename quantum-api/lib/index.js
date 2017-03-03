@@ -14,6 +14,7 @@ const config = require('./config')
 const header = require('./entity-transforms/builders/header')
 const body = require('./entity-transforms/builders/body')
 const item = require('./entity-transforms/builders/item')
+const itemGroup = require('./entity-transforms/builders/item-group')
 
 // entity transforms
 const api = require('./entity-transforms/api')
@@ -26,7 +27,7 @@ const javascript = require('./languages/javascript')
 const css = require('./languages/css')
 
 // file transforms
-const changelogFileTransform = require('./file-transforms/changelog')
+const changelogFileTransform = require('./file-transforms/changelog').fileTransform
 
 function transforms (options) {
   const opts = config.resolve(options)
@@ -48,7 +49,7 @@ function fileTransform (options) {
   const opts = config.resolve(options)
   return (file) => {
     if (opts.processChangelogs) {
-      return changelogFileTransform.fileTransform(file, opts)
+      return changelogFileTransform(file, opts)
     } else {
       return file
     }
@@ -69,6 +70,7 @@ module.exports = {
   builders: {
     header,
     body,
-    item
+    item,
+    itemGroup
   }
 }

@@ -11,7 +11,10 @@
 
 @contentSection
   @topic About
-    This module provides a file transform that enables the generation of incrementally versioned content. The version transform works well with the @hyperlink(../quantum-api/)[quantum-api] transforms for generating versioned api documentation.
+    This module provides a file transform that enables the generation of
+    incrementally versioned content. The version transform works well with the
+    @hyperlink(../quantum-api/)[quantum-api] transforms for generating
+    versioned api documentation.
 
   @topic API
     @inline api.um

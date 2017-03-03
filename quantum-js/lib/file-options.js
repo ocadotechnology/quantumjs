@@ -87,7 +87,7 @@ function normalizeSpec (item) {
     return {
       files: files,
       base: item.base ? item.base : inferBase(item.files), // in the 'else' situation item.files must be a string since it passed the validation check
-      watch: item.watch,
+      watch: item.watch !== false,
       dest: item.dest
     }
   }
