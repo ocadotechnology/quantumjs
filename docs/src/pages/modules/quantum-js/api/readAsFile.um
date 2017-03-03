@@ -63,6 +63,10 @@
       @description
         The base of the glob path that should be ignored when writing to the
         target.
+    @property resolveRoot [String]
+      @description
+        The path to resolve absolute files from.
+      @default: The current working directory
 
   @returns [Promise[File]]
     @description
