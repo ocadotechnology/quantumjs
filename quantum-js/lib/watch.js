@@ -105,6 +105,7 @@ function watch (specs, handler, options) {
   const fileReader = opts.fileReader || readAsFile
   const loader = opts.loader || defaultLoader
   const buildConcurrency = opts.concurrency || 1
+  const resolveRoot = path.resolve(opts.resolveRoot || process.cwd())
 
   // State that is maintained by watching for file changes
   const fileInfos = {}
@@ -175,7 +176,7 @@ function watch (specs, handler, options) {
 
   function workHandler (work) {
     fileInfos[work.fileInfo.src] = work.fileInfo
-    return fileReader(work.fileInfo, { loader: linkingLoader })
+    return fileReader(work.fileInfo, { loader: linkingLoader, resolveRoot })
       .then(file => handler(undefined, file, work.cause))
       .catch((err) => {
         if (err instanceof ParseError) {
