@@ -141,7 +141,7 @@ function buildSpecs (startTime, specs, config, options, pipeline, logger) {
   let builtCount = 0
 
   return fileOptions.resolve(specs, options).map((fileInfo) => {
-    return fileReader(fileInfo, { loader })
+    return fileReader(fileInfo, { loader, resolveRoot: options.resolveRoot })
       .then(file => buildPage(file, pipeline, config, logger, false)
         .then(files => {
           builtCount += files.length
@@ -162,11 +162,11 @@ function build (config) {
   const logger = createFilteredLogger(config.logger || defaultLogger, config.logLevel)
   const options = {
     concurrency: config.concurrency || 1,
-    dest: config.dest
+    dest: config.dest,
+    resolveRoot: path.resolve(config.resolveRoot || process.cwd())
   }
   const pipeline = createPipeline(config.pipeline)
   const startTime = Date.now()
-
   return copyResources(config, options, logger).then(() => {
     logger({type: 'header', message: 'Building Pages'})
     return buildSpecs(startTime, config.pages, config, options, pipeline, logger)
@@ -222,7 +222,8 @@ function watch (config) {
     dest: config.dest || 'target',
     port: config.port || 8080,
     fileReader: config.fileReader || readAsFile,
-    loader: config.loader || defaultLoader
+    loader: config.loader || defaultLoader,
+    resolveRoot: path.resolve(config.resolveRoot || process.cwd())
   }
   const pipeline = createPipeline(config.pipeline)
 

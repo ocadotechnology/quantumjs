@@ -1,4 +1,4 @@
-@inline ../../templates/sidebar-page.um
+@inline /templates/sidebar-page.um
 
 @topSection
   @title Config File
@@ -91,3 +91,8 @@
         @description
           This property should describe the files that should be processed by
           quantum as pages.
+
+      @property resolveRoot [String]
+        @description
+          The path to resolve absolute files from.
+        @default: The current working directory

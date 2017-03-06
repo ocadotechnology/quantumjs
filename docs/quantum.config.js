@@ -87,6 +87,7 @@ module.exports = {
     ],
     base: 'src/pages'
   },
+  resolveRoot: 'src',
   resources: [
     {
       files: 'src/resources/**/*',
