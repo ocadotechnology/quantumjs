@@ -1,216 +1,275 @@
 describe('changelog', () => {
-  const path = require('path')
+  const should = require('chai').should()
   const dom = require('quantum-dom')
-  const quantum = require('quantum-js')
   const header = require('../../../lib/entity-transforms/builders/header')
-  const type = require('../../../lib/entity-transforms/components/type')
+  const path = require('path')
+  const quantum = require('quantum-js')
   const changelogFileTransform = require('../../../lib/file-transforms/changelog')
   const javascript = require('../../../lib/languages/javascript')
 
-  const typeLinks = {}
+  describe('createHeaderDom', () => {
+    const options = {}
+    function transformer () {}
 
-  function transformer () {}
+    const { createHeaderDom } = javascript(options).changelog
+    it('creates a header for a single entity', () => {
+      function functionNamebuilder (selection) {
+        const name = selection.param(0)
+        return dom.create('span')
+          .class('qm-api-javascript-header-function-signature')
+          .attr('id', name ? name.toLowerCase() : undefined)
+          .add(dom.create('span')
+            .class('qm-api-javascript-header-function-name')
+            .text(selection.type() === 'constructor' ? 'constructor' : name))
+          .add(dom.create('span')
+            .class('qm-api-javascript-header-function-params'))
+      }
 
-  describe('changelogHeaderTransforms', () => {
-    const { changelogHeaderTransforms } = javascript({ typeLinks })
-    const keys = [
-      'object',
-      'prototype',
-      'event',
-      'constructor',
-      'function',
-      'method',
-      'property',
-      'property?'
-    ]
+      const selection = {
+        type: 'function',
+        params: ['function-name'],
+        content: []
+      }
 
-    it('has the right properties', () => {
-      changelogHeaderTransforms.should.have.keys(keys)
-    })
-
-    keys.forEach(entityType => {
-      it(`${entityType}' looks like a transform`, () => {
-        changelogHeaderTransforms[entityType].should.be.a('function')
-        changelogHeaderTransforms[entityType].length.should.equal(2)
+      const headerSel = quantum.select({
+        type: 'header',
+        params: [],
+        content: [selection]
       })
+
+      createHeaderDom(headerSel, transformer).should.eql(dom.create('span')
+        .class('qm-changelog-javascript-header')
+          .add(dom.create('span')
+            .class('qm-changelog-javascript-function')
+            .add(header('function', functionNamebuilder)(quantum.select(selection), transformer))))
     })
 
-    const typesThatUsePropertyHeader = [
-      'property',
-      'object',
-      'event',
-      'property?'
-    ]
+    it('creates a header for nested entites', () => {
+      const child3 = {
+        type: 'property',
+        params: [],
+        content: []
+      }
 
-    typesThatUsePropertyHeader.forEach(entityType => {
-      describe(entityType, () => {
-        it('renders correctly', () => {
-          function testPropertHeaderDetails (selection) {
-            return dom.create('span')
-              .class('qm-api-javascript-header-property')
-              .attr('id', 'someprop')
-              .add(dom.create('span').class('qm-api-javascript-header-property-name').text('someProp'))
-              .add(dom.create('span').class('qm-api-javascript-header-property-type').add(type('Type', typeLinks)))
-          }
-          const selection = quantum.select({
-            type: entityType,
-            params: ['someProp', 'Type'],
-            content: []
-          })
-          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('property', testPropertHeaderDetails)(selection, transformer))
-        })
+      const child2 = {
+        type: 'property',
+        params: ['some-prop'],
+        content: [child3]
+      }
 
-        it('handles not having params', () => {
-          function testPropertHeaderDetails (selection) {
-            return dom.create('span')
-              .class('qm-api-javascript-header-property')
-              .add(dom.create('span').class('qm-api-javascript-header-property-name').text(''))
-              .add(dom.create('span').class('qm-api-javascript-header-property-type').add(type(undefined, typeLinks)))
-          }
-          const selection = quantum.select({
-            type: entityType,
-            params: [],
-            content: []
-          })
-          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('property', testPropertHeaderDetails)(selection, transformer))
-        })
+      const child1 = {
+        type: 'property',
+        params: ['some-object', 'Object'],
+        content: [child2]
+      }
+
+      const selection = {
+        type: 'object',
+        params: ['entity-name'],
+        content: [
+          child1
+        ]
+      }
+
+      const headerSel = quantum.select({
+        type: 'header',
+        params: [],
+        content: [selection]
       })
+
+      function objectHeaderBuilder (selection, transformer) {
+        const name = selection.param(0)
+        return dom.create('span')
+          .class('qm-api-javascript-header-object')
+          .attr('id', name ? name.toLowerCase() : undefined)
+          .add(dom.create('span').class('qm-api-javascript-header-object-name').text(name || ''))
+      }
+
+      function propertyHeaderBuilder (selection, transformer) {
+        const name = selection.param(0)
+        return dom.create('span')
+          .class('qm-api-javascript-header-property')
+          .attr('id', name ? name.toLowerCase() : undefined)
+          .add(dom.create('span').class('qm-api-javascript-header-property-name').text(name || ''))
+          .add(dom.create('span').class('qm-api-javascript-header-property-type'))
+      }
+
+      createHeaderDom(headerSel, transformer).should.eql(dom.create('span')
+        .class('qm-changelog-javascript-header')
+          .add(dom.create('span')
+            .class('qm-changelog-javascript-object')
+            .add(header('object', objectHeaderBuilder)(quantum.select(selection), transformer)))
+          .add(dom.create('span')
+            .class('qm-changelog-javascript-property')
+            .add(header('object', objectHeaderBuilder)(quantum.select(child1), transformer)))
+          .add(dom.create('span')
+            .class('qm-changelog-javascript-property')
+            .add(header('property', propertyHeaderBuilder)(quantum.select(child2), transformer)))
+          .add(dom.create('span')
+            .class('qm-changelog-javascript-property')
+            .add(header('property', propertyHeaderBuilder)(quantum.select(child3), transformer))))
     })
 
-    const typesThatUseFunctionHeader = [
-      'function',
-      'method',
-      'constructor'
-    ]
+    it('creates a header with params', () => {
+      const child1 = {
+        type: 'param',
+        params: ['param'],
+        content: []
+      }
 
-    typesThatUseFunctionHeader.forEach((entityType) => {
-      describe(entityType, () => {
-        it('renders correctly', () => {
-          function testFunctionHeaderDetails (selection) {
-            return dom.create('span').class('qm-api-javascript-header-function')
-              .attr('id', entityType === 'constructor' ? undefined : 'somefunction')
-              .add(dom.create('span').class('qm-api-javascript-header-function-name').text(entityType === 'constructor' ? 'constructor' : 'someFunction'))
-              .add(dom.create('span').class('qm-api-javascript-header-function-params')
-                .add(dom.create('span').class('qm-api-javascript-header-function-param')
-                  .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text('param1'))
-                  .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type('param1Type', typeLinks)))))
-          }
-          const selection = quantum.select({
-            type: entityType,
-            params: entityType === 'constructor' ? [] : ['someFunction'],
-            content: [{
-              type: 'param',
-              params: ['param1', 'param1Type'],
-              content: []
-            }]
-          })
-          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('function', testFunctionHeaderDetails)(selection, transformer))
-        })
+      const child2 = {
+        type: 'param?',
+        params: ['optional'],
+        content: []
+      }
 
-        it('renders optional params correctly', () => {
-          function testFunctionHeaderDetails (selection) {
-            return dom.create('span').class('qm-api-javascript-header-function')
-              .attr('id', entityType === 'constructor' ? undefined : 'somefunction')
-              .add(dom.create('span').class('qm-api-javascript-header-function-name').text(entityType === 'constructor' ? 'constructor' : 'someFunction'))
-              .add(dom.create('span').class('qm-api-javascript-header-function-params')
-                .add(dom.create('span').class('qm-api-javascript-header-function-param qm-api-optional')
-                  .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text('param1'))
-                  .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type('param1Type', typeLinks)))))
-          }
-          const selection = quantum.select({
-            type: entityType,
-            params: entityType === 'constructor' ? [] : ['someFunction'],
-            content: [{
-              type: 'param?',
-              params: ['param1', 'param1Type'],
-              content: []
-            }]
-          })
-          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('function', testFunctionHeaderDetails)(selection, transformer))
-        })
+      const child3 = {
+        type: 'param',
+        params: [''],
+        content: []
+      }
 
-        it('renders returns correctly', () => {
-          function testFunctionHeaderDetails (selection) {
-            return dom.create('span').class('qm-api-javascript-header-function')
-              .attr('id', entityType === 'constructor' ? undefined : 'somefunction')
-              .add(dom.create('span').class('qm-api-javascript-header-function-name').text(entityType === 'constructor' ? 'constructor' : 'someFunction'))
-              .add(dom.create('span').class('qm-api-javascript-header-function-params')
-                .add(dom.create('span').class('qm-api-javascript-header-function-param')
-                  .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text('param1'))
-                  .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type('param1Type', typeLinks)))))
-              .add(dom.create('span').class('qm-api-javascript-header-function-returns').add(type('Type', typeLinks)))
-          }
-          const selection = quantum.select({
-            type: entityType,
-            params: entityType === 'constructor' ? [] : ['someFunction'],
-            content: [{
-              type: 'param',
-              params: ['param1', 'param1Type'],
-              content: []
-            }, {
-              type: 'returns',
-              params: ['Type'],
-              content: []
-            }]
-          })
-          changelogHeaderTransforms[entityType](selection, transformer).should.eql(header('function', testFunctionHeaderDetails)(selection, transformer))
-        })
+      const selection = {
+        type: 'function',
+        params: ['entity-name'],
+        content: [
+          child1,
+          child2,
+          child3
+        ]
+      }
+
+      const headerSel = quantum.select({
+        type: 'header',
+        params: [],
+        content: [selection]
       })
+
+      function paramBuilder (selection, transformer) {
+        const name = selection.param(0)
+        const isOptional = selection.type()[selection.type().length - 1] === '?'
+        return dom.create('span')
+          .class('qm-api-javascript-header-function-param')
+          .classed('qm-api-optional', isOptional)
+          .add(dom.create('span').class('qm-api-javascript-header-function-param-name')
+            .text(name || ''))
+          .add(dom.create('span').class('qm-api-javascript-header-function-param-type'))
+      }
+
+      function functionBuilder (selection, transformer) {
+        const name = selection.param(0)
+
+        const nameSel = dom.create('span')
+          .class('qm-api-javascript-header-function-name')
+          .add(name || '')
+
+        return dom.create('span')
+          .class('qm-api-javascript-header-function-signature')
+          .attr('id', name ? name.toLowerCase() : undefined)
+          .add(nameSel)
+          .add(dom.create('span').class('qm-api-javascript-header-function-params')
+            .add(paramBuilder(quantum.select(child1), transformer))
+            .add(paramBuilder(quantum.select(child2), transformer))
+            .add(paramBuilder(quantum.select(child3), transformer)))
+      }
+
+      createHeaderDom(headerSel, transformer).should.eql(dom.create('span')
+        .class('qm-changelog-javascript-header')
+          .add(dom.create('span')
+            .class('qm-changelog-javascript-function')
+            .add(header('function', functionBuilder)(quantum.select(selection), transformer))))
     })
 
-    describe('prototype', () => {
-      it('renders correctly', () => {
-        const { prototype } = changelogHeaderTransforms
-        function testPrototypeHeader (selection) {
-          return dom.create('span')
-            .class('qm-api-javascript-header-prototype')
-            .attr('id', 'protoname1')
-            .add(dom.create('span').class('qm-api-javascript-prototype-name').text('ProtoName1'))
-        }
-        const selection = quantum.select({
-          type: 'prototype',
-          params: ['ProtoName1'],
+    it('returns nothing when there are no supported entityTypes', () => {
+      const headerSel = quantum.select({
+        type: 'header',
+        params: [],
+        content: [{
+          type: 'something',
+          params: ['name'],
           content: []
-        })
-        prototype(selection, transformer).should.eql(header('prototype', testPrototypeHeader)(selection, transformer))
+        }]
       })
 
-      it('renders extended entites correctly', () => {
-        const { prototype } = changelogHeaderTransforms
-        function testPrototypeHeader (selection) {
-          return dom.create('span')
-            .class('qm-api-javascript-header-prototype')
-            .attr('id', 'protoname1')
-            .add(dom.create('span').class('qm-api-javascript-prototype-name').text('ProtoName1'))
-            .add(dom.create('span').class('qm-api-javascript-prototype-extends').text('extends'))
-            .add(dom.create('span').class('qm-api-javascript-prototype-extender').add(type('ProtoName2', typeLinks)))
-        }
-        const selection = quantum.select({
-          type: 'prototype',
-          params: ['ProtoName1'],
-          content: [{
-            type: 'extends',
-            params: ['ProtoName2'],
-            content: []
-          }]
-        })
-        prototype(selection, transformer).should.eql(header('prototype', testPrototypeHeader)(selection, transformer))
+      should.not.exist(createHeaderDom(headerSel, transformer))
+    })
+
+    it('renders a constructor correctly', () => {
+      function paramBuilder (selection, transformer) {
+        const name = selection.param(0)
+        const isOptional = selection.type()[selection.type().length - 1] === '?'
+        return dom.create('span')
+          .class('qm-api-javascript-header-function-param')
+          .classed('qm-api-optional', isOptional)
+          .add(dom.create('span').class('qm-api-javascript-header-function-param-name')
+            .text(name || ''))
+          .add(dom.create('span').class('qm-api-javascript-header-function-param-type'))
+      }
+
+      function constructorBuilder (selection, transformer) {
+        const name = 'SomeProto'
+
+        const nameSel = dom.create('span')
+          .class('qm-api-javascript-header-constructor-name')
+          .add(name || '')
+
+        return dom.create('span')
+          .class('qm-api-javascript-header-constructor-signature')
+          .attr('id', name ? name.toLowerCase() : undefined)
+          .add(nameSel)
+          .add(dom.create('span').class('qm-api-javascript-header-function-params')
+            .add(paramBuilder(quantum.select(child1), transformer))
+            .add(paramBuilder(quantum.select(child2), transformer))
+            .add(paramBuilder(quantum.select(child3), transformer)))
+      }
+
+      const child1 = {
+        type: 'param',
+        params: ['param'],
+        content: []
+      }
+
+      const child2 = {
+        type: 'param?',
+        params: ['optional'],
+        content: []
+      }
+
+      const child3 = {
+        type: 'param',
+        params: [''],
+        content: []
+      }
+
+      const construct = {
+        type: 'constructor',
+        params: [],
+        content: [
+          child1,
+          child2,
+          child3
+        ]
+      }
+
+      const proto = {
+        type: 'prototype',
+        params: ['SomeProto'],
+        content: [
+          construct
+        ]
+      }
+
+      const headerSel = quantum.select({
+        type: 'header',
+        params: [],
+        content: [proto]
       })
 
-      it('handles not having params', () => {
-        const { prototype } = changelogHeaderTransforms
-        function testPrototypeHeader (selection) {
-          return dom.create('span')
-            .class('qm-api-javascript-header-prototype')
-            .add(dom.create('span').class('qm-api-javascript-prototype-name').text(''))
-        }
-        const selection = quantum.select({
-          type: 'prototype',
-          params: [],
-          content: []
-        })
-        prototype(selection, transformer).should.eql(header('prototype', testPrototypeHeader)(selection, transformer))
-      })
+      createHeaderDom(headerSel, transformer).should.eql(dom.create('span')
+        .class('qm-changelog-javascript-header')
+          .add(dom.create('span')
+            .class('qm-changelog-javascript-constructor')
+            .add(header('constructor', constructorBuilder)(quantum.select(construct), transformer))))
     })
   })
 

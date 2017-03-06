@@ -62,6 +62,60 @@ function propertyHeaderDetails (typeLinks) {
   }
 }
 
+function objectHeaderDetails () {
+  return (selection, transformer) => {
+    const name = selection.param(0)
+    return dom.create('span')
+      .class('qm-api-javascript-header-object')
+      .attr('id', name ? name.toLowerCase() : undefined)
+      .add(dom.create('span').class('qm-api-javascript-header-object-name').text(name || ''))
+  }
+}
+
+function functionHeaderParamDetails (selection, transformer, typeLinks) {
+  const name = selection.param(0)
+  const isOptional = selection.type()[selection.type().length - 1] === '?'
+  return dom.create('span')
+    .class('qm-api-javascript-header-function-param')
+    .classed('qm-api-optional', isOptional)
+    .add(dom.create('span').class('qm-api-javascript-header-function-param-name')
+      .text(name || ''))
+    .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type(selection.param(1), typeLinks)))
+}
+
+function functionSignature (selection, transformer, typeLinks) {
+  const params = selection.selectAll(['param', 'param?']).map((param) => functionHeaderParamDetails(param, transformer, typeLinks))
+
+  const returnsSelection = selection
+    .selectAll('returns')
+    .filter(sel => !sel.has('removed'))[0]
+
+  const retns = returnsSelection ?
+    dom.create('span')
+      .class('qm-api-javascript-header-function-returns')
+      .add(type(returnsSelection.ps(), typeLinks)) :
+    undefined
+
+  return [
+    dom.create('span').class('qm-api-javascript-header-function-params').add(params),
+    retns
+  ]
+}
+
+function constructorHeaderDetails (typeLinks) {
+  return (selection, transformer) => {
+    const parentName = selection.parent().ps()
+    const name = dom.create('span')
+      .class('qm-api-javascript-header-constructor-name')
+      .text(parentName)
+
+    return dom.create('span')
+      .class('qm-api-javascript-header-constructor-signature')
+      .attr('id', parentName ? parentName.toLowerCase() : undefined)
+      .add(name)
+      .add(functionSignature(selection, transformer, typeLinks)[0])
+  }
+}
 function functionHeaderDetails (typeLinks) {
   return (selection, transformer) => {
     const functionName = selection.param(0)
@@ -69,30 +123,11 @@ function functionHeaderDetails (typeLinks) {
       .class('qm-api-javascript-header-function-name')
       .text(selection.type() === 'constructor' ? 'constructor' : functionName)
 
-    const params = selection.selectAll(['param', 'param?']).map((param) => {
-      const isOptional = param.type()[param.type().length - 1] === '?'
-      return dom.create('span').class('qm-api-javascript-header-function-param')
-        .classed('qm-api-optional', isOptional)
-        .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text(param.param(0)))
-        .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type(param.param(1), typeLinks)))
-    })
-
-    const returnsSelection = selection
-      .selectAll('returns')
-      .filter(sel => !sel.has('removed'))[0]
-
-    const retns = returnsSelection ?
-      dom.create('span')
-        .class('qm-api-javascript-header-function-returns')
-        .add(type(returnsSelection.ps(), typeLinks)) :
-      undefined
-
     return dom.create('span')
-      .class('qm-api-javascript-header-function')
+      .class('qm-api-javascript-header-function-signature')
       .attr('id', functionName ? functionName.toLowerCase() : undefined)
       .add(name)
-      .add(dom.create('span').class('qm-api-javascript-header-function-params').add(params))
-      .add(retns)
+      .add(functionSignature(selection, transformer, typeLinks))
   }
 }
 
@@ -121,19 +156,57 @@ function prototypeHeaderDetails (typeLinks) {
   }
 }
 
+function changelogHeader (typeLinks, changelogHeaders) {
+  const entityTypes = Object.keys(changelogHeaders)
+  return (selection, transformer) => {
+    if (entityTypes.some(entityType => selection.has(entityType))) {
+      let current = selection
+      const sections = []
+      while (entityTypes.some(entityType => current.has(entityType))) {
+        current = current.select(entityTypes)
+
+        const type = current.type()
+        const baseType = type.replace('?', '')
+
+        const headerTransformObj = changelogHeaders[type]
+
+        let headerTransform = headerTransformObj.header
+        if (headerTransformObj.renderAsOther) {
+          const otherType = current.params()[1]
+          headerTransform = headerTransformObj.renderAsOther[otherType] || headerTransform
+        }
+
+        const section = dom.create('span')
+          .class(`qm-changelog-javascript-${baseType}`)
+          .add(headerTransform(current, transformer))
+
+        if (baseType === 'constructor') {
+          sections.pop()
+        }
+        sections.push(section)
+      }
+      return dom.create('span')
+        .class('qm-changelog-javascript-header')
+        .add(sections)
+    }
+  }
+}
+
 module.exports = (options) => {
   const typeLinks = (options || {}).typeLinks || {}
   const propertyHeader = header('property', propertyHeaderDetails(typeLinks))
+  const objectHeader = header('object', objectHeaderDetails(typeLinks))
   const prototypeHeader = header('prototype', prototypeHeaderDetails(typeLinks))
   const functionHeader = header('function', functionHeaderDetails(typeLinks))
+  const constructorHeader = header('constructor', constructorHeaderDetails(typeLinks))
   const typeHeader = header('type', typeHeaderDetails(typeLinks))
 
   const typeHeaderBuilders = {
-    constructor: functionHeader,
+    constructor: constructorHeader,
     event: propertyHeader,
     function: functionHeader,
     method: functionHeader,
-    object: propertyHeader,
+    object: objectHeader,
     param: propertyHeader,
     property: propertyHeader,
     prototype: prototypeHeader,
@@ -198,6 +271,36 @@ module.exports = (options) => {
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
+  const changelogHeaderTransforms = {
+    'object': {
+      header: typeHeaderBuilders.object
+    },
+    'prototype': {
+      header: typeHeaderBuilders['prototype']
+    },
+    'constructor': {
+      header: typeHeaderBuilders['constructor']
+    },
+    'function': {
+      header: typeHeaderBuilders['function']
+    },
+    'method': {
+      header: typeHeaderBuilders.method
+    },
+    'event': {
+      header: typeHeaderBuilders.event,
+      renderAsOther: { Function: typeHeaderBuilders['function'], Object: typeHeaderBuilders.object }
+    },
+    'property': {
+      header: typeHeaderBuilders.property,
+      renderAsOther: { Function: typeHeaderBuilders['function'], Object: typeHeaderBuilders.object }
+    },
+    'property?': {
+      header: typeHeaderBuilders.property,
+      renderAsOther: { Function: typeHeaderBuilders['function'], Object: typeHeaderBuilders.object }
+    }
+  }
+
   return {
     assets,
     name: 'javascript',
@@ -215,15 +318,9 @@ module.exports = (options) => {
       'event': eventBuilder,
       'returns': returnsBuilder
     },
-    changelogHeaderTransforms: {
-      'object': typeHeaderBuilders.object,
-      'prototype': typeHeaderBuilders.prototype,
-      'event': typeHeaderBuilders.event,
-      'constructor': typeHeaderBuilders.constructor,
-      'function': typeHeaderBuilders.function,
-      'method': typeHeaderBuilders.method,
-      'property': typeHeaderBuilders.property,
-      'property?': typeHeaderBuilders.property
+    changelog: {
+      entityTypes: Object.keys(changelogHeaderTransforms),
+      createHeaderDom: changelogHeader(typeLinks, changelogHeaderTransforms)
     }
   }
 }

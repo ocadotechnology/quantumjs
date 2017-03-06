@@ -30,3 +30,8 @@
 .qm-api-item-header-extra-class > .qm-api-css-header-name:before {
   content: '.';
 }
+
+/* Changelog */
+.qm-changelog-css-class + .qm-changelog-css-class {
+  margin-left: 0.4em;
+}

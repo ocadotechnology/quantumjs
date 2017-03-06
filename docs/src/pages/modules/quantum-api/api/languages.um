@@ -21,9 +21,15 @@
       @property transforms [Object[EntityTransform]]
         @description
           The transforms the language exposes
-      @property changelogHeaderTransforms [Object[EntityTransform]]
+      @property changelog [Object]
         @description
-          The header transforms for the changelog to use
+          The entity types and header function for generating changelog items.
+        @property entityTypes [Array[String]]
+          @description
+            The types to look for when building the changelog
+        @property createHeaderDom [EntityTransform]
+          @description
+            The transform to use when building the changelog header for an entry
       @property assets [Array[Asset]]
         @description
           The assets required to render the language.
@@ -39,9 +45,15 @@
       @property transforms [Object[EntityTransform]]
         @description
           The transforms the language exposes
-      @property changelogHeaderTransforms [Object[EntityTransform]]
+      @property changelog [Object]
         @description
-          The header transforms for the changelog to use
+          The entity types and header function for generating changelog items.
+        @property entityTypes [Array[String]]
+          @description
+            The types to look for when building the changelog
+        @property createHeaderDom [EntityTransform]
+          @description
+            The transform to use when building the changelog header for an entry
       @property assets [Array[Asset]]
         @description
           The assets required to render the language.
@@ -57,9 +69,15 @@
       @property transforms [Object[EntityTransform]]
         @description
           The transforms the language exposes
-      @property changelogHeaderTransforms [Object[EntityTransform]]
+      @property changelog [Object]
         @description
-          The header transforms for the changelog to use
+          The entity types and header function for generating changelog items.
+        @property entityTypes [Array[String]]
+          @description
+            The types to look for when building the changelog
+        @property createHeaderDom [EntityTransform]
+          @description
+            The transform to use when building the changelog header for an entry
       @property assets [Array[Asset]]
         @description
           The assets required to render the language.

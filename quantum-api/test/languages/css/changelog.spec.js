@@ -1,4 +1,5 @@
 describe('changelog', () => {
+  const should = require('chai').should()
   const path = require('path')
   const quantum = require('quantum-js')
   const dom = require('quantum-dom')
@@ -7,62 +8,16 @@ describe('changelog', () => {
   const css = require('../../../lib/languages/css')
 
   function transformer () {}
+  const options = {}
 
-  describe('changelogHeaderTransforms', () => {
-    const { changelogHeaderTransforms } = css()
-    const keys = [
-      'class',
-      'extraClass'
-    ]
-    it('has the right properties', () => {
-      changelogHeaderTransforms.should.have.keys(keys)
-    })
-    keys.forEach(k => {
-      it(`'${k}' looks like a transform`, () => {
-        changelogHeaderTransforms[k].should.be.a('function')
-        changelogHeaderTransforms[k].length.should.equal(2)
-      })
-    })
-
-    const typesThatUseNameHeader = keys
-    const classesForHeaders = [
-      'class',
-      'extra-class'
-    ]
-
-    typesThatUseNameHeader.forEach((entityType, index) => {
-      describe(entityType, () => {
-        it('renders correctly', () => {
-          function testPropertHeaderDetails (selection) {
-            return dom.create('span')
-              .class(`qm-api-css-header-name`)
-              .attr('id', 'someprop')
-              .add('someProp')
-          }
-          const selection = quantum.select({
-            type: entityType,
-            params: ['someProp', 'Type'],
-            content: []
-          })
-          changelogHeaderTransforms[entityType](selection, transformer).should.eql(
-            header(classesForHeaders[index], testPropertHeaderDetails)(selection, transformer))
-        })
-
-        it('handles not having params', () => {
-          function testPropertHeaderDetails (selection) {
-            return dom.create('span')
-              .class(`qm-api-css-header-name`)
-          }
-          const selection = quantum.select({
-            type: entityType,
-            params: [],
-            content: []
-          })
-          changelogHeaderTransforms[entityType](selection, transformer).should.eql(
-            header(classesForHeaders[index], testPropertHeaderDetails)(selection, transformer))
-        })
-      })
-    })
+  it('exports the correct things', () => {
+    const cssChangelog = css(options).changelog
+    cssChangelog.should.have.keys([
+      'entityTypes',
+      'createHeaderDom'
+    ])
+    cssChangelog.entityTypes.should.be.an('array')
+    cssChangelog.createHeaderDom.should.be.a('function')
   })
 
   function checkSpec (spec) {
@@ -98,6 +53,91 @@ describe('changelog', () => {
 
     changelogFileTransform.fileTransform(inputFile, options).should.eql(outputFile)
   }
+
+  describe('createHeaderDom', () => {
+    function nameBuilder (selection) {
+      const name = selection.param(0)
+      return dom.create('span')
+        .class('qm-api-css-header-name')
+        .attr('id', name ? name.toLowerCase() : undefined)
+        .add(name || '')
+    }
+
+    const { createHeaderDom } = css(options).changelog
+    it('creates a header for a single entity', () => {
+      const selection = {
+        type: 'class',
+        params: ['class-name'],
+        content: []
+      }
+
+      const headerSel = quantum.select({
+        type: 'header',
+        params: [],
+        content: [selection]
+      })
+
+      createHeaderDom(headerSel, transformer).should.eql(dom.create('span')
+        .class('qm-changelog-css-header')
+          .add(dom.create('span')
+            .class('qm-changelog-css-class')
+            .add(header('class', nameBuilder)(quantum.select(selection), transformer))))
+    })
+
+    it('creates a header for nested entites', () => {
+      const child2 = {
+        type: 'extraClass',
+        params: [],
+        content: []
+      }
+
+      const child1 = {
+        type: 'extraClass',
+        params: ['some-extra-class'],
+        content: [child2]
+      }
+
+      const selection = {
+        type: 'class',
+        params: ['class-name'],
+        content: [
+          child1
+        ]
+      }
+
+      const headerSel = quantum.select({
+        type: 'header',
+        params: [],
+        content: [selection]
+      })
+
+      createHeaderDom(headerSel, transformer).should.eql(dom.create('span')
+        .class('qm-changelog-css-header')
+          .add(dom.create('span')
+            .class('qm-changelog-css-class')
+            .add(header('class', nameBuilder)(quantum.select(selection), transformer)))
+          .add(dom.create('span')
+            .class('qm-changelog-css-extra-class')
+            .add(header('extra-class', nameBuilder)(quantum.select(child1), transformer)))
+          .add(dom.create('span')
+            .class('qm-changelog-css-extra-class')
+            .add(header('extra-class', nameBuilder)(quantum.select(child2), transformer))))
+    })
+
+    it('returns nothing when there are no supported entityTypes', () => {
+      const headerSel = quantum.select({
+        type: 'header',
+        params: [],
+        content: [{
+          type: 'something',
+          params: ['name'],
+          content: []
+        }]
+      })
+
+      should.not.exist(createHeaderDom(headerSel, transformer))
+    })
+  })
 
   describe('examples', () => {
     function testExample (filename) {

@@ -5,6 +5,8 @@ describe('body', () => {
   const body = require('../../../lib/entity-transforms/builders/body')
   const should = require('chai').should()
 
+  function transformer () {}
+
   const keys = [
     'default',
     'description',
@@ -36,8 +38,6 @@ describe('body', () => {
         ]
       })
 
-      function transformer () {}
-
       description(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-api-description')
@@ -63,13 +63,21 @@ describe('body', () => {
         ]
       })
 
-      function transformer () {}
-
       description(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-api-description')
           .add(html.paragraphTransform(quantum.select(descriptionBlock, transformer)))
       )
+    })
+
+    it('returns nothing when there is no description or content', () => {
+      const selection = quantum.select({
+        type: 'function',
+        params: [],
+        content: []
+      })
+
+      should.not.exist(description(selection, transformer))
     })
   })
 
@@ -108,8 +116,6 @@ describe('body', () => {
         content: []
       })
 
-      function transformer () {}
-
       should.not.exist(dfault(selection, transformer))
     })
   })
@@ -142,8 +148,6 @@ describe('body', () => {
         ]
       })
 
-      function transformer () {}
-
       extras(selection, transformer).should.eql(
         dom.create('div').class('qm-api-extras')
           .add(dom.create('div').class('qm-api-extra').add(html.paragraphTransform(quantum.select(extra1), transformer)))
@@ -157,8 +161,6 @@ describe('body', () => {
         params: [],
         content: []
       })
-
-      function transformer () {}
 
       should.not.exist(extras(selection, transformer))
     })
@@ -243,8 +245,6 @@ describe('body', () => {
         ]
       })
 
-      function transformer () {}
-
       return groups(selection, transformer).should.eql(
         dom.create('div').class('qm-api-groups')
           .add(dom.create('div').class('qm-api-group')
@@ -258,14 +258,50 @@ describe('body', () => {
       )
     })
 
+    it('handles regular content', () => {
+      function transformer () {
+        return dom.create('div').text('Something Here')
+      }
+
+      const group1 = {
+        type: 'group',
+        params: ['Group 1'],
+        content: [
+          {
+            type: 'description',
+            params: [],
+            content: ['Group description 1']
+          },
+          {
+            type: 'anything',
+            params: [],
+            content: []
+          }
+        ]
+      }
+
+      const selection = quantum.select({
+        type: 'function',
+        params: [],
+        content: [
+          group1
+        ]
+      })
+
+      groups(selection, transformer).should.eql(dom.create('div').class('qm-api-groups')
+        .add(dom.create('div').class('qm-api-group')
+          .add(dom.create('div').class('qm-api-group-header qm-header-font').text('Group 1'))
+          .add(dom.create('div').class('qm-api-group-content')
+            .add(description(quantum.select(group1), transformer))
+            .add(dom.create('div').text('Something Here')))))
+    })
+
     it('returns undefined if no @group entity exists', () => {
       const selection = quantum.select({
         type: 'function',
         params: [],
         content: []
       })
-
-      function transformer () {}
 
       should.not.exist(groups(selection, transformer))
     })

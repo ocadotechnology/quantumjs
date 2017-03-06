@@ -53,7 +53,7 @@
         @description
           The languages to use to render the changelog headers
 
-          This is where defined @code[changelogHeaderTransforms] are used from
+          This is where defined @code[changelog] objects are used from
           the @hyperlink(./#languages)[languages]
 
     @returns File

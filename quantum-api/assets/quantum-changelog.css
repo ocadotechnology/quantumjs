@@ -79,6 +79,10 @@
   padding: 0.5em;
 }
 
+.qm-changelog-entry-header .qm-api-item-header {
+  display: inline-block;
+}
+
 .qm-changelog-change {
   padding: 0.5em;
   display: flex;

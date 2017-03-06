@@ -8,7 +8,7 @@
         @api ApiName
           @added 0.1.0
             @description: Api added
-          @function test
+          @function test1
             @added 0.1.0
               @issue 123
               @description: Function added
@@ -41,7 +41,7 @@
           @description: Api added
         @entry
           @header test-language-1
-            @function test
+            @function test1
               @param arg0 [String]
               @returns Number
           @change added
@@ -51,7 +51,7 @@
         @description: Version 0.2.0
         @entry
           @header test-language-1
-            @function test
+            @function test1
               @param arg0 [String]
               @returns Number
           @change updated
@@ -61,7 +61,7 @@
         @description: Version 0.3.0
         @entry
           @header test-language-1
-            @function test
+            @function test1
               @param arg0 [String]
               @returns Number
           @change deprecated
@@ -69,7 +69,7 @@
         @description: Version 0.4.0
         @entry
           @header test-language-1
-            @function test
+            @function test1
               @param arg0 [String]
               @returns Number
           @change info
@@ -78,7 +78,7 @@
         @description: Version 0.5.0
         @entry
           @header test-language-1
-            @function test
+            @function test1
               @param arg0 [String]
               @returns Number
           @change deprecated
@@ -86,7 +86,7 @@
         @description: Version 0.6.0
         @entry
           @header test-language-1
-            @function test
+            @function test1
               @param arg0 [String]
               @returns Number
           @change removed
@@ -102,7 +102,7 @@
         @api ApiName
           @added 0.1.0
             @description: Api added
-          @function test
+          @function test2
             @added 0.1.0
               @issue 123
               @description: Function added
@@ -136,7 +136,7 @@
             @description: Api added
           @entry
             @header test-language-1
-              @function test
+              @function test2
                 @param arg0 [String]
                 @returns Number
             @change added
@@ -147,7 +147,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test2
                 @param arg0 [String]
                 @returns Number
             @change updated
@@ -158,7 +158,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test2
                 @param arg0 [String]
                 @returns Number
             @change deprecated
@@ -167,7 +167,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test2
                 @param arg0 [String]
                 @returns Number
             @change info
@@ -177,7 +177,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test2
                 @param arg0 [String]
                 @returns Number
             @change deprecated
@@ -186,7 +186,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test2
                 @param arg0 [String]
                 @returns Number
             @change removed
@@ -203,7 +203,7 @@
         @api ApiName
           @added 0.1.0
             @description: Api added
-          @function test
+          @function test3
             @added 0.1.0
               @issue 123
               @description: Function added
@@ -237,7 +237,7 @@
             @description: Api added
           @entry
             @header test-language-1
-              @function test
+              @function test3
                 @param arg0 [String]
                 @returns Number
             @change added
@@ -248,7 +248,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test3
                 @param arg0 [String]
                 @returns Number
             @change updated
@@ -259,7 +259,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test3
                 @param arg0 [String]
                 @returns Number
             @change deprecated
@@ -268,7 +268,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test3
                 @param arg0 [String]
                 @returns Number
             @change info
@@ -278,7 +278,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test3
                 @param arg0 [String]
                 @returns Number
             @change deprecated
@@ -287,7 +287,7 @@
         @group ApiName
           @entry
             @header test-language-1
-              @function test
+              @function test3
                 @param arg0 [String]
                 @returns Number
             @change removed
@@ -303,7 +303,7 @@
         @api ApiName
           @added 0.1.0
             @description: Api added
-          @function test
+          @function test4
             @added 0.1.0
               @issue 123
               @description: Function added
@@ -334,7 +334,7 @@
         @description: Version 0.6.0
         @entry
           @header test-language-1
-            @function test
+            @function test4
               @param arg0 [String]
               @returns Number
           @change removed
@@ -343,7 +343,7 @@
         @description: Version 0.5.0
         @entry
           @header test-language-1
-            @function test
+            @function test4
               @param arg0 [String]
               @returns Number
           @change deprecated
@@ -351,7 +351,7 @@
         @description: Version 0.4.0
         @entry
           @header test-language-1
-            @function test
+            @function test4
               @param arg0 [String]
               @returns Number
           @change info
@@ -360,7 +360,7 @@
         @description: Version 0.3.0
         @entry
           @header test-language-1
-            @function test
+            @function test4
               @param arg0 [String]
               @returns Number
           @change deprecated
@@ -368,7 +368,7 @@
         @description: Version 0.2.0
         @entry
           @header test-language-1
-            @function test
+            @function test4
               @param arg0 [String]
               @returns Number
           @change updated
@@ -380,7 +380,7 @@
           @description: Api added
         @entry
           @header test-language-1
-            @function test
+            @function test4
               @param arg0 [String]
               @returns Number
           @change added
@@ -398,7 +398,7 @@
         @api ApiName
           @added 0.1.0
             @description: Api added
-          @function test
+          @function test5
             @added 0.1.0
               @issue 123
               @description: Function added
@@ -429,7 +429,7 @@
         @description: Version 0.6.0
         @entry
           @header test-language-1
-            @function test
+            @function test5
               @param arg0 [String]
               @returns Number
           @change removed
@@ -438,7 +438,7 @@
         @description: Version 0.5.0
         @entry
           @header test-language-1
-            @function test
+            @function test5
               @param arg0 [String]
               @returns Number
           @change deprecated
@@ -446,7 +446,7 @@
         @description: Version 0.4.0
         @entry
           @header test-language-1
-            @function test
+            @function test5
               @param arg0 [String]
               @returns Number
           @change info
@@ -455,7 +455,7 @@
         @description: Version 0.3.0
         @entry
           @header test-language-1
-            @function test
+            @function test5
               @param arg0 [String]
               @returns Number
           @change deprecated
@@ -463,7 +463,7 @@
         @description: Version 0.2.0
         @entry
           @header test-language-1
-            @function test
+            @function test5
               @param arg0 [String]
               @returns Number
           @change updated
@@ -475,7 +475,7 @@
           @description: Api added
         @entry
           @header test-language-1
-            @function test
+            @function test5
               @param arg0 [String]
               @returns Number
           @change added
@@ -492,7 +492,7 @@
         @api ApiName
           @description: Api does something
           @added 0.1.0
-          @function test
+          @function test6
             @description: Function does something
             @added 0.1.0
       @version 0.1.0
@@ -503,7 +503,7 @@
           @description: Api does something
         @entry
           @header test-language-1
-            @function test
+            @function test6
               @description: Function does something
           @change added
             @description: Function does something
@@ -601,3 +601,40 @@
   @output
     @changelogList
       @changelog 0.1.0
+
+@spec output version without api content
+  @input
+    @changelogList
+      @process
+      @version 0.1.0
+        @description: Something
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @description: Something
+
+@spec output nothing with no matching versions
+  @input
+    @changelogList
+      @debug
+      @process
+        @api ApiName
+          @nonapithing
+            @function test
+              @description: Function does something
+              @added 0.1.0
+      @version 0.0.1
+  @output
+    @changelogList
+      @changelog 0.0.1
+
+@spec output link to version
+  @input
+    @changelogList
+      @process
+      @version 0.1.0
+        @link [http://example.com]
+  @output
+    @changelogList
+      @changelog 0.1.0
+        @link [http://example.com]
