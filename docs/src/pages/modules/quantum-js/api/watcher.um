@@ -64,7 +64,8 @@
 
   @description
     An instance of one of these is returned by @code[quantum.watcher]. It
-    provides a way to stop watching the files.
+    provides a way to stop watching the files. Do not create one of these directly;
+    instead use the @code[quantum.watcher] function.
 
   @event add [FileInfo]
     @description

@@ -1,7 +1,28 @@
 @method entity
   @description
     Returns the underlying entity this @type[Selection] wraps
-    
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const basketEntity = {
+          type: 'basket',
+          params: [],
+          content: [
+            {
+              type: 'fruit',
+              params: ['lemon'],
+              content: []
+            }
+          ]
+        }
+
+        const selection = quantum.select(basketEntity)
+
+        selection.entity() // returns basketEntity
+
   @returns Object
     @description
       The entity this selection wraps

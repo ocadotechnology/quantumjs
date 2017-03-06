@@ -62,37 +62,5 @@
       }
 
   @topic Available options
-    @api
-      @function FileTransform
-        @description
-          A function that takes a page and returns a new page with a transformation
-          applied. This transfomation can be anything - from converting quantum-ast
-          to html, or a transformation that replaces variables in the markup with
-          values from template.
-
-        @param page [File]: The page to transform
-        @returns [File/Array[File]]: The transformed page
-
-      @property pipeline [Array[FileTransform]]
-        @description
-          An array of FileTransform functions that take a page as the input and
-          return a page (or array of pages) that have been transformed.
-
-          Here is the most basic pipeline you can define:
-
-          @codeblock js
-            const html = require('quantum-html')
-
-            const pipeline = [
-              html()
-            ]
-
-      @property pages [String/Array[String]/Array[Object]]
-        @description
-          This property should describe the files that should be processed by
-          quantum as pages.
-
-      @property resolveRoot [String]
-        @description
-          The path to resolve absolute files from.
-        @default: The current working directory
+    @api config
+      @inline ../modules/quantum-js/api/api/config.um

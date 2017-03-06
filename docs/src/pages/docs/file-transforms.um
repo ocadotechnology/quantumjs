@@ -7,4 +7,20 @@
     TODO...
 
 @contentSection
-  @notice TODO: Write this page...
+  @topic File Transform Api
+    @api
+      #XXX: there should be a way of hiding the default group headers
+      @group
+        @function FileTransform
+          @collapsible false
+          @description
+            A function that takes a page and returns a new page with a transformation
+            applied. This transfomation can be anything - from converting quantum-ast
+            to html, or a transformation that replaces variables in the markup with
+            values from template.
+
+          @extra
+            @notice TODO: Add an example
+
+          @param page [File]: The page to transform
+          @returns [File/Array[File]]: The transformed page

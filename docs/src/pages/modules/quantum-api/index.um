@@ -4,7 +4,7 @@
   @version 2.0.0
 
 @topSection
-  @title API
+  @title quantum-api
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     Transforms for writing API documentation and building changelogs.

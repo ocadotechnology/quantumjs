@@ -1,10 +1,11 @@
 @prototype Selection
   @added 2.0.0
-  @collapsible false
 
   @description
     An object that wraps an entity. This object has useful methods for extracting
     information from, and updating entities.
+
+    Do not create one of these directly; instead use @code[quantum.select()].
 
   @extra
     @subsection Example
@@ -18,82 +19,6 @@
         }
 
         const selection = quantum.select(entity)
-        // selection is a Selection
+        // selection is an instance of Selection
 
   @inline selection/*.um
-
-  @method removeChild (childEntity)
-    const childIndex = this._entity.content.indexOf(childEntity)
-    if (childIndex > -1) {
-      this._entity.content.splice(childIndex, 1)
-      return true
-    } else {
-      return false
-    }
-
-  @method removeChildOfType (type, options)
-    if (Array.isArray(type)) {
-      const self = this
-      // OPTIM: remove the use of map
-      return type.map((t) => self.removeChildOfType(t, options))
-    } else {
-      let i = 0
-      const content = this._entity.content
-      while (i < content.length) {
-        const entity = content[i]
-        if (isEntity(entity) && entity.type === type) {
-          content.splice(i, 1)
-          return entity
-        }
-        i++
-      }
-
-      if (options && options.recursive) {
-        i = 0
-        while (i < content.length) {
-          const child = content[i]
-          if (isEntity(child)) {
-            const removed = select(child).removeChildOfType(type, options)
-            if (removed) {
-              return removed
-            }
-          }
-          i++
-        }
-      }
-    }
-
-  @method removeAllChildOfType (type, options)
-    if (Array.isArray(type)) {
-      const self = this
-      // OPTIM: remove the use of map
-      return type.map((t) => self.removeAllChildOfType(t, options))
-    } else {
-      const result = []
-      let i = 0
-      const content = this._entity.content
-      while (i < content.length) {
-        const entity = content[i]
-        if (isEntity(entity) && entity.type === type) {
-          content.splice(i, 1)
-          result.push(entity)
-        } else {
-          i++
-        }
-      }
-
-      if (options && options.recursive) {
-        i = 0
-        while (i < content.length) {
-          const child = content[i]
-          if (isEntity(child)) {
-            select(child).removeAllChildOfType(type, options).forEach((removed) => {
-              result.push(removed)
-            })
-          }
-          i++
-        }
-      }
-
-      return result
-    }

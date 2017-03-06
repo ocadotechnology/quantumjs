@@ -5,19 +5,19 @@
       Adds an @code(html)[<{{ps}}>] element
 
       @@codeblock um
-        \# Create an <{{ps}}> element
+        # Create an <{{ps}}> element
         @{{ps}}
 
-        \# Create an <{{ps}}> element with class='className'
+        # Create an <{{ps}}> element with class='className'
         @{{ps}} .className
 
-        \# Create an <{{ps}}> element with id='idName'
+        # Create an <{{ps}}> element with id='idName'
         @{{ps}} #idName
 
-        \# Create an <{{ps}}> element with id='idName' and class='className'
+        # Create an <{{ps}}> element with id='idName' and class='className'
         @{{ps}} #idName.className
 
-        \# Chain multiple classes without spaces
+        # Chain multiple classes without spaces
         @{{ps}} #idName.className.otherClassName
 
     @group Child Entities
@@ -38,19 +38,19 @@
       Adds a @code(html)[<{{ps}}>] element
 
       @@codeblock um
-        \# Create a <{{ps}}> element
+        # Create a <{{ps}}> element
         @{{ps}}
 
-        \# Create a <{{ps}}> element with class='className'
+        # Create a <{{ps}}> element with class='className'
         @{{ps}} .className
 
-        \# Create a <{{ps}}> element with id='idName'
+        # Create a <{{ps}}> element with id='idName'
         @{{ps}} #idName
 
-        \# Create a <{{ps}}> element with id='idName' and class='className'
+        # Create a <{{ps}}> element with id='idName' and class='className'
         @{{ps}} #idName.className
 
-        \# Chain multiple classes without spaces
+        # Chain multiple classes without spaces
         @{{ps}} #idName.className.otherClassName
 
     @group Child Entities

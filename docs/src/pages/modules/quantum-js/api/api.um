@@ -1,0 +1,23 @@
+@object api
+  @added 2.0.0
+  @description
+    This object exposes the functionality that the CLI provides as an api that
+    can be called from within your own code.
+
+    The running the @code[build()] function results in the same thing as running
+    @code[quantum build] and the @code[watch()] function builds the site and watches
+    for changes, in the same way that @code[quantum watch] does.
+
+  @function build
+    @added 2.0.0
+    @description
+      Build a quantum site using the config passed in.
+    @param config [Object]
+      @inline ./api/config.um
+
+  @function watch
+    @added 2.0.0
+    @description
+      Build a quantum site and watch for changes using the config passed in.
+    @param config [Object]
+      @inline ./api/config.um

@@ -30,9 +30,8 @@
               It is bootstrapped to itself to allow children to be transformed.
 
             @extra
-              @example
-                @noOutput
-                @js
+              @subsection Example
+                @@codeblock js
                   function customTransform (selection, transformer) {
                     return dom.create('div').class('custom-class')
                       // Transform the content of the selection

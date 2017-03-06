@@ -1,0 +1,26 @@
+@property pipeline [Array[FileTransform]]
+  @added 2.0.0
+  @description
+    An array of FileTransform functions that take a page as the input and
+    return a page (or array of pages) that have been transformed.
+
+    Here is the most basic pipeline you can define:
+
+    @codeblock js
+      const html = require('quantum-html')
+
+      const pipeline = [
+        html()
+      ]
+
+@property pages [String/Array[String]/Array[Object]]
+  @added 2.0.0
+  @description
+    This property should describe the files that should be processed by
+    quantum as pages.
+
+@property resolveRoot [String]
+  @added 2.0.0
+  @description
+    The path to resolve absolute files from.
+  @default: The current working directory

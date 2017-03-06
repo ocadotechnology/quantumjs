@@ -1,0 +1,48 @@
+@method selectUpwards
+  @description
+    Traverses up the tree until it finds an entity of type @code[type]. If
+    no entity is found, @code[undefined] will be returned.
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-js')
+
+        const entity = {
+          type: 'basket',
+          params: [],
+          content: [
+            {
+              type: 'item',
+              params: ['lemon'],
+              content: [
+                {
+                  type: 'price',
+                  params: ['1.20'],
+                  content: []
+                }
+              ]
+            }
+          ]
+        }
+
+        const selection = quantum.select(entity)
+        const priceSelection = selection.select('item').select('price')
+
+        // returns the basket entity wrapped in a Selection
+        priceSelection.selectUpwards('basket')
+
+        // returns the item entity wrapped in a Selection
+        priceSelection.selectUpwards('item')
+
+        // returns undefined - there is no parent entity of type 'trolley'
+        priceSelection.selectUpwards('trolley')
+
+  @param type [String]
+    @description
+      The entity type to look for.
+
+  @returns Selection
+    @description
+      The parent entity that has type @code[type], or @code[undefined] if
+      the entity was not found.

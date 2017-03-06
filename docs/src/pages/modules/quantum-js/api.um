@@ -3,6 +3,8 @@
   @inline api/File.um
   @inline api/Selection.um
 
+  @inline api/api.um
+
   @inline api/parse.um
   @inline api/read.um
   @inline api/readAsFile.um

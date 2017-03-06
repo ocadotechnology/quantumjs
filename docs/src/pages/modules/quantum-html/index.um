@@ -4,7 +4,7 @@
   @version 2.0.0
 
 @topSection
-  @title HTML
+  @title quantum-html
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     A library for converting parsed Quantum AST to HTML.
