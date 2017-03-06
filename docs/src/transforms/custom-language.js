@@ -46,8 +46,41 @@ const thingBuilder = item({
   content: [ description ]
 })
 
+function changelogHeader (changelogHeaders) {
+  const entityTypes = Object.keys(changelogHeaders)
+  return (selection, transformer) => {
+    // Check if the selection has one of the changelog types
+    if (entityTypes.some(entityType => selection.has(entityType))) {
+      let current = selection
+      const sections = []
+
+      // Move down the tree of entries to the bottom, adding each level as a 'section'
+      while (entityTypes.some(entityType => current.has(entityType))) {
+        current = current.select(entityTypes)
+        const type = current.type()
+        const baseType = type.replace('?', '')
+
+        const section = dom.create('span')
+          .class(`qm-changelog-custom-${baseType}`)
+          // Render the header using the 'api' entity transform
+          .add(changelogHeaders[type](current, transformer))
+
+        sections.push(section)
+      }
+      return dom.create('span')
+        .class('qm-changelog-custom-header')
+        // Add all the built sections for the tree to the changelog header
+        .add(sections)
+    }
+  }
+}
+
 // Define the function that gets the custom langugae
 module.exports = function customLanguage () {
+  const changelogHeaders = {
+    custom: customHeader
+  }
+
   return {
     assets: assets,
     name: languageName,
@@ -56,10 +89,12 @@ module.exports = function customLanguage () {
       custom: customBuilder,
       thing: thingBuilder
     },
-    // Export the transforms for the changelog headers
-    changelogHeaderTransforms: {
-      custom: customHeader,
-      thing: customHeader
+    // Export the changelog options
+    changelog: {
+      // Export the entity types to look for
+      entityTypes: Object.keys(changelogHeaders),
+      // Export the function for building the changelog header
+      createHeaderDom: changelogHeader(changelogHeaders)
     }
   }
 }

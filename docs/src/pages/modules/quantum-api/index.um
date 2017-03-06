@@ -88,7 +88,7 @@
             const api = require('quantum-api')
 
             const apiOptions = {
-
+              // Define api options here
             }
 
             const htmlOptions = {
@@ -115,11 +115,12 @@
                 @param param1 [String]: Parameter
                 @param? param2 [String]: Optional parameter
 
-                @param? param3 [Boolean]: Additional Parameter
-                  @added 2.0.0
-
               @object exampleObject
-                @description: Object description
+                @description
+                  Object Description
+                @added 2.0.0
+                  @description
+                    Added an example object
 
         @file path/changelog.um
           @@um
@@ -145,11 +146,12 @@
                   @param param1 [String]: Parameter
                   @param? param2 [String]: Optional parameter
 
-                  @param? param3 [Boolean]: Additional Parameter
-                    @added 2.0.0
-
                 @object exampleObject
-                  @description: Object description
+                  @description
+                    Object Description
+                  @added 2.0.0
+                    @description
+                      Added an example object
 
             @version 2.0.0
               @description: Version 2.0.0 changes
@@ -171,7 +173,7 @@
             const html = require('quantum-html')
 
             const apiOptions = {
-
+              // Define api options here
             }
 
             const htmlOptions = {
@@ -202,11 +204,12 @@
                 @param param1 [String]: Parameter
                 @param? param2 [String]: Optional parameter
 
-                @param? param3 [Boolean]: Additional Parameter
-                  @added 2.0.0
-
               @object exampleObject
-                @description: Object description
+                @description
+                  Object Description
+                @added 2.0.0
+                  @description
+                    Added an example object
 
         @output
           @div .docs-example-code-heading: target/1.0.0/index.html
@@ -223,29 +226,29 @@
 
           @function exampleFunction
             @description: Function description
-
-            @updated 2.0.0
-              Added an additional parameter
-
             @param param1 [String]: Parameter
             @param? param2 [String]: Optional parameter
 
-            @param? param3 [Boolean]: Additional Parameter
-              @added 2.0.0
+          @object exampleObject
+            @description
+              Object Description
+            @added 2.0.0
+              @description
+                Added an example object
 
-          @div .docs-example-code-heading: target/index.html
+          @div .docs-example-code-heading: target/index.html (same as target/2.0.0/index.html)
 
           @function exampleFunction
             @description: Function description
-
-            @updated 2.0.0
-              Added an additional parameter
-
             @param param1 [String]: Parameter
             @param? param2 [String]: Optional parameter
 
-            @param? param3 [Boolean]: Additional Parameter
-              @added 2.0.0
+          @object exampleObject
+            @description
+              Object Description
+            @added 2.0.0
+              @description
+                Added an example object
 
     @section Creating a Custom Language
       To define a language to use with quantum api, you can build a custom
@@ -296,8 +299,36 @@
         @file index.um
           @@um
             @custom something
+              @added 1.0.0
+                @description
+                  Added something
               @description
                 Description of something
 
               @thing thing1: Thing 1
               @thing thing2: Thing 2
+
+      You can also render a changelog:
+
+      @example
+        @file changelog.um
+          @@um
+            @changelogList
+              @process
+                @inline index.um
+              @version 1.0.0
+
+          @output
+            @changelogList
+              @process
+                @api myApi
+                  @custom something
+                    @added 1.0.0
+                      @description
+                        Added something
+                    @description
+                      Description of something
+
+                    @thing thing1: Thing 1
+                    @thing thing2: Thing 2
+              @version 1.0.0
