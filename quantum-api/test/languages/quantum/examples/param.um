@@ -14,7 +14,5 @@
     @changelogList
       @changelog 0.1.0
         @entry
-          @header quantum
-            @param test
           @change added
             @description: param added

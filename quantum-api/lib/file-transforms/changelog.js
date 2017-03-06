@@ -43,9 +43,12 @@ function processChangelogList (page, changelogList, options) {
   const reverseVisibleList = changelogList.has('reverseVisibleList') ? changelogList.select('reverseVisibleList').ps() === 'true' : options.changelogReverseVisibleList
   const entityTypeToLanguage = {}
   options.languages.forEach(language => {
-    Object.keys(language.changelogHeaderTransforms).forEach(entityType => {
-      entityTypeToLanguage[entityType] = language
-    })
+    const entityTypes = language && language.changelog && language.changelog.entityTypes
+    if (entityTypes) {
+      entityTypes.forEach(entityType => {
+        entityTypeToLanguage[entityType] = language
+      })
+    }
   })
 
   const changelogs = buildChangelogs(changelogList, entityTypeToLanguage, groupByApi)
@@ -106,13 +109,11 @@ function buildChangelogs (changelogList, entityTypeToLanguage, groupByApi) {
     const changelog = buildChangelog(version, versions, tagSelectionsByVersion[version], entityTypeToLanguage, groupByApi)
     const versionSelection = versionSelectionsByVersion[version]
 
-    if (versionSelection) {
-      if (versionSelection.has('description')) {
-        changelog.content.unshift(versionSelection.select('description').entity())
-      }
-      if (versionSelection.has('link')) {
-        changelog.content.unshift(versionSelection.select('link').entity())
-      }
+    if (versionSelection && versionSelection.has('description')) {
+      changelog.content.unshift(versionSelection.select('description').entity())
+    }
+    if (versionSelection && versionSelection.has('link')) {
+      changelog.content.unshift(versionSelection.select('link').entity())
     }
     return changelog
   })
@@ -180,6 +181,9 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
       const sanitizedParent = quantum.select(quantum.clone(parent.entity()))
       qversion.processVersioned(sanitizedParent.entity(), version, versions)
       sanitizedParent.removeAllChildOfType(tags)
+      if (language && language.changelog && language.changelog.entityTypes) {
+        sanitizedParent.removeAllChildOfType(language.changelog.entityTypes)
+      }
 
       let entity = undefined
       while (selection.parent() && selection.type() !== 'api') {

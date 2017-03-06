@@ -14,14 +14,14 @@ describe('quantum', () => {
     const language = quantum()
     language.should.have.keys([
       'assets',
-      'changelogHeaderTransforms',
+      'changelog',
       'name',
       'transforms'
     ])
     language.assets.should.be.an('array')
     language.name.should.equal('quantum')
     language.transforms.should.be.an('object')
-    language.changelogHeaderTransforms.should.be.an('object')
+    language.changelog.should.be.an('object')
   })
 
   require('./transforms.spec')
