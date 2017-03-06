@@ -201,7 +201,9 @@
 .qm-changelog-javascript-prototype + .qm-changelog-javascript-constructor:before,
 .qm-changelog-javascript-prototype + .qm-changelog-javascript-property:before,
 .qm-changelog-javascript-property + .qm-changelog-javascript-property:before,
-.qm-changelog-javascript-object + .qm-changelog-javascript-property:before {
+.qm-changelog-javascript-object + .qm-changelog-javascript-property:before,
+.qm-changelog-javascript-object + .qm-changelog-javascript-function:before,
+.qm-changelog-javascript-object + .qm-changelog-javascript-prototype:before {
   content: '.';
 }
 
