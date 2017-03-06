@@ -26,7 +26,7 @@ function paramHeaderDetails (selection, transformer) {
     .add(name || '')
 }
 
-function entityParamHeaderDetails (selection, transformer) {
+function entityParamHeader (selection, transformer) {
   const name = selection.param(0)
   const isOptional = selection.type()[selection.type().length - 1] === '?'
   return dom.create('span')
@@ -36,7 +36,6 @@ function entityParamHeaderDetails (selection, transformer) {
       .text(name || ''))
 }
 
-const entityParamHeader = header('entity-param', entityParamHeaderDetails)
 function entityHeaderDetails (selection, transformer) {
   const name = selection.param(0)
   const params = selection.selectAll(['param', 'param?']).map((param) => entityParamHeader(param, transformer))

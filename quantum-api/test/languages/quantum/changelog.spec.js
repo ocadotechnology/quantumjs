@@ -166,9 +166,9 @@ describe('changelog', () => {
           .attr('id', name ? name.toLowerCase() : undefined)
           .add(name || '')
           .add(dom.create('span').class('qm-api-quantum-header-entity-params')
-            .add(header('entity-param', paramBuilder)(quantum.select(child1), transformer))
-            .add(header('entity-param', paramBuilder)(quantum.select(child2), transformer))
-            .add(header('entity-param', paramBuilder)(quantum.select(child3), transformer)))
+            .add(paramBuilder(quantum.select(child1), transformer))
+            .add(paramBuilder(quantum.select(child2), transformer))
+            .add(paramBuilder(quantum.select(child3), transformer)))
       }
 
       function paramBuilder (selection, transformer) {

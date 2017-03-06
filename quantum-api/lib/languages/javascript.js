@@ -72,14 +72,19 @@ function objectHeaderDetails () {
   }
 }
 
-function functionSignature (selection, typeLinks) {
-  const params = selection.selectAll(['param', 'param?']).map((param) => {
-    const isOptional = param.type()[param.type().length - 1] === '?'
-    return dom.create('span').class('qm-api-javascript-header-function-param')
-      .classed('qm-api-optional', isOptional)
-      .add(dom.create('span').class('qm-api-javascript-header-function-param-name').text(param.param(0)))
-      .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type(param.param(1), typeLinks)))
-  })
+function functionParamHeader (selection, transformer, typeLinks) {
+  const name = selection.param(0)
+  const isOptional = selection.type()[selection.type().length - 1] === '?'
+  return dom.create('span')
+    .class('qm-api-javascript-header-function-param')
+    .classed('qm-api-optional', isOptional)
+    .add(dom.create('span').class('qm-api-javascript-header-function-param-name')
+      .text(name || ''))
+    .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type(selection.param(1), typeLinks)))
+}
+
+function functionSignature (selection, transformer, typeLinks) {
+  const params = selection.selectAll(['param', 'param?']).map((param) => functionParamHeader(param, transformer, typeLinks))
 
   const returnsSelection = selection
     .selectAll('returns')
@@ -105,10 +110,10 @@ function constructorHeaderDetails (typeLinks) {
       .text(parentName)
 
     return dom.create('span')
-      .class('qm-api-javascript-header-constructor')
+      .class('qm-api-javascript-header-constructor-signature')
       .attr('id', parentName ? parentName.toLowerCase() : undefined)
       .add(name)
-      .add(functionSignature(selection, typeLinks)[0])
+      .add(functionSignature(selection, transformer, typeLinks)[0])
   }
 }
 function functionHeaderDetails (typeLinks) {
@@ -119,10 +124,10 @@ function functionHeaderDetails (typeLinks) {
       .text(selection.type() === 'constructor' ? 'constructor' : functionName)
 
     return dom.create('span')
-      .class('qm-api-javascript-header-function')
+      .class('qm-api-javascript-header-function-signature')
       .attr('id', functionName ? functionName.toLowerCase() : undefined)
       .add(name)
-      .add(functionSignature(selection, typeLinks))
+      .add(functionSignature(selection, transformer, typeLinks))
   }
 }
 
