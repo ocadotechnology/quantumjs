@@ -83,10 +83,6 @@
   display: inline-block;
 }
 
-.qm-changelog-entry-header .qm-api-item-header-parent {
-  opacity: 0.6;
-}
-
 .qm-changelog-change {
   padding: 0.5em;
   display: flex;

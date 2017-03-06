@@ -72,7 +72,7 @@ function objectHeaderDetails () {
   }
 }
 
-function functionParamHeader (selection, transformer, typeLinks) {
+function functionHeaderParamDetails (selection, transformer, typeLinks) {
   const name = selection.param(0)
   const isOptional = selection.type()[selection.type().length - 1] === '?'
   return dom.create('span')
@@ -84,7 +84,7 @@ function functionParamHeader (selection, transformer, typeLinks) {
 }
 
 function functionSignature (selection, transformer, typeLinks) {
-  const params = selection.selectAll(['param', 'param?']).map((param) => functionParamHeader(param, transformer, typeLinks))
+  const params = selection.selectAll(['param', 'param?']).map((param) => functionHeaderParamDetails(param, transformer, typeLinks))
 
   const returnsSelection = selection
     .selectAll('returns')

@@ -26,7 +26,7 @@ function paramHeaderDetails (selection, transformer) {
     .add(name || '')
 }
 
-function entityParamHeader (selection, transformer) {
+function entityHeaderParamDetails (selection, transformer) {
   const name = selection.param(0)
   const isOptional = selection.type()[selection.type().length - 1] === '?'
   return dom.create('span')
@@ -38,7 +38,7 @@ function entityParamHeader (selection, transformer) {
 
 function entityHeaderDetails (selection, transformer) {
   const name = selection.param(0)
-  const params = selection.selectAll(['param', 'param?']).map((param) => entityParamHeader(param, transformer))
+  const params = selection.selectAll(['param', 'param?']).map((param) => entityHeaderParamDetails(param, transformer))
   const paramsContent = params.length ?
     dom.create('span').class('qm-api-quantum-header-entity-params').add(params) :
     undefined

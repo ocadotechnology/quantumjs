@@ -31,10 +31,6 @@
   content: '.';
 }
 
-.qm-api-css-header-parent-name:before {
-  content: '.';
-}
-
 /* Changelog */
 .qm-changelog-css-class + .qm-changelog-css-class {
   margin-left: 0.4em;
