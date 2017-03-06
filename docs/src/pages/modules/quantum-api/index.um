@@ -54,7 +54,7 @@
             const api = require('quantum-api')
 
             const apiOptions = {
-
+              // Define api options here
             }
 
             const htmlOptions = {
