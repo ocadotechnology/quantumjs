@@ -94,7 +94,9 @@ function strikethrough (selection, transformer) {
 
 function image (selection, transformer) {
   return dom.create('img')
-    .attr('src', selection.ps())
+    .attr('src', selection.param(0))
+    .attr('width', selection.param(1))
+    .attr('height', selection.param(2))
     .attr('alt', selection.cs())
     .attr('title', selection.cs())
 }
