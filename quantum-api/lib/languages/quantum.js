@@ -43,8 +43,11 @@ function entityHeaderDetails (selection, transformer) {
     dom.create('span').class('qm-api-quantum-header-entity-params').add(params) :
     undefined
 
+  const isOptional = selection.type()[selection.type().length - 1] === '?'
+
   return dom.create('span')
     .class('qm-api-quantum-header-entity-name')
+    .classed('qm-api-optional', isOptional)
     .attr('id', name ? name.toLowerCase() : undefined)
     .add(name || '')
     .add(paramsContent)
@@ -56,7 +59,7 @@ const paramHeader = header('param', paramHeaderDetails)
 const description = body.description
 const extras = body.extras
 const groups = body.groups
-const entities = itemGroup('quantum', 'entity', 'Entities')
+const entities = itemGroup('quantum', ['entity', 'entity?'], 'Entities')
 const params = itemGroup('quantum', ['param', 'param?'], 'Parameters')
 
 const entityBuilder = item({
@@ -104,8 +107,10 @@ module.exports = (options) => {
     assets,
     name: 'quantum',
     transforms: {
-      entity: entityBuilder,
-      param: paramBuilder
+      'entity': entityBuilder,
+      'entity?': entityBuilder,
+      'param': paramBuilder,
+      'param?': paramBuilder
     },
     changelog: {
       entityTypes: Object.keys(changelogHeaderTransforms),

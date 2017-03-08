@@ -6,7 +6,9 @@ describe('transforms', () => {
   const { transforms } = quantum({typeLinks})
   const keys = [
     'entity',
-    'param'
+    'entity?',
+    'param',
+    'param?'
   ]
   it('has the right properties', () => {
     transforms.should.have.keys(keys)

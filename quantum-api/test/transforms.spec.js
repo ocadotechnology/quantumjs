@@ -26,7 +26,9 @@ describe('transforms', () => {
   ]
   const quantumProps = [
     'entity',
-    'param'
+    'entity?',
+    'param',
+    'param?'
   ]
 
   describe('provides the correct transforms', () => {
