@@ -7,11 +7,13 @@
   @title quantum-docs
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    TODO
+    A collection of entities and transforms useful for writing documentation.
 
 @contentSection
   @topic About
-    TODO
+    The docs module consists of a collection of entites that make it easier to
+    write documentation, providing both layout and visual modifiers such as
+    sidebars, content sections and a dynamic table of contents.
 
   @topic Entities
     @inline entities.um

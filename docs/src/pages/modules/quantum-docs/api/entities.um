@@ -1,120 +1,525 @@
 @entity topic
   @added 2.0.0
   @description
-    TODO
+    Creates a topic section. These are intended to be the 'top level' of the
+    page content.
+
+    A topic is a section or group of sections about a particular thing.
+
+    The title is converted to an anchor so it can be linked to directly on a
+    page.
+
+    They are used used to populate the @code[@tableOfContents] when using the
+    @hyperlink(./#filetransform)[fileTransform].
+
+  @extra
+    @example
+      @@um
+        @topic Topic Heading
+          Topic Content
+
+  @param header
+    @description
+      The header to display
 
 @entity section
   @added 2.0.0
   @description
-    TODO
+    Creates a section of content. These are intended to be used inside
+    @code[@topic] entities.
+
+    The title is converted to an anchor so it can be linked to directly on a
+    page.
+
+    They are used used to populate the @code[@tableOfContents] when using the
+    @hyperlink(./#filetransform)[fileTransform].
+
+  @extra
+    @example
+      @@um
+        @section Section Heading
+          Section Content
+
+  @param header
+    @description
+      The header to display
 
 @entity subsection
   @added 2.0.0
   @description
-    TODO
+    Creates a subsection inside a @code[@section] entity.
+
+    A subsection is designed as a more specific section of content inside an
+    @code[@section].
+
+    Subsections are not used in the @code[@tableOfContents] and do not have an
+    anchor added to the heading.
+
+  @extra
+    @example
+      @@um
+        @subsection Subsection Heading
+          Subsection Content
+
+  @param header
+    @description
+      The header to display
 
 @entity notice
   @added 2.0.0
   @description
-    TODO
+    Displays a notice on the page to highlight important points.
+
+  @extra
+    @example
+      @@um
+        @notice [Notice Heading]
+          @description
+            Notice Content
+
+  @param header
+    @description
+      The header to display
 
 @entity list
   @added 2.0.0
   @description
-    TODO
+    Creates an ordered or unordered list using @code[@item] entities.
+
+  @extra
+    @example
+      @@um
+        # unordered list
+        @list
+          @item: Item
+          @item: Item
+          @item: Item
+
+        # ordered list
+        @list ordered
+          @item: Item
+          @item: Item
+          @item: Item
+
+  @param type
+    @description
+      The type of list to use, can be @code[ordered] or @code[unordered]
+    @default: unordered
+
+  @entity item
+    @description
+      Creates an item in the list
 
 @entity bold
   @added 2.0.0
   @description
-    TODO
+    Make a section of text bold.
+
+  @extra
+    @example
+      @@um
+        This text is @bold[bold]!
 
 @entity italic
   @added 2.0.0
   @description
-    TODO
+    Make a section of text italic.
+
+  @extra
+    @example
+      @@um
+        This text is @italic[italic]!
 
 @entity strikethrough
   @added 2.0.0
   @description
-    TODO
+    Strikes through a section of text.
+
+  @extra
+    @example
+      @@um
+        This text @strikethrough[has a line through it]
 
 @entity image
   @added 2.0.0
   @description
-    TODO
+    Add an image to the page. The content of the entity is used as the alt-text
+    as well as the title text.
 
+  @extra
+    @example
+      @@um
+        @image [/resources/quantum-sm.png]: Quantum Logo
+
+        @image [/resources/quantum-sm.png]
+          @title: Small Quantum Logo
+          @width 50
+
+
+  @param src
+    @description
+      The image src
+
+  @entity? width
+    @description
+      The width to set on the image
+
+  @entity? height
+    @description
+      The height to set on the image
+
+  @entity? title
+    @description
+      The title to set on the image when using @code[@width] and @code[@height]
+
+# XXX Missing link icon
 @entity summary
   @added 2.0.0
   @description
-    TODO
+    Creates a summary section with a set of links to provide more information.
 
+  @extra
+    @example
+      @@um
+        @summary Summary Head
+          @description
+            Summary Content
+          @link ./: Link to more information
+
+# XXX Only works with @summary?
 @entity group
   @added 2.0.0
   @description
-    TODO
+    Creates a horizontal group of elements using @code[flex] styles.
 
+  @extra
+    @example
+      @@um
+        @group
+          @summary Head
+            @description
+              Desc
+          @summary Head
+            @description
+              Desc
+
+# XXX Doesn't seem to work
 @entity versionSelector
   @added 2.0.0
   @description
-    TODO
+    Displays a version selector based on the currently available versions.
+
+  @extra
+    @example
+      @@um
+        @versionSelector
+          @versionList
+            @current 1.0.0
+            @version 1.0.0
+            @version 2.0.0
+            @version 3.0.0
+
 
 @entity sidebarPage
   @added 2.0.0
   @description
-    TODO
+    Creates a page with a sidebar. Generally this makes sense to use in
+    conjunciton with @code[@sidebar], @code[@topSection] and
+    @code[@contentSection] to provide a nice layout.
 
-@entity sidebar
-  @added 2.0.0
-  @description
-    TODO
+  @extra
+    @example
+      @@um
+        @sidebarPage
+          @sidebar
+            @navigationMenu
+              @section Introduction
+                @page /: Home
+
+          @content
+            @topSection
+              @title Example Page
+
+            @contentSection
+              @topic Topic
+
+  @entity sidebar
+    @description
+      Creates the sidebar for a @code[@sidebarPage] Any content can be used
+      inside it but it works well with the @code[@navigationMenu].
+
+  @entity content
+    @description
+      The content for the @code[@sidebarPage]
 
 @entity tableOfContents
   @added 2.0.0
   @description
-    TODO
+    Used to create a table of contents on a page.
+
+    Generally this should be used with the
+    @hyperlink(./#filetransform)[fileTransform] to provide an auto-generated
+    contents, however it is possible to create one manually.
+
+  @extra
+    @example
+      @@um
+        @tableOfContents Contents
+          @topic Something
+            @section Section
+          @topic Something else
+          @topic Another topic
+
+  @param header
+    @description
+      The header to display above the table of contents.
+
 
 @entity navigationMenu
   @added 2.0.0
   @description
-    TODO
+    Creates a list of links to be used as a navigation. It is generally combined
+    with a @code[@sidebar] entity
+
+  @extra
+    @example
+      @@um
+        @navigationMenu
+          @section Something
+            @page /#page-1: Page 1
+            @page /#page-2: Page 2
+            @page /#page-3: Page 3
+
+          @section Another thing
+            @page /#page-1: Page 1
+            @page /#page-2: Page 2
+            @page /#page-3: Page 3
+
+  @entity section
+    @description
+      Creates a group of pages in a navigation menu
+
+    @param title
+      @description
+        The title to display for the section
+
+  @entity page
+    @description
+      Creates a link to a page. The content is used as the link text.
+
+    @param url
+      @description
+        The link to go to
 
 @entity header
   @added 2.0.0
   @description
-    TODO
+    Creates the titlebar for a page
 
+  @extra
+    @example
+      @@um
+        @header
+          @title Some header
+          @icon /resources/logo.png
+
+  @entity title
+    @description
+      Sets the text for the header
+
+    @param text
+      @description
+        The text to set for the header
+
+  @entity icon
+    @description
+      Adds an icon to the header
+
+    @param src
+      @description
+        The path to the icon to display
+
+# XXX: Missing icon
 @entity breadcrumb
   @added 2.0.0
   @description
-    TODO
+    Creates a breadcumb trail of items.
+
+  @extra
+    @example
+      @@um
+        @breadcrumb
+          @item /: Somewhere
 
 @entity topSection
   @added 2.0.0
   @description
-    TODO
+    Creates a top section for a page with a title and description. Usually used
+    with @code[@contentSection]
+
+  @extra
+    @example
+      @@um
+        @topSection
+          @title quantum-docs
+          @description
+            Some description
+          @source [http://example.com/this-page.um]: Edit Page
+          @breadcrumb
+            @item #: Page 1
+            @item #: Page 2
+            @item #: This page
+
+        @contentSection
+          @topic Content
+
+  @entity title
+    @description
+      Adds a title section and also sets the @code[<title>] for a given page.
+
+  @entity description
+    @description
+      Add a description of the current page to display below the title
+
+  @entity breadcrumb
+    @description
+      Creates a breadcumb trail of items in the top section.
+
+  @entity source
+    @description
+      Creates a link to the source of the current page
+
+    @param url
+      @description
+        The URL to link to. The content is used as the link text.
 
 @entity contentSection
   @added 2.0.0
   @description
-    TODO
+    Creates a content section for a page. Usually
+    used with @code[@topSection]
+
+  @extra
+    @example
+      @@um
+        @topSection
+          @title quantum-docs
+
+        @contentSection
+          @topic Content
+            Page content
 
 @entity fullWidth
   @added 2.0.0
   @description
-    TODO
+    Breaks an element out of the @code[@contentSection] to make it span the
+    entire width of the page.
 
+  @extra
+    @example
+      @@um
+        @fullWidth
+          @notice Something
+            Content
+
+# XXX: Colours? How is this supposed to be used?
 @entity bottomSection
   @added 2.0.0
   @description
-    TODO
+    Creates a footer for the page. Generally used with @code[@sidebarPage] and
+    @code[@relatedButtons].
+
+  @extra
+    @example
+      @@um
+        @sidebarPage
+          @sidebar
+            @navigationMenu
+              @section Introduction
+                @page /: Home
+
+          @content
+            @topSection
+              @title Example Page
+
+            @contentSection
+              @topic Topic
+
+            @bottomSection
+              @relatedButtons
+                @button /
+                  @title: Related 1
+                  @description: More Info
+
 
 @entity relatedButtons
   @added 2.0.0
   @description
-    TODO
+    Creates a set of related links for the bottom of a page. Generally used
+    inside a @code[@bottomSection].
+
+  @extra
+    @example
+      @@um
+        @bottomSection
+          @relatedButtons
+            @button /
+              @title: Related 1
+              @description: More Info
+
+  @entity button
+    @description
+      Creates a related button
+
+    @param url
+      @description
+        The url for the button to link to
+
+    @entity title
+      @description
+        The title for a related button
+
+      @param text
+
+    @entity description
+      @description
+        The short description of a related button.
 
 @entity table
   @added 2.0.0
   @description
-    TODO
+    A nicer way of creating a table, as opposed to using @code[@tr] and
+    @code[@td]
 
+  @extra
+    @example
+      @@um
+        @table
+          @header
+            @cell
+              Something
+            @cell
+              Something else
+          @row
+            @cell
+              Cell content
+            @cell
+              Other content
+          @row
+            @cell
+              Cell content
+            @cell
+              Other content
+
+  @entity header
+    @description
+      Creates a header row for the table
+
+  @entity row
+    @description
+      Creates a table row
+
+  @entity cell
+    @description
+      Creates a table cell. Should be used inside a @code[@header] or
+      @code[@row]

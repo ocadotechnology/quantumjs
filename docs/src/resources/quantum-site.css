@@ -268,7 +268,16 @@ a:hover {
   box-shadow: none;
 }
 
-.docs-example-body :last-child,
-.docs-example-code :last-child {
+.docs-example-body > :last-child,
+.docs-example-code > :last-child {
   margin-bottom: 0;
+}
+
+
+.qm-html-paragraph .docs-example-body {
+  line-height: normal;
+}
+
+.qm-docs-breadcrumb {
+  background: #168dea;
 }
