@@ -384,6 +384,7 @@ describe('transforms', () => {
           .id('fixed-id')
           .class('qm-docs-version-selector hx-btn')
           .add(stylesheetAsset)
+          .add(scriptAsset)
           .add(dom.create('span').text('0.2.0'))
           .add(dom.create('i').class('fa fa-caret-down'))
           .add(dom.create('script').text('window.quantum.docs.createDropdown("fixed-id", ["0.1.0", "0.2.0", "0.3.0"], "0.2.0");', {escape: false}))

@@ -18,8 +18,7 @@ function createDropdown (id, versions, current) {
   })
 }
 
-window.quantum = {
-  docs: {
-    createDropdown: createDropdown
-  }
+window.quantum = window.quantum || {}
+window.quantum.docs = {
+  createDropdown: createDropdown
 }

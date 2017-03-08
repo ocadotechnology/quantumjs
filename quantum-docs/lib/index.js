@@ -93,12 +93,16 @@ function strikethrough (selection, transformer) {
 }
 
 function image (selection, transformer) {
+  const width = selection.has('width') ? selection.select('width').ps() : undefined
+  const height = selection.has('height') ? selection.select('height').ps() : undefined
+  const title = selection.has('title') ? selection.select('title').cs() : selection.cs()
+
   return dom.create('img')
     .attr('src', selection.param(0))
-    .attr('width', selection.param(1))
-    .attr('height', selection.param(2))
-    .attr('alt', selection.cs())
-    .attr('title', selection.cs())
+    .attr('alt', title)
+    .attr('title', title)
+    .attr('width', width)
+    .attr('height', height)
 }
 
 function summary (selection, transformer) {
@@ -134,6 +138,7 @@ function versionSelector (selection, transformer) {
       .id(id)
       .class('qm-docs-version-selector hx-btn')
       .add(stylesheetAsset)
+      .add(scriptAsset)
       .add(dom.create('span').text(current))
       .add(dom.create('i').class('fa fa-caret-down'))
       .add(dom.create('script').text(script, {escape: false}))

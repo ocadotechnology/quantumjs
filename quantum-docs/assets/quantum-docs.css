@@ -1,4 +1,3 @@
-
 html,
 body {
   margin: 0;
@@ -10,11 +9,13 @@ body {
 body {
   display: -webkit-box;
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
 }
 
 .qm-docs-centered {
@@ -32,7 +33,6 @@ body {
   margin-bottom: 1em;
   position: relative;
   top: 50px;
-
   color: #676767;
 }
 
@@ -40,9 +40,7 @@ h1 {
   color: #676767;
 }
 
-.qm-docs-topic-body {
-
-}
+.qm-docs-topic-body {}
 
 .qm-docs-section {
   margin-bottom: 3em;
@@ -77,7 +75,7 @@ p {
   margin: 1em 0;
 }
 
-p:first-child  {
+p:first-child {
   margin-top: 0;
 }
 
@@ -96,6 +94,7 @@ p:last-child {
   margin: 0.15em;
 }
 
+
 /* Sidebar */
 
 .qm-docs-sidebar-page .qm-docs-content-section-container {
@@ -105,14 +104,16 @@ p:last-child {
 
 .qm-docs-content-section-container {
   -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  -ms-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
 }
 
 .qm-docs-sidebar {
   max-width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   left: 0;
   bottom: 0;
@@ -125,6 +126,7 @@ p:last-child {
   overflow: auto;
 }
 
+
 /*.qm-docs-sidebar-left {
   right: calc(50% + 400px);
 }
@@ -132,6 +134,7 @@ p:last-child {
 .qm-docs-sidebar-right {
   left: calc(50% + 400px);
 }*/
+
 
 /*.qm-docs-sidebar.qm-docs-sidebar-at-top {
   position: absolute;
@@ -144,11 +147,10 @@ p:last-child {
   top: initial;
 }*/
 
+
 /* Table of contents */
 
-.qm-docs-table-of-contents {
-
-}
+.qm-docs-table-of-contents {}
 
 .qm-docs-table-of-contents-topic-container {
   /*margin-bottom: 0.5em;*/
@@ -194,8 +196,9 @@ p:last-child {
 
 .qm-docs-search-container {
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 auto;
-          flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 .qm-docs-search {
@@ -205,6 +208,7 @@ p:last-child {
   border-radius: 2px;
   display: -webkit-box;
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
 }
 
@@ -221,8 +225,9 @@ p:last-child {
   margin: 0;
   height: 24px;
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 auto;
-          flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 .qm-docs-search-input::-webkit-input-placeholder {
@@ -256,8 +261,9 @@ p:last-child {
 .qm-docs-subtitle {
   font-size: 1.3em;
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 auto;
-          flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 .qm-docs-summary {
@@ -265,18 +271,22 @@ p:last-child {
   margin: 8px;
   background: #FFFFFF;
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 320px;
-          flex: 1 1 320px;
+  -ms-flex: 1 1 320px;
+  -webkit-flex: 1 1 320px;
+  flex: 1 1 320px;
   display: -webkit-box;
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
   border-radius: 5px;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
@@ -287,27 +297,28 @@ p:last-child {
   margin-bottom: 0;
   font-size: 32px;
   text-align: center;
-  color: #00a0ff;
+  color: #15668e;
 }
 
 .qm-docs-summary-body {
   margin: 0.75em;
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 auto;
-          flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
   text-align: center;
 }
 
 .qm-docs-summary-link {
   padding: 0.5em;
   cursor: pointer;
-  color: #00a0ff;
+  color: #15668e;
   text-align: center;
   background: #F6F6F6;
 }
 
 .qm-docs-summary-link:hover {
-  background: #00a0ff;
+  background: #15668e;
   text-decoration: none;
   color: white;
 }
@@ -319,9 +330,11 @@ p:last-child {
 .qm-docs-group {
   display: -webkit-box;
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
   margin: -0.5em;
 }
 
@@ -345,7 +358,6 @@ p:last-child {
   color: #6B6B6B;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
-
 
 .qm-docs-top-section-source {
   color: gray;
@@ -387,7 +399,7 @@ p:last-child {
 }
 
 .qm-docs-breadcrumb {
-      background: rgb(83, 185, 181);
+  background: rgb(83, 185, 181);
 }
 
 .qm-docs-breadcrumb-padding {
@@ -418,7 +430,6 @@ p:last-child {
   padding: 1em 0;
 }
 
-
 .qm-docs-bottom-section {
   padding: 1em 1em;
   background: #333;
@@ -427,10 +438,12 @@ p:last-child {
 .qm-docs-related-buttons {
   display: -webkit-box;
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
 }
 
 .qm-docs-related-button {
@@ -440,10 +453,12 @@ p:last-child {
   padding: 1em 1.5em;
   display: -webkit-box;
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
   border-radius: 0.25em;
   cursor: pointer;
   margin: 0.5em;
@@ -467,8 +482,6 @@ p:last-child {
 }
 
 
-
-
 /* Nagivation menu */
 
 .qm-docs-navigation-menu {
@@ -478,31 +491,38 @@ p:last-child {
 
 .qm-docs-navigation-menu-section-title {
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.39);
+  color: rgba(0, 0, 0, 0.39);
   font-size: 12px;
   margin: 1.5em 0 1em 0;
+}
+
+.qm-docs-sidebar .qm-docs-navigation-menu-section-title {
+  color: rgba(255, 255, 255, 0.39);
 }
 
 .qm-docs-navigation-menu-section:first-child .qm-docs-navigation-menu-section-title {
   margin-top: 0;
 }
 
-.qm-docs-navigation-menu-section-body {
-}
+.qm-docs-navigation-menu-section-body {}
 
 .qm-docs-navigation-menu-page {
-    display: block;
-    color: rgba(255, 255, 255, 0.85);
+  display: block;
+  color: rgba(0, 0, 0, 0.85);
 }
 
+.qm-docs-sidebar .qm-docs-navigation-menu-page {
+  color: rgba(255, 255, 255, 0.85);
+}
 
 
 /* Notices */
 
+
 /* XXX: add the hexagon type context classes here */
 
 .qm-docs-notice {
-    margin: 1em 0;
+  margin: 1em 0;
 }
 
 .qm-docs-notice-header {
@@ -518,7 +538,6 @@ p:last-child {
   border-radius: 0 0 3px 3px;
 }
 
-
 .qm-docs-header {
   position: fixed;
   background: white;
@@ -529,7 +548,13 @@ p:last-child {
 }
 
 .qm-docs-sidebar-page {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
   flex: 1 1 auto;
 }
 
@@ -542,7 +567,11 @@ p:last-child {
 .qm-docs-header-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
   align-items: center;
 }
 
@@ -555,7 +584,13 @@ p:last-child {
 .qm-docs-header-logo-link {
   display: inline-block;
   cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
   align-items: center;
 }
 
@@ -565,8 +600,9 @@ p:last-child {
   font-size: 24px;
   font-weight: 100;
   -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  -ms-flex-positive: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -577,7 +613,7 @@ p:last-child {
   border-bottom: solid 3px rgba(255, 255, 255, 0.5);
   color: #828282;
   line-height: 39px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   padding: 0 1em;
   margin: 0 0.25em;
   cursor: pointer;
@@ -589,7 +625,6 @@ p:last-child {
   text-decoration: none;
 }
 
-
 .qm-docs-header + .qm-docs-content-section-container {
   padding-top: 42px;
 }
@@ -597,6 +632,7 @@ p:last-child {
 .qm-docs-header + .qm-docs-top-section {
   padding-top: 42px;
 }
+
 
 /* .qm-docs-table {
   border-spacing: 0;
@@ -680,6 +716,10 @@ p:last-child {
   }
 
   .qm-docs-sidebar-page .qm-docs-sidebar-page {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
     flex-direction: column;
     overflow: auto;
   }
@@ -725,7 +765,6 @@ p:last-child {
     position: initial;
   }
 }
-
 
 .qm-docs-sidebar-page .qm-docs-centered {
   max-width: 100%;
