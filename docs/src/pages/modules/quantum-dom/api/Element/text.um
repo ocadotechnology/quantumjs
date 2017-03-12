@@ -1,0 +1,28 @@
+@method text
+  @description
+    Adds text as a child of this @type[Element]
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div')
+          .add("Some text")
+
+  @param text [String]
+    @description
+      The text to add as a child
+
+  @param? options [Object]
+    @descriptions
+      Options that specify how the element is added
+
+    @property escape [Boolean]
+      @description
+        Set to @code[true] to html escape the added text
+      @default: true
+
+  @returns Element
+    @description
+      Returns this @type[Element] instance

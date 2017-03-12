@@ -1,0 +1,17 @@
+@function randomId
+  @added 2.0.0
+  @description
+    Creates a new random id which can be used to identify an element in a page.
+    This is useful when a script needs to be run to initialise a specific element.
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        dom.randomId() // returns a new random id
+
+  @returns String
+    @description
+      A random 32 character hex string which can be used to uniquely identify
+      elements in the page.

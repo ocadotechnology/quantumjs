@@ -1,0 +1,19 @@
+@method stringify
+  @description
+    Turns this @type[Element] into a html string fragment
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div')
+          .add(dom.create('div').class('child-1'))
+          .add(dom.create('div').class('child-2'))
+
+        div.stringify()
+        // <div><div class="child-1></div><div class="child-2></div></div>
+
+  @returns String
+    @description
+      The html string that represents this @type[Element].

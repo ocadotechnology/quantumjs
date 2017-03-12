@@ -1,0 +1,58 @@
+@method classed
+  @description
+    Checks if the @type[Element] has a class
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const button = dom.create('button')
+          .class('button outline danger')
+
+        div.classed('button') // returns true
+        div.classed('outline') // returns true
+        div.classed('positive') // returns false
+
+  @param class [String]
+    @description
+      The class to check existence of
+
+  @returns Boolean
+    @description
+      Returns true if the @type[Element] has the class supplied
+
+@method classed
+  @description
+    Adds or removes one or more classes to this @type[Element]
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const button = dom.create('button')
+          .class('button outline danger')
+
+
+        button.classed('button') // returns true
+        button.classed('button', false)
+        button.classed('button') // returns false
+
+        button.classed('positive', true)
+        button.class() // returns 'danger outline positive'
+        button.classed('danger outline', false)
+        button.class() // returns 'positive'
+
+
+  @param class [String]
+    @description
+      The class to add or remove (or multiple space separated classes)
+
+  @param add [Boolean]
+    @description
+      Supply @code[true] to add classes to the element, @code[false] to remove.
+
+  @returns Element
+    @description
+      Returns this @type[Element] instance

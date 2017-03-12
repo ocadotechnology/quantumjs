@@ -216,10 +216,11 @@ TextNode.prototype.stringify = function () {
   return this.text
 }
 
-function Asset (url, filename, shared) {
-  this.url = url
-  this.filename = filename
-  this.shared = shared
+function Asset (options) {
+  this.url = options.url
+  this.filename = options.filename
+  this.type = options.type
+  this.content = options.content
 }
 
 function HeadWrapper (element, options) {
@@ -281,14 +282,16 @@ function head (element, options) {
 
 // adds an asset to the page - the user can choose to embed or not when stringifying
 function asset (options) {
-  const opts = options || {}
-  return new Asset(opts.url || '', opts.filename || '', opts.shared === true)
+  return new Asset(options || {})
 }
 
 // renders the elements given to html
-function stringify (elements, options) {
-  const embedAssets = options ? options.embedAssets !== false : true
-  const assetPath = options ? options.assetPath || '' : ''
+function stringify (elements, options = {}) {
+  const {
+    embedAssets = true,
+    assetPath = '',
+    assetLoader = (filename) => fs.readFileAsync(filename, 'utf-8')
+  } = options
 
   const [headWrappers, modifiers, assets] = extractTypes(elements, [HeadWrapper, PageModifier, Asset])
 
@@ -320,12 +323,15 @@ function stringify (elements, options) {
     .map(e => e !== undefined && e.stringify ? e.stringify() : (isString(e) ? e : ''))
     .join('')
 
-  // XXX: add an option for choosing where the assets live
-
   // only keep unique assets
   const uniqueAssetsMap = {}
+  const anonymousAssets = []
   assets.forEach(asset => {
-    uniqueAssetsMap[asset.url] = asset
+    if (asset.url) {
+      uniqueAssetsMap[asset.url] = asset
+    } else {
+      anonymousAssets.push(asset)
+    }
   })
   const uniqueAssets = Object.keys(uniqueAssetsMap).map(k => uniqueAssetsMap[k])
 
@@ -333,23 +339,49 @@ function stringify (elements, options) {
 
   const stylesheets = Promise.all(uniqueAssets.filter(a => a.url.endsWith('.css')).map(s => {
     if (embedAssets) {
-      // XXX: make this loader configurable so that assets can be cached
-      return fs.readFileAsync(s.filename, 'utf-8').then(content => `<style>${content}</style>`)
+      if (s.content) {
+        return `<style>${s.content}</style>`
+      } else {
+        return assetLoader(s.filename)
+          .then(content => `<style>${content}</style>`)
+      }
     } else {
       exportAssets.push(s)
       return `<link rel="stylesheet" href="${assetPath}${s.url}"></link>`
     }
   }))
 
+  const anonymousStylesheets = anonymousAssets.filter(a => a.type === 'css').map(s => {
+    if (s.content) {
+      return `<style>${s.content}</style>`
+    } else {
+      return assetLoader(s.filename)
+        .then(content => `<style>${content}</style>`)
+    }
+  })
+
   const scripts = Promise.all(uniqueAssets.filter(a => a.url.endsWith('.js')).map(s => {
     if (embedAssets) {
-      // XXX: make this loader configurable so that assets can be cached
-      return fs.readFileAsync(s.filename, 'utf-8').then(content => `<script>${content}</script>`)
+      if (s.content) {
+        return `<script>${s.content}</script>`
+      } else {
+        return assetLoader(s.filename)
+          .then(content => `<script>${content}</script>`)
+      }
     } else {
       exportAssets.push(s)
       return `<script src="${assetPath}${s.url}"></script>`
     }
   }))
+
+  const anonymousScripts = anonymousAssets.filter(a => a.type === 'js').map(s => {
+    if (s.content) {
+      return `<script>${s.content}</script>`
+    } else {
+      return assetLoader(s.filename)
+        .then(content => `<script>${content}</script>`)
+    }
+  })
 
   // Also export any un-embeddable assets
   uniqueAssets.forEach(asset => {
@@ -360,10 +392,9 @@ function stringify (elements, options) {
 
   return Promise.all([stylesheets, scripts])
     .spread((stylesheets, scripts) => {
-      const head = `<head>${stylesheets.join('')}${headElements}</head>`
-      const bodyClasses = `qm-body-font${bodyClass ? ` ${bodyClass}` : ''}`
-      const openBodyTag = `<body class="${bodyClasses}">`
-      const body = `${openBodyTag}${bodyElements}${scripts.join('')}</body>`
+      const bodyClasses = 'qm-body-font' + (bodyClass ? ' ' + bodyClass : '')
+      const head = `<head>${stylesheets.join('')}${anonymousStylesheets.join('')}${headElements}</head>`
+      const body = `<body class="${bodyClasses}">${bodyElements}${scripts.join('')}${anonymousScripts.join('')}</body>`
       const html = `<!DOCTYPE html>\n<html>\n${head}\n${body}</html>`
       return {
         html: html,

@@ -1,0 +1,36 @@
+@method id
+  @description
+    Gets the id attribute for this element
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div').id('my-div')
+
+        div.id() // returns 'my-div'
+
+  @returns String
+    @description
+      Returns the id attribute of this @type[Element] or @code[undefined] if no
+      id is set
+
+@method id
+  @description
+    Sets the id attribute for this element
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div').id('my-div')
+
+  @param value [String]
+    @description
+      The value to set the id to
+
+  @returns Element
+    @description
+      Returns this @type[Element] instance

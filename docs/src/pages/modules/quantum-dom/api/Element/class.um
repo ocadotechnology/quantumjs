@@ -1,0 +1,36 @@
+@method class
+  @description
+    Gets the class attribute for this element
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div').class('my-div')
+
+        div.class() // returns 'my-div'
+
+  @returns String
+    @description
+      Returns the class attribute of this @type[Element] or @code[undefined] if no
+      class is set
+
+@method class
+  @description
+    Sets the class attribute for this element
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div').class('my-div')
+
+  @param value [String]
+    @description
+      The value to set the class to
+
+  @returns Element
+    @description
+      Returns this @type[Element] instance

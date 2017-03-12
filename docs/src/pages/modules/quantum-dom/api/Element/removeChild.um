@@ -1,0 +1,26 @@
+@method removeChild
+  @description
+    Removes a child from this @type[Element]
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const child1 = dom.create('div').class('child-1')
+        const child2 = dom.create('div').class('child-1')
+
+        const div = dom.create('div')
+          .add([child1, child2])
+
+        div.removeChild(child1)
+        // 'div' just has child2 as a child now
+
+  @param child [Element]
+    @description
+      The child to remove from this @type[Element]
+
+  @returns [Boolean]
+    @description
+      Returns @code[true] if the child was successfully removed, @code[false] if
+      the element being removed is not a child of this @type[Element]

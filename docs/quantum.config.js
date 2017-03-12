@@ -25,9 +25,11 @@ const typeLinks = {
   Selection: '/modules/quantum-js/#selection',
   Watcher: '/modules/quantum-js/#watcher',
   Element: '/modules/quantum-dom/#element',
+  TextNode: '/modules/quantum-dom/#textnode',
+  Asset: '/modules/quantum-dom/#asset',
+  HeadWrapper: '/modules/quantum-dom/#headwrapper',
   FileTransform: '/docs/file-transforms/',
-  EntityTransform: '/docs/entity-transforms/',
-  Asset: '/modules/quantum-dom/#asset'
+  EntityTransform: '/docs/entity-transforms/'
 }
 
 const apiOptions = {

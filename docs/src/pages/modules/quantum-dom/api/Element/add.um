@@ -1,0 +1,94 @@
+@method add
+  @description
+    Adds an element as a child of this @type[Element]
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div')
+          .add(dom.create('div').class('child-1'))
+          .add(dom.create('div').class('child-2'))
+
+  @param element [Element]
+    @description
+      The element to add as a child
+
+  @param? options [Object]
+    @descriptions
+      Options that specify how the element is added
+
+    @property addToEnd [Boolean]
+      @description
+        Set to @code[true] to keep the child at the end of list of children when
+        it is stringified
+      @default: false
+
+  @returns Element
+    @description
+      Returns this @type[Element] instance
+
+@method add
+  @description
+    Adds an element as a child of this @type[Element]
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div')
+          .add(getName().then(name => dom.create('div').text(name)))
+          .add(getAge().then(age => dom.create('div').text(age)))
+
+  @param element [Promise[Element]]
+    @description
+      A promise which yields the element to add as a child
+
+    @param? options [Object]
+      @descriptions
+        Options that specify how the element is added
+
+      @property addToEnd [Boolean]
+        @description
+          Set to @code[true] to keep the child at the end of list of children when
+          it is stringified
+        @default: false
+
+  @returns Element
+    @description
+      Returns this @type[Element] instance
+
+@method add
+  @description
+    Adds multiple elements as a children of this @type[Element]
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div')
+          .add([
+            dom.create('div').class('child-1'),
+            dom.create('div').class('child-2')
+          ])
+
+  @param element [Array[Element/Promise[Element]]]
+    @description
+      An array of elements to add as children
+
+  @param? options [Object]
+    @descriptions
+      Options that specify how the element is added
+
+    @property addToEnd [Boolean]
+      @description
+        Set to @code[true] to keep the child at the end of list of children when
+        it is stringified
+      @default: false
+
+  @returns Element
+    @description
+      Returns this @type[Element] instance

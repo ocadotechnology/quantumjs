@@ -1,3 +1,9 @@
+@prototype HeadWrapper
+  @added 2.0.0
+  @description
+    The type returned by @code[head()]. Instances of this should be created only
+    using the @code[head()] function.
+
 @function head
   @added 2.0.0
 

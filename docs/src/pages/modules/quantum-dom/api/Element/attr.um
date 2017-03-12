@@ -1,0 +1,47 @@
+@method attr
+  @description
+    Gets the value of an element's attribute
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div')
+          .attr('class', 'my-div')
+
+        div.attr('class') // returns 'my-div'
+
+  @param name [String]
+    @description
+      The name of the element's attribute to get
+
+  @returns String
+    @description
+      Returns the value of attribute or @code[undefined] if no value is set for
+      the attribute
+
+@method attr
+  @description
+    Sets the value of an element's attribute
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div')
+          .attr('class', 'my-div')
+          .attr('id', 'div1')
+
+  @param name [String]
+    @description
+      The name of the element's attribute to set
+
+  @param value [String]
+    @description
+      The value to set the attribute to
+
+  @returns Element
+    @description
+      Returns this @type[Element] instance

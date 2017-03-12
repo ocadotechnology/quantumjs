@@ -1,3 +1,34 @@
+@prototype TextNode
+  @added 2.0.0
+  @description
+    An object that represents a HTML text node. Instances of this should be
+    created using the @code[textNode] factory function.
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        dom.create('div')
+          .add(dom.textNode('hello'))
+          .add(dom.textNode('<div id="my-div"></div>', {escape: false}))
+
+  @method stringify
+    @description
+      Turns this text node to a string
+
+    @extra
+      @subsection Example
+        @@codeblock js
+          const dom = require('quantum-dom')
+
+          const textNode = dom.textNode('hello')
+          textNode.stringify() // "hello"
+
+    @returns String
+      @description
+        This text node converted to a string
+
 @function textNode
   @added 2.0.0
 

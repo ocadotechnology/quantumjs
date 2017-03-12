@@ -1,0 +1,20 @@
+@prototype Element
+  @added 2.0.0
+
+  @description
+    An object that represents a DOM element. These can be created using
+    @code[dom.create()]
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div')
+          .class('button-container')
+          .add(dom.create('button').text('Click me'))
+
+        div.stringify()
+        // '<div class="button-container"><button>Click me</button></div>'
+
+  @inline Element/*.um

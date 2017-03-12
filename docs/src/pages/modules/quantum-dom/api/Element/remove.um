@@ -1,0 +1,17 @@
+@method remove
+  @description
+    Removes this element from its parent
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const child1 = dom.create('div').class('child-1')
+        const child2 = dom.create('div').class('child-1')
+
+        const div = dom.create('div')
+          .add([child1, child2])
+
+        child1.remove()
+        // 'div' just has child2 as a child now
