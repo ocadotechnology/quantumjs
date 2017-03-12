@@ -354,7 +354,7 @@ p:last-child {
   top: 0;
   left: 0;
   right: 0;
-  background: #FDFDFD;
+  background: white;
   color: #6B6B6B;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
@@ -497,7 +497,7 @@ p:last-child {
 }
 
 .qm-docs-sidebar .qm-docs-navigation-menu-section-title {
-  color: rgba(255, 255, 255, 0.39);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .qm-docs-navigation-menu-section:first-child .qm-docs-navigation-menu-section-title {
@@ -512,7 +512,7 @@ p:last-child {
 }
 
 .qm-docs-sidebar .qm-docs-navigation-menu-page {
-  color: rgba(255, 255, 255, 0.85);
+  color: white;
 }
 
 

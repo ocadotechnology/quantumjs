@@ -20,7 +20,7 @@
   margin: 1em 0 0.5em;
 }
 
-.qm-api-item .qm-api-group:first-child > .qm-api-group-header {
+.qm-api-group:first-child > .qm-api-group-header {
   margin-top: 0;
 }
 
@@ -134,17 +134,12 @@
   display: block;
 }
 
-.qm-api-groups {}
-
-.qm-api-groups .qm-api-groups > .qm-api-group {
-  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.17);
-  padding: 0.5em;
-  background: #fff;
-  margin-bottom: 0.5em;
+.qm-api-groups {
+  margin-top: 1em;
 }
 
-.qm-api-groups .qm-api-groups .qm-api-group-header {
-  font-size: 1.1em;
+.qm-api-groups .qm-api-groups > .qm-api-group {
+  padding: 0.5em;
 }
 
 .qm-api-groups .qm-api-groups > .qm-api-group > .qm-api-group-header {
