@@ -1,5 +1,6 @@
 const dom = require('quantum-dom')
 const quantum = require('quantum-js')
+const html = require('quantum-html')
 
 function um (selection, transformer) {
   return quantum.select(quantum.parse(selection.cs())).transform(transformer)
@@ -99,7 +100,6 @@ function example (selection, transformer) {
       .add(result)
 }
 
-const html = require('quantum-html')
 function customTransform (selection, transformer) {
   return html.paragraphTransform(selection, transformer)
 }
