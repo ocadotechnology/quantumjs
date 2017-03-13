@@ -62,7 +62,19 @@ function template (entity, variables) {
 
         items.forEach((value) => {
           variable1.value = value
+          const valIsObj = (typeof value === 'object') && (value !== null)
+          if (valIsObj) {
+            Object.keys(value).forEach(key => {
+              variables.push({
+                key: `${variable1.key}.${key}`,
+                value: value[key]
+              })
+            })
+          }
           content = processEntity(entity, variables, content)
+          if (valIsObj) {
+            Object.keys(value).forEach(_ => variables.pop())
+          }
         })
 
         variables.pop()
