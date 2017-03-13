@@ -1,0 +1,5 @@
+@prototype PageModifier
+  @added 2.0.0
+  @description
+    An object that modifies the page in some way when stringifying. This is returned
+    by the @code[bodyClassed] function.

@@ -1,0 +1,49 @@
+@function stringify
+  @added 2.0.0
+
+  @description
+    Converts an array of elements to a full html page (as a string)
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        const div = dom.create('div').class('button-container').add(dom.create('button').text('Click me'))
+
+        dom.stringify([div])
+
+    @subsection Output
+      @@codeblock js
+        {
+          html: '<!DOCTYPE html>\n<html>\n<head></head>\n<body class="qm-body-font"><div class="button-container"><button>Click me</button></div></body></html>',
+          assets: []
+        }
+
+  @param elements [Array[Element]]
+    @descriptions
+      The elements that should form the body of the html page
+
+  @param? options [Object]
+    @description
+      Options that configure how the page is rendered
+
+    @property embedAssets [Boolean]
+      @description
+        Set to true to embed JavaScript and CSS assets in the page, false to
+        export them as separate files
+      @default: true
+
+    @property assetPath [String]
+      @description
+        The base url for the exported assets
+      @default: ''
+
+  @returns Object
+    @property html [String]
+      @description
+        The build html string
+
+    @property assets [Array[Asset]]
+      @description
+        The assets that were exported when building the page

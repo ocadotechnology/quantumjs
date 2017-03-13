@@ -1,0 +1,32 @@
+@function bodyClassed
+  @added 2.0.0
+  @description
+    Adds or removes a class to the body of the page.
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
+
+        // Adds the class '.extra-body-class' to the body
+        const extraBodyClass = dom.bodyClassed('extra-body-class', true)
+
+        const div = dom.create('div')
+
+        dom.stringify([
+          extraBodyClass,
+          div
+        ])
+
+  @param class [String]
+    @description
+      The class to add or remove
+
+  @param classed [Boolean]
+    @description
+      @code[true] to add the class, @code[false] to remove
+
+  @returns PageModifier
+    @description
+      A @type[PageModifier] instance that adds or removes a class from the body
+      element of a page when stringified.

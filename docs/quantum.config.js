@@ -28,6 +28,7 @@ const typeLinks = {
   TextNode: '/modules/quantum-dom/#textnode',
   Asset: '/modules/quantum-dom/#asset',
   HeadWrapper: '/modules/quantum-dom/#headwrapper',
+  PageModifier: '/modules/quantum-dom/#pagemodifier',
   FileTransform: '/docs/file-transforms/',
   EntityTransform: '/docs/entity-transforms/'
 }
