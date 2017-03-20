@@ -1,6 +1,6 @@
 {
   "name": "quantum-api",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "description": "quantum entity to virtual dom transforms for writing api docs",
   "contributors": [
     "James Smyth <james.smyth@ocado.com>",
@@ -29,10 +29,10 @@
     "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"
   },
   "dependencies": {
-    "quantum-js": "^2.0.0-rc.2",
-    "quantum-dom": "^2.0.0-rc.2",
-    "quantum-html": "^2.0.0-rc.2",
-    "quantum-version": "^2.0.0-rc.2"
+    "quantum-js": "^2.0.0-rc.3",
+    "quantum-dom": "^2.0.0-rc.3",
+    "quantum-html": "^2.0.0-rc.3",
+    "quantum-version": "^2.0.0-rc.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",

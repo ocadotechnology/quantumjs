@@ -1,6 +1,6 @@
 {
   "name": "quantum-markdown",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "description": "A markdown transform for QuantumJS",
   "contributors": [
     "Charlie Frater <charlie.frater@ocado.com>"
@@ -30,9 +30,9 @@
   },
   "dependencies": {
     "marked": "^0.3.6",
-    "quantum-js": "^2.0.0-rc.2",
-    "quantum-code-highlight": "^2.0.0-rc.2",
-    "quantum-dom": "^2.0.0-rc.2"
+    "quantum-js": "^2.0.0-rc.3",
+    "quantum-code-highlight": "^2.0.0-rc.3",
+    "quantum-dom": "^2.0.0-rc.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",
