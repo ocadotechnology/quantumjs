@@ -544,7 +544,7 @@ p:last-child {
   width: 100%;
   z-index: 1000;
   padding: 0 15px;
-  box-shadow: 1px 1px 1px 1px #d8d8d8;
+  box-shadow: 1px 1px 1px 1px rgba(10, 10, 10, 0.07);
 }
 
 .qm-docs-sidebar-page {
