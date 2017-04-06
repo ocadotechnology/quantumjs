@@ -213,7 +213,8 @@ HTMLPage.prototype.stringify = function (options) {
 function buildHTML (opts) {
   const options = merge({
     embedAssets: true,
-    assetPath: undefined
+    assetPath: undefined,
+    resourcesTarget: undefined
   }, opts)
 
   return (file) => {
@@ -227,7 +228,7 @@ function buildHTML (opts) {
                 src: asset.filename,
                 resolved: asset.filename,
                 base: '',
-                dest: (file.info.destBase || '') + (options.assetPath || '') + asset.url,
+                dest: (file.info.destBase || '') + (options.resourcesTarget || '') + asset.url,
                 destBase: file.info.destBase,
                 watch: false
               }),
