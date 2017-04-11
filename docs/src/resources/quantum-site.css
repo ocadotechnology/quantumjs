@@ -248,13 +248,16 @@ a:hover {
   border-top: none;
 }
 
+.docs-example-body-section:not(:last-child),
 .docs-example-code-section:not(:last-child),
 .docs-example-code-body:not(:last-child) {
   margin-bottom: 0.5em;
 }
 
+.docs-example-body-heading,
 .docs-example-code-heading {
   font-weight: bold;
+  margin-bottom: 0.5em;
 }
 
 .docs-example-body,
