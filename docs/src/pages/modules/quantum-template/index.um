@@ -7,11 +7,189 @@
   @title quantum-template
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    TODO
+    Transforms for templating content.
 
 @contentSection
   @topic About
-    TODO
+    The template module provides the ability to use variables to create
+    conditional content and for loops as well as the ability to create page
+    templates to include things like a sidebar or titlebar.
+
+  @topic Example
+    Variables are defined in the options of the @code[fileTransform] and can be
+    a @type[String], @type[Object] or @type[Array[String/Object]].
+
+    Variables are included on a page using double curly braces (e.g.
+    @code[{{variableName}}])
+
+    Below is an example showing how to set up and use variables in your
+    pipeline:
+
+    @example
+      @js
+        // Summarised Pipeline Config
+        const template = require('quantum-template')
+
+        const templateOptions = {
+          // Define the variables to use:
+          variables: {
+            exampleString: 'my string',
+            exampleList: ['a', 'b', 'c'],
+            exampleObjectList: [
+              { head: 'Something', body: 'Content 1' },
+              { body: 'Content 2' }
+            ],
+            exampleObject: {
+              name: 'Dave',
+              age: 25
+            }
+          }
+        }
+
+        module.exports = {
+          pipeline: [
+            // Add to your pipeline
+            template.fileTransform(templateOptions)
+          ]
+        }
+
+      @@um
+        # Use the `exampleString` variable as the title
+        @h1: {{exampleString}}
+
+        # Object properties are referenced with a dot:
+        @h2: {{exampleObject.name}}, {{exampleObject.age}}
+
+        # Loop through the items in an array:
+        @for item in exampleList
+          @bold[{{item}}]
+          @br
+
+        # Loop through an array of objects:
+        @for item in exampleObjectList
+          @if item.head
+            @h3: {{item.head}}
+          @p: {{item.body}}
+
+        # Loop through the keys/values of an object
+        @for key value in exampleObject
+          @p: @b[key:] {{key}}, @bold[value:] {{value}}
+
+        @ifnot nonExistentVariable
+          @p: Display This
+
+        @ifnot exampleString
+          @p: This won't display because exampleString exists
+
+
+      @output
+        # Use the `exampleString` variable as the title
+        @h1: {{examples.exampleString}}
+
+        # Object properties are referenced with a dot:
+        @h2: {{examples.exampleObject.name}}, {{examples.exampleObject.age}}
+
+        # Loop through the items in an array:
+        @for item in examples.exampleList
+          @bold[{{item}}]
+          @br
+
+        # Loop through an array of objects:
+        @for item in examples.exampleObjectList
+          @if item.head
+            @h3: {{item.head}}
+          @p: {{item.body}}
+
+        # Loop through the keys/values of an object
+        @for key value in examples.exampleObject
+          @p: @b[key:] {{key}}, @bold[value:] {{value}}
+
+        @ifnot nonExistentVariable
+          @p: Display This
+
+        @ifnot examples.exampleString
+          @p: This won't display because exampleString exists
+
+
+  @topic Page Template Example
+    Page templates are provided by including an @code[@template] at the root of
+    a page. This is most sensibly done using @code[@inline].
+
+    The @code[fileTransform] processes the @code[@template], finds the
+    @code[@contentEntity] and moves everything outside the template into the
+    content entity.
+
+    @example
+      @file templates/template.um
+        @noOutput
+        @@um
+          @template
+            @contentEntityName templateContent
+            @content
+              @header
+                @icon [/resources/logo.svg] [/]
+                @title QuantumJS
+
+              @sidebarPage
+                @sidebar
+                  @navigationMenu
+                    @section Introduction
+                      @page /: Home
+                      @page /page-1: Page 1
+
+                @content
+                  @templateContent
+
+      @file pages/index.um
+        @@um
+          @inline /templates/template.um
+
+          @contentSection
+            @topic Home
+              Some information on the home page
+
+        @output target/index.html
+          @header
+            @icon [/resources/logo.svg] [/]
+            @title QuantumJS
+
+          @sidebarPage
+            @sidebar
+              @navigationMenu
+                @section Introduction
+                  @page /: Home
+                  @page /page-1: Page 1
+
+            @content
+              @contentSection
+                @topic Home
+                  Some information on the home page
+
+      @file pages/page-1.um
+        @@um
+          @inline /templates/template.um
+
+          @contentSection
+            @topic Page 1
+              Some information on page 1
+
+        @output target/page-1/index.html
+          @header
+            @icon [/resources/logo.svg] [/]
+            @title QuantumJS
+
+          @sidebarPage
+            @sidebar
+              @navigationMenu
+                @section Introduction
+                  @page /: Home
+                  @page /page-1: Page 1
+
+            @content
+              @contentSection
+                @topic Page 1
+                  Some information on page 1
+
 
   @topic API
     @inline api.um

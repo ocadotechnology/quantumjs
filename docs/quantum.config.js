@@ -61,7 +61,13 @@ const htmlOptions = {
 function customizedTemplate (file) {
   const templateVariables = {
     examples: {
-      exampleList: [1, 2, 3],
+      // Used on the quantum-template example(s)
+      exampleString: 'my string',
+      exampleList: ['a', 'b', 'c'],
+      exampleObjectList: [
+        { head: 'Something', body: 'Content 1' },
+        { body: 'Content 2' }
+      ],
       exampleObject: {
         name: 'Dave',
         age: 25

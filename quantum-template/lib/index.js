@@ -230,11 +230,11 @@ function applyDefinitions (parsed, definitions) {
 }
 
 // Processes the page for wrapping templates.
-function wrapper (pageContent, wrapperOptions) {
+function wrapper (fileContent, wrapperOptions) {
   const selection = quantum.select({
     type: '',
     params: [],
-    content: pageContent.content
+    content: fileContent.content
   })
 
   if (selection.has('template')) {
@@ -262,7 +262,7 @@ function wrapper (pageContent, wrapperOptions) {
       content: template.select('content').content()
     }
   } else {
-    return pageContent
+    return fileContent
   }
 }
 

@@ -1,8 +1,166 @@
 @entity template
   @added 2.0.0
+  @description
+    Creates a template to apply to the page.
 
-@entity contentEntityName
-  @added 2.0.0
+  @entity? contentEntityName
+    @description
+      Used to define what entity to put the content of a templated page inside.
 
-@entity content
+      By default, it looks for @code[@content]
+
+    @extra
+      @example
+        @noOutput
+        @@um
+          @template
+            @contentEntityName someEntity
+
+            @someEntity
+              # Content would be placed here
+
+    @param entityName
+      @description
+        The name of the entity to look for in the template to put the content
+        inside.
+
+  @entity content
+    @description
+      The default location to put the template content. This can be overriden by
+      providing a @code[@contentEntityName].
+
+  @extra
+    An example can be seen in the
+    @hyperlink(./#page-template-example)[Page Template Example] section
+
+@entity for
   @added 2.0.0
+  @description
+    Loop through an @type[Array] variable or an @type[Object] variables keys
+
+  @extra
+    @example
+      @@js
+        ...
+
+        // Variables passed into fileTransform
+        {
+          exampleList: ['a', 'b', 'c'],
+          exampleObjectList: [
+            { head: 'Something', body: 'Content 1' },
+            { body: 'Content 2' }
+          ],
+          exampleObject: {
+            name: 'Dave',
+            age: 25
+          }
+        }
+        ...
+
+      @@um
+        @h3: Loop through list
+        @for item in exampleList
+          @bold[{{item}}]
+          @br
+
+        @h3: Loop through list of objects
+        @for item in exampleObjectList
+          @if item.head
+            @h3: {{item.head}}
+          @p: {{item.body}}
+
+        @h3: Loop through object keys
+        @for key value in exampleObject
+          @p: @b[key:] {{key}}, @bold[value:] {{value}}
+
+      @output
+        @h3: Loop through list
+        @for item in examples.exampleList
+          @bold[{{item}}]
+          @br
+
+        @h3: Loop through list of objects
+        @for item in examples.exampleObjectList
+          @if item.head
+            @h3: {{item.head}}
+          @p: {{item.body}}
+
+        @h3: Loop through object keys
+        @for key value in examples.exampleObject
+          @p: @b[key:] {{key}}, @bold[value:] {{value}}
+
+@entity if
+  @added 2.0.0
+  @description
+    Display some content based on a variable value.
+
+  @param variable
+    @description
+      The variable to check
+
+  @extra
+    @example
+      @@js
+        ...
+
+        // Variables passed into fileTransform
+        {
+          exampleString: 'my string'
+        }
+        ...
+
+      @@um
+        @if exampleString
+          @h3: exampleString is declared
+          {{exampleString}}
+
+        @if undeclaredVariable
+          @h3: Variable not declared, this will not show
+
+      @output
+        @if examples.exampleString
+          @h3: exampleString is declared
+          {{examples.exampleString}}
+
+        @if undeclaredVariable
+          @h3: Variable not declared, this will not show
+
+
+@entity ifnot
+  @added 2.0.0
+  @description
+    Inverse of @code[@if], can be used as an 'else' statement for @code[@if]
+    blocks. It displays content if a the value of a variable is falsey.
+
+  @param variable
+    @description
+      The variable to check
+
+  @extra
+    @example
+      @@js
+        ...
+
+        // Variables passed into fileTransform
+        {
+          exampleString: 'my string'
+        }
+        ...
+
+      @@um
+        @ifnot exampleString
+          @h3: exampleString is declared, this will not show
+          {{exampleString}}
+
+        @ifnot undeclaredVariable
+          @h3: Variable not declared, this will show
+
+      @output
+        @ifnot examples.exampleString
+          @h3: exampleString is declared, this will not show
+          {{examples.exampleString}}
+
+        @ifnot undeclaredVariable
+          @h3: Variable not declared, this will show
+
+

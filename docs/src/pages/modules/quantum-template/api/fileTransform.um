@@ -1,6 +1,33 @@
 @function fileTransform
   @added 2.0.0
-  @param? options [Object]
+  @description
+    The function for getting a @code[FileTransform] for parsing template
+    variables and processing the entities (e.g. @code[@for], @code[@if])
+    provided by this module.
 
-  @returns Function
-    @param file [File]
+  @param? options [Object]
+    @property variables [Object]
+      @description
+        The variables to use when templating. They can be any type of
+        @type[String], @type[Object] or @type[Array].
+
+        Variables are then available on pages in the form of
+        @code[{{variableName}}]
+
+      @extra
+        @example
+          @js
+            template.fileTransform({
+              variables: {
+                myVar: 'my variable'
+              }
+            })
+          @@um
+            @h3: Heading
+            @p: {{myVar}}
+
+          @output
+            @h3: Heading
+            @p: my variable
+
+  @returns FileTransform
