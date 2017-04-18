@@ -15,20 +15,21 @@
     into @bold[html].
 
     QuantumJS comes preloaded with some modules for writing beautiful
-    @hyperlink(/modules/quantum-api/)[API docs], drawing simple
-    @hyperlink(/modules/quantum-diagram/)[diagrams], and comes with various
-    utilities to help with @hyperlink(/modules/quantum-docs/)[writing documentation]. It
-    also has support for @hyperlink(/modules/quantum-version/)[versioned content],
-    @hyperlink(/modules/quantum-template/)[templates] and
-    @hyperlink(/modules/quantum-code-highlight/)[code highlighting]. All of this
+    @hyperlink(/docs/modules/quantum-api/)[API docs], drawing simple
+    @hyperlink(/docs/modules/quantum-diagram/)[diagrams], and comes with various
+    utilities to help with @hyperlink(/docs/modules/quantum-docs/)[writing documentation]. It
+    also has support for @hyperlink(/docs/modules/quantum-version/)[versioned content],
+    @hyperlink(/docs/modules/quantum-template/)[templates] and
+    @hyperlink(/docs/modules/quantum-code-highlight/)[code highlighting]. All of this
     is supported through a simple @hyperlink(/docs/markup/)[Markup Language].
 
     QuantumJS has its own markup language, but it also has support for
-    @hyperlink(/modules/quantum-markdown/)[Markdown], great for when only basic
+    @hyperlink(/docs/modules/quantum-markdown/)[Markdown], great for when only basic
     formatting options are needed, or for working with existing Markdown-based
     sites.
 
-    Quantum comes with a @hyperlink(/docs/cli/)[CLI] (command line interface) for
+    Quantum comes with a @hyperlink(/docs/cli-and-api/)[CLI] (command line
+     interface) for
     building sites.
 
   @topic Features
@@ -76,5 +77,5 @@
       }
 
   @notice [What's Next?]
-    Head to the @hyperlink(/docs/quick-start/)[Quick Start] page to get started
+    Head to the @hyperlink(/docs/)[Quick Start] page to get started
     with QuantumJS.

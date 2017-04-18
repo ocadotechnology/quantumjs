@@ -1,0 +1,14 @@
+@api quantum-version
+  @description
+    Below are all the properties of the object returned from
+    @code[require('quantum-version')].
+
+    For information about different versions, see the
+    @hyperlink(/docs/modules/quantum-version/changelog/)[Changelog]
+
+
+  @inline api/entities.um
+  @inline api/fileTransform.um
+  @inline api/processTags.um
+  @inline api/processVersioned.um
+  @inline api/processVersionLists.um

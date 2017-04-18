@@ -1,0 +1,22 @@
+@inline /templates/sidebar-page.um
+
+@topSection
+  @title HTML changelog
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    What has changed in @code[quantum-html] for each release.
+
+@contentSection
+  @changelogList
+    @groupByApi false
+    @reverseVisibleList true
+    @process
+      @inline api.um
+      @inline entities.um
+    @version 2.0.0
+      @link /docs/modules/quantum-html/2.0.0
+      @description
+        Initial public release of quantum-html.
+    @version 1.0.0
+      @description
+        Version 1.0.0 is an unsupported version of the library.

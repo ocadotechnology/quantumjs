@@ -1,0 +1,20 @@
+@inline /templates/sidebar-page.um
+
+@versionedPage
+  @version 2.0.0
+
+@topSection
+  @title quantum-version
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    TODO
+
+@contentSection
+  @topic About
+    This module provides a file transform that enables the generation of
+    incrementally versioned content. The version transform works well with the
+    @hyperlink(/docs/modules/quantum-api/)[quantum-api] transforms for
+    generating versioned api documentation.
+
+  @topic API
+    @inline api.um

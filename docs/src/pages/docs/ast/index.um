@@ -1,0 +1,26 @@
+@inline /templates/sidebar-page.um
+
+@topSection
+  @title The AST
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    This page explains the abstract syntax tree (AST)
+
+@contentSection
+  @topic The AST (abstract syntax tree)
+
+    Parsing is the process of turning the markup text into objects that can be
+    more easily manipulated. The quantum markup language is designed to be easy
+    to work with once parsed.
+
+    This is what the markup on the @hyperlink(/docs/markup/)[Markup] page looks
+    like when parsed into AST.
+
+    @notice [TODO]
+      XXX: replace this with something easier to read
+    @codeblock json: @inline output.json
+
+    @notice [Note]
+      There are some helper apis for working with the parsed AST. See
+      the @hyperlink(/docs/modules/quantum-js/#selection-api)[quantum-js] module
+      docs for more information.

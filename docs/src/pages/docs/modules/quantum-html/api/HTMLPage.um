@@ -1,0 +1,21 @@
+@prototype HTMLPage
+  @added 2.0.0
+  # XXX: Not sure if this _should_ be exposed?
+  @description
+    A prototype for storing
+    @hyperlink(/docs/core-concepts#file-transforms/)[transformed] pages.
+
+  @extra
+    @example
+      @noOutput
+      @js
+        file.clone({
+          content: new HTMLPage(quantum.select(file.content).transform(transformer))
+        })
+
+  @constructor
+    @description
+      Creates a virtual dom representation of a transformed @type[File] @code[contents]
+    @param elements [Array[Element]]
+      @description
+        An array of transformed elements

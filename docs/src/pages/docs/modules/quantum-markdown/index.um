@@ -1,0 +1,59 @@
+@inline /templates/sidebar-page.um
+
+@versionedPage
+  @version 2.0.0
+
+@topSection
+  @title quantum-markdown
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description: A transform for using markdown inline inside a Quantum site.
+
+@contentSection
+  @topic About
+    This module provides the @code[@@markdown] transform for including markdown
+    snippets in a quantum site.
+
+  @topic Example
+    @example
+      @file
+        @@um
+          @@markdown
+            ### Heading Text
+
+            _italic_ or **bold** text.
+
+    @div .docs-example-heading qm-header-font: HTML Output
+    @div .docs-example-body
+      @@codeblock html
+        <div class="qm-markdown">
+          <h3 id="heading-text">Heading Text</h3>
+          <p><em>italic</em> or <strong>bold</strong> text.</p>
+        </div>
+
+
+
+  @topic Markdown File Example
+    It is also possible to include markdown inline directly from @code[.md]
+    files using @code[@markdown] and @code[@inline]
+
+    @subsection Example
+      @@codeblock um
+        @markdown: @inline path/to/file.md
+
+    Inlining files in this way uses @code[@markdown] as non-quantum files are
+    not parsed by quantum when using @code[@inline] (so all the @code[#] for
+    headings are retained)
+
+  @notice [Note]
+    Always use @code[@@markdown] for markdown blocks and @code[@markdown] when
+    inlining markdown files.
+
+    Using @code[@@markdown] prevents the @code[#] character being treated as a
+    quantum comment. Since @code[#] is used for headings in markdown it is
+    important to do this otherwise they will not show up in the rendered page!
+
+  @topic Entities
+    @inline entities.um
+
+  @topic Api
+    @inline api.um

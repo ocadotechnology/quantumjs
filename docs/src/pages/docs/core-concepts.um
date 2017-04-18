@@ -54,9 +54,29 @@
     @code(js)[filename] is the name of the file that was read, @code(js)[content] is
     the parsed AST.
 
-    @notice More details
-      See the @hyperlink(tutorials/custom-transforms)[Custom transforms] tutorial
-      for how to create and use your own pipline transforms.
+    @section File Transform Api
+      @api
+        #XXX: there should be a way of hiding the default group headers
+        @group
+          @function FileTransform
+            @collapsible false
+            @description
+              A function that takes a page and returns a new page with a transformation
+              applied. This transfomation can be anything - from converting quantum-ast
+              to html, or a transformation that replaces variables in the markup with
+              values from template.
+
+            @extra
+              @notice TODO: Add an example
+
+            @param page [File]: The page to transform
+            @returns [File/Array[File]]: The transformed page
+
+
+    # @notice More details
+    #   See the @hyperlink(/tutorials/custom-transforms)[Custom transforms] tutorial
+    #   for how to create and use your own entity transforms.
+
 
   @topic Entities
 
@@ -103,10 +123,48 @@
         <div class="notice-body">There is something you should know</div>
       </div>
 
+    @section Entity Transform API
+      @api entity-transforms
+        @group
+          @function EntityTransform
+            @collapsible false
+            @description
+              A function that takes a @type[Selection] and converts it to a dom @type[Element]
 
-    @notice More details
-      See the @hyperlink(tutorials/custom-transforms)[Custom transforms] tutorial
-      for how to create and use your own entity transforms.
+            @param selection [Selection]
+              @collapsible false
+              @description
+                The @type[Selection] to transform.
+
+            @param transformer [Function]
+              @collapsible false
+              @description
+                The transformer created in the @hyperlink(/docs/modules/quantum-html/#builddom)[buildDOM] function.
+
+                It is bootstrapped to itself to allow children to be transformed.
+
+              @extra
+                @subsection Example
+                  @@codeblock js
+                    function customTransform (selection, transformer) {
+                      return dom.create('div').class('custom-class')
+                        // Transform the content of the selection
+                        .add(selection.transform(transformer))
+                    }
+
+              @param selection [Selection]
+                @description
+                  The @type[Selection] to transform.
+
+            @param? meta [Object]
+              @collapsible false
+              @description
+                The meta object as defined in @hyperlink(/docs/modules/quantum-html/#builddom)[buildDOM] options. This should only be used in custom transforms.
+
+    # @notice More details
+    #   See the @hyperlink(/tutorials/custom-transforms)[Custom transforms] tutorial
+    #   for how to create and use your own entity transforms.
+
 
 
 @footer

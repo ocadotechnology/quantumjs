@@ -1,0 +1,10 @@
+@api quantum-diagram
+  @description
+    Below are all the properties of the object returned from
+    @code[require('quantum-diagram')].
+
+    For information about different versions, see the
+    @hyperlink(/docs/modules/quantum-diagram/changelog/)[Changelog]
+
+
+  @inline api/transforms.um

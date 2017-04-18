@@ -1,0 +1,264 @@
+@inline /templates/sidebar-page.um
+
+@topSection
+  @title Using the CLI / API
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    This page explains how use the command line interface (CLI) and the API for
+    creating documentation.
+
+@contentSection
+  @topic Using the CLI
+    @notice TODO: Write this section
+
+
+  @topic Using the API
+    @notice TODO: Write this section
+
+
+  @topic Configuring Quantum
+    Quantum is configured by creating a config file called @code[quantum.config.js] which
+    contains the pipeline definition as well as config for which files
+    to build.
+
+    @section An example config file
+      @@codeblock js
+        const html = require('quantum-html')
+        const docs = require('quantum-docs')
+        const api = require('quantum-api')
+        const diagram = require('quantum-diagram')
+        const version = require('quantum-version')
+        const template = require('quantum-template')
+
+        // Define the entity transforms to use to transform
+        // individual entities into html
+        const htmlOptions = {
+          transforms: {
+            html: html.transforms(),
+            api: api.transforms(),
+            diagram: diagram.transforms(),
+            docs: docs.transforms()
+          }
+        }
+
+        // This defines how to transform an entire page into html
+        const pipeline = [
+          version(),
+          template(),
+          api(),
+          docs(),
+          html(htmlOptions)
+        ]
+
+        // Export the config, which includes the files to watch,
+        // and any resources that should be copied
+        module.exports = {
+          pipeline: pipeline,
+          pages: 'pages/**/*.um',
+          resources: 'resources/**/*'
+        }
+
+    @section Available options
+      @notice TODO: Make sure this is up to date
+      @api config
+        @inline ./modules/quantum-js/api/api/config.um
+
+    @section Using the config with the CLI
+      If your config file is called @code[quantum.config.js], you can just run this
+      in the same directory as the config file:
+
+      @codeblock bash
+        quantum build
+
+      If the config file has a different name the @code[--config] option can be used:
+
+      @codeblock bash
+        quantum --config="quantum.config.production.js" build
+
+    @section Using the config with the API
+      @notice TODO: Write this section
+
+
+  # @topic About
+  #   The api can be used as an alternative to the CLI to gain further control over how quantum reads and transforms pages.
+
+  # @topic Basic Example
+  #   Quantum can be used in whatever way is required. It is generally intended to be used for building complete sites but using the api provides the ability to create single pages.
+
+  #   Below is an example that shows how to convert a single page using the HTML transforms.
+
+  #   @bold: script.js
+  #   @codeblock js
+  #     const fs = require('fs')
+  #     const quantum = require('quantum-js')
+  #     const html = require('quantum-html')
+
+  #     const htmlTransforms = {
+  #       // Add the quantum-html transforms
+  #       html: html.transforms()
+  #     }
+
+  #     // Read the file
+  #     quantum.read.page('file.um')
+  #       // Run the html transforms
+  #       .then(html({ transforms: htmlTransforms }))
+  #       // Convert to HTML
+  #       .then(html.stringify())
+  #       // Output the file
+  #       .then(({file, content}) => fs.writeFileAsync(file.dest, content))
+
+  #   @bold: file.um
+  #   @@codeblock um
+  #     @h1: Heading
+
+  #     @p: Page content here
+
+  #     @div .something
+  #       Some content here
+
+  #   @bold: Output
+  #   @codeblock html
+  #     <!-- Adds the html doctype automatically -->
+  #     <!DOCTYPE html>
+  #     <html>
+  #       <head>
+  #         <!-- Adds viewport scaling so site displays reasonably on smaller devices -->
+  #         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  #       </head>
+  #       <body>
+  #         <!-- Renders html to the body -->
+  #         <h1>Heading</h1>
+  #         <p>Page content here</p>
+  #         <div class="something">Some content here</div>
+  #       </body>
+  #     </html>
+
+  # @topic Complete Example
+
+  #   @bold: Example Site structure
+  #     @codeblock nohighlight
+  #       example
+  #       |-- src
+  #       |    |-- pages
+  #       |    |    +-- index.um
+  #       |    |    +-- about.um
+  #       |    +-- resources
+  #       |    |    +-- site.css
+  #       |    |    +-- logo.png
+  #       |    |-- templates
+  #       |    |    +-- template.um
+  #       |    |-- transforms
+  #       |         +-- transforms.js
+  #       +-- script.js
+  #       +-- server.js
+
+  #   @bold: Install Dependencies
+  #   @codeblock bash
+  #     \# External dependencies
+  #     npm install bluebird fs-extra flatten live-server
+
+  #     \# Quantum dependencies
+  #     npm install quantum-js quantum-html quantum-api quantum-version quantum-template quantum-changelog quantum-diagram quantum-markdown quantum-code-highlight quantum-docs
+
+  #   @bold: script.js
+  #   @codeblock js
+  #     // External Dependencies
+  #     const Promise = require('bluebird')
+  #     const fs = Promise.promisifyAll(require('fs-extra'))
+  #     const flatten = require('flatten')
+
+  #     // Quantum Dependencies
+  #     const quantum = require('quantum-js')
+  #     const html = require('quantum-html')
+  #     const api = require('quantum-api')
+  #     const version = require('quantum-version')
+  #     const template = require('quantum-template')
+  #     const changelog = require('quantum-changelog')
+  #     const diagram = require('quantum-diagram')
+  #     const markdown = require('quantum-markdown')
+  #     const codeHighlight = require('quantum-code-highlight')
+  #     const docs = require('quantum-docs')
+
+  #     // Custom transforms
+  #     const quantumSite = require('./src/transforms/transforms')
+
+  #     // Create the transforms object to use
+  #     const htmlTransforms = {
+  #       // Add the quantum transforms
+  #       html: html.transforms(),
+  #       api: api.transforms(),
+  #       changelog: changelog.transforms(),
+  #       diagram: diagram.transforms(),
+  #       markdown: markdown.transforms(),
+  #       docs: docs.transforms(),
+  #       highlight: codeHighlight.transforms(),
+
+  #       // Add custom transforms the same way quantum transforms are added
+  #       site: quantumSite
+  #     }
+
+  #     function pipeline (page) {
+  #       // Set up template variables
+  #       const templateVariables = {
+  #         examples: {
+  #           exampleList: [1, 2, 3],
+  #           exampleObject: {
+  #             name: 'Dave',
+  #             age: 25
+  #           }
+  #         },
+  #         filename: page.file.src
+  #       }
+
+  #       return Promise.resolve(page)
+  #         // Run templating whilst inserting variables
+  #         .then(template({ variables: temateVariables }))
+  #         // Build the changelog
+  #         .then(changelog())
+  #         // Run the versioning to produce versioned files
+  #         .then(version())
+  #         // Generate any contents sections
+  #         .map(docs())
+  #         // Run the transforms
+  #         .map(html({ transforms: htmlTransforms }))
+  #         // Convert from transformed AST to HTML
+  #         .map(html.stringify())
+  #         // Change the dest (eg. from 'about.html' to 'about/index.html')
+  #         .map(html.htmlRenamer())
+  #     }
+
+  #     // Copy the resources to the target directory
+  #     fs.copyAsync('src/resources', 'target/resources')
+  #       .then(() => {
+  #         // Get all the files for the site
+  #         return quantum.fileOptions.resolve({
+  #           files: 'src/pages/**/*.um',
+  #           base: 'src/pages'
+  #         })
+  #           .map((file) => {
+  #             // Read the file contents
+  #             return quantum.read.page(file.src)
+  #               .then((page) => {
+  #                 page.file = file
+  #                 return page
+  #               })
+  #           })
+  #           // Run the pipeline for each file
+  #           .map(pipeline)
+  #           // Flatten to get a single array (as versioning can produce arrays of files)
+  #           .then(flatten)
+  #           // Write the files
+  #           .map(({file, content}) => fs.outputFileAsync(file.dest, content))
+  #       })
+
+
+  #   @bold: server.js
+  #   @codeblock js
+  #     const liveServer = require('live-server')
+
+  #     liveServer.start({
+  #       port: 8080,
+  #       host: '0.0.0.0',
+  #       root: 'target',
+  #     })
+

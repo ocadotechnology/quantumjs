@@ -20,17 +20,17 @@ const typeLinks = {
   String: 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
   Promise: 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise',
   EventEmitter: 'https://nodejs.org/api/events.html',
-  File: '/modules/quantum-js/#file',
-  FileInfo: '/modules/quantum-js/#fileinfo',
-  Selection: '/modules/quantum-js/#selection',
-  Watcher: '/modules/quantum-js/#watcher',
-  Element: '/modules/quantum-dom/#element',
-  TextNode: '/modules/quantum-dom/#textnode',
-  Asset: '/modules/quantum-dom/#asset',
-  HeadWrapper: '/modules/quantum-dom/#headwrapper',
-  PageModifier: '/modules/quantum-dom/#pagemodifier',
-  FileTransform: '/docs/file-transforms/',
-  EntityTransform: '/docs/entity-transforms/'
+  File: '/docs/modules/quantum-js/#file',
+  FileInfo: '/docs/modules/quantum-js/#fileinfo',
+  Selection: '/docs/modules/quantum-js/#selection',
+  Watcher: '/docs/modules/quantum-js/#watcher',
+  Element: '/docs/modules/quantum-dom/#element',
+  TextNode: '/docs/modules/quantum-dom/#textnode',
+  Asset: '/docs/modules/quantum-dom/#asset',
+  HeadWrapper: '/docs/modules/quantum-dom/#headwrapper',
+  PageModifier: '/docs/modules/quantum-dom/#pagemodifier',
+  FileTransform: '/docs/core-concepts/#file-transforms',
+  EntityTransform: '/docs/core-concepts/#entity-transforms'
 }
 
 const apiOptions = {

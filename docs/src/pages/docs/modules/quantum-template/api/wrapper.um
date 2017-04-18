@@ -1,0 +1,32 @@
+@function wrapper
+  @added 2.0.0
+  @description
+    The function used by the @code[fileTransform] that processes the
+    @code[@template] entities.
+
+    It does not apply variable definitions and only processes the page content
+    to apply the templating.
+
+  @extra
+    @example
+      @noOutput
+      @@js
+        const wrapper = require('quantum-template').wrapper
+
+        // Example use in pipeline
+        const pipeline = [
+          (file) => {
+            return file.clone({
+              content: wrapper(file.content)
+            })
+          }
+        ]
+
+  @param fileContent [Array[Entity]]
+    @description
+      The content of a processed @hyperlink(/docs/modules/quantum-js/#file)[File]
+      object.
+
+  # @param? wrapperOptions [Object]
+  #   @description
+  #     The options to use when wrapping file contents
