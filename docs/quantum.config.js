@@ -47,6 +47,7 @@ const apiOptions = {
 const htmlOptions = {
   embedAssets: false,
   assetPath: '/resources',
+  resourcesTarget: '/resources',
   transforms: {
     html: html.transforms(),
     api: api.transforms(apiOptions),
