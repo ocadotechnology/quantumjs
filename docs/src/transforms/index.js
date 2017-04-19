@@ -130,11 +130,21 @@ function customTransform (selection, transformer) {
   return html.paragraphTransform(selection, transformer)
 }
 
+function landingSection (selection, transformer) {
+  return dom.create('div').class('landing-section')
+    .add(dom.create('h2').class('landing-section__title')
+      .add(selection.ps() || ''))
+    .add(html.paragraphTransform(selection, transformer))
+    .add(selection.has('last') ? undefined : dom.create('div').class('scroll-next-placeholder'))
+    .add(selection.has('last') ? undefined : dom.create('div').class('scroll-next'))
+}
+
 function transforms () {
   return Object.freeze({
     um,
     example,
-    customTransform
+    customTransform,
+    landingSection
   })
 }
 

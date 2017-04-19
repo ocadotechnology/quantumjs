@@ -1,0 +1,169 @@
+body {
+  font-size: 18px;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin-top: 0;
+}
+
+.top-landing-section {
+  text-align: center;
+  padding: 0 5vh;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.top-landing-section__logo {
+  height: 30vh;
+}
+
+.top-landing-section__title {
+  font-size: 2.5em;
+  margin: 0;
+}
+
+.top-landing-section__tagline {
+  font-size: 1em;
+  margin: 1em 0;
+}
+
+
+.landing-section {
+  text-align: center;
+  padding: 0 1em;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.landing-section__title {
+  font-size: 1.6em;
+}
+
+.landing-section > * {
+  width: 80vw;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.scroll-next-placeholder {
+  height: 10vh;
+}
+
+.scroll-next {
+  cursor: pointer;
+  background: transparent;
+  background-image: url('angle-double-down.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10vh;
+  z-index: 100;
+}
+
+.landing-section:nth-child(2n) {
+  background: #168dea;
+  box-shadow: 0 0 10px 1px rgba(0,0,0,0.2);
+}
+
+.landing-section:nth-child(2n) a {
+  color: #f69c26;
+}
+
+.landing-section:nth-child(4n) {
+  background: #f69c26;
+}
+
+.buttons {
+  margin: 2em 0;
+}
+
+.button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 15px 30px;
+  display: block;
+  margin: 15px 0;
+  outline: none;
+  position: relative;
+  background: #f69c26;
+  color: #fff;
+  box-shadow: 0 4px #f27926;
+  border-radius: 30px;
+}
+
+.button:hover {
+  box-shadow: 0 6px #f27926;
+  top: -2px;
+  text-decoration: none;
+}
+
+.button:active {
+  box-shadow: 0 0 #f27926;
+  top: 4px;
+}
+
+.button span {
+  vertical-align: middle;
+}
+
+.button img {
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 0.5em;
+  opacity: 0.7;
+}
+
+@media (min-width: 400px) {
+  body {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 500px) and (orientation: landscape) {
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .button {
+    flex: 1;
+    padding: 10px 20px;
+    margin: 0 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 2em 0;
+  }
+
+  .button {
+    flex: 1;
+    padding: 15px 30px;
+    margin: 0 15px;
+    max-width: 15vw;
+  }
+}
+
+.footer {
+  text-align: center;
+  margin-top: -60px;
+}
