@@ -1,5 +1,5 @@
 body {
-  font-size: 18px;
+  font-size: 14px;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -86,22 +86,28 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .buttons {
-  margin: 2em 0;
+  margin: 1em 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .button {
   border: none;
   background: none;
   cursor: pointer;
-  padding: 15px 30px;
-  display: block;
-  margin: 15px 0;
+  padding: 7px 14px;
+  display: inline-block;
+  margin: 5px 0;
   outline: none;
   position: relative;
   background: #f69c26;
   color: #fff;
   box-shadow: 0 4px #f27926;
   border-radius: 30px;
+  max-width: 250px;
 }
 
 .button:hover {
@@ -124,6 +130,13 @@ h1,h2,h3,h4,h5,h6 {
   display: inline-block;
   margin-left: 0.5em;
   opacity: 0.7;
+}
+
+
+@media (min-width: 350px) {
+  body {
+    font-size: 18px;
+  }
 }
 
 @media (min-width: 400px) {
@@ -159,7 +172,7 @@ h1,h2,h3,h4,h5,h6 {
     flex: 1;
     padding: 15px 30px;
     margin: 0 15px;
-    max-width: 15vw;
+    white-space: nowrap;
   }
 }
 
