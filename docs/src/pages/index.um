@@ -1,152 +1,77 @@
+@title QuantumJS
 @inline ../templates/favicons.um
+
 @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:100,400,700|Roboto+Slab:300,400,700|Source+Code+Pro:200,400,700]
 @stylesheet [/resources/quantum-site.css]
 @stylesheet [/resources/quantum-landing.css]
 
-@div .top-landing-section
-  @div
-    @img
-      @attr src: /resources/logo.svg
-      @attr class: top-landing-section__logo
-    @h1 .top-landing-section__title: QuantumJS
-    @div .top-landing-section__tagline
-      A node.js @bold[static site generator] with a focus on extensibility and speed
+@div .container
+  @div .top-landing-section
+    @div
+      @img
+        @attr src: /resources/logo.svg
+        @attr class: top-landing-section__logo
+      @h1 .top-landing-section__title: QuantumJS
+      @div .top-landing-section__tagline
+        A node.js @bold[static site generator] with a focus on extensibility and speed
 
+      @div .buttons
+        @a .button: @span[Documentation]
+          @attr href: /docs/
+          @image [/resources/book.svg]
+            @height 30px
+
+        @a .button: @span[Quick Start]
+          @attr href: /docs/quick-start
+          @image [/resources/rocket.svg]
+            @height 30px
+
+        @a .button: @span[GitHub]
+          @attr href: https://github.com/ocadotechnology/quantumjs/
+          @image [/resources/github-mark.svg]
+            @height 30px
+
+    @div .scroll-next-placeholder
+    @div .scroll-next
+
+  @landingSection Simple
+    Comes with an @bold[easy-to-pickup markup language].
+
+    Markup goes in, html comes out.
+
+  @landingSection Fast
+    @bold[Sub 10ms] page compile times.
+
+  @landingSection No complicated folder structures
+    @bold[You] choose how to structure your project.
+
+  @landingSection Extensible
+    Define @bold[custom pipelines] for building your site.
+
+    Plug @bold[custom transforms] into your pipeline to extend the capabilities for your own needs.
+
+  @landingSection Great for technical documentation
+    Writing technical documentation?
+
+    QuantumJS particularly excels in this area with features such as @bold[versioned content], @bold[api docs], and automatic @bold[changelog generation].
+
+  @landingSection Get Started
+    @last
     @div .buttons
-      @a .button: @span[Quick Start]
-        @attr href: /docs/
+      @a .button: @span[Quickstart]
+        @attr href: /docs/quick-start
         @image [/resources/rocket.svg]
           @height 30px
-
+      @a .button: @span[Releases]
+        @attr href: https://github.com/ocadotechnology/quantumjs/releases
+        @image [/resources/tags.svg]
+          @height 30px
       @a .button: @span[GitHub]
         @attr href: https://github.com/ocadotechnology/quantumjs/
         @image [/resources/github-mark.svg]
           @height 30px
 
-  @div .scroll-next-placeholder
-  @div .scroll-next
-
-@landingSection Simple
-  Comes with an @bold[easy-to-pickup markup language].
-
-  Markup goes in, html comes out.
-
-@landingSection Fast
-  @bold[Sub 10ms] page compile times.
-
-@landingSection No complicated folder structures
-  @bold[You] choose how to structure your project.
-
-@landingSection Extensible
-  Define @bold[custom pipelines] for building your site.
-
-  Plug @bold[custom transforms] into your pipeline to extend the capabilities for your own needs.
-
-@landingSection Great for technical documentation
-  Writing technical documentation?
-
-  QuantumJS particularly excels in this area with features such as @bold[versioned content], @bold[api docs], and automatic @bold[changelog generation].
-
-@landingSection Get Started
-  @last
-  @div .buttons
-    @a .button: @span[Quickstart]
-      @attr href: /docs/
-      @image [/resources/rocket.svg]
-        @height 30px
-    @a .button: @span[Releases]
-      @attr href: https://github.com/ocadotechnology/quantumjs/releases
-      @image [/resources/tags.svg]
-        @height 30px
-    @a .button: @span[GitHub]
-      @attr href: https://github.com/ocadotechnology/quantumjs/
-      @image [/resources/github-mark.svg]
-        @height 30px
-
-@div .footer
-  @html[&copy;] Ocado Technology 2017
-
-
-# @inline /templates/sidebar-page.um
-
-# @topSection
-#   @title Overview
-#   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
-#   @description
-#     A node.js static site generator with a focus on extensibility and speed
-
-# @contentSection
-#   @topic What is QuantumJS?
-#     QuantumJS is a tool for building websites.
-
-#     More specifically, QuantumJS is a @italic[static site generator]. This is
-#     just a fancy name for a tool that can convert @bold[human readable markup]
-#     into @bold[html].
-
-#     QuantumJS comes preloaded with some modules for writing beautiful
-#     @hyperlink(/docs/modules/quantum-api/)[API docs], drawing simple
-#     @hyperlink(/docs/modules/quantum-diagram/)[diagrams], and comes with various
-#     utilities to help with @hyperlink(/docs/modules/quantum-docs/)[writing documentation]. It
-#     also has support for @hyperlink(/docs/modules/quantum-version/)[versioned content],
-#     @hyperlink(/docs/modules/quantum-template/)[templates] and
-#     @hyperlink(/docs/modules/quantum-code-highlight/)[code highlighting]. All of this
-#     is supported through a simple @hyperlink(/docs/markup/)[Markup Language].
-
-#     QuantumJS has its own markup language, but it also has support for
-#     @hyperlink(/docs/modules/quantum-markdown/)[Markdown], great for when only basic
-#     formatting options are needed, or for working with existing Markdown-based
-#     sites.
-
-#     Quantum comes with a @hyperlink(/docs/cli-and-api/)[CLI] (command line
-#      interface) for
-#     building sites.
-
-#   @topic Features
-#     @list
-#       @item: Explicit, easy to learn markup language for building web pages
-#       @item: Built with customisability / extensibility in mind
-#       @item: Uses node.js - full access to npm when writing custom transforms
-#       @item: Prebuilt transforms for writing technical documentation
-#       @item: Auto browser page refresh when files are changed
-#       @item: Fast - builds this site in ~1 second
-
-#   @topic Example
-
-#     Suppose we have this very simple page (written using @hyperlink(/docs/markup/)[Quantum's markup])
-
-#     @subsection sign-in.um
-#       @@codeblock um
-#         @div: Welcome to the site, please sign in below
-#         @signIn
-
-#     Building this page with quantum, would produce the following
-
-
-#     @subsection sign-in.html
-#       @@codeblock html
-#         <div>Welcome to the site, please sign in below</div>
-#         <div class="sign-in">
-#           <input class="username-input" placeholder="Username"></input>
-#           <input class="password-input" placeholder="Password"></input>
-#           <button class="sign-in-button">Sign in</button>
-#         </div>
-
-
-#     The above conversion actually made use of this custom transform, that we defined
-#     just for our site.
-
-#     @@codeblock js
-#       const dom = require('quantum-dom')
-
-#       exports.signIn = (selection) => {
-#         return dom.create('div').class('sign-in')
-#           .add(dom.create('input').class('username-input'))
-#           .add(dom.create('input').class('password-input'))
-#           .add(dom.create('button').class('sign-in-button').text('Sign in'))
-#       }
-
-#   @notice [What's Next?]
-#     Head to the @hyperlink(/docs/)[Quick Start] page to get started
-#     with QuantumJS.
+  @div .footer
+    @html[&copy;] Ocado Technology 2017
 
 @script [/resources/quantum-landing.js]
