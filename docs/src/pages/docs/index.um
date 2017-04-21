@@ -29,8 +29,7 @@
     sites.
 
     Quantum comes with a @hyperlink(/docs/cli-and-api/)[CLI] (command line
-     interface) for
-    building sites.
+    interface) for building sites.
 
   @topic Features
     @list
