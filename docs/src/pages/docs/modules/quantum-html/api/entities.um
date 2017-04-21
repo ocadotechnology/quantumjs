@@ -4,6 +4,7 @@
     @description
       Adds an @code(html)[<{{ps}}>] element
 
+    @extra
       @@codeblock um
         # Create an <{{ps}}> element
         @{{ps}}
@@ -37,6 +38,7 @@
     @description
       Adds a @code(html)[<{{ps}}>] element
 
+    @extra
       @@codeblock um
         # Create a <{{ps}}> element
         @{{ps}}
