@@ -239,12 +239,16 @@ function extractTypes (elements, Types) {
     const l = elements.length
     for (let i = 0; i < l; i++) {
       const e = elements[i]
-      const index = Types.indexOf(e.constructor)
-      if (index > -1) {
-        res[index].push(e)
-      } else if (e instanceof Element) {
-        inner(e.content, res)
-        inner(e.endContent, res)
+      if (Array.isArray(e)) {
+        inner(e, res)
+      } else {
+        const index = Types.indexOf(e.constructor)
+        if (index > -1) {
+          res[index].push(e)
+        } else if (e instanceof Element) {
+          inner(e.content, res)
+          inner(e.endContent, res)
+        }
       }
     }
   }
