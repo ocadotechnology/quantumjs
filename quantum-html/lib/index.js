@@ -164,6 +164,10 @@ function standardDefaultTransform (selection) {
   return quantum.isSelection(selection) ? selection.cs() : selection
 }
 
+function flatten (arrays) {
+  return Array.prototype.concat.apply([], arrays)
+}
+
 /*
   Returns the transform function that converts parsed quantum source to virtual dom.
 */
@@ -191,7 +195,8 @@ function buildDOM (options) {
   return (file) => {
     return Promise.resolve(quantum.select(file.content).transform(transformer))
       .then((elements) => {
-        const completeElements = includeCommonMetaTags ? elements.concat(commonMetaTags) : elements
+        const flattenedElements = flatten(elements)
+        const completeElements = includeCommonMetaTags ? flattenedElements.concat(commonMetaTags) : flattenedElements
         return file.clone({
           content: new HTMLPage(completeElements)
         })
