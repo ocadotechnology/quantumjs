@@ -165,6 +165,23 @@
     #   See the @hyperlink(/tutorials/custom-transforms)[Custom transforms] tutorial
     #   for how to create and use your own entity transforms.
 
+    @topic The AST (abstract syntax tree)
+
+      Parsing is the process of turning the markup text into objects that can be
+      more easily manipulated. The quantum markup language is designed to be easy
+      to work with once parsed.
+
+      This is what the markup on the @hyperlink(/docs/markup/)[Markup] page looks
+      like when parsed into AST.
+
+      @notice [TODO]
+        XXX: Add easy to read example
+      # @codeblock json: @inline output.json
+
+      @notice [Note]
+        There are some helper apis for working with the parsed AST. See
+        the @hyperlink(/docs/modules/quantum-js/#selection-api)[quantum-js] module
+        docs for more information.
 
 
 @footer

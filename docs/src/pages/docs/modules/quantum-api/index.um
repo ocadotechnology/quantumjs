@@ -258,7 +258,7 @@
         @file custom-language.js
           @noOutput
           @js
-            @inline ../../../transforms/custom-language.js
+            @inline /transforms/custom-language.js
 
         @file quantum.config.js
           @noOutput
@@ -294,7 +294,7 @@
         @file custom-language.css
           @noOutput
           @css
-            @inline ../../../transforms/custom-language.css
+            @inline /transforms/custom-language.css
 
         @file index.um
           @@um

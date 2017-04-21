@@ -17,6 +17,7 @@
             @page /docs/: Overview
             @page /docs/quick-start: Quick Start
             @page /docs/cli-and-api/: Using the CLI / API
+            @page /docs/core-concepts/: Core Concepts
             @page /docs/markup/: The Markup Language
             @page /docs/quantum-vs-markdown: Quantum vs Markdown
 
@@ -24,9 +25,8 @@
           #   @page /tutorials/writing-technical-documentation/: Writing Technical Documentation
           #   @page /tutorials/creating-a-blog/: Creating a Blog
 
-          @section Advanced Topics
-            @page /docs/ast/: The AST
-            @page /docs/core-concepts/: Core Concepts
+          # @section Advanced Topics
+          #   @page /docs/ast/: The AST
 
           @section Core Modules
             @page /docs/modules/quantum-js/: quantum-js
