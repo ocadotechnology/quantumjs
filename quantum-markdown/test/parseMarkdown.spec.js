@@ -16,4 +16,14 @@ describe('parseMarkdown', () => {
       return parseMarkdown(readFile('highlight.md')).should.equal(readFile('highlight.html'))
     })
   })
+
+  describe('table of contents', () => {
+    it('renders a basic table of contents', () => {
+      return parseMarkdown(readFile('basic-toc.md')).should.equal(readFile('basic-toc.html'))
+    })
+
+    it('handles duplicate headings correctly', () => {
+      return parseMarkdown(readFile('duplicate-toc.md')).should.equal(readFile('duplicate-toc.html'))
+    })
+  })
 })
