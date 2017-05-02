@@ -34,7 +34,7 @@ function headingRenderer (headings) {
       headings[duplicateIndex].count++
       duplicateText = `${escapedText}-${headings[duplicateIndex].count}`
     }
-    return `<h${level}>${text}<a class="qm-docs-anchor-icon" id="${duplicateText || escapedText}" href="#${duplicateText || escapedText}"></a></h${level}>\n`
+    return `<h${level} class="qm-header-font">${text}<a class="qm-docs-anchor-icon" id="${duplicateText || escapedText}" href="#${duplicateText || escapedText}"></a></h${level}>\n`
   }
 }
 
