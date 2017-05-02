@@ -68,5 +68,6 @@ function transforms (options) {
 }
 
 module.exports = {
-  transforms
+  transforms,
+  parseMarkdown
 }
