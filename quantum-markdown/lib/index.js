@@ -9,9 +9,10 @@
 */
 
 const dom = require('quantum-dom')
-const marked = require('marked')
 const path = require('path')
 const codeHighlight = require('quantum-code-highlight')
+const toc = require('markdown-toc')
+const marked = require('marked')
 
 const stylesheetAsset = dom.asset({
   url: '/quantum-markdown.css',
@@ -50,8 +51,10 @@ function parseMarkdown (content) {
       }
     }
   }
-  return marked(content, markdownOpts)
+  return marked(toc.insert(content), markdownOpts)
     .replace(/<code( class="(.*)")?>/gi, '<code class="qm-code-font $2">')
+    .replace('<!-- toc -->\n<ul>', '<div class="qm-markdown-toc-header qm-header-font">Contents</div>\n<ul class="qm-markdown-toc">')
+    .replace('<!-- tocstop -->\n', '')
 }
 
 function markdown (selection, transform) {

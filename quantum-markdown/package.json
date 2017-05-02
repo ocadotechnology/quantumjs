@@ -29,6 +29,7 @@
     "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"
   },
   "dependencies": {
+    "markdown-toc": "^1.1.0",
     "marked": "^0.3.6",
     "quantum-code-highlight": "^2.0.0-rc.3",
     "quantum-dom": "^2.0.0-rc.3",

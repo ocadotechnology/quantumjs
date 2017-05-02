@@ -168,3 +168,23 @@
 .qm-markdown pre code::after {
   content: normal;
 }
+
+.qm-markdown-toc {
+  padding-left: 1.5em;
+  color: #00A3E0;
+}
+
+.qm-markdown-toc ul {
+  padding-left: 1.5em;
+  margin: 0.5em 0 1em 0;
+}
+
+.qm-markdown-toc ul ul,
+.qm-markdown-toc ul ul li {
+  margin: 0;
+}
+
+.qm-markdown-toc-header {
+  font-size: 1.17em;
+  margin: 1em 0 0.5em 0;
+}
