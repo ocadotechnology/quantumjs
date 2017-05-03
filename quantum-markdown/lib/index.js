@@ -20,9 +20,13 @@ const stylesheetAsset = dom.asset({
   shared: true
 })
 
+const whitespaceRegEx = /[^\w]+/g
+const codeHTMLTagRegEx = /<code( class="(.*)")?>/gi
+
 function headingRenderer (headings) {
   return (text, level) => {
-    const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-')
+    // Convert `Heading Text` to `heading-text`
+    const escapedText = text.toLowerCase().replace(whitespaceRegEx, '-')
     const duplicateIndex = headings.map(({ text }) => text).indexOf(escapedText)
     let duplicateText = undefined
     if (duplicateIndex === -1) {
@@ -52,7 +56,10 @@ function parseMarkdown (content) {
     }
   }
   return marked(toc.insert(content), markdownOpts)
-    .replace(/<code( class="(.*)")?>/gi, '<code class="qm-code-font $2">')
+    // Replace `<code>` and `<code class="xxx">` with `<code class="qm-code-font xxx">`
+    // For `<code>` it ends up being `<code class="qm-code-font ">` (as $2 is unmatched in the RegEx)
+    .replace(codeHTMLTagRegEx, '<code class="qm-code-font $2">')
+    // Replace the TOC `<ul>` with one that has a class so we can style it easily
     .replace('<!-- toc -->\n<ul>', '<div class="qm-markdown-toc-header qm-header-font">Contents</div>\n<ul class="qm-markdown-toc">')
     .replace('<!-- tocstop -->\n', '')
 }
