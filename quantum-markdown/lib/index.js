@@ -59,35 +59,36 @@ function sluggifyText (text) {
 }
 
 // Takes an array and an sluggify function and returns a function that de-duplicates headings
-function deDuplicator (headings, sluggify) {
+function dedupeAndSluggify (sluggify) {
+  const existingHeadings = []
   return (heading) => {
     const sluggifiedText = sluggify(heading)
-    const duplicateIndex = headings.map(({ text }) => text).indexOf(sluggifiedText)
+    const duplicateIndex = existingHeadings.map(({ text }) => text).indexOf(sluggifiedText)
     if (duplicateIndex === -1) {
-      headings.push({
+      existingHeadings.push({
         text: sluggifiedText,
         count: 0
       })
       return sluggifiedText
     } else {
-      headings[duplicateIndex].count++
-      return `${sluggifiedText}-${headings[duplicateIndex].count}`
+      existingHeadings[duplicateIndex].count++
+      return `${sluggifiedText}-${existingHeadings[duplicateIndex].count}`
     }
   }
 }
 
-function headingRenderer (headings) {
-  const dedupeChecker = deDuplicator(headings, sluggifyText)
+function headingRenderer () {
+  const dedupeChecker = dedupeAndSluggify(sluggifyText)
   return (text, level) => {
     // Convert `Heading Text` to `heading-text`
-    const deDupedHeading = dedupeChecker(text)
-    return `<h${level} class="qm-header-font">${text}<a class="qm-docs-anchor-icon" id="${deDupedHeading}" href="#${deDupedHeading}"></a></h${level}>\n`
+    const dedupedSlug = dedupeChecker(text)
+    return `<h${level} class="qm-header-font">${text}<a class="qm-docs-anchor-icon" id="${dedupedSlug}" href="#${dedupedSlug}"></a></h${level}>\n`
   }
 }
 
 function parseMarkdown (content) {
   const renderer = new marked.Renderer()
-  renderer.heading = headingRenderer([])
+  renderer.heading = headingRenderer()
   const markdownOpts = {
     renderer,
     highlight: (code, language) => {
@@ -100,7 +101,7 @@ function parseMarkdown (content) {
   }
 
   if (content.indexOf('<!-- toc -->') > -1) {
-    const tocDeDuplicator = deDuplicator([], sluggifyText)
+    const tocDeDuplicator = dedupeAndSluggify(sluggifyText)
     const pageToc = toc(content.replace('<!-- toc -->', '<!-- toc -->\n'), {
       firsth1: false
     })
