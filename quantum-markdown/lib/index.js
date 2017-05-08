@@ -25,7 +25,7 @@ const codeHTMLTagRegEx = /<code( class="(.*)")?>/gi
 
 const lastCharDashRegex = /-$/
 const multiDashRegex = /--+/g
-const unsafeCharsRegex = new RegExp('[\\s~!@#$%^&*(){}[\\]=:/\\\\,;?+\'"]', 'g')
+const unsafeCharsRegex = new RegExp('[\\s~!@#$%^&*(){}[\\]=:/\\\\,;?+\'"]+', 'g')
 
 const ampRegex = /&amp;/g
 const ltRegex = /&lt;/g
