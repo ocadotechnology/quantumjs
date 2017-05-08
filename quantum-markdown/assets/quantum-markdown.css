@@ -65,7 +65,7 @@
   list-style-type: none;
 }
 
-.qm-markdown ul ul,
+.qm-markdown ul:not(.qm-markdown-toc) ul,
 .qm-markdown ul ol,
 .qm-markdown ol ol,
 .qm-markdown ol ul {
@@ -175,16 +175,20 @@
 }
 
 .qm-markdown-toc ul {
-  padding-left: 1.5em;
+  padding-left: 1.3em;
   margin: 0.5em 0 1em 0;
 }
 
-.qm-markdown-toc ul ul,
-.qm-markdown-toc ul ul li {
-  margin: 0;
+.qm-markdown-toc li,
+.qm-markdown-toc ul {
+  margin:  0.25em 0 0.5em 0;
 }
 
 .qm-markdown-toc-header {
   font-size: 1.17em;
   margin: 1em 0 0.5em 0;
+}
+
+.qm-markdown-toc ul {
+  list-style: initial;
 }
