@@ -25,7 +25,14 @@ const codeHTMLTagRegEx = /<code( class="(.*)")?>/gi
 
 const lastCharDashRegex = /-$/
 const multiDashRegex = /--+/g
-const unsafeCharsRegex = new RegExp('[\\s~!@#$%^&*(){}[\\]=:/\\\\,;?+\'"]+', 'g')
+
+/*
+  This essentially finds any of the following characters: ~!@#$%^&*(){}[]=:/\,;?+\'"
+  (e.g. the characters wrapped by [...])
+
+  The + outside the [...] indicates a 'one or more' check so ! would be matched once, as would !!!!!
+*/
+const unsafeCharsRegex = /[\s~!@#$%^&*(){}[\]=:/\\,;?+'"]+/g
 
 const ampRegex = /&amp;/g
 const ltRegex = /&lt;/g
@@ -60,20 +67,12 @@ function sluggifyText (text) {
 
 // Takes an array and an sluggify function and returns a function that de-duplicates headings
 function dedupeAndSluggify (sluggify) {
-  const existingHeadings = []
+  const existingHeadings = {}
   return (heading) => {
     const sluggifiedText = sluggify(heading)
-    const duplicateIndex = existingHeadings.map(({ text }) => text).indexOf(sluggifiedText)
-    if (duplicateIndex === -1) {
-      existingHeadings.push({
-        text: sluggifiedText,
-        count: 0
-      })
-      return sluggifiedText
-    } else {
-      existingHeadings[duplicateIndex].count++
-      return `${sluggifiedText}-${existingHeadings[duplicateIndex].count}`
-    }
+    const existingCount = existingHeadings[sluggifiedText] || 0
+    existingHeadings[sluggifiedText] = existingCount + 1
+    return existingCount > 0 ? `${sluggifiedText}-${existingCount}` : sluggifiedText
   }
 }
 
