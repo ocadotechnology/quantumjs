@@ -11,7 +11,8 @@
 @contentSection
   @topic About
     This module provides the @code[@@markdown] transform for including markdown
-    snippets in a quantum site.
+    snippets in a quantum site and the @code[@markdown] transform for inlining
+    markdown files.
 
   @topic Example
     @example
@@ -22,22 +23,22 @@
 
             _italic_ or **bold** text.
 
-    @div .docs-example-heading qm-header-font: HTML Output
-    @div .docs-example-body
-      @@codeblock html
-        <div class="qm-markdown">
-          <h3 id="heading-text">Heading Text</h3>
-          <p><em>italic</em> or <strong>bold</strong> text.</p>
-        </div>
-
-
+    @div .docs-example
+      @div .docs-example-heading qm-header-font: HTML Output
+      @div .docs-example-body
+        @@codeblock html
+          <div class="qm-markdown">
+            <h3 id="heading-text">Heading Text</h3>
+            <p><em>italic</em> or <strong>bold</strong> text.</p>
+          </div>
 
   @topic Markdown File Example
     It is also possible to include markdown inline directly from @code[.md]
     files using @code[@markdown] and @code[@inline]
 
-    @subsection Example
-      @@codeblock um
+    @example
+      @noOutput
+      @@um
         @markdown: @inline path/to/file.md
 
     Inlining files in this way uses @code[@markdown] as non-quantum files are
@@ -51,6 +52,66 @@
     Using @code[@@markdown] prevents the @code[#] character being treated as a
     quantum comment. Since @code[#] is used for headings in markdown it is
     important to do this otherwise they will not show up in the rendered page!
+
+  @topic Markdown Table of Contents
+    When using markdown, it is possible to create an automated table of contents
+    (toc) for the @code[@@markdown] section you are writing, or for the
+    @code[@markdown] file you are inlining.
+
+    To add a table of contents, add @code[<!-- toc -->] to the place in the
+    section that you want the toc to be added. This will find all the subsequent
+    headings and convert them to a list structure.
+
+    The below example demonstrates using some markdown headings. All @code[#]
+    headings will be used for the toc that appear after the @code[<!-- toc -->]:
+
+    @section Example
+      @example
+        @file
+          @@um
+            @@markdown
+              ### First Heading
+              This heading won't display in the table of contents as it is
+              before the `toc` comment
+
+              Table of contents will display below here
+              <!-- toc -->
+
+              ### First heading in toc
+
+              ### Second Heading in toc
+
+              #### Sub Heading
+
+    The header links and table of contents apply de-duplication so if you have
+    multiple headings with the same text, subsequent headings are given a
+    numbered suffix.
+
+    As anchors are all converted to lower case, the casing of duplicate headings
+    is ignored:
+
+    @section De-duplication example
+      @example
+        @file
+          @@um
+            @@markdown
+              <!-- toc -->
+              # Example
+              This heading has anchor `#example`
+              ## example
+              This heading has anchor `#example-1`
+              # example
+              This heading has anchor `#example-2`
+              ## Example
+              This heading has anchor `#example-3`
+
+    @notice [Special Characters]
+      The special characters @code[~!@#$%^&*(){}[]=:/\,;?+\'"] will be removed
+      from the header links to make them both URL safe and easy to follow.
+
+      Other characters, such as Chinese letters, will be uri encoded (e.g.
+      from @code[华] to @code[%E5%8D%8E])
+
 
   @topic Entities
     @inline entities.um
