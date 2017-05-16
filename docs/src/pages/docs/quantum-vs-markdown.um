@@ -156,7 +156,7 @@
 
         @cell:
           @subsection Markdown
-            @codeblock md: Some **italic** text
+            @codeblock md: Some _italic_ text
           @subsection Quantum
             @@codeblock um
               Some @italic[italic] text
@@ -187,9 +187,6 @@
 
           @subsection Quantum
             @@codeblock um
-              @topic Topic Name
-                @section Section Name
-
               @h1: H1
               @h2: H2
               @h3: H3
@@ -197,9 +194,6 @@
               @h5: H5
               @h6: H6
         @cell
-          @topic Topic Name
-            @section Section Name
-
           @h1: H1
           @h2: H2
           @h3: H3

@@ -18,7 +18,7 @@
           content: []
         }
 
-        const selection = quantum.select(entity)
-        // selection is an instance of Selection
+        const sel = quantum.select(entity)
+        // sel is an instance of Selection
 
   @inline selection/*.um

@@ -29,4 +29,6 @@
         childSelection.parent() // == parentSelection
 
   @returns Selection
-    Returns the parent @type[Selection] if it exists, otherwise @code[undefined]
+    @description
+      Returns the parent @type[Selection] if it exists, otherwise
+      @code[undefined]

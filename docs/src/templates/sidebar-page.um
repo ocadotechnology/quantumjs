@@ -16,9 +16,9 @@
           @section Introduction
             @page /docs/: Overview
             @page /docs/quick-start: Quick Start
-            @page /docs/cli-and-api/: Using the CLI / API
-            @page /docs/core-concepts/: Core Concepts
             @page /docs/markup/: The Markup Language
+            @page /docs/core-concepts/: Core Concepts
+            @page /docs/cli-and-api/: Using the CLI / API
             @page /docs/quantum-vs-markdown: Quantum vs Markdown
 
           # @section Tutorials

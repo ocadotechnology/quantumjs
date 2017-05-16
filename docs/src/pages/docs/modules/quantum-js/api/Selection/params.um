@@ -47,6 +47,10 @@
         selection.params(['p1', 'p2'])
         selection.params() // ['p1', 'p2']
 
+  @param parameters [Array[String]]
+    @description
+      The parameters to set for the entity
+
   @returns Selection
     @description
       This @type[Selection] instance

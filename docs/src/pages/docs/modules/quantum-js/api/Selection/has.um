@@ -44,7 +44,7 @@
   @param? options [Object]
     @property recursive [Boolean]
       @description
-        True to do a recursive search down the tree for the type
+        true to do a recursive search down the tree for the type
       @default: false
   @returns Boolean
     @description

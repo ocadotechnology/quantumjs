@@ -30,5 +30,5 @@
       The entity to remove from the children
 
   @returns Boolean
-    True if the child was removed, false if it was not a child and could not be
+    true if the child was removed, false if it was not a child and could not be
     removed.

@@ -14,9 +14,9 @@
           pipeline: [
             quantum.json()
           ],
-          files: '**/index.um'
+          pages: '**/index.um'
         }
 
-  @returns Function
+  @returns FileTransform
     @description
       A file transform function.

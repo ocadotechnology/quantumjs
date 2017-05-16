@@ -52,7 +52,7 @@
   @param? options [Object]
     @property recursive [Boolean]
       @description: Set to true to recurse down the children to find
-      @default: False
+      @default: false
   @returns [Array[Selection]]
     @description
       An array of the removed entities wrapped in @type[Selection]s
@@ -102,11 +102,11 @@
           }
         */
 
-  @param type [Array[String]]: The entity types to remove
+  @param types [Array[String]]: The entity types to remove
   @param? options [Object]
     @property recursive [Boolean]
       @description: Set to true to recurse down the children to find
-      @default: False
+      @default: false
 
 
   @returns [Array[Selection]]

@@ -365,13 +365,13 @@
               @collapsed false
               @property prop1 [Boolean]
                 @collapsed false
-                @default: False
+                @default: false
 
             @function functionName
               @collapsed false
               @param? param1 [Boolean]
                 @collapsed false
-                @default: True
+                @default: true
 
 
   @entity returns

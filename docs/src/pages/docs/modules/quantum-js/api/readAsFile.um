@@ -18,7 +18,7 @@
       @@codeblock js
         const quantum = require('quantum-js')
 
-        const fileInfo = new quantum.FileInfo({
+        const info = new quantum.FileInfo({
           src: "src/content/about.um",
           resolved: "about.um",
           base: "src/content",
@@ -27,7 +27,7 @@
           watch: true
         })
 
-        quantum.readAsFile(fileInfo).then(file => {
+        quantum.readAsFile(info).then(file => {
           console.log(file)
         })
 
@@ -35,7 +35,7 @@
     @description
       The filename string or @type[FileInfo] to load. If a @type[FileInfo] is
       passed in, the returned @type[File] instance will use the @type[FileInfo]
-      for its @code[fileInfo] property.
+      for its @code[info] property.
 
   @param? options [Object]
 

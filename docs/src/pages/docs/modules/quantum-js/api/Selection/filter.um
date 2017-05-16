@@ -41,7 +41,7 @@
         // filteredSelection does not have 'childB' or 'childC' type entities as
         // children
 
-  @param types [String]
+  @param type [String]
     @description
       The type of children to keep.
   @returns Selection
@@ -140,7 +140,7 @@
 
         // filteredSelection does not have any 'childA' type children
 
-  @param types [Function]
+  @param typeLookup [Function]
     @description
       An indicator function which should return true for the childen to keep in
       the filtered selection, false for children that should be excluded.

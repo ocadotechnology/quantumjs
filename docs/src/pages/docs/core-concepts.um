@@ -4,7 +4,7 @@
   @title Core Concepts
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    This page explains some of the concepts used in quantumjs, including the pipeline,
+    This file explains some of the concepts used in quantumjs, including the pipeline,
     file transforms and entity html transforms.
 
 @contentSection
@@ -36,41 +36,57 @@
 
   @topic File Transforms
 
-    A @bold[file transform] lets you @bold[mess with the parsed AST] of an
-    entire page before it is rendered out to HTML. A file transform is
+    A @bold[file transform] lets you @bold[alter the parsed AST] of an
+    entire file before it is rendered out to HTML. A file transform is
     simply a function.
 
     Here is a file transform that does absolutely nothing:
 
     @codeblock js
-      function identityTransform (page) {
-        return page.clone()
+      function identityTransform (file) {
+        return file
       }
 
-    A @bold[file transform] is a function that takes an object of the form
-    @code(js)[{filename, content}] that returns an object also of the form
-    @code(js)[{filename, content}].
-
-    @code(js)[filename] is the name of the file that was read, @code(js)[content] is
-    the parsed AST.
+    A @bold[file transform] is a function that takes a @type[File], modifies it
+    and returns the modified @type[File] (or an array of @type[File] objects)
 
     @section File Transform Api
       @api
-        #XXX: there should be a way of hiding the default group headers
         @group
           @function FileTransform
             @collapsible false
             @description
-              A function that takes a page and returns a new page with a transformation
+              A function that takes a file and returns a new file with a transformation
               applied. This transfomation can be anything - from converting quantum-ast
               to html, or a transformation that replaces variables in the markup with
               values from template.
 
             @extra
-              @notice TODO: Add an example
+              @example
+                @noOutput
+                @@js
+                  const path = require('path')
 
-            @param page [File]: The page to transform
-            @returns [File/Array[File]]: The transformed page
+                  // The htmlRenamer from 'quantum-html'
+                  // renames name.html to name/index.html and leaves index.html as it is
+                  function htmlRenamer () {
+                    return (file) => {
+                      if (path.extname(file.info.dest) === '.html') {
+                        const filenameWithoutExtension = path.basename(file.info.dest).replace('.html', '')
+                        const rootPath = path.dirname(file.info.dest)
+                        return file.clone({
+                          info: file.info.clone({
+                            dest: filenameWithoutExtension === 'index' ? file.info.dest : path.join(rootPath, filenameWithoutExtension, 'index.html')
+                          })
+                        })
+                      } else {
+                        return file
+                      }
+                    }
+                  }
+
+            @param file [File]: The file to transform
+            @returns [File/Array[File]]: The transformed file
 
 
     # @notice More details
@@ -79,7 +95,6 @@
 
 
   @topic Entities
-
     An entity looks like this in markup:
 
     @@codeblock um
@@ -104,10 +119,11 @@
     Here's an example entity transform:
 
     @codeblock js
-      function notice (selection, page) {
-        return page.create('div').class('notice')
-          .add(page.create('div').class('notice-header').text(selection.ps()))
-          .add(page.create('div').class('notice-body').add(selection.cs()))
+      const dom = require('quantum-dom')
+      function notice (selection, transformer) {
+        return dom.create('div').class('notice')
+          .add(dom.create('div').class('notice-header').text(selection.ps()))
+          .add(dom.create('div').class('notice-body').add(selection.cs()))
       }
 
     This would convert the following markup:
@@ -171,7 +187,7 @@
       more easily manipulated. The quantum markup language is designed to be easy
       to work with once parsed.
 
-      This is what the markup on the @hyperlink(/docs/markup/)[Markup] page looks
+      This is what the markup on the @hyperlink(/docs/markup/)[Markup] file looks
       like when parsed into AST.
 
       @notice [TODO]

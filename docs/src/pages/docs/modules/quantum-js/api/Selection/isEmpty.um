@@ -43,7 +43,7 @@
         selection2.isEmpty() // true
 
         const selection3 = quantum.select(entity3)
-        selection3.isEmpty() // true
+        selection3.isEmpty() // false
 
   @returns Boolean
     @description

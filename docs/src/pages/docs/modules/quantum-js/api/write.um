@@ -55,8 +55,8 @@
 
   @param file [Array[File]]
     @description
-      The @type[File]s to save. @code[file.dest] is the location where the file
-      will be saved
+      The @type[File]s to save. @code[file.info.dest] is the location where the
+      file will be saved
 
   @returns [Promise[Array[File]]]
     @description

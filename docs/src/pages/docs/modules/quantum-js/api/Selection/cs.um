@@ -27,7 +27,7 @@
 
 @method cs
   @description
-    Sets the parameters as a string
+    Sets the content as a string
 
   @extra
     @subsection Example

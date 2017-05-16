@@ -5,6 +5,9 @@
       file, including where the file was read from, and where it is going to be
       written to once fully transformed.
 
+      This property can be manipulated by @type[FileTransform] functions (for
+      instance in @code[quantum-html] using the @code[htmlRenamer] transform)
+
   @property content [Any]
     @description
       Contains the contents of the file - this depends on the type of the file.
@@ -17,6 +20,9 @@
       to export. For example, the version transform adds the current `version` to
       this object after processing the file - so that other transforms can make
       use of that information.
+
+      This property should not be used in any quantum libraries and is designed
+      to be used in custom transforms.
 
   @property warnings [Array[Object]]
     @description

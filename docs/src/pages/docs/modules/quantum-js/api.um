@@ -1,4 +1,11 @@
 @api quantum-js
+  @description
+    Below are all the properties of the object returned from
+    @code[require('quantum-js')].
+
+    For information about different versions, see the
+    @hyperlink(/docs/modules/quantum-js/changelog/)[Changelog]
+
   @inline api/FileInfo.um
   @inline api/File.um
   @inline api/Selection.um

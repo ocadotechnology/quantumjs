@@ -52,25 +52,25 @@
 
   @param handler [Function]
     @description
-      A callback that transforms a page. If this does anything asynchronous, it
+      A callback that transforms a file. If this does anything asynchronous, it
       should return a @type[Promise]
 
     @param error [Error]
       @description
         This will be defined if there was an error when parsing the file. The
         handler has the option to handle this case if it wants to.
-    @param page [Page]
+    @param file [File]
       @description
-        The page that has been loaded. This is the page that the handler should
+        The file that has been loaded. This is the file that the handler should
         process / transform.
     @param cause [String]
       @description
-        The reason this page is being transformed. Can be one of @code['build'],
+        The reason this file is being transformed. Can be one of @code['build'],
         @code['add'] or @code['change']
 
-    @returns [Page]
+    @returns [File]
       @description
-        The transformed page
+        The transformed file
 
 
   @param? options [Object]
@@ -113,7 +113,7 @@
               })
             })
           }
-    @property buildConcurrency [Number]
+    @property concurrency [Number]
       @description
         The number of files to build concurrently
       @default: 1
@@ -122,10 +122,10 @@
       @description
         The function for reading a file and converting it to a @type[File].
 
-      @param fileInfo [FileInfo]
+      @param info [FileInfo]
         @description
           This describes which file to load. The file that is loaded should use
-          this @type[FileInfo] as it's @code[fileInfo] property.
+          this @type[FileInfo] as it's @code[info] property.
 
       @param? options [Object]
         @description

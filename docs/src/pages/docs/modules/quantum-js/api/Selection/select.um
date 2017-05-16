@@ -14,9 +14,7 @@
             {
               type: 'childExample',
               params: [],
-              content: [
-
-              ]
+              content: []
             }
           ]
         }
