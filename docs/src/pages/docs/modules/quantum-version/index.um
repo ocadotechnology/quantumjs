@@ -7,7 +7,7 @@
   @title quantum-version
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    TODO
+    Expands a single page with versioned content into multiple pages - one page for each version
 
 @contentSection
   @topic About
@@ -15,6 +15,55 @@
     incrementally versioned content. The version transform works well with the
     @hyperlink(/docs/modules/quantum-api/)[quantum-api] transforms for
     generating versioned api documentation.
+
+    This module provides a few entity types for labelling up versioned content.
+    With these labels, it is possible to include content only for certain version
+    ranges. Here are some examples of what is possible:
+
+    @@codeblock um
+      # This function was added in version 1.0.0. By giving it the @added 1.0.0
+      # tag, it will only be included in pages with version 0.1.0 and later
+      @function myFunction
+        @added 0.1.0
+        @description
+          # Versioned content provides alternative versions of content for
+          # different versions. Between versions, the content does not change -
+          # for example, for version 0.1.1, the description will still be
+          # "Description 1"
+          @versioned
+            @version 0.1.0: Description 1
+            @version 0.2.0: Description 2
+
+        @param x [Number]
+          @description
+            Some Description
+
+        # Only included in versions 0.2.0 and later, and gets removed after 0.4.0
+        @param y [Number]
+          @added 0.2.0
+          @deprecated 0.3.0
+          @removed 0.4.0
+          @description
+            @versioned
+              @version 0.2.0: Description 1
+              @version 0.4.0: Description 2
+
+    There are a few entity types that can be used to label versioned content:
+
+    Typically the @code[@added], @code[@deprecated] and @code[@removed] tags are
+    used in @code[@api] sections, and have the following meanings:
+
+    @list
+      @item
+        The @code[@added] tag indicates that some content should only be included from
+        the version specified onwards.
+      @item
+        The @code[@deprecated] tag indicates that something is going to be removed
+        (from an api), and should no longer be used.
+      @item
+        The @code[@removed] tag indicates that the something was removed. The
+        entity with this tag will remain on the page for the version given, but
+        will not be included for versions greater than the version specified.
 
   @topic API
     @inline api.um

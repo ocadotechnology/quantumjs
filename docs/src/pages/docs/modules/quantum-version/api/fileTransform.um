@@ -2,5 +2,4 @@
   @added 2.0.0
   @param? options [Object]
 
-  @returns Function
-    @param file [File]
+  @returns FileTransform
