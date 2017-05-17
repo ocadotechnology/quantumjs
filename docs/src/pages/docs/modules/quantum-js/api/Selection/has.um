@@ -45,7 +45,7 @@
     @property recursive [Boolean]
       @description
         true to do a recursive search down the tree for the type
-      @default: false
+      @default: @code[false]
   @returns Boolean
     @description
       Returns true if the selected entity has a child entity of type @code[type]

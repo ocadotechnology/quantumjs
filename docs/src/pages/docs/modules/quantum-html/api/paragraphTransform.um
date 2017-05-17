@@ -31,8 +31,8 @@
 
             Will be made into separate paragraphs
 
-  @param selection
-  @param transformer
+  @param selection [Selection]
+  @param transformer [EntityTransform]
 
   @returns [Array[Element]]
     @description

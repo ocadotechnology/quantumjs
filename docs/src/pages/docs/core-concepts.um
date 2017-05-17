@@ -177,9 +177,76 @@
               @description
                 The meta object as defined in @hyperlink(/docs/modules/quantum-html/#builddom)[buildDOM] options. This should only be used in custom transforms.
 
-    # @notice More details
-    #   See the @hyperlink(/tutorials/custom-transforms)[Custom transforms] tutorial
-    #   for how to create and use your own entity transforms.
+    # TODO: Convert this to a tutorial page with a more in-depth example
+    @section Custom Entity Transform Example
+      The following shows a full example of how to create a custom entity
+      transform using the @code[quantum-dom] and @code[quantum-html] modules:
+
+      @example
+        @file custom.js
+          @noOutput
+          @@js
+            const dom = require('quantum-dom')
+
+            // creates a sign in block for the @signIn entity
+            function signIn (selection) {
+              return dom.create('div').class('sign-in')
+                .add(dom.create('input').class('username-input'))
+                .add(dom.create('input').class('password-input'))
+                .add(dom.create('button').class('sign-in-button').text('Sign in'))
+            }
+
+            function transforms () {
+              return Object.freeze({
+                signIn
+              })
+            }
+
+            module.exports = {
+              transforms
+            }
+
+        @file quantum.config.js
+          @noOutput
+          @@js
+            const custom = require('./custom.js')
+            const html = require('quantum-html')
+
+            const htmlOptions = {
+              transforms: {
+                custom: custom.transforms()
+              }
+            }
+
+            module.exports = {
+              pipeline: [
+                html(htmlOptions)
+              ],
+              pages: 'index.um'
+            }
+
+        @file index.um
+          @@um
+            @signIn
+
+          @output
+            Calling @code[quantum build] would render the @code[index.um] page
+            and output to @bold[target/index.html]
+            @@codeblock html
+              <!DOCTYPE html>
+              <html>
+              <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+              </head>
+              <body class="qm-body-font">
+                <!-- the result of the @signIn transform -->
+                <div class="sign-in">
+                  <input class="username-input"></input>
+                  <input class="password-input"></input>
+                  <button class="sign-in-button">Sign in</button>
+                </div>
+              </body>
+              </html>
 
     @topic The AST (abstract syntax tree)
 

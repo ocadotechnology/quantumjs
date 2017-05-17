@@ -21,9 +21,10 @@
       @output
         @@codeblock js
           {
-            aTransform: aFunction,
+            'aTransform': aFunction,
             'aNamespace.aTransform': aFunction,
-            bTransform: lastDefinedFunction,
+            // The last defined function with a given namespace will be used as the 'top level' transform
+            'bTransform': lastDefinedFunction,
             'bNamespace.bTransform': bFunction
           }
 
@@ -31,4 +32,4 @@
     @description
       The object of nested @code[Transform] functions to flatten.
 
-  @returns Object
+  @returns [Object[EntityTransform]]

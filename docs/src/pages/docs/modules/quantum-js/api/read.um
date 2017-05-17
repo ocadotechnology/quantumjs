@@ -23,7 +23,7 @@
       @description
         When inline mode is on, the inlineEntityType (@code(um)[@inline] by
         default) will be replaced with the content of the specified files.
-      @default: true
+      @default: @code[true]
     @property loader [Function]
       @description
         A function for loading a file from disk, returning a @type[Promise] that

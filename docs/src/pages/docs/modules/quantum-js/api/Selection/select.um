@@ -30,11 +30,11 @@
       @description
         Set to true to search recursively down the child entities to search
         for this type. It will do a depth first search.
-      @default: false
+      @default: @code[false]
     @property required [Boolean]
       @description
         Set to true to throw an error when this type is not found
-      @default: false
+      @default: @code[false]
 
   @returns Selection
     @description

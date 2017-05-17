@@ -7,7 +7,7 @@
   #   @description
   #     The options to use when creating the set of transforms.
 
-  @returns Object
+  @returns [Object[EntityTransform]]
     @description
       The transforms to use in @hyperlink(./#filetransform)[fileTransform] to define the entities that can be rendered.
 

@@ -57,7 +57,7 @@
   @param? options [Object]
     @property recursive [Boolean]
       @description: Set to true to recurse down the children to find
-      @default: false
+      @default: @code[false]
 
   @returns Selection
     @description
@@ -119,7 +119,7 @@
   @param? options [Object]
     @property recursive [Boolean]
       @description: Set to true to recurse down the children to find
-      @default: false
+      @default: @code[false]
 
   @returns [Array[Selection]]
     @description

@@ -16,18 +16,18 @@
       The element to add as a child
 
   @param? options [Object]
-    @descriptions
+    @description
       Options that specify how the element is added
 
     @property addToEnd [Boolean]
       @description
         Set to @code[true] to keep the child at the end of list of children when
         it is stringified
-      @default: false
+      @default: @code[false]
 
   @returns Element
     @description
-      Returns this @type[Element] instance
+      Returns the @type[Element] instance you are adding to.
 
 @method add
   @description
@@ -46,19 +46,19 @@
     @description
       A promise which yields the element to add as a child
 
-    @param? options [Object]
-      @descriptions
-        Options that specify how the element is added
+  @param? options [Object]
+    @description
+      Options that specify how the elements are added
 
-      @property addToEnd [Boolean]
-        @description
-          Set to @code[true] to keep the child at the end of list of children when
-          it is stringified
-        @default: false
+    @property addToEnd [Boolean]
+      @description
+        Set to @code[true] to keep the child at the end of list of children when
+        it is stringified
+      @default: @code[false]
 
   @returns Element
     @description
-      Returns this @type[Element] instance
+      Returns the @type[Element] instance you are adding to.
 
 @method add
   @description
@@ -75,20 +75,20 @@
             dom.create('div').class('child-2')
           ])
 
-  @param element [Array[Element/Promise[Element]]]
+  @param elements [Array[Element / Promise[Element]]]
     @description
       An array of elements to add as children
 
   @param? options [Object]
-    @descriptions
-      Options that specify how the element is added
+    @description
+      Options that specify how the elements are added
 
     @property addToEnd [Boolean]
       @description
-        Set to @code[true] to keep the child at the end of list of children when
-        it is stringified
-      @default: false
+        Set to @code[true] to keep the children at the end of list of children
+        when they are stringified
+      @default: @code[false]
 
   @returns Element
     @description
-      Returns this @type[Element] instance
+      Returns the @type[Element] instance you are adding to.

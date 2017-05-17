@@ -30,7 +30,8 @@ const typeLinks = {
   HeadWrapper: '/docs/modules/quantum-dom/#headwrapper',
   PageModifier: '/docs/modules/quantum-dom/#pagemodifier',
   FileTransform: '/docs/core-concepts/#file-transforms',
-  EntityTransform: '/docs/core-concepts/#entity-transforms'
+  EntityTransform: '/docs/core-concepts/#entity-transforms',
+  HTMLPage: '/docs/modules/quantum-html/#htmlpage'
 }
 
 const apiOptions = {
@@ -41,6 +42,18 @@ const apiOptions = {
     api.languages.javascript({
       typeLinks: typeLinks
     })
+  ],
+  apiBuilders: [
+    api.builders.body.description,
+    api.builders.body.extras,
+    api.builders.body.groups,
+    api.languages.javascript.properties,
+    api.languages.javascript.prototypes,
+    api.languages.javascript.objects,
+    api.languages.javascript.functions,
+    api.languages.javascript.events,
+    api.languages.css.classes,
+    api.languages.quantum.entities
   ]
 }
 

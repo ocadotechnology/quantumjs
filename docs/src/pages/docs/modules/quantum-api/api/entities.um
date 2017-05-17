@@ -303,7 +303,7 @@
               @function something
                 @param param1 [String]
                 @param? param2 [Boolean]
-                  @default: true
+                  @default: @code[true]
 
   @entity object
     @added 2.0.0
@@ -365,13 +365,13 @@
               @collapsed false
               @property prop1 [Boolean]
                 @collapsed false
-                @default: false
+                @default: @code[false]
 
             @function functionName
               @collapsed false
               @param? param1 [Boolean]
                 @collapsed false
-                @default: true
+                @default: @code[true]
 
 
   @entity returns
@@ -459,7 +459,7 @@
               @constructor
                 @description
                   Create an array of @code[undefined] elements
-                @param length
+                @param length [Number]
                   @description: The length of the array to create
 
               @method fill
@@ -485,7 +485,7 @@
               @constructor
                 @param param1 [String]
                 @param? param2 [Boolean]
-                  @default: true
+                  @default: @code[true]
 
   @entity method
     @added 2.0.0
@@ -503,7 +503,7 @@
               @method methodName
                 @param param1 [String]
                 @param? param2 [Boolean]
-                  @default: true
+                  @default: @code[true]
 
 
 @group [Language: CSS]
