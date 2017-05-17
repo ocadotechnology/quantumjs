@@ -6,7 +6,7 @@
 @topSection
   @title quantum-markdown
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
-  @description: A transform for using markdown inline inside a Quantum site.
+  @description: A transform for embedding markdown into a Quantum site.
 
 @contentSection
   @topic About

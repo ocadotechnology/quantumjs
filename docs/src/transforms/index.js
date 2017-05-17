@@ -135,8 +135,6 @@ function landingSection (selection, transformer) {
     .add(dom.create('h2').class('landing-section__title')
       .add(selection.ps() || ''))
     .add(html.paragraphTransform(selection, transformer))
-    .add(selection.has('last') ? undefined : dom.create('div').class('scroll-next-placeholder'))
-    .add(selection.has('last') ? undefined : dom.create('div').class('scroll-next'))
 }
 
 function transforms () {
