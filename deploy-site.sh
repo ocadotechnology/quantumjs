@@ -4,7 +4,7 @@ npm run link-all
 pushd docs
 
 mkdir target
-git clone git@github.com:jmsmyth/quantumjs.git target
+git clone git@github.com:ocadotechnology/quantumjs.git target
 
 pushd target
 git checkout gh-pages
