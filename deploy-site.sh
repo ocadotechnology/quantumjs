@@ -3,6 +3,7 @@
 npm run link-all
 pushd docs
 
+rm -rf target
 mkdir target
 git clone git@github.com:ocadotechnology/quantumjs.git target
 
