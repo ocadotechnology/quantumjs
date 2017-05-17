@@ -12,9 +12,10 @@
       @@codeblock js
         const dom = require('quantum-dom')
 
-        const div = dom.create('div')
-        const span = dom.create('span')
-        const button = dom.create('button')
+        const div = dom.create('div') // Creates a <div> element
+        const span = dom.create('span') // Creates a <span> element
+        const button = dom.create('button') // Creates a <button> element
+        const myElement = dom.create('myElement') // Creates a <myElement> custom element
 
   @param type [String]
     @description

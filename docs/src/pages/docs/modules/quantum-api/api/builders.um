@@ -3,8 +3,8 @@
   @description
     Provides functions for building transforms for entities in languages.
 
-    See the @hyperlink(./#custom-languages)[Custom Language] example for a
-    complete example.
+    See the @hyperlink(./#creating-a-custom-language)[Custom Language] example
+    for a complete example.
 
   @property header [Function]
     @description
@@ -165,4 +165,4 @@
         @description
           Whether to sort entities in this group. Set to true for things like
           function parameters that have a fixed order.
-        @default: false
+        @default: @code[false]

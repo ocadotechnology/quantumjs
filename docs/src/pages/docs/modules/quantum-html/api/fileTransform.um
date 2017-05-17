@@ -20,9 +20,5 @@
       @property embedAssets [Boolean]
       @property assetPath [String]
       @property resourcesTarget [String]
-        @description
-          The directory that the resources are output to (inside the global target
-          directory).
-        @default: @code[undefined]
 
   @returns FileTransform

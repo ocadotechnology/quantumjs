@@ -62,16 +62,52 @@
 
     @param linkType
       @description
-        The type of link to use:
-        @list
-          @item: @b[-]: Solid line between the two ids
-          @item: @b[--]: Dashed line between the two ids
-          @item: @b[->]: Solid line with arrow towards rightId
-          @item: @b[<-]: Solid line with arrow towards leftId
-          @item: @b[<->]: Double ended arrow with solid line
-          @item: @b[-->]: Dashed line with arrow towards rightId
-          @item: @b[<--]: Dashed line with arrow towards leftId
-          @item: @b[<-->]: Double ended arrow with dashed line
+        The type of link to use
+
+      @extra
+        @example
+          @@um
+            @diagram
+              @item a [Solid]
+              @item b [Solid]
+
+              @link a - b
+
+              @item c [Arrow]
+              @item d [Arrow]
+
+              @link c -> d
+
+              @item e [Arrow (reversed)]
+              @item f [Arrow (reversed)]
+
+              @link e <- f
+
+              @item g [Double Arrow]
+              @item h [Double Arrow]
+
+              @link g <-> h
+
+            @diagram
+                @item a [Dashed]
+                @item b [Dashed]
+
+                @link a -- b
+
+                @item c [Dashed Arrow]
+                @item d [Dashed Arrow]
+
+                @link c --> d
+
+                @item e [Dashed Arrow (reversed)]
+                @item f [Dashed Arrow (reversed)]
+
+                @link e <-- f
+
+                @item g [Dashed Double Arrow]
+                @item h [Dashed Double Arrow]
+
+                @link g <--> h
 
     @param rightId
       @description

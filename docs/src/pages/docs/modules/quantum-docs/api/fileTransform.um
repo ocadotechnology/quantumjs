@@ -11,6 +11,6 @@
       @property enabled [Boolean]
         @description
           Whether to populate the table of contents
-        @default: true
+        @default: @code[true]
   @returns FileTransform
 

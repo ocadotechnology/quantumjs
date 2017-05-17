@@ -11,7 +11,8 @@
       @description
         An object containing data that is accessible in all @type[EntityTransform] functions as a third argument.
 
-        It is mainly useful for custom transforms, it should never be used in libraries.
+        It is mainly useful for custom transforms, it should never be used in
+        quantum modules.
 
     @property defaultTransform [EntityTransform]
       @description
@@ -19,8 +20,9 @@
 
       @default
         @@codeblock js
+          const quantum = require('quantum-js')
           function (selection) {
-            return require('quantum-js').isSelection(selection) ? selection.cs() : selection
+            return quantum.isSelection(selection) ? selection.cs() : selection
           }
 
     @property transforms [Object]

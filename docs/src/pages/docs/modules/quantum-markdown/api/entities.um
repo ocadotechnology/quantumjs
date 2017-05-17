@@ -1,7 +1,7 @@
 @entity @markdown
   @added 2.0.0
   @description
-    A renderer for rendering @code[markdown] using quantum
+    An entity for rendering @code[markdown] using quantum
 
   @extra
     @example
@@ -14,7 +14,7 @@
 @entity markdown
   @added 2.0.0
   @description
-    A renderer for including markdown files in quantum.
+    An entity for including markdown files in quantum.
 
   @extra
     @example

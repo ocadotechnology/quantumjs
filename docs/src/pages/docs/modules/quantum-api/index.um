@@ -21,17 +21,39 @@
 
   @topic Example
     @example
-      @@um
-        @api example-api
-          @function makeCoffee
-            @description
-              A function for making coffee
-            @param sugar [Boolean]
+      @file quantum.config.js
+        @noOutput
+        @@js
+          const api = require('quantum-api')
+          const html = require('quantum-html')
+
+          const htmlOptions = {
+            transforms: {
+              api: api.transforms()
+            }
+          }
+
+          module.exports = {
+            pipeline: [
+              html(htmlOptions)
+            ],
+            pages: 'index.um'
+          }
+
+      @file index.um
+        @@um
+          @api example-api
+            @function makeCoffee
               @description
-                Whether to add Sugar
-            @param milk [Boolean]
-              @description
-                Whether to add milk
+                A function for making coffee
+              @param sugar [Boolean]
+                @description
+                  Whether to add Sugar
+              @param milk [Boolean]
+                @description
+                  Whether to add milk
+
+
 
   @topic Entities
     @inline entities.um

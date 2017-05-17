@@ -2,7 +2,7 @@
   @entity {{ps}}
     @added 2.0.0
     @description
-      Adds an @code(html)[<{{ps}}>] element
+      Adds an @code[<{{ps}}>] element
 
     @extra
       @@codeblock um
@@ -36,7 +36,7 @@
   @entity {{ps}}
     @added 2.0.0
     @description
-      Adds a @code(html)[<{{ps}}>] element
+      Adds a @code[<{{ps}}>] element
 
     @extra
       @@codeblock um
@@ -119,7 +119,7 @@
   @entity css
     @added 2.0.0
     @description
-      Adds some styles to be applied to the page (adds a @code(html)[<style>] element to the @code(html)[<head>])
+      Adds some styles to be applied to the page (adds a @code[<style>] element to the @code[<head>])
 
     @extra
       @example
@@ -134,7 +134,11 @@
   @entity js
     @added 2.0.0
     @description
-      Adds some javascript to be executed on the page (adds a @code(html)[<script>] element to the @code(html)[<body>])
+      Adds some javascript to be executed on the page (adds a @code[<script>]
+      element to the @code[<body>])
+
+      It is @bold[not] placed at the end of the body like the @code[@script]
+      entity
 
     @extra
       @example
@@ -147,7 +151,7 @@
   @entity script
     @added 2.0.0
     @description
-      Adds a link to a javascript file to the bottom of the @code(html)[<body>]
+      Adds a link to a javascript file to the bottom of the @code[<body>]
     @param link
       @description
         The link to the script to add
@@ -163,7 +167,7 @@
   @entity stylesheet
     @added 2.0.0
     @description
-      Adds a link to a css file to the bottom of the @code(html)[<head>]
+      Adds a link to a css file to the bottom of the @code[<head>]
     @param link
       @description
         The link to the stylesheet to add
@@ -179,8 +183,8 @@
   @entity hyperlink
     @added 2.0.0
     @description
-      Adds a @code(html)[<a>] element, with the href set to the link
-      specified in the parameters.
+      Adds an @code[<a>] element, with the href set to the link specified in the
+      parameters.
     @param link
       @description
         The link to add
@@ -194,7 +198,7 @@
   @entity title
     @added 2.0.0
     @description
-      Sets the page title (adds a @code(html)[<title>] element to the @code(html)[<head>])
+      Sets the page title (adds a @code[<title>] element to the @code[<head>])
     @param title
       @description
         The title to set

@@ -21,7 +21,7 @@
         }
 
   @param elements [Array[Element]]
-    @descriptions
+    @description
       The elements that should form the body of the html page
 
   @param? options [Object]
@@ -32,7 +32,7 @@
       @description
         Set to true to embed JavaScript and CSS assets in the page, false to
         export them as separate files
-      @default: true
+      @default: @code[true]
 
     @property assetPath [String]
       @description
@@ -42,7 +42,7 @@
   @returns Object
     @property html [String]
       @description
-        The build html string
+        The built html string
 
     @property assets [Array[Asset]]
       @description
