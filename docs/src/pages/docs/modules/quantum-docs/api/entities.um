@@ -10,7 +10,7 @@
     page.
 
     They are used used to populate the @code[@tableOfContents] when using the
-    @hyperlink(./#filetransform)[fileTransform].
+    @hyperlink(#filetransform)[fileTransform].
 
   @extra
     @example
@@ -32,7 +32,7 @@
     page.
 
     They are used used to populate the @code[@tableOfContents] when using the
-    @hyperlink(./#filetransform)[fileTransform].
+    @hyperlink(#filetransform)[fileTransform].
 
   @extra
     @example
@@ -258,7 +258,7 @@
     Used to create a table of contents on a page.
 
     Generally this should be used with the
-    @hyperlink(./#filetransform)[fileTransform] to provide an auto-generated
+    @hyperlink(#filetransform)[fileTransform] to provide an auto-generated
     contents, however it is possible to create one manually.
 
   @extra

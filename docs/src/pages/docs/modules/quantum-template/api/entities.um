@@ -31,7 +31,7 @@
 
   @extra
     An example can be seen in the
-    @hyperlink(./#page-template-example)[Page Template Example] section
+    @hyperlink(#page-template-example)[Page Template Example] section
 
 @entity for
   @added 2.0.0
@@ -162,5 +162,3 @@
 
         @ifnot undeclaredVariable
           @h3: Variable not declared, this will show
-
-

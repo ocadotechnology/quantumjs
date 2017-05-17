@@ -2,7 +2,7 @@
   @added 2.0.0
   @description
     A function for converting a @type[HTMLPage]  (the output of the
-    @hyperlink(./#builddom)[buildDOM]) function to HTML.
+    @hyperlink(#builddom)[buildDOM]) function to HTML.
 
     It converts the file objects @code[content] to an HTML string and gives the
     @code[dest] of the file the @code[.html] extension.

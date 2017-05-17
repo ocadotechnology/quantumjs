@@ -4,7 +4,8 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "start": "quantum watch"
+    "start": "quantum watch",
+    "build": "quantum build"
   },
   "contributors": [
     "James Smyth <james.smyth@ocado.com>",

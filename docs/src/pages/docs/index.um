@@ -76,5 +76,5 @@
       }
 
   @notice [What's Next?]
-    Head to the @hyperlink(/docs/quick-start/)[Quick Start] page to get started
+    Head to the @hyperlink({{baseurl}}/docs/quick-start/)[Quick Start] page to get started
     with QuantumJS.

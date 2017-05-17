@@ -1,7 +1,8 @@
 @function transforms
   @added 2.0.0
   @description
-    A function that returns a set of @type[EntityTransform] functions for use when rendering a page.
+    A function that returns a set of @type[EntityTransform] functions for use
+    when rendering a page.
 
   # @param? options [Object]
   #   @description
@@ -9,7 +10,8 @@
 
   @returns [Object[EntityTransform]]
     @description
-      The transforms to use in @hyperlink(./#filetransform)[fileTransform] to define the entities that can be rendered.
+      The transforms to use in @hyperlink(#filetransform)[fileTransform] to
+      define the entities that can be rendered.
 
     @property a [EntityTransform]
     @property b [EntityTransform]
@@ -54,4 +56,3 @@
     @property tr [EntityTransform]
     @property ul [EntityTransform]
     @property vr [EntityTransform]
-

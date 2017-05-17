@@ -3,7 +3,7 @@
   @description
     Provides functions for building transforms for entities in languages.
 
-    See the @hyperlink(./#creating-a-custom-language)[Custom Language] example
+    See the @hyperlink(#creating-a-custom-language)[Custom Language] example
     for a complete example.
 
   @property header [Function]
@@ -146,7 +146,7 @@
   @property itemGroup [Function]
     @description
       A function for defining a group of items to be used in an
-      @hyperlink(./#item)[item] content.
+      @hyperlink(#item)[item] content.
 
     @param language [String]
       @description

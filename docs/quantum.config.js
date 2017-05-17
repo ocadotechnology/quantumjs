@@ -88,6 +88,7 @@ function customizedTemplate (file) {
         age: 25
       }
     },
+    baseurl: process.env.GITHUB_PAGES ? '/quantumjs' : '',
     filename: file.info.src
   }
 

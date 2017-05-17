@@ -25,8 +25,8 @@
     are more details on how to use it on these pages:
 
     @list
-      @item: @hyperlink(/docs/core-concepts/)[Core Concepts]
-      @item: @hyperlink(/docs/cli-and-api/)[Using the CLI / API]
+      @item: @hyperlink({{baseurl}}/docs/core-concepts/)[Core Concepts]
+      @item: @hyperlink({{baseurl}}/docs/cli-and-api/)[Using the CLI / API]
 
     The CLI is bundled with this module - so if you install this globally,
     you should have access to the @code(bash)[quantum] command. Or you can

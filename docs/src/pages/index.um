@@ -1,15 +1,15 @@
 @title QuantumJS
-@inline ../templates/favicons.um
+@inline /templates/favicons.um
 
 @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:100,400,700|Roboto+Slab:300,400,700|Source+Code+Pro:200,400,700]
-@stylesheet [/resources/quantum-site.css]
-@stylesheet [/resources/quantum-landing.css]
+@stylesheet [{{baseurl}}/resources/quantum-site.css]
+@stylesheet [{{baseurl}}/resources/quantum-landing.css]
 
 @div .container
   @div .top-landing-section
     @div
       @img
-        @attr src: /resources/logo.svg
+        @attr src: {{baseurl}}/resources/logo.svg
         @attr class: top-landing-section__logo
       @h1 .top-landing-section__title: QuantumJS
       @div .top-landing-section__tagline
@@ -17,18 +17,18 @@
 
       @div .buttons
         @a .button: @span[Documentation]
-          @attr href: /docs/
-          @image [/resources/book.svg]
+          @attr href: {{baseurl}}/docs/
+          @image [{{baseurl}}/resources/book.svg]
             @height 30px
 
         @a .button: @span[Quick Start]
-          @attr href: /docs/quick-start
-          @image [/resources/rocket.svg]
+          @attr href: {{baseurl}}/docs/quick-start
+          @image [{{baseurl}}/resources/rocket.svg]
             @height 30px
 
         @a .button: @span[GitHub]
           @attr href: https://github.com/ocadotechnology/quantumjs/
-          @image [/resources/github-mark.svg]
+          @image [{{baseurl}}/resources/github-mark.svg]
             @height 30px
 
     @div .scroll-next-placeholder
@@ -59,19 +59,19 @@
     @last
     @div .buttons
       @a .button: @span[Quickstart]
-        @attr href: /docs/quick-start
-        @image [/resources/rocket.svg]
+        @attr href: {{baseurl}}/docs/quick-start
+        @image [{{baseurl}}/resources/rocket.svg]
           @height 30px
       @a .button: @span[Releases]
         @attr href: https://github.com/ocadotechnology/quantumjs/releases
-        @image [/resources/tags.svg]
+        @image [{{baseurl}}/resources/tags.svg]
           @height 30px
       @a .button: @span[GitHub]
         @attr href: https://github.com/ocadotechnology/quantumjs/
-        @image [/resources/github-mark.svg]
+        @image [{{baseurl}}/resources/github-mark.svg]
           @height 30px
 
   @div .footer
     @html[&copy;] Ocado Technology 2017
 
-@script [/resources/quantum-landing.js]
+@script [{{baseurl}}/resources/quantum-landing.js]
