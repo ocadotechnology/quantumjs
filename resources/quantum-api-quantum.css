@@ -1,0 +1,28 @@
+.qm-api-quantum-entity {}
+
+.qm-api-quantum-header-entity-name {
+  font-weight: bold;
+}
+
+.qm-api-quantum-header-entity-name:before {
+  content: '@';
+}
+
+.qm-api-quantum-header-entity-params {
+  margin-left: 0.4em;
+  font-weight: normal;
+}
+
+.qm-api-quantum-header-entity-params:empty {
+  margin-left: 0;
+}
+
+.qm-api-quantum-header-entity-param + .qm-api-quantum-header-entity-param {
+  margin-left: 0.4em;
+}
+
+/* Changelog */
+.qm-changelog-quantum-entity + .qm-changelog-quantum-entity:before {
+  content: ':';
+  margin-right: 0.4em;
+}

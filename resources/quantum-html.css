@@ -1,0 +1,18 @@
+.qm-code-font {
+  font-family: monospace;
+}
+
+.qm-header-font {}
+.qm-body-font {}
+
+.qm-html-paragraph {
+  margin: 1em 0;
+}
+
+.qm-html-paragraph:first-child {
+  margin-top: 0;
+}
+
+.qm-html-paragraph:last-child {
+  margin-bottom: 0;
+}
