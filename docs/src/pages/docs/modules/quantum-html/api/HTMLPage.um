@@ -3,7 +3,7 @@
   # XXX: Not sure if this _should_ be exposed?
   @description
     A prototype for storing
-    @hyperlink(/docs/core-concepts#file-transforms/)[transformed] pages.
+    @hyperlink({{baseurl}}/docs/core-concepts#file-transforms/)[transformed] pages.
 
   @extra
     @example

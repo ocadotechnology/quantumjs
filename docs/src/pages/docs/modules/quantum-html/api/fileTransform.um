@@ -1,9 +1,12 @@
 @function fileTransform
   @added 2.0.0
   @description
-    Builds a file transform that takes a @type[File], converts it to HTML and then renames files to make a sensible directory structure for the site.
+    Builds a file transform that takes a @type[File], converts it to HTML and
+    then renames files to make a sensible directory structure for the site.
 
-    It applies the @hyperlink(./#builddom)[buildDOM], the @hyperlink(./#buildhtml)[buildHTML] and then the @hyperlink(./#htmlrenamer)[htmlRenamer] file transforms in sequence.
+    It applies the @hyperlink(#builddom)[buildDOM], the
+    @hyperlink(#buildhtml)[buildHTML] and then the @hyperlink(#htmlrenamer)[htmlRenamer]
+    file transforms in sequence.
 
   @param? options [Object]
     @group [buildDOM Options]

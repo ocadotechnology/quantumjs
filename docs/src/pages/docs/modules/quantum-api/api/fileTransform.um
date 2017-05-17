@@ -54,6 +54,6 @@
           The languages to use to render the changelog headers
 
           This is where defined @code[changelog] objects are used from
-          the @hyperlink(./#languages)[languages]
+          the @hyperlink(#languages)[languages]
 
     @returns File

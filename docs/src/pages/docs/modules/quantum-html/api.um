@@ -2,7 +2,7 @@
   @description
     Below are all the properties of the object returned from @code[require('quantum-html')].
 
-    For information about different versions, see the @hyperlink(/docs/modules/quantum-html/changelog/)[Changelog]
+    For information about different versions, see the @hyperlink({{baseurl}}/docs/modules/quantum-html/changelog/)[Changelog]
 
   @inline api/buildDOM.um
   @inline api/buildHTML.um
