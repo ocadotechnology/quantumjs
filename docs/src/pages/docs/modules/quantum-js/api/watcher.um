@@ -48,7 +48,7 @@
     @property dir [String]
       @description
         The working directory for the watcher to work in
-      @default: @code['.']
+      @default: @code['.'] (The current working directory)
 
     @property dest [String]
       @description

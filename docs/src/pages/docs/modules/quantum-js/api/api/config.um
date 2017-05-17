@@ -23,4 +23,4 @@
   @added 2.0.0
   @description
     The path to resolve absolute files from.
-  @default: The current working directory
+  @default: @code['.'] (The current working directory)

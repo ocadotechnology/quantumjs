@@ -77,7 +77,7 @@
     @property dir [String]
       @description
         The working directory for the watcher to work in
-      @default: '.'
+      @default: @code['.'] (The current working directory)
 
     @property dest [String]
       @description
@@ -156,7 +156,7 @@
     @property resolveRoot [String]
       @description
         The path to resolve absolute files from.
-      @default: The current working directory
+      @default: @code['.'] (The current working directory)
 
   @returns [Promise[Object]]
     @description

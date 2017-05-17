@@ -27,6 +27,7 @@ function exampleFile (selection, transformer, fileName) {
 
   const code = dom.create('div').class('docs-example-code-body')
     .add([
+      addCodeSection('nohighlight', 'Console'),
       addCodeSection('html', 'HTML'),
       addCodeSection('js', 'Javascript'),
       addCodeSection('css', 'CSS'),

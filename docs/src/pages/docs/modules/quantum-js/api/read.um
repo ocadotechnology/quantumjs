@@ -39,7 +39,7 @@
     @property resolveRoot [String]
       @description
         The path to resolve absolute files from.
-      @default: The current working directory
+      @default: @code['.'] (The current working directory)
   @returns [Promise[Entity]]
     @description
       A promise that yields the parsed AST entity.

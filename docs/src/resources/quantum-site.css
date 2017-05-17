@@ -287,6 +287,10 @@ a:hover {
   margin-bottom: 0;
 }
 
+.qm-api-extra .docs-example {
+  margin: -0.5em -1em;
+}
+
 
 .qm-html-paragraph .docs-example-body {
   line-height: normal;
