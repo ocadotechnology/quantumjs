@@ -40,6 +40,6 @@
       @description
         The path to resolve absolute files from.
       @default: The current working directory
-  @returns [Promise[Object]]
+  @returns [Promise[Entity]]
     @description
-      A promise that yields the parsed AST.
+      A promise that yields the parsed AST entity.

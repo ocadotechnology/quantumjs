@@ -19,7 +19,7 @@
 
         quantum.select(ast) // returns a Selection
 
-  @param entity [Object]
+  @param entity [Entity]
     @description: An entity object to select.
   @returns Selection
     A Selection instance which wraps the passed in AST

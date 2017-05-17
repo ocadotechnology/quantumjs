@@ -45,9 +45,9 @@
           Content 1
           Content 2
 
-  @returns Object
+  @returns Entity
     @description
-      The parsed ast. Looks something like this:
+      The parsed AST entity. Looks something like this:
 
       @codeblock js
         {

@@ -19,5 +19,5 @@
         // cloned will look exactly the same as entity (but will be a copy,
         // so changes made to the clone will not affect the original)
 
-  @param ast [Object]: The AST to clone.
-  @returns Object: The cloned AST
+  @param entity [Entity]: The AST entity to clone.
+  @returns Object: The cloned AST entity

@@ -23,6 +23,6 @@
 
         selection.entity() // returns basketEntity
 
-  @returns Object
+  @returns Entity
     @description
-      The entity this selection wraps
+      The AST entity this selection wraps

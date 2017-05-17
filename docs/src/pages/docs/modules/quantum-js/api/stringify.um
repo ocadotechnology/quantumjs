@@ -30,9 +30,9 @@
             @child child-param
         */
 
-  @param ast [Object]
+  @param entity [Entity]
     @description
-      The quantum objects (AST) to turn into a markup string.
+      The quantum AST entities to turn into a markup string.
   @returns String
     @description
       The markup string
