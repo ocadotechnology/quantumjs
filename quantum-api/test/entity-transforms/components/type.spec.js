@@ -84,4 +84,57 @@ describe('type', () => {
           .text('Type2'))
     )
   })
+
+  describe('getTypeArray', () => {
+    it('handles basic types', () => {
+      type.getTypeArray('String')
+        .should.eql(['String'])
+    })
+
+    it('handles multiple types', () => {
+      type.getTypeArray('String/Any')
+        .should.eql(['String', ' / ', 'Any'])
+    })
+
+    it('handles multiple types with spaces', () => {
+      type.getTypeArray('String / Any')
+        .should.eql(['String', ' / ', 'Any'])
+    })
+
+    it('handles array-like types', () => {
+      type.getTypeArray('Array[String]')
+        .should.eql(['Array', '[', 'String', ']'])
+    })
+
+    it('handles array-like types with multiple types ', () => {
+      type.getTypeArray('Array[String/Any]')
+        .should.eql(['Array', '[', 'String', ' / ', 'Any', ']'])
+    })
+
+    it('handles nested array-like types', () => {
+      type.getTypeArray('Array[Array[String]]')
+        .should.eql(['Array', '[', 'Array', '[', 'String', ']', ']'])
+    })
+
+    it('handles mixed nested array-like types', () => {
+      type.getTypeArray('Array[String/Array[String]]')
+        .should.eql(['Array', '[', 'String', ' / ', 'Array', '[', 'String', ']', ']'])
+    })
+
+    it('handles muliple array-like types', () => {
+      type.getTypeArray('String/Array[String/Array[String]]')
+        .should.eql(['String', ' / ', 'Array', '[', 'String', ' / ', 'Array', '[', 'String', ']', ']'])
+    })
+
+    it('handles muliple array-like types', () => {
+      type.getTypeArray('String/Array[String]')
+        .should.eql(['String', ' / ', 'Array', '[', 'String', ']'])
+    })
+
+    it('handles complex types', () => {
+      type.getTypeArray('Array[Any]/Promise[Array[Any]]')
+        .should.eql(['Array', '[', 'Any', ']', ' / ', 'Promise', '[', 'Array', '[', 'Any', ']', ']'])
+    })
+  })
 })
+
