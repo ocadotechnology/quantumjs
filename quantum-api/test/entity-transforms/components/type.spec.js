@@ -122,13 +122,13 @@ describe('type', () => {
     })
 
     it('handles muliple array-like types', () => {
-      type.getTypeArray('String/Array[String/Array[String]]')
-        .should.eql(['String', ' / ', 'Array', '[', 'String', ' / ', 'Array', '[', 'String', ']', ']'])
-    })
-
-    it('handles muliple array-like types', () => {
       type.getTypeArray('String/Array[String]')
         .should.eql(['String', ' / ', 'Array', '[', 'String', ']'])
+    })
+
+    it('handles muliple mixed nested array-like types', () => {
+      type.getTypeArray('String/Array[String/Array[String]]')
+        .should.eql(['String', ' / ', 'Array', '[', 'String', ' / ', 'Array', '[', 'String', ']', ']'])
     })
 
     it('handles complex types', () => {
