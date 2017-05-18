@@ -60,7 +60,7 @@ const apiOptions = {
 
 const htmlOptions = {
   embedAssets: false,
-  assetPath: '/resources',
+  assetPath: process.env.GITHUB_PAGES ? '/quantumjs/resources' : '/resources',
   resourcesTarget: '/resources',
   transforms: {
     html: html.transforms(),
