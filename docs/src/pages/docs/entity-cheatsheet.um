@@ -1,0 +1,98 @@
+@inline /templates/sidebar-page.um
+
+@topSection
+  @title Entity Cheatsheet
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    Useful quantum snippets
+
+@contentSection
+  @fullWidth
+    @topic quantum-docs
+      @section Regular Page
+        @@cheatsheetExample
+          @header
+            @icon [/resources/logo.svg] [/]
+            @title Site Title
+
+          @topSection
+            @title Page Title
+
+          @contentSection
+            @topic Some topic
+
+      @section Sidebar Page
+        @@cheatsheetExample
+          @header
+            @icon [/resources/logo.svg] [/]
+            @title Site Title
+          @sidebarPage
+            @sidebar
+              @navigationMenu
+                @page /: Home
+                @section Introduction
+                  @page /docs/: Overview
+                  @page /docs/quick-start: Quick Start
+                  @page /docs/markup/: The Markup Language
+                  @page /docs/core-concepts/: Core Concepts
+                  @page /docs/cli-and-api/: Using the CLI / API
+                  @page /docs/quantum-vs-markdown: Quantum vs Markdown
+            @content
+              @topSection
+                @title Page Title
+
+              @contentSection
+                @topic Some topic
+
+    @topic quantum-code-highlight
+      @section Inline code
+        @@cheatsheetExample
+          Some @code[inline()] code
+
+      @section Code block
+        @@cheatsheetExample
+          @codeblock js
+            function myFunction () {
+              return "Hello world"
+            }
+
+    @topic quantum-api
+
+    @topic quantum-html
+      @@cheatsheetExample
+        @div[Hello]
+
+      @@cheatsheetExample
+        @button[Button]
+
+    @topic quantum-diagram
+      @section Basic Diagram
+        @@cheatsheetExample
+          @diagram
+            @item sugar [Sugar]
+              Optional ingredient
+            @item milk [Milk]
+              Optional ingredient
+            @item coffee [Coffee]
+            @item water [Water]
+            @item kettle [Kettle]
+            @item cup [Cup]
+            @item tasty [Tasty Beverage]
+
+            @link sugar --> cup
+            @link milk --> cup
+            @link water -> kettle
+            @link kettle -> cup
+            @link coffee -> cup
+            @link cup -> tasty
+
+
+    @topic quantum-markdown
+      @section Markdown
+        @@cheatsheetExample
+          @@markdown
+            # Heading
+            Some content
+
+            ## Another heading
+            Some more content
