@@ -14,7 +14,8 @@
     This is a minimal virtual dom library that is used when defining entity
     transforms which convert entities into snippets of html.
 
-    The Quantum DOM library is primarily used when defining custom @type[EntityTransform] functions. It provides an api that allows creation of objects that represented
+    The Quantum DOM library is primarily used when defining custom @type[EntityTransform]
+    functions. It provides an api that allows creation of objects that represent
     @hyperlink(https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)[elements]
     on a web page (for example a @code[<div>] or @code[<span>], or any other dom
     element).
