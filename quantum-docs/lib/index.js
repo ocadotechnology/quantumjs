@@ -134,14 +134,17 @@ function versionSelector (selection, transformer) {
 
     const script = 'window.quantum.docs.createDropdown("' + id + '", [' + versions.map(v => '"' + v + '"').join(', ') + '], "' + current + '");'
 
-    return dom.create('button')
+    const versionScriptAsset = dom.asset({
+      type: 'js',
+      content: script
+    })
+
+    return dom.create('select')
       .id(id)
       .class('qm-docs-version-selector hx-btn')
       .add(stylesheetAsset)
       .add(scriptAsset)
-      .add(dom.create('span').text(current))
-      .add(dom.create('i').class('fa fa-caret-down'))
-      .add(dom.create('script').text(script, {escape: false}))
+      .add(versionScriptAsset)
   }
 }
 
