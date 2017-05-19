@@ -65,6 +65,16 @@
     An object which represents a html page, css file or javascript file (or
     any other file type that a transform decides to export)
 
+  @constructor
+    @description
+      Creates a new file. The preferred method for creating a file is to use
+      the @code[file.clone()] method of an existing file.
+
+    @param options [Object]
+      The options to use when creating the new file
+
+      @fileProperties
+
   @fileProperties
 
   @method clone

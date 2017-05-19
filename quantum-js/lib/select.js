@@ -200,6 +200,7 @@ Selection.prototype = {
         return s
       }
     }
+    return emptySelection()
   },
   filter: function (f) {
     if (Array.isArray(f)) {
@@ -265,11 +266,11 @@ Selection.prototype = {
       }
     }
   },
-  removeAllChildOfType: function (type, options) {
+  removeAllChildrenOfType: function (type, options) {
     if (Array.isArray(type)) {
       const self = this
       // OPTIM: remove the use of map
-      return type.map((t) => self.removeAllChildOfType(t, options))
+      return type.map((t) => self.removeAllChildrenOfType(t, options))
     } else {
       const result = []
       let i = 0
@@ -289,7 +290,7 @@ Selection.prototype = {
         while (i < content.length) {
           const child = content[i]
           if (isEntity(child)) {
-            select(child).removeAllChildOfType(type, options).forEach((removed) => {
+            select(child).removeAllChildrenOfType(type, options).forEach((removed) => {
               result.push(removed)
             })
           }

@@ -19,6 +19,7 @@ const defaultOptions = {
     javascript.prototypes,
     javascript.objects,
     javascript.functions,
+    javascript.events,
     css.classes,
     quantum.entities
   ],

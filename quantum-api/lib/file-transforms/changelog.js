@@ -180,9 +180,9 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
 
       const sanitizedParent = quantum.select(quantum.clone(parent.entity()))
       qversion.processVersioned(sanitizedParent.entity(), version, versions)
-      sanitizedParent.removeAllChildOfType(tags)
+      sanitizedParent.removeAllChildrenOfType(tags)
       if (language && language.changelog && language.changelog.entityTypes) {
-        sanitizedParent.removeAllChildOfType(language.changelog.entityTypes)
+        sanitizedParent.removeAllChildrenOfType(language.changelog.entityTypes)
       }
 
       let entity = undefined

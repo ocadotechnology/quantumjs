@@ -1,4 +1,4 @@
-@method removeAllChildOfType
+@method removeAllChildrenOfType
   @description
     Removes all the children of the type provided from the selected entity.
 
@@ -30,7 +30,7 @@
         }
 
         const parentSelection = quantum.select(entity)
-        parentSelection.removeAllChildOfType('child1') // removes all the child1 entities
+        parentSelection.removeAllChildrenOfType('child1') // removes all the child1 entities
 
         parentSelection.entity()
         /*
@@ -57,7 +57,7 @@
     @description
       An array of the removed entities wrapped in @type[Selection]s
 
-@method removeAllChildOfType
+@method removeAllChildrenOfType
   @description
     Removes all the children of the types provided from the selected entity.
 
@@ -91,7 +91,7 @@
         const parentSelection = quantum.select(entity)
 
         // removes the first child1 type entity and the first child2 type entity
-        parentSelection.removeAllChildOfType(['child1', 'child2'])
+        parentSelection.removeAllChildrenOfType(['child1', 'child2'])
 
         parentSelection.entity()
         /*

@@ -35,7 +35,7 @@
         // returns the item entity wrapped in a Selection
         priceSelection.selectUpwards('item')
 
-        // returns undefined - there is no parent entity of type 'trolley'
+        // returns an empty selection - there is no parent entity of type 'trolley'
         priceSelection.selectUpwards('trolley')
 
   @param type [String]
@@ -44,5 +44,14 @@
 
   @returns Selection
     @description
-      The parent entity that has type @code[type], or @code[undefined] if
-      the entity was not found.
+      Returns a new selection that wraps the parent entity of type @code[type]
+      that was found. If there was no entity of type @code[type] found, a
+      @type[Selection] will still be returned, but will contain an empty entity
+      that looks like this
+
+      @@codeblock js
+        {
+          type: '',
+          params: [],
+          content: []
+        }

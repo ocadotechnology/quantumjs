@@ -1060,7 +1060,7 @@ describe('select', () => {
     })
   })
 
-  describe('Selection::removeAllChildOfType', () => {
+  describe('Selection::removeAllChildrenOfType', () => {
     it('removes entities by type', () => {
       const child1 = {type: 'child1', params: [], content: []}
       const child2 = {type: 'child2', params: [], content: []}
@@ -1078,9 +1078,9 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.removeAllChildOfType('child1').should.eql([child1, child3])
+      selection.removeAllChildrenOfType('child1').should.eql([child1, child3])
       entity.content.should.eql([child2])
-      selection.removeAllChildOfType('child1').should.eql([])
+      selection.removeAllChildrenOfType('child1').should.eql([])
       entity.content.should.eql([child2])
     })
 
@@ -1104,13 +1104,13 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.removeAllChildOfType('child4', {recursive: true}).should.eql([child4, child5])
+      selection.removeAllChildrenOfType('child4', {recursive: true}).should.eql([child4, child5])
       entity.content.should.eql([
         child1,
         'text',
         {type: 'child2', params: [], content: ['text', child3]}
       ])
-      selection.removeAllChildOfType('child4', {recursive: true}).should.eql([])
+      selection.removeAllChildrenOfType('child4', {recursive: true}).should.eql([])
     })
 
     it('removes multiple entities by type', () => {
@@ -1136,11 +1136,11 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.removeAllChildOfType(['child1', 'child2']).should.eql([[child1, child4], [child2, child5]])
+      selection.removeAllChildrenOfType(['child1', 'child2']).should.eql([[child1, child4], [child2, child5]])
       entity.content.should.eql([child3, child6])
-      selection.removeAllChildOfType(['child1', 'child2']).should.eql([[], []])
+      selection.removeAllChildrenOfType(['child1', 'child2']).should.eql([[], []])
       entity.content.should.eql([child3, child6])
-      selection.removeAllChildOfType(['child3']).should.eql([[child3, child6]])
+      selection.removeAllChildrenOfType(['child3']).should.eql([[child3, child6]])
       entity.content.should.eql([])
     })
 
@@ -1164,12 +1164,12 @@ describe('select', () => {
 
       const selection = select(entity)
 
-      selection.removeAllChildOfType(['child1', 'child4'], {recursive: true}).should.eql([[child1], [child5, child4]])
+      selection.removeAllChildrenOfType(['child1', 'child4'], {recursive: true}).should.eql([[child1], [child5, child4]])
       entity.content.should.eql([
         'text',
         {type: 'child2', params: [], content: ['text', child3]}
       ])
-      selection.removeAllChildOfType(['child1', 'child4'], {recursive: true}).should.eql([[], []])
+      selection.removeAllChildrenOfType(['child1', 'child4'], {recursive: true}).should.eql([[], []])
     })
   })
 
