@@ -27,6 +27,7 @@ function exampleFile (selection, transformer, fileName) {
 
   const code = dom.create('div').class('docs-example-code-body')
     .add([
+      addCodeSection('nohighlight', 'Console'),
       addCodeSection('html', 'HTML'),
       addCodeSection('js', 'Javascript'),
       addCodeSection('css', 'CSS'),
@@ -137,12 +138,25 @@ function landingSection (selection, transformer) {
     .add(html.paragraphTransform(selection, transformer))
 }
 
+function cheatsheetExample (selection, transformer) {
+  return dom.create('div').class('docs-cheatsheet-example')
+    .add(dom.create('div').class('docs-cheatsheet-example-code')
+      .add(transformer(quantum.select({
+        type: 'codeblock',
+        params: ['um'],
+        content: selection.content()
+      }))))
+    .add(dom.create('div').class('docs-cheatsheet-example-output')
+      .add(quantum.select(quantum.parse(selection.cs())).transform(transformer)))
+}
+
 function transforms () {
   return Object.freeze({
     um,
     example,
     customTransform,
-    landingSection
+    landingSection,
+    cheatsheetExample
   })
 }
 

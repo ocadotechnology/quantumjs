@@ -7,8 +7,8 @@
       @@codeblock js
         const dom = require('quantum-dom')
 
-        const child1 = dom.create('div').class('child-1')
-        const child2 = dom.create('div').class('child-1')
+        const child1 = dom.create('div')
+        const child2 = dom.create('div')
 
         const div = dom.create('div')
           .add([child1, child2])

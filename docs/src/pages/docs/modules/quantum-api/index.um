@@ -12,26 +12,48 @@
 @contentSection
   @topic About
     This module provides transforms for writing the API documentation that you
-    can see in the @hyperlink(/docs/modules/quantum-api/#api)[API] section of this
+    can see in the @hyperlink({{baseurl}}/docs/modules/quantum-api/#api)[API] section of this
     and the other module pages.
 
-    It also provides the ability to generate @hyperlink(./#rendering-changelogs)[changelogs]
-    from the api as well as @hyperlink(./#versioning-apis)[versioned pages] when
-    combined with @hyperlink(/docs/modules/quantum-version/)[quantum-version]
+    It also provides the ability to generate @hyperlink(#rendering-changelogs)[changelogs]
+    from the api as well as @hyperlink(#versioning-apis)[versioned pages] when
+    combined with @hyperlink({{baseurl}}/docs/modules/quantum-version/)[quantum-version]
 
   @topic Example
     @example
-      @@um
-        @api example-api
-          @function makeCoffee
-            @description
-              A function for making coffee
-            @param sugar [Boolean]
+      @file quantum.config.js
+        @noOutput
+        @@js
+          const api = require('quantum-api')
+          const html = require('quantum-html')
+
+          const htmlOptions = {
+            transforms: {
+              api: api.transforms()
+            }
+          }
+
+          module.exports = {
+            pipeline: [
+              html(htmlOptions)
+            ],
+            pages: 'index.um'
+          }
+
+      @file index.um
+        @@um
+          @api example-api
+            @function makeCoffee
               @description
-                Whether to add Sugar
-            @param milk [Boolean]
-              @description
-                Whether to add milk
+                A function for making coffee
+              @param sugar [Boolean]
+                @description
+                  Whether to add Sugar
+              @param milk [Boolean]
+                @description
+                  Whether to add milk
+
+
 
   @topic Entities
     @inline entities.um
@@ -162,7 +184,7 @@
       You can use the same versioned api to produce multiple versioned pages that
       show a single version.
 
-      See @hyperlink(/docs/modules/quantum-version/)[quantum-version] for more
+      See @hyperlink({{baseurl}}/docs/modules/quantum-version/)[quantum-version] for more
       information.
 
       @example

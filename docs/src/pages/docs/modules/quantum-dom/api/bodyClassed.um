@@ -17,6 +17,12 @@
           extraBodyClass,
           div
         ])
+        /* Returns a promise with:
+        {
+          html: '<!DOCTYPE html>\n<html>\n<head></head>\n<body class="qm-body-font extra-body-class"><div></div></body></html>',
+          assets: []
+        }
+        */
 
   @param class [String]
     @description

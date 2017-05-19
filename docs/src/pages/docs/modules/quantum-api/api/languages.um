@@ -3,7 +3,7 @@
   @description
     The languages available in the @code[quantum-api] module.
 
-    It is also possible to define @hyperlink(./#custom-language)[Custom Languages].
+    It is also possible to define @hyperlink(#custom-language)[Custom Languages].
 
   @property javascript [Function]
     @description

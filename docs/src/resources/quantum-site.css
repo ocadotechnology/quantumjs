@@ -287,6 +287,10 @@ a:hover {
   margin-bottom: 0;
 }
 
+.qm-api-extra .docs-example {
+  margin: -0.5em -1em;
+}
+
 
 .qm-html-paragraph .docs-example-body {
   line-height: normal;
@@ -294,4 +298,21 @@ a:hover {
 
 .qm-docs-breadcrumb {
   background: #168dea;
+}
+
+
+.docs-cheatsheet-example {
+  display: flex;
+  /*border: solid 1px rgba(0, 0, 0, 0.05);*/
+  align-items: center;
+}
+
+.docs-cheatsheet-example-code,
+.docs-cheatsheet-example-output {
+  margin: 8px;
+  flex: 1 1 0px;
+}
+
+.docs-cheatsheet-example-code .qm-code-highlight-codeblock {
+  margin: 0;
 }

@@ -23,7 +23,7 @@
       @description
         When inline mode is on, the inlineEntityType (@code(um)[@inline] by
         default) will be replaced with the content of the specified files.
-      @default: true
+      @default: @code[true]
     @property loader [Function]
       @description
         A function for loading a file from disk, returning a @type[Promise] that
@@ -39,7 +39,7 @@
     @property resolveRoot [String]
       @description
         The path to resolve absolute files from.
-      @default: The current working directory
-  @returns [Promise[Object]]
+      @default: @code['.'] (The current working directory)
+  @returns [Promise[Entity]]
     @description
-      A promise that yields the parsed AST.
+      A promise that yields the parsed AST entity.

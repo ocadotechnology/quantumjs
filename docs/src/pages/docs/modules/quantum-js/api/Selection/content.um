@@ -45,7 +45,7 @@
         selection.content(['New Content', 'Second line'])
         selection.content() // ['New Content', 'Second line']
 
-  @param content [Array[String/Object]]
+  @param content [Array[String/Entity]]
     @description
       The content to give the selected entity
 

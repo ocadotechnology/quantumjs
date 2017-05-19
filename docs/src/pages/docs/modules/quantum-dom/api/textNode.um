@@ -11,7 +11,8 @@
 
         dom.create('div')
           .add(dom.textNode('hello'))
-          .add(dom.textNode('<div id="my-div"></div>', {escape: false}))
+          // Add html to the page without converting < to &lt; etc.
+          .add(dom.textNode('<div id="my-div"></div>', { escape: false }))
 
   @method stringify
     @description

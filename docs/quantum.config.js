@@ -11,6 +11,8 @@ const docs = require('quantum-docs')
 const custom = require('./src/transforms')
 const customLanguage = require('./src/transforms/custom-language')
 
+const baseUrl = process.env.GITHUB_PAGES ? '/quantumjs' : ''
+
 const typeLinks = {
   Array: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array',
   Boolean: 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean',
@@ -20,17 +22,19 @@ const typeLinks = {
   String: 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
   Promise: 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise',
   EventEmitter: 'https://nodejs.org/api/events.html',
-  File: '/docs/modules/quantum-js/#file',
-  FileInfo: '/docs/modules/quantum-js/#fileinfo',
-  Selection: '/docs/modules/quantum-js/#selection',
-  Watcher: '/docs/modules/quantum-js/#watcher',
-  Element: '/docs/modules/quantum-dom/#element',
-  TextNode: '/docs/modules/quantum-dom/#textnode',
-  Asset: '/docs/modules/quantum-dom/#asset',
-  HeadWrapper: '/docs/modules/quantum-dom/#headwrapper',
-  PageModifier: '/docs/modules/quantum-dom/#pagemodifier',
-  FileTransform: '/docs/core-concepts/#file-transforms',
-  EntityTransform: '/docs/core-concepts/#entity-transforms'
+  File: baseUrl + '/docs/modules/quantum-js/#file',
+  FileInfo: baseUrl + '/docs/modules/quantum-js/#fileinfo',
+  Selection: baseUrl + '/docs/modules/quantum-js/#selection',
+  Watcher: baseUrl + '/docs/modules/quantum-js/#watcher',
+  Element: baseUrl + '/docs/modules/quantum-dom/#element',
+  TextNode: baseUrl + '/docs/modules/quantum-dom/#textnode',
+  Asset: baseUrl + '/docs/modules/quantum-dom/#asset',
+  HeadWrapper: baseUrl + '/docs/modules/quantum-dom/#headwrapper',
+  PageModifier: baseUrl + '/docs/modules/quantum-dom/#pagemodifier',
+  FileTransform: baseUrl + '/docs/core-concepts/#file-transforms',
+  EntityTransform: baseUrl + '/docs/core-concepts/#entity-transforms',
+  Entity: baseUrl + '/docs/core-concepts/#the-ast-(abstract-syntax-tree)',
+  HTMLPage: baseUrl + '/docs/modules/quantum-html/#htmlpage'
 }
 
 const apiOptions = {
@@ -41,12 +45,24 @@ const apiOptions = {
     api.languages.javascript({
       typeLinks: typeLinks
     })
+  ],
+  apiBuilders: [
+    api.builders.body.description,
+    api.builders.body.extras,
+    api.builders.body.groups,
+    api.languages.javascript.properties,
+    api.languages.javascript.prototypes,
+    api.languages.javascript.objects,
+    api.languages.javascript.functions,
+    api.languages.javascript.events,
+    api.languages.css.classes,
+    api.languages.quantum.entities
   ]
 }
 
 const htmlOptions = {
   embedAssets: false,
-  assetPath: '/resources',
+  assetPath: baseUrl + '/resources',
   resourcesTarget: '/resources',
   transforms: {
     html: html.transforms(),
@@ -74,6 +90,7 @@ function customizedTemplate (file) {
         age: 25
       }
     },
+    baseurl: baseUrl,
     filename: file.info.src
   }
 

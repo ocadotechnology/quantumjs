@@ -37,7 +37,7 @@
     @description
       Define a collection of changelogs for multiple versions.
 
-      Behaves differently when using the @hyperlink(./#filetransform)[fileTransform].
+      Behaves differently when using the @hyperlink(#filetransform)[fileTransform].
 
     @extra
       @example
@@ -107,14 +107,14 @@
 @group [File Transform Entities]
   @description
     Entities that are available or behave differently when using the
-    @hyperlink(./#filetransform)[fileTransform].
+    @hyperlink(#filetransform)[fileTransform].
 
   @entity changelogList
     @added 2.0.0
     @description
       Processes and generates changelogs from content in @code[@api] sections.
 
-      See the @hyperlink(./#rendering-changelogs)[Rendering Changelogs] example.
+      See the @hyperlink(#rendering-changelogs)[Rendering Changelogs] example.
 
     @entity groupByApi
       @description
@@ -187,7 +187,7 @@
 
 @group [Shared Entities]
   @description
-    All the entities provided by @hyperlink(./#languages)[languages] support these entities.
+    All the entities provided by @hyperlink(#languages)[languages] support these entities.
 
   @entity description
     @added 2.0.0
@@ -279,7 +279,7 @@
 
 @group [Language: Javascript]
   @description
-    Transforms provided by the @code[javascript] @hyperlink(./#languages)[language]
+    Transforms provided by the @code[javascript] @hyperlink(#languages)[language]
     when passed in as an option.
 
   @entity function
@@ -303,7 +303,7 @@
               @function something
                 @param param1 [String]
                 @param? param2 [Boolean]
-                  @default: true
+                  @default: @code[true]
 
   @entity object
     @added 2.0.0
@@ -365,13 +365,13 @@
               @collapsed false
               @property prop1 [Boolean]
                 @collapsed false
-                @default: false
+                @default: @code[false]
 
             @function functionName
               @collapsed false
               @param? param1 [Boolean]
                 @collapsed false
-                @default: true
+                @default: @code[true]
 
 
   @entity returns
@@ -459,7 +459,7 @@
               @constructor
                 @description
                   Create an array of @code[undefined] elements
-                @param length
+                @param length [Number]
                   @description: The length of the array to create
 
               @method fill
@@ -485,7 +485,7 @@
               @constructor
                 @param param1 [String]
                 @param? param2 [Boolean]
-                  @default: true
+                  @default: @code[true]
 
   @entity method
     @added 2.0.0
@@ -503,12 +503,12 @@
               @method methodName
                 @param param1 [String]
                 @param? param2 [Boolean]
-                  @default: true
+                  @default: @code[true]
 
 
 @group [Language: CSS]
   @description
-    Transforms provided by the @code[css] @hyperlink(./#languages)[language] when
+    Transforms provided by the @code[css] @hyperlink(#languages)[language] when
     passed in as an option.
 
   @entity class
@@ -565,7 +565,7 @@
 
 @group [Language: Quantum]
   @description
-    Transforms provided by the @code[quantum] @hyperlink(./#languages)[language] when
+    Transforms provided by the @code[quantum] @hyperlink(#languages)[language] when
     passed in as an option.
 
   @entity entity

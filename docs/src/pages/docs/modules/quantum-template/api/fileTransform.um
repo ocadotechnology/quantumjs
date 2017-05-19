@@ -1,7 +1,7 @@
 @function fileTransform
   @added 2.0.0
   @description
-    The function for getting a @code[FileTransform] for parsing template
+    The function for getting a @type[FileTransform] for parsing template
     variables and processing the entities (e.g. @code[@for], @code[@if])
     provided by this module.
 
