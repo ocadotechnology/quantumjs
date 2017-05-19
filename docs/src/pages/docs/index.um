@@ -8,12 +8,16 @@
 
 @contentSection
   @topic What is QuantumJS?
-    QuantumJS is a tool for building websites.
+    QuantumJS is a @italic[static site generator] - a tool for converting
+    @bold[human readable markup] into @bold[HTML].
 
-    More specifically, QuantumJS is a @italic[static site generator]. This is
-    just a fancy name for a tool that can convert @bold[human readable markup]
-    into @bold[html].
+    Websites built with QuantumJS can be deployed to anywhere that can host static
+    files (Firebase Hosting, Amazon S3, Google Cloud Storage, etc).
 
+    QuantumJS comes with a @hyperlink(/docs/cli-and-api/)[CLI] (command line
+    interface) and @hyperlink(/docs/cli-and-api/)[API] for building sites.
+
+  @topic Features
     QuantumJS comes preloaded with some modules for writing beautiful
     @hyperlink(/docs/modules/quantum-api/)[API docs], drawing simple
     @hyperlink(/docs/modules/quantum-diagram/)[diagrams], and comes with various
@@ -24,21 +28,18 @@
     is supported through a simple @hyperlink(/docs/markup/)[Markup Language].
 
     QuantumJS has its own markup language, but it also has support for
-    @hyperlink(/docs/modules/quantum-markdown/)[Markdown], great for when only basic
+    @hyperlink(/docs/modules/quantum-markdown/)[Markdown], for when only basic
     formatting options are needed, or for working with existing Markdown-based
     sites.
 
-    Quantum comes with a @hyperlink(/docs/cli-and-api/)[CLI] (command line
-    interface) for building sites.
-
-  @topic Features
-    @list
-      @item: Explicit, easy to learn markup language for building web pages
-      @item: Built with customisability / extensibility in mind
-      @item: Uses node.js - full access to npm when writing custom transforms
-      @item: Prebuilt transforms for writing technical documentation
-      @item: Auto browser page refresh when files are changed
-      @item: Fast - builds this site in ~1 second
+    @subsection Other Features
+      @list
+        @item: Explicit, easy to learn markup language for building web pages
+        @item: Built with customisability / extensibility in mind
+        @item: Uses node.js - full access to npm when writing custom transforms
+        @item: Prebuilt transforms for writing technical documentation
+        @item: Auto browser page refresh when files are changed
+        @item: Fast - builds this site in ~2 seconds
 
   @topic Example
 
