@@ -71,7 +71,7 @@
     @code[quantum-html] module
 
     Quantum has the same syntax when doing HTML preprocessing, as when using more
-    high level entites. With markdown, when html can be used directly when markdown
+    high level entites. With markdown, html can be used directly when markdown
     doesn't have syntax for the tag you need.
 
     An example of quantum being used to do HTML preprocessing:
@@ -125,9 +125,10 @@
 
     @br
 
-    @bold[Markdown] doesn't support templating out of the box.
+    @bold[Markdown] doesn't support templating out of the box, but is added by many
+    markdown-based static site generators.
 
-    @bold[Quantum] can do templating when the @code(js)[quantum-template] module is
+    @bold[Quantum] can do templating when the @code[quantum-template] module is
     included in the pipeline.
 
   @topic Equivalent markup
@@ -234,10 +235,10 @@
 
           @subsection Quantum
             @@codeblock um
-              Some @code(js)[inline()] code
+              Some @code[inline()] code
 
         @cell
-          Some @code(js)[inline()] code
+          Some @code[inline()] code
 
       @row
         @cell: Links
