@@ -149,7 +149,7 @@ function buildSpecs (startTime, specs, config, options, pipeline, logger) {
         }))
       .catch((err) => {
         if (err instanceof ParseError) {
-          logger({type: 'page-load-error', fileInfo: fileInfo.src, error: err})
+          logger({type: 'page-load-error', file: fileInfo.src, error: err})
         } else {
           throw err
         }
@@ -250,7 +250,7 @@ function watch (config) {
           logger({type: 'header', message: 'Building Watched Files'})
           function watchHandler (err, file) {
             if (err) {
-              logger({type: 'page-load-error', fileInfo: file.info.src, error: err})
+              logger({type: 'page-load-error', file: file.info.src, error: err})
             } else {
               return buildPage(file, pipeline, config, logger, true)
                 .then((files) => {

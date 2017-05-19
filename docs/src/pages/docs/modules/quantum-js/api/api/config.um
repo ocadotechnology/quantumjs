@@ -1,3 +1,78 @@
+@property logger [Function]
+  @added 2.0.0
+  @param event [Object]
+    @group [Properties for all events]
+      @property type [String]
+        @description
+          The event type.
+
+          The events used in Quantum are:
+          @list
+            @item: @code['header']
+            @item: @code['message']
+            @item: @code['build-page']
+            @item: @code['page-load-error']
+            @item: @code['copy-resource']
+            @item: @code['error']
+            @item: @code['end']
+            @item: @code['error']
+
+    @group [Properties for event type 'header']
+      @property message [String]
+
+    @group [Properties for event type 'message']
+      @property message [String]
+
+    @group [Properties for event type 'build-page']
+      @property sourceFile [File]
+      @property timeTaken [Number]
+      @property destFiles [Array[File]]
+
+    @group [Properties for event type 'page-load-error']
+      @property file [String]
+      @property error [Error]
+
+    @group [Properties for event type 'copy-resource']
+      @property fileInfo [FileInfo]
+      @property timeTaken [Number]
+
+    @group [Properties for event type 'error']
+      @property error [Error]
+
+    @group [Properties for event type 'end']
+      @property builtCount [Number]
+      @property timeTaken [Number]
+
+@property logLevel [String]
+  @added 2.0.0
+  @description
+    The level of logging to use when running the command.
+
+    The available options are:
+    @list
+      @item: @code['none']
+      @item: @code['error']
+      @item: @code['all']
+  @default: @code['all']
+
+@property concurrency [Number]
+  @added 2.0.0
+  @description
+    How many pages that can be processed in parallel.
+  @default: 1
+
+@property dest [String]
+  @added 2.0.0
+  @description
+    The target directory to output the built site files to.
+  @default: 'target'
+
+@property resolveRoot [String]
+  @added 2.0.0
+  @description
+    The path to resolve absolute files from.
+  @default: @code['.'] (The current working directory)
+
 @property pipeline [Array[FileTransform]]
   @added 2.0.0
   @description
@@ -19,8 +94,35 @@
     This property should describe the files that should be processed by
     quantum as pages.
 
-@property resolveRoot [String]
+@property fileReader [Function]
   @added 2.0.0
   @description
-    The path to resolve absolute files from.
-  @default: @code['.'] (The current working directory)
+    The function used to load a file from disk and then convert it to a
+    @type[File] object for use in a pipeline.
+  @param fileInfo [FileInfo]
+    @description
+      The @type[FileInfo] of the @type[File] to read.
+  @param options [Object]
+    @description
+      The options to use when reading a file.
+    @property loader [Function]
+      @description
+        The loader to use to read a file from disk.
+    @property resolveRoot [String]
+      @description
+        The path to resolve absolute files from.
+      @default: @code['.'] (The current working directory)
+
+@property loader [Function]
+  @added 2.0.0
+  @description
+    The function to use for loading file content from disk.
+
+  @default
+    @@codeblock js
+      function (filename) {
+        return fs.readFileAsync(filename, 'utf-8')
+      }
+
+  @param fileName [String]
+  @param parentFilename [String]

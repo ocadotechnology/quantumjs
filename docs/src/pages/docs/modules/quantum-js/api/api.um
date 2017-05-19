@@ -21,3 +21,10 @@
       Build a quantum site and watch for changes using the config passed in.
     @param config [Object]
       @inline ./api/config.um
+
+      @property port [Number]
+        @description
+          The port to start the site on so it can be accessed in the browser
+          (e.g. @code[http://localhost:port])
+        @default: 8080
+
