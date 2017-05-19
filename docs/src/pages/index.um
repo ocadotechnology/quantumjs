@@ -40,11 +40,32 @@
         @attr(src)[/resources/um.svg]
 
       @i(.material-icons.um-to-html__arrow)[forward]
-      
+
       @img .um-to-html__image
         @attr(src)[/resources/html.svg]
 
-  @landingSection Lightening Fast
+  @landingSection Entity driven
+    Keep content separate from page structure and styling.
+
+  @landingSection Great for technical documentation
+    With QuantumJS you can easily create @bold[versioned content], @bold[api docs], and automatically generate @bold[changelogs].
+
+    @div .versioned
+      @div .versioned-source
+        @img .versioned-image
+          @attr(src)[/resources/um.svg]
+
+      @i(.material-icons.versioned-arrow)[forward]
+
+      @div .versioned-pages
+        @img .versioned-image
+          @attr(src)[/resources/versioned-1.svg]
+        @img .versioned-image
+          @attr(src)[/resources/versioned-2.svg]
+        @img .versioned-image
+          @attr(src)[/resources/versioned-3.svg]
+
+  @landingSection Lightning Fast
     @bold[Sub 10ms] page compile times.
 
   @landingSection No fixed folder structures
@@ -53,26 +74,7 @@
   @landingSection Extensible
     Define @bold[custom pipelines] for building your site.
 
-    //XXX: style these up
-
-    @codeblock js
-      {
-        pipeline: [
-          docs.pageTransform(),
-          myCustomTransform(),
-          html.pageTransform()
-        ]
-      }
-
     Define new @bold[entities] with a single function.
-
-    @codeblock js
-      function blogPost () {
-        return dom.create('div').class('blog-post')
-      }
-
-  @landingSection Great for technical documentation
-    With QuantumJS you can easily create @bold[versioned content], @bold[api docs], and automatically generate @bold[changelogs].
 
   @landingSection Get Started
     @last

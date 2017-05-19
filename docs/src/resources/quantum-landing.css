@@ -37,6 +37,29 @@ h1,h2,h3,h4,h5,h6 {
   opacity: 0.53;
 }
 
+.versioned {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.versioned-image {
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+  margin: 8px;
+  height: 250px;
+}
+
+.versioned-arrow {
+  font-size: 64px;
+  opacity: 0.53;
+}
+
+.versioned-pages {
+  display: flex;
+  flex-direction: column;
+}
+
 .top-landing-section__logo {
   height: 30vh;
 }
