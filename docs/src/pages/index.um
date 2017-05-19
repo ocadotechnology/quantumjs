@@ -1,6 +1,7 @@
 @title QuantumJS
 @inline /templates/favicons.um
 
+@stylesheet [https://fonts.googleapis.com/icon?family=Material+Icons]
 @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:100,400,700|Roboto+Slab:300,400,700|Source+Code+Pro:200,400,700]
 @stylesheet [{{baseurl}}/resources/quantum-site.css]
 @stylesheet [{{baseurl}}/resources/quantum-landing.css]
@@ -15,45 +16,65 @@
       @div .top-landing-section__tagline
         A node.js @bold[static site generator] with a focus on extensibility and speed
 
-      @div .buttons
-        @a .button: @span[Documentation]
-          @attr href: {{baseurl}}/docs/
-          @image [{{baseurl}}/resources/book.svg]
-            @height 30px
+  @div .buttons
+    @a .button: @span[Documentation]
+      @attr href: {{baseurl}}/docs/
+      @image [{{baseurl}}/resources/book.svg]
+        @height 30px
 
-        @a .button: @span[Quick Start]
-          @attr href: {{baseurl}}/docs/quick-start
-          @image [{{baseurl}}/resources/rocket.svg]
-            @height 30px
+    @a .button: @span[Quick Start]
+      @attr href: {{baseurl}}/docs/quick-start
+      @image [{{baseurl}}/resources/rocket.svg]
+        @height 30px
 
-        @a .button: @span[GitHub]
-          @attr href: https://github.com/ocadotechnology/quantumjs/
-          @image [{{baseurl}}/resources/github-mark.svg]
-            @height 30px
+    @a .button: @span[GitHub]
+      @attr href: https://github.com/ocadotechnology/quantumjs/
+      @image [{{baseurl}}/resources/github-mark.svg]
+        @height 30px
 
-    @div .scroll-next-placeholder
-    @div .scroll-next
+  @landingSection Markup goes in, HTML comes out.
+    Comes with an @bold[easy-to-pickup] markup language.
 
-  @landingSection Simple
-    Comes with an @bold[easy-to-pickup markup language].
+    @div .um-to-html
+      @img .um-to-html__image
+        @attr(src)[/resources/um.svg]
 
-    Markup goes in, html comes out.
+      @i(.material-icons.um-to-html__arrow)[forward]
 
-  @landingSection Fast
+      @img .um-to-html__image
+        @attr(src)[/resources/html.svg]
+
+  @landingSection Entity driven
+    Keep content separate from page structure and styling.
+
+  @landingSection Great for technical documentation
+    With QuantumJS you can easily create @bold[versioned content], @bold[api docs], and automatically generate @bold[changelogs].
+
+    @div .versioned
+      @div .versioned-source
+        @img .versioned-image
+          @attr(src)[/resources/um.svg]
+
+      @i(.material-icons.versioned-arrow)[forward]
+
+      @div .versioned-pages
+        @img .versioned-image
+          @attr(src)[/resources/versioned-1.svg]
+        @img .versioned-image
+          @attr(src)[/resources/versioned-2.svg]
+        @img .versioned-image
+          @attr(src)[/resources/versioned-3.svg]
+
+  @landingSection Lightning Fast
     @bold[Sub 10ms] page compile times.
 
-  @landingSection No complicated folder structures
+  @landingSection No fixed folder structures
     @bold[You] choose how to structure your project.
 
   @landingSection Extensible
     Define @bold[custom pipelines] for building your site.
 
-    Plug @bold[custom transforms] into your pipeline to extend the capabilities for your own needs.
-
-  @landingSection Great for technical documentation
-    Writing technical documentation?
-
-    QuantumJS particularly excels in this area with features such as @bold[versioned content], @bold[api docs], and automatic @bold[changelog generation].
+    Define new @bold[entities] with a single function.
 
   @landingSection Get Started
     @last
@@ -72,6 +93,4 @@
           @height 30px
 
   @div .footer
-    @html[&copy;] Ocado Technology 2017
-
-@script [{{baseurl}}/resources/quantum-landing.js]
+    © Ocado Technology 2017

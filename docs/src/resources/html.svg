@@ -1,0 +1,520 @@
+<svg width="500" height="418" viewBox="0 0 500 418" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Group</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(-742 18)">
+<g id="Group">
+<g id="Group">
+<g id="Rectangle">
+<use xlink:href="#path0_fill" transform="translate(742 0)" fill="#283F51"/>
+</g>
+<g id="Rectangle 4">
+<use xlink:href="#path1_fill" transform="translate(742 -18)" fill="#F3F3F3"/>
+</g>
+</g>
+<g id="Group">
+<g id="Ellipse">
+<use xlink:href="#path2_fill" transform="translate(746 -14)" fill="#F14343"/>
+</g>
+<g id="Ellipse">
+<use xlink:href="#path2_fill" transform="translate(761 -14)" fill="#F1B943"/>
+<use xlink:href="#path2_fill" transform="translate(761 -14)" fill="#F1B943"/>
+</g>
+<g id="Ellipse">
+<use xlink:href="#path2_fill" transform="translate(776 -14)" fill="#F1B943"/>
+<use xlink:href="#path2_fill" transform="translate(776 -14)" fill="#61EA8D"/>
+</g>
+</g>
+<g id="Group">
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path3_fill" transform="translate(774 29)" fill="#B34D7A"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 759 42)" fill="#CC407E"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 849 42)" fill="#CC407E"/>
+</g>
+</g>
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path3_fill" transform="translate(774 365)" fill="#B34D7A"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 759 378)" fill="#CC407E"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 849 378)" fill="#CC407E"/>
+</g>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 97)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 110)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 110)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 147)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 160)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 160)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 114)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 127)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 127)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 130)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 143)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 143)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 164)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 177)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 177)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 214)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 227)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 227)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 181)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 194)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 194)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 197)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 210)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 210)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 231)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 244)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 244)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 281)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 294)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 294)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 248)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 261)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 261)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 264)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 277)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 277)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 97)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 110)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 110)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 147)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 160)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 160)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 114)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 127)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 127)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 130)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 143)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 143)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 298)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 311)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 311)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path5_fill" transform="translate(787 348)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 361)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 841 361)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 315)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 328)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 328)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path6_fill" transform="translate(801 331)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 786 344)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 906 344)" fill="#F3BE36"/>
+</g>
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path3_fill" transform="translate(787 46)" fill="#864DB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 59)" fill="#9F40CC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 862 59)" fill="#9F40CC"/>
+</g>
+</g>
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path3_fill" transform="translate(787 63)" fill="#864DB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 76)" fill="#9F40CC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 862 76)" fill="#9F40CC"/>
+</g>
+</g>
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path3_fill" transform="translate(787 80)" fill="#864DB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(1.04083e-17 -1 1 1.04083e-17 772 93)" fill="#9F40CC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path4_fill" transform="matrix(-1.04083e-17 -1 -1 1.04083e-17 862 93)" fill="#9F40CC"/>
+</g>
+</g>
+</g>
+<g id="Group">
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path7_fill" transform="translate(1150.06 22.4543)" fill="#B34D7A"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1142 28.36)" fill="#CC407E"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1190.37 28.36)" fill="#CC407E"/>
+</g>
+</g>
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path7_fill" transform="translate(1150.06 175.094)" fill="#B34D7A"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1142 181)" fill="#CC407E"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1190.37 181)" fill="#CC407E"/>
+</g>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 53.3457)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 59.2514)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 59.2514)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 76.06)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 81.9657)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 81.9657)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 61.0686)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 66.9743)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 66.9743)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 68.3371)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 74.2429)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 74.2429)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 83.7829)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 89.6886)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 89.6886)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 106.497)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 112.403)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 112.403)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 91.5057)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 97.4114)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 97.4114)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 98.7743)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 104.68)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 104.68)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 114.22)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 120.126)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 120.126)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 136.934)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 142.84)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 142.84)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 121.943)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 127.849)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 127.849)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 129.211)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 135.117)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 135.117)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 53.3457)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 59.2514)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 59.2514)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 76.06)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 81.9657)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 81.9657)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 61.0686)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 66.9743)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 66.9743)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 68.3371)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 74.2429)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 74.2429)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 144.657)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 150.563)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 150.563)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path9_fill" transform="translate(1157.05 167.371)" fill="#4DABB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 173.277)" fill="#40CCCC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1186.07 173.277)" fill="#40CCCC"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 152.38)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 158.286)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 158.286)" fill="#F3BE36"/>
+</g>
+<g id="Rectangle 2">
+<use xlink:href="#path10_fill" transform="translate(1164.57 159.649)" fill="#FFBA53"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1156.51 165.554)" fill="#F3BE36"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1221 165.554)" fill="#F3BE36"/>
+</g>
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path7_fill" transform="translate(1157.05 30.1771)" fill="#864DB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 36.0829)" fill="#9F40CC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1197.35 36.0829)" fill="#9F40CC"/>
+</g>
+</g>
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path7_fill" transform="translate(1157.05 37.9)" fill="#864DB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 43.8057)" fill="#9F40CC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1197.35 43.8057)" fill="#9F40CC"/>
+</g>
+</g>
+<g id="Group">
+<g id="Rectangle 2">
+<use xlink:href="#path7_fill" transform="translate(1157.05 45.6229)" fill="#864DB3"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(1.2313e-17 -1 1 8.79834e-18 1148.99 51.5286)" fill="#9F40CC"/>
+</g>
+<g id="Polygon">
+<use xlink:href="#path8_fill" transform="matrix(-1.2313e-17 -1 -1 8.79834e-18 1197.35 51.5286)" fill="#9F40CC"/>
+</g>
+</g>
+</g>
+<g id="Rectangle 5">
+<use xlink:href="#path11_fill" transform="translate(1133 11)" fill="#405D73" fill-opacity="0.53"/>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 0 0L 500 0L 500 400L 0 400L 0 0Z"/>
+<path id="path1_fill" d="M 0 0L 500 0L 500 18L 0 18L 0 0Z"/>
+<path id="path2_fill" d="M 10 5C 10 7.76142 7.76143 10 5 10C 2.23858 10 0 7.76142 0 5C 0 2.23858 2.23858 0 5 0C 7.76143 0 10 2.23858 10 5Z"/>
+<path id="path3_fill" d="M 0 0L 60 0L 60 12L 0 12L 0 0Z"/>
+<path id="path4_fill" d="M 7 0L 13.0622 10.5L 0.937822 10.5L 7 0Z"/>
+<path id="path5_fill" d="M 0 0L 40 0L 40 12L 0 12L 0 0Z"/>
+<path id="path6_fill" d="M 0 0L 90 0L 90 12L 0 12L 0 0Z"/>
+<path id="path7_fill" d="M 0 0L 32.2449 0L 32.2449 5.45143L 0 5.45143L 0 0Z"/>
+<path id="path8_fill" d="M 3.18 0L 5.93396 5.64286L 0.426039 5.64286L 3.18 0Z"/>
+<path id="path9_fill" d="M 0 0L 21.4966 0L 21.4966 5.45143L 0 5.45143L 0 0Z"/>
+<path id="path10_fill" d="M 0 0L 48.3673 0L 48.3673 5.45143L 0 5.45143L 0 0Z"/>
+<path id="path11_fill" d="M 0 0L 98 0L 98 376L 0 376L 0 0Z"/>
+</defs>
+</svg>
