@@ -37,12 +37,12 @@
 
     @div .um-to-html
       @img .um-to-html__image
-        @attr(src)[/resources/um.svg]
+        @attr(src)[{{baseurl}}/resources/um.svg]
 
       @i(.material-icons.um-to-html__arrow)[forward]
 
       @img .um-to-html__image
-        @attr(src)[/resources/html.svg]
+        @attr(src)[{{baseurl}}/resources/html.svg]
 
   @landingSection Entity driven
     Keep content separate from page structure and styling.
@@ -53,17 +53,17 @@
     @div .versioned
       @div .versioned-source
         @img .versioned-image
-          @attr(src)[/resources/um.svg]
+          @attr(src)[{{baseurl}}/resources/um.svg]
 
       @i(.material-icons.versioned-arrow)[forward]
 
       @div .versioned-pages
         @img .versioned-image
-          @attr(src)[/resources/versioned-1.svg]
+          @attr(src)[{{baseurl}}/resources/versioned-1.svg]
         @img .versioned-image
-          @attr(src)[/resources/versioned-2.svg]
+          @attr(src)[{{baseurl}}/resources/versioned-2.svg]
         @img .versioned-image
-          @attr(src)[/resources/versioned-3.svg]
+          @attr(src)[{{baseurl}}/resources/versioned-3.svg]
 
   @landingSection Lightning Fast
     @bold[Sub 10ms] page compile times.

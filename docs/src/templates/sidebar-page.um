@@ -6,7 +6,7 @@
     @stylesheet [{{baseurl}}/resources/quantum-site.css]
 
     @header
-      @icon [{{baseurl}}/resources/logo.svg] [/]
+      @icon [{{baseurl}}/resources/logo.svg] [{{baseurl}}/]
       @title QuantumJS
 
     @sidebarPage
