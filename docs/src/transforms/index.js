@@ -146,7 +146,7 @@ function cheatsheetExample (selection, transformer) {
         params: ['um'],
         content: selection.content()
       }))))
-    .add(dom.create('div').class('docs-cheatsheet-example-output')
+    .add(dom.create('div').class('docs-cheatsheet-example-output ' + selection.ps())
       .add(quantum.select(quantum.parse(selection.cs())).transform(transformer)))
 }
 

@@ -10,7 +10,23 @@
   @fullWidth
     @topic quantum-docs
       @section Regular Page
-        @@cheatsheetExample
+        @css
+          .flex-override {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+          }
+
+          .flex-override .qm-docs-content-section {
+            margin: 0;
+          }
+        @@cheatsheetExample flex-override
           @header
             @icon [/resources/logo.svg] [/]
             @title Site Title
