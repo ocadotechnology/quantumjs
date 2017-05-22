@@ -209,12 +209,12 @@ Element.prototype.stringify = function () {
 }
 
 function TextNode (text, options) {
-  this.text = options && options.escape === false ? text : escapeHTML(text)
+  this.text = text
   this.options = options
 }
 
 TextNode.prototype.stringify = function () {
-  return this.text
+  return this.options && this.options.escape === false ? this.text : escapeHTML(this.text)
 }
 
 function Asset (options) {
