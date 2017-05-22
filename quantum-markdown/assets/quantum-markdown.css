@@ -49,11 +49,6 @@
   margin-bottom: 0;
 }
 
-.qm-markdown h1,
-.qm-markdown h2 {
-  border-bottom: 1px solid #eee;
-}
-
 .qm-markdown ul,
 .qm-markdown ol {
   padding-left: 2em;
