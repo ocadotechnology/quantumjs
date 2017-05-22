@@ -228,19 +228,40 @@ function makeHeaderIcon (icon) {
 }
 
 function header (selection, transformer) {
+  const mobileNavId = dom.randomId()
+
+  const mobileNavScriptAsset = dom.asset({
+    type: 'js',
+    content: 'window.quantum.docs.createHeaderToggle("' + mobileNavId + '");'
+  })
+
+  const mobileNavStyleAsset = dom.asset({
+    url: '/quantum-docs-menu-icon.css',
+    filename: path.join(__dirname, '../assets/quantum-docs-menu-icon.css'),
+    shared: true
+  })
+
   return dom.create('div').class('qm-docs-header')
-    .add(stylesheetAsset)
     .add(dom.create('div').class('qm-docs-centered')
       .add(dom.create('div').class('qm-docs-header-wrapper')
         .add(selection.has('icon') ? makeHeaderIcon(selection.select('icon')) : undefined)
         .add(dom.create('div').class('qm-docs-header-title qm-header-font').text(selection.select('title').ps()))
-        .add(selection.selectAll('link').map((e) => {
-          return dom.create('a')
-            .class('qm-docs-header-link')
-            .attr('href', e.ps())
-            .text(e.cs())
-        }))
+        .add(dom.create('div').class('qm-docs-header-mobile-menu')
+          .id('nav.toggle.' + mobileNavId)
+          .add(dom.create('i').class('qm-docs-menu-icon-toggle')))
+        .add(dom.create('div').class('qm-docs-header-links')
+          .id('nav.links.' + mobileNavId)
+          .add(selection.selectAll('link').map((e) => {
+            return dom.create('a')
+              .class('qm-docs-header-link')
+              .attr('href', e.ps())
+              .text(e.cs())
+          })))
     ))
+    .add(stylesheetAsset)
+    .add(scriptAsset)
+    .add(mobileNavStyleAsset)
+    .add(mobileNavScriptAsset)
 }
 
 function breadcrumb (selection, transformer) {
