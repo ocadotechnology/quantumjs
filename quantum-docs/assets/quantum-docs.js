@@ -58,7 +58,6 @@ function createHeaderToggle (id) {
   var header = toggle.parentNode.parentNode.parentNode
 
   function updateSidebar () {
-    console.log('here')
     var headerHeight = header.getBoundingClientRect().height
     sidebar.style.top = headerHeight + 'px'
   }
