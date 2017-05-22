@@ -4,6 +4,25 @@
     The type returned by @code[head()]. Instances of this should be created only
     using the @code[head()] function.
 
+  @property options [Object]
+    @HeadWrapperOptions
+
+  @property element [Element]
+    @description
+      The element to place in the head of the document.
+
+
+@define HeadWrapperOptions
+  @property id [String]
+    @description
+      A unique id that can be used for an element. Sometimes you may only want
+      one copy of an element in the head - if you specify an id then any
+      duplicate elements with the same id will be de-duplicated when rendering
+      out to a html string.
+
+      Note that this id is different to the id attribute on an element. For
+      setting the element id, see the @type[Element] prototype.
+
 @function head
   @added 2.0.0
 
@@ -26,15 +45,7 @@
       The element to place in the head of the document.
 
   @param? options [Object]
-    @property id [String]
-      @description
-        A unique id that can be used for an element. Sometimes you may only want
-        one copy of an element in the head - if you specify an id then any
-        duplicate elements with the same id will be de-duplicated when rendering
-        out to a html string.
-
-        Note that this id is different to the id attribute on an element. For
-        setting the element id, see the @type[Element] prototype.
+    @HeadWrapperOptions
 
   @returns HeadWrapper
     @description

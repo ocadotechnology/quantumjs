@@ -3,3 +3,29 @@
   @description
     An object that modifies the page in some way when stringifying. This is returned
     by the @code[bodyClassed] function.
+
+  @property options [Object]
+    @description
+      The options used to create the @type[PageModifier]
+
+    @group [Common Properties]
+      @description
+        Properties that should exist for all @type[PageModifier] objects.
+      @property type [String]
+        @description
+          The type of @type[PageModifier] being created.
+
+          The @code[bodyClassed] function uses type @code['body-classed'].
+
+    @group [bodyClassed properties]
+      @description
+        Properties that exist within the options when created by the
+        @code[bodyClassed] function.
+
+      @property class [String]
+        @description
+          The class to add or remove
+
+      @property classed [Boolean]
+        @description
+          @code[true] when adding the class, @code[false] when removing

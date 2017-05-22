@@ -1,18 +1,36 @@
 @define assetExample
-  @@codeblock js
-    const dom = require('quantum-dom')
+  @extra
+    @subsection Example
+      @@codeblock js
+        const dom = require('quantum-dom')
 
-    // An asset that is loaded from a file
-    dom.asset({
-      url: "/resources/lib.js",
-      filename: 'lib.js'
-    })
+        // An asset that is loaded from a file
+        dom.asset({
+          url: "/resources/lib.js",
+          filename: 'lib.js'
+        })
 
-    // An anonymous asset that takes a string as the content
-    dom.asset({
-      type: "js",
-      content: 'alert("example")'
-    })
+        // An anonymous asset that takes a string as the content
+        dom.asset({
+          type: "js",
+          content: 'alert("example")'
+        })
+
+@define assetProps
+  @property url [String]
+    @description
+      The url to load the asset from (when the asset is not embedded in the page)
+  @property type [String]
+    @description
+      The type of asset. Can be @code['js'] or @code['css']. This is required
+      when the url is not provided, otherwise it is ignored.
+  @property filename [String]
+    @description
+      The file to load the asset content from
+  @property content [String]
+    @description
+      The content of this asset (this can be used as an alternative to the
+      filename option)
 
 @prototype Asset
   @added 2.0.0
@@ -22,34 +40,19 @@
     other). This protoype should not be used directly, instead use
     @code[dom.asset()]
 
-  @extra
-    @subsection Example
-      @assetExample
+  @assetExample
+  @assetProps
 
 @function asset
   @added 2.0.0
   @description
     Creates a new @type[Asset]
 
-  @extra
-    @subsection Example
-      @assetExample
+  @assetExample
 
   @param options [Object]
-    @property url [String]
-      @description
-        The url to load the asset from (when the asset is not embedded in the page)
-    @property type [String]
-      @description
-        The type of asset. Can be @code['js'] or @code['css']. This is required
-        when the url is not provided, otherwise it is ignored.
-    @property filename [String]
-      @description
-        The file to load the asset content from
-    @property content [String]
-      @description
-        The content of this asset (this can be used as an alternative to the
-        filename option)
+    @assetProps
+
   @returns Asset
     @description
       Returns a new @type[Asset] instance

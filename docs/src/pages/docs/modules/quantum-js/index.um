@@ -53,63 +53,66 @@
       Quantum markup can be parsed as a string using the @code[quantum.parse()]
       function:
 
-      @subsection example.js
-        @@codeblock js
-          const quantum = require('quantum-js')
+      @example
+        @file example.js
+          @@js
+            const quantum = require('quantum-js')
 
-          const markup = `
-            @example param1 params2
-              Content 1
-              Content 2
-          `
+            const markup = `
+              @example param1 params2
+                Content 1
+                Content 2
+            `
 
-          console.log(quantum.parse(markup))
+            console.log(quantum.parse(markup))
 
-      @subsection Prints this
-        @@codeblock text
-          {
-            type: '',
-            params: [],
-            content: [
-              {
-                type: 'example',
-                params: ['param1', 'param2'],
-                content: ['Content 1', 'Content 2']
-              }
-            ]
-          }
+
+        @output
+          @@codeblock
+            {
+              type: '',
+              params: [],
+              content: [
+                {
+                  type: 'example',
+                  params: ['param1', 'param2'],
+                  content: ['Content 1', 'Content 2']
+                }
+              ]
+            }
 
     @section File Parsing
       Quantum markup can be read and parsed from a file using the
       @code[quantum.read()] function:
 
-      @subsection example.um
-        @@codeblock um
-          @example param1 params2
-            Content 1
-            Content 2
+      @example
+        @file example.um
+          @@um
+            @example param1 params2
+              Content 1
+              Content 2
 
-      @subsection example.js
-        @@codeblock js
-          const quantum = require('quantum-js')
+        @file example.js
+          @@js
+            const quantum = require('quantum-js')
 
-          quantum.read('example.um').then(parsed => {
-            console.log(parsed)
-          })
+            quantum.read('example.um').then(parsed => {
+              console.log(parsed)
+            })
 
-      @subsection Prints this
-        @@codeblock text
-          {
-            type: '',
-            params: [],
-            content: [
-              {
-                type: 'example',
-                params: ['param1', 'param2'],
-                content: ['Content 1', 'Content 2']
-              }
-            ]
-          }
+        @output
+          @@codeblock
+            {
+              type: '',
+              params: [],
+              content: [
+                {
+                  type: 'example',
+                  params: ['param1', 'param2'],
+                  content: ['Content 1', 'Content 2']
+                }
+              ]
+            }
 
   @topic Selection Api
     The selection api allows the selection and manipulation of quantum AST:

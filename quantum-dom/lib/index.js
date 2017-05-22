@@ -208,8 +208,9 @@ Element.prototype.stringify = function () {
   return res
 }
 
-function TextNode (text) {
-  this.text = text
+function TextNode (text, options) {
+  this.text = options && options.escape === false ? text : escapeHTML(text)
+  this.options = options
 }
 
 TextNode.prototype.stringify = function () {
@@ -263,7 +264,7 @@ function create (type) {
 
 // creates an element of the type given
 function textNode (text, options) {
-  return new TextNode(options && options.escape === false ? text : escapeHTML(text))
+  return new TextNode(text, options)
 }
 
 // creates an element of the type given
