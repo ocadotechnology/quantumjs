@@ -44,9 +44,6 @@
       @img .um-to-html__image
         @attr(src)[{{baseurl}}/resources/html.svg]
 
-  @landingSection Entity driven
-    Keep content separate from page structure and styling.
-
   @landingSection Great for technical documentation
     With QuantumJS you can easily create @bold[versioned content], @bold[api docs], and automatically generate @bold[changelogs].
 
