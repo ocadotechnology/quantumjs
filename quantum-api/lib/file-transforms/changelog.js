@@ -132,7 +132,7 @@ function buildGroups (version, versions, tagSelections, entityTypeToLanguage) {
   const tagsByApi = new Map()
   tagSelections.forEach(tag => {
     const parentApi = tag.selectUpwards('api')
-    if (parentApi) {
+    if (!parentApi.isEmpty()) {
       const parentApiName = parentApi.ps()
       tagsByApi.set(parentApiName, tagsByApi.get(parentApiName) || [])
       tagsByApi.get(parentApiName).push(tag)
