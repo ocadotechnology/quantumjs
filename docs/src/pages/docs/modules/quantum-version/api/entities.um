@@ -1,25 +1,182 @@
 @entity added
   @added 2.0.0
+  @description
+    Can be added to any content that should only be included in the page starting
+    from a certain version.
+
+    For example, this function will only be included in pages with version 2.1.0
+    or later:
+
+    @example
+      @file
+        @@um
+          @versionedPage
+            @version 2.0.0
+
+          @api
+            @function myFunction
+              @added 2.0.0
+                @description
+                  The content of the description block will be shown in the api
+                  section.
+              @param a [Number]
+              @param b [number]
+              @return Number
+
+    The automatic changelog generation in quantum-api also uses these tags to
+    build up a summary of what has changed from one version to the next.
+
   @param version
+    The version when the content was added
 
 @entity removed
   @added 2.0.0
+  @description
+    Can be added to any content that should stop being included in the page
+    after a certain version. The content will remain in the page for the version
+    specified, but any versions later than the one given will not include the
+    content.
+
+    For example, this function will only be included in pages from versions 2.1.0
+    up to 3.0.0:
+
+    @example
+      @file
+        @@um
+          @versionedPage
+            @version 2.0.0
+
+          @api
+            @function myFunction
+              @removed 2.0.0
+                @description
+                  The content of the description block will be shown in the api
+                  section.
+              @param a [Number]
+              @param b [number]
+              @return Number
+
+    The automatic changelog generation in quantum-api also uses these tags to
+    build up a summary of what has changed from one version to the next.
+
   @param version
+    The version when the content was removed
 
 @entity deprecated
   @added 2.0.0
+  @description
+    This tag has no real affect on the content that is output, but when other
+    modules are used, such as quantum-api, this tag can have an affect on the
+    visible output - for quantum-api a notice is displayed in the api section.
+
+    Normally a @code[deprecated] tag will sit before a @code[@removed] tag.
+
+    @example
+      @file
+        @@um
+          @versionedPage
+            @version 2.0.0
+
+          @api
+            @function myFunction
+              @deprecated 2.0.0
+                @description
+                  The content of the description block will be shown in the api
+                  section.
+              @param a [Number]
+              @param b [number]
+              @return Number
+
+    The automatic changelog generation in quantum-api also uses these tags to
+    build up a summary of what has changed from one version to the next.
+
   @param version
+    @description
+      The version when the content was deprecated
+
+  @entity description
+    @description
+      The description that the
 
 @entity updated
   @added 2.0.0
+  @description
+    This tag has no real affect on the content that is output, but when other
+    modules are used, such as quantum-api, this tag can have an affect on the
+    visible output. A notice will be displayed for @italic[just] the version
+    specified. The content for the notice will be taken from the
+    @type[@description] tag.
+
+    @example
+      @file
+        @@um
+          @versionedPage
+            @version 2.0.0
+
+          @api
+            @function myFunction
+              @updated 2.0.0
+                @description
+                  The content of the description block will be shown in the api
+                  section.
+              @param a [Number]
+              @param b [number]
+              @return Number
+
+    The automatic changelog generation in quantum-api also uses these tags to
+    build up a summary of what has changed from one version to the next.
+
   @param version
+    The version when the content was updated
 
 @entity versionedPage
   @added 2.0.0
 
-@entity version
-  @added 2.0.0
-  @param version
+  @description
+    This marks a page as "versioned", which means that it will be processed by
+    the version @code[fileTransform]. Any pages without this entity will pass
+    through the version file transform untouched.
+
+    The list of versions for this page can be included in this entity. An
+    alternative way of doing this is to set the list of entities in the options
+    passed into @code[version.fileTransform()] in the @code[quantum.config.json].
+
+    @subsection [Example: when the versions are set in quantum.config.json]
+      @@codeblock um
+        @versionedPage
+
+    @subsection [Example: specifying the versions in the page itself]
+      @@codeblock um
+        @versionedPage
+          @version 1.0.0
+          @version 1.1.0
+          @version 1.2.0
+          @version 1.2.1
+          @version 1.3.0
+          @version 2.0.0
+
+    @subsection [Example: Using inlining]
+
+      @bold[index.um]
+      @@codeblock um
+        @versionedPage
+          @inline ./versions.um
+
+      @bold[versions.um]
+      @@codeblock um
+        @version 1.0.0
+        @version 1.1.0
+        @version 1.2.0
+        @version 1.2.1
+        @version 1.3.0
+        @version 2.0.0
+
+  @entity version
+    @description
+      Describes one of the versions for this page
+    @param version
+      @description
+        The version number / string
 
 @entity versioned
   @added 2.0.0

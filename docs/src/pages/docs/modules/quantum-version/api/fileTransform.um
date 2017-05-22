@@ -1,5 +1,67 @@
 @function fileTransform
   @added 2.0.0
+
+  @description
+    Creates pipeline transformation functions for quantum-version. This function
+    takes the config for configuring quantum version, and returns a function for
+    transforming pages (a @type[FileTransform]).
+
   @param? options [Object]
+    @property versions [Array[String]]
+      @description
+        An array of versions the versioned content uses. This can be left
+        undefined if the a @code[@versionedPage] entity is included on the page
+        which contains the versions.
+
+        If both a @code[@versionedPage] entity is found for a page, and this
+        option is set, the option takes precedence.
+
+    @property filenameModifier [Function]
+      @description
+        This is a function which modifies the filename of the file to include the
+        version. By default the version is added to the end of the filename.
+        For example @code[target/api/index.html] becomes
+        @code[target/api/0.1.0/index.html].
+
+      @default
+        @codeblock js
+          function filenameModifier (fileInfo, version) {
+            if (fileInfo.dest.endsWith('index.um')) {
+              return fileInfo.clone({
+                dest: fileInfo.dest.replace('index.um', version) + '/' + 'index.um'
+              })
+            } else {
+              return fileInfo.clone({
+                dest: fileInfo.dest.replace('.um', '') + '/' + version + '.um'
+              })
+            }
+          }
+
+      @returns FileInfo
+        @description
+          Returns a new @type[FileInfo] instance, or a clone of the one passed in.
+
+    @property outputLatest [Boolean]
+      @description
+        Whether or not to output the latest page without the version included in
+        the url. When this option is turned on, it would output something like
+
+        @@codeblock nohighlight
+          target/api/1.0.0/index.html
+          target/api/1.1.0/index.html
+          target/api/1.2.0/index.html
+          target/api/index.html          <- The same as target/api/1.2.0/index.html
+
+        When this option is set to false, only the following pages are output:
+
+        @@codeblock nohighlight
+          target/api/1.0.0/index.html
+          target/api/1.1.0/index.html
+          target/api/1.2.0/index.html
+
+      @default: @code[true]
 
   @returns FileTransform
+    @description
+      Returns a new @type[FileTransform] function which can expand a @type[File]
+      instance into multiple @type[File] instances - one for each version.
