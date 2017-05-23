@@ -4,7 +4,7 @@
   @title Overview
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    A node.js static site generator with a focus on extensibility and speed
+    A node.js static site generator with a focus on extensibility, versioning and speed
 
 @contentSection
   @topic What is QuantumJS?
