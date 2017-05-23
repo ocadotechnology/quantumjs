@@ -92,7 +92,7 @@ function css (selection, transformer) {
   return dom.head(dom.create('style').text(selection.cs(), {escape: false}))
 }
 
-function transforms (options) {
+function entityTransforms (options) {
   // No options at the moment - this is just future proofing
   return Object.freeze({
     bodyClassed: bodyClassed,
@@ -144,15 +144,15 @@ function transforms (options) {
 }
 
 // flattens out namespaced renderers into a single object
-function prepareTransforms (transforms, namespace, target) {
+function prepareTransforms (entityTransforms, namespace, target) {
   const resolvedNamespace = namespace || ''
   const resolvedTarget = target || {}
-  for (const d in transforms) {
-    if (typeof (transforms[d]) === 'function') {
-      resolvedTarget[resolvedNamespace + d] = transforms[d]
-      resolvedTarget[d] = transforms[d]
+  for (const d in entityTransforms) {
+    if (typeof (entityTransforms[d]) === 'function') {
+      resolvedTarget[resolvedNamespace + d] = entityTransforms[d]
+      resolvedTarget[d] = entityTransforms[d]
     } else {
-      prepareTransforms(transforms[d], resolvedNamespace + d + '.', resolvedTarget)
+      prepareTransforms(entityTransforms[d], resolvedNamespace + d + '.', resolvedTarget)
     }
   }
 
@@ -174,11 +174,11 @@ function flatten (arrays) {
 function buildDOM (options) {
   const opts = options || {}
 
-  const meta = opts.meta // gets passed through to all transforms (mainly useful for custom transforms - should never be used in libraries)
+  const meta = opts.meta // gets passed through to all entityTransforms (mainly useful for custom entityTransforms - should never be used in libraries)
   const defaultTransform = opts.defaultTransform || standardDefaultTransform
-  const entityTransforms = opts.transforms || transforms()
+  const transforms = opts.entityTransforms || entityTransforms()
   const includeCommonMetaTags = opts.includeCommonMetaTags !== false
-  const transformMap = prepareTransforms(entityTransforms)
+  const transformMap = prepareTransforms(transforms)
 
   const commonMetaTags = [
     dom.head(dom.create('meta').attr('name', 'viewport').attr('content', 'width=device-width, initial-scale=1'))
@@ -327,7 +327,7 @@ function fileTransform (options) {
       .then(files => files.map(renamer))
   }
 
-  fileTransformer.entityTransforms = (options || {}).transforms || transforms()
+  fileTransformer.entityTransforms = (options || {}).entityTransforms || entityTransforms()
 
   return fileTransformer
 }
@@ -340,5 +340,5 @@ module.exports = {
   htmlRenamer,
   paragraphTransform,
   prepareTransforms,
-  transforms
+  entityTransforms
 }

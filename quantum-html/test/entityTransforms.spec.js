@@ -1,4 +1,4 @@
-describe('transforms', () => {
+describe('entityTransforms', () => {
   const html = require('..')
   const quantum = require('quantum-js')
   const dom = require('quantum-dom')
@@ -9,8 +9,8 @@ describe('transforms', () => {
     }
     return function transformer (selection) {
       const t = quantum.isSelection(selection) ? selection.type() : undefined
-      if (t in html.transforms()) {
-        return html.transforms()[t](selection, transformer)
+      if (t in html.entityTransforms()) {
+        return html.entityTransforms()[t](selection, transformer)
       } else {
         return defaultTransform(selection)
       }
@@ -23,8 +23,8 @@ describe('transforms', () => {
     }
     return function transformer (selection) {
       const t = quantum.isSelection(selection) ? selection.type() : undefined
-      if (t in html.transforms()) {
-        return Promise.resolve(html.transforms()[t](selection, transformer))
+      if (t in html.entityTransforms()) {
+        return Promise.resolve(html.entityTransforms()[t](selection, transformer))
       } else {
         return defaultTransform(selection)
       }
@@ -40,7 +40,7 @@ describe('transforms', () => {
           content: []
         })
 
-        html.transforms()[type](selection, transformEntity())
+        html.entityTransforms()[type](selection, transformEntity())
           .should.eql(dom.create(type))
       })
 
@@ -51,7 +51,7 @@ describe('transforms', () => {
           content: ['content']
         })
 
-        html.transforms()[type](selection, transformEntity())
+        html.entityTransforms()[type](selection, transformEntity())
           .should.eql(dom.create(type).id('id').add(dom.textNode('content')))
       })
 
@@ -62,7 +62,7 @@ describe('transforms', () => {
           content: ['content']
         })
 
-        html.transforms()[type](selection, transformEntity())
+        html.entityTransforms()[type](selection, transformEntity())
           .should.eql(dom.create(type).class('class class2').add(dom.textNode('content')))
       })
 
@@ -73,7 +73,7 @@ describe('transforms', () => {
           content: ['content']
         })
 
-        html.transforms()[type](selection, transformEntity())
+        html.entityTransforms()[type](selection, transformEntity())
           .should.eql(dom.create(type).class('class class2').id('id').add(dom.textNode('content')))
       })
 
@@ -88,7 +88,7 @@ describe('transforms', () => {
           }]
         })
 
-        html.transforms()[type](selection, transformEntity())
+        html.entityTransforms()[type](selection, transformEntity())
           .should.eql(dom.create(type).attr('x', '0'))
       })
 
@@ -103,7 +103,7 @@ describe('transforms', () => {
           }]
         })
 
-        html.transforms()[type](selection, transformEntity())
+        html.entityTransforms()[type](selection, transformEntity())
           .should.eql(dom.create(type).id('id'))
       })
 
@@ -118,7 +118,7 @@ describe('transforms', () => {
           }]
         })
 
-        html.transforms()[type](selection, transformEntity())
+        html.entityTransforms()[type](selection, transformEntity())
           .should.eql(dom.create(type).class('class'))
       })
 
@@ -133,7 +133,7 @@ describe('transforms', () => {
           }]
         })
 
-        html.transforms()[type](selection, transformEntity())
+        html.entityTransforms()[type](selection, transformEntity())
           .should.eql(dom.create(type).add(dom.create(type).class('x').add(dom.textNode('content'))))
       })
     })
@@ -188,7 +188,7 @@ describe('transforms', () => {
         content: []
       })
 
-      html.transforms().bodyClassed(selection, transformEntity())
+      html.entityTransforms().bodyClassed(selection, transformEntity())
         .should.eql(dom.bodyClassed('body-class', true))
     })
 
@@ -199,7 +199,7 @@ describe('transforms', () => {
         content: ['true']
       })
 
-      html.transforms().bodyClassed(selection, transformEntity())
+      html.entityTransforms().bodyClassed(selection, transformEntity())
         .should.eql(dom.bodyClassed('body-class', true))
     })
 
@@ -210,7 +210,7 @@ describe('transforms', () => {
         content: ['false']
       })
 
-      html.transforms().bodyClassed(selection, transformEntity())
+      html.entityTransforms().bodyClassed(selection, transformEntity())
         .should.eql(dom.bodyClassed('body-class', false))
     })
   })
@@ -223,7 +223,7 @@ describe('transforms', () => {
         content: ['Text']
       })
 
-      return html.transforms().hyperlink(selection, transformEntity())
+      return html.entityTransforms().hyperlink(selection, transformEntity())
         .should.eql(dom.create('a').attr('href', 'my-link').add(dom.textNode('Text')))
     })
 
@@ -238,7 +238,7 @@ describe('transforms', () => {
         }]
       })
 
-      return html.transforms().hyperlink(selection, transformEntity())
+      return html.entityTransforms().hyperlink(selection, transformEntity())
         .should.eql(dom.create('a').attr('x', '0').attr('href', ''))
     })
 
@@ -253,7 +253,7 @@ describe('transforms', () => {
         }]
       })
 
-      return html.transforms().hyperlink(selection, transformEntity())
+      return html.entityTransforms().hyperlink(selection, transformEntity())
         .should.eql(dom.create('a').id('id').attr('href', ''))
     })
 
@@ -268,7 +268,7 @@ describe('transforms', () => {
         }]
       })
 
-      return html.transforms().hyperlink(selection, transformEntity())
+      return html.entityTransforms().hyperlink(selection, transformEntity())
         .should.eql(dom.create('a').class('class').attr('href', ''))
     })
 
@@ -283,7 +283,7 @@ describe('transforms', () => {
         }]
       })
 
-      return html.transforms().hyperlink(selection, transformEntity())
+      return html.entityTransforms().hyperlink(selection, transformEntity())
         .should.eql(dom.create('a').attr('href', '').add(dom.create('div').class('x').add(dom.textNode('content'))))
     })
   })
@@ -296,7 +296,7 @@ describe('transforms', () => {
         content: []
       })
 
-      html.transforms().title(selection, transformEntity())
+      html.entityTransforms().title(selection, transformEntity())
         .should.eql(dom.head(dom.create('title').text('My Title'), {id: 'title'}))
     })
   })
@@ -328,7 +328,7 @@ describe('transforms', () => {
         ]
       })
 
-      return html.transforms().head(selection, transformEntity()).should.eql([
+      return html.entityTransforms().head(selection, transformEntity()).should.eql([
         dom.head(dom.create('meta').attr('name', 'value')),
         dom.head(dom.create('meta').attr('name2', 'value2'))
       ])
@@ -360,7 +360,7 @@ describe('transforms', () => {
         ]
       })
 
-      return html.transforms().head(selection, promiseTransformEntity()).should.eventually.eql([
+      return html.entityTransforms().head(selection, promiseTransformEntity()).should.eventually.eql([
         dom.head(dom.create('meta').attr('name', 'value')),
         dom.head(dom.create('meta').attr('name2', 'value2'))
       ])
@@ -375,7 +375,7 @@ describe('transforms', () => {
         content: ['<div></div>']
       })
 
-      html.transforms().html(selection, transformEntity()).should.eql(
+      html.entityTransforms().html(selection, transformEntity()).should.eql(
         dom.textNode('<div></div>', {escape: false})
       )
     })
@@ -389,7 +389,7 @@ describe('transforms', () => {
         content: []
       })
 
-      html.transforms().script(selection, transformEntity()).should.eql(
+      html.entityTransforms().script(selection, transformEntity()).should.eql(
         dom.create('script').attr('src', '/content/file.js')
       )
     })
@@ -403,7 +403,7 @@ describe('transforms', () => {
         content: []
       })
 
-      html.transforms().stylesheet(selection, transformEntity()).should.eql(
+      html.entityTransforms().stylesheet(selection, transformEntity()).should.eql(
         dom.head(dom.create('link').attr('href', '/content/file.css').attr('rel', 'stylesheet'))
       )
     })
@@ -417,7 +417,7 @@ describe('transforms', () => {
         content: ['function (x) { return x < 100}']
       })
 
-      html.transforms().js(selection, transformEntity()).should.eql(
+      html.entityTransforms().js(selection, transformEntity()).should.eql(
         dom.create('script').text('function (x) { return x < 100}', {escape: false})
       )
     })
@@ -431,7 +431,7 @@ describe('transforms', () => {
         content: ['.class { color: red; }']
       })
 
-      html.transforms().css(selection, transformEntity()).should.eql(
+      html.entityTransforms().css(selection, transformEntity()).should.eql(
         dom.head(dom.create('style').text('.class { color: red; }', {escape: false}))
       )
     })
