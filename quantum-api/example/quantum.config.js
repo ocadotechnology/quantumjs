@@ -15,13 +15,13 @@ const apiOptions = {
 }
 
 const htmlTransforms = {
-  html: html.transforms(),
-  api: api.transforms(apiOptions)
+  html: html.entityTransforms(),
+  api: api.entityTransforms(apiOptions)
 }
 
 module.exports = {
   pipeline: [
-    html({ transforms: htmlTransforms }),
+    html({ entityTransforms: htmlTransforms }),
     html.build(),
     html.htmlRenamer()
   ],

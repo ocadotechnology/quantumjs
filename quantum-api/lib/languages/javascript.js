@@ -304,7 +304,7 @@ module.exports = (options) => {
   return {
     assets,
     name: 'javascript',
-    transforms: {
+    entityTransforms: {
       'type': typeBuilder(typeLinks),
       'prototype': prototypeBuilder,
       'object': objectBuilder,

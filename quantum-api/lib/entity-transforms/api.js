@@ -16,7 +16,7 @@ const assets = [
   })
 ]
 
-module.exports = function transforms (options) {
+module.exports = function entityTransforms (options) {
   const builders = (options || {}).builders || []
   const languages = (options || {}).languages || []
   return (selection, transformer) => {

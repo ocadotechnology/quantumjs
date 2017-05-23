@@ -1,8 +1,8 @@
 'use strict'
 
 /*
-  This file defines the entity transforms for the changelog module. There
-  are two transforms:
+  This file defines the entity entityTransforms for the changelog module. There
+  are two entityTransforms:
 
     @changelog
     @changelogList

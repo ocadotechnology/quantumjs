@@ -1,5 +1,5 @@
-describe('transforms', () => {
-  const { transforms, languages: { css, javascript, quantum } } = require('..')
+describe('entityTransforms', () => {
+  const { entityTransforms, languages: { css, javascript, quantum } } = require('..')
 
   const topLevelProps = [
     'api',
@@ -31,9 +31,9 @@ describe('transforms', () => {
     'param?'
   ]
 
-  describe('provides the correct transforms', () => {
+  describe('provides the correct entityTransforms', () => {
     it('when using the defaults', () => {
-      const obj = transforms()
+      const obj = entityTransforms()
       obj.should.have.keys([
         ...topLevelProps,
         'css',
@@ -46,7 +46,7 @@ describe('transforms', () => {
     })
 
     it('when providing languages: [ css ]', () => {
-      const obj = transforms({ languages: [ css() ] })
+      const obj = entityTransforms({ languages: [ css() ] })
       obj.should.have.keys([
         ...topLevelProps,
         'css'
@@ -56,7 +56,7 @@ describe('transforms', () => {
     })
 
     it('when providing languages: [ javascript ]', () => {
-      const obj = transforms({ languages: [ javascript() ] })
+      const obj = entityTransforms({ languages: [ javascript() ] })
       obj.should.have.keys([
         ...topLevelProps,
         'javascript'
@@ -66,7 +66,7 @@ describe('transforms', () => {
     })
 
     it('when providing languages: [ quantum ]', () => {
-      const obj = transforms({ languages: [ quantum() ] })
+      const obj = entityTransforms({ languages: [ quantum() ] })
       obj.should.have.keys([
         ...topLevelProps,
         'quantum'
@@ -76,7 +76,7 @@ describe('transforms', () => {
     })
 
     it('when providing languages: [ css, javascript, quantum ]', () => {
-      const obj = transforms({ languages: [ css(), javascript(), quantum() ] })
+      const obj = entityTransforms({ languages: [ css(), javascript(), quantum() ] })
       obj.should.have.keys([
         ...topLevelProps,
         'css',

@@ -8,10 +8,10 @@ describe('module', () => {
       'fileTransform',
       'fileTransforms',
       'languages',
-      'transforms'
+      'entityTransforms'
     ])
     api.fileTransform.should.be.a('function')
-    api.transforms.should.be.a('function')
+    api.entityTransforms.should.be.a('function')
   })
 
   describe('builders', () => {
