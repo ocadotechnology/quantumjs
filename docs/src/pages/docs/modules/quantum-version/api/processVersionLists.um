@@ -1,7 +1,57 @@
 @function processVersionLists
   @added 2.0.0
 
-  @param content [Object]
-    @property content [Array[Entity]]
-  @param version [String]
+  @description
+    Looks for all the @code[@versionList] entities in the entity passed in
+    (recursively), and populates them with the full list of versions for the
+    page, as well as the current version.
+
+    This function handles the following functionality:
+    
+    Given this input:
+
+    @subsection index.um
+      @@codeblock um
+        @versionedPage
+          @version 1.0.0
+          @version 1.1.0
+          @version 2.0.0
+
+        @versionList
+
+    The output will be (3 separate files)
+
+    @subsection 1.0.0/index.um
+      @@codeblock um
+        @versionList
+          @version 1.0.0
+          @version 1.1.0
+          @version 2.0.0
+          @current 1.0.0
+
+    @subsection 1.1.0/index.um
+      @@codeblock um
+        @versionList
+          @version 1.0.0
+          @version 1.1.0
+          @version 2.0.0
+          @current 1.1.0
+
+    @subsection 2.0.0/index.um
+      @@codeblock um
+        @versionList
+          @version 1.0.0
+          @version 1.1.0
+          @version 2.0.0
+          @current 2.0.0
+
+  @param entity [Entity]
+    @description
+      The entity to look for @code[@versionList] entities to populate
+  @param currentVersion [String]
+    @description
+      The version to populate as the @code[@current] version
   @param versions [Array[String]]
+    @description
+      The full list of versions to populate in the @code[@versionList] entities
+      that are found

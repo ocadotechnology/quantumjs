@@ -1,6 +1,7 @@
+const { FileInfo } = require('quantum-js')
+const { defaultFilenameModifier } = require('../lib/lib')
+
 describe('defaultFilenameModifier', () => {
-  const { FileInfo } = require('quantum-js')
-  const { defaultFilenameModifier } = require('../lib/lib')
   it('adds a version number to the filename', () => {
     const fileInfo = new FileInfo({
       dest: 'test.um'

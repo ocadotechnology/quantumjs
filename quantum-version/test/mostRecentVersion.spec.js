@@ -1,7 +1,8 @@
+const should = require('chai').should()
+const quantum = require('quantum-js')
+const { mostRecentVersion } = require('../lib/lib')
+
 describe('mostRecentVersion', () => {
-  const should = require('chai').should()
-  const quantum = require('quantum-js')
-  const { mostRecentVersion } = require('../lib/lib')
   it('works when versions all line up (vanilla case)', () => {
     const version = '0.2.0'
     const candidateVersions = ['0.1.0', '0.2.0', '0.3.0']

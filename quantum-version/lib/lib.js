@@ -167,8 +167,8 @@ function mostRecentVersion (version, candidateVersionSelections, versions) {
 }
 
 /* Processes all @versioned sections for a file */
-function processVersioned (content, version, versions) {
-  quantum.select(content)
+function processVersioned (entity, version, versions) {
+  quantum.select(entity)
     .selectAll('versioned', {recursive: true})
     .forEach(versioned => {
       const candidateVersionSelections = versioned.selectAll('version')
@@ -181,8 +181,8 @@ function processVersioned (content, version, versions) {
 }
 
 /* Populates all @versionList entities with @version and @current tags for a page */
-function processVersionLists (content, version, versions) {
-  quantum.select(content)
+function processVersionLists (entity, version, versions) {
+  quantum.select(entity)
     .selectAll('versionList', {recursive: true})
     .forEach(versionList => {
       versionList.content(versions.map(v => {

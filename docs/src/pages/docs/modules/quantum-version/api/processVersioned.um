@@ -1,7 +1,61 @@
 @function processVersioned
   @added 2.0.0
 
-  @param content [Object]
-    @property content [Array[Entity]]
+  @description
+    Processes the @code[@versioned] sections in the entity passed in. This removes
+    all @code[@versioned] sections from the entity (recursively) and replaces
+    then with the correct content for the version given.
+
+    @subsection Example
+      @@codeblock js
+        const version = require('quantum-version')
+
+        const entity = {
+          params: [],
+          content: [
+            {
+              type: 'versioned',
+              params: [],
+              content: [
+                {
+                  type: 'version',
+                  params: ['0.1.0'],
+                  content: [
+                    "Content1"
+                  ]
+                },
+                {
+                  type: 'version',
+                  params: ['0.3.0'],
+                  content: [
+                    "Content2"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+
+        const versions = ['0.1.0', '0.2.0', '0.3.0']
+
+        version.processVersioned(entity, '0.1.0', versions)
+        console.log(entity)
+        // { params: [], content: ['Content1'] }
+
+        version.processVersioned(entity, '0.2.0', versions)
+        console.log(entity)
+        // { params: [], content: ['Content1'] }
+
+        version.processVersioned(entity, '0.3.0', versions)
+        console.log(entity)
+        // { params: [], content: ['Content2'] }
+
+  @param entity [Entity]
+    @description
+      The entity to process
   @param version [String]
+    @description
+      The version to target when processing the @code[@versioned] blocks
   @param versions [Array[String]]
+    @description
+      The full list of versions possible

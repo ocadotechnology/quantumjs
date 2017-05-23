@@ -1,8 +1,24 @@
 @function processTags
   @added 2.0.0
 
-  @param content [Object]
-    @property content [Array[Entity]]
+  @description
+    Processes all the tags in the content passed in. This involves only keeping
+    content that satisfy the @code[@added] and @code[@removed] tags for the
+    version specified.
+
+    The @code[@updated] and @code[@deprecated] tags are removed if they do not
+    apply to the version passed in.
+
+  @param entity [Entity]
+    @description
+      The entity to process the tags for
   @param version [String]
+    @description
+      The version to process the tags for
   @param versions [Array[String]]
+    @description
+      The full list of versions available for the content being passed in
   @param file [File]
+    @description
+      The file the content originated from (this is so that errors can be
+      reported to the file)

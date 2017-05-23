@@ -180,3 +180,79 @@
 
 @entity versioned
   @added 2.0.0
+
+  @description
+    Versioned content provides alternative versions of content for different
+    versions. It does a full replacement for each version. Content remains the
+    same between versions.
+
+    Given this input:
+
+    @subsection index.um
+      @@codeblock um
+        @versionedPage
+          @version 1.0.0
+          @version 1.1.0
+          @version 2.0.0
+
+        @versioned
+          @version 1.0.0: Description 1
+          @version 2.0.0: Description 2
+
+    The output will be (3 separate files)
+
+    @subsection 1.0.0/index.um
+      @@codeblock um
+        Description 1
+
+    @subsection 1.1.0/index.um
+      @@codeblock um
+        Description 1
+
+    @subsection 2.0.0/index.um
+      @@codeblock um
+        Description 2
+
+@entity versionList
+  @added 2.0.0
+
+  @description
+    An entity that will be populated with the full list of versions and the
+    current version when the file is processed by the version page transform.
+
+    Given this input:
+
+    @subsection index.um
+      @@codeblock um
+        @versionedPage
+          @version 1.0.0
+          @version 1.1.0
+          @version 2.0.0
+
+        @versionList
+
+    The output will be (3 separate files)
+
+    @subsection 1.0.0/index.um
+      @@codeblock um
+        @versionList
+          @version 1.0.0
+          @version 1.1.0
+          @version 2.0.0
+          @current 1.0.0
+
+    @subsection 1.1.0/index.um
+      @@codeblock um
+        @versionList
+          @version 1.0.0
+          @version 1.1.0
+          @version 2.0.0
+          @current 1.1.0
+
+    @subsection 2.0.0/index.um
+      @@codeblock um
+        @versionList
+          @version 1.0.0
+          @version 1.1.0
+          @version 2.0.0
+          @current 2.0.0
