@@ -8,6 +8,6 @@
 
 
   @inline api/fileTransform.um
-  @inline api/transforms.um
+  @inline api/entityTransforms.um
   @inline api/languages.um
   @inline api/builders.um

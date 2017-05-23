@@ -11,4 +11,4 @@
   @inline api/htmlRenamer.um
   @inline api/paragraphTransform.um
   @inline api/prepareTransforms.um
-  @inline api/transforms.um
+  @inline api/entityTransforms.um

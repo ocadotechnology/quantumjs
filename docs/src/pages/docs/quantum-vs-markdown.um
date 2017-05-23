@@ -38,7 +38,7 @@
     whatever way you want. In markdown the markup is tightly tied with HTML tags.
 
 
-    @subsection Quantum (using the quantum-docs transforms)
+    @subsection Quantum (using the quantum-docs entity transforms)
       @@codeblock um
         @topic Heading 1
           @section Section 1

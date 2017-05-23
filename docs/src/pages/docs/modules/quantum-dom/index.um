@@ -66,31 +66,3 @@
 
     See @hyperlink({{baseurl}}/docs/core-concepts/#entity-transforms)[Core Concepts - Entity Transforms]
     for more information.
-
-    # A quantum entity transform might look something like this:
-
-    # @@codeblock js
-    #   const dom = require('quantum-dom')
-
-    #   // creates a sign in block for the @signIn entity
-    #   function signIn (selection) {
-    #     return dom.create('div').class('sign-in')
-    #       .add(dom.create('input').class('username-input'))
-    #       .add(dom.create('input').class('password-input'))
-    #       .add(dom.create('button').class('sign-in-button').text('Sign in'))
-    #   }
-
-    # The above would render out any instances of @code[@signIn] in the page as the
-    # following html block:
-
-    # @@codeblock html
-    #   <div class="sign-in">
-    #     <input class="username-input"></input>
-    #     <input class="password-input"></input>
-    #     <button class="sign-in-button">Sign in</button>
-    #   </div>
-
-    # Entity transforms often make use of the passed in selection (that wraps the
-    # @code[@signIn] entity), but this transform is rather simple, and needs no
-    # information from the entity. See the tutorial on @hyperlink(/tutorials/creating-a-blog/)[creating a blog]
-    # for how to create more advanced entity transforms.

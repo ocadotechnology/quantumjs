@@ -41,7 +41,7 @@
 
   @param transformer [Function]
     @description
-      A function that takes transforms a piece of text, or an entity into a new
+      A function that transforms a piece of text, or an entity into a new
       format. Normally this is outputs pieces of quantum dom.
     @param selection [Selection/String]
       @description: The item to transform

@@ -16,7 +16,7 @@ const languageName = 'custom'
 // Create a group of @thing entities for the @custom item
 const things = api.builders.itemGroup(languageName, 'thing', 'Things')
 
-function customDetails (selection, transforms) {
+function customDetails (selection, transformer) {
   // render the param string as the header details (e.g. for '@thing something' it would be 'something')
   return dom.create('div').text(selection.ps())
 }
@@ -75,8 +75,8 @@ module.exports = function customLanguage () {
   return {
     assets: assets,
     name: languageName,
-    // Export the transforms we want to render with
-    transforms: {
+    // Export the entityTransforms we want to render with
+    entityTransforms: {
       custom: customBuilder,
       thing: thingBuilder
     },

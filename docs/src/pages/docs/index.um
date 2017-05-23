@@ -37,7 +37,7 @@
         @item: Explicit, easy to learn markup language for building web pages
         @item: Built with customisability / extensibility in mind
         @item: Uses node.js - full access to npm when writing custom transforms
-        @item: Prebuilt transforms for writing technical documentation
+        @item: Prebuilt entity transforms for writing technical documentation
         @item: Auto browser page refresh when files are changed
         @item: Fast - builds this site in ~2 seconds
 
