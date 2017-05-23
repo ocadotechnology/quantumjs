@@ -1,5 +1,6 @@
+const version = require('..')
+
 describe('module', () => {
-  const version = require('..')
   it('exports the correct things', () => {
     version.should.be.an('object')
     version.should.have.keys([

@@ -56,14 +56,14 @@
 
       @div .versioned-pages
         @img .versioned-image
-          @attr(src)[{{baseurl}}/resources/versioned-1.svg]
-        @img .versioned-image
-          @attr(src)[{{baseurl}}/resources/versioned-2.svg]
-        @img .versioned-image
-          @attr(src)[{{baseurl}}/resources/versioned-3.svg]
+          @attr(src)[{{baseurl}}/resources/versioned-overlap.svg]
+
 
   @landingSection Lightning Fast
     @bold[Sub 10ms] page compile times.
+
+    @img .lightning-fast-image-image
+      @attr(src)[{{baseurl}}/resources/lightning-fast.svg]
 
   @landingSection No fixed folder structures
     @bold[You] choose how to structure your project.
@@ -73,8 +73,10 @@
 
     Define new @bold[entities] with a single function.
 
+    @img .extensible-image
+      @attr(src)[{{baseurl}}/resources/extensible.svg]
+
   @landingSection Get Started
-    @last
     @div .buttons
       @a .button: @span[Quickstart]
         @attr href: {{baseurl}}/docs/quick-start

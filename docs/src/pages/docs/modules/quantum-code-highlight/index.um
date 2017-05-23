@@ -14,15 +14,19 @@
     This module provides the entity transforms for @code[@code] and @@code[@@codeblock] entities.
     The code and codeblock entities render highlighted code blocks.
 
-  @topic Example
-    @example
-      @@um
-        Inline code @code[var inlineJS = true;] with text
+  @topic Examples
+    @section Inline code
+      @example
+        @@um
+          Some @code[inline()] code
 
-        @@codeblock css
-          .class {
-            background: #FFF;
-          }
+    @section Code block
+      @example
+        @@um
+          @@codeblock css
+            .class {
+              background: #FFF;
+            }
 
 
   @topic Entities
