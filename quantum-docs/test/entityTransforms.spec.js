@@ -1,9 +1,10 @@
-describe('transforms', () => {
+
+describe('entityTransforms', () => {
   const path = require('path')
   const quantum = require('quantum-js')
   const dom = require('quantum-dom')
   const html = require('quantum-html')
-  const { transforms } = require('..')
+  const { entityTransforms } = require('..')
   const should = require('chai').should()
 
   function transformer (selection) {
@@ -22,7 +23,7 @@ describe('transforms', () => {
     shared: true
   })
 
-  it('provides the correct transforms', () => {
+  it('provides the correct entityTransforms', () => {
     const keys = [
       'topic',
       'section',
@@ -49,8 +50,8 @@ describe('transforms', () => {
       'relatedButtons',
       'table'
     ]
-    transforms().should.have.keys(keys)
-    keys.forEach(key => transforms()[key].should.be.a('function'))
+    entityTransforms().should.have.keys(keys)
+    keys.forEach(key => entityTransforms()[key].should.be.a('function'))
   })
 
   describe('@topic', () => {
@@ -63,7 +64,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().topic(selection, transformer).should.eql(
+      entityTransforms().topic(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-topic')
           .add(stylesheetAsset)
@@ -86,7 +87,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().section(selection, transformer).should.eql(
+      entityTransforms().section(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-section')
           .add(stylesheetAsset)
@@ -109,7 +110,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().subsection(selection, transformer).should.eql(
+      entityTransforms().subsection(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-subsection')
           .add(stylesheetAsset)
@@ -129,7 +130,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().notice(selection, transformer).should.eql(
+      entityTransforms().notice(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-notice qm-docs-info')
           .add(stylesheetAsset)
@@ -147,7 +148,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().notice(selection, transformer).should.eql(
+      entityTransforms().notice(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-notice')
           .add(stylesheetAsset)
@@ -170,7 +171,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().list(selection, transformer).should.eql(
+      entityTransforms().list(selection, transformer).should.eql(
         dom.create('ul')
           .class('qm-docs-list')
           .add(stylesheetAsset)
@@ -191,7 +192,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().list(selection, transformer).should.eql(
+      entityTransforms().list(selection, transformer).should.eql(
         dom.create('ol')
           .class('qm-docs-list')
           .add(stylesheetAsset)
@@ -211,7 +212,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().bold(selection, transformer).should.eql(
+      entityTransforms().bold(selection, transformer).should.eql(
         dom.create('b').add(dom.create('div').text('Content'))
       )
     })
@@ -227,7 +228,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().italic(selection, transformer).should.eql(
+      entityTransforms().italic(selection, transformer).should.eql(
         dom.create('i').add(dom.create('div').text('Content'))
       )
     })
@@ -243,7 +244,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().strikethrough(selection, transformer).should.eql(
+      entityTransforms().strikethrough(selection, transformer).should.eql(
         dom.create('del').add(dom.create('div').text('Content'))
       )
     })
@@ -259,7 +260,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().image(selection, transformer).should.eql(
+      entityTransforms().image(selection, transformer).should.eql(
         dom.create('img')
           .attr('src', 'path/image.png')
           .attr('alt', 'Content')
@@ -276,7 +277,7 @@ describe('transforms', () => {
         content: []
       })
 
-      transforms().summary(selection, transformer).should.eql(
+      entityTransforms().summary(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-summary')
           .add(stylesheetAsset)
@@ -294,7 +295,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().summary(selection, transformer).should.eql(
+      entityTransforms().summary(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-summary')
           .add(stylesheetAsset)
@@ -313,7 +314,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().summary(selection, transformer).should.eql(
+      entityTransforms().summary(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-summary')
           .add(stylesheetAsset)
@@ -336,7 +337,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().group(selection, transformer).should.eql(
+      entityTransforms().group(selection, transformer).should.eql(
         dom.create('div')
           .add(stylesheetAsset)
           .class('qm-docs-group')
@@ -353,7 +354,7 @@ describe('transforms', () => {
         content: []
       })
 
-      should.not.exist(transforms().versionSelector(selection, transformer))
+      should.not.exist(entityTransforms().versionSelector(selection, transformer))
     })
 
     it('renders as expected', () => {
@@ -378,16 +379,19 @@ describe('transforms', () => {
       dom.randomId = function () {
         return 'fixed-id'
       }
+      const versionSelectorAsset = dom.asset({
+        type: 'js',
+        content: 'window.quantum.docs.createDropdown("fixed-id", ["0.1.0", "0.2.0", "0.3.0"], "0.2.0");'
+      })
 
-      transforms().versionSelector(selection, transformer).should.eql(
-        dom.create('button')
+      entityTransforms().versionSelector(selection, transformer).should.eql(
+        dom.create('select')
           .id('fixed-id')
-          .class('qm-docs-version-selector hx-btn')
+          .class('qm-docs-version-selector')
           .add(stylesheetAsset)
           .add(scriptAsset)
-          .add(dom.create('span').text('0.2.0'))
-          .add(dom.create('i').class('fa fa-caret-down'))
-          .add(dom.create('script').text('window.quantum.docs.createDropdown("fixed-id", ["0.1.0", "0.2.0", "0.3.0"], "0.2.0");', {escape: false}))
+          .add(versionSelectorAsset)
+
       )
 
       dom.randomId = randomId
@@ -404,7 +408,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().sidebar(selection, transformer).should.eql(
+      entityTransforms().sidebar(selection, transformer).should.eql(
         dom.create('div')
           .add(stylesheetAsset)
           .add(scriptAsset)
@@ -440,13 +444,13 @@ describe('transforms', () => {
       function innerTransformer (selection) {
         const type = quantum.isSelection(selection) ? selection.type() : undefined
         if (type === 'sidebar') {
-          return transforms().sidebar(selection, transformer)
+          return entityTransforms().sidebar(selection, transformer)
         } else {
           return transformer(selection)
         }
       }
 
-      transforms().sidebarPage(selection, innerTransformer).should.eql(
+      entityTransforms().sidebarPage(selection, innerTransformer).should.eql(
         dom.create('div').class('qm-docs-sidebar-page')
           .add(stylesheetAsset)
           .add(dom.create('div')
@@ -469,7 +473,7 @@ describe('transforms', () => {
         content: []
       })
 
-      transforms().tableOfContents(selection, transformer).should.eql(
+      entityTransforms().tableOfContents(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-table-of-contents')
           .add(stylesheetAsset)
@@ -484,7 +488,7 @@ describe('transforms', () => {
         content: []
       })
 
-      transforms().tableOfContents(selection, transformer).should.eql(
+      entityTransforms().tableOfContents(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-table-of-contents')
           .add(stylesheetAsset)
@@ -516,7 +520,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().tableOfContents(selection, transformer).should.eql(
+      entityTransforms().tableOfContents(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-table-of-contents')
           .add(stylesheetAsset)
@@ -564,7 +568,7 @@ describe('transforms', () => {
         content: []
       })
 
-      transforms().navigationMenu(selection, transformer).should.eql(
+      entityTransforms().navigationMenu(selection, transformer).should.eql(
         dom.create('div')
           .add(stylesheetAsset)
           .class('qm-docs-navigation-menu-wrapper')
@@ -595,7 +599,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().navigationMenu(selection, transformer).should.eql(
+      entityTransforms().navigationMenu(selection, transformer).should.eql(
         dom.create('div')
           .add(stylesheetAsset)
           .class('qm-docs-navigation-menu-wrapper')
@@ -635,7 +639,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().header(selection, transformer).should.eql(
+      entityTransforms().header(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-header')
           .add(stylesheetAsset)
           .add(dom.create('div').class('qm-docs-centered')
@@ -664,7 +668,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().header(selection, transformer).should.eql(
+      entityTransforms().header(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-header')
           .add(stylesheetAsset)
           .add(dom.create('div').class('qm-docs-centered')
@@ -694,7 +698,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().header(selection, transformer).should.eql(
+      entityTransforms().header(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-header')
           .add(stylesheetAsset)
           .add(dom.create('div').class('qm-docs-centered')
@@ -724,7 +728,7 @@ describe('transforms', () => {
         content: []
       })
 
-      should.not.exist(transforms().breadcrumb(selection, transformer))
+      should.not.exist(entityTransforms().breadcrumb(selection, transformer))
     })
 
     it('renders correctly', () => {
@@ -737,7 +741,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().breadcrumb(selection, transformer).should.eql(
+      entityTransforms().breadcrumb(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-breadcrumb')
           .add(stylesheetAsset)
@@ -758,10 +762,10 @@ describe('transforms', () => {
         content: []
       })
 
-      transforms().topSection(selection, transformer).should.eql(
+      entityTransforms().topSection(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-top-section')
           .add(stylesheetAsset)
-          .add(transforms().breadcrumb(selection.select('breadcrumb'), transformer))
+          .add(entityTransforms().breadcrumb(selection.select('breadcrumb'), transformer))
           .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
             .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text(''))
             .add(dom.create('div').class('qm-docs-top-section-description')
@@ -778,11 +782,11 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().topSection(selection, transformer).should.eql(
+      entityTransforms().topSection(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-top-section')
           .add(dom.head(dom.create('title').text('Title'), {id: 'title'}))
           .add(stylesheetAsset)
-          .add(transforms().breadcrumb(selection.select('breadcrumb'), transformer))
+          .add(entityTransforms().breadcrumb(selection.select('breadcrumb'), transformer))
           .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
             .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text('Title'))
             .add(dom.create('div').class('qm-docs-top-section-description')
@@ -799,10 +803,10 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().topSection(selection, transformer).should.eql(
+      entityTransforms().topSection(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-top-section')
           .add(stylesheetAsset)
-          .add(transforms().breadcrumb(selection.select('breadcrumb'), transformer))
+          .add(entityTransforms().breadcrumb(selection.select('breadcrumb'), transformer))
           .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
             .add(dom.create('a').class('qm-docs-top-section-source').attr('href', '/source/link').text('Suggest edit'))
             .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text(''))
@@ -820,10 +824,10 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().topSection(selection, transformer).should.eql(
+      entityTransforms().topSection(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-top-section')
           .add(stylesheetAsset)
-          .add(transforms().breadcrumb(selection.select('breadcrumb'), transformer))
+          .add(entityTransforms().breadcrumb(selection.select('breadcrumb'), transformer))
           .add(dom.create('div').class('qm-docs-top-section-centered qm-docs-top-section-banner')
             .add(dom.create('div').class('qm-docs-top-section-title qm-header-font').text(''))
             .add(dom.create('div').class('qm-docs-top-section-description')
@@ -842,7 +846,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().contentSection(selection, transformer).should.eql(
+      entityTransforms().contentSection(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-content-section')
           .add(stylesheetAsset)
@@ -861,7 +865,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().fullWidth(selection, transformer).should.eql(
+      entityTransforms().fullWidth(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-full-width')
           .add(selection.transform(transformer)))
@@ -878,7 +882,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().bottomSection(selection, transformer).should.eql(
+      entityTransforms().bottomSection(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-bottom-section')
           .add(stylesheetAsset)
           .add(selection.transform(transformer))
@@ -911,7 +915,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().relatedButtons(selection, transformer).should.eql(
+      entityTransforms().relatedButtons(selection, transformer).should.eql(
         dom.create('div')
           .class('qm-docs-related-buttons')
           .add(stylesheetAsset)
@@ -967,7 +971,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().table(selection, transformer).should.eql(
+      entityTransforms().table(selection, transformer).should.eql(
         dom.create('table')
           .class('qm-docs-table')
           .add(dom.create('thead').class('qm-header-font')
@@ -1014,7 +1018,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().table(selection, transformer).should.eql(
+      entityTransforms().table(selection, transformer).should.eql(
         dom.create('table')
           .class('qm-docs-table')
           .add(dom.create('thead').class('qm-header-font')
@@ -1047,7 +1051,7 @@ describe('transforms', () => {
         ]
       })
 
-      transforms().table(selection, transformer).should.eql(
+      entityTransforms().table(selection, transformer).should.eql(
         dom.create('table')
           .class('qm-docs-table')
           .add(dom.create('tbody')
