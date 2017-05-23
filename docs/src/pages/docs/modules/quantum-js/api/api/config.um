@@ -1,47 +1,96 @@
 @property logger [Function]
   @added 2.0.0
+  @description
+    The logger to use when building and watching files.
+
+    It will be passed an event object from different stages of the pipeline.
+
   @param event [Object]
+    @description
+      The object describing the event to log.
+
+      Every event has a @code[type] property, the events types used in Quantum
+      are:
+      @list
+        @item: @code['header']
+        @item: @code['message']
+        @item: @code['build-page']
+        @item: @code['page-load-error']
+        @item: @code['copy-resource']
+        @item: @code['error']
+        @item: @code['end']
+        @item: @code['error']
+
     @group [Properties for all events]
       @property type [String]
         @description
-          The event type.
-
-          The events used in Quantum are:
-          @list
-            @item: @code['header']
-            @item: @code['message']
-            @item: @code['build-page']
-            @item: @code['page-load-error']
-            @item: @code['copy-resource']
-            @item: @code['error']
-            @item: @code['end']
-            @item: @code['error']
+          The event type. This can be used to switch the behaviour of the
+          logger.
 
     @group [Properties for event type 'header']
+      @description
+        Events that should be logged as a header, e.g. 'Building Pages'
       @property message [String]
+        @description
+          The header message to display.
 
     @group [Properties for event type 'message']
+      @description
+        Informational events, e.g. 'Starting server on http://localhost:8080'
       @property message [String]
+        @description
+          The message to display
 
     @group [Properties for event type 'build-page']
+      @description
+        Events logged when building each page included in the pipeline.
       @property sourceFile [File]
+        @description
+          The source used when building a file
       @property timeTaken [Number]
+        @description
+          The time taken to build the output file(s)
       @property destFiles [Array[File]]
+        @description
+          The list of output files, including asset files such as CSS and JS
 
     @group [Properties for event type 'page-load-error']
-      @property file [String]
+      @description
+        Events logged for each file with an error
+      @property fileInfo [FileInfo]
+        @description
+          The @type[FileInfo] object for the file that is in error
       @property error [Error]
+        @description
+          The error that was thrown
 
     @group [Properties for event type 'copy-resource']
+      @description
+        Event logged when copying resources to the output directory.
       @property fileInfo [FileInfo]
+        @description
+          The resource file that has been copied
       @property timeTaken [Number]
+        @description
+          The time taken to copy the resource (in milliseconds)
 
     @group [Properties for event type 'error']
+      @description
+        Events logged when there are errors in the pipeline, excluding events
+        that have explicit event loggers (e.g. 'page-load-error')
       @property error [Error]
+        @description
+          The error that was thrown
 
     @group [Properties for event type 'end']
+      @description
+        The event logged at the end of a complete pipeline.
       @property builtCount [Number]
+        @description
+          The total number of pages built in the pipeline
       @property timeTaken [Number]
+        @description
+          The total time taken (in milliseconds)
 
 @property logLevel [String]
   @added 2.0.0
@@ -126,3 +175,12 @@
 
   @param fileName [String]
   @param parentFilename [String]
+
+@property port [Number]
+  @added 2.0.0
+  @description
+    The port to start the site on so it can be accessed in the browser
+    (e.g. @code[http://localhost:port]).
+
+    This is only used when watching.
+  @default: 8080

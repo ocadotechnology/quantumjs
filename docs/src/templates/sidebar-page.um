@@ -20,13 +20,15 @@
             @page {{baseurl}}/docs/core-concepts/: Core Concepts
             @page {{baseurl}}/docs/cli-and-api/: Using the CLI / API
             @page {{baseurl}}/docs/quantum-vs-markdown: Quantum vs Markdown
-
           # @section Tutorials
           #   @page {{baseurl}}/tutorials/writing-technical-documentation/: Writing Technical Documentation
           #   @page {{baseurl}}/tutorials/creating-a-blog/: Creating a Blog
 
           # @section Advanced Topics
           #   @page {{baseurl}}/docs/ast/: The AST
+
+          @section Config
+            @page {{baseurl}}/docs/quantum-config/: quantum.config.js
 
           @section Core Modules
             @page {{baseurl}}/docs/modules/quantum-js/: quantum-js

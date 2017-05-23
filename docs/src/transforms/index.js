@@ -11,10 +11,12 @@ function exampleFile (selection, transformer, fileName) {
     if (selection.has(type)) {
       const subEntity = selection.select(type)
 
+      const language = type === 'config' ? 'js' : type === 'console' ? 'bash' : type
+
       const fake = quantum.select({
         content: [{
           type: 'codeblock',
-          params: [type === 'config' ? 'js' : type],
+          params: [language],
           content: subEntity.content()
         }]
       })
@@ -27,7 +29,7 @@ function exampleFile (selection, transformer, fileName) {
 
   const code = dom.create('div').class('docs-example-code-body')
     .add([
-      addCodeSection('nohighlight', 'Console'),
+      addCodeSection('console', 'Console'),
       addCodeSection('html', 'HTML'),
       addCodeSection('js', 'Javascript'),
       addCodeSection('css', 'CSS'),

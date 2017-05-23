@@ -14,17 +14,21 @@
       Build a quantum site using the config passed in.
     @param config [Object]
       @inline ./api/config.um
+    @returns Promise
+      @description
+        A promise that resolves when the pipeline is complete.
+
+        It does not contain a value but can be used when chaining items in a
+        build (e.g. build the site and then run the deployment script)
+
 
   @function watch
     @added 2.0.0
     @description
       Build a quantum site and watch for changes using the config passed in.
+
+      This function does not return anything as it watches files for changes and
+      must be killed by ending the current process.
     @param config [Object]
       @inline ./api/config.um
-
-      @property port [Number]
-        @description
-          The port to start the site on so it can be accessed in the browser
-          (e.g. @code[http://localhost:port])
-        @default: 8080
 

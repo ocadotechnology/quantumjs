@@ -8,18 +8,19 @@
     file transforms and entity html transforms.
 
 @contentSection
+  @tableOfContents Contents
+
   @topic The Pipeline
-
     One key feature that quantum has is the way in which it turns markup into
-    html. It uses a chain of functions to apply various transforms to get the output
-    in the right format before turning it into html. Taking this approach allows
-    multiple useful features to be added on top of the basic markup language
-    (versioning, automatic table of contents generation, templating logic and more).
+    html. It uses a chain of @type[FileTransform] functions to apply various
+    transforms to get the output in the right format before turning it into
+    html.
 
-    @label
-      A typical pipeline for turning quantum markup into html
+    Taking this approach allows multiple useful features to be added on top of
+    the basic markup language (versioning, automatic table of contents
+    generation, templating logic and more).
 
-    @sheet
+    @subsection A typical pipeline for turning quantum markup into html
       @diagram
         @item markup [Read index.um]
         @item custom-transforms [Custom Transforms]
@@ -33,9 +34,44 @@
         @link html -> write: HTML String
 
 
+  @topic The AST (abstract syntax tree)
+    Parsing is the process of turning the markup text into @type[Entity]
+    AST objects that can be more easily manipulated.
+
+    The quantum markup language is designed tobe easy to work with once parsed
+    as well as provide the ability to use @type[EntityTransform] functions as
+    well as @type[FileTransform] functions to manipulate the output of a page.
+
+    A basic example of the AST for some Quantum markup can be seen below:
+
+    @example
+      @@um
+        @type param1 param2
+          @otherType: Content
+
+      @output
+        @@codeblock js
+          {
+            type: 'type',
+            params: ['param1', 'param2'],
+            content: [
+              {
+                type: 'otherType',
+                params: [],
+                content: ['Content']
+              }
+            ]
+          }
+
+
+    @notice [Note]
+      There are some helper apis for working with the parsed AST.
+
+      See the @hyperlink({{baseurl}}/docs/modules/quantum-js/#selection-api)[quantum-js]
+      module docs for more information.
+
 
   @topic File Transforms
-
     A @bold[file transform] lets you @bold[alter the parsed AST] of an
     entire file before it is rendered out to HTML. A file transform is
     simply a function.
@@ -110,6 +146,40 @@
         params: ['param1', 'param2'],
         content: ['Content']
       }
+
+
+    @section Entity Objects
+      An entity consists of entities with three properties, @code[type],
+      @code[params] and @code[content]:
+      @api entities
+        @group
+          @object Entity
+            @collapsible false
+            @property type [String]
+              @description
+                The @code[@] type of the entity, e.g for @code[@code] the type is
+                @code['code'].
+
+            @property params [Array[String]]
+              @description
+                The params for an entity
+
+              @extra
+                For the following entity:
+                @@codeblock um
+                  @type param1 param2
+
+                The @code[params] is:
+                @@codeblock js
+                  ['param1', 'param2']
+
+            @property content [Array[String/Entity]]
+              @description
+                The content of the current entity.
+
+                It contains all the string content as well as the nested entities
+                of the current entity.
+
 
   @topic Entity Transforms
 
@@ -247,24 +317,5 @@
                 </div>
               </body>
               </html>
-
-    @topic The AST (abstract syntax tree)
-
-      Parsing is the process of turning the markup text into objects that can be
-      more easily manipulated. The quantum markup language is designed to be easy
-      to work with once parsed.
-
-      This is what the markup on the @hyperlink({{baseurl}}/docs/markup/)[Markup] file looks
-      like when parsed into AST.
-
-      @notice [TODO]
-        XXX: Add easy to read example
-      # @codeblock json: @inline output.json
-
-      @notice [Note]
-        There are some helper apis for working with the parsed AST. See
-        the @hyperlink({{baseurl}}/docs/modules/quantum-js/#selection-api)[quantum-js] module
-        docs for more information.
-
 
 @footer

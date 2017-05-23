@@ -1,0 +1,103 @@
+@inline /templates/sidebar-page.um
+
+@topSection
+  @title Using the CLI / API
+  @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
+  @description
+    This page explains how use the command line interface (CLI) and the API for
+    creating documentation.
+
+@contentSection
+  @topic Configuring Quantum
+    Quantum is configured by creating a config file called @code[quantum.config.js] which
+    contains the pipeline definition as well as config for which files
+    to build.
+
+    @section Available options
+      @api config
+        @group
+          @inline ./modules/quantum-js/api/api/config.um
+
+
+    @section Full-featured Example
+      @example
+        @noOutput
+        @file quantum.config.js
+          @@js
+            const html = require('quantum-html')
+            const api = require('quantum-api')
+            const version = require('quantum-version')
+            const template = require('quantum-template')
+            const diagram = require('quantum-diagram')
+            const markdown = require('quantum-markdown')
+            const codeHighlight = require('quantum-code-highlight')
+            const docs = require('quantum-docs')
+
+            // Provide type links for quantum-api
+            const typeLinks = {
+              Array: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array',
+              Boolean: 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean',
+              Function: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function',
+              Number: 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number',
+              Object: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object',
+              String: 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String',
+              Promise: 'https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise'
+            }
+
+            // Provide the languages to use when creating apis with quantum-api
+            const apiOptions = {
+              languages: [
+                api.languages.quantum(),
+                api.languages.css(),
+                api.languages.javascript({
+                  typeLinks: typeLinks
+                })
+              ]
+            }
+
+            const htmlOptions = {
+              embedAssets: false,
+              // Output assets to `/resources`
+              assetPath: '/resources',
+              resourcesTarget: '/resources',
+              transforms: {
+                // Add the transforms from all the quantum modules
+                html: html.transforms(),
+                api: api.transforms(apiOptions),
+                diagram: diagram.transforms(),
+                markdown: markdown.transforms(),
+                docs: docs.transforms(),
+                highlight: codeHighlight.transforms()
+              }
+            }
+
+            // Export the options for quantum to use
+            module.exports = {
+              // The port to run quantum on when watching
+              port: 9000,
+              // The quantum pipeline to use when transforming files
+              pipeline: [
+                template.fileTransform(),
+                api.fileTransform(apiOptions),
+                version.fileTransform(),
+                docs.fileTransform(),
+                html.fileTransform(htmlOptions)
+              ],
+              // The pages to include in the site
+              pages: {
+                files: [
+                  'content/**/*.um'
+                ],
+                base: 'content'
+              },
+              // The path to resolve absolute paths from
+              resolveRoot: 'content',
+              // Additional files to include on the site (e.g. custom CSS, SVG etc.)
+              resources: [
+                {
+                  files: 'content/resources/**/*',
+                  dest: 'resources',
+                  watch: true
+                }
+              ]
+            }

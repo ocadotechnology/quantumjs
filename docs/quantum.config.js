@@ -33,7 +33,7 @@ const typeLinks = {
   PageModifier: baseUrl + '/docs/modules/quantum-dom/#pagemodifier',
   FileTransform: baseUrl + '/docs/core-concepts/#file-transforms',
   EntityTransform: baseUrl + '/docs/core-concepts/#entity-transforms',
-  Entity: baseUrl + '/docs/core-concepts/#the-ast-(abstract-syntax-tree)',
+  Entity: baseUrl + '/docs/core-concepts/#entities',
   HTMLPage: baseUrl + '/docs/modules/quantum-html/#htmlpage'
 }
 
