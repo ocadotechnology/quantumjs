@@ -1,16 +1,16 @@
-describe('transforms', () => {
+describe('entityTransforms', () => {
   const path = require('path')
   const quantum = require('quantum-js')
   const dom = require('quantum-dom')
-  const { transforms } = require('..')
+  const { entityTransforms } = require('..')
 
-  it('provides the correct transforms', () => {
-    transforms().should.have.keys([
+  it('provides the correct entityTransforms', () => {
+    entityTransforms().should.have.keys([
       'code',
       'codeblock'
     ])
-    transforms().code.should.be.a('function')
-    transforms().codeblock.should.be.a('function')
+    entityTransforms().code.should.be.a('function')
+    entityTransforms().codeblock.should.be.a('function')
   })
 
   it('doesnt highlight inline code', () => {
@@ -20,7 +20,7 @@ describe('transforms', () => {
       content: ['function (x) { return x * x }']
     })
 
-    transforms().code(selection).should.eql(
+    entityTransforms().code(selection).should.eql(
       dom.create('code')
         .class('qm-code-highlight-code qm-code-font')
         .text('function (x) { return x * x }', {escape: false})
@@ -39,7 +39,7 @@ describe('transforms', () => {
       content: ['function (x) { return x * x }']
     })
 
-    transforms().codeblock(selection).should.eql(
+    entityTransforms().codeblock(selection).should.eql(
       dom.create('div')
         .class('qm-code-highlight-codeblock language-js')
         .add(dom.create('pre')
@@ -60,7 +60,7 @@ describe('transforms', () => {
       content: ['function (x) { return x * x }']
     })
 
-    transforms().codeblock(selection).should.eql(
+    entityTransforms().codeblock(selection).should.eql(
       dom.create('div')
         .class('qm-code-highlight-codeblock language-notalanguage')
         .add(dom.create('pre')
@@ -81,7 +81,7 @@ describe('transforms', () => {
       content: ['function (x) { return x * x }']
     })
 
-    transforms().codeblock(selection).should.eql(
+    entityTransforms().codeblock(selection).should.eql(
       dom.create('div')
         .class('qm-code-highlight-codeblock')
         .add(dom.create('pre')
