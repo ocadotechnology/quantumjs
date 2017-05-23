@@ -16,14 +16,14 @@ describe('css', () => {
       'assets',
       'changelog',
       'name',
-      'transforms'
+      'entityTransforms'
     ])
     language.assets.should.be.an('array')
     language.name.should.equal('css')
-    language.transforms.should.be.an('object')
+    language.entityTransforms.should.be.an('object')
     language.changelog.should.be.an('object')
   })
 
-  require('./transforms.spec')
+  require('./entityTransforms.spec')
   require('./changelog.spec')
 })

@@ -1,5 +1,5 @@
 'use strict'
 require('chai').should()
 require('./module.spec')
-require('./transforms.spec')
+require('./entityTransforms.spec')
 require('./parseMarkdown.spec')

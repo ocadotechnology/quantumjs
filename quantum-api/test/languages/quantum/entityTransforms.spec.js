@@ -1,9 +1,9 @@
-describe('transforms', () => {
+describe('entityTransforms', () => {
   const quantum = require('../../../lib/languages/quantum')
 
   const typeLinks = {}
 
-  const { transforms } = quantum({typeLinks})
+  const { entityTransforms } = quantum({typeLinks})
   const keys = [
     'entity',
     'entity?',
@@ -11,13 +11,13 @@ describe('transforms', () => {
     'param?'
   ]
   it('has the right properties', () => {
-    transforms.should.have.keys(keys)
+    entityTransforms.should.have.keys(keys)
   })
 
   keys.forEach(k => {
     it(`'${k}' looks like a transform`, () => {
-      transforms[k].should.be.a('function')
-      transforms[k].length.should.equal(2)
+      entityTransforms[k].should.be.a('function')
+      entityTransforms[k].length.should.equal(2)
     })
   })
 })

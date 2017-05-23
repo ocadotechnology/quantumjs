@@ -59,14 +59,14 @@
               // Output assets to `/resources`
               assetPath: '/resources',
               resourcesTarget: '/resources',
-              transforms: {
-                // Add the transforms from all the quantum modules
-                html: html.transforms(),
-                api: api.transforms(apiOptions),
-                diagram: diagram.transforms(),
-                markdown: markdown.transforms(),
-                docs: docs.transforms(),
-                highlight: codeHighlight.transforms()
+              entityTransforms: {
+                // Add the entity transforms from all the quantum modules
+                html: html.entityTransforms(),
+                api: api.entityTransforms(apiOptions),
+                diagram: diagram.entityTransforms(),
+                markdown: markdown.entityTransforms(),
+                docs: docs.entityTransforms(),
+                highlight: codeHighlight.entityTransforms()
               }
             }
 

@@ -106,7 +106,7 @@ module.exports = (options) => {
   return {
     assets,
     name: 'quantum',
-    transforms: {
+    entityTransforms: {
       'entity': entityBuilder,
       'entity?': entityBuilder,
       'param': paramBuilder,

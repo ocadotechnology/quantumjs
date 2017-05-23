@@ -7,4 +7,4 @@
     @hyperlink({{baseurl}}/docs/modules/quantum-diagram/changelog/)[Changelog]
 
 
-  @inline api/transforms.um
+  @inline api/entityTransforms.um

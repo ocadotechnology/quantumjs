@@ -119,6 +119,7 @@ p:last-child {
   bottom: 0;
   top: 43px;
   background: #15668e;
+  -webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 
@@ -133,8 +134,8 @@ p:last-child {
 
 .qm-docs-sidebar-right {
   left: calc(50% + 400px);
-}*/
-
+}
+*/
 
 /*.qm-docs-sidebar.qm-docs-sidebar-at-top {
   position: absolute;
@@ -145,8 +146,8 @@ p:last-child {
   position: absolute;
   bottom: 0;
   top: initial;
-}*/
-
+}
+*/
 
 /* Table of contents */
 
@@ -288,6 +289,7 @@ p:last-child {
   -webkit-justify-content: flex-start;
   justify-content: flex-start;
   border-radius: 5px;
+  -webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 
@@ -356,6 +358,7 @@ p:last-child {
   right: 0;
   background: white;
   color: #6B6B6B;
+  -webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 
@@ -518,7 +521,6 @@ p:last-child {
 
 /* Notices */
 
-
 /* XXX: add the hexagon type context classes here */
 
 .qm-docs-notice {
@@ -544,6 +546,7 @@ p:last-child {
   width: 100%;
   z-index: 1000;
   padding: 0 15px;
+  -webkit-box-shadow: 1px 1px 1px 1px rgba(10, 10, 10, 0.07);
   box-shadow: 1px 1px 1px 1px rgba(10, 10, 10, 0.07);
 }
 
@@ -618,10 +621,11 @@ p:last-child {
   margin: 0 0.25em;
   cursor: pointer;
   font-family: 'Open Sans', sans-serif;
+  display: inline-block;
 }
 
 .qm-docs-header-link:hover {
-  border-color: white;
+  border-color: grey;
   text-decoration: none;
 }
 
@@ -677,7 +681,8 @@ p:last-child {
 .qm-docs-table tr:last-child th:last-child,
 .qm-docs-table tr:last-child td:last-child {
   border-bottom-right-radius: 0.2em;
-} */
+}
+ */
 
 .qm-docs-table {
   border-collapse: collapse;
@@ -706,13 +711,36 @@ p:last-child {
   background-color: #f8f8f8;
 }
 
+.qm-docs-header-mobile-menu  {
+  display: none;
+  opacity: 0.3;
+  cursor: pointer;
+  font-size: 2em;
+}
+
+.qm-docs-header-mobile-menu:hover {
+  opacity: 1;
+}
+
 @media (max-width: 800px) {
+  .qm-docs-header-mobile-menu {
+    display: inline-block;
+    line-height: 1em;
+    height: 1em;
+  }
+
   .qm-docs-centered {
     max-width: 680px;
   }
 
   .qm-docs-top-section-centered {
     max-width: 680px;
+  }
+
+  .qm-docs-header-wrapper {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
   }
 
   .qm-docs-sidebar-page .qm-docs-sidebar-page {
@@ -724,7 +752,43 @@ p:last-child {
     overflow: auto;
   }
 
+  .qm-docs-header-links {
+    display: none;
+    -webkit-flex-basis: 100%;
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+  }
+
+  .qm-docs-header-links.qm-mobile-nav-open {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+
   .qm-docs-sidebar-page .qm-docs-sidebar {
+    display: none;
+    position: fixed;
+    top: 42px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  .qm-docs-navigation-menu-wrapper {
+    max-height: 100%;
+  }
+
+  .qm-docs-sidebar-page .qm-docs-sidebar.qm-mobile-nav-open {
     display: block;
   }
 
@@ -768,4 +832,13 @@ p:last-child {
 
 .qm-docs-sidebar-page .qm-docs-centered {
   max-width: 100%;
+}
+
+.qm-docs-menu-icon-toggle {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  background: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#444" d="M3 6h18v2.016h-18v-2.016zM3 12.984v-1.969h18v1.969h-18zM3 18v-2.016h18v2.016h-18z"></path></svg>');
+  background-position: center;
+  background-size: cover;
 }

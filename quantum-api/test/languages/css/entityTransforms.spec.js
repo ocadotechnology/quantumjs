@@ -1,21 +1,21 @@
-describe('transforms', () => {
+describe('entityTransforms', () => {
   const css = require('../../../lib/languages/css')
 
   const typeLinks = {}
 
-  const { transforms } = css({typeLinks})
+  const { entityTransforms } = css({typeLinks})
   const keys = [
     'class',
     'extraClass'
   ]
   it('has the right properties', () => {
-    transforms.should.have.keys(keys)
+    entityTransforms.should.have.keys(keys)
   })
 
   keys.forEach(k => {
     it(`'${k}' looks like a transform`, () => {
-      transforms[k].should.be.a('function')
-      transforms[k].length.should.equal(2)
+      entityTransforms[k].should.be.a('function')
+      entityTransforms[k].length.should.equal(2)
     })
   })
 })

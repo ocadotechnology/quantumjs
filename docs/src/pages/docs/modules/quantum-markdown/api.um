@@ -6,4 +6,4 @@
     For information about different versions, see the
     @hyperlink({{baseurl}}/docs/modules/quantum-markdown/changelog/)[Changelog]
 
-  @inline api/transforms.um
+  @inline api/entityTransforms.um

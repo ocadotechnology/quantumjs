@@ -14,7 +14,7 @@
         The options to pass to the @hyperlink(./#builddom)[buildDOM] function.
       @property meta [Object]
       @property defaultTransform [EntityTransform]
-      @property transforms [Object]
+      @property entityTransforms [Object]
       @property includeCommonMetaTags [Boolean]
 
     @group [buildHTML Options]

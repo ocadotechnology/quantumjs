@@ -11,7 +11,7 @@
 
 @contentSection
   @topic About
-    This module provides transforms for writing the API documentation that you
+    This module provides entity transforms for writing the API documentation that you
     can see in the @hyperlink({{baseurl}}/docs/modules/quantum-api/#api)[API] section of this
     and the other module pages.
 
@@ -28,8 +28,8 @@
           const html = require('quantum-html')
 
           const htmlOptions = {
-            transforms: {
-              api: api.transforms()
+            entityTransforms: {
+              api: api.entityTransforms()
             }
           }
 
@@ -85,7 +85,7 @@
     Below are several examples with the code required and their output.
 
     @section Standalone
-      Using the module to provide the transforms provides basic api
+      Using the module to provide the entity transforms provides basic api
       documentation capabilities:
 
       @example
@@ -100,9 +100,9 @@
             }
 
             const htmlOptions = {
-              transforms: {
-                html: html.transforms(),
-                api: api.transforms(apiOptions) // Add the api section renderers to the page
+              entityTransforms: {
+                html: html.entityTransforms(),
+                api: api.entityTransforms(apiOptions) // Add the api section renderers to the page
               }
             }
 
@@ -134,9 +134,9 @@
             }
 
             const htmlOptions = {
-              transforms: {
-                html: html.transforms(),
-                api: api.transforms(apiOptions) // Add the api section renderers to the page
+              entityTransforms: {
+                html: html.entityTransforms(),
+                api: api.entityTransforms(apiOptions) // Add the api section renderers to the page
               }
             }
 
@@ -219,9 +219,9 @@
             }
 
             const htmlOptions = {
-              transforms: {
-                html: html.transforms(),
-                api: api.transforms(apiOptions) // Add the api section renderers to the page
+              entityTransforms: {
+                html: html.entityTransforms(),
+                api: api.entityTransforms(apiOptions) // Add the api section renderers to the page
               }
             }
 
@@ -316,10 +316,10 @@
               ]
             }
 
-            // Add the api transforms to htmlTransforms if they weren't there already
+            // Add the api entity transforms to htmlTransforms if they weren't there already
             const htmlOptions = {
-              transforms: {
-                api: api.transforms(apiOptions)
+              entityTransforms: {
+                api: api.entityTransforms(apiOptions)
               }
             }
 

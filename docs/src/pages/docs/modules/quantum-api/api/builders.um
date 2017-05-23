@@ -1,7 +1,7 @@
 @object builders
   @added 2.0.0
   @description
-    Provides functions for building transforms for entities in languages.
+    Provides functions for building entity transforms for entities in languages.
 
     See the @hyperlink(#creating-a-custom-language)[Custom Language] example
     for a complete example.
@@ -58,7 +58,7 @@
   @property item [Function]
     @description
       Provides a transform for rendering an api item, such as @code[@function],
-      by providing a header and a set of transforms to apply to content.
+      by providing a header and a set of entity transforms to apply to content.
 
     @param? options [Object]
       @property class [String]
@@ -67,7 +67,7 @@
 
       @property content [Array[EntityTransform]]
         @description
-          The transforms to apply to the content of the item in the order they
+          The entity transforms to apply to the content of the item in the order they
           should be displayed
 
         @extra
@@ -86,7 +86,7 @@
                 })
 
                 module.exports = () => ({
-                  transforms: {
+                  entityTransforms: {
                     function: functionBuilder
                   }
                 })
@@ -126,7 +126,7 @@
                 })
 
                 module.exports = () => ({
-                  transforms: {
+                  entityTransforms: {
                     function: functionBuilder,
                     property: propertyBuilder
                   }

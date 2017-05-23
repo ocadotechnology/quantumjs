@@ -2,13 +2,13 @@ const html = require('quantum-html')
 const markdown = require('quantum-markdown')
 
 const htmlTransforms = {
-  html: html.transforms(),
-  markdown: markdown.transforms()
+  html: html.entityTransforms(),
+  markdown: markdown.entityTransforms()
 }
 
 function pipeline (page) {
   return Promise.resolve(page)
-    .then(html({ transforms: htmlTransforms }))
+    .then(html({ entityTransforms: htmlTransforms }))
     .then(html.stringify())
     .then(html.htmlRenamer())
 }

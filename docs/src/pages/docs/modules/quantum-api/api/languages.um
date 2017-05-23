@@ -18,9 +18,9 @@
       @property name [String]
         @description
           The name of the language
-      @property transforms [Object[EntityTransform]]
+      @property entityTransforms [Object[EntityTransform]]
         @description
-          The transforms the language exposes
+          The entity transforms the language exposes
       @property changelog [Object]
         @description
           The entity types and header function for generating changelog items.
@@ -42,9 +42,9 @@
       @property name [String]
         @description
           The name of the language
-      @property transforms [Object[EntityTransform]]
+      @property entityTransforms [Object[EntityTransform]]
         @description
-          The transforms the language exposes
+          The entity transforms the language exposes
       @property changelog [Object]
         @description
           The entity types and header function for generating changelog items.
@@ -66,9 +66,9 @@
       @property name [String]
         @description
           The name of the language
-      @property transforms [Object[EntityTransform]]
+      @property entityTransforms [Object[EntityTransform]]
         @description
-          The transforms the language exposes
+          The entity transforms the language exposes
       @property changelog [Object]
         @description
           The entity types and header function for generating changelog items.

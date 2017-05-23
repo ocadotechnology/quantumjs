@@ -3,13 +3,13 @@ const html = require('quantum-html')
 const diagram = require('..') // normally require('quantum-diagram')
 
 const htmlTransforms = {
-  html: html.transforms(),
-  diagram: diagram.transforms()
+  html: html.entityTransforms(),
+  diagram: diagram.entityTransforms()
 }
 
 module.exports = {
   pipeline: [
-    html({transforms: htmlTransforms}),
+    html({entityTransforms: htmlTransforms}),
     html.build()
   ],
   pages: 'index.um'

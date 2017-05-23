@@ -260,12 +260,12 @@ function diagram (selection, transform) {
   return constructDom(graph, graphOptions, nodeMap, edgeMap)
 }
 
-function transforms (opts) {
+function entityTransforms (opts) {
   return Object.freeze({
     diagram
   })
 }
 
 module.exports = {
-  transforms
+  entityTransforms
 }
