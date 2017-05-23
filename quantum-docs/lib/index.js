@@ -235,12 +235,6 @@ function header (selection, transformer) {
     content: 'window.quantum.docs.createHeaderToggle("' + mobileNavId + '");'
   })
 
-  const mobileNavStyleAsset = dom.asset({
-    url: '/quantum-docs-menu-icon.css',
-    filename: path.join(__dirname, '../assets/quantum-docs-menu-icon.css'),
-    shared: true
-  })
-
   return dom.create('div').class('qm-docs-header')
     .add(dom.create('div').class('qm-docs-centered')
       .add(dom.create('div').class('qm-docs-header-wrapper')
@@ -260,7 +254,6 @@ function header (selection, transformer) {
     ))
     .add(stylesheetAsset)
     .add(scriptAsset)
-    .add(mobileNavStyleAsset)
     .add(mobileNavScriptAsset)
 }
 
