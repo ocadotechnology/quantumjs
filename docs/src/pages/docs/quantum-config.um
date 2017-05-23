@@ -1,11 +1,10 @@
 @inline /templates/sidebar-page.um
 
 @topSection
-  @title Using the CLI / API
+  @title quantum.config.js
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    This page explains how use the command line interface (CLI) and the API for
-    creating documentation.
+    This page explains the quantum.config.js file and the available options
 
 @contentSection
   @topic Configuring Quantum
