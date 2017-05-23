@@ -7,6 +7,6 @@
     @hyperlink({{baseurl}}/docs/modules/quantum-code-highlight/changelog/)[Changelog]
 
 
-  @inline api/transforms.um
+  @inline api/entityTransforms.um
   @inline api/highlightCode.um
   @inline api/stylesheetAsset.um

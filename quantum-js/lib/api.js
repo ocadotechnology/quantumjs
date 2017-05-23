@@ -108,10 +108,10 @@ function flatten (arrays) {
   return Array.prototype.concat.apply([], arrays)
 }
 
-function createPipeline (transforms) {
+function createPipeline (entityTransforms) {
   return (file) => {
     let result = Promise.resolve([file])
-    transforms.forEach(transform => {
+    entityTransforms.forEach(transform => {
       result = result.then(files => {
         return Promise.all(files.map(transform)).then(flatten)
       })

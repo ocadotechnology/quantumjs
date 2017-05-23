@@ -5,7 +5,7 @@
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     This file explains some of the concepts used in quantumjs, including the pipeline,
-    file transforms and entity html transforms.
+    file transforms and entity transforms.
 
 @contentSection
   @tableOfContents Contents
@@ -126,7 +126,7 @@
 
 
     # @notice More details
-    #   See the @hyperlink({{baseurl}}/tutorials/custom-transforms)[Custom transforms] tutorial
+    #   See the @hyperlink({{baseurl}}/tutorials/custom-transforms)[Custom entityTransforms] tutorial
     #   for how to create and use your own entity transforms.
 
 
@@ -245,7 +245,7 @@
             @param? meta [Object]
               @collapsible false
               @description
-                The meta object as defined in @hyperlink({{baseurl}}/docs/modules/quantum-html/#builddom)[buildDOM] options. This should only be used in custom transforms.
+                The meta object as defined in @hyperlink({{baseurl}}/docs/modules/quantum-html/#builddom)[buildDOM] options. This should only be used in custom entity transforms.
 
     # TODO: Convert this to a tutorial page with a more in-depth example
     @section Custom Entity Transform Example
@@ -266,14 +266,14 @@
                 .add(dom.create('button').class('sign-in-button').text('Sign in'))
             }
 
-            function transforms () {
+            function entityTransforms () {
               return Object.freeze({
                 signIn
               })
             }
 
             module.exports = {
-              transforms
+              entityTransforms
             }
 
         @file quantum.config.js
@@ -283,8 +283,8 @@
             const html = require('quantum-html')
 
             const htmlOptions = {
-              transforms: {
-                custom: custom.transforms()
+              entityTransforms: {
+                custom: custom.entityTransforms()
               }
             }
 

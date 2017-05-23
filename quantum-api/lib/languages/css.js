@@ -85,7 +85,7 @@ module.exports = (options) => {
   return {
     assets,
     name: 'css',
-    transforms: {
+    entityTransforms: {
       class: classBuilder,
       extraClass: extraClassBuilder
     },

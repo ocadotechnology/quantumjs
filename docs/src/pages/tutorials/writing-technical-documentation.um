@@ -17,7 +17,7 @@
       @item: Writing some general documentation using the @bold[quantum-docs] module
       @item: Documenting a javascript client library for the service with the @bold[quantum-api] and @bold[quantum-version] modules
       @item: Documenting the tea/coffee making process with the @bold[quantum-diagram] module
-      @item: Writing custom transforms for the @bold[quantum-html] module
+      @item: Writing custom entity transforms for the @bold[quantum-html] module
 
     The finished tutorial is available as a git repository @hyperlink(#)[here].
 
@@ -89,8 +89,8 @@
           var Promise = require('bluebird')
 
           var htmlOptions = {
-            transforms: {
-              html: html.transforms,
+            entityTransforms: {
+              html: html.entityTransforms,
               docs: docs()
             }
           }
@@ -284,8 +284,8 @@
         ...
 
         var htmlOptions = {
-          transforms: {
-            html: html.transforms,
+          entityTransforms: {
+            html: html.entityTransforms,
             docs: docs(),
             api: api() // Add the api renderers
           }
@@ -451,8 +451,8 @@
 
         function pipeline () {
           var htmlOptions = {
-            transforms: {
-              html: html.transforms,
+            entityTransforms: {
+              html: html.entityTransforms,
               docs: docs(),
               api: api()
             }
@@ -557,11 +557,11 @@
         ...
 
           var htmlOptions = {
-            transforms: {
-              html: html.transforms,
+            entityTransforms: {
+              html: html.entityTransforms,
               docs: docs(),
               api: api(),
-              changelog: changelog.transforms() // Add the changelog transforms
+              changelog: changelog.entityTransforms() // Add the changelog entityTransforms
             }
           }
 
@@ -656,12 +656,12 @@
         ...
 
           var htmlOptions = {
-            transforms: {
-              html: html.transforms,
+            entityTransforms: {
+              html: html.entityTransforms,
               docs: docs(),
               api: api(),
-              changelog: changelog.transforms(),
-              diagram: diagram() // Add the diagram transforms
+              changelog: changelog.entityTransforms(),
+              diagram: diagram() // Add the diagram entityTransforms
             }
           }
 

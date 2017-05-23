@@ -40,7 +40,7 @@
       Most of this page goes into low level apis that you most likely won't have
       to worry about if you are just using quantum as a tool.
       This page documents some of the parts of quantum that are interesting when
-      developing your own transforms.
+      developing your own entity transforms.
 
     @inline api.um
 

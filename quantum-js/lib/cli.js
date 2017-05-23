@@ -64,7 +64,7 @@ function list (config) {
       logKeys(entityTransforms[entityName], entityName, entityName)
     })
   } else {
-    console.log(chalk.yellow('No entity transforms are present in your pipeline'))
+    console.log(chalk.yellow('No entity entityTransforms are present in your pipeline'))
   }
 }
 

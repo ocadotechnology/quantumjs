@@ -16,7 +16,7 @@ const body = require('./entity-transforms/builders/body')
 const item = require('./entity-transforms/builders/item')
 const itemGroup = require('./entity-transforms/builders/item-group')
 
-// entity transforms
+// entity entityTransforms
 const api = require('./entity-transforms/api')
 const changelogList = require('./entity-transforms/changelog-list')
 const changelog = require('./entity-transforms/changelog')
@@ -26,23 +26,23 @@ const quantum = require('./languages/quantum')
 const javascript = require('./languages/javascript')
 const css = require('./languages/css')
 
-// file transforms
+// file entityTransforms
 const changelogFileTransform = require('./file-transforms/changelog').fileTransform
 
-function transforms (options) {
+function entityTransforms (options) {
   const opts = config.resolve(options)
 
-  const transforms = {
+  const entityTransforms = {
     api: api({ builders: opts.apiBuilders, languages: opts.languages }),
     changelogList: changelogList(),
     changelog: changelog(opts)
   }
 
   opts.languages.forEach(language => {
-    transforms[language.name] = language.transforms
+    entityTransforms[language.name] = language.entityTransforms
   })
 
-  return Object.freeze(transforms)
+  return Object.freeze(entityTransforms)
 }
 
 function fileTransform (options) {
@@ -57,7 +57,7 @@ function fileTransform (options) {
 }
 
 module.exports = {
-  transforms,
+  entityTransforms,
   fileTransform,
   fileTransforms: {
     changelog: changelogFileTransform

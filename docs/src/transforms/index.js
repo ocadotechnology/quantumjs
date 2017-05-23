@@ -152,7 +152,7 @@ function cheatsheetExample (selection, transformer) {
       .add(quantum.select(quantum.parse(selection.cs())).transform(transformer)))
 }
 
-function transforms () {
+function entityTransforms () {
   return Object.freeze({
     um,
     example,
@@ -163,5 +163,5 @@ function transforms () {
 }
 
 module.exports = {
-  transforms
+  entityTransforms
 }

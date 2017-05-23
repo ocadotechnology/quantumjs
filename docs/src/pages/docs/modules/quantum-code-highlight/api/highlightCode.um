@@ -6,7 +6,7 @@
     returining the html with highlight classes applied.
 
     This function is used in the @code[@@codeblock] entity but can be used
-    within custom transforms if required.
+    within custom entity transforms if required.
 
     If using this directly, you must add the @code[stylesheetAsset] in the
     transform or the highlight colours will not be applied.

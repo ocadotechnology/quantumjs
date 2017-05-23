@@ -22,7 +22,7 @@
       use of that information.
 
       This property should not be used in any quantum libraries and is designed
-      to be used in custom transforms.
+      to be used in custom entity transforms.
 
   @property warnings [Array[Object]]
     @description

@@ -141,7 +141,7 @@ function versionSelector (selection, transformer) {
 
     return dom.create('select')
       .id(id)
-      .class('qm-docs-version-selector hx-btn')
+      .class('qm-docs-version-selector')
       .add(stylesheetAsset)
       .add(scriptAsset)
       .add(versionScriptAsset)
@@ -332,7 +332,7 @@ function table (selection, transformer) {
     .add(stylesheetAsset)
 }
 
-function transforms (opts) {
+function entityTransforms (opts) {
   return Object.freeze({
     topic,
     section,
@@ -394,5 +394,5 @@ function fileTransform (options) {
 
 module.exports = {
   fileTransform,
-  transforms
+  entityTransforms
 }

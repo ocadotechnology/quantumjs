@@ -64,14 +64,14 @@ const htmlOptions = {
   embedAssets: false,
   assetPath: baseUrl + '/resources',
   resourcesTarget: '/resources',
-  transforms: {
-    html: html.transforms(),
-    api: api.transforms(apiOptions),
-    diagram: diagram.transforms(),
-    markdown: markdown.transforms(),
-    docs: docs.transforms(),
-    highlight: codeHighlight.transforms(),
-    custom: custom.transforms()
+  entityTransforms: {
+    html: html.entityTransforms(),
+    api: api.entityTransforms(apiOptions),
+    diagram: diagram.entityTransforms(),
+    markdown: markdown.entityTransforms(),
+    docs: docs.entityTransforms(),
+    highlight: codeHighlight.entityTransforms(),
+    custom: custom.entityTransforms()
   }
 }
 

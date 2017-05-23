@@ -42,7 +42,8 @@
   @topic Create a config file
     Next we'll create a config file for building our project. The config file
     describes how to convert your markup into HTML. Create a file called
-    @bold[quantum.config.js] and copy the following into it:
+    @hyperlink({{baseurl}}/docs/quantum-config)[quantum.config.js] and copy the following
+    into it:
 
     @@codeblock js
       const html = require('quantum-html')
@@ -53,8 +54,8 @@
         individual entries in the page to virtual dom.
       */
       const htmlTransforms = {
-        html: html.transforms(),
-        docs: docs.transforms()
+        html: html.entityTransforms(),
+        docs: docs.entityTransforms()
       }
 
       /*
@@ -62,13 +63,12 @@
         quantum ast to HTML.
       */
       const pipeline = [
-        html({ transforms: htmlTransforms })
+        html.fileTransform({ entityTransforms: htmlTransforms })
       ]
 
       /* Export the pipeline, the pages we want to transform */
       module.exports = {
         pipeline: pipeline,
-        htmlTransforms: htmlTransforms,
         pages: '*.um'
       }
 

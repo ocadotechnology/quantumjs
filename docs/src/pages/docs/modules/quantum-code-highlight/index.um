@@ -11,7 +11,7 @@
 
 @contentSection
   @topic About
-    This module provides the transforms for @code[@code] and @@code[@@codeblock] entities.
+    This module provides the entity transforms for @code[@code] and @@code[@@codeblock] entities.
     The code and codeblock entities render highlighted code blocks.
 
   @topic Examples

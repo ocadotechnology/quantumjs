@@ -8,7 +8,7 @@ describe('changelogList', () => {
     return dom.create('div').text(selection.type())
   }
 
-  it('only transforms changelog entries', () => {
+  it('only entityTransforms changelog entries', () => {
     const selection = quantum.select({
       type: 'changelogList',
       params: [],

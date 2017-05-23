@@ -40,7 +40,7 @@ function codeblock (selection, transform) {
     .add(stylesheetAsset)
 }
 
-function transforms (opts) {
+function entityTransforms (opts) {
   return Object.freeze({
     code,
     codeblock
@@ -50,5 +50,5 @@ function transforms (opts) {
 module.exports = {
   highlightCode,
   stylesheetAsset,
-  transforms
+  entityTransforms
 }

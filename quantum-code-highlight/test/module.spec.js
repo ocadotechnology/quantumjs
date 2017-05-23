@@ -3,9 +3,9 @@ describe('module', () => {
 
   it('exports the correct things', () => {
     codeHighlight.should.be.an('object')
-    codeHighlight.should.have.keys(['transforms', 'stylesheetAsset', 'highlightCode'])
+    codeHighlight.should.have.keys(['entityTransforms', 'stylesheetAsset', 'highlightCode'])
     codeHighlight.highlightCode.should.be.a('function')
     codeHighlight.stylesheetAsset.should.be.an('object')
-    codeHighlight.transforms.should.be.a('function')
+    codeHighlight.entityTransforms.should.be.a('function')
   })
 })

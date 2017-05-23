@@ -2,4 +2,4 @@
 require('chai').should()
 require('./module.spec')
 require('./fileTransform.spec')
-require('./transforms.spec')
+require('./entityTransforms.spec')

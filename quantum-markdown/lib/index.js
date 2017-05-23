@@ -145,13 +145,13 @@ function markdown (selection, transform) {
     .add(codeHighlight.stylesheetAsset)
 }
 
-function transforms (options) {
+function entityTransforms (options) {
   return Object.freeze({
     markdown: markdown
   })
 }
 
 module.exports = {
-  transforms,
+  entityTransforms,
   parseMarkdown
 }

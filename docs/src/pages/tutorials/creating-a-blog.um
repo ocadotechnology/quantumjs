@@ -4,13 +4,13 @@
   @title Creating a Blog
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
-    Example of defining transforms for writing a blog
+    Example of defining entity transforms for writing a blog
 
 @contentSection
   @topic Introduction
-    Quantum makes it easy to define how content is rendered using @italic[transforms].
-    There are a couple of modules that already have transforms defined, which
-    should cover many cases, however you may wish to define your own transforms
+    Quantum makes it easy to define how content is rendered using @italic[entityTransforms].
+    There are a couple of modules that already have entity transforms defined, which
+    should cover many cases, however you may wish to define your own entityTransforms
     that convert quantum into html. This tutorial explores what a transform is,
     and how to define your own.
 
@@ -42,7 +42,7 @@
   @topic Defining an entity transform
 
     To contert something that looks like this into html, we need to define a
-    transforms function:
+    entity transforms function:
 
     @@codeblock js
       function post (selection, transformer) {
@@ -62,7 +62,7 @@
       @codeblock js
         const dom = require('quantum-dom')
 
-        exports.transforms = () => {
+        exports.entityTransforms = () => {
           function post (selection, transformer) {
             return dom.create('div').class('post')
               .add(dom.create('post-title').text(selection.ps()))
@@ -83,9 +83,9 @@
         const blog = require('./blog-transforms')
 
         const htmlOptions = {
-          transforms: {
-            html: html.transforms(),
-            blog: blog.transforms()
+          entityTransforms: {
+            html: html.entityTransforms(),
+            blog: blog.entityTransforms()
           }
         }
 

@@ -9,7 +9,7 @@ describe('module', () => {
       'htmlRenamer',
       'paragraphTransform',
       'prepareTransforms',
-      'transforms'
+      'entityTransforms'
     ]
     html.should.be.an('object')
     html.should.have.keys(keys)

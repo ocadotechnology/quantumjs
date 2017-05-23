@@ -1,6 +1,6 @@
 @api quantum-api-entities
   @description
-    The below entities are provided by the @hyperlink(#transforms)[transforms]
+    The below entities are provided by the @hyperlink(#entityTransforms)[entityTransforms]
     function.
 
   @inline api/entities.um

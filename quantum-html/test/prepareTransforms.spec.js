@@ -1,15 +1,15 @@
 describe('prepareTransforms', () => {
   const { prepareTransforms } = require('..')
-  it('flattens transforms into a single namespaced object', () => {
+  it('flattens entityTransforms into a single namespaced object', () => {
     function t1 () {}
     function t2 () {}
-    const transforms = {
+    const entityTransforms = {
       a: {
         b: t1,
         c: t2
       }
     }
-    prepareTransforms(transforms).should.eql({
+    prepareTransforms(entityTransforms).should.eql({
       'b': t1,
       'c': t2,
       'a.b': t1,
@@ -17,10 +17,10 @@ describe('prepareTransforms', () => {
     })
   })
 
-  it('overrides root transform for multiple transforms with the same name', () => {
+  it('overrides root transform for multiple entityTransforms with the same name', () => {
     function t1 () {}
     function t2 () {}
-    const transforms = {
+    const entityTransforms = {
       a: {
         b: t1
       },
@@ -28,7 +28,7 @@ describe('prepareTransforms', () => {
         b: t2
       }
     }
-    prepareTransforms(transforms).should.eql({
+    prepareTransforms(entityTransforms).should.eql({
       'b': t2,
       'a.b': t1,
       'c.b': t2

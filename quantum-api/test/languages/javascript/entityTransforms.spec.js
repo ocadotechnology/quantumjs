@@ -1,4 +1,4 @@
-describe('transforms', () => {
+describe('entityTransforms', () => {
   const quantum = require('quantum-js')
   const dom = require('quantum-dom')
   const type = require('../../../lib/entity-transforms/components/type')
@@ -8,7 +8,7 @@ describe('transforms', () => {
 
   function transformer () {}
 
-  const { transforms } = javascript({typeLinks})
+  const { entityTransforms } = javascript({typeLinks})
   const keys = [
     'type',
     'prototype',
@@ -24,13 +24,13 @@ describe('transforms', () => {
     'returns'
   ]
   it('has the right properties', () => {
-    transforms.should.have.keys(keys)
+    entityTransforms.should.have.keys(keys)
   })
 
   keys.forEach(k => {
     it(`'${k}' looks like a transform`, () => {
-      transforms[k].should.be.a('function')
-      transforms[k].length.should.equal(2)
+      entityTransforms[k].should.be.a('function')
+      entityTransforms[k].length.should.equal(2)
     })
   })
 
@@ -40,7 +40,7 @@ describe('transforms', () => {
       params: [],
       content: ['content']
     })
-    transforms.type(selection, transformer).should.eql(dom.create('span')
+    entityTransforms.type(selection, transformer).should.eql(dom.create('span')
       .class('qm-api-type-standalone qm-code-font')
       .add(type('content', typeLinks)))
   })
