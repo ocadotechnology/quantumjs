@@ -44,10 +44,16 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .versioned-image {
-  border-radius: 2px;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
   margin: 8px;
-  height: 250px;
+  height: 350px;
+}
+
+.extensible-image {
+  height: 300px;
+}
+
+.lightning-fast-image {
+  height: 300px;
 }
 
 .versioned-arrow {
