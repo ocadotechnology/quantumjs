@@ -36,7 +36,50 @@ function createDropdown (id, versions, current) {
   node.addEventListener('change', goToVersion)
 }
 
+function classed (node, className, classed) {
+  var current = node.className.split(' ')
+  var index = current.indexOf(className)
+  if (arguments.length === 3) {
+    if (index > -1 && !classed) {
+      current.splice(index, 1)
+    } else if (index === -1 && classed) {
+      current.push(className)
+    }
+    node.className = current.join(' ')
+  } else {
+    return index > -1
+  }
+}
+
+function createHeaderToggle (id) {
+  var toggle = document.getElementById('nav.toggle.' + id)
+  var links = document.getElementById('nav.links.' + id)
+  var sidebar = document.querySelector('.qm-docs-sidebar')
+  var header = toggle.parentNode.parentNode.parentNode
+
+  function updateSidebar () {
+    var headerHeight = header.getBoundingClientRect().height
+    sidebar.style.top = headerHeight + 'px'
+  }
+
+  toggle.onclick = function () {
+    var isOpen = classed(links, 'qm-mobile-nav-open')
+    classed(links, 'qm-mobile-nav-open', !isOpen)
+    if (sidebar) {
+      classed(sidebar, 'qm-mobile-nav-open', !isOpen)
+      updateSidebar()
+    }
+  }
+
+  if (sidebar) {
+    window.addEventListener('orientationchange', function () {
+      setTimeout(updateSidebar, 5)
+    })
+  }
+}
+
 window.quantum = window.quantum || {}
 window.quantum.docs = {
-  createDropdown: createDropdown
+  createDropdown: createDropdown,
+  createHeaderToggle: createHeaderToggle
 }
