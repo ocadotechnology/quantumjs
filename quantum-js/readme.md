@@ -4,7 +4,7 @@ The core module for the QuantumJS collection
 
 This module contains the parser, the selection api and the watching api
 
-See the full documentation here: https://quantum.hexagonjs.io.
+See the full documentation here: https://ocadotechnology.github.io/quantumjs/
 
 ## quantum.watch
 
