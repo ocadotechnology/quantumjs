@@ -12,7 +12,7 @@
 
         div.attr('class') // returns 'my-div'
 
-  @param name [String]
+  @arg name [String]
     @description
       The name of the element's attribute to get
 
@@ -34,11 +34,11 @@
           .attr('class', 'my-div')
           .attr('id', 'div1')
 
-  @param name [String]
+  @arg name [String]
     @description
       The name of the element's attribute to set
 
-  @param value [String]
+  @arg value [String]
     @description
       The value to set the attribute to
 

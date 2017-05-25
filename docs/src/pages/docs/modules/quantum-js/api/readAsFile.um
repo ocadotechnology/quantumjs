@@ -31,13 +31,13 @@
           console.log(file)
         })
 
-  @param file [String/FileInfo]
+  @arg file [String/FileInfo]
     @description
       The filename string or @type[FileInfo] to load. If a @type[FileInfo] is
       passed in, the returned @type[File] instance will use the @type[FileInfo]
       for its @code[info] property.
 
-  @param? options [Object]
+  @arg? options [Object]
 
     @property inlineEntityType [String]
       @description
@@ -55,7 +55,7 @@
         A function for loading a file from disk, returning a @type[Promise] that
         contains the contents of the file as a string that can be passed to the
         parser.
-      @param filename [String]: The file/resource to load.
+      @arg filename [String]: The file/resource to load.
       @returns [Promise[String]]
         A promise that yields the contents of the file as a string.
 

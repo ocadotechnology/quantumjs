@@ -8,7 +8,7 @@
   @property javascript [Function]
     @description
       A function used to build the javascript language to provide entity transforms.
-    @param? options [Object]
+    @arg? options [Object]
       @property typeLinks [Object]
         @description
           The type links to use when linking types

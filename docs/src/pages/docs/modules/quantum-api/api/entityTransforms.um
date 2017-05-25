@@ -3,7 +3,7 @@
   @description
     A function that returns a set of @type[EntityTransform] functions.
 
-  @param? options [Object]
+  @arg? options [Object]
     @description
       The options to use when creating the set of entity transforms.
 
@@ -46,7 +46,7 @@
       @description
         Builds the issue url from an issue number to display next to a changelog
         entry.
-      @param issueNumber [String]
+      @arg issueNumber [String]
         @description
           The issue number
       @returns String

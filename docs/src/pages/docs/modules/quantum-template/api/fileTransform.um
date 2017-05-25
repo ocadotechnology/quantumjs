@@ -5,7 +5,7 @@
     variables and processing the entities (e.g. @code[@for], @code[@if])
     provided by this module.
 
-  @param? options [Object]
+  @arg? options [Object]
     @property variables [Object]
       @description
         The variables to use when templating. They can be any type of

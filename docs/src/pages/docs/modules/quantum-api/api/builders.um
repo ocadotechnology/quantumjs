@@ -11,14 +11,14 @@
       Builds a header transform for constructing api/changelog headers for
       entities from a type and a details builder.
 
-    @param type [String]
+    @arg type [String]
       @description
         The type of the header to build, for instance @code[function] or
         @code[object] that will be used to class the header.
 
         # Headers are given the @code[qm-api-item-header] and @code[qm-api-item-header-<type>] classes.
 
-    @param detailsBuilder [EntityTransform]
+    @arg detailsBuilder [EntityTransform]
       @description
         The @type[EntityTransform] for creating the text to display in the
         header from an entity.
@@ -60,7 +60,7 @@
       Provides a transform for rendering an api item, such as @code[@function],
       by providing a header and a set of entity transforms to apply to content.
 
-    @param? options [Object]
+    @arg? options [Object]
       @property class [String]
         @description
           An additional class to give to api section if it has a header
@@ -96,7 +96,7 @@
                 @function something
                   # Display order is determined by item, not by order in file
                   @returns Boolean
-                  @param a [String]
+                  @arg a [String]
                   @description: Description goes first
 
 
@@ -137,7 +137,7 @@
                 @property property [String]
 
                 @property something [Function]
-                  @param p1 [String]
+                  @arg p1 [String]
 
 
 
@@ -148,19 +148,19 @@
       A function for defining a group of items to be used in an
       @hyperlink(#item)[item] content.
 
-    @param language [String]
+    @arg language [String]
       @description
         The language the item group is part of
-    @param type [String/Array[String]]
+    @arg type [String/Array[String]]
       @description
         The type or types of entity that are part of this group (e.g.
         @code['param'] or @code[['param', 'param?']])
 
-    @param title [String]
+    @arg title [String]
       @description
         The title to display above the group
 
-    @param? options [Object]
+    @arg? options [Object]
       @property noSort [Boolean]
         @description
           Whether to sort entities in this group. Set to true for things like

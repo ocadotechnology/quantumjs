@@ -28,7 +28,7 @@
             'bNamespace.bTransform': bFunction
           }
 
-  @param entityTransforms [Object]
+  @arg entityTransforms [Object]
     @description
       The object of nested @code[Transform] functions to flatten.
 

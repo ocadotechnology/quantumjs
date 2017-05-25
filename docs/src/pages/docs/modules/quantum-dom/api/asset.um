@@ -50,7 +50,7 @@
 
   @assetExample
 
-  @param options [Object]
+  @arg options [Object]
     @assetProps
 
   @returns Asset

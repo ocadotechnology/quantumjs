@@ -17,7 +17,7 @@
         const button = dom.create('button') // Creates a <button> element
         const myElement = dom.create('myElement') // Creates a <myElement> custom element
 
-  @param type [String]
+  @arg type [String]
     @description
       The type of element to create. This should be a valid lower case html
       element type.

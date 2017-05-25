@@ -39,11 +39,11 @@
         })
 
 
-  @param transformer [Function]
+  @arg transformer [Function]
     @description
       A function that transforms a piece of text, or an entity into a new
       format. Normally this is outputs pieces of quantum dom.
-    @param selection [Selection/String]
+    @arg selection [Selection/String]
       @description: The item to transform
     @returns [Any/Promise[Any]]
       @description

@@ -19,14 +19,14 @@
                 @description
                   The content of the description block will be shown in the api
                   section.
-              @param a [Number]
-              @param b [number]
+              @arg a [Number]
+              @arg b [number]
               @return Number
 
     The automatic changelog generation in quantum-api also uses these tags to
     build up a summary of what has changed from one version to the next.
 
-  @param version
+  @arg version
     The version when the content was added
 
 @entity removed
@@ -52,14 +52,14 @@
                 @description
                   The content of the description block will be shown in the api
                   section.
-              @param a [Number]
-              @param b [number]
+              @arg a [Number]
+              @arg b [number]
               @return Number
 
     The automatic changelog generation in quantum-api also uses these tags to
     build up a summary of what has changed from one version to the next.
 
-  @param version
+  @arg version
     The version when the content was removed
 
 @entity deprecated
@@ -83,14 +83,14 @@
                 @description
                   The content of the description block will be shown in the api
                   section.
-              @param a [Number]
-              @param b [number]
+              @arg a [Number]
+              @arg b [number]
               @return Number
 
     The automatic changelog generation in quantum-api also uses these tags to
     build up a summary of what has changed from one version to the next.
 
-  @param version
+  @arg version
     @description
       The version when the content was deprecated
 
@@ -119,14 +119,14 @@
                 @description
                   The content of the description block will be shown in the api
                   section.
-              @param a [Number]
-              @param b [number]
+              @arg a [Number]
+              @arg b [number]
               @return Number
 
     The automatic changelog generation in quantum-api also uses these tags to
     build up a summary of what has changed from one version to the next.
 
-  @param version
+  @arg version
     The version when the content was updated
 
 @entity versionedPage
@@ -174,7 +174,7 @@
   @entity version
     @description
       Describes one of the versions for this page
-    @param version
+    @arg version
       @description
         The version number / string
 

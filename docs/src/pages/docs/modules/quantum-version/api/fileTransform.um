@@ -6,7 +6,7 @@
     takes the config for configuring quantum version, and returns a function for
     transforming pages (a @type[FileTransform]).
 
-  @param? options [Object]
+  @arg? options [Object]
     @property versions [Array[String]]
       @description
         An array of versions the versioned content uses. This can be left

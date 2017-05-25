@@ -27,7 +27,7 @@
 
         const div = dom.create('div').class('my-div')
 
-  @param value [String]
+  @arg value [String]
     @description
       The value to set the class to
 

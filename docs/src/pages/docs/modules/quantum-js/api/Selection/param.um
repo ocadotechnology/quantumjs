@@ -20,7 +20,7 @@
         selection.param(0) // '10/12/17'
         selection.param(1) // undefined
 
-  @param index [Number]
+  @arg index [Number]
     @description: The index of the parameter to get
   @returns String
     @description
@@ -53,9 +53,9 @@
         selection.param(0, "11/12/17")
         selection.param(0) // "11/12/17"
 
-  @param index [Number]
+  @arg index [Number]
     @description: The index of the parameter to get
-  @param param [String]
+  @arg param [String]
     @description: The parameter value to set
   @returns Selection
     @description

@@ -17,7 +17,7 @@
           })
           .then(quantum.write)
 
-  @param file [File]
+  @arg file [File]
     @description
       The @type[File] to write to disk. @code[file.dest] is the location where the
       file will be saved
@@ -53,7 +53,7 @@
         })
         .then(quantum.write)
 
-  @param file [Array[File]]
+  @arg file [Array[File]]
     @description
       The @type[File]s to save. @code[file.info.dest] is the location where the
       file will be saved

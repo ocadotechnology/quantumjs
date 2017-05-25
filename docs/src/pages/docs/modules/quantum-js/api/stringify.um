@@ -30,7 +30,7 @@
             @child child-param
         */
 
-  @param entity [Entity]
+  @arg entity [Entity]
     @description
       The quantum AST entities to turn into a markup string.
   @returns String

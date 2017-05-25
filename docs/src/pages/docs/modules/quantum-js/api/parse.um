@@ -36,7 +36,7 @@
     The parser returns an entity so that the results can be wrapped directly in
     a @type[Selection] using @code[quantum.select()]
 
-  @param input [String]
+  @arg input [String]
     @description
       A string containing markup to parse. i.e. something that looks like this:
 

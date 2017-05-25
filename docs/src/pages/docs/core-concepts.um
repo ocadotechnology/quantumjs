@@ -121,7 +121,7 @@
                     }
                   }
 
-            @param file [File]: The file to transform
+            @arg file [File]: The file to transform
             @returns [File/Array[File]]: The transformed file
 
 
@@ -217,12 +217,12 @@
             @description
               A function that takes a @type[Selection] and converts it to a dom @type[Element]
 
-            @param selection [Selection]
+            @arg selection [Selection]
               @collapsible false
               @description
                 The @type[Selection] to transform.
 
-            @param transformer [Function]
+            @arg transformer [Function]
               @collapsible false
               @description
                 The transformer created in the @hyperlink({{baseurl}}/docs/modules/quantum-html/#builddom)[buildDOM] function.
@@ -238,11 +238,11 @@
                         .add(selection.transform(transformer))
                     }
 
-              @param selection [Selection]
+              @arg selection [Selection]
                 @description
                   The @type[Selection] to transform.
 
-            @param? meta [Object]
+            @arg? meta [Object]
               @collapsible false
               @description
                 The meta object as defined in @hyperlink({{baseurl}}/docs/modules/quantum-html/#builddom)[buildDOM] options. This should only be used in custom entity transforms.

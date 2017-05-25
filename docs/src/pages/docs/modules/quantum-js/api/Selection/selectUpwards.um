@@ -38,7 +38,7 @@
         // returns an empty selection - there is no parent entity of type 'trolley'
         priceSelection.selectUpwards('trolley')
 
-  @param type [String]
+  @arg type [String]
     @description
       The entity type to look for.
 

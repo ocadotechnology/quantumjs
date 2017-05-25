@@ -7,7 +7,7 @@
     It converts the file objects @code[content] to an HTML string and gives the
     @code[dest] of the file the @code[.html] extension.
 
-  @param? options [Object]
+  @arg? options [Object]
     @description
       The options to use when building the HTML
 

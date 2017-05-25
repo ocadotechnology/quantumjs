@@ -11,11 +11,11 @@
           .add(dom.create('div').class('child-1'))
           .add(dom.create('div').class('child-2'))
 
-  @param element [Element]
+  @arg element [Element]
     @description
       The element to add as a child
 
-  @param? options [Object]
+  @arg? options [Object]
     @description
       Options that specify how the element is added
 
@@ -42,11 +42,11 @@
           .add(getName().then(name => dom.create('div').text(name)))
           .add(getAge().then(age => dom.create('div').text(age)))
 
-  @param element [Promise[Element]]
+  @arg element [Promise[Element]]
     @description
       A promise which yields the element to add as a child
 
-  @param? options [Object]
+  @arg? options [Object]
     @description
       Options that specify how the elements are added
 
@@ -75,11 +75,11 @@
             dom.create('div').class('child-2')
           ])
 
-  @param elements [Array[Element / Promise[Element]]]
+  @arg elements [Array[Element / Promise[Element]]]
     @description
       An array of elements to add as children
 
-  @param? options [Object]
+  @arg? options [Object]
     @description
       Options that specify how the elements are added
 

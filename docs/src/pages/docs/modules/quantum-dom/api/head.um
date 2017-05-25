@@ -40,11 +40,11 @@
           .add(dom.create('div').class('my-element'))
           .add(dom.head(dom.create('style').text('.my-element { background: red; }', {escape: false})))
 
-  @param element [Element]
+  @arg element [Element]
     @description
       The element to place in the head of the document.
 
-  @param? options [Object]
+  @arg? options [Object]
     @HeadWrapperOptions
 
   @returns HeadWrapper

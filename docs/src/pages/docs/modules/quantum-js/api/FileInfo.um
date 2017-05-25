@@ -54,7 +54,7 @@
     @description
       Constructs a new @type[FileInfo]
 
-    @param? options [Object]
+    @arg? options [Object]
       @description
         An object with the properties to populate the @type[FileInfo] with
       @fileInfoProperties
@@ -84,7 +84,7 @@
 
           console.log(newFileInfo.dest) // prints "target/about.html"
 
-    @param extension [String]
+    @arg extension [String]
       @description
         The new extension the @type[FileInfo] should have. This should include the
         preceding period:
@@ -126,7 +126,7 @@
         // newFileInfo.destBase === "target",
         // newFileInfo.watch === false
 
-    @param? changes [Object]
+    @arg? changes [Object]
       @description
         Provide any properties to override
 

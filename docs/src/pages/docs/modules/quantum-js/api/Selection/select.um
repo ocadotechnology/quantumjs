@@ -22,10 +22,10 @@
         const selection = quantum.select(entity)
         selection.select('childExample') // returns a new selection wrapping the 'childExample' entity
 
-  @param type [String]
+  @arg type [String]
     @description
       The type of entity to select
-  @param? options [Object]
+  @arg? options [Object]
     @property recursive [Boolean]
       @description
         Set to true to search recursively down the child entities to search

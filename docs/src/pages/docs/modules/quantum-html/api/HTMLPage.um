@@ -11,7 +11,7 @@
   # @constructor
   #   @description
   #     Creates a virtual dom representation of a transformed @type[File] @code[contents]
-  #   @param elements [Array[Element]]
+  #   @arg elements [Array[Element]]
   #     @description
   #       An array of transformed elements
 

@@ -46,24 +46,24 @@
             @function makeCoffee
               @description
                 A function for making coffee
-              @param sugar [Boolean]
+              @arg sugar [Boolean]
                 @description
                   Whether to add Sugar
-              @param milk [Boolean]
+              @arg milk [Boolean]
                 @description
                   Whether to add milk
 
     @section Nesting content
       It is possible to nest most api entities for a language inside it, for
-      instance a function @code[@param] may be an object so could contain
+      instance a function @code[@arg] may be an object so could contain
       @code[@property] entities.
 
       @example
         @@um
           @api
             @function functionName
-              @param stringParma [String]
-              @param objectParam [Object]
+              @arg stringParma [String]
+              @arg objectParam [Object]
                 @property objectProp [Object]
                   @property anotherObjectProp [Object]
                     @description: And so on...
@@ -116,8 +116,8 @@
           @@um
             @function exampleFunction
               @description: Function description
-              @param param1 [String]: Parameter
-              @param? param1 [String]: Optional parameter
+              @arg param1 [String]: Parameter
+              @arg? param1 [String]: Optional parameter
 
             @object exampleObject
               @description: Object description
@@ -154,8 +154,8 @@
               @function exampleFunction
                 @added 1.0.0
                 @description: Function description
-                @param param1 [String]: Parameter
-                @param? param2 [String]: Optional parameter
+                @arg param1 [String]: Parameter
+                @arg? param2 [String]: Optional parameter
 
               @object exampleObject
                 @description
@@ -185,8 +185,8 @@
                 @function exampleFunction
                   @added 1.0.0
                   @description: Function description
-                  @param param1 [String]: Parameter
-                  @param? param2 [String]: Optional parameter
+                  @arg param1 [String]: Parameter
+                  @arg? param2 [String]: Optional parameter
 
                 @object exampleObject
                   @description
@@ -243,8 +243,8 @@
               @function exampleFunction
                 @added 1.0.0
                 @description: Function description
-                @param param1 [String]: Parameter
-                @param? param2 [String]: Optional parameter
+                @arg param1 [String]: Parameter
+                @arg? param2 [String]: Optional parameter
 
               @object exampleObject
                 @description
@@ -260,16 +260,16 @@
             @added 2.0.0
             @description: Function description
 
-            @param param1 [String]: Parameter
-            @param? param2 [String]: Optional parameter
+            @arg param1 [String]: Parameter
+            @arg? param2 [String]: Optional parameter
 
 
           @div .docs-example-code-heading: target/2.0.0/index.html
 
           @function exampleFunction
             @description: Function description
-            @param param1 [String]: Parameter
-            @param? param2 [String]: Optional parameter
+            @arg param1 [String]: Parameter
+            @arg? param2 [String]: Optional parameter
 
           @object exampleObject
             @description
@@ -282,8 +282,8 @@
 
           @function exampleFunction
             @description: Function description
-            @param param1 [String]: Parameter
-            @param? param2 [String]: Optional parameter
+            @arg param1 [String]: Parameter
+            @arg? param2 [String]: Optional parameter
 
           @object exampleObject
             @description

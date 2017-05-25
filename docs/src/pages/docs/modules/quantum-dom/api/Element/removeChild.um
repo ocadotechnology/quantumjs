@@ -16,7 +16,7 @@
         div.removeChild(child1)
         // 'div' just has child2 as a child now
 
-  @param child [Element]
+  @arg child [Element]
     @description
       The child to remove from this @type[Element]
 

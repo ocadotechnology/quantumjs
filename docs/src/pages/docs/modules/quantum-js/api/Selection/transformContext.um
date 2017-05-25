@@ -33,7 +33,7 @@
         selection.transformContext() // returns { someInformation: "somthing useful" }
 
 
-  @param context [Object]
+  @arg context [Object]
     @description
       The context object to store on the selection.
 

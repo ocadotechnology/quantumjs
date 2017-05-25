@@ -14,7 +14,7 @@
         div.classed('outline') // returns true
         div.classed('positive') // returns false
 
-  @param class [String]
+  @arg class [String]
     @description
       The class to check existence of
 
@@ -45,11 +45,11 @@
         button.class() // returns 'positive'
 
 
-  @param class [String]
+  @arg class [String]
     @description
       The class to add or remove (or multiple space separated classes)
 
-  @param classed [Boolean]
+  @arg classed [Boolean]
     @description
       Supply @code[true] to add classes to the element, @code[false] to remove.
 

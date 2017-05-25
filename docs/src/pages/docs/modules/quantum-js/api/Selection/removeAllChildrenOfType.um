@@ -48,8 +48,8 @@
         */
 
 
-  @param type [String]: The entity type to remove
-  @param? options [Object]
+  @arg type [String]: The entity type to remove
+  @arg? options [Object]
     @property recursive [Boolean]
       @description: Set to true to recurse down the children to find
       @default: @code[false]
@@ -102,8 +102,8 @@
           }
         */
 
-  @param types [Array[String]]: The entity types to remove
-  @param? options [Object]
+  @arg types [Array[String]]: The entity types to remove
+  @arg? options [Object]
     @property recursive [Boolean]
       @description: Set to true to recurse down the children to find
       @default: @code[false]

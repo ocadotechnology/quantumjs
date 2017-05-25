@@ -57,11 +57,11 @@
           .add(dom.textNode('hello'))
           .add(dom.textNode('<div id="my-div"></div>', {escape: false}))
 
-  @param text [String]
+  @arg text [String]
     @description
       The text contents of this textNode
 
-  @param? options [Object]
+  @arg? options [Object]
     @property escape [Boolean]
       @description
         Set to true to html-escape the text passed in, false to leave it unescaped.

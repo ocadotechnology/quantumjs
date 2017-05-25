@@ -8,7 +8,7 @@
     @hyperlink(#buildhtml)[buildHTML] and then the @hyperlink(#htmlrenamer)[htmlRenamer]
     file transforms in sequence.
 
-  @param? options [Object]
+  @arg? options [Object]
     @group [buildDOM Options]
       @description
         The options to pass to the @hyperlink(./#builddom)[buildDOM] function.

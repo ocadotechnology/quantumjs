@@ -12,7 +12,7 @@
     @added 2.0.0
     @description
       Build a quantum site using the config passed in.
-    @param config [Object]
+    @arg config [Object]
       @inline ./api/config.um
     @returns Promise
       @description
@@ -29,6 +29,6 @@
 
       This function does not return anything as it watches files for changes and
       must be killed by ending the current process.
-    @param config [Object]
+    @arg config [Object]
       @inline ./api/config.um
 
