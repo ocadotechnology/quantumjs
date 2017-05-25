@@ -7,7 +7,7 @@
     page, as well as the current version.
 
     This function handles the following functionality:
-    
+
     Given this input:
 
     @subsection index.um
@@ -45,13 +45,13 @@
           @version 2.0.0
           @current 2.0.0
 
-  @param entity [Entity]
+  @arg entity [Entity]
     @description
       The entity to look for @code[@versionList] entities to populate
-  @param currentVersion [String]
+  @arg currentVersion [String]
     @description
       The version to populate as the @code[@current] version
-  @param versions [Array[String]]
+  @arg versions [Array[String]]
     @description
       The full list of versions to populate in the @code[@versionList] entities
       that are found

@@ -14,7 +14,7 @@
         })
 
 
-  @param specs [String/Object/Array]
+  @arg specs [String/Object/Array]
     @description
       This describes the files to watch.
 
@@ -50,20 +50,20 @@
           }
         ], handler, options)
 
-  @param handler [Function]
+  @arg handler [Function]
     @description
       A callback that transforms a file. If this does anything asynchronous, it
       should return a @type[Promise]
 
-    @param error [Error]
+    @arg error [Error]
       @description
         This will be defined if there was an error when parsing the file. The
         handler has the option to handle this case if it wants to.
-    @param file [File]
+    @arg file [File]
       @description
         The file that has been loaded. This is the file that the handler should
         process / transform.
-    @param cause [String]
+    @arg cause [String]
       @description
         The reason this file is being transformed. Can be one of @code['build'],
         @code['add'] or @code['change']
@@ -73,7 +73,7 @@
         The transformed file
 
 
-  @param? options [Object]
+  @arg? options [Object]
     @property dir [String]
       @description
         The working directory for the watcher to work in
@@ -88,11 +88,11 @@
       @description
         A function which loads files from disk, returning a @type[Promise]
 
-      @param filename [String]
+      @arg filename [String]
         @description
           The filename of the file to load
 
-      @param parentFilename [String]
+      @arg parentFilename [String]
         @description
           The filename of the parent file - ie if this file is being loaded as the
           result of an @code[@inline] include, the parent file will be the one
@@ -122,12 +122,12 @@
       @description
         The function for reading a file and converting it to a @type[File].
 
-      @param info [FileInfo]
+      @arg info [FileInfo]
         @description
           This describes which file to load. The file that is loaded should use
           this @type[FileInfo] as it's @code[info] property.
 
-      @param? options [Object]
+      @arg? options [Object]
         @description
           The options to pass to the reader.
 
@@ -143,7 +143,7 @@
             contains the contents of the file as a string that can be passed to the
             parser.
 
-          @param filename [String]: The file/resource to load.
+          @arg filename [String]: The file/resource to load.
           @returns [Promise[String]]
             A promise that yields the contents of the file as a string.
 

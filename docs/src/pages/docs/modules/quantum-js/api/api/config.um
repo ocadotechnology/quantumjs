@@ -5,7 +5,7 @@
 
     It will be passed an event object from different stages of the pipeline.
 
-  @param event [Object]
+  @arg event [Object]
     @description
       The object describing the event to log.
 
@@ -148,10 +148,10 @@
   @description
     The function used to load a file from disk and then convert it to a
     @type[File] object for use in a pipeline.
-  @param fileInfo [FileInfo]
+  @arg fileInfo [FileInfo]
     @description
       The @type[FileInfo] of the @type[File] to read.
-  @param options [Object]
+  @arg options [Object]
     @description
       The options to use when reading a file.
     @property loader [Function]
@@ -173,8 +173,8 @@
         return fs.readFileAsync(filename, 'utf-8')
       }
 
-  @param fileName [String]
-  @param parentFilename [String]
+  @arg fileName [String]
+  @arg parentFilename [String]
 
 @property port [Number]
   @added 2.0.0

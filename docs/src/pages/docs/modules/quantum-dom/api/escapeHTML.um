@@ -12,7 +12,7 @@
         dom.escapeHTML('<div>')
         // returns '&lt;div&gt;'
 
-  @param string [String]
+  @arg string [String]
     @description
       The string to be HTML escaped.
 

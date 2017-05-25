@@ -6,7 +6,7 @@
     @description
       The container for api content. All the entities provided by this module
       should be used inside an @code[@api] entity
-    @param apiName
+    @arg apiName
       @description
         The name of the api that is used to group content when generating
         changelogs from multiple apis
@@ -20,7 +20,7 @@
       @added 2.0.0
       @description
         Define a custom group inside an api
-      @param header
+      @arg header
         @description
           The text to display as the group header.
       @extra
@@ -100,7 +100,7 @@
       @description
         A link to add to the version header (e.g. to go to version x of the api)
 
-      @param url
+      @arg url
         @description
           The URL to link to
 
@@ -120,7 +120,7 @@
       @description
         Whether to group entries by api or render all entries in one set.
 
-      @param boolean
+      @arg boolean
         @description
           The value to set
 
@@ -135,7 +135,7 @@
       @description
         Whether to reverse the list of versions so the latest is at the top.
 
-      @param boolean
+      @arg boolean
         @description
           The value to set
 
@@ -168,7 +168,7 @@
                 @description
                   Description of the changes in version 1
 
-      @param versionNumber
+      @arg versionNumber
         @description
           The version number to show
 
@@ -176,7 +176,7 @@
         @description
           A link to add to the version header (e.g. to go to version x of the api)
 
-        @param url
+        @arg url
           @description
             The URL to link to
 
@@ -221,7 +221,7 @@
     @description
       Whether an api item should be collapsed when loading the page.
 
-    @param boolean
+    @arg boolean
       @description
         The value to set
 
@@ -244,7 +244,7 @@
     @description
       Whether an api item can be collapsed.
 
-    @param boolean
+    @arg boolean
       @description
         The value to set
 
@@ -265,7 +265,7 @@
     @added 2.0.0
     @description
       Define a custom group inside an api
-    @param header
+    @arg header
       @description
         The text to display as the group header.
     @extra
@@ -301,8 +301,8 @@
           @@um
             @api
               @function something
-                @param param1 [String]
-                @param? param2 [Boolean]
+                @arg param1 [String]
+                @arg? param2 [Boolean]
                   @default: @code[true]
 
   @entity object
@@ -369,7 +369,7 @@
 
             @function functionName
               @collapsed false
-              @param? param1 [Boolean]
+              @arg? param1 [Boolean]
                 @collapsed false
                 @default: @code[true]
 
@@ -400,7 +400,7 @@
           @api
             @function functionName
               @collapsed false
-              @param paramName [ParamType]
+              @arg paramName [ParamType]
                 @description
                   Param Descripton
 
@@ -415,7 +415,7 @@
           @api
             @function functionName
               @collapsed false
-              @param? paramName [ParamType]
+              @arg? paramName [ParamType]
                 @description
                   Param Descripton
 
@@ -459,13 +459,13 @@
               @constructor
                 @description
                   Create an array of @code[undefined] elements
-                @param length [Number]
+                @arg length [Number]
                   @description: The length of the array to create
 
               @method fill
                 @description
                   Fill an array with values
-                @param value [Any]
+                @arg value [Any]
                   @description: The value to fill with
 
   @entity constructor
@@ -483,8 +483,8 @@
             @prototype Selection
               @collapsed false
               @constructor
-                @param param1 [String]
-                @param? param2 [Boolean]
+                @arg param1 [String]
+                @arg? param2 [Boolean]
                   @default: @code[true]
 
   @entity method
@@ -501,8 +501,8 @@
             @prototype Selection
               @collapsed false
               @method methodName
-                @param param1 [String]
-                @param? param2 [Boolean]
+                @arg param1 [String]
+                @arg? param2 [Boolean]
                   @default: @code[true]
 
 
@@ -591,4 +591,4 @@
         @@um
           @api
             @entity groupByApi
-              @param boolean
+              @arg boolean

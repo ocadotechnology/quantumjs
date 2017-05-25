@@ -3,7 +3,7 @@
     A function that returns a @type[FileTransform] for populating the
     @code[@tableOfContents].
   @added 2.0.0
-  @param? options [Object]
+  @arg? options [Object]
     @property tableOfContents [Object]
       @description
         Options relating to the @code[@tableOfContents] entity

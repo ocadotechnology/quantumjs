@@ -24,13 +24,13 @@
     @group Child Entities
       @entity id
         @description: Sets the id attribute property to a value
-        @params: value
+        @args: value
       @entity class
         @description: Sets the class attribute property to a value
-        @params: value
+        @args: value
       @entity attr
         @description: Sets an attribute property to a value
-        @params name: value
+        @args name: value
 
 @define element-renderer
   @entity {{ps}}
@@ -58,13 +58,13 @@
     @group Child Entities
       @entity id
         @description: Sets the id attribute property to a value
-        @params: value
+        @args: value
       @entity class
         @description: Sets the class attribute property to a value
-        @params: value
+        @args: value
       @entity attr
         @description: Sets an attribute property to a value
-        @params name: value
+        @args name: value
 
 @group Standard HTML elements
   @element-renderer b
@@ -152,7 +152,7 @@
     @added 2.0.0
     @description
       Adds a link to a javascript file to the bottom of the @code[<body>]
-    @param link
+    @arg link
       @description
         The link to the script to add
 
@@ -168,7 +168,7 @@
     @added 2.0.0
     @description
       Adds a link to a css file to the bottom of the @code[<head>]
-    @param link
+    @arg link
       @description
         The link to the stylesheet to add
 
@@ -185,7 +185,7 @@
     @description
       Adds an @code[<a>] element, with the href set to the link specified in the
       parameters.
-    @param link
+    @arg link
       @description
         The link to add
 
@@ -199,7 +199,7 @@
     @added 2.0.0
     @description
       Sets the page title (adds a @code[<title>] element to the @code[<head>])
-    @param title
+    @arg title
       @description
         The title to set
 

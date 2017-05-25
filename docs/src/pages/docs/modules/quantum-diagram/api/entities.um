@@ -23,11 +23,11 @@
 
 
   @entity item
-    @param id
+    @arg id
       @description
         The id of the item. Used when linking and is not displayed on screen.
 
-    @param label
+    @arg label
       @description
         The label to display on the item
 
@@ -56,11 +56,11 @@
 
             @link item1 -> item2
 
-    @param leftId
+    @arg leftId
       @description
         The @code[id] of an item to link
 
-    @param linkType
+    @arg linkType
       @description
         The type of link to use
 
@@ -109,6 +109,6 @@
 
                 @link g <--> h
 
-    @param rightId
+    @arg rightId
       @description
         The @code[id] of an item to link

@@ -9,16 +9,16 @@
     The @code[@updated] and @code[@deprecated] tags are removed if they do not
     apply to the version passed in.
 
-  @param entity [Entity]
+  @arg entity [Entity]
     @description
       The entity to process the tags for
-  @param version [String]
+  @arg version [String]
     @description
       The version to process the tags for
-  @param versions [Array[String]]
+  @arg versions [Array[String]]
     @description
       The full list of versions available for the content being passed in
-  @param file [File]
+  @arg file [File]
     @description
       The file the content originated from (this is so that errors can be
       reported to the file)

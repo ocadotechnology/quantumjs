@@ -11,11 +11,11 @@
     If using this directly, you must add the @code[stylesheetAsset] in the
     transform or the highlight colours will not be applied.
 
-  @param code [String]
+  @arg code [String]
     @description
       The code to highlight
 
-  @param? language [String]
+  @arg? language [String]
     @description
       The language to use for the highlighting.
 

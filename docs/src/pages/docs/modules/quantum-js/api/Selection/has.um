@@ -38,10 +38,10 @@
         selection.has('child3', {recursive: true}) // true
         selection.has('child4', {recursive: true}) // false
 
-  @param type [String]
+  @arg type [String]
     @description
       The entity type to look for
-  @param? options [Object]
+  @arg? options [Object]
     @property recursive [Boolean]
       @description
         true to do a recursive search down the tree for the type

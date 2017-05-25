@@ -34,12 +34,12 @@
             @version 0.1.0: Description 1
             @version 0.2.0: Description 2
 
-        @param x [Number]
+        @arg x [Number]
           @description
             Some Description
 
         # Only included in versions 0.2.0 and later, and gets removed after 0.4.0
-        @param y [Number]
+        @arg y [Number]
           @added 0.2.0
           @deprecated 0.3.0
           @removed 0.4.0

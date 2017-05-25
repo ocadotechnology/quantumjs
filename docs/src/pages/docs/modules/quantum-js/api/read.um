@@ -13,8 +13,8 @@
           console.log(parsed)
         })
 
-  @param filename [String]: The filename of the file to load and parse.
-  @param? options [Object]
+  @arg filename [String]: The filename of the file to load and parse.
+  @arg? options [Object]
     @property inlineEntityType [String]
       @description
         The entity type to use for inlining other files.
@@ -29,7 +29,7 @@
         A function for loading a file from disk, returning a @type[Promise] that
         contains the contents of the file as a string that can be passed to the
         parser.
-      @param filename [String]: The file/resource to load.
+      @arg filename [String]: The file/resource to load.
       @returns [Promise[String]]
         A promise that yields the contents of the file as a string.
     @property base [String]

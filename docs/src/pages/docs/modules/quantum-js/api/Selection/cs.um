@@ -50,7 +50,7 @@
         selection.cs('Line1\nLine2\nLine3')
         selection.content() // ['Line 1', 'Line 2', 'Line 3']
 
-  @param cs [String]
+  @arg cs [String]
     @description
       A string that should be split on new lines, the result of which will become
       the content array for the entity.

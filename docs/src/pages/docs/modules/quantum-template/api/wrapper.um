@@ -22,11 +22,11 @@
           }
         ]
 
-  @param fileContent [Array[Entity]]
+  @arg fileContent [Array[Entity]]
     @description
       The content of a processed @hyperlink({{baseurl}}/docs/modules/quantum-js/#file)[File]
       object.
 
-  # @param? wrapperOptions [Object]
+  # @arg? wrapperOptions [Object]
   #   @description
   #     The options to use when wrapping file contents

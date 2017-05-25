@@ -25,7 +25,7 @@
         parentSelection.removeChild(childEntity) // removes the child and returns true
 
 
-  @param childEntity [Entity]
+  @arg childEntity [Entity]
     @description
       The entity to remove from the children
 

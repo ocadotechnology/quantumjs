@@ -4,7 +4,7 @@
     A function that returns a set of @type[EntityTransform] functions for use
     when rendering a page.
 
-  # @param? options [Object]
+  # @arg? options [Object]
   #   @description
   #     The options to use when creating the set of entity transforms.
 

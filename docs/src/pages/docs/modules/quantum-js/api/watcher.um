@@ -4,7 +4,7 @@
   @description
     Creates a new @type[Watcher] instance that watches files for changes.
 
-  @param specs [String/Object/Array]
+  @arg specs [String/Object/Array]
     @description
       This describes the files to watch.
 
@@ -44,7 +44,7 @@
           }
         ], options)
 
-  @param? options [Object]
+  @arg? options [Object]
     @property dir [String]
       @description
         The working directory for the watcher to work in

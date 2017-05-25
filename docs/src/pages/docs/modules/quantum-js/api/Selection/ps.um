@@ -47,7 +47,7 @@
         selection.ps('p1 p2')
         selection.params() // ['p1', 'p2']
 
-  @param ps [String]
+  @arg ps [String]
     @description
       A string that should be split on spaces, the result of which will become
       the params array for the entity.

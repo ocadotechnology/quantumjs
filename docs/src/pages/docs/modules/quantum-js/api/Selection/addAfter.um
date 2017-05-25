@@ -51,7 +51,7 @@
           ]
         */
 
-  @param content [String/Entity]
+  @arg content [String/Entity]
     @description
       The content to add to the end of the content array. Can either be a
       string, or an AST entity object.

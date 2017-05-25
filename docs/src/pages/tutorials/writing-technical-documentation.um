@@ -320,7 +320,7 @@
           @api
             @function tea
               @description: A function for making cups of tea
-              @param? options [Object]: The options to use when making a cup of tea
+              @arg? options [Object]: The options to use when making a cup of tea
                 @property sugar [Number]: The number of sugars to add
                   @default: 0
                 @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
@@ -386,7 +386,7 @@
               @function tea
                 @added: Added the tea function in this version
                 @description: A function for making cups of tea
-                @param? options [Object]: The options to use when making a cup of tea
+                @arg? options [Object]: The options to use when making a cup of tea
                   @property sugars [Number]: The number of sugars to add
                     @default: 0
                   @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
@@ -396,14 +396,14 @@
           @version 2.0.0
             @api
               @function tea
-                @param? options [Object]
+                @arg? options [Object]
                   @property sugars [Number]
                   @property type [String]: The type of teabag to use, can be 'english-breakfast', 'earl-grey' or 'green'
                     @default: 'english-breakfast'
 
               @function coffee
                 @description: A function for making cups of coffee
-                @param? options [Object]: The options to use when making a cup of coffee
+                @arg? options [Object]: The options to use when making a cup of coffee
                   @property sugars [Number]: The number of sugars to add
                     @default: 0
                   @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
@@ -413,7 +413,7 @@
           @version 3.0.0
             @api
               @function coffee
-                @param? options [Object]
+                @arg? options [Object]
                   @property type [String]: The type of teabag to use, can be 'capuccino', 'americano' or 'latte'
                     @default: 'americano'
                     @added: Added the type option to the coffee function
@@ -507,7 +507,7 @@
           @function tea
             @added: Added the tea function in this version
             @description: A function for making cups of tea
-            @param? options [Object]: The options to use when making a cup of tea
+            @arg? options [Object]: The options to use when making a cup of tea
               @property sugars [Number]: The number of sugars to add
                 @default: 0
               @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
@@ -516,14 +516,14 @@
       @version 2.0.0
         @api
           @function tea
-            @param? options [Object]
+            @arg? options [Object]
               @property sugars [Number]
               @property type [String]: The type of teabag to use, can be 'english-breakfast', 'earl-grey' or 'green'
                 @default: 'english-breakfast'
 
           @function coffee
             @description: A function for making cups of coffee
-            @param? options [Object]: The options to use when making a cup of coffee
+            @arg? options [Object]: The options to use when making a cup of coffee
               @property sugars [Number]: The number of sugars to add
                 @default: 0
               @property milk [String]: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
@@ -532,7 +532,7 @@
       @version 3.0.0
         @api
           @function coffee
-            @param? options [Object]
+            @arg? options [Object]
               @property type [String]: The type of teabag to use, can be 'capuccino', 'americano' or 'latte'
                 @default: 'americano'
                 @added: Added the type option to the coffee function

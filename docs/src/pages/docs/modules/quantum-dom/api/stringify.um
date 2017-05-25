@@ -20,11 +20,11 @@
           assets: []
         }
 
-  @param elements [Array[Element]]
+  @arg elements [Array[Element]]
     @description
       The elements that should form the body of the html page
 
-  @param? options [Object]
+  @arg? options [Object]
     @description
       Options that configure how the page is rendered
 

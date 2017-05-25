@@ -18,7 +18,7 @@
         @topic Topic Heading
           Topic Content
 
-  @param header
+  @arg header
     @description
       The header to display
 
@@ -40,7 +40,7 @@
         @section Section Heading
           Section Content
 
-  @param header
+  @arg header
     @description
       The header to display
 
@@ -61,7 +61,7 @@
         @subsection Subsection Heading
           Subsection Content
 
-  @param header
+  @arg header
     @description
       The header to display
 
@@ -77,7 +77,7 @@
           @description
             Notice Content
 
-  @param header
+  @arg header
     @description
       The header to display
 
@@ -101,7 +101,7 @@
           @item: Item
           @item: Item
 
-  @param type
+  @arg type
     @description
       The type of list to use, can be @code[ordered] or @code[unordered]
     @default: unordered
@@ -156,7 +156,7 @@
           @width 50
 
 
-  @param src
+  @arg src
     @description
       The image src
 
@@ -270,7 +270,7 @@
           @topic Something else
           @topic Another topic
 
-  @param header
+  @arg header
     @description
       The header to display above the table of contents.
 
@@ -299,7 +299,7 @@
     @description
       Creates a group of pages in a navigation menu
 
-    @param title
+    @arg title
       @description
         The title to display for the section
 
@@ -307,7 +307,7 @@
     @description
       Creates a link to a page. The content is used as the link text.
 
-    @param url
+    @arg url
       @description
         The link to go to
 
@@ -327,7 +327,7 @@
     @description
       Sets the text for the header
 
-    @param text
+    @arg text
       @description
         The text to set for the header
 
@@ -335,7 +335,7 @@
     @description
       Adds an icon to the header
 
-    @param src
+    @arg src
       @description
         The path to the icon to display
 
@@ -389,7 +389,7 @@
     @description
       Creates a link to the source of the current page
 
-    @param url
+    @arg url
       @description
         The URL to link to. The content is used as the link text.
 
@@ -471,7 +471,7 @@
     @description
       Creates a related button
 
-    @param url
+    @arg url
       @description
         The url for the button to link to
 
@@ -479,7 +479,7 @@
       @description
         The title for a related button
 
-      @param text
+      @arg text
 
     @entity description
       @description

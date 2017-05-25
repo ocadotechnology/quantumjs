@@ -24,11 +24,11 @@
         }
         */
 
-  @param class [String]
+  @arg class [String]
     @description
       The class to add or remove
 
-  @param classed [Boolean]
+  @arg classed [Boolean]
     @description
       @code[true] to add the class, @code[false] to remove
 

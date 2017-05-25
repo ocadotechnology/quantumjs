@@ -3,7 +3,7 @@
   @description
     A wrapper around the exposed file transforms.
 
-  @param? options [Object]
+  @arg? options [Object]
     @description
       The options to use for the file transform.
 
@@ -26,10 +26,10 @@
     @description
       The @type[FileTransform] for processing @code[@changelogList] entities.
 
-    @param file [File]
+    @arg file [File]
       @description
         The file currently being processed.
-    @param? options [Object]
+    @arg? options [Object]
       @property changelogGroupByApi [Boolean]
         @description
           Whether the changelog should be grouped by api.

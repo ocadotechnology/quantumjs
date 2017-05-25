@@ -3,7 +3,7 @@
   @description
     Returns the @type[FileTransform] function that converts parsed quantum source to virtual dom (@hyperlink(#htmlpage)[HTMLPage]) pages using a series of @type[EntityTransform] functions.
 
-  @param? options [Object]
+  @arg? options [Object]
     @description
       The options to use when building the virtual dom
 

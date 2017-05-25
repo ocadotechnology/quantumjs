@@ -22,7 +22,7 @@
         selection.addParam(['param3'])
         selection.params() // ['param1', 'param2', 'param3']
 
-  @param param [String]
+  @arg param [String]
     The parameter value to add
 
   @returns Selection

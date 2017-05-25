@@ -51,7 +51,7 @@
         console.log(selection.type()) // Prints "myBlogEntry"
         console.log(entity.type)      // Prints "myBlogEntry"
 
-  @param type [String]: The new type
+  @arg type [String]: The new type
   @returns Selection
     @description
       This @type[Selection] for further chaining

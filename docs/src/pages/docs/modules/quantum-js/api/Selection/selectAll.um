@@ -82,10 +82,10 @@
           const selection = quantum.select(entity)
           selection.selectAll('child', { recursive: true }) // returns an array of 5 Selections
 
-  @param type [String]
+  @arg type [String]
     @description
       The type of entity to select
-  @param? options [Object]
+  @arg? options [Object]
     @property recursive [Boolean]
       @description
         Set to true to search recursively down the child entities to search
@@ -202,10 +202,10 @@
           const selection = quantum.select(entity)
           selection.selectAll(['child1', 'child2'], { recursive: true }) // returns an array of 5 Selections
 
-  @param types [Array[String]]
+  @arg types [Array[String]]
     @description
       The types of entities to select
-  @param? options [Object]
+  @arg? options [Object]
     @property recursive [Boolean]
       @description
         Set to true to search recursively down the child entities to search

@@ -10,11 +10,11 @@
         const div = dom.create('div')
           .text("Some text")
 
-  @param text [String]
+  @arg text [String]
     @description
       The text to add as a child
 
-  @param? options [Object]
+  @arg? options [Object]
     @description
       Options that specify how the element is added
 

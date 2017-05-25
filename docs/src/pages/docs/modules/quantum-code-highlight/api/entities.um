@@ -11,7 +11,7 @@
 
 @entity @codeblock
   @added 2.0.0
-  @param? language: The language to use for code highlighting
+  @arg? language: The language to use for code highlighting
   @description
     Creates an inline code section with highlighting using
     @hyperlink(https://highlightjs.org/usage/)[highlight.js].

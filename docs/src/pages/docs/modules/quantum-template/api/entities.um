@@ -19,7 +19,7 @@
             @someEntity
               # Content would be placed here
 
-    @param entityName
+    @arg entityName
       @description
         The name of the entity to look for in the template to put the content
         inside.
@@ -94,7 +94,7 @@
   @description
     Display some content based on a variable value.
 
-  @param variable
+  @arg variable
     @description
       The variable to check
 
@@ -132,7 +132,7 @@
     Inverse of @code[@if], can be used as an 'else' statement for @code[@if]
     blocks. It displays content if a the value of a variable is falsey.
 
-  @param variable
+  @arg variable
     @description
       The variable to check
 

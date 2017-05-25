@@ -70,7 +70,7 @@
       Creates a new file. The preferred method for creating a file is to use
       the @code[file.clone()] method of an existing file.
 
-    @param options [Object]
+    @arg options [Object]
       The options to use when creating the new file
 
       @fileProperties
@@ -81,7 +81,7 @@
     @description
       Creates a new @type[File] instance with some or all of the properties changed.
 
-    @param? changes [Object]
+    @arg? changes [Object]
       @description
         Provide any properties to override
       @fileProperties
@@ -105,7 +105,7 @@
           resolution: 'use a @description block inside the @updated tag'
         }
 
-    @param warning [Object]
+    @arg warning [Object]
       @property module [String]: The module that raised the warning
       @property problem [String]: A description of the issue
       @property resolution [String]: How to fix the issue
@@ -127,7 +127,7 @@
           resolution: 'Fix indentation'
         }
 
-    @param error [Object]
+    @arg error [Object]
       @property module [String]: The module that raised the error
       @property problem [String]: A description of the issue
       @property resolution [String]: How to fix the issue
