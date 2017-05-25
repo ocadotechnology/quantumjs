@@ -6,6 +6,5 @@ This module provides the ability to use variables to create conditional content
 and for loops as well as the ability to create page templates to include things
 like a sidebar or titlebar.
 
-This readme includes no details about how to use the library itself as there is
-documentation for the library available here:
+Documentation:
 https://ocadotechnology.github.io/quantumjs/docs/modules/quantum-template/
