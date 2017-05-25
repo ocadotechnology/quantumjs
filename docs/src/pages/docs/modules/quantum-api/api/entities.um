@@ -287,6 +287,19 @@
     @description
       Describes a javascript Function
 
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @default
+        @arg
+        @arg?
+        @group
+        @event
+        @returns
+
     @extra
       @example
         @file Function to document
@@ -310,6 +323,20 @@
     @description
       Describes a javascript object
 
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @default
+        @group
+        @property
+        @property?
+        @event
+        @prototype
+        @function
+
     @extra
       @example
         @file Object to document
@@ -332,6 +359,19 @@
     @added 2.0.0
     @description
       Describes a javascript event
+
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @default
+
+
+      You can also render these as a @code[@function] using @code[@event ... [Function]],
+      or as an @code[@object] using @code[@event ... [Object]]. This allows the children
+      of @code[@function] and @code[@object] to be used as children of this entity.
 
     @extra
       @example
@@ -379,6 +419,18 @@
     @description
       Describes the return type for a javascript function
 
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+
+
+      You can also render these as a @code[@function] using @code[@returns [Function]],
+      or as an @code[@object] using @code[@returns [Object]]. This allows the children
+      of @code[@function] and @code[@object] to be used as children of this entity.
+
     @extra
       @example
         @@um
@@ -393,6 +445,19 @@
     @added 2.0.0
     @description
       Describes a function parameter
+
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @default
+
+
+      You can also render these as a @code[@function] using @code[@arg ... [Function]],
+      or as an @code[@object] using @code[@arg ... [Object]]. This allows the children
+      of @code[@function] and @code[@object] to be used as children of this entity.
 
     @extra
       @example
@@ -409,6 +474,19 @@
     @description
       Describes an optional function parameter
 
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @default
+
+
+      You can also render these as a @code[@function] using @code[@arg ... [Function]],
+      or as an @code[@object] using @code[@arg ... [Object]]. This allows the children
+      of @code[@function] and @code[@object] to be used as children of this entity.
+
     @extra
       @example
         @@um
@@ -424,6 +502,20 @@
     @description
       Describes an object property
 
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @default
+
+
+      You can also render these in the same way as a @code[@function]
+      entity using @code[@property ... [Function]], or as an @code[@object] using
+      @code[@property ... [Object]]. This allows the children of @code[@function]
+      and @code[@object] to be used as children of this entity.
+
     @extra
       @example
         @@um
@@ -435,6 +527,20 @@
     @added 2.0.0
     @description
       Describes an optional object property
+
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @default
+
+
+      You can also render these in the same way as a @code[@function]
+      entity using @code[@property ... [Function]], or as an @code[@object] using
+      @code[@property ... [Object]]. This allows the children of @code[@function]
+      and @code[@object] to be used as children of this entity.
 
     @extra
       @example
@@ -448,6 +554,21 @@
     @added 2.0.0
     @description
       Describes a javscript prototype
+
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @default
+        @constructor
+        @group
+        @property
+        @property?
+        @event
+        @method
+        @function
 
     @extra
       @example
@@ -476,6 +597,15 @@
       It is rendered in the same way as a function but does not expect a
       function name.
 
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @arg
+        @arg?
+
     @extra
       @example
         @@um
@@ -493,6 +623,19 @@
       Describes a method for a Prototype.
 
       It is rendered in the same way as a function.
+
+      The entities that can be used inside an entity of this type are as
+      follows:
+
+      @@codeblock um
+        @description
+        @extra
+        @default
+        @arg
+        @arg?
+        @group
+        @event
+        @returns
 
     @extra
       @example
