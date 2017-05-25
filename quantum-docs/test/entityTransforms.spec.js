@@ -267,6 +267,74 @@ describe('entityTransforms', () => {
           .attr('title', 'Content')
       )
     })
+
+    it('uses the width attribute', () => {
+      const selection = quantum.select({
+        type: 'image',
+        params: ['path/image.png'],
+        content: [
+          'Content',
+          {
+            type: 'width',
+            params: ['500px'],
+            content: []
+          }
+        ]
+      })
+
+      entityTransforms().image(selection, transformer).should.eql(
+        dom.create('img')
+          .attr('src', 'path/image.png')
+          .attr('alt', 'Content')
+          .attr('title', 'Content')
+          .attr('width', '500px')
+      )
+    })
+
+    it('uses the height attribute', () => {
+      const selection = quantum.select({
+        type: 'image',
+        params: ['path/image.png'],
+        content: [
+          'Content',
+          {
+            type: 'height',
+            params: ['500px'],
+            content: []
+          }
+        ]
+      })
+
+      entityTransforms().image(selection, transformer).should.eql(
+        dom.create('img')
+          .attr('src', 'path/image.png')
+          .attr('alt', 'Content')
+          .attr('title', 'Content')
+          .attr('height', '500px')
+      )
+    })
+
+    it('uses the title attribute', () => {
+      const selection = quantum.select({
+        type: 'image',
+        params: ['path/image.png'],
+        content: [
+          'Content',
+          {
+            type: 'title',
+            params: [],
+            content: ['something']
+          }
+        ]
+      })
+
+      entityTransforms().image(selection, transformer).should.eql(
+        dom.create('img')
+          .attr('src', 'path/image.png')
+          .attr('alt', 'something')
+          .attr('title', 'something')
+      )
+    })
   })
 
   describe('@summary', () => {
@@ -630,6 +698,10 @@ describe('entityTransforms', () => {
 
   describe('@header', () => {
     it('renders as expected', () => {
+      const randomId = dom.randomId
+      dom.randomId = function () {
+        return 'fixed-id'
+      }
       const selection = quantum.select({
         type: 'header',
         params: [],
@@ -641,23 +713,36 @@ describe('entityTransforms', () => {
 
       entityTransforms().header(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-header')
-          .add(stylesheetAsset)
           .add(dom.create('div').class('qm-docs-centered')
             .add(dom.create('div').class('qm-docs-header-wrapper')
               .add(dom.create('div').class('qm-docs-header-title qm-header-font').text(selection.select('title').ps()))
-              .add(dom.create('a')
-                .class('qm-docs-header-link')
-                .attr('href', '/link/one')
-                .text('Link One'))
-              .add(dom.create('a')
-                .class('qm-docs-header-link')
-                .attr('href', '/link/two')
-                .text('Link Two'))
+              .add(dom.create('div').class('qm-docs-header-mobile-menu').id('nav.toggle.fixed-id')
+                .add(dom.create('i').class('qm-docs-header-mobile-menu-icon')))
+              .add(dom.create('div').class('qm-docs-header-links').id('nav.links.fixed-id')
+                .add(dom.create('a')
+                  .class('qm-docs-header-link')
+                  .attr('href', '/link/one')
+                  .text('Link One'))
+                .add(dom.create('a')
+                  .class('qm-docs-header-link')
+                  .attr('href', '/link/two')
+                  .text('Link Two')))
           ))
+          .add(stylesheetAsset)
+          .add(scriptAsset)
+          .add(dom.asset({
+            type: 'js',
+            content: 'window.quantum.docs.createHeaderToggle("fixed-id");'
+          }))
       )
+      dom.randomId = randomId
     })
 
     it('renders with an icon', () => {
+      const randomId = dom.randomId
+      dom.randomId = function () {
+        return 'fixed-id'
+      }
       const selection = quantum.select({
         type: 'header',
         params: [],
@@ -670,24 +755,37 @@ describe('entityTransforms', () => {
 
       entityTransforms().header(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-header')
-          .add(stylesheetAsset)
           .add(dom.create('div').class('qm-docs-centered')
             .add(dom.create('div').class('qm-docs-header-wrapper')
               .add(dom.create('image').class('qm-docs-header-logo').attr('src', selection.select('icon').ps()))
               .add(dom.create('div').class('qm-docs-header-title qm-header-font').text(selection.select('title').ps()))
-              .add(dom.create('a')
-                .class('qm-docs-header-link')
-                .attr('href', '/link/one')
-                .text('Link One'))
-              .add(dom.create('a')
-                .class('qm-docs-header-link')
-                .attr('href', '/link/two')
-                .text('Link Two'))
+              .add(dom.create('div').class('qm-docs-header-mobile-menu').id('nav.toggle.fixed-id')
+                .add(dom.create('i').class('qm-docs-header-mobile-menu-icon')))
+              .add(dom.create('div').class('qm-docs-header-links').id('nav.links.fixed-id')
+                .add(dom.create('a')
+                  .class('qm-docs-header-link')
+                  .attr('href', '/link/one')
+                  .text('Link One'))
+                .add(dom.create('a')
+                  .class('qm-docs-header-link')
+                  .attr('href', '/link/two')
+                  .text('Link Two')))
           ))
+          .add(stylesheetAsset)
+          .add(scriptAsset)
+          .add(dom.asset({
+            type: 'js',
+            content: 'window.quantum.docs.createHeaderToggle("fixed-id");'
+          }))
       )
+      dom.randomId = randomId
     })
 
     it('renders with an icon and icon link', () => {
+      const randomId = dom.randomId
+      dom.randomId = function () {
+        return 'fixed-id'
+      }
       const selection = quantum.select({
         type: 'header',
         params: [],
@@ -700,23 +798,32 @@ describe('entityTransforms', () => {
 
       entityTransforms().header(selection, transformer).should.eql(
         dom.create('div').class('qm-docs-header')
-          .add(stylesheetAsset)
           .add(dom.create('div').class('qm-docs-centered')
             .add(dom.create('div').class('qm-docs-header-wrapper')
               .add(dom.create('a').class('qm-docs-header-logo-link')
                 .attr('href', selection.select('icon').param(1))
                 .add(dom.create('image').class('qm-docs-header-logo').attr('src', selection.select('icon').param(0))))
               .add(dom.create('div').class('qm-docs-header-title qm-header-font').text(selection.select('title').ps()))
-              .add(dom.create('a')
-                .class('qm-docs-header-link')
-                .attr('href', '/link/one')
-                .text('Link One'))
-              .add(dom.create('a')
-                .class('qm-docs-header-link')
-                .attr('href', '/link/two')
-                .text('Link Two'))
+              .add(dom.create('div').class('qm-docs-header-mobile-menu').id('nav.toggle.fixed-id')
+                .add(dom.create('i').class('qm-docs-header-mobile-menu-icon')))
+              .add(dom.create('div').class('qm-docs-header-links').id('nav.links.fixed-id')
+                .add(dom.create('a')
+                  .class('qm-docs-header-link')
+                  .attr('href', '/link/one')
+                  .text('Link One'))
+                .add(dom.create('a')
+                  .class('qm-docs-header-link')
+                  .attr('href', '/link/two')
+                  .text('Link Two')))
           ))
+          .add(stylesheetAsset)
+          .add(scriptAsset)
+          .add(dom.asset({
+            type: 'js',
+            content: 'window.quantum.docs.createHeaderToggle("fixed-id");'
+          }))
       )
+      dom.randomId = randomId
     })
   })
 
