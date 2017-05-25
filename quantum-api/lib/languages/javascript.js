@@ -26,7 +26,7 @@ const defaultValue = body.default
 const prototypes = itemGroup('javascript', 'prototype', 'Prototypes')
 const constructors = itemGroup('javascript', 'constructor', 'Constructors')
 const objects = itemGroup('javascript', 'object', 'Objects')
-const params = itemGroup('javascript', ['param', 'param?'], 'Arguments', { noSort: true })
+const args = itemGroup('javascript', ['arg', 'arg?'], 'Arguments', { noSort: true })
 const properties = itemGroup('javascript', ['property', 'property?'], 'Properties')
 const methods = itemGroup('javascript', 'method', 'Methods')
 const events = itemGroup('javascript', 'event', 'Events')
@@ -76,15 +76,15 @@ function functionHeaderParamDetails (selection, transformer, typeLinks) {
   const name = selection.param(0)
   const isOptional = selection.type()[selection.type().length - 1] === '?'
   return dom.create('span')
-    .class('qm-api-javascript-header-function-param')
+    .class('qm-api-javascript-header-function-arg')
     .classed('qm-api-optional', isOptional)
-    .add(dom.create('span').class('qm-api-javascript-header-function-param-name')
+    .add(dom.create('span').class('qm-api-javascript-header-function-arg-name')
       .text(name || ''))
-    .add(dom.create('span').class('qm-api-javascript-header-function-param-type').add(type(selection.param(1), typeLinks)))
+    .add(dom.create('span').class('qm-api-javascript-header-function-arg-type').add(type(selection.param(1), typeLinks)))
 }
 
 function functionSignature (selection, transformer, typeLinks) {
-  const params = selection.selectAll(['param', 'param?']).map((param) => functionHeaderParamDetails(param, transformer, typeLinks))
+  const args = selection.selectAll(['arg', 'arg?']).map((param) => functionHeaderParamDetails(param, transformer, typeLinks))
 
   const returnsSelection = selection
     .selectAll('returns')
@@ -97,7 +97,7 @@ function functionSignature (selection, transformer, typeLinks) {
     undefined
 
   return [
-    dom.create('span').class('qm-api-javascript-header-function-params').add(params),
+    dom.create('span').class('qm-api-javascript-header-function-args').add(args),
     retns
   ]
 }
@@ -172,7 +172,7 @@ function changelogHeader (typeLinks, changelogHeaders) {
 
         let headerTransform = headerTransformObj.header
         if (headerTransformObj.renderAsOther) {
-          const otherType = current.params()[1]
+          const otherType = current.args()[1]
           headerTransform = headerTransformObj.renderAsOther[otherType] || headerTransform
         }
 
@@ -207,7 +207,7 @@ module.exports = (options) => {
     function: functionHeader,
     method: functionHeader,
     object: objectHeader,
-    param: propertyHeader,
+    arg: propertyHeader,
     property: propertyHeader,
     prototype: prototypeHeader,
     returns: typeHeader
@@ -216,7 +216,7 @@ module.exports = (options) => {
   const constructorBuilder = item({
     class: 'qm-api-javascript-constructor',
     header: typeHeaderBuilders.constructor,
-    content: [ description, extras, params ]
+    content: [ description, extras, args ]
   })
 
   const prototypeBuilder = item({
@@ -228,7 +228,7 @@ module.exports = (options) => {
   const functionBuilder = item({
     class: 'qm-api-javascript-function',
     header: typeHeaderBuilders.function,
-    content: [ description, extras, defaultValue, params, groups, events, returns ]
+    content: [ description, extras, defaultValue, args, groups, events, returns ]
   })
 
   const objectBuilder = item({
@@ -240,7 +240,7 @@ module.exports = (options) => {
   const methodBuilder = item({
     class: 'qm-api-javascript-method',
     header: typeHeaderBuilders.method,
-    content: [ description, extras, defaultValue, params, groups, events, returns ]
+    content: [ description, extras, defaultValue, args, groups, events, returns ]
   })
 
   const propertyBuilder = item({
@@ -250,9 +250,9 @@ module.exports = (options) => {
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
 
-  const paramBuilder = item({
-    class: 'qm-api-javascript-param',
-    header: typeHeaderBuilders.param,
+  const argBuilder = item({
+    class: 'qm-api-javascript-arg',
+    header: typeHeaderBuilders.arg,
     content: [ description, extras, defaultValue ],
     renderAsOther: { Function: functionBuilder, Object: objectBuilder }
   })
@@ -311,8 +311,8 @@ module.exports = (options) => {
       'method': methodBuilder,
       'function': functionBuilder,
       'constructor': constructorBuilder,
-      'param': paramBuilder,
-      'param?': paramBuilder,
+      'arg': argBuilder,
+      'arg?': argBuilder,
       'property': propertyBuilder,
       'property?': propertyBuilder,
       'event': eventBuilder,
@@ -328,7 +328,7 @@ module.exports = (options) => {
 module.exports.prototypes = prototypes
 module.exports.constructors = constructors
 module.exports.objects = objects
-module.exports.params = params
+module.exports.args = args
 module.exports.properties = properties
 module.exports.methods = methods
 module.exports.events = events

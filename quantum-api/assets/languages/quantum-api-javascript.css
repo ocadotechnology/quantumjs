@@ -58,7 +58,7 @@
   background-color: #EEAD2B;
 }
 
-.qm-api-javascript-param {}
+.qm-api-javascript-arg {}
 
 .qm-api-javascript-event {
   border-color: #EC3A65;
@@ -84,7 +84,7 @@
 
 .qm-api-javascript-header-function-name {}
 
-.qm-api-javascript-header-function-params {
+.qm-api-javascript-header-function-args {
     display: -webkit-inline-flex;
     display: -ms-inline-flexbox;
     display: inline-flex;
@@ -99,15 +99,15 @@
             flex-direction: row;
 }
 
-.qm-api-javascript-header-function-params:before {
+.qm-api-javascript-header-function-args:before {
   content: "(";
 }
 
-.qm-api-javascript-header-function-params:after {
+.qm-api-javascript-header-function-args:after {
   content: ")";
 }
 
-.qm-api-javascript-header-function-param {
+.qm-api-javascript-header-function-arg {
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -119,28 +119,28 @@
           flex-direction: row;
 }
 
-.qm-api-javascript-header-function-param:after {
+.qm-api-javascript-header-function-arg:after {
   content: ",";
   margin-right: 4px;
 }
 
-.qm-api-javascript-header-function-param:last-child:after {
+.qm-api-javascript-header-function-arg:last-child:after {
   content: none;
   margin-right: 0;
 }
 
-.qm-api-javascript-header-function-param.qm-api-optional:after {
+.qm-api-javascript-header-function-arg.qm-api-optional:after {
   content: "],";
   margin-right: 4px;
 }
 
-.qm-api-javascript-header-function-param.qm-api-optional:last-child:after {
+.qm-api-javascript-header-function-arg.qm-api-optional:last-child:after {
   content: "]";
   margin-right: 0;
 }
 
-.qm-api-javascript-header-function-param-name {}
-.qm-api-javascript-header-function-param-type {}
+.qm-api-javascript-header-function-arg-name {}
+.qm-api-javascript-header-function-arg-type {}
 
 .qm-api-javascript-header-function-returns {}
 
@@ -163,7 +163,7 @@
 
 .qm-api-javascript-header-property-type {}
 
-.qm-api-javascript-header-function-param-type:before,
+.qm-api-javascript-header-function-arg-type:before,
 .qm-api-javascript-header-property-type:before {
   content: ":";
   margin-right: 4px;
@@ -186,7 +186,7 @@
 
 .qm-api-javascript-header-property-type,
 .qm-api-javascript-header-function-type,
-.qm-api-javascript-header-function-param-type,
+.qm-api-javascript-header-function-arg-type,
 .qm-api-javascript-header-type-type {
   color: #8C8C8C;
 }
