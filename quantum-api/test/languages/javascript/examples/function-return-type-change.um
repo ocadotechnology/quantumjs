@@ -11,7 +11,7 @@
             #   @description: Return type starts as Number
             @updated 0.2.0
               @description: Return type changed to String
-            @param arg0 [String]
+            @arg arg0 [String]
             @versioned
               @version 0.1.0
                 @returns Number
@@ -20,7 +20,7 @@
 
         @api ApiName
           @function test
-            @param arg0 [String]
+            @arg arg0 [String]
             @returns String
 
       @version 0.1.0
@@ -32,7 +32,7 @@
         @entry
           @header javascript
             @function test
-              @param arg0 [String]
+              @arg arg0 [String]
               @returns String
           @change updated
             @description: Return type changed to String

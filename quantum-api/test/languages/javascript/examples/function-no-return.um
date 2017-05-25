@@ -9,7 +9,7 @@
           @function test
             @added 0.1.0
               @description: Function added
-            @param arg0 [String]
+            @arg arg0 [String]
       @version 0.1.0
   @output
     @changelogList
@@ -17,6 +17,6 @@
         @entry
           @header javascript
             @function test
-              @param arg0 [String]
+              @arg arg0 [String]
           @change added
             @description: Function added

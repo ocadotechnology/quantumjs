@@ -6,7 +6,7 @@ describe('javascript', () => {
       'prototypes',
       'constructors',
       'objects',
-      'params',
+      'args',
       'properties',
       'methods',
       'events',

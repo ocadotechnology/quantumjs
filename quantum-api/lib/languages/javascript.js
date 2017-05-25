@@ -172,7 +172,7 @@ function changelogHeader (typeLinks, changelogHeaders) {
 
         let headerTransform = headerTransformObj.header
         if (headerTransformObj.renderAsOther) {
-          const otherType = current.args()[1]
+          const otherType = current.params()[1]
           headerTransform = headerTransformObj.renderAsOther[otherType] || headerTransform
         }
 

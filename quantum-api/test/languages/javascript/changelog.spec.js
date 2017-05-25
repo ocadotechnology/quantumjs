@@ -22,7 +22,7 @@ describe('changelog', () => {
             .class('qm-api-javascript-header-function-name')
             .text(selection.type() === 'constructor' ? 'constructor' : name))
           .add(dom.create('span')
-            .class('qm-api-javascript-header-function-params'))
+            .class('qm-api-javascript-header-function-args'))
       }
 
       const selection = {
@@ -110,21 +110,21 @@ describe('changelog', () => {
             .add(header('property', propertyHeaderBuilder)(quantum.select(child3), transformer))))
     })
 
-    it('creates a header with params', () => {
+    it('creates a header with args', () => {
       const child1 = {
-        type: 'param',
+        type: 'arg',
         params: ['param'],
         content: []
       }
 
       const child2 = {
-        type: 'param?',
+        type: 'arg?',
         params: ['optional'],
         content: []
       }
 
       const child3 = {
-        type: 'param',
+        type: 'arg',
         params: [''],
         content: []
       }
@@ -149,11 +149,11 @@ describe('changelog', () => {
         const name = selection.param(0)
         const isOptional = selection.type()[selection.type().length - 1] === '?'
         return dom.create('span')
-          .class('qm-api-javascript-header-function-param')
+          .class('qm-api-javascript-header-function-arg')
           .classed('qm-api-optional', isOptional)
-          .add(dom.create('span').class('qm-api-javascript-header-function-param-name')
+          .add(dom.create('span').class('qm-api-javascript-header-function-arg-name')
             .text(name || ''))
-          .add(dom.create('span').class('qm-api-javascript-header-function-param-type'))
+          .add(dom.create('span').class('qm-api-javascript-header-function-arg-type'))
       }
 
       function functionBuilder (selection, transformer) {
@@ -167,7 +167,7 @@ describe('changelog', () => {
           .class('qm-api-javascript-header-function-signature')
           .attr('id', name ? name.toLowerCase() : undefined)
           .add(nameSel)
-          .add(dom.create('span').class('qm-api-javascript-header-function-params')
+          .add(dom.create('span').class('qm-api-javascript-header-function-args')
             .add(paramBuilder(quantum.select(child1), transformer))
             .add(paramBuilder(quantum.select(child2), transformer))
             .add(paramBuilder(quantum.select(child3), transformer)))
@@ -199,11 +199,11 @@ describe('changelog', () => {
         const name = selection.param(0)
         const isOptional = selection.type()[selection.type().length - 1] === '?'
         return dom.create('span')
-          .class('qm-api-javascript-header-function-param')
+          .class('qm-api-javascript-header-function-arg')
           .classed('qm-api-optional', isOptional)
-          .add(dom.create('span').class('qm-api-javascript-header-function-param-name')
+          .add(dom.create('span').class('qm-api-javascript-header-function-arg-name')
             .text(name || ''))
-          .add(dom.create('span').class('qm-api-javascript-header-function-param-type'))
+          .add(dom.create('span').class('qm-api-javascript-header-function-arg-type'))
       }
 
       function constructorBuilder (selection, transformer) {
@@ -217,26 +217,26 @@ describe('changelog', () => {
           .class('qm-api-javascript-header-constructor-signature')
           .attr('id', name ? name.toLowerCase() : undefined)
           .add(nameSel)
-          .add(dom.create('span').class('qm-api-javascript-header-function-params')
+          .add(dom.create('span').class('qm-api-javascript-header-function-args')
             .add(paramBuilder(quantum.select(child1), transformer))
             .add(paramBuilder(quantum.select(child2), transformer))
             .add(paramBuilder(quantum.select(child3), transformer)))
       }
 
       const child1 = {
-        type: 'param',
+        type: 'arg',
         params: ['param'],
         content: []
       }
 
       const child2 = {
-        type: 'param?',
+        type: 'arg?',
         params: ['optional'],
         content: []
       }
 
       const child3 = {
-        type: 'param',
+        type: 'arg',
         params: [''],
         content: []
       }

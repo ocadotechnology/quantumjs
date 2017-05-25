@@ -9,7 +9,7 @@
           @method test
             @added 0.1.0
               @description: Method added
-            @param arg0 [String]
+            @arg arg0 [String]
             @returns Number
       @version 0.1.0
   @output
@@ -18,7 +18,7 @@
         @entry
           @header javascript
             @method test
-              @param arg0 [String]
+              @arg arg0 [String]
               @returns Number
           @change added
             @description: Method added
