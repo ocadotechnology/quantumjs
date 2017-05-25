@@ -314,7 +314,7 @@ describe('parse', () => {
         { type: 'EMPTY_CONTENT', value: '' },
         { type: 'INDENT', value: 2 },
         { type: 'TYPE', value: 'banana' },
-        { type: 'EMPTY_CONTENT', value: '  ' },
+        { type: 'EMPTY_CONTENT', value: '' },
         { type: 'TYPE', value: 'lychee' }
       ])
     })
@@ -1679,7 +1679,7 @@ describe('parse', () => {
               params: [],
               content: []
             },
-            '  ',
+            '',
             {
               type: 'tag-b',
               params: [],
@@ -1723,6 +1723,27 @@ describe('parse', () => {
           params: [],
           content: ['very long content']
         }
+      ]))
+    })
+
+    it('handles newlines when an inline entity is at the end of a line', () => {
+      parse('Some @code[Inline] Code\n\nSome inline code at the end of a @code[line]\n\nSome text').should.eql(selection([
+        'Some ',
+        {
+          type: 'code',
+          params: [],
+          content: ['Inline']
+        },
+        ' Code',
+        '',
+        'Some inline code at the end of a ',
+        {
+          type: 'code',
+          params: [],
+          content: ['line']
+        },
+        '',
+        'Some text'
       ]))
     })
   })
