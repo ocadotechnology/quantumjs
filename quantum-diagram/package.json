@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/ocadotechnology/quantumjs/issues"
   },
-  "homepage": "",
+  "homepage": "https://ocadotechnology.github.io/quantumjs/",
   "main": "lib/index.js",
   "directories": {
     "test": "test"
