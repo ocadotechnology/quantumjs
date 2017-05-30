@@ -65,9 +65,6 @@
     @img .lightning-fast-image-image
       @attr(src)[{{baseurl}}/resources/lightning-fast.svg]
 
-  @landingSection No fixed folder structures
-    @bold[You] choose how to structure your project.
-
   @landingSection Extensible
     Define @bold[custom pipelines] for building your site.
 
@@ -75,6 +72,15 @@
 
     @img .extensible-image
       @attr(src)[{{baseurl}}/resources/extensible.svg]
+
+  @landingSection Other features
+    @list
+      @item: No fixed folder structures: @bold[You] choose how to structure your project.
+      @item: Entity driven: keep content, and page structure separate
+      @item: Diagram support
+      @item: Templating support
+      @item: Code highlighting
+      @item: Embedded support
 
   @landingSection Get Started
     @div .buttons
@@ -92,4 +98,4 @@
           @height 30px
 
   @div .footer
-    © Ocado Technology 2017
+    © @hyperlink(http://ocadotechnology.com/)[Ocado Technology] 2017

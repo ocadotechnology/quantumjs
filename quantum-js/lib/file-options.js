@@ -107,7 +107,7 @@ function resolve (specs, opts) {
   }
   const options = opts || {}
   const dir = options.dir || '.'
-  const dest = options.dest || 'target'
+  const dest = options.dest || 'public'
   return Promise.all(normalize(specs))
     .map((spec) => {
       return Promise.resolve(globby(spec.files, { cwd: dir, nodir: true }))
