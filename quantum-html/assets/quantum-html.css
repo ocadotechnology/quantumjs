@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   background: #fbfbfb;
@@ -16,12 +17,12 @@ a:hover {
   text-decoration: underline;
 }
 
-
 .qm-code-font {
   font-family: monospace;
 }
 
 .qm-header-font {}
+
 .qm-body-font {}
 
 .qm-html-paragraph {

@@ -5,7 +5,8 @@
   font-style: normal;
 }
 
-[class^="qm-changelog-icon-"], [class*=" qm-changelog-icon-"] {
+[class^="qm-changelog-icon-"],
+[class*=" qm-changelog-icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'qm-changelog-icons' !important;
   speak: none;
@@ -14,7 +15,6 @@
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -23,18 +23,23 @@
 .qm-changelog-icon-added:before {
   content: "\e145";
 }
+
 .qm-changelog-icon-updated:before {
   content: "\e419";
 }
+
 .qm-changelog-icon-bug-fix:before {
   content: "\e868";
 }
+
 .qm-changelog-icon-deprecated:before {
   content: "\e14b";
 }
+
 .qm-changelog-icon-removed:before {
   content: "\e888";
 }
+
 .qm-changelog-icon-info:before {
   content: "\e88f";
 }
