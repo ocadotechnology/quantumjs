@@ -122,5 +122,18 @@
 
       You can also include markdown in quantum which is __really__ cool!
 
+  @topic Group/Summary example
+    @group
+      @summary Title
+        @description: Description
+        @link #: Summary Link
+        @link #: Summary Link
+        @link #: Summary Link
+      @summary Title
+        @description: Description
+        @link #: Summary Link
+        @link #: Summary Link
+        @link #: Summary Link
+
 @bottomSection
   Some Text

@@ -301,7 +301,7 @@ p:last-child {
   margin-bottom: 0;
   font-size: 32px;
   text-align: center;
-  color: #15668e;
+  color: #168dea;
 }
 
 .qm-docs-summary-body {
@@ -316,13 +316,13 @@ p:last-child {
 .qm-docs-summary-link {
   padding: 0.5em;
   cursor: pointer;
-  color: #15668e;
+  color: #168dea;
   text-align: center;
   background: #F6F6F6;
 }
 
 .qm-docs-summary-link:hover {
-  background: #15668e;
+  background: #168dea;
   text-decoration: none;
   color: white;
 }
@@ -476,7 +476,7 @@ p:last-child {
 }
 
 .qm-docs-related-button:focus {
-  outline: solid 2px #00ADA8;
+  outline: solid 2px #168dea;
 }
 
 .qm-docs-related-button-description {
@@ -613,7 +613,6 @@ p:last-child {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-family: 'Open Sans', sans-serif;
 }
 
 .qm-docs-header-link {
@@ -624,7 +623,6 @@ p:last-child {
   padding: 0 1em;
   margin: 0 0.25em;
   cursor: pointer;
-  font-family: 'Open Sans', sans-serif;
   display: inline-block;
 }
 
