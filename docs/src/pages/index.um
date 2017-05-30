@@ -80,7 +80,6 @@
       @item: Diagram support
       @item: Templating support
       @item: Code highlighting
-      @item: Embedded support
 
   @landingSection Get Started
     @div .buttons
