@@ -1,0 +1,14 @@
+/* Change the color of the toggle and border */
+.api-custom {
+  border-color: purple;
+}
+.api-custom > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background: purple;
+}
+
+.api-thing {
+  border-color: orange;
+}
+.api-thing > .qm-api-collapsible-heading .qm-api-collapsible-toggle {
+  background: orange;
+}
