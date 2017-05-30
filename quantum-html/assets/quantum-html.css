@@ -1,3 +1,22 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  background: #fbfbfb;
+  font-size: 14px;
+  font-family: Verdana, Arial, sans-serif;
+}
+
+a {
+  color: #0b7fd8;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
 .qm-code-font {
   font-family: monospace;
 }
@@ -6,6 +25,7 @@
 .qm-body-font {}
 
 .qm-html-paragraph {
+  line-height: 1.5em;
   margin: 1em 0;
 }
 

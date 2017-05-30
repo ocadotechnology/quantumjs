@@ -118,7 +118,7 @@ p:last-child {
   left: 0;
   bottom: 0;
   top: 43px;
-  background: #15668e;
+  background: #f69c26;
   -webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
@@ -402,7 +402,7 @@ p:last-child {
 }
 
 .qm-docs-breadcrumb {
-  background: rgb(83, 185, 181);
+  background: #168dea;
 }
 
 .qm-docs-breadcrumb-padding {
@@ -436,6 +436,7 @@ p:last-child {
 .qm-docs-bottom-section {
   padding: 1em 1em;
   background: #333;
+  color: white;
 }
 
 .qm-docs-related-buttons {
@@ -528,7 +529,7 @@ p:last-child {
 }
 
 .qm-docs-notice-header {
-  background: #E6992D;
+  background: #168dea;
   color: white;
   padding: 0.5em 0.75em;
   border-radius: 3px 3px 0 0;
@@ -536,7 +537,7 @@ p:last-child {
 
 .qm-docs-notice-body {
   padding: 0.75em;
-  background: #FFF0E7;
+  background: #e7f1fe;
   border-radius: 0 0 3px 3px;
 }
 

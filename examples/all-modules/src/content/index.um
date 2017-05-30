@@ -39,6 +39,8 @@
       # tag, it will only be included in pages with version 1.0.0 and later
       @function myFunction
         @added 1.0.0
+          @description
+            Added a new function
         @updated 2.0.0
         @deprecated 3.0.0
         @removed 4.0.0
@@ -119,3 +121,6 @@
       # H1
 
       You can also include markdown in quantum which is __really__ cool!
+
+@bottomSection
+  Some Text

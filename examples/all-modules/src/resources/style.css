@@ -1,8 +1,4 @@
 /* Include a custom set of styles */
-h1 {
-  color:  red;
-}
-
-h1:after {
-  content: ' Red h1s brought to you by a custom stylesheet';
+html, body {
+  font-family: Verdana;
 }
