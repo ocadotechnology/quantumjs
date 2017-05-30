@@ -233,7 +233,7 @@ function buildHTML (opts) {
                 src: asset.filename,
                 resolved: asset.filename,
                 base: '',
-                dest: (file.info.destBase || '') + (options.assetPath || '') + asset.url,
+                dest: (file.info.destBase || '') + (options.resourcesTarget || '') + asset.url,
                 destBase: file.info.destBase,
                 watch: false
               }),
