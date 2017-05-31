@@ -60,8 +60,16 @@ function tokenize (str) {
   const indent = [0]
   const tokens = []
 
+  function emit (type, value) {
+    if (arguments.length > 1) {
+      tokens.push({type: type, value: value})
+    } else {
+      tokens.push({type: type})
+    }
+  }
+
   function consume (type, next) {
-    tokens.push({type: type, value: str.substring(start, pos)})
+    emit(type, str.substring(start, pos))
     state = next
     start = pos + 1
   }
@@ -76,18 +84,10 @@ function tokenize (str) {
           v = v.replace(es, es[1])
         }
       }
-      tokens.push({type: type, value: v})
+      emit(type, v)
     }
     state = next
     start = pos + 1
-  }
-
-  function emit (type, value) {
-    if (arguments.length > 1) {
-      tokens.push({type: type, value: value})
-    } else {
-      tokens.push({type: type})
-    }
   }
 
   function shuffleIfNext (character) {
@@ -145,7 +145,7 @@ function tokenize (str) {
         if (str[pos + ind] === '\n') {
           pos += ind + 1
           row++
-          emit('EMPTY_CONTENT', '')
+          emit('EMPTY_CONTENT', str.substring(start, pos - 1))
         } else if (str[pos + ind] !== '#' || consumingUnparsed) {
           if (ind > indent[indent.length - 1]) {
             emit('INDENT', ind - indent[indent.length - 1])
@@ -277,7 +277,7 @@ function tokenize (str) {
         if (escapedInlineCounter === 0) {
           consumeIfNonEmpty('CONTENT', CONTENT, ['\\]', '\\['])
           emit('END_INLINE_CONTENT')
-          lastInlineContentEndPos = pos
+          lastInlineContentEndPos = pos + 1
         } else {
           escapedInlineCounter--
         }
