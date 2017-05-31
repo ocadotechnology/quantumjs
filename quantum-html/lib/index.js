@@ -258,6 +258,8 @@ function buildHTML (opts) {
   }
 }
 
+const punctationRegex = /^\W\s/
+
 function paragraphTransform (selection, transformer) {
   const paragraphs = [
     dom.asset({
@@ -268,8 +270,8 @@ function paragraphTransform (selection, transformer) {
   ]
 
   let currentParagraph = void (0)
-
-  selection.content().forEach((e) => {
+  const content = selection.content()
+  content.forEach((e, i) => {
     if (e === '') {
       if (currentParagraph) {
         paragraphs.push(currentParagraph)
@@ -280,10 +282,15 @@ function paragraphTransform (selection, transformer) {
         currentParagraph = dom.create('div').class('qm-html-paragraph')
       }
 
+      const next = content[i + 1]
       if (quantum.isEntity(e)) {
         currentParagraph = currentParagraph
           .add(transformer(quantum.select(e)))
-          .add(dom.textNode(' '))
+
+        if (next && quantum.isEntity(next) || !punctationRegex.test(next)) {
+          currentParagraph = currentParagraph
+            .add(dom.textNode(' '))
+        }
       } else {
         currentParagraph = currentParagraph
           .add(dom.textNode(e + ' '))
