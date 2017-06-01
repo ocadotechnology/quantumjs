@@ -79,19 +79,9 @@ function stylesheet (selection, transform) {
     .attr('rel', 'stylesheet'))
 }
 
-function applyBaseUrl (baseUrl, url) {
-  if (baseUrl && url && url.indexOf('/') === 0) {
-    return path.join(baseUrl, url)
-  } else {
-    return url
-  }
-}
-
-function hyperlink (baseUrl) {
-  return (selection, transform) => {
-    return setupElement('a', selection, transform, false)
-      .attr('href', applyBaseUrl(baseUrl, selection.ps()))
-  }
+function hyperlink (selection, transform) {
+  return setupElement('a', selection, transform, false)
+    .attr('href', selection.ps())
 }
 
 function js (selection, transformer) {
@@ -111,7 +101,7 @@ function entityTransforms (options) {
     html: html,
     script: script,
     stylesheet: stylesheet,
-    hyperlink: hyperlink(options ? options.baseUrl || '' : ''),
+    hyperlink: hyperlink,
     js: js,
     css: css,
     link: elementTransform('link'),
