@@ -79,9 +79,19 @@ function stylesheet (selection, transform) {
     .attr('rel', 'stylesheet'))
 }
 
-function hyperlink (selection, transform) {
-  return setupElement('a', selection, transform, false)
-    .attr('href', selection.ps())
+function applyBaseUrl (baseUrl, url) {
+  if (baseUrl && url && url.indexOf('/') === 0) {
+    return path.join(baseUrl, url)
+  } else {
+    return url
+  }
+}
+
+function hyperlink (baseUrl) {
+  return (selection, transform) => {
+    return setupElement('a', selection, transform, false)
+      .attr('href', applyBaseUrl(baseUrl, selection.ps()))
+  }
 }
 
 function js (selection, transformer) {
@@ -101,7 +111,7 @@ function entityTransforms (options) {
     html: html,
     script: script,
     stylesheet: stylesheet,
-    hyperlink: hyperlink,
+    hyperlink: hyperlink(options ? options.baseUrl || '' : ''),
     js: js,
     css: css,
     link: elementTransform('link'),
@@ -211,7 +221,8 @@ function HTMLPage (elements) {
 HTMLPage.prototype.stringify = function (options) {
   return dom.stringify(this.elements, {
     embedAssets: options ? options.embedAssets : true,
-    assetPath: options ? options.assetPath : undefined
+    assetPath: options ? options.assetPath : undefined,
+    baseUrl: options ? options.baseUrl : undefined
   })
 }
 
@@ -219,7 +230,7 @@ function buildHTML (opts) {
   const options = merge({
     embedAssets: true,
     assetPath: undefined,
-    resourcesTarget: undefined
+    baseUrl: undefined
   }, opts)
 
   return (file) => {
@@ -233,7 +244,7 @@ function buildHTML (opts) {
                 src: asset.filename,
                 resolved: asset.filename,
                 base: '',
-                dest: (file.info.destBase || '') + (options.resourcesTarget || '') + asset.url,
+                dest: (file.info.destBase || '') + (options.baseUrl || '') + (options.assetPath || '') + asset.url,
                 destBase: file.info.destBase,
                 watch: false
               }),

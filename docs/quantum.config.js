@@ -62,10 +62,10 @@ const apiOptions = {
 
 const htmlOptions = {
   embedAssets: false,
-  assetPath: baseUrl + '/resources',
-  resourcesTarget: '/resources',
+  assetPath: '/resources',
+  baseUrl: baseUrl,
   entityTransforms: {
-    html: html.entityTransforms(),
+    html: html.entityTransforms({ baseUrl }),
     api: api.entityTransforms(apiOptions),
     diagram: diagram.entityTransforms(),
     markdown: markdown.entityTransforms(),
@@ -90,7 +90,6 @@ function customizedTemplate (file) {
         age: 25
       }
     },
-    baseurl: baseUrl,
     filename: file.info.src
   }
 
