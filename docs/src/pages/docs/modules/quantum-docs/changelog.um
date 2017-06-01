@@ -13,7 +13,7 @@
     @process
       @inline api.um
     @version 2.0.0
-      @link /docs/modules/quantum-docs/2.0.0
+      @link {{baseurl}}/docs/modules/quantum-docs/2.0.0
       @description
         Initial public release of quantum-docs.
     @version 1.0.0

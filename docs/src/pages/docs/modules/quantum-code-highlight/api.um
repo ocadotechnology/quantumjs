@@ -4,7 +4,7 @@
     @code[require('quantum-code-highlight')].
 
     For information about different versions, see the
-    @hyperlink(/docs/modules/quantum-code-highlight/changelog/)[Changelog]
+    @hyperlink({{baseurl}}/docs/modules/quantum-code-highlight/changelog/)[Changelog]
 
 
   @inline api/entityTransforms.um

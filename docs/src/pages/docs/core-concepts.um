@@ -67,7 +67,7 @@
     @notice [Note]
       There are some helper apis for working with the parsed AST.
 
-      See the @hyperlink(/docs/modules/quantum-js/#selection-api)[quantum-js]
+      See the @hyperlink({{baseurl}}/docs/modules/quantum-js/#selection-api)[quantum-js]
       module docs for more information.
 
 
@@ -126,7 +126,7 @@
 
 
     # @notice More details
-    #   See the @hyperlink(/tutorials/custom-transforms)[Custom entityTransforms] tutorial
+    #   See the @hyperlink({{baseurl}}/tutorials/custom-transforms)[Custom entityTransforms] tutorial
     #   for how to create and use your own entity transforms.
 
 
@@ -225,7 +225,7 @@
             @arg transformer [Function]
               @collapsible false
               @description
-                The transformer created in the @hyperlink(/docs/modules/quantum-html/#builddom)[buildDOM] function.
+                The transformer created in the @hyperlink({{baseurl}}/docs/modules/quantum-html/#builddom)[buildDOM] function.
 
                 It is bootstrapped to itself to allow children to be transformed.
 
@@ -245,7 +245,7 @@
             @arg? meta [Object]
               @collapsible false
               @description
-                The meta object as defined in @hyperlink(/docs/modules/quantum-html/#builddom)[buildDOM] options. This should only be used in custom entity transforms.
+                The meta object as defined in @hyperlink({{baseurl}}/docs/modules/quantum-html/#builddom)[buildDOM] options. This should only be used in custom entity transforms.
 
     # TODO: Convert this to a tutorial page with a more in-depth example
     @section Custom Entity Transform Example

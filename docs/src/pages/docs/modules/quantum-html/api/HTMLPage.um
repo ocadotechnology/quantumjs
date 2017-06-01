@@ -2,7 +2,7 @@
   @added 2.0.0
   @description
     A prototype for storing
-    @hyperlink(/docs/core-concepts#file-transforms/)[transformed] pages.
+    @hyperlink({{baseurl}}/docs/core-concepts#file-transforms/)[transformed] pages.
 
     This type is created by the @code[buildDOM] function. It is designed to be
     used in the @code[buildHTML] function to convert from the transformed

@@ -4,7 +4,7 @@
     @code[require('quantum-version')].
 
     For information about different versions, see the
-    @hyperlink(/docs/modules/quantum-version/changelog/)[Changelog]
+    @hyperlink({{baseurl}}/docs/modules/quantum-version/changelog/)[Changelog]
 
   @group File Transform
     @inline api/fileTransform.um

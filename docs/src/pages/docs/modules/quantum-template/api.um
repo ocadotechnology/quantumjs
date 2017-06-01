@@ -4,7 +4,7 @@
     @code[require('quantum-template')].
 
     For information about different versions, see the
-    @hyperlink(/docs/modules/quantum-template/changelog/)[Changelog]
+    @hyperlink({{baseurl}}/docs/modules/quantum-template/changelog/)[Changelog]
 
 
   @inline api/entities.um

@@ -3,14 +3,14 @@
 
 @stylesheet [https://fonts.googleapis.com/icon?family=Material+Icons]
 @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:100,400,700|Roboto+Slab:300,400,700|Source+Code+Pro:200,400,700]
-@stylesheet [/resources/quantum-site.css]
-@stylesheet [/resources/quantum-landing.css]
+@stylesheet [{{baseurl}}/resources/quantum-site.css]
+@stylesheet [{{baseurl}}/resources/quantum-landing.css]
 
 @div .container
   @div .top-landing-section
     @div
       @img
-        @attr src: /resources/logo.svg
+        @attr src: {{baseurl}}/resources/logo.svg
         @attr class: top-landing-section__logo
       @h1 .top-landing-section__title: QuantumJS
       @div .top-landing-section__tagline
@@ -18,18 +18,18 @@
 
   @div .buttons
     @a .button: @span[Documentation]
-      @attr href: /docs/
-      @image [/resources/book.svg]
+      @attr href: {{baseurl}}/docs/
+      @image [{{baseurl}}/resources/book.svg]
         @height 30px
 
     @a .button: @span[Quick Start]
-      @attr href: /docs/quick-start
-      @image [/resources/rocket.svg]
+      @attr href: {{baseurl}}/docs/quick-start
+      @image [{{baseurl}}/resources/rocket.svg]
         @height 30px
 
     @a .button: @span[GitHub]
       @attr href: https://github.com/ocadotechnology/quantumjs/
-      @image [/resources/github-mark.svg]
+      @image [{{baseurl}}/resources/github-mark.svg]
         @height 30px
 
   @landingSection Markup goes in, HTML comes out.
@@ -37,12 +37,12 @@
 
     @div .um-to-html
       @img .um-to-html__image
-        @attr(src)[/resources/um.svg]
+        @attr(src)[{{baseurl}}/resources/um.svg]
 
       @i(.material-icons.um-to-html__arrow)[forward]
 
       @img .um-to-html__image
-        @attr(src)[/resources/html.svg]
+        @attr(src)[{{baseurl}}/resources/html.svg]
 
   @landingSection Great for technical documentation
     With QuantumJS you can easily create @bold[versioned content], @bold[api docs], and automatically generate @bold[changelogs].
@@ -50,20 +50,20 @@
     @div .versioned
       @div .versioned-source
         @img .versioned-image
-          @attr(src)[/resources/um.svg]
+          @attr(src)[{{baseurl}}/resources/um.svg]
 
       @i(.material-icons.versioned-arrow)[forward]
 
       @div .versioned-pages
         @img .versioned-image
-          @attr(src)[/resources/versioned-overlap.svg]
+          @attr(src)[{{baseurl}}/resources/versioned-overlap.svg]
 
 
   @landingSection Lightning Fast
     @bold[Sub 10ms] page compile times.
 
     @img .lightning-fast-image-image
-      @attr(src)[/resources/lightning-fast.svg]
+      @attr(src)[{{baseurl}}/resources/lightning-fast.svg]
 
   @landingSection Extensible
     Define @bold[custom pipelines] for building your site.
@@ -71,7 +71,7 @@
     Define new @bold[entities] with a single function.
 
     @img .extensible-image
-      @attr(src)[/resources/extensible.svg]
+      @attr(src)[{{baseurl}}/resources/extensible.svg]
 
   @landingSection Other features
     @list
@@ -84,16 +84,16 @@
   @landingSection Get Started
     @div .buttons
       @a .button: @span[Quickstart]
-        @attr href: /docs/quick-start
-        @image [/resources/rocket.svg]
+        @attr href: {{baseurl}}/docs/quick-start
+        @image [{{baseurl}}/resources/rocket.svg]
           @height 30px
       @a .button: @span[Releases]
         @attr href: https://github.com/ocadotechnology/quantumjs/releases
-        @image [/resources/tags.svg]
+        @image [{{baseurl}}/resources/tags.svg]
           @height 30px
       @a .button: @span[GitHub]
         @attr href: https://github.com/ocadotechnology/quantumjs/
-        @image [/resources/github-mark.svg]
+        @image [{{baseurl}}/resources/github-mark.svg]
           @height 30px
 
   @div .footer

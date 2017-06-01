@@ -24,7 +24,7 @@
 
   @arg fileContent [Array[Entity]]
     @description
-      The content of a processed @hyperlink(/docs/modules/quantum-js/#file)[File]
+      The content of a processed @hyperlink({{baseurl}}/docs/modules/quantum-js/#file)[File]
       object.
 
   # @arg? wrapperOptions [Object]
