@@ -90,6 +90,7 @@ function customizedTemplate (file) {
         age: 25
       }
     },
+    baseurl: baseUrl,
     filename: file.info.src
   }
 
