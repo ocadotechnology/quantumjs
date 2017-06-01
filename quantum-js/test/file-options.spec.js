@@ -46,24 +46,24 @@ describe('file options', () => {
         src: 'target/test/files1/a.um',
         resolved: 'a.um',
         base: 'target/test/files1',
-        dest: 'target/a.um',
-        destBase: 'target',
+        dest: 'public/a.um',
+        destBase: 'public',
         watch: true
       }),
       new FileInfo({
         src: 'target/test/files1/b.um',
         resolved: 'b.um',
         base: 'target/test/files1',
-        dest: 'target/b.um',
-        destBase: 'target',
+        dest: 'public/b.um',
+        destBase: 'public',
         watch: true
       }),
       new FileInfo({
         src: 'target/test/files1/c/d.um',
         resolved: 'c/d.um',
         base: 'target/test/files1',
-        dest: 'target/c/d.um',
-        destBase: 'target',
+        dest: 'public/c/d.um',
+        destBase: 'public',
         watch: true
       })
     ]
@@ -73,8 +73,8 @@ describe('file options', () => {
         src: 'target/test/files2/e.um',
         resolved: 'e.um',
         base: 'target/test/files2',
-        dest: 'target/e.um',
-        destBase: 'target',
+        dest: 'public/e.um',
+        destBase: 'public',
         watch: true
       })
     ]
@@ -84,16 +84,16 @@ describe('file options', () => {
         src: 'target/test/files2/e.um',
         resolved: 'e.um',
         base: 'target/test/files2',
-        dest: 'target/e.um',
-        destBase: 'target',
+        dest: 'public/e.um',
+        destBase: 'public',
         watch: true
       }),
       new FileInfo({
         src: 'target/test/files2/z.um',
         resolved: 'z.um',
         base: 'target/test/files2',
-        dest: 'target/z.um',
-        destBase: 'target',
+        dest: 'public/z.um',
+        destBase: 'public',
         watch: true
       })
     ]
@@ -114,7 +114,7 @@ describe('file options', () => {
 
       const options = {
         dir: '.',
-        dest: 'target'
+        dest: 'public'
       }
 
       return resolve(list, options).then((files) => {
@@ -154,7 +154,7 @@ describe('file options', () => {
 
       const options = {
         dir: '.',
-        dest: 'target'
+        dest: 'public'
       }
 
       return resolve(list, options).then((files) => {
@@ -169,7 +169,7 @@ describe('file options', () => {
 
       const options = {
         dir: '.',
-        dest: 'target'
+        dest: 'public'
       }
 
       return resolve(list, options).then((files) => {
@@ -196,7 +196,7 @@ describe('file options', () => {
 
       const options = {
         dir: '.',
-        dest: 'target'
+        dest: 'public'
       }
 
       return resolve(list, options).then((files) => {
@@ -209,7 +209,7 @@ describe('file options', () => {
 
       const options = {
         dir: '.',
-        dest: 'target'
+        dest: 'public'
       }
 
       return resolve(list, options).then((files) => {
@@ -222,7 +222,7 @@ describe('file options', () => {
 
       const options = {
         dir: '.',
-        dest: 'target'
+        dest: 'public'
       }
 
       return resolve(list, options).then((files) => {
@@ -256,7 +256,7 @@ describe('file options', () => {
         files: ['page.um'],
         base: '/',
         watch: true,
-        dest: 'target'
+        dest: 'public'
       }
       should.not.exist(validate(validSpec))
     })
