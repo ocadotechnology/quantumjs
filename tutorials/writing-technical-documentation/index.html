@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="stylesheet" href="/quantumjs/resources/quantum-docs.css"></link><link rel="stylesheet" href="/quantumjs/resources/quantum-html.css"></link><link rel="stylesheet" href="/quantumjs/resources/quantum-code-highlight.css"></link><link rel="stylesheet" href="/quantumjs/resources/quantum-diagram.css"></link><link href="https://fonts.googleapis.com/css?family=Open+Sans:100,400,700|Roboto+Slab:300,400,700|Source+Code+Pro:200,400,700" rel="stylesheet"></link><link href="/quantumjs/resources/quantum-site.css" rel="stylesheet"></link><link rel="apple-touch-icon" sizes="57x57" href="/quantumjs/resources/favicons/apple-touch-icon-57x57.png"></link><link rel="apple-touch-icon" sizes="60x60" href="/quantumjs/resources/favicons/apple-touch-icon-60x60.png"></link><link rel="apple-touch-icon" sizes="72x72" href="/quantumjs/resources/favicons/apple-touch-icon-72x72.png"></link><link rel="apple-touch-icon" sizes="76x76" href="/quantumjs/resources/favicons/apple-touch-icon-76x76.png"></link><link rel="apple-touch-icon" sizes="114x114" href="/quantumjs/resources/favicons/apple-touch-icon-114x114.png"></link><link rel="apple-touch-icon" sizes="120x120" href="/quantumjs/resources/favicons/apple-touch-icon-120x120.png"></link><link rel="apple-touch-icon" sizes="144x144" href="/quantumjs/resources/favicons/apple-touch-icon-144x144.png"></link><link rel="apple-touch-icon" sizes="152x152" href="/quantumjs/resources/favicons/apple-touch-icon-152x152.png"></link><link rel="apple-touch-icon" sizes="180x180" href="/quantumjs/resources/favicons/apple-touch-icon-180x180.png"></link><meta name="apple-mobile-web-app-capable" content="yes"></meta><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"></meta><meta name="apple-mobile-web-app-title" content="Quantum JS"></meta><link rel="manifest" href="/quantumjs/resources/favicons/manifest.json"></link><meta name="mobile-web-app-capable" content="yes"></meta><meta name="theme-color" content="#fff"></meta><meta name="application-name" content="Quantum JS"></meta><link rel="icon type=image/png" sizes="228x228" href="/quantumjs/resources/favicons/coast-228x228.png"></link><link rel="yandex-tableau-widget" href="/quantumjs/resources/favicons/yandex-browser-manifest.json"></link><meta name="msapplication-TileColor" content="#fff"></meta><meta name="msapplication-TileImage" content="/mstile-144x144.png"></meta><link rel="icon type=image/png" sizes="32x32" href="/quantumjs/resources/favicons/favicon-32x32.png"></link><link rel="icon type=image/png" sizes="192x192" href="/quantumjs/resources/favicons/android-chrome-192x192.png"></link><link rel="icon type=image/png" sizes="16x16" href="/quantumjs/resources/favicons/favicon-16x16.png"></link><link rel="shortcut icon" href="/quantumjs/resources/favicons/favicon.ico"></link><link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)" href="/quantumjs/resources/favicons/apple-touch-startup-image-320x460.png"></link><link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" href="/quantumjs/resources/favicons/apple-touch-startup-image-640x920.png"></link><link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" href="/quantumjs/resources/favicons/apple-touch-startup-image-640x1096.png"></link><link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" href="/quantumjs/resources/favicons/apple-touch-startup-image-750x1294.png"></link><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 3)" href="/quantumjs/resources/favicons/apple-touch-startup-image-1182x2208.png"></link><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 3)" href="/quantumjs/resources/favicons/apple-touch-startup-image-1242x2148.png"></link><link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)" href="/quantumjs/resources/favicons/apple-touch-startup-image-748x1024.png"></link><link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)" href="/quantumjs/resources/favicons/apple-touch-startup-image-768x1004.png"></link><link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" href="/quantumjs/resources/favicons/apple-touch-startup-image-1496x2048.png"></link><link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" href="/quantumjs/resources/favicons/apple-touch-startup-image-1536x2008.png"></link><title>Writing Technical Documentation</title><meta name="viewport" content="width=device-width, initial-scale=1"></meta></head>
+<body class="qm-body-font qm-docs-sidebar-page"><div class="qm-docs-header"><div class="qm-docs-centered"><div class="qm-docs-header-wrapper"><a class="qm-docs-header-logo-link" href="/quantumjs/"><image class="qm-docs-header-logo" src="/quantumjs/resources/logo.svg"></image></a><div class="qm-docs-header-title qm-header-font">QuantumJS</div><div class="qm-docs-header-mobile-menu" id="nav.toggle.64CBF85B56F4B18350474BDEE921DD72"><i class="qm-docs-header-mobile-menu-icon"></i></div><div class="qm-docs-header-links" id="nav.links.64CBF85B56F4B18350474BDEE921DD72"></div></div></div></div><div class="qm-docs-sidebar-page"><div class="qm-docs-sidebar"><div class="qm-docs-navigation-menu-wrapper"><div class="qm-docs-navigation-menu"><a class="qm-docs-navigation-menu-page" href="/quantumjs/">Home</a><div class="qm-docs-navigation-menu-section"><div class="qm-docs-navigation-menu-section-title">Introduction</div><div class="qm-docs-navigation-menu-section-body"><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/">Overview</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/quick-start">Quick Start</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/markup/">The Markup Language</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/core-concepts/">Core Concepts</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/cli-and-api/">Using the CLI &#x2F; API</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/quantum-vs-markdown">Quantum vs Markdown</a></div></div><div class="qm-docs-navigation-menu-section"><div class="qm-docs-navigation-menu-section-title">Config</div><div class="qm-docs-navigation-menu-section-body"><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/quantum-config/">quantum.config.js</a></div></div><div class="qm-docs-navigation-menu-section"><div class="qm-docs-navigation-menu-section-title">Core Modules</div><div class="qm-docs-navigation-menu-section-body"><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-js/">quantum-js</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-dom/">quantum-dom</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-html/">quantum-html</a></div></div><div class="qm-docs-navigation-menu-section"><div class="qm-docs-navigation-menu-section-title">Optional Modules</div><div class="qm-docs-navigation-menu-section-body"><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-api/">quantum-api</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-code-highlight/">quantum-code-highlight</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-diagram/">quantum-diagram</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-docs/">quantum-docs</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-markdown/">quantum-markdown</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-template/">quantum-template</a><a class="qm-docs-navigation-menu-page" href="/quantumjs/docs/modules/quantum-version/">quantum-version</a></div></div></div></div></div><div class="qm-docs-content-section-container"><div class="qm-docs-top-section"><div class="qm-docs-top-section-centered qm-docs-top-section-banner"><a class="qm-docs-top-section-source" href="https://github.com/ocadotechnology/quantumjs/tree/master/docs/src/pages/tutorials/writing-technical-documentation.um">Edit Page</a><div class="qm-docs-top-section-title qm-header-font">Writing Technical Documentation</div><div class="qm-docs-top-section-description"><div class="qm-html-paragraph">This tutorial will guide you through use of some of the quantum modules for writing technical documentation </div></div></div></div><div class="qm-docs-content-section"><div class="qm-docs-topic"><div class="qm-docs-anchor" id="about"><div class="qm-docs-topic-header qm-header-font">About<a class="qm-docs-anchor-icon" href="#about"></a></div></div><div class="qm-docs-topic-body"><div class="qm-html-paragraph">In this tutorial we will document a fictitious hot drink delivery service. </div><div class="qm-html-paragraph">This will include: <ul class="qm-docs-list"><li><div class="qm-html-paragraph">Setting up a new quantum project </div></li><li><div class="qm-html-paragraph">Writing some general documentation using the  <b>quantum-docs</b>  module </div></li><li><div class="qm-html-paragraph">Documenting a javascript client library for the service with the  <b>quantum-api</b>  and  <b>quantum-version</b>  modules </div></li><li><div class="qm-html-paragraph">Documenting the tea&#x2F;coffee making process with the  <b>quantum-diagram</b>  module </div></li><li><div class="qm-html-paragraph">Writing custom entity transforms for the  <b>quantum-html</b>  module </div></li></ul> </div><div class="qm-html-paragraph">The finished tutorial is available as a git repository  <a href="#">here</a> . </div></div></div><div class="qm-docs-topic"><div class="qm-docs-anchor" id="setting-up"><div class="qm-docs-topic-header qm-header-font">Setting Up<a class="qm-docs-anchor-icon" href="#setting-up"></a></div></div><div class="qm-docs-topic-body"><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="installing-the-dependencies"><div class="qm-docs-section-header qm-header-font">Installing the dependencies<a class="qm-docs-anchor-icon" href="#installing-the-dependencies"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">First, let&#39;s create a package.json in a new directory and then install some the dependencies we&#39;ll need. </div><div class="qm-html-paragraph">The directory we&#39;ll use for this example will be called &#39;my-project&#39;: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">mkdir my-project <span class="hljs-comment"># creates project directory</span>
+<span class="hljs-built_in">cd</span> my-project    <span class="hljs-comment"># change to the my-project directory</span>
+npm init         <span class="hljs-comment"># initialize npm and create a package.json</span></code></pre></div> </div><div class="qm-html-paragraph">Now the project has been initialized, the dependencies need to be installed. For now we will install just a few of the quantum modules available: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">npm install -g quantum-cli
+npm install --save quantum-html quantum-docs</code></pre></div> </div><div class="qm-html-paragraph">Quantum makes extensive use of Promises, as does this walkthrough. For this tutorial we are going to use  <a href="https://www.npmjs.com/package/bluebird">bluebird</a>  as our bluebird implementation. </div><div class="qm-html-paragraph">It can be installed using the following command: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">npm install --save bluebird</code></pre></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="preparing-the-site-structure"><div class="qm-docs-section-header qm-header-font">Preparing the site structure<a class="qm-docs-anchor-icon" href="#preparing-the-site-structure"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">The directory structure for quantum is flexible - you can choose how you lay out your files. For this tutorial we are going to show an example folder structure that works well in most cases. </div><div class="qm-html-paragraph">To prepare our example structure, we can make a few directories inside <code class="qm-code-highlight-code qm-code-font">my-project</code> : </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">mkdir pages shared resources</code></pre></div> </div><div class="qm-html-paragraph">This should leave you with a structure as follows: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">- my-project
+| - pages         <span class="hljs-comment"># The pages for the site. This will be the site root.</span>
+| - shared        <span class="hljs-comment"># Quantum content that is shared across multiple pages, such as templates or a common file.</span>
+| - resources     <span class="hljs-comment"># Any client-side JS/CSS.</span>
+| - node_modules  <span class="hljs-comment"># generated by npm install. See 'Installing the dependencies'</span>
+| - package.json  <span class="hljs-comment"># generated by npm init. See 'Installing the dependencies'</span></code></pre></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="creating-a-build-script"><div class="qm-docs-section-header qm-header-font">Creating a build script<a class="qm-docs-anchor-icon" href="#creating-a-build-script"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">We are going to use the quantum-hub module for building our site - this module simplifies setting up things like watching the source for changes, and runs a web server that reloads automatically when files are saved. </div><div class="qm-html-paragraph">The first step is to create the config file in the build folder called quantum.config.js: </div><div class="qm-html-paragraph"><div class="qm-docs-subsection"><div class="qm-docs-subsection-header qm-header-font">quantum.config.js</div><div class="qm-docs-subsection-body"><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-js"><pre><code class="qm-code-font"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>)
+<span class="hljs-keyword">var</span> html = <span class="hljs-built_in">require</span>(<span class="hljs-string">'quantum-html'</span>)
+<span class="hljs-keyword">var</span> docs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'quantum-docs'</span>)
+<span class="hljs-keyword">var</span> <span class="hljs-built_in">Promise</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bluebird'</span>)
+
+<span class="hljs-keyword">var</span> htmlOptions = {
+  <span class="hljs-attr">entityTransforms</span>: {
+    <span class="hljs-attr">html</span>: html.entityTransforms,
+    <span class="hljs-attr">docs</span>: docs()
+  }
+}
+
+<span class="hljs-comment">// returns a function that compiles a page out to html</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pipeline</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(obj)
+      .then(html(htmlOptions))
+      .then(html.stringify())
+  }
+}
+
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">pipeline</span>: pipeline,
+  <span class="hljs-attr">pages</span>: <span class="hljs-string">'pages/**/*.um'</span>,
+  <span class="hljs-attr">base</span>: <span class="hljs-string">'pages'</span>,
+  <span class="hljs-attr">resourceDir</span>: <span class="hljs-string">'resources'</span>
+}</code></pre></div> </div></div></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="create-some-test-content"><div class="qm-docs-section-header qm-header-font">Create some test content<a class="qm-docs-anchor-icon" href="#create-some-test-content"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">Next, we can check that everything has been set up correctly. To do this, we need some example content. Create a file called index.um in the pages folder: </div><div class="qm-html-paragraph"><div class="qm-docs-subsection"><div class="qm-docs-subsection-header qm-header-font">pages&#x2F;index.um</div><div class="qm-docs-subsection-body"><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@h1</span>: Example page
+<span class="hljs-keyword">@p</span>: Omgasdfghjkl, it actually worked!</code></pre></div> </div></div></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="build-the-site"><div class="qm-docs-section-header qm-header-font">Build the site<a class="qm-docs-anchor-icon" href="#build-the-site"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">Now run the build script: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">quantum watch</code></pre></div> </div><div class="qm-html-paragraph">If all has gone well you should see something logged out to the console to indicate that the page was built and a web server was started. Visit  <a href="http://localhost:8000">localhost:8000</a>  in your browser to see the site that has been built </div><div class="qm-html-paragraph"><div class="qm-docs-notice qm-docs-info"><div class="qm-docs-notice-header qm-header-font">Note</div><div class="qm-docs-notice-body"><div class="qm-html-paragraph">If you get an error, check back through the tutorial for steps that were accidently skipped, or miscopied code snippets. </div><div class="qm-html-paragraph">If you believe you have done everything correctly, then you can seek help on the issue tracker in github for this project. </div></div></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="install-and-build-hexagon.js"><div class="qm-docs-section-header qm-header-font">Install and build Hexagon.js<a class="qm-docs-anchor-icon" href="#install-and-build-hexagon.js"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph"><div class="qm-docs-notice"><div class="qm-docs-notice-header qm-header-font">TODO</div><div class="qm-docs-notice-body"><div class="qm-html-paragraph">Improve this section - use the build in dest? </div></div></div> </div><div class="qm-html-paragraph">Next, we can install  <a href="https://hexagonjs.io">Hexagon.js</a>. We are going to use it mainly for its stylesheet. </div><div class="qm-html-paragraph">Hexagon.js is available as a node module which can be installed using: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">npm install --save hexagon-js</code></pre></div> </div><div class="qm-html-paragraph">A build script can then be created: </div><div class="qm-html-paragraph"><b>build/hexagon.js</b> <div class="qm-code-highlight-codeblock language-js"><pre><code class="qm-code-font"><span class="hljs-keyword">var</span> hexagon = <span class="hljs-built_in">require</span>(<span class="hljs-string">'hexagon-js'</span>)
+
+hexagon.light.build({
+  <span class="hljs-attr">dest</span>: <span class="hljs-string">'resources/hexagon-js'</span>
+})</code></pre></div> </div><div class="qm-html-paragraph">This can then be run using the following command to create a build
+of hexagon in the resources folder: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">node build/hexagon.js</code></pre></div> </div><div class="qm-html-paragraph">This will need to be run whenever the hexagon build config is changed
+or a new version of hexagon is installed. </div></div></div> </div></div></div><div class="qm-docs-topic"><div class="qm-docs-anchor" id="adding-content"><div class="qm-docs-topic-header qm-header-font">Adding Content<a class="qm-docs-anchor-icon" href="#adding-content"></a></div></div><div class="qm-docs-topic-body"><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="creating-the-titlebar-template"><div class="qm-docs-section-header qm-header-font">Creating the titlebar template<a class="qm-docs-anchor-icon" href="#creating-the-titlebar-template"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">Before adding content to the page, it's best to define common templates
+to use for the pages.
+
+The first step for using templates is installing 
+: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">npm install --save quantum-template</code></pre></div> </div><div class="qm-html-paragraph">Then add the script to build/build.js to include template in the build process: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-js"><pre><code class="qm-code-font"><span class="hljs-comment">// Add this to the top of the page, alongside the other require statements</span>
+<span class="hljs-keyword">var</span> template = <span class="hljs-built_in">require</span>(<span class="hljs-string">'template'</span>)
+
+...
+
+return <span class="hljs-built_in">Promise</span>.resolve(obj)
+  .then(template()) <span class="hljs-comment">// Add this line to the build pipeline, this includes the template functionality.</span>
+  .map(html(htmlOptions))
+  .map(html.stringify())
+
+...</code></pre></div> </div><div class="qm-html-paragraph">Templates can then be created using @define.
+
+In this walkthrough, we only need one template for the titlebar: </div><div class="qm-html-paragraph"><b>shared/shared.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-comment"># Include the Hexagon library on all pages that include this file.</span>
+<span class="hljs-keyword">@stylesheet<span class="hljs-attr"> [/resources/hexagon-js/hexagon.css]</span></span>
+<span class="hljs-keyword">@script<span class="hljs-attr"> [/resources/hexagon-js/hexagon.js]</span></span>
+
+<span class="hljs-comment"># Define the @titlebar entity</span>
+<span class="hljs-keyword">@define<span class="hljs-attr"> titlebar</span></span>
+  <span class="hljs-comment"># Apply the 'hx-heading-fixed' class to the body</span>
+  <span class="hljs-keyword">@bodyClass<span class="hljs-attr"> hx-heading-fixed</span></span>
+  <span class="hljs-comment"># Add a div to the page with the hx-heading class</span>
+  <span class="hljs-keyword">@div<span class="hljs-attr"> .hx-heading</span></span>
+    <span class="hljs-keyword">@div<span class="hljs-attr"> .hx-titlebar</span></span>
+      <span class="hljs-keyword">@div<span class="hljs-attr"> .hx-titlebar-container</span></span>
+        <span class="hljs-keyword">@div<span class="hljs-attr"> .hx-titlebar-header</span></span>
+          <span class="hljs-keyword">@a<span class="hljs-attr"> .hx-titlebar-icon</span></span>
+            <span class="hljs-keyword">@attr<span class="hljs-attr"> href</span></span>: /
+            <span class="hljs-comment"># Add the site logo</span>
+            <span class="hljs-keyword">@image<span class="hljs-attr"> /resources/coffee.png</span></span>
+          <span class="hljs-comment"># Add the header text</span>
+          <span class="hljs-keyword">@div<span class="hljs-attr"> .hx-titlebar-title</span></span>: BeverageInc.</code></pre></div> </div><div class="qm-html-paragraph">The template uses the following site logo, which should be copied to the site: </div><div class="qm-html-paragraph"><b>resources/coffee.png</b> </div><div class="qm-html-paragraph"><img src="/resources/coffee.png" alt="" title=""></img> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="creating-a-home-page"><div class="qm-docs-section-header qm-header-font">Creating a home page<a class="qm-docs-anchor-icon" href="#creating-a-home-page"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">The next step is to create the home page for the site using the template you just created </div><div class="qm-html-paragraph"><b>pages/index.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-comment"># Include the shared file</span>
+<span class="hljs-keyword">@inline<span class="hljs-attr"> ../shared/shared.um</span></span>
+
+<span class="hljs-comment"># Add the titlebar from the template created in the previous step</span>
+<span class="hljs-keyword">@titlebar</span>
+
+<span class="hljs-keyword">@topSection</span>
+  <span class="hljs-keyword">@breadcrumb</span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> /</span></span>: Home
+  <span class="hljs-keyword">@title<span class="hljs-attr"> Making Tea and Coffee</span></span>
+  <span class="hljs-keyword">@description</span>: An api for making tea and coffee using Javascript
+
+<span class="hljs-keyword">@contentSection</span>
+  <span class="hljs-keyword">@topic<span class="hljs-attr"> About</span></span>
+    <span class="hljs-keyword">@sheet</span>
+      This api has broken the digital wall and provides the functionality to make real tea and coffee using Javascript.
+
+<span class="hljs-keyword">@bottomSection</span></code></pre></div> </div><div class="qm-html-paragraph">Content can be added easily in this way by adding more pages and folders as required. </div></div></div> </div></div></div><div class="qm-docs-topic"><div class="qm-docs-anchor" id="using-quantum-api"><div class="qm-docs-topic-header qm-header-font">Using quantum-api<a class="qm-docs-anchor-icon" href="#using-quantum-api"></a></div></div><div class="qm-docs-topic-body"><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="installing-the-dependency"><div class="qm-docs-section-header qm-header-font">Installing the dependency<a class="qm-docs-anchor-icon" href="#installing-the-dependency"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">The first step to add the api is to install the dependency: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">npm install --save quantum-api</code></pre></div> </div><div class="qm-html-paragraph">Then add the script to build/build.js to include api in the build process: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-js"><pre><code class="qm-code-font"><span class="hljs-comment">// Add this to the top of the page, alongside the other require statements</span>
+<span class="hljs-keyword">var</span> api = <span class="hljs-built_in">require</span>(<span class="hljs-string">'api'</span>)
+
+...
+
+var htmlOptions = {
+  <span class="hljs-attr">entityTransforms</span>: {
+    <span class="hljs-attr">html</span>: html.entityTransforms,
+    <span class="hljs-attr">docs</span>: docs(),
+    <span class="hljs-attr">api</span>: api() <span class="hljs-comment">// Add the api renderers</span>
+  }
+}
+
+...</code></pre></div> </div><div class="qm-html-paragraph">The api can then be added as a new topic in the contentSection. For this
+walkthrough, we'll document the ficticious 'tea' function: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-js"><pre><code class="qm-code-font"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">tea</span> (<span class="hljs-params">options</span>) </span>{
+  <span class="hljs-keyword">if</span>(options === <span class="hljs-literal">undefined</span>) { options = {} }
+  <span class="hljs-keyword">if</span>(options.sugar === <span class="hljs-literal">undefined</span>) { options.sugar = <span class="hljs-number">0</span> }
+  <span class="hljs-keyword">if</span>(options.milk === <span class="hljs-literal">undefined</span>) { options.milk = <span class="hljs-literal">true</span> }
+
+  ...<span class="hljs-comment">// Make tea</span>
+}</code></pre></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="adding-the-basic-api"><div class="qm-docs-section-header qm-header-font">Adding the basic api<a class="qm-docs-anchor-icon" href="#adding-the-basic-api"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">The next step is to add the documentation for the tea function as a topic below the 'About' section: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@topic<span class="hljs-attr"> About</span></span>
+  ...
+
+<span class="hljs-comment"># The api section</span>
+<span class="hljs-keyword">@topic<span class="hljs-attr"> Api</span></span>
+  <span class="hljs-comment"># Define the api content area</span>
+  <span class="hljs-keyword">@api</span>
+    <span class="hljs-keyword">@function<span class="hljs-attr"> tea</span></span>
+      <span class="hljs-keyword">@description</span>: A function for making cups of tea
+      <span class="hljs-keyword">@arg?<span class="hljs-attr"> options [Object]</span></span>: The options to use when making a cup of tea
+        <span class="hljs-keyword">@property<span class="hljs-attr"> sugar [Number]</span></span>: The number of sugars to add
+          <span class="hljs-keyword">@default</span>: 0
+        <span class="hljs-keyword">@property<span class="hljs-attr"> milk [String]</span></span>: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
+          <span class="hljs-keyword">@default</span>: 'skimmed'</code></pre></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="adding-versioning-to-the-api"><div class="qm-docs-section-header qm-header-font">Adding versioning to the api<a class="qm-docs-anchor-icon" href="#adding-versioning-to-the-api"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">It is a realtively simple process that allows an incrementally versioned api to be created.
+
+The first step is to install the quantum-version dependency and add the relevant build scripts: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">npm install --save quantum-version</code></pre></div> </div><div class="qm-html-paragraph">Then add the script to build/build.js to include template in the build process: </div><div class="qm-html-paragraph"><b>build/build.js</b> <div class="qm-code-highlight-codeblock language-js"><pre><code class="qm-code-font"><span class="hljs-comment">// Add this to the top of the page, alongside the other require statements</span>
+<span class="hljs-keyword">var</span> version = <span class="hljs-built_in">require</span>(<span class="hljs-string">'version'</span>)
+
+...
+
+return <span class="hljs-built_in">Promise</span>.resolve(obj)
+  .then(template())
+  .then(version()) <span class="hljs-comment">// Add this line to the build pipeline, this includes the version functionality.</span>
+  .map(html(htmlOptions))
+  .map(html.stringify())
+
+...</code></pre></div> </div><div class="qm-html-paragraph">Versions can then be defined in the content. For this example, we'll add
+versioning to the api by adding the 'coffee' function, as well as making
+some changes to the 'tea' function.
+
+Start by adding a @versionList to the top of the file: </div><div class="qm-html-paragraph"><b>pages/index.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@versionList</span>
+  <span class="hljs-keyword">@version<span class="hljs-attr"> 1.0.0</span></span>
+  <span class="hljs-keyword">@version<span class="hljs-attr"> 2.0.0</span></span>
+  <span class="hljs-keyword">@version<span class="hljs-attr"> 3.0.0</span></span></code></pre></div> </div><div class="qm-html-paragraph">The versions that will be used should be defined before adding the versioning
+otherwise quantum-version will not version any content. For example, if you
+were to add content for version 1.1.0, "@version 1.1.0" should be added to
+the version list.
+
+Now we've set up the file ready for 3 versions, we'll add some versioned content. </div><div class="qm-html-paragraph"><b>pages/index.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@topic<span class="hljs-attr"> Api</span></span>
+  <span class="hljs-comment"># Define version 1.0.0</span>
+  <span class="hljs-keyword">@version<span class="hljs-attr"> 1.0.0</span></span>
+    <span class="hljs-keyword">@api</span>
+      <span class="hljs-keyword">@function<span class="hljs-attr"> tea</span></span>
+        <span class="hljs-keyword">@added</span>: Added the tea function in this version
+        <span class="hljs-keyword">@description</span>: A function for making cups of tea
+        <span class="hljs-keyword">@arg?<span class="hljs-attr"> options [Object]</span></span>: The options to use when making a cup of tea
+          <span class="hljs-keyword">@property<span class="hljs-attr"> sugars [Number]</span></span>: The number of sugars to add
+            <span class="hljs-keyword">@default</span>: 0
+          <span class="hljs-keyword">@property<span class="hljs-attr"> milk [String]</span></span>: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
+            <span class="hljs-keyword">@default</span>: 'skimmed'
+
+  <span class="hljs-comment"># Define version 2.0.0</span>
+  <span class="hljs-keyword">@version<span class="hljs-attr"> 2.0.0</span></span>
+    <span class="hljs-keyword">@api</span>
+      <span class="hljs-keyword">@function<span class="hljs-attr"> tea</span></span>
+        <span class="hljs-keyword">@arg?<span class="hljs-attr"> options [Object]</span></span>
+          <span class="hljs-keyword">@property<span class="hljs-attr"> sugars [Number]</span></span>
+          <span class="hljs-keyword">@property<span class="hljs-attr"> type [String]</span></span>: The type of teabag to use, can be 'english-breakfast', 'earl-grey' or 'green'
+            <span class="hljs-keyword">@default</span>: 'english-breakfast'
+
+      <span class="hljs-keyword">@function<span class="hljs-attr"> coffee</span></span>
+        <span class="hljs-keyword">@description</span>: A function for making cups of coffee
+        <span class="hljs-keyword">@arg?<span class="hljs-attr"> options [Object]</span></span>: The options to use when making a cup of coffee
+          <span class="hljs-keyword">@property<span class="hljs-attr"> sugars [Number]</span></span>: The number of sugars to add
+            <span class="hljs-keyword">@default</span>: 0
+          <span class="hljs-keyword">@property<span class="hljs-attr"> milk [String]</span></span>: A string indicating the type of milk to use, can be 'skimmed' or 'full-cream'
+            <span class="hljs-keyword">@default</span>: 'skimmed'
+
+  <span class="hljs-comment"># Define version 3.0.0</span>
+  <span class="hljs-keyword">@version<span class="hljs-attr"> 3.0.0</span></span>
+    <span class="hljs-keyword">@api</span>
+      <span class="hljs-keyword">@function<span class="hljs-attr"> coffee</span></span>
+        <span class="hljs-keyword">@arg?<span class="hljs-attr"> options [Object]</span></span>
+          <span class="hljs-keyword">@property<span class="hljs-attr"> type [String]</span></span>: The type of teabag to use, can be 'capuccino', 'americano' or 'latte'
+            <span class="hljs-keyword">@default</span>: 'americano'
+            <span class="hljs-keyword">@added</span>: Added the type option to the coffee function</code></pre></div> </div><div class="qm-html-paragraph">This provides us wth a versioned api. To switch between versions, the
+following needs to be added to the titlebar template, alongside the title: </div><div class="qm-html-paragraph"><b>shared/shared.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@div<span class="hljs-attr"> .hx-titlebar-title</span></span>: BeverageInc.
+<span class="hljs-comment"># New content</span>
+<span class="hljs-keyword">@div<span class="hljs-attr"> .hx-section</span></span>
+<span class="hljs-keyword">@versionSelector</span>: <span class="hljs-keyword">@versionList</span></code></pre></div> </div><div class="qm-html-paragraph">A version dropdown will now be available on the right hand side of the titlebar.
+Navigating to '/' will show the latest version, with each version available under
+'/x.0.0/'. </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="result"><div class="qm-docs-section-header qm-header-font">Result<a class="qm-docs-anchor-icon" href="#result"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">At the end of this section, the home page and build structure should look like this: </div><div class="qm-html-paragraph"><b>build/build.js</b> <div class="qm-code-highlight-codeblock language-js"><pre><code class="qm-code-font"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>)
+<span class="hljs-keyword">var</span> html = <span class="hljs-built_in">require</span>(<span class="hljs-string">'quantum-html'</span>)
+<span class="hljs-keyword">var</span> docs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'quantum-docs'</span>)
+<span class="hljs-keyword">var</span> hub = <span class="hljs-built_in">require</span>(<span class="hljs-string">'quantum-hub'</span>)
+<span class="hljs-keyword">var</span> api = <span class="hljs-built_in">require</span>(<span class="hljs-string">'quantum-api'</span>)
+<span class="hljs-keyword">var</span> template = <span class="hljs-built_in">require</span>(<span class="hljs-string">'quantum-template'</span>)
+<span class="hljs-keyword">var</span> version = <span class="hljs-built_in">require</span>(<span class="hljs-string">'quantum-version'</span>)
+<span class="hljs-keyword">var</span> <span class="hljs-built_in">Promise</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bluebird'</span>) <span class="hljs-comment">// Promise Polyfill</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pipeline</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> htmlOptions = {
+    <span class="hljs-attr">entityTransforms</span>: {
+      <span class="hljs-attr">html</span>: html.entityTransforms,
+      <span class="hljs-attr">docs</span>: docs(),
+      <span class="hljs-attr">api</span>: api()
+    }
+  }
+
+  <span class="hljs-comment">// returns a function that compiles a page out to html</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(obj)
+      .then(template())
+      .then(version())
+      .map(html(htmlOptions))
+      .map(html.stringify())
+  }
+}
+
+hub.client.watch({
+  <span class="hljs-attr">pipeline</span>: pipeline,
+  <span class="hljs-attr">port</span>: <span class="hljs-number">5555</span>,
+  <span class="hljs-attr">config</span>: {
+    <span class="hljs-attr">pages</span>: <span class="hljs-string">'pages/**/*.um'</span>,
+    <span class="hljs-attr">base</span>: <span class="hljs-string">'pages'</span>
+  },
+  <span class="hljs-attr">resourceDir</span>: path.join(__dirname, <span class="hljs-string">'..'</span>, <span class="hljs-string">'content'</span>, <span class="hljs-string">'resources'</span>)
+})</code></pre></div> </div><div class="qm-html-paragraph"><b>pages/index.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@inline<span class="hljs-attr"> ../shared/shared.um</span></span>
+
+<span class="hljs-keyword">@titlebar</span>
+
+<span class="hljs-keyword">@topSection</span>
+  <span class="hljs-keyword">@breadcrumb</span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> /</span></span>: Home
+  <span class="hljs-keyword">@title<span class="hljs-attr"> Making Tea and Coffee</span></span>
+  <span class="hljs-keyword">@description</span>: An api for making tea and coffee using Javascript</code></pre></div> </div></div></div> </div></div></div><div class="qm-docs-topic"><div class="qm-docs-anchor" id="using-quantum-changelog"><div class="qm-docs-topic-header qm-header-font">Using quantum-changelog<a class="qm-docs-anchor-icon" href="#using-quantum-changelog"></a></div></div><div class="qm-docs-topic-body"><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="about"><div class="qm-docs-section-header qm-header-font">About<a class="qm-docs-anchor-icon" href="#about"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">This api has broken the digital wall and provides the functionality to make real tea and coffee using Javascript. </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="api"><div class="qm-docs-section-header qm-header-font">Api<a class="qm-docs-anchor-icon" href="#api"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph"> </div><div class="qm-html-paragraph"> </div><div class="qm-html-paragraph"> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="installing-the-dependency"><div class="qm-docs-section-header qm-header-font">Installing the dependency<a class="qm-docs-anchor-icon" href="#installing-the-dependency"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">Creating a changelog using versioned api content is an easy process.
+
+The first step is to install the quantum-changelog dependency and add the relevant build scripts: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">npm install --save quantum-changelog</code></pre></div> </div><div class="qm-html-paragraph">Then add the script to build/build.js to include template in the build process: </div><div class="qm-html-paragraph"><b>build/build.js</b> <div class="qm-code-highlight-codeblock language-js"><pre><code class="qm-code-font"><span class="hljs-comment">// Add this to the top of the page, alongside the other require statements</span>
+<span class="hljs-keyword">var</span> changelog = <span class="hljs-built_in">require</span>(<span class="hljs-string">'changelog'</span>)
+
+...
+
+  var htmlOptions = {
+    <span class="hljs-attr">entityTransforms</span>: {
+      <span class="hljs-attr">html</span>: html.entityTransforms,
+      <span class="hljs-attr">docs</span>: docs(),
+      <span class="hljs-attr">api</span>: api(),
+      <span class="hljs-attr">changelog</span>: changelog.entityTransforms() <span class="hljs-comment">// Add the changelog entityTransforms</span>
+    }
+  }
+
+...
+
+...
+
+return <span class="hljs-built_in">Promise</span>.resolve(obj)
+  .then(template())
+  .then(changelog()) <span class="hljs-comment">// Add this line to the build pipeline, this includes the changelog functionality.</span>
+  .then(version())
+  .map(html(htmlOptions))
+  .map(html.stringify())
+
+...</code></pre></div> </div><div class="qm-html-paragraph">Once the changelog has been installed and added to the build script, the
+next step is to create the changelog page </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="adding-the-changelog-page"><div class="qm-docs-section-header qm-header-font">Adding the changelog page<a class="qm-docs-anchor-icon" href="#adding-the-changelog-page"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">First, create a link on the home page to the changelog at the bottom of the api section: </div><div class="qm-html-paragraph"><b>pages/index.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@a<span class="hljs-attr"> .hx-btn.hx-action</span></span>: Changelog
+  <span class="hljs-keyword">@attr<span class="hljs-attr"> href</span></span>: changelog.html</code></pre></div> </div><div class="qm-html-paragraph">Then create the page with content: </div><div class="qm-html-paragraph"><b>pages/changelog.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@inline<span class="hljs-attr"> ../shared/shared.um</span></span>
+
+<span class="hljs-keyword">@titlebar</span>
+
+<span class="hljs-keyword">@topSection</span>
+  <span class="hljs-keyword">@breadcrumb</span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> /</span></span>: Home
+    <span class="hljs-comment"># Add the crumbtrail link for the changelog</span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> /changelog.html</span></span>: Changelog
+  <span class="hljs-keyword">@title<span class="hljs-attr"> Changelog</span></span>
+  <span class="hljs-keyword">@description</span>: An api for making tea and coffee using Javascript
+
+<span class="hljs-keyword">@contentSection</span>
+  <span class="hljs-keyword">@topic<span class="hljs-attr"> Changes</span></span>
+    <span class="hljs-comment"># define the entity to place the changelog inside.</span>
+    <span class="hljs-keyword">@changelog.wrapper</span>
+      <span class="hljs-keyword">@process</span>
+        <span class="hljs-comment"># Inline the pages with api content that you wish to use</span>
+        <span class="hljs-keyword">@inline<span class="hljs-attr"> index.um</span></span>
+
+        <span class="hljs-comment"># If there is only one api, it will be rendered in a more readable manner using this option</span>
+        <span class="hljs-keyword">@renderSingleItemInRoot</span>
+
+      <span class="hljs-keyword">@version<span class="hljs-attr"> 1.0.0</span></span>
+        <span class="hljs-comment"># Descriptions can be added to each version but are not required</span>
+        <span class="hljs-keyword">@description</span>: Added the initial version of the tea function.
+
+      <span class="hljs-keyword">@version<span class="hljs-attr"> 2.0.0</span></span>
+      <span class="hljs-keyword">@version<span class="hljs-attr"> 3.0.0</span></span>
+
+  <span class="hljs-comment"># Add a key to the page, illustrating what each of the icons means</span>
+  <span class="hljs-keyword">@topic<span class="hljs-attr"> Key</span></span>
+    <span class="hljs-keyword">@changelog.key</span></code></pre></div> </div><div class="qm-html-paragraph">This will process all the @version entities found in index.um and generate
+a versioned changelog, along with a key illustrating what each of the icons means. </div></div></div> </div></div></div><div class="qm-docs-topic"><div class="qm-docs-anchor" id="using-quantum-diagram"><div class="qm-docs-topic-header qm-header-font">Using quantum-diagram<a class="qm-docs-anchor-icon" href="#using-quantum-diagram"></a></div></div><div class="qm-docs-topic-body"><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="installing-the-dependency"><div class="qm-docs-section-header qm-header-font">Installing the dependency<a class="qm-docs-anchor-icon" href="#installing-the-dependency"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">The first step is to install the quantum-diagram dependency and add the relevant build scripts: </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-bash"><pre><code class="qm-code-font">npm install --save quantum-diagram</code></pre></div> </div><div class="qm-html-paragraph">Then add the script to build/build.js to include template in the build process: </div><div class="qm-html-paragraph"><b>build/build.js</b> <div class="qm-code-highlight-codeblock language-js"><pre><code class="qm-code-font"><span class="hljs-comment">// Add this to the top of the page, alongside the other require statements</span>
+<span class="hljs-keyword">var</span> diagram = <span class="hljs-built_in">require</span>(<span class="hljs-string">'diagram'</span>)
+
+...
+
+  var htmlOptions = {
+    <span class="hljs-attr">entityTransforms</span>: {
+      <span class="hljs-attr">html</span>: html.entityTransforms,
+      <span class="hljs-attr">docs</span>: docs(),
+      <span class="hljs-attr">api</span>: api(),
+      <span class="hljs-attr">changelog</span>: changelog.entityTransforms(),
+      <span class="hljs-attr">diagram</span>: diagram() <span class="hljs-comment">// Add the diagram entityTransforms</span>
+    }
+  }
+
+...</code></pre></div> </div><div class="qm-html-paragraph">Once quantum-diagram has been installed and added to the build script, the
+next step is to create the flow diagram page </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="adding-the-flow-diagram-page"><div class="qm-docs-section-header qm-header-font">Adding the flow diagram page<a class="qm-docs-anchor-icon" href="#adding-the-flow-diagram-page"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">This part of the walkthrough follows the process of defining a diagram
+using the 
+ entity. The final diagram will display the
+system behind our fictitious "rest api for ordering hot drinks".
+
+The first step is to create a new page for the flow diagram: </div><div class="qm-html-paragraph"><b>pages/flow-diagram.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font">...
+
+<span class="hljs-keyword">@titlebar</span>
+
+<span class="hljs-keyword">@topSection</span>
+  <span class="hljs-keyword">@breadcrumb</span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> /</span></span>: Home
+    <span class="hljs-comment"># Add the crumbtrail link for the flow diagram</span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> /flow-diagram.html</span></span>: Flow Diagram
+  <span class="hljs-keyword">@title<span class="hljs-attr"> Flow Diagram</span></span>
+  <span class="hljs-keyword">@description</span>: A diagram showing the flow of the beverage api.
+
+<span class="hljs-keyword">@contentSection</span></code></pre></div> </div><div class="qm-html-paragraph">Then we add a link to the flow diagram page on the home page after the changelog button: </div><div class="qm-html-paragraph"><b>pages/index.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font">...
+
+<span class="hljs-keyword">@a<span class="hljs-attr"> .hx-btn.hx-action</span></span>: Changelog
+  <span class="hljs-keyword">@attr<span class="hljs-attr"> href</span></span>: changelog.html
+
+<span class="hljs-keyword">@a<span class="hljs-attr"> .hx-btn.hx-action</span></span>: Flow Diagram
+  <span class="hljs-keyword">@attr<span class="hljs-attr"> href</span></span>: flow-diagram.html</code></pre></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="creating-the-flow-diagram"><div class="qm-docs-section-header qm-header-font">Creating the flow diagram<a class="qm-docs-anchor-icon" href="#creating-the-flow-diagram"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">We now have somewhere to start making a diagram.
+
+We'll walk through each of the steps for creating a diagram to show what's
+going on. First, we create our user: </div><div class="qm-html-paragraph"><div class="qm-diagram"><svg class="qm-diagram-svg" width="62" viewBox="0 0 62 35"><defs></defs><rect class="qm-diagram-rectangle" x="0" y="0" width="62" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="31" y="17.5">User</text></svg></div> </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@diagram</span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> user [User]</span></span></code></pre></div> </div><div class="qm-html-paragraph">This user either makes a request to the tea or the coffee function so we add those as well </div><div class="qm-html-paragraph"><div class="qm-diagram"><svg class="qm-diagram-svg" width="467" viewBox="0 0 467 35"><defs></defs><rect class="qm-diagram-rectangle" x="0" y="0" width="62" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="31" y="17.5">User</text><rect class="qm-diagram-rectangle" x="112" y="0" width="138" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="181" y="17.5">tea(options)</text><rect class="qm-diagram-rectangle" x="300" y="0" width="166.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="383.25" y="17.5">coffee(options)</text></svg></div> </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@diagram</span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> user [User]</span></span>
+
+  <span class="hljs-keyword">@item<span class="hljs-attr"> tea [tea(options)]</span></span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> coffee [coffee(options)]</span></span></code></pre></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="linking-items"><div class="qm-docs-section-header qm-header-font">Linking Items<a class="qm-docs-anchor-icon" href="#linking-items"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">Now we want to define a link between these items, to indicate that the user makes requests to the rest api: </div><div class="qm-html-paragraph"><div class="qm-diagram"><svg class="qm-diagram-svg" width="355" viewBox="0 0 355 120"><defs><marker id="arrow-start-E274B4FD1A61830CAD7CFDA2C7F0DB42" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-E274B4FD1A61830CAD7CFDA2C7F0DB42" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-69B2BB77A67AE6456EFCC59A4B73CF85" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-69B2BB77A67AE6456EFCC59A4B73CF85" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker></defs><rect class="qm-diagram-rectangle" x="139.125" y="0" width="62" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="170.125" y="17.5">User</text><rect class="qm-diagram-rectangle" x="0" y="85" width="138" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="69" y="102.5">tea(options)</text><rect class="qm-diagram-rectangle" x="188" y="85" width="166.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="271.25" y="102.5">coffee(options)</text><path class="qm-diagram-path" d="M139.125,30.528430160692213,69,60,69,85" stroke="#000000" marker-end="url(#arrow-end-E274B4FD1A61830CAD7CFDA2C7F0DB42)"></path><path class="qm-diagram-path" d="M201.125,30.528430160692213,271.25,60,271.25,85" stroke="#000000" marker-end="url(#arrow-end-69B2BB77A67AE6456EFCC59A4B73CF85)"></path></svg></div> </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@diagram</span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> user [User]</span></span>
+
+  <span class="hljs-keyword">@item<span class="hljs-attr"> tea [tea(options)]</span></span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> coffee [coffee(options)]</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; tea</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; coffee</span></span></code></pre></div> </div><div class="qm-html-paragraph">But there is more to the imaginary api than meets the eye, of course. Lets add in some more components that describe how the system works in more detail: </div><div class="qm-html-paragraph"><div class="qm-diagram"><svg class="qm-diagram-svg" width="355" viewBox="0 0 355 460"><defs><marker id="arrow-start-1ED55D9741FC755B753DA52668AD2981" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-1ED55D9741FC755B753DA52668AD2981" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-AA2A036ECCE712C5F2ECC802583A4942" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-AA2A036ECCE712C5F2ECC802583A4942" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-B10B5A20E0311138A9FB93B363673BFC" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-B10B5A20E0311138A9FB93B363673BFC" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-90BF391CC0C5E0DB1953B43F73A3E415" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-90BF391CC0C5E0DB1953B43F73A3E415" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-3A7D2F374E93516ED0A198864078BFE8" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-3A7D2F374E93516ED0A198864078BFE8" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-2075BA2F565DEB75D1E8078DFF783E72" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-2075BA2F565DEB75D1E8078DFF783E72" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-432BD3F22BD9833898532D04AFF63D55" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-432BD3F22BD9833898532D04AFF63D55" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-93434EE1E89F1F4710CCDB0CACBA91C3" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-93434EE1E89F1F4710CCDB0CACBA91C3" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-F049BAEE396399EE26F2449FC974F4F8" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-F049BAEE396399EE26F2449FC974F4F8" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-241C0E82DE87B99326FAD0EDF36A87DE" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-241C0E82DE87B99326FAD0EDF36A87DE" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker></defs><rect class="qm-diagram-rectangle" x="139.125" y="0" width="62" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="170.125" y="17.5">User</text><rect class="qm-diagram-rectangle" x="0" y="85" width="138" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="69" y="102.5">tea(options)</text><rect class="qm-diagram-rectangle" x="4.75" y="170" width="128.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="69" y="187.5">Select Type</text><rect class="qm-diagram-rectangle" x="19" y="255" width="100" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="69" y="272.5">Add Milk</text><rect class="qm-diagram-rectangle" x="14.25" y="340" width="109.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="69" y="357.5">Add Sugar</text><rect class="qm-diagram-rectangle" x="188" y="85" width="166.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="271.25" y="102.5">coffee(options)</text><rect class="qm-diagram-rectangle" x="207" y="170" width="128.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="271.25" y="187.5">Select Type</text><rect class="qm-diagram-rectangle" x="221.25" y="255" width="100" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="271.25" y="272.5">Add Milk</text><rect class="qm-diagram-rectangle" x="216.5" y="340" width="109.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="271.25" y="357.5">Add Sugar</text><rect class="qm-diagram-rectangle" x="86.875" y="425" width="166.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="170.125" y="442.5">Return Beverage</text><path class="qm-diagram-path" d="M139.125,30.528430160692213,69,60,69,85" stroke="#000000" marker-end="url(#arrow-end-1ED55D9741FC755B753DA52668AD2981)"></path><path class="qm-diagram-path" d="M201.125,30.528430160692213,271.25,60,271.25,85" stroke="#000000" marker-end="url(#arrow-end-AA2A036ECCE712C5F2ECC802583A4942)"></path><path class="qm-diagram-path" d="M69,120,69,145,69,170" stroke="#000000" marker-end="url(#arrow-end-B10B5A20E0311138A9FB93B363673BFC)"></path><path class="qm-diagram-path" d="M69,205,69,230,69,255" stroke="#000000" marker-end="url(#arrow-end-90BF391CC0C5E0DB1953B43F73A3E415)"></path><path class="qm-diagram-path" d="M69,290,69,315,69,340" stroke="#000000" marker-end="url(#arrow-end-3A7D2F374E93516ED0A198864078BFE8)"></path><path class="qm-diagram-path" d="M69,375,69,400,128.48529411764707,425" stroke="#000000" marker-end="url(#arrow-end-2075BA2F565DEB75D1E8078DFF783E72)"></path><path class="qm-diagram-path" d="M271.25,120,271.25,145,271.25,170" stroke="#000000" marker-end="url(#arrow-end-432BD3F22BD9833898532D04AFF63D55)"></path><path class="qm-diagram-path" d="M271.25,205,271.25,230,271.25,255" stroke="#000000" marker-end="url(#arrow-end-93434EE1E89F1F4710CCDB0CACBA91C3)"></path><path class="qm-diagram-path" d="M271.25,290,271.25,315,271.25,340" stroke="#000000" marker-end="url(#arrow-end-F049BAEE396399EE26F2449FC974F4F8)"></path><path class="qm-diagram-path" d="M271.25,375,271.25,400,211.76470588235293,425" stroke="#000000" marker-end="url(#arrow-end-241C0E82DE87B99326FAD0EDF36A87DE)"></path></svg></div> </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@diagram</span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> user [User]</span></span>
+
+  <span class="hljs-keyword">@item<span class="hljs-attr"> tea [tea(options)]</span></span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> tea-select-type [Select Type]</span></span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> tea-add-milk [Add Milk]</span></span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> tea-add-sugar [Add Sugar]</span></span>
+
+  <span class="hljs-keyword">@item<span class="hljs-attr"> coffee [coffee(options)]</span></span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-select-type [Select Type]</span></span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-add-milk [Add Milk]</span></span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-add-sugar [Add Sugar]</span></span>
+
+  <span class="hljs-keyword">@item<span class="hljs-attr"> return-beverage [Return Beverage]</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; tea</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; coffee</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea -&gt; tea-select-type</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea-select-type -&gt; tea-add-milk</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea-add-milk -&gt; tea-add-sugar</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea-add-sugar -&gt; return-beverage</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee -&gt; coffee-select-type</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-select-type -&gt; coffee-add-milk</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-add-milk -&gt; coffee-add-sugar</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-add-sugar -&gt; return-beverage</span></span></code></pre></div> </div><div class="qm-html-paragraph"><div class="qm-docs-notice qm-docs-info"><div class="qm-docs-notice-header qm-header-font">Note</div><div class="qm-docs-notice-body"><div class="qm-html-paragraph">Note that here, the  <code class="qm-code-highlight-code qm-code-font">@item</code>  entity takes two parameters - an id and a visible name. The words &quot; <code class="qm-code-highlight-code qm-code-font">Api Request</code>&quot; are surrounded by square brackets so that together they are treated as the second parameter. Without the square brackets the text &quot; <code class="qm-code-highlight-code qm-code-font">request Api Request</code>&quot; would be treated as 3 separate parameters. </div></div></div> </div><div class="qm-html-paragraph">It looks like there is a lot more going on here, but really it is more of the same - defining items and links between those items. </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="creating-groups"><div class="qm-docs-section-header qm-header-font">Creating Groups<a class="qm-docs-anchor-icon" href="#creating-groups"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">What if we want to indicate that selecting the type, adding milk and adding sugar is part of the tea/coffee function? The 
+ entity groups together items, and draws a rectangle around them: </div><div class="qm-html-paragraph"><div class="qm-diagram"><svg class="qm-diagram-svg" width="425" viewBox="0 0 425 510"><defs><marker id="arrow-start-13D8C58808BC698F80004176B5C7C2B4" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-13D8C58808BC698F80004176B5C7C2B4" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-DA5AA2FA710A52412474DEDD8A0564D9" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-DA5AA2FA710A52412474DEDD8A0564D9" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-A30A09A3B8B474317D699C82F1580EED" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-A30A09A3B8B474317D699C82F1580EED" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-065F9218049E47C97EC5EDB8F54DBB70" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-065F9218049E47C97EC5EDB8F54DBB70" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-63A4C55F36D833B911C518E06436B89A" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-63A4C55F36D833B911C518E06436B89A" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-F7C72FCB62636D1D45B277B0D1CDFCF3" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-F7C72FCB62636D1D45B277B0D1CDFCF3" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-4DDD07B7E13F70E8622BEA7BD2143258" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-4DDD07B7E13F70E8622BEA7BD2143258" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-0D96360834DEBE1044AC227BEC5EE03F" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-0D96360834DEBE1044AC227BEC5EE03F" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-8317C96820D5FDBEC2F3A89709C09277" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-8317C96820D5FDBEC2F3A89709C09277" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-65CFC2DAE8664F7E7E845AA1D37F4940" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-65CFC2DAE8664F7E7E845AA1D37F4940" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker></defs><rect class="qm-diagram-group" x="0" y="85" width="424.5" height="340" rx="1"></rect><text class="qm-diagram-text qm-group-label qm-code-font" x="12" y="102.5">Make</text><rect class="qm-diagram-rectangle" x="174.125" y="0" width="62" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="205.125" y="17.5">User</text><rect class="qm-diagram-rectangle" x="121.875" y="475" width="166.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="205.125" y="492.5">Return Beverage</text><rect class="qm-diagram-rectangle" x="35" y="110" width="138" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="104" y="127.5">tea(options)</text><rect class="qm-diagram-rectangle" x="39.75" y="195" width="128.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="104" y="212.5">Select Type</text><rect class="qm-diagram-rectangle" x="54" y="280" width="100" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="104" y="297.5">Add Milk</text><rect class="qm-diagram-rectangle" x="49.25" y="365" width="109.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="104" y="382.5">Add Sugar</text><rect class="qm-diagram-rectangle" x="223" y="110" width="166.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="306.25" y="127.5">coffee(options)</text><rect class="qm-diagram-rectangle" x="242" y="195" width="128.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="306.25" y="212.5">Select Type</text><rect class="qm-diagram-rectangle" x="256.25" y="280" width="100" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="306.25" y="297.5">Add Milk</text><rect class="qm-diagram-rectangle" x="251.5" y="365" width="109.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="306.25" y="382.5">Add Sugar</text><path class="qm-diagram-path" d="M174.125,30.528430160692213,104,60,104,85,104,110" stroke="#000000" marker-end="url(#arrow-end-13D8C58808BC698F80004176B5C7C2B4)"></path><path class="qm-diagram-path" d="M236.125,30.528430160692213,306.25,60,306.25,85,306.25,110" stroke="#000000" marker-end="url(#arrow-end-DA5AA2FA710A52412474DEDD8A0564D9)"></path><path class="qm-diagram-path" d="M104,145,104,170,104,195" stroke="#000000" marker-end="url(#arrow-end-A30A09A3B8B474317D699C82F1580EED)"></path><path class="qm-diagram-path" d="M104,230,104,255,104,280" stroke="#000000" marker-end="url(#arrow-end-065F9218049E47C97EC5EDB8F54DBB70)"></path><path class="qm-diagram-path" d="M104,315,104,340,104,365" stroke="#000000" marker-end="url(#arrow-end-63A4C55F36D833B911C518E06436B89A)"></path><path class="qm-diagram-path" d="M104,400,104,425,104,450,163.48529411764707,475" stroke="#000000" marker-end="url(#arrow-end-F7C72FCB62636D1D45B277B0D1CDFCF3)"></path><path class="qm-diagram-path" d="M306.25,145,306.25,170,306.25,195" stroke="#000000" marker-end="url(#arrow-end-4DDD07B7E13F70E8622BEA7BD2143258)"></path><path class="qm-diagram-path" d="M306.25,230,306.25,255,306.25,280" stroke="#000000" marker-end="url(#arrow-end-0D96360834DEBE1044AC227BEC5EE03F)"></path><path class="qm-diagram-path" d="M306.25,315,306.25,340,306.25,365" stroke="#000000" marker-end="url(#arrow-end-8317C96820D5FDBEC2F3A89709C09277)"></path><path class="qm-diagram-path" d="M306.25,400,306.25,425,306.25,450,246.76470588235293,475" stroke="#000000" marker-end="url(#arrow-end-65CFC2DAE8664F7E7E845AA1D37F4940)"></path></svg></div> </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@diagram</span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> user [User]</span></span>
+
+  <span class="hljs-keyword">@group<span class="hljs-attr"> Make Tea</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> tea [tea(options)]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> tea-select-type [Select Type]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> tea-add-milk [Add Milk]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> tea-add-sugar [Add Sugar]</span></span>
+
+  <span class="hljs-keyword">@group<span class="hljs-attr"> Make Coffee</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> coffee [coffee(options)]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-select-type [Select Type]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-add-milk [Add Milk]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-add-sugar [Add Sugar]</span></span>
+
+  <span class="hljs-keyword">@item<span class="hljs-attr"> return-beverage [Return Beverage]</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; tea</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; coffee</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea -&gt; tea-select-type</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea-select-type -&gt; tea-add-milk</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea-add-milk -&gt; tea-add-sugar</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea-add-sugar -&gt; return-beverage</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee -&gt; coffee-select-type</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-select-type -&gt; coffee-add-milk</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-add-milk -&gt; coffee-add-sugar</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-add-sugar -&gt; return-beverage</span></span></code></pre></div> </div><div class="qm-html-paragraph">This makes the tea and coffee related steps into groups to add clarity to the diagram. </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="link-styles"><div class="qm-docs-section-header qm-header-font">Link Styles<a class="qm-docs-anchor-icon" href="#link-styles"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">For this example, selecting the type, adding milk and adding sugar are all
+optional steps. We can use different link styles to indicate this fact.
+
+Below is a list of all the link styles that can be used:
+
+
+In addition, all the above links can be made into dashed lines using two dashes
+instead of one, e.g. 
+ instead of 
+
+
+For this example, we'll use dashed lines to indicate optional steps: </div><div class="qm-html-paragraph"><div class="qm-diagram"><svg class="qm-diagram-svg" width="425" viewBox="0 0 425 510"><defs><marker id="arrow-start-4D0A53115238B2EA7805657DF6127607" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-4D0A53115238B2EA7805657DF6127607" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-F73591D525C8B029907EA3A484ED07A4" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-F73591D525C8B029907EA3A484ED07A4" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-E90ABBF0B0ECE3FD71D21538F69C2E2B" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-E90ABBF0B0ECE3FD71D21538F69C2E2B" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-78D070ECB797837C7CCF83D7CD47C0BD" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-78D070ECB797837C7CCF83D7CD47C0BD" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-15B82B4419A6A1A9B7B25628C5EC271C" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-15B82B4419A6A1A9B7B25628C5EC271C" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-8331E74F7BCB36284B4511A6C1BE2698" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-8331E74F7BCB36284B4511A6C1BE2698" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-EAB650EC1BFD9E0BD53D447D87E3C9A5" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-EAB650EC1BFD9E0BD53D447D87E3C9A5" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-26608198E081B872E35B5D118F953D2A" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-26608198E081B872E35B5D118F953D2A" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-8EE41A656472CDADBE211A832E7D39F9" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-8EE41A656472CDADBE211A832E7D39F9" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker><marker id="arrow-start-7BBDE611C60745C28EA40702A29144C9" orient="auto" markerWidth="4" markerHeight="4" refX="0" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,2 L4,4 L4,0 Z"></path></marker><marker id="arrow-end-7BBDE611C60745C28EA40702A29144C9" orient="auto" markerWidth="4" markerHeight="4" refX="4" refY="2" class="qm-diagram-arrow"><path fill="#000000" d="M0,0 V4 L4,2 Z"></path></marker></defs><rect class="qm-diagram-group" x="0" y="85" width="424.5" height="340" rx="1"></rect><text class="qm-diagram-text qm-group-label qm-code-font" x="12" y="102.5">Make</text><rect class="qm-diagram-rectangle" x="174.125" y="0" width="62" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="205.125" y="17.5">User</text><rect class="qm-diagram-rectangle" x="121.875" y="475" width="166.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="205.125" y="492.5">Return Beverage</text><rect class="qm-diagram-rectangle" x="35" y="110" width="138" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="104" y="127.5">tea(options)</text><rect class="qm-diagram-rectangle" x="39.75" y="195" width="128.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="104" y="212.5">Select Type</text><rect class="qm-diagram-rectangle" x="54" y="280" width="100" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="104" y="297.5">Add Milk</text><rect class="qm-diagram-rectangle" x="49.25" y="365" width="109.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="104" y="382.5">Add Sugar</text><rect class="qm-diagram-rectangle" x="223" y="110" width="166.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="306.25" y="127.5">coffee(options)</text><rect class="qm-diagram-rectangle" x="242" y="195" width="128.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="306.25" y="212.5">Select Type</text><rect class="qm-diagram-rectangle" x="256.25" y="280" width="100" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="306.25" y="297.5">Add Milk</text><rect class="qm-diagram-rectangle" x="251.5" y="365" width="109.5" height="35" rx="1"></rect><text class="qm-diagram-text qm-code-font" x="306.25" y="382.5">Add Sugar</text><path class="qm-diagram-path" d="M174.125,30.528430160692213,104,60,104,85,104,110" stroke="#000000" marker-end="url(#arrow-end-4D0A53115238B2EA7805657DF6127607)"></path><path class="qm-diagram-path" d="M236.125,30.528430160692213,306.25,60,306.25,85,306.25,110" stroke="#000000" marker-end="url(#arrow-end-F73591D525C8B029907EA3A484ED07A4)"></path><path class="qm-diagram-path qm-diagram-path-dashed" d="M104,145,104,170,104,195" stroke="#000000" marker-end="url(#arrow-end-E90ABBF0B0ECE3FD71D21538F69C2E2B)"></path><path class="qm-diagram-path qm-diagram-path-dashed" d="M104,230,104,255,104,280" stroke="#000000" marker-end="url(#arrow-end-78D070ECB797837C7CCF83D7CD47C0BD)"></path><path class="qm-diagram-path qm-diagram-path-dashed" d="M104,315,104,340,104,365" stroke="#000000" marker-end="url(#arrow-end-15B82B4419A6A1A9B7B25628C5EC271C)"></path><path class="qm-diagram-path" d="M104,400,104,425,104,450,163.48529411764707,475" stroke="#000000" marker-end="url(#arrow-end-8331E74F7BCB36284B4511A6C1BE2698)"></path><path class="qm-diagram-path qm-diagram-path-dashed" d="M306.25,145,306.25,170,306.25,195" stroke="#000000" marker-end="url(#arrow-end-EAB650EC1BFD9E0BD53D447D87E3C9A5)"></path><path class="qm-diagram-path qm-diagram-path-dashed" d="M306.25,230,306.25,255,306.25,280" stroke="#000000" marker-end="url(#arrow-end-26608198E081B872E35B5D118F953D2A)"></path><path class="qm-diagram-path qm-diagram-path-dashed" d="M306.25,315,306.25,340,306.25,365" stroke="#000000" marker-end="url(#arrow-end-8EE41A656472CDADBE211A832E7D39F9)"></path><path class="qm-diagram-path" d="M306.25,400,306.25,425,306.25,450,246.76470588235293,475" stroke="#000000" marker-end="url(#arrow-end-7BBDE611C60745C28EA40702A29144C9)"></path></svg></div> </div><div class="qm-html-paragraph"><div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font"><span class="hljs-keyword">@diagram</span>
+  <span class="hljs-keyword">@item<span class="hljs-attr"> user [User]</span></span>
+
+  <span class="hljs-keyword">@group<span class="hljs-attr"> Make Tea</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> tea [tea(options)]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> tea-select-type [Select Type]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> tea-add-milk [Add Milk]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> tea-add-sugar [Add Sugar]</span></span>
+
+  <span class="hljs-keyword">@group<span class="hljs-attr"> Make Coffee</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> coffee [coffee(options)]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-select-type [Select Type]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-add-milk [Add Milk]</span></span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-add-sugar [Add Sugar]</span></span>
+
+  <span class="hljs-keyword">@item<span class="hljs-attr"> return-beverage [Return Beverage]</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; tea</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; coffee</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea --&gt; tea-select-type</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea-select-type --&gt; tea-add-milk</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea-add-milk --&gt; tea-add-sugar</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> tea-add-sugar -&gt; return-beverage</span></span>
+
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee --&gt; coffee-select-type</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-select-type --&gt; coffee-add-milk</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-add-milk --&gt; coffee-add-sugar</span></span>
+  <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-add-sugar -&gt; return-beverage</span></span></code></pre></div> </div></div></div> </div><div class="qm-html-paragraph"><div class="qm-docs-section"><div class="qm-docs-anchor" id="flow-diagram-page"><div class="qm-docs-section-header qm-header-font">Flow Diagram page<a class="qm-docs-anchor-icon" href="#flow-diagram-page"></a></div></div><div class="qm-docs-section-body"><div class="qm-html-paragraph">Once you've completed this step of the walkthrough, the flow diagram page
+should look like this: </div><div class="qm-html-paragraph"><b>pages/flow-diagram.um</b> <div class="qm-code-highlight-codeblock language-um"><pre><code class="qm-code-font">...
+
+<span class="hljs-keyword">@titlebar</span>
+
+<span class="hljs-keyword">@topSection</span>
+  <span class="hljs-keyword">@breadcrumb</span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> /</span></span>: Home
+    <span class="hljs-comment"># Add the crumbtrail link for the flow diagram</span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> /flow-diagram.html</span></span>: Flow Diagram
+  <span class="hljs-keyword">@title<span class="hljs-attr"> Flow Diagram</span></span>
+  <span class="hljs-keyword">@description</span>: A diagram showing the flow of the beverage api.
+
+<span class="hljs-keyword">@contentSection</span>
+  <span class="hljs-keyword">@diagram</span>
+    <span class="hljs-keyword">@item<span class="hljs-attr"> user [User]</span></span>
+
+    <span class="hljs-keyword">@group<span class="hljs-attr"> Make Tea</span></span>
+      <span class="hljs-keyword">@item<span class="hljs-attr"> tea [tea(options)]</span></span>
+      <span class="hljs-keyword">@item<span class="hljs-attr"> tea-select-type [Select Type]</span></span>
+      <span class="hljs-keyword">@item<span class="hljs-attr"> tea-add-milk [Add Milk]</span></span>
+      <span class="hljs-keyword">@item<span class="hljs-attr"> tea-add-sugar [Add Sugar]</span></span>
+
+    <span class="hljs-keyword">@group<span class="hljs-attr"> Make Coffee</span></span>
+      <span class="hljs-keyword">@item<span class="hljs-attr"> coffee [coffee(options)]</span></span>
+      <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-select-type [Select Type]</span></span>
+      <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-add-milk [Add Milk]</span></span>
+      <span class="hljs-keyword">@item<span class="hljs-attr"> coffee-add-sugar [Add Sugar]</span></span>
+
+    <span class="hljs-keyword">@item<span class="hljs-attr"> return-beverage [Return Beverage]</span></span>
+
+    <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; tea</span></span>
+    <span class="hljs-keyword">@link<span class="hljs-attr"> user -&gt; coffee</span></span>
+
+    <span class="hljs-keyword">@link<span class="hljs-attr"> tea --&gt; tea-select-type</span></span>
+    <span class="hljs-keyword">@link<span class="hljs-attr"> tea-select-type --&gt; tea-add-milk</span></span>
+    <span class="hljs-keyword">@link<span class="hljs-attr"> tea-add-milk --&gt; tea-add-sugar</span></span>
+    <span class="hljs-keyword">@link<span class="hljs-attr"> tea-add-sugar -&gt; return-beverage</span></span>
+
+    <span class="hljs-keyword">@link<span class="hljs-attr"> coffee --&gt; coffee-select-type</span></span>
+    <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-select-type --&gt; coffee-add-milk</span></span>
+    <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-add-milk --&gt; coffee-add-sugar</span></span>
+    <span class="hljs-keyword">@link<span class="hljs-attr"> coffee-add-sugar -&gt; return-beverage</span></span></code></pre></div> </div></div></div> </div></div></div></div></div></div><script src="/quantumjs/resources/quantum-docs.js"></script><script>window.quantum.docs.createHeaderToggle("64CBF85B56F4B18350474BDEE921DD72");</script></body></html>
