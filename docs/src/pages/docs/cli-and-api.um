@@ -34,7 +34,7 @@
     @notice [More Information]
       More details of what options can be used in the config, as well as a
       full-featured example can be found on the
-      @hyperlink({{baseurl}}/docs/quantum-config/)[quantum.config.js] page.
+      @hyperlink(/docs/quantum-config/)[quantum.config.js] page.
 
   @topic Using the config with the CLI
     If your config file is called @code[quantum.config.js], you can just run this

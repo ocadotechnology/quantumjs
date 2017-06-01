@@ -3,46 +3,46 @@
   @contentEntityName templateContent
   @content
     @stylesheet [https://fonts.googleapis.com/css?family=Open+Sans:100,400,700|Roboto+Slab:300,400,700|Source+Code+Pro:200,400,700]
-    @stylesheet [{{baseurl}}/resources/quantum-site.css]
+    @stylesheet [/resources/quantum-site.css]
 
     @header
-      @icon [{{baseurl}}/resources/logo.svg] [{{baseurl}}/]
+      @icon [/resources/logo.svg] [/]
       @title QuantumJS
 
     @sidebarPage
       @sidebar
         @navigationMenu
-          @page {{baseurl}}/: Home
+          @page /: Home
           @section Introduction
-            @page {{baseurl}}/docs/: Overview
-            @page {{baseurl}}/docs/quick-start: Quick Start
-            @page {{baseurl}}/docs/markup/: The Markup Language
-            @page {{baseurl}}/docs/core-concepts/: Core Concepts
-            @page {{baseurl}}/docs/cli-and-api/: Using the CLI / API
-            @page {{baseurl}}/docs/quantum-vs-markdown: Quantum vs Markdown
+            @page /docs/: Overview
+            @page /docs/quick-start: Quick Start
+            @page /docs/markup/: The Markup Language
+            @page /docs/core-concepts/: Core Concepts
+            @page /docs/cli-and-api/: Using the CLI / API
+            @page /docs/quantum-vs-markdown: Quantum vs Markdown
           # @section Tutorials
-          #   @page {{baseurl}}/tutorials/writing-technical-documentation/: Writing Technical Documentation
-          #   @page {{baseurl}}/tutorials/creating-a-blog/: Creating a Blog
+          #   @page /tutorials/writing-technical-documentation/: Writing Technical Documentation
+          #   @page /tutorials/creating-a-blog/: Creating a Blog
 
           # @section Advanced Topics
-          #   @page {{baseurl}}/docs/ast/: The AST
+          #   @page /docs/ast/: The AST
 
           @section Config
-            @page {{baseurl}}/docs/quantum-config/: quantum.config.js
+            @page /docs/quantum-config/: quantum.config.js
 
           @section Core Modules
-            @page {{baseurl}}/docs/modules/quantum-js/: quantum-js
-            @page {{baseurl}}/docs/modules/quantum-dom/: quantum-dom
-            @page {{baseurl}}/docs/modules/quantum-html/: quantum-html
+            @page /docs/modules/quantum-js/: quantum-js
+            @page /docs/modules/quantum-dom/: quantum-dom
+            @page /docs/modules/quantum-html/: quantum-html
 
           @section Optional Modules
-            @page {{baseurl}}/docs/modules/quantum-api/: quantum-api
-            @page {{baseurl}}/docs/modules/quantum-code-highlight/: quantum-code-highlight
-            @page {{baseurl}}/docs/modules/quantum-diagram/: quantum-diagram
-            @page {{baseurl}}/docs/modules/quantum-docs/: quantum-docs
-            @page {{baseurl}}/docs/modules/quantum-markdown/: quantum-markdown
-            @page {{baseurl}}/docs/modules/quantum-template/: quantum-template
-            @page {{baseurl}}/docs/modules/quantum-version/: quantum-version
+            @page /docs/modules/quantum-api/: quantum-api
+            @page /docs/modules/quantum-code-highlight/: quantum-code-highlight
+            @page /docs/modules/quantum-diagram/: quantum-diagram
+            @page /docs/modules/quantum-docs/: quantum-docs
+            @page /docs/modules/quantum-markdown/: quantum-markdown
+            @page /docs/modules/quantum-template/: quantum-template
+            @page /docs/modules/quantum-version/: quantum-version
 
       @content
         @templateContent

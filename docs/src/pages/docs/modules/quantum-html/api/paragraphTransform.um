@@ -39,4 +39,4 @@
   @returns [Array[Element]]
     @description
       An array containing an @type[Asset] (for styling the paragraphs) and
-      @code[<p>] elements (represented in @hyperlink({{baseurl}}/docs/modules/quantum-dom)[quantum-dom])
+      @code[<p>] elements (represented in @hyperlink(/docs/modules/quantum-dom)[quantum-dom])

@@ -42,7 +42,7 @@
   @topic Create a config file
     Next we'll create a config file for building our project. The config file
     describes how to convert your markup into HTML. Create a file called
-    @hyperlink({{baseurl}}/docs/quantum-config)[quantum.config.js] and copy the following
+    @hyperlink(/docs/quantum-config)[quantum.config.js] and copy the following
     into it:
 
     @@codeblock js
@@ -119,8 +119,8 @@
   @notice [What Next?]
     Read more about quantum and how it works here:
     @list
-      @item: @hyperlink({{baseurl}}/docs/markup)[Markup language]
-      @item: @hyperlink({{baseurl}}/docs/core-concepts)[Core Concepts]
+      @item: @hyperlink(/docs/markup)[Markup language]
+      @item: @hyperlink(/docs/core-concepts)[Core Concepts]
 
     # And for some more interesting examples, check out these tutorials:
     # @list

@@ -12,12 +12,12 @@
 @contentSection
   @topic About
     This module provides entity transforms for writing the API documentation that you
-    can see in the @hyperlink({{baseurl}}/docs/modules/quantum-api/#api)[API] section of this
+    can see in the @hyperlink(/docs/modules/quantum-api/#api)[API] section of this
     and the other module pages.
 
     It also provides the ability to generate @hyperlink(#rendering-changelogs)[changelogs]
     from the api as well as @hyperlink(#versioning-apis)[versioned pages] when
-    combined with @hyperlink({{baseurl}}/docs/modules/quantum-version/)[quantum-version]
+    combined with @hyperlink(/docs/modules/quantum-version/)[quantum-version]
 
   @topic Example
     @example
@@ -204,7 +204,7 @@
       You can use the same versioned api to produce multiple versioned pages that
       show a single version.
 
-      See @hyperlink({{baseurl}}/docs/modules/quantum-version/)[quantum-version] for more
+      See @hyperlink(/docs/modules/quantum-version/)[quantum-version] for more
       information.
 
       @example

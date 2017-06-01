@@ -14,21 +14,21 @@
     Websites built with QuantumJS can be deployed to anywhere that can host static
     files (Firebase Hosting, Amazon S3, Google Cloud Storage, etc).
 
-    QuantumJS comes with a @hyperlink({{baseurl}}/docs/cli-and-api/)[CLI] (command line
-    interface) and @hyperlink({{baseurl}}/docs/cli-and-api/)[API] for building sites.
+    QuantumJS comes with a @hyperlink(/docs/cli-and-api/)[CLI] (command line
+    interface) and @hyperlink(/docs/cli-and-api/)[API] for building sites.
 
   @topic Features
     QuantumJS comes preloaded with some modules for writing beautiful
-    @hyperlink({{baseurl}}/docs/modules/quantum-api/)[API docs], drawing simple
-    @hyperlink({{baseurl}}/docs/modules/quantum-diagram/)[diagrams], and comes with various
-    utilities to help with @hyperlink({{baseurl}}/docs/modules/quantum-docs/)[writing documentation]. It
-    also has support for @hyperlink({{baseurl}}/docs/modules/quantum-version/)[versioned content],
-    @hyperlink({{baseurl}}/docs/modules/quantum-template/)[templates] and
-    @hyperlink({{baseurl}}/docs/modules/quantum-code-highlight/)[code highlighting]. All of this
-    is supported through a simple @hyperlink({{baseurl}}/docs/markup/)[Markup Language].
+    @hyperlink(/docs/modules/quantum-api/)[API docs], drawing simple
+    @hyperlink(/docs/modules/quantum-diagram/)[diagrams], and comes with various
+    utilities to help with @hyperlink(/docs/modules/quantum-docs/)[writing documentation]. It
+    also has support for @hyperlink(/docs/modules/quantum-version/)[versioned content],
+    @hyperlink(/docs/modules/quantum-template/)[templates] and
+    @hyperlink(/docs/modules/quantum-code-highlight/)[code highlighting]. All of this
+    is supported through a simple @hyperlink(/docs/markup/)[Markup Language].
 
     QuantumJS has its own markup language, but it also has support for
-    @hyperlink({{baseurl}}/docs/modules/quantum-markdown/)[Markdown], for when only basic
+    @hyperlink(/docs/modules/quantum-markdown/)[Markdown], for when only basic
     formatting options are needed, or for working with existing Markdown-based
     sites.
 
@@ -43,7 +43,7 @@
 
   @topic Example
 
-    Suppose we have this very simple page (written using @hyperlink({{baseurl}}/docs/markup/)[Quantum's markup])
+    Suppose we have this very simple page (written using @hyperlink(/docs/markup/)[Quantum's markup])
 
     @subsection sign-in.um
       @@codeblock um
@@ -77,5 +77,5 @@
       }
 
   @notice [What's Next?]
-    Head to the @hyperlink({{baseurl}}/docs/quick-start/)[Quick Start] page to get started
+    Head to the @hyperlink(/docs/quick-start/)[Quick Start] page to get started
     with QuantumJS.

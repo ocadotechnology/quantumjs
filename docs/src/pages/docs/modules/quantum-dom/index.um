@@ -64,5 +64,5 @@
     entity transform to be a @hyperlink(https://en.wikipedia.org/wiki/Pure_function)[pure function],
     which has nice properties for caching and speeding up builds.
 
-    See @hyperlink({{baseurl}}/docs/core-concepts/#entity-transforms)[Core Concepts - Entity Transforms]
+    See @hyperlink(/docs/core-concepts/#entity-transforms)[Core Concepts - Entity Transforms]
     for more information.

@@ -295,15 +295,15 @@
         @cell
           @subsection Markdown
             @codeblock md
-              ![Quantum Logo]({{baseurl}}/resources/logo.png)
+              ![Quantum Logo](/resources/logo.png)
 
 
           @subsection Quantum
             @@codeblock um
-              @image({{baseurl}}/resources/logo.png)[Quantum Logo]
+              @image(/resources/logo.png)[Quantum Logo]
 
         @cell
           @img
             @attr style: width:auto;width:100px;margin:25px;
-            @attr src: {{baseurl}}/resources/logo.png
+            @attr src: /resources/logo.png
             @attr alt: Quantum Logo

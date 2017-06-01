@@ -13,7 +13,7 @@
   @topic About
     This module provides a file transform that enables the generation of
     incrementally versioned content. The version transform works well with the
-    @hyperlink({{baseurl}}/docs/modules/quantum-api/)[quantum-api] entity transforms for
+    @hyperlink(/docs/modules/quantum-api/)[quantum-api] entity transforms for
     generating versioned api documentation.
 
     This module provides a few entity types for labelling up versioned content.
