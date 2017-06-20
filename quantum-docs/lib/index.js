@@ -242,7 +242,7 @@ function header (selection, transformer) {
         .add(dom.create('div').class('qm-docs-header-title qm-header-font').text(selection.select('title').ps()))
         .add(dom.create('div').class('qm-docs-header-mobile-menu')
           .id('nav.toggle.' + mobileNavId)
-          .add(dom.create('i').class('qm-docs-menu-icon-toggle')))
+          .add(dom.create('i').class('qm-docs-header-mobile-menu-icon')))
         .add(dom.create('div').class('qm-docs-header-links')
           .id('nav.links.' + mobileNavId)
           .add(selection.selectAll('link').map((e) => {

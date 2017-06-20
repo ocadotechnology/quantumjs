@@ -118,7 +118,7 @@ function constructorHeaderDetails (typeLinks) {
 }
 function functionHeaderDetails (typeLinks) {
   return (selection, transformer) => {
-    const functionName = selection.param(0)
+    const functionName = selection.type() === 'returns' && selection.params().length === 1 ? 'function' : selection.param(0)
     const name = dom.create('span')
       .class('qm-api-javascript-header-function-name')
       .text(selection.type() === 'constructor' ? 'constructor' : functionName)

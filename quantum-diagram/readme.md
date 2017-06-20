@@ -1,7 +1,9 @@
 # quantum-diagram
 
-A module intended for use with `quantum-js`
+A module intended for use with `quantum-js` and `quantum-html`
 
-A module for creating flow diagrams with linked elements using @diagram.
+This module adds entity transforms for creating flow diagrams with the `@diagram`
+entity
 
-This readme includes no details about how to use the library itself as there is documentation for the library available here: https://quantum.hexagonjs.io.
+Documentation:
+https://ocadotechnology.github.io/quantumjs/docs/modules/quantum-diagram/
