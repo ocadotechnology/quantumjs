@@ -1,4 +1,3 @@
-
 describe('entityTransforms', () => {
   const path = require('path')
   const quantum = require('quantum-js')

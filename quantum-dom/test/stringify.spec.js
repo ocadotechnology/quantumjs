@@ -84,6 +84,28 @@ describe('stringify', () => {
     })
   })
 
+  it('stringifies a page with assets (embedAssets: false, assetPath: /resources, baseUrl: /quantumjs)', () => {
+    const elements = [
+      dom.asset({url: '/assets/site.css', filename: 'src/assets/site.css', shared: true}),
+      dom.asset({url: '/assets/site.js', filename: 'src/assets/site.js', shared: true})
+    ]
+    return dom.stringify(elements, {embedAssets: false, assetPath: '/resources', baseUrl: '/quantumjs'}).should.eventually.eql({
+      html: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="/quantumjs/resources/assets/site.css"></link></head>\n<body class="qm-body-font"><script src="/quantumjs/resources/assets/site.js"></script></body></html>',
+      assets: elements
+    })
+  })
+
+  it('stringifies a page with assets (embedAssets: false, baseUrl: /quantumjs)', () => {
+    const elements = [
+      dom.asset({url: '/assets/site.css', filename: 'src/assets/site.css', shared: true}),
+      dom.asset({url: '/assets/site.js', filename: 'src/assets/site.js', shared: true})
+    ]
+    return dom.stringify(elements, {embedAssets: false, baseUrl: '/quantumjs'}).should.eventually.eql({
+      html: '<!DOCTYPE html>\n<html>\n<head><link rel="stylesheet" href="/quantumjs/assets/site.css"></link></head>\n<body class="qm-body-font"><script src="/quantumjs/assets/site.js"></script></body></html>',
+      assets: elements
+    })
+  })
+
   it('adds content that are strings when stringifying', () => {
     return dom.stringify([
       dom.head('Some content')

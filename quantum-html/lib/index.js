@@ -211,7 +211,8 @@ function HTMLPage (elements) {
 HTMLPage.prototype.stringify = function (options) {
   return dom.stringify(this.elements, {
     embedAssets: options ? options.embedAssets : true,
-    assetPath: options ? options.assetPath : undefined
+    assetPath: options ? options.assetPath : undefined,
+    baseUrl: options ? options.baseUrl : undefined
   })
 }
 
@@ -219,7 +220,7 @@ function buildHTML (opts) {
   const options = merge({
     embedAssets: true,
     assetPath: undefined,
-    resourcesTarget: undefined
+    baseUrl: undefined
   }, opts)
 
   return (file) => {
@@ -233,7 +234,7 @@ function buildHTML (opts) {
                 src: asset.filename,
                 resolved: asset.filename,
                 base: '',
-                dest: (file.info.destBase || '') + (options.resourcesTarget || '') + asset.url,
+                dest: (file.info.destBase || '') + (options.assetPath || '') + asset.url,
                 destBase: file.info.destBase,
                 watch: false
               }),

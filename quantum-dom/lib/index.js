@@ -11,6 +11,7 @@
 
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
+const path = require('path')
 
 // -------- Utils --------
 
@@ -291,6 +292,7 @@ function stringify (elements, options = {}) {
   const {
     embedAssets = true,
     assetPath = '',
+    baseUrl = '',
     assetLoader = (filename) => fs.readFileAsync(filename, 'utf-8')
   } = options
 
@@ -348,7 +350,7 @@ function stringify (elements, options = {}) {
       }
     } else {
       exportAssets.push(s)
-      return `<link rel="stylesheet" href="${assetPath}${s.url}"></link>`
+      return `<link rel="stylesheet" href="${path.join(baseUrl, assetPath, s.url)}"></link>`
     }
   }))
 
@@ -371,7 +373,7 @@ function stringify (elements, options = {}) {
       }
     } else {
       exportAssets.push(s)
-      return `<script src="${assetPath}${s.url}"></script>`
+      return `<script src="${path.join(baseUrl, assetPath, s.url)}"></script>`
     }
   }))
 

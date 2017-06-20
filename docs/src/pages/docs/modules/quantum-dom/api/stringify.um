@@ -36,7 +36,19 @@
 
     @property assetPath [String]
       @description
-        The base url for the exported assets
+        The url for the exported assets in the output site.
+      @default: ''
+
+    @property baseUrl [String]
+      @description
+        The base url for the exported assets. This will be prefixed to the
+        @code[assetPath] destination.
+
+      @extra
+        E.g. for GitHub Pages (i.e. where the output site is served in a
+        subdirectory) @code[https://username.github.io/project] the
+        @code[baseUrl] would be @code["/project"]
+
       @default: ''
 
   @returns Object
