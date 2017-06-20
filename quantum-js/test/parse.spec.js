@@ -114,7 +114,21 @@ describe('parse', () => {
         ])
       })
 
-      it('inlines followed by a newline', () => {
+      it('inlines followed by a whitespace newline', () => {
+        tokenize('@fruits: @ripe[banana]\n  \nSomething').should.eql([
+          { type: 'TYPE', value: 'fruits' },
+          { type: 'START_SAME_LINE_CONTENT' },
+          { type: 'TYPE', value: 'ripe' },
+          { type: 'START_INLINE_CONTENT' },
+          { type: 'CONTENT', value: 'banana' },
+          { type: 'END_INLINE_CONTENT' },
+          { type: 'END_SAME_LINE_CONTENT' },
+          { type: 'EMPTY_CONTENT', value: '  ' },
+          { type: 'CONTENT', value: 'Something' }
+        ])
+      })
+
+      it('inlines followed by a newline in a container', () => {
         tokenize('@container\n  @fruits: @ripe[banana]\n    @veg: parsnip').should.eql([
           { type: 'TYPE', value: 'container' },
           { type: 'INDENT', value: 2 },
