@@ -560,6 +560,22 @@ describe('parse', () => {
         { type: 'CONTENT', value: 'Content' }
       ])
     })
+
+    it('indenting in plain content after an indent works', () => {
+      tokenize("@codeblock js\n  console.log('one')\n\nfunction test () {\n  console.log('two')\n}").should.eql([
+        { type: 'TYPE', value: 'codeblock' },
+        { type: 'PARAMS', value: 'js' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: "console.log('one')" },
+        { type: 'EMPTY_CONTENT', value: '' },
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: 'function test () {' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: "console.log('two')" },
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: '}' }
+      ])
+    })
   })
 
   describe('ast', () => {
@@ -1055,6 +1071,36 @@ describe('parse', () => {
           params: [],
           content: ['very long content']
         }
+      ])
+    })
+
+    it('indenting in plain content after an indent works', () => {
+      const tokens = [
+        { type: 'TYPE', value: 'codeblock' },
+        { type: 'PARAMS', value: 'js' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: "console.log('one')" },
+        { type: 'EMPTY_CONTENT', value: '' },
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: 'function test () {' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: "console.log('two')" },
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: '}' }
+      ]
+
+      ast(tokens).should.eql([
+        {
+          type: 'codeblock',
+          params: ['js'],
+          content: [
+            "console.log('one')"
+          ]
+        },
+        '',
+        'function test () {',
+        "  console.log('two')",
+        '}'
       ])
     })
   })
