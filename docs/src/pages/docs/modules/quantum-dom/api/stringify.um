@@ -47,7 +47,7 @@
       @extra
         E.g. for GitHub Pages (i.e. where the output site is served in a
         subdirectory) @code[https://username.github.io/project] the
-        @code[baseUrl] would be @code[project]
+        @code[baseUrl] would be @code["/project"]
 
       @default: ''
 
