@@ -74,30 +74,32 @@ h1,h2,h3,h4,h5,h6 {
   font-size: 2.5em;
   margin: 0;
   font-weight: 100;
-  /*color: #FFFFFF;*/
 }
 
 .top-landing-section__tagline {
   font-size: 1em;
   margin: 1em 0;
-  /*color: #FFFFFF;*/
 }
-
 
 .landing-section {
   text-align: center;
   padding: 3em 1em;
-  /*height: 100vh;*/
   display: flex;
   justify-content: center;
   flex-direction: column;
   position: relative;
   background: #084267;
   color: white;
+  border-top: solid 1px rgba(0, 0, 0, 0.05);
 }
 
 .landing-section:nth-child(2n) {
   background: #054b77;
+}
+
+.landing-section.landing-section--no-bg {
+  background: transparent;
+  padding: 1em;
 }
 
 .landing-section__title {
@@ -110,7 +112,6 @@ h1,h2,h3,h4,h5,h6 {
   margin-left: auto;
   margin-right: auto;
 }
-
 
 .scroll-next-placeholder {
   height: 10vh;
@@ -131,18 +132,12 @@ h1,h2,h3,h4,h5,h6 {
   opacity: 0.53;
 }
 
-.landing-section {
-  border-top: solid 1px rgba(0, 0, 0, 0.05);
-}
-
 .buttons {
-  /*margin: 1em 0;*/
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.05);
   padding: 2em;
   position: relative;
 }
@@ -206,7 +201,6 @@ h1,h2,h3,h4,h5,h6 {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    /*margin: 0;*/
   }
 
   .button {
@@ -221,7 +215,6 @@ h1,h2,h3,h4,h5,h6 {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    /*margin: 2em 0;*/
   }
 
   .button {
@@ -242,4 +235,12 @@ h1,h2,h3,h4,h5,h6 {
   left: 0;
   right: 0;
   text-align: center;
+  height: 30px;
+  padding: 1em 1em;
+  background: #252525;
+  color: white;
+}
+
+.footer a {
+  color: inherit;
 }

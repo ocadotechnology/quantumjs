@@ -16,21 +16,22 @@
       @div .top-landing-section__tagline
         A node.js @bold[static site generator] with a focus on extensibility and speed
 
-  @div .buttons
-    @a .button: @span[Documentation]
-      @attr href: {{baseurl}}/docs/
-      @image [{{baseurl}}/resources/book.svg]
-        @height 30px
+  @div .landing-section.landing-section--no-bg
+    @div .buttons
+      @a .button: @span[Documentation]
+        @attr href: {{baseurl}}/docs/
+        @image [{{baseurl}}/resources/book.svg]
+          @height 30px
 
-    @a .button: @span[Quick Start]
-      @attr href: {{baseurl}}/docs/quick-start
-      @image [{{baseurl}}/resources/rocket.svg]
-        @height 30px
+      @a .button: @span[Quick Start]
+        @attr href: {{baseurl}}/docs/quick-start
+        @image [{{baseurl}}/resources/rocket.svg]
+          @height 30px
 
-    @a .button: @span[GitHub]
-      @attr href: https://github.com/ocadotechnology/quantumjs/
-      @image [{{baseurl}}/resources/github-mark.svg]
-        @height 30px
+      @a .button: @span[GitHub]
+        @attr href: https://github.com/ocadotechnology/quantumjs/
+        @image [{{baseurl}}/resources/github-mark.svg]
+          @height 30px
 
   @landingSection Markup goes in, HTML comes out.
     Comes with an @bold[easy-to-pickup] markup language.

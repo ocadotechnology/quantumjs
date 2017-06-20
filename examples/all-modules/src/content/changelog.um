@@ -1,0 +1,32 @@
+@inline /templates/sidebar-page.um
+
+@topSection
+  @title Example Changelog Page
+  @description
+    A description of this page
+  @source [http://example.com/this-page.um]: Edit Page
+  @breadcrumb
+    @item /: Home
+    @item /changelog/: Changelog
+
+@contentSection
+  @topic Changelog
+    @changelogList
+      @process
+        @inline index.um
+
+      @version 1.0.0
+        @description
+          First version of the api
+
+      @version 2.0.0
+        @description
+          Second version of the api
+
+      @version 3.0.0
+        @description
+          Third version of the api
+
+      @version 4.0.0
+        @description
+          Fourth version of the api

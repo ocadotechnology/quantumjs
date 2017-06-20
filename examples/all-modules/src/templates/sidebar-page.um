@@ -1,0 +1,16 @@
+@template
+  @contentEntityName templateContent
+  @content
+    @header
+      @icon [/resources/logo.svg] [/]
+      @title QuantumJS
+
+    @sidebarPage
+      @sidebar
+        @navigationMenu
+          @section Introduction
+            @page /: Home
+            @page /changelog/: Changelog
+
+      @content
+        @templateContent

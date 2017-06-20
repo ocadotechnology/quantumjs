@@ -1,0 +1,139 @@
+@inline /templates/sidebar-page.um
+
+@stylesheet [/resources/style.css]
+
+@versionedPage
+  @version 1.0.0
+  @version 2.0.0
+  @version 3.0.0
+  @version 4.0.0
+
+@topSection
+  @title Example Home Page
+  @description
+    A description of this page
+  @source [http://example.com/this-page.um]: Edit Page
+  @breadcrumb
+    @item /: Home
+
+@contentSection
+  @tableOfContents Contents
+
+  @topic Home
+    This page demonstrates the inclusion of a custom set of styles as well as
+    the auto-generated table of contents and multiple other features that are
+    included through the @code[quantum-docs] module, such as @code[@topic],
+    @code[@section], @code[@topSection] etc.
+
+  @topic API / Version Example
+    The version selector lets you switch between the available versions
+    @versionSelector
+      @versionList
+        @version 1.0.0
+        @version 2.0.0
+        @version 3.0.0
+        @version 4.0.0
+
+    @api MyApi
+      # This function was added in version 1.0.0. By giving it the @added 1.0.0
+      # tag, it will only be included in pages with version 1.0.0 and later
+      @function myFunction
+        @added 1.0.0
+          @description
+            Added a new function
+        @updated 2.0.0
+        @deprecated 3.0.0
+        @removed 4.0.0
+        @description
+          # Versioned content provides alternative versions of content for
+          # different versions. Between versions, the content does not change -
+          # for example, for version 0.1.1, the description will still be
+          # "Description 1"
+          @versioned
+            @version 1.0.0: Description 1
+            @version 2.0.0: Description 2
+
+        @arg x [Number]
+          @description
+            Some Description
+
+        # Only included in versions 2.0.0 and later, and gets removed after 4.0.0
+        @arg y [Number]
+          @added 2.0.0
+          @deprecated 3.0.0
+          @removed 4.0.0
+          @description
+            @versioned
+              @version 2.0.0: Description 1
+              @version 4.0.0: Description 2
+
+  @topic Code Highlighting Example
+    Some @code[inline] code
+
+    Code block with syntax guessing
+    @@codeblock
+      function a () {
+        return true
+      }
+
+    Codeblock with a language
+    @@codeblock css
+      .class {
+        background: #FFF;
+      }
+
+    Codeblock with highlighting disabled
+    @@codeblock nohighlight
+      .class {
+        background: #FFF;
+      }
+
+  @topic Diagram Example
+    @diagram
+      @item sugar [Sugar]
+        Optional
+      @item milk [Milk]
+        Optional
+      @item coffee [Coffee]
+      @item water [Water]
+      @item kettle [Kettle]
+      @item cup [Cup]
+      @item tasty [Tasty Beverage!]
+
+      @link sugar --> cup
+      @link milk --> cup
+      @link water -> kettle
+      @link kettle -> cup
+      @link coffee -> cup
+      @link cup -> tasty
+
+  @topic Docs Example
+    The @code[quantum-docs] module includes the entity transforms for this page,
+    as well as @strikethrough[strikethrough], @italic[italic] and @bold[bold]
+    transforms.
+
+    @notice [Notices]
+      @description
+        Notices are also part of the docs module
+
+  @topic Markdown Example
+    @@markdown
+      # H1
+
+      You can also include markdown in quantum which is __really__ cool!
+
+  @topic Group/Summary example
+    @group
+      @summary Title
+        @description: Description
+        @link #: Summary Link
+        @link #: Summary Link
+        @link #: Summary Link
+      @summary Title
+        @description: Description
+        @link #: Summary Link
+        @link #: Summary Link
+        @link #: Summary Link
+
+@bottomSection
+  Some Text
