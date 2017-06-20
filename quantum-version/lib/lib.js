@@ -8,7 +8,7 @@
 
 */
 
-const quantum = require('quantum-js')
+const quantum = require('quantum-core')
 
 /* A factory that returns the file transform */
 function fileTransform (options) {

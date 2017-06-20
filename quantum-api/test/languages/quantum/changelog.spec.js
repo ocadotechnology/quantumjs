@@ -1,7 +1,7 @@
 describe('changelog', () => {
   const should = require('chai').should()
   const path = require('path')
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const dom = require('quantum-dom')
   const header = require('../../../lib/entity-transforms/builders/header')
   const changelogFileTransform = require('../../../lib/file-transforms/changelog')

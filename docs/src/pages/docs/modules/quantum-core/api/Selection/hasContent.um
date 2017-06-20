@@ -1,0 +1,37 @@
+@method hasContent
+  @description
+    Returns true if the selected entity has any content
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const entity1 = {
+          type: 'example',
+          params: [],
+          content: []
+        }
+
+        const entity2 = {
+          type: 'example',
+          params: [],
+          content: [
+            'Line 1',
+            {
+              type: 'child',
+              params: [],
+              content: []
+            }
+          ]
+        }
+
+        const selection1 = quantum.select(entity1)
+        selection1.hasContent() // false
+
+        const selection2 = quantum.select(entity2)
+        selection2.hasContent() // true
+
+  @returns Boolean
+    @description
+      Returns true if the entity has content, false otherwise

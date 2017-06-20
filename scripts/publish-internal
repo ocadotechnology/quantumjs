@@ -1,6 +1,6 @@
 #! /bin/bash
 
-pushd quantum-js
+pushd quantum-core
 npm publish --registry=http://maven.ocado.com/nexus/content/repositories/lastmile-npm-releases/
 popd
 

@@ -1,5 +1,5 @@
 describe('fileTransform (changelog)', () => {
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const { fileTransform } = require('../../lib/file-transforms/changelog')
 
   const testlanguage = {

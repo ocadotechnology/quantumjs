@@ -18,7 +18,7 @@ env:
   - MODULE="quantum-docs"
   - MODULE="quantum-dom"
   - MODULE="quantum-html"
-  - MODULE="quantum-js"
+  - MODULE="quantum-core"
   - MODULE="quantum-template"
   - MODULE="quantum-version"
   - MODULE="cross-compatible"

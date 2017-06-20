@@ -1,4 +1,4 @@
-const { FileInfo } = require('quantum-js')
+const { FileInfo } = require('quantum-core')
 const { defaultFilenameModifier } = require('../lib/lib')
 
 describe('defaultFilenameModifier', () => {

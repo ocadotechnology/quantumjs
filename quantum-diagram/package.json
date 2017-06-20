@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "dagre": "0.7.4",
-    "quantum-js": "^2.0.0-rc.3",
+    "quantum-core": "^2.0.0-rc.3",
     "quantum-dom": "^2.0.0-rc.3"
   },
   "devDependencies": {

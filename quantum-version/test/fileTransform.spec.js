@@ -1,4 +1,4 @@
-const { select, File, FileInfo } = require('quantum-js')
+const { select, File, FileInfo } = require('quantum-core')
 const { fileTransform } = require('..')
 
 describe('fileTransform', () => {

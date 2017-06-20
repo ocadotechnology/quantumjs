@@ -38,9 +38,9 @@ Run this in the relevant module folder
 
     npm test
 
-For example, to run the tests for quantum-js:
+For example, to run the tests for quantum-core:
 
-    cd quantum-js
+    cd quantum-core
     npm test
 
 Coverage data is output to the `coverage/` folder within the module directory

@@ -1,6 +1,6 @@
 describe('item', () => {
   const should = require('chai').should()
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const dom = require('quantum-dom')
   const collapsible = require('../../../lib/entity-transforms/components/collapsible')
   const item = require('../../../lib/entity-transforms/builders/item')

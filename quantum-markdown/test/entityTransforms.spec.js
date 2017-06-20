@@ -1,6 +1,6 @@
 describe('entityTransforms', () => {
   const path = require('path')
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const dom = require('quantum-dom')
   const { stylesheetAsset } = require('quantum-code-highlight')
   const { entityTransforms } = require('..')

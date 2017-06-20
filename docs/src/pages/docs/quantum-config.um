@@ -15,7 +15,7 @@
     @section Available options
       @api config
         @group
-          @inline ./modules/quantum-js/api/api/config.um
+          @inline ./modules/quantum-core/api/api/config.um
 
 
     @section Full-featured Example

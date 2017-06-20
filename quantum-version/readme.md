@@ -1,6 +1,6 @@
 # quantum-version
 
-A module intended for use with `quantum-js` and `quantum-html`
+A module intended for use with `quantum-core` and `quantum-html`
 
 This module provides a file transform that enables the generation of
 incrementally versioned content. The version transform works well with the

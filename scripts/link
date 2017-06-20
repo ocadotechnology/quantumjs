@@ -2,7 +2,7 @@
 
 # This script is useful for developing locally - it will npm link all the modules
 
-pushd quantum-js
+pushd quantum-core
 npm install
 npm link
 popd
@@ -13,54 +13,54 @@ npm link
 popd
 
 pushd quantum-template
-npm link quantum-js
+npm link quantum-core
 npm install
 npm link
 popd
 
 pushd quantum-html
-npm link quantum-js quantum-dom
+npm link quantum-core quantum-dom
 npm install
 npm link
 popd
 
 pushd quantum-code-highlight
-npm link quantum-js quantum-dom
+npm link quantum-core quantum-dom
 npm install
 npm link
 popd
 
 pushd quantum-api
-npm link quantum-js quantum-dom quantum-html quantum-version
+npm link quantum-core quantum-dom quantum-html quantum-version
 npm install
 npm link
 popd
 
 pushd quantum-diagram
-npm link quantum-js quantum-dom
+npm link quantum-core quantum-dom
 npm install
 npm link
 popd
 
 pushd quantum-docs
-npm link quantum-js quantum-html quantum-dom
+npm link quantum-core quantum-html quantum-dom
 npm install
 npm link
 popd
 
 pushd quantum-version
-npm link quantum-js
+npm link quantum-core
 npm install
 npm link
 popd
 
 pushd quantum-markdown
-npm link quantum-js quantum-dom quantum-code-highlight
+npm link quantum-core quantum-dom quantum-code-highlight
 npm install
 npm link
 popd
 
 pushd docs
-npm link quantum-js quantum-html quantum-template quantum-api quantum-diagram quantum-dom quantum-docs quantum-version quantum-code-highlight quantum-markdown
+npm link quantum-core quantum-html quantum-template quantum-api quantum-diagram quantum-dom quantum-docs quantum-version quantum-code-highlight quantum-markdown
 npm install
 popd

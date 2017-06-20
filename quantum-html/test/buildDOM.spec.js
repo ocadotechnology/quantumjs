@@ -1,5 +1,5 @@
 describe('buildDOM', () => {
-  const { File, FileInfo } = require('quantum-js')
+  const { File, FileInfo } = require('quantum-core')
   const { buildDOM } = require('..')
   it('entityTransforms a file', () => {
     const file = new File({

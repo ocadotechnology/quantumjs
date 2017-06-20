@@ -1,5 +1,5 @@
 describe('buildHTML', () => {
-  const { File, FileInfo } = require('quantum-js')
+  const { File, FileInfo } = require('quantum-core')
   const dom = require('quantum-dom')
   const path = require('path')
   const { buildHTML, HTMLPage } = require('..')

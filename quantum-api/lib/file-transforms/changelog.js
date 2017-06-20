@@ -1,6 +1,6 @@
 'use strict'
 
-const quantum = require('quantum-js')
+const quantum = require('quantum-core')
 const qversion = require('quantum-version')
 const utils = require('../utils')
 const tags = require('../tags')

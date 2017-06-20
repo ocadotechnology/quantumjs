@@ -1,6 +1,6 @@
 describe('entityTransforms', () => {
   const html = require('..')
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const dom = require('quantum-dom')
 
   function transformEntity () {

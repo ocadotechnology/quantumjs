@@ -3,7 +3,7 @@ describe('changelog', () => {
   const dom = require('quantum-dom')
   const header = require('../../../lib/entity-transforms/builders/header')
   const path = require('path')
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const changelogFileTransform = require('../../../lib/file-transforms/changelog')
   const javascript = require('../../../lib/languages/javascript')
 

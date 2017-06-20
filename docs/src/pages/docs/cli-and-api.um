@@ -72,7 +72,7 @@
       @noOutput
       @@js
         const config = require('./quantum.config.js')
-        const quantum = require('quantum-js')
+        const quantum = require('quantum-core')
 
         // Build the site once
         quantum.api.build(config)

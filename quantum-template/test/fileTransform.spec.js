@@ -1,6 +1,6 @@
 describe('fileTransform', () => {
   const should = require('chai').should()
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const { fileTransform } = require('..')
   function compare (input, source, expected) {
     return quantum.readAsFile(source)

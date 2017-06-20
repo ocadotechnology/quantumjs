@@ -1,0 +1,45 @@
+@function read
+  @added 2.0.0
+
+  @description
+    Reads and parses the contents of a file
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        quantum.read('some/file.um').then(parsed => {
+          console.log(parsed)
+        })
+
+  @arg filename [String]: The filename of the file to load and parse.
+  @arg? options [Object]
+    @property inlineEntityType [String]
+      @description
+        The entity type to use for inlining other files.
+      @default: "inline"
+    @property inline [Boolean]
+      @description
+        When inline mode is on, the inlineEntityType (@code(um)[@inline] by
+        default) will be replaced with the content of the specified files.
+      @default: @code[true]
+    @property loader [Function]
+      @description
+        A function for loading a file from disk, returning a @type[Promise] that
+        contains the contents of the file as a string that can be passed to the
+        parser.
+      @arg filename [String]: The file/resource to load.
+      @returns [Promise[String]]
+        A promise that yields the contents of the file as a string.
+    @property base [String]
+      @description
+        The base of the glob path that should be ignored when writing to the
+        target.
+    @property resolveRoot [String]
+      @description
+        The path to resolve absolute files from.
+      @default: @code['.'] (The current working directory)
+  @returns [Promise[Entity]]
+    @description
+      A promise that yields the parsed AST entity.

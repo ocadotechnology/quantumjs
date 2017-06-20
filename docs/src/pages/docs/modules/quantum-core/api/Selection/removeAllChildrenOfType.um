@@ -1,0 +1,114 @@
+@method removeAllChildrenOfType
+  @description
+    Removes all the children of the type provided from the selected entity.
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const entity = {
+          type: 'parent',
+          params: [],
+          content: [
+            {
+              type: 'child1',
+              params: [],
+              content: []
+            },
+            {
+              type: 'child1',
+              params: [],
+              content: []
+            },
+            {
+              type: 'child2',
+              params: [],
+              content: []
+            }
+          ]
+        }
+
+        const parentSelection = quantum.select(entity)
+        parentSelection.removeAllChildrenOfType('child1') // removes all the child1 entities
+
+        parentSelection.entity()
+        /*
+          {
+            type: 'parent',
+            params: [],
+            content: [
+              {
+                type: 'child2',
+                params: [],
+                content: []
+              }
+            ]
+          }
+        */
+
+
+  @arg type [String]: The entity type to remove
+  @arg? options [Object]
+    @property recursive [Boolean]
+      @description: Set to true to recurse down the children to find
+      @default: @code[false]
+  @returns [Array[Selection]]
+    @description
+      An array of the removed entities wrapped in @type[Selection]s
+
+@method removeAllChildrenOfType
+  @description
+    Removes all the children of the types provided from the selected entity.
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const entity = {
+          type: 'parent',
+          params: [],
+          content: [
+            {
+              type: 'child1',
+              params: [],
+              content: []
+            },
+            {
+              type: 'child1',
+              params: [],
+              content: []
+            },
+            {
+              type: 'child2',
+              params: [],
+              content: []
+            }
+          ]
+        }
+
+        const parentSelection = quantum.select(entity)
+
+        // removes the first child1 type entity and the first child2 type entity
+        parentSelection.removeAllChildrenOfType(['child1', 'child2'])
+
+        parentSelection.entity()
+        /*
+          {
+            type: 'parent',
+            params: [],
+            content: []
+          }
+        */
+
+  @arg types [Array[String]]: The entity types to remove
+  @arg? options [Object]
+    @property recursive [Boolean]
+      @description: Set to true to recurse down the children to find
+      @default: @code[false]
+
+
+  @returns [Array[Selection]]
+    @description
+      An array of the removed entities wrapped in @type[Selection]s

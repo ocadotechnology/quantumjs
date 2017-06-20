@@ -1,0 +1,136 @@
+@define fileInfoProperties
+  @property src [String]
+    @description
+      The filename of the source file for this page. Can be specified relative
+      to the cwd or as an absolute path
+
+  @property resolved [String]
+    @description
+      The filename of the source file, relative the the base directory. Can be
+      specified relative to the cwd or as an absolute path
+
+  @property base [String]
+    @description
+      The base directory used to extract the resolved filename
+
+  @property dest [String]
+    @description
+      The destBase directory + the resolved filename
+
+  @property destBase [String]
+    @description
+      The directory where files are output to
+
+  @property watch [Boolean]
+    @description
+      Whether or not this file should be watched for changes. This is only used
+      by the cli when in watch mode.
+
+@prototype FileInfo
+  @added 2.0.0
+
+  @description
+    An object which holds filename information. Chances are this object is
+    something you'll never have to use, unless writing a file transform which
+    needs to modify the output filename.
+
+    Every @type[File] instance has a @code[info] property, which is one of these guys.
+
+  @extra
+    @subsection Creating a FileInfo instance
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const info = new quantum.FileInfo({
+          src: "src/content/about.um",
+          resolved: "about.um",
+          base: "src/content",
+          dest: "target/about.um",
+          destBase: "target",
+          watch: true
+        })
+
+  @constructor
+    @description
+      Constructs a new @type[FileInfo]
+
+    @arg? options [Object]
+      @description
+        An object with the properties to populate the @type[FileInfo] with
+      @fileInfoProperties
+
+  @fileInfoProperties
+
+  @method withExtension
+    @description
+      Returns a new @type[FileInfo] instance with the extension changed for the
+      dest property:
+
+    @extra
+      @subsection Example
+        @@codeblock js
+          const quantum = require('quantum-core')
+
+          const info = new quantum.FileInfo({
+            src: "src/content/about.um",
+            resolved: "about.um",
+            base: "src/content",
+            dest: "target/about.um",
+            destBase: "target",
+            watch: true
+          })
+
+          const newFileInfo = info.withExtension('.html')
+
+          console.log(newFileInfo.dest) // prints "target/about.html"
+
+    @arg extension [String]
+      @description
+        The new extension the @type[FileInfo] should have. This should include the
+        preceding period:
+
+        @codeblock js
+          info.withExtension('.html') // This is correct
+          info.withExtension('html')  // This is (probably) not correct
+
+    @returns FileInfo
+      @description
+        A new @type[FileInfo] instance with the updated dest property.
+
+  @method clone
+    @description
+      Creates a clone of this @type[FileInfo], with some or all of the properties
+      replaced. The value returned from this function is a new @type[FileInfo] instance.
+
+      @codeblock js
+        const quantum = require('quantum-core')
+
+        const info = new quantum.FileInfo({
+          src: "src/content/about.um",
+          resolved: "about.um",
+          base: "src/content",
+          dest: "target/about.um",
+          destBase: "target",
+          watch: true
+        })
+
+        const newFileInfo = info.clone({
+          watch: false,
+          dest: "target/about/index.html"
+        })
+
+        // newFileInfo.src === "src/content/about.um",
+        // newFileInfo.resolved === "about.um",
+        // newFileInfo.base === "src/content",
+        // newFileInfo.dest === "target/about/index.html",
+        // newFileInfo.destBase === "target",
+        // newFileInfo.watch === false
+
+    @arg? changes [Object]
+      @description
+        Provide any properties to override
+
+      @fileInfoProperties
+
+    @returns FileInfo
+      A new @api.Type[FileInfo] instance with the changes applied.

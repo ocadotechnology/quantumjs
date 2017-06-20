@@ -1,5 +1,5 @@
 describe('header', () => {
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const dom = require('quantum-dom')
   const header = require('../../../lib/entity-transforms/builders/header')
 
