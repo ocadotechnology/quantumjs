@@ -259,7 +259,11 @@ function buildHTML (opts) {
   }
 }
 
+// Match a string that starts with '. ' or any other punctuation (e.g. '! ') so
+// we don't add an extra space
 const punctationRegex = /^\W\s/
+// Match 0 or more whitespace characters
+const whitespaceRegex = /^\s*$/
 
 function paragraphTransform (selection, transformer) {
   const paragraphs = [
@@ -273,7 +277,7 @@ function paragraphTransform (selection, transformer) {
   let currentParagraph = void (0)
   const content = selection.content()
   content.forEach((e, i) => {
-    if (e === '') {
+    if (whitespaceRegex.test(e)) {
       if (currentParagraph) {
         paragraphs.push(currentParagraph)
         currentParagraph = undefined

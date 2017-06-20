@@ -34,6 +34,29 @@ describe('paragraphTransform', () => {
       ])
   })
 
+  it('makes multiple paragraphs with whitespace', () => {
+    const selection = quantum.select({
+      type: 'div',
+      params: [],
+      content: [
+        'Line 1.',
+        'Part of same paragraph',
+        ' ',
+        'New Paragraph 1',
+        '    ',
+        'New Paragraph 2'
+      ]
+    })
+
+    paragraphTransform(selection, transformer)
+      .should.eql([
+        stylesheetAsset,
+        dom.create('div').class('qm-html-paragraph').add(dom.textNode('Line 1. ')).add(dom.textNode('Part of same paragraph ')),
+        dom.create('div').class('qm-html-paragraph').add(dom.textNode('New Paragraph 1 ')),
+        dom.create('div').class('qm-html-paragraph').add(dom.textNode('New Paragraph 2 '))
+      ])
+  })
+
   it('no content should be fine', () => {
     const selection = quantum.select({
       type: 'whatever',
