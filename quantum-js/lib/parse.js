@@ -54,8 +54,8 @@ function tokenize (str) {
   let escapedParamCounter = 0
   let consumingEscapedParams = false
   let consumingUnparsed = false // true when in an @@ block
-  let lastInlineContentEndPos = undefined
-  let unparsedIndentStart = undefined
+  let lastInlineContentEndPos = void (0)
+  let unparsedIndentStart = void (0)
 
   const indent = [0]
   const tokens = []
@@ -485,8 +485,10 @@ function ast (tokens) {
       extraIndent = absoluteIndent - currentIndent
     } else if (token.type === 'DEDENT') {
       current = stack.pop()
+      active = current
       absoluteIndent -= token.value
-      extraIndent = absoluteIndent - currentIndent
+      currentIndent = absoluteIndent
+      extraIndent = 0
     }
     i++
   }
