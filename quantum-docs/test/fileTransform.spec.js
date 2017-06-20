@@ -1,6 +1,6 @@
 describe('fileTransform', () => {
   const { fileTransform } = require('..')
-  const { File, FileInfo } = require('quantum-js')
+  const { File, FileInfo } = require('quantum-core')
 
   it('populates a table of contents (default options)', () => {
     const page = new File({

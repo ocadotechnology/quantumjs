@@ -5,7 +5,7 @@ const fs = require('fs')
 const unique = require('array-unique')
 const Promise = require('bluebird')
 const merge = require('merge')
-const quantum = require('quantum-js')
+const quantum = require('quantum-core')
 const dom = require('quantum-dom')
 
 function setupElement (type, selection, transformer, parsePs) {

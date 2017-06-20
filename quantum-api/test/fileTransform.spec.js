@@ -1,5 +1,5 @@
 describe('fileTransform', () => {
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const path = require('path')
   const api = require('..')
   it('does nothing when options.processChangelogs is false', () => {

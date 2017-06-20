@@ -1,0 +1,34 @@
+@method removeChild
+  @description
+    Removes a child entity from this entity
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const entity = {
+          type: 'parent',
+          params: [],
+          content: [
+            {
+              type: 'childExample',
+              params: [],
+              content: []
+            }
+          ]
+        }
+
+        const parentSelection = quantum.select(entity)
+        const childEntity = entity.content[0]
+
+        parentSelection.removeChild(childEntity) // removes the child and returns true
+
+
+  @arg childEntity [Entity]
+    @description
+      The entity to remove from the children
+
+  @returns Boolean
+    true if the child was removed, false if it was not a child and could not be
+    removed.

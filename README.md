@@ -18,7 +18,7 @@ This repository contains the parser for the language along with some common tran
 
 |Directory|Description|
 |----------|-----------|
-| quantum-js | The language parser, the cli, and utilities for working with the parsed AST |
+| quantum-core | The language parser, the cli, and utilities for working with the parsed AST |
 | quantum-dom | A virtual DOM library which quantum uses to build the HTML |
 | quantum-template | A transform which adds common templating abilities |
 | quantum-version | A transform that lets you write versioned content with incremental changes |

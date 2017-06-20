@@ -1,0 +1,57 @@
+@method type
+  @description
+    Gets the @code[type] property from the underlying entity
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const entity = {
+          type: 'blogEntry',
+          params: ['10/12/17'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        console.log(selection.type()) // Prints "blogEntry"
+
+  @returns String
+    @description
+      Returns the underlying entity's @code[type] property
+
+@method type
+  @description
+    Sets the @code[type] property for the underlying entity
+
+  @extra
+    @subsection Example
+      @codeblock js
+        const quantum = require('quantum-core')
+
+        const entity = {
+          type: 'blogEntry',
+          params: ['10/12/17'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+
+        console.log(selection.type()) // Prints "blogEntry"
+        console.log(entity.type)      // Prints "blogEntry"
+
+        // Change the entity type
+        selection.type('myBlogEntry')
+
+        console.log(selection.type()) // Prints "myBlogEntry"
+        console.log(entity.type)      // Prints "myBlogEntry"
+
+  @arg type [String]: The new type
+  @returns Selection
+    @description
+      This @type[Selection] for further chaining

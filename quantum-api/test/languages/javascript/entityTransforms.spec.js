@@ -1,5 +1,5 @@
 describe('entityTransforms', () => {
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const dom = require('quantum-dom')
   const type = require('../../../lib/entity-transforms/components/type')
   const javascript = require('../../../lib/languages/javascript')

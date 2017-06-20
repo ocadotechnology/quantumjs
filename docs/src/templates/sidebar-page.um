@@ -31,7 +31,7 @@
             @page {{baseurl}}/docs/quantum-config/: quantum.config.js
 
           @section Core Modules
-            @page {{baseurl}}/docs/modules/quantum-js/: quantum-js
+            @page {{baseurl}}/docs/modules/quantum-core/: quantum-core
             @page {{baseurl}}/docs/modules/quantum-dom/: quantum-dom
             @page {{baseurl}}/docs/modules/quantum-html/: quantum-html
 

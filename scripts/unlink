@@ -3,7 +3,7 @@
 # This script does the reverse of link - it will npm unlink everything
 # that was linked by the link script
 
-pushd quantum-js
+pushd quantum-core
 npm unlink
 popd
 
@@ -12,46 +12,46 @@ npm unlink
 popd
 
 pushd quantum-template
-npm unlink quantum-js
+npm unlink quantum-core
 npm unlink
 popd
 
 pushd quantum-html
-npm unlink quantum-js quantum-dom
+npm unlink quantum-core quantum-dom
 npm unlink
 popd
 
 pushd quantum-code-highlight
-npm unlink quantum-js quantum-dom
+npm unlink quantum-core quantum-dom
 npm unlink
 popd
 
 pushd quantum-api
-npm unlink quantum-js quantum-dom quantum-html
+npm unlink quantum-core quantum-dom quantum-html
 npm unlink
 popd
 
 pushd quantum-diagram
-npm unlink quantum-js quantum-dom
+npm unlink quantum-core quantum-dom
 npm unlink
 popd
 
 pushd quantum-docs
-npm unlink quantum-js quantum-html quantum-dom
+npm unlink quantum-core quantum-html quantum-dom
 npm unlink
 popd
 
 pushd quantum-version
-npm unlink quantum-js
+npm unlink quantum-core
 npm unlink
 popd
 
 pushd quantum-markdown
-npm unlink quantum-js quantum-dom quantum-code-highlight
+npm unlink quantum-core quantum-dom quantum-code-highlight
 npm install
 npm link
 popd
 
 pushd docs
-npm unlink quantum-js quantum-html quantum-template quantum-api quantum-diagram quantum-docs quantum-version quantum-code-highlight
+npm unlink quantum-core quantum-html quantum-template quantum-api quantum-diagram quantum-docs quantum-version quantum-code-highlight
 popd

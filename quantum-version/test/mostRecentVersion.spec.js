@@ -1,5 +1,5 @@
 const should = require('chai').should()
-const quantum = require('quantum-js')
+const quantum = require('quantum-core')
 const { mostRecentVersion } = require('../lib/lib')
 
 describe('mostRecentVersion', () => {

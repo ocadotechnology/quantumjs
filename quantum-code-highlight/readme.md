@@ -1,6 +1,6 @@
 # quantum-code-highlight
 
-A module intended for use with `quantum-js` and `quantum-html`
+A module intended for use with `quantum-core` and `quantum-html`
 
 This module adds entity transforms for syntax highlighting code with the
 `@codeblocks` and `@code` entities.

@@ -20,7 +20,7 @@
 
       @default
         @@codeblock js
-          const quantum = require('quantum-js')
+          const quantum = require('quantum-core')
           function (selection) {
             return quantum.isSelection(selection) ? selection.cs() : selection
           }

@@ -1,6 +1,6 @@
 'use strict'
 
-const quantum = require('quantum-js')
+const quantum = require('quantum-core')
 
 /* A function for comparing two semantic versions (that can be fed to sort()) */
 function semanticVersionComparator (v1, v2) {

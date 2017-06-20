@@ -33,7 +33,7 @@
     "bluebird": "^3.4.6",
     "merge": "^1.2.0",
     "quantum-dom": "^2.0.0-rc.3",
-    "quantum-js": "^2.0.0-rc.3"
+    "quantum-core": "^2.0.0-rc.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",

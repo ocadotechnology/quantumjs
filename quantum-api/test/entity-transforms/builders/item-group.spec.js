@@ -1,6 +1,6 @@
 describe('item-group', () => {
   const should = require('chai').should()
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const dom = require('quantum-dom')
   const itemGroup = require('../../../lib/entity-transforms/builders/item-group')
   const utils = require('../../../lib/utils')

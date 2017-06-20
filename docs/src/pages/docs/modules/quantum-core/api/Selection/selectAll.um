@@ -1,0 +1,222 @@
+@method selectAll
+  @description
+    Selects all children of a particular type.
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const entity = {
+          type: 'recipe',
+          params: ['Omelette'],
+          content: [
+            {
+              type: 'ingredient',
+              params: ['Eggs'],
+              content: []
+            },
+            {
+              type: 'ingredient',
+              params: ['Milk'],
+              content: []
+            },
+            {
+              type: 'ingredient',
+              params: ['Salt'],
+              content: []
+            },
+            {
+              type: 'ingredient',
+              params: ['Pepper'],
+              content: []
+            }
+          ]
+        }
+
+        const selection = quantum.select(entity)
+        const ingredients = selection.selectAll('ingredient') // returns an array of 4 Selections
+
+    @extra
+      @subsection Example
+        By default @code[selectAll] will only search through the direct childen.
+        To search recursively down the tree, add the @code[{recursive: true}] option.
+
+        @@codeblock js
+          const quantum = require('quantum-core')
+
+          const entity = {
+            type: 'parent',
+            params: [],
+            content: [
+              {
+                type: 'child',
+                params: [],
+                content: [
+                  {
+                    type: 'child',
+                    params: [],
+                    content: []
+                  }
+                ]
+              },
+              {
+                type: 'child',
+                params: [],
+                content: [
+                  {
+                    type: 'child',
+                    params: [],
+                    content: []
+                  },
+                  {
+                    type: 'child',
+                    params: [],
+                    content: []
+                  }
+                ]
+              },
+            ]
+          }
+
+          const selection = quantum.select(entity)
+          selection.selectAll('child', { recursive: true }) // returns an array of 5 Selections
+
+  @arg type [String]
+    @description
+      The type of entity to select
+  @arg? options [Object]
+    @property recursive [Boolean]
+      @description
+        Set to true to search recursively down the child entities to search
+        for this type. It will do a depth first search.
+      @default: @code[false]
+    @property required [Boolean]
+      @description
+        Set to true to throw an error when this type is not found
+      @default: @code[false]
+
+  @returns [Array[Selection]]
+    @description
+      Returns the entities that were found, each wraped in a @type[Selection].
+      If no results are found an empty array will be returned.
+
+@method selectAll
+  @description
+    Selects all children of a particular type.
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const entity = {
+          type: 'recipe',
+          params: ['Omelette'],
+          content: [
+            {
+              type: 'ingredient',
+              params: ['Eggs'],
+              content: []
+            },
+            {
+              type: 'ingredient',
+              params: ['Milk'],
+              content: []
+            },
+            {
+              type: 'ingredient',
+              params: ['Salt'],
+              content: []
+            },
+            {
+              type: 'ingredient',
+              params: ['Pepper'],
+              content: []
+            },
+            {
+              type: 'step',
+              params: [],
+              content: ['Beat eggs and milk to gether in a bowl and add salt and pepper']
+            },
+            {
+              type: 'step',
+              params: [],
+              content: ['Melt some butter in a frying pan']
+            },
+            {
+              type: 'step',
+              params: [],
+              content: ['Pour egg mixture into the frying pan and cook.']
+            }
+          ]
+        }
+
+        const selection = quantum.select(entity)
+        const ingredients = selection.selectAll('ingredient') // returns an array of 4 Selections
+        const steps = selection.selectAll('step') // returns an array of 3 Selections
+        const ingredientsAndSteps = selection.selectAll(['ingredient', 'step']) // returns an array of 7 Selections
+
+    @extra
+      @subsection Example
+        By default it @code[selectAll] will only search through the direct childen.
+        To search recursively down the tree, add the @code[{recursive: true}] option.
+
+        @@codeblock js
+          const quantum = require('quantum-core')
+
+          const entity = {
+            type: 'parent',
+            params: [],
+            content: [
+              {
+                type: 'child1',
+                params: [],
+                content: [
+                  {
+                    type: 'child2',
+                    params: [],
+                    content: []
+                  }
+                ]
+              },
+              {
+                type: 'child2',
+                params: [],
+                content: [
+                  {
+                    type: 'child1',
+                    params: [],
+                    content: []
+                  },
+                  {
+                    type: 'child2',
+                    params: [],
+                    content: []
+                  }
+                ]
+              },
+            ]
+          }
+
+          const selection = quantum.select(entity)
+          selection.selectAll(['child1', 'child2'], { recursive: true }) // returns an array of 5 Selections
+
+  @arg types [Array[String]]
+    @description
+      The types of entities to select
+  @arg? options [Object]
+    @property recursive [Boolean]
+      @description
+        Set to true to search recursively down the child entities to search
+        for this type. It will do a depth first search.
+      @default: @code[false]
+    @property required [Boolean]
+      @description
+        Set to true to throw an error when no results are found
+      @default: @code[false]
+
+  @returns [Array[Selection]]
+    @description
+      Returns the entities that were found, each wraped in a @type[Selection].
+      If no results are found an empty array will be returned.

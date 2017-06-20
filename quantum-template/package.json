@@ -26,7 +26,7 @@
     "fix-lint-issues": "eslint --fix lib/*.js test/*.js"
   },
   "dependencies": {
-    "quantum-js": "^2.0.0-rc.3"
+    "quantum-core": "^2.0.0-rc.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",

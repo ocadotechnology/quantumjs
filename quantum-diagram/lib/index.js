@@ -1,7 +1,7 @@
 'use strict'
 
 const dagre = require('dagre')
-const quantum = require('quantum-js')
+const quantum = require('quantum-core')
 const dom = require('quantum-dom')
 const path = require('path')
 

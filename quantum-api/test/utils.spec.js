@@ -1,5 +1,5 @@
 describe('utils', () => {
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const utils = require('../lib/utils')
 
   it('provides the correct things', () => {

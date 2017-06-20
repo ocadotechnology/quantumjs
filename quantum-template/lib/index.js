@@ -1,5 +1,5 @@
 'use strict'
-const quantum = require('quantum-js')
+const quantum = require('quantum-core')
 
 function replacer (variables, str) {
   let res = str

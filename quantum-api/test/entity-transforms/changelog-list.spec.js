@@ -1,5 +1,5 @@
 describe('changelogList', () => {
-  const quantum = require('quantum-js')
+  const quantum = require('quantum-core')
   const dom = require('quantum-dom')
 
   const changelogList = require('../../lib/entity-transforms/changelog-list')

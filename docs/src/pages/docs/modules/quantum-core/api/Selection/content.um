@@ -1,0 +1,54 @@
+@method content
+  @description
+    Gets the content of this entity as an array
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+      const selection = quantum.select(entity)
+      selection.content() // ['Blah blah blah']
+
+  @returns Selection
+    @description
+      This @type[Selection] instance
+
+@method content
+  @description
+    Sets the content of this entity as an array
+
+  @extra
+    @subsection Example
+      @@codeblock js
+        const quantum = require('quantum-core')
+
+        const entity = {
+          type: 'example',
+          params: ['param1', 'param2'],
+          content: [
+            'Blah blah blah'
+          ]
+        }
+
+        const selection = quantum.select(entity)
+        selection.content() // ['Blah blah blah']
+
+        selection.content(['New Content', 'Second line'])
+        selection.content() // ['New Content', 'Second line']
+
+  @arg content [Array[String/Entity]]
+    @description
+      The content to give the selected entity
+
+  @returns Selection
+    @description
+      This @type[Selection] instance

@@ -18,7 +18,7 @@
     that:
 
     @codeblock bash
-      npm install -g quantum-js
+      npm install -g quantum-core
 
   @topic Initialise the project
     Next we are going to set up the project and install the dependencies we need.

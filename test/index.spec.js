@@ -49,11 +49,11 @@ describe('combined tests', () => {
     })
     require('../quantum-html/test/index.spec')
   })
-  describe('quantum-js', () => {
+  describe('quantum-core', () => {
     before(() => {
-      process.chdir(path.join(__dirname, '../quantum-js/'))
+      process.chdir(path.join(__dirname, '../quantum-core/'))
     })
-    require('../quantum-js/test/index.spec')
+    require('../quantum-core/test/index.spec')
   })
   describe('quantum-markdown', () => {
     before(() => {
