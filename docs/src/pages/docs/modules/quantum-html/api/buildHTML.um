@@ -23,15 +23,17 @@
 
     @property assetPath [String]
       @description
-        The path to output assets to.
+        The path to output assets and resources to to.
 
         By default, this will output to the same directory that the file
         including it was output to.
 
-    @property resourcesTarget [String]
+    @property baseUrl [String]
       @description
-        The directory that the resources are output to (inside the global target
-        directory).
+        The baseUrl to prefix assets with. This is passed to @code[quantum-dom]
+        when stringifying content to make sure files are included from the
+        correct folder.
+
       @default: @code[undefined]
 
   @returns FileTransform
