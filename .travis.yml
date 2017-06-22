@@ -30,7 +30,7 @@ install:
   - if [ "$MODULE" != "integration" ]; then npm install; else npm run link-all && npm install; fi
 
 script:
-  - if [ "$MODULE" != "integration" ]; npm test && npm run upload-coverage; else npm test; fi
+  - if [ "$MODULE" != "integration" ]; then npm test && npm run upload-coverage; else npm test; fi
 
 deploy:
   email: quantumjs.ci.noreply@ocado.com
