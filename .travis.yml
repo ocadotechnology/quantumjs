@@ -5,9 +5,9 @@ cache:
     - node_modules
 
 node_js:
-  - "6"
-  - "7"
-  - "8"
+  - '6'
+  - '7'
+  - '8'
 
 env:
   - MODULE="quantum-api"
@@ -33,10 +33,11 @@ script: npm test && npm run upload-coverage
 
 deploy:
   email: quantumjs.ci.noreply@ocado.com
-  api_key:
-    secure: GpXKIC946J3acPqCmUCMUa+/g6vHh0mSkAw0ut7HpLYUBpUnNKZGHNePevOum/jxeAjMQOSAIlUW9nWo2A9wkrx7hV7mwIhTOhIQiSqGrQ/kOyAEWNXWGgrKSlzbEyOzUVJfSfesfPgGSc2gO6JjgCFuxgi7nEMrjyUdCf5Vl7lYq6HqQtbO3wcguDtq9lYbxwZ4PoDf8bN2j2aanj/Fk9KcyqAdIrUdRmOq5U3k0BcaQg31w1iaOPr4ES3UoxN/QCa+m+5ZqBYdt2Ekms7Hb8rukneTV94XaaRT2qmdQAAZfi7X66yO/z14nlpEO3z+i5kYeutdw7KoTVNhKCmbrscTB+pJ6agGk7pZkrEAlRH3DIo9k3VPo/GeifflpUWZXvQwzfEq3iaO6XtgN63NITMcuhXqykjk+u2DSCUhyiNuwf/WYlbAJWp+vYo+fnHQGpt/jRAedVPFad+NDfbJxUXluEnMCE1ujpflyIXdab3yZFrO5Hg36xdwd2tq3vAXRm/3R39h38EMLn1DkD9O5OWY0AkbXfzLLtYydmD8JHOXD9R8yzeaudcQi3Gkqt5K1dVqmNDsjP6eaC5aMRmUqRFTqt06wmQxS8yFSQQZCJDTIPztYmfb54icFNRAklA4I2QRKd/WGQ4PtBxnLQOa8zeuAp4T61aHxNx21Znt5Ts=
   provider: npm
+  api_key:
+    secure: HgRJBRbyT+rQnnugl5R33Kb7geN3x7rw6XsE5ALxs5P+JWlxq7gfoUd23iPK1p7y/ixy+PeOC+vbxI/fRQdfqH9wDzjPhj9ZDMshKLX3ZeZnqG+P6MPf3wNp9EGqmTWzoYmruBQEof31RMCEplsEjgA+RJX/WHsfyjZKpzVLJboFLULdnX1VBu180s7XxQ//gGd6nq5lc69cm7BjCwCyhCAHs29YyRpTIV4K6tooeJWv1ZwTqq4U7gzKE0AgJJFfButcxy15NeZ8sxp9ZHCeY7kaXstCSpfBPwD6pR5ee0LLy208by5xYMpqjwGhlpeeXY45XUhBjlsltmIwJT4h5zZWFvE/K51uqf2LwlCa7512v4GdTv7d6nPP5W2oEoZrOBCPmUWm6syYH4qD08nrTc8rJG3bVw/SL6GTXhMJ15itg7NYHTSF2bIjISAcm02CFaIiLL5LYfEME9+ENHWc0N1rAM0Qt2besz+4RuY1e/wdvJceXuKulL1OikZuuQB5/t6olUeMbJnCPowv6t7w/38k03HAv/NWs3DXavtqrn+vw7pvOgGM7pQ/ZpjmZXdMZofkC27KD9lz3ez4fZk53urxP9Rn4Cq3IXFz7qB5Poi76dht+wD9AJVsyS4yqVo1eZoKG1nBR1Wkg1psuWKMfAUCxDPSmCS/wLnDI4JPXE8=
   on:
+    repo: ocadotechnology/quantumjs
     branch: master
     tags: true
     node: "6"
