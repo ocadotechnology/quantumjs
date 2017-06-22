@@ -26,8 +26,8 @@ env:
 before_install:
   - if [ "$MODULE" != "cross-compatible" ]; then cd "$MODULE" || return; fi
 
-script:
-  - if [ "$MODULE" != "cross-compatible" ]; then npm install && npm test; else npm run link-all && npm test; fi
+install:
+  - if [ "$MODULE" != "cross-compatible" ]; then npm install; else npm run link-all; fi
 
 deploy:
   email: quantumjs.ci.noreply@ocado.com
