@@ -25,7 +25,8 @@
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover -x lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test/index.spec.js && npm run lint",
     "lint": "eslint lib/*.js test/*.js",
-    "fix-lint-issues": "eslint --fix lib/*.js test/*.js"
+    "fix-lint-issues": "eslint --fix lib/*.js test/*.js",
+    "upload-coverage": "cat target/test-library/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bin": {
     "quantum": "./bin/quantum"
@@ -46,6 +47,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
+    "coveralls": "^2.13.1",
     "eslint": "^3.3.1",
     "eslint-config-standard": "^6.0.0-beta.3",
     "eslint-plugin-promise": "^3.4.0",
