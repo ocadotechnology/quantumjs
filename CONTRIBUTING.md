@@ -26,11 +26,11 @@ When working on multiple modules, it can be useful to link them so that changes 
 up automatically when you require the module. There is a script in the script folder called `link` for
 doing this. To run it do:
 
-    ./scripts/link
+    npm run link-all
 
 If you want to undo the links, run the unlink script:
 
-    ./scripts/unlink
+    npm run unlink-all
 
 ## Running the tests
 
