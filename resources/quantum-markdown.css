@@ -1,12 +1,13 @@
 .qm-markdown * {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-.qm-markdown > :first-child {
+.qm-markdown >:first-child {
   margin-top: 0 !important
 }
 
-.qm-markdown > :last-child {
+.qm-markdown >:last-child {
   margin-bottom: 0 !important
 }
 
@@ -41,11 +42,11 @@
   border-left: 0.25em solid #ddd;
 }
 
-.qm-markdown blockquote > :first-child {
+.qm-markdown blockquote >:first-child {
   margin-top: 0;
 }
 
-.qm-markdown blockquote > :last-child {
+.qm-markdown blockquote >:last-child {
   margin-bottom: 0;
 }
 
@@ -123,6 +124,7 @@
 
 .qm-markdown img {
   background-color: #fff;
+  -webkit-box-sizing: content-box;
   box-sizing: content-box;
   max-width: 100%;
 }
@@ -133,7 +135,6 @@
   font-size: 14px;
   padding: 0.2em 0.4em;
 }
-
 
 .qm-markdown pre {
   background: rgba(0, 0, 0, 0.05);
@@ -176,7 +177,7 @@
 
 .qm-markdown-toc li,
 .qm-markdown-toc ul {
-  margin:  0.25em 0 0.5em 0;
+  margin: 0.25em 0 0.5em 0;
 }
 
 .qm-markdown-toc-header {
