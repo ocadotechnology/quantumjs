@@ -27,7 +27,7 @@ before_install:
   - if [ "$MODULE" != "cross-compatible" ]; then cd "$MODULE" || return; fi
 
 install:
-  - if [ "$MODULE" != "cross-compatible" ]; then npm install; else npm run link-all; fi
+  - if [ "$MODULE" != "cross-compatible" ]; then npm install; else npm run link-all && npm install; fi
 
 script: npm test && npm run upload-coverage
 
