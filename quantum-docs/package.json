@@ -1,6 +1,6 @@
 {
   "name": "quantum-docs",
-  "version": "2.0.0-rc.3",
+  "version": "2.0.0",
   "description": "quantum.js html transfoms for writing documentation style web pages",
   "license": "Apache-2.0",
   "contributors": [
@@ -27,9 +27,9 @@
     "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"
   },
   "dependencies": {
-    "quantum-core": "^2.0.0-rc.3",
-    "quantum-html": "^2.0.0-rc.3",
-    "quantum-dom": "^2.0.0-rc.3"
+    "quantum-core": "^2.0.0",
+    "quantum-html": "^2.0.0",
+    "quantum-dom": "^2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",
