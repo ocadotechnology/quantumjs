@@ -11,25 +11,26 @@ node_js:
 
 env:
   - MODULE="quantum-api"
-  - MODULE="quantum-changelog"
   - MODULE="quantum-code-highlight"
+  - MODULE="quantum-core"
   - MODULE="quantum-diagram"
   - MODULE="quantum-docs"
   - MODULE="quantum-dom"
   - MODULE="quantum-html"
-  - MODULE="quantum-core"
   - MODULE="quantum-template"
+  - MODULE="quantum-markdown"
   - MODULE="quantum-version"
-  - MODULE="cross-compatible"
+  - MODULE="integration"
   - MODULE="docs"
 
 before_install:
-  - if [ "$MODULE" != "cross-compatible" ]; then cd "$MODULE" || return; fi
+  - if [ "$MODULE" != "integration" ]; then cd "$MODULE" || return; fi
 
 install:
-  - if [ "$MODULE" != "cross-compatible" ]; then npm install; else npm run link-all && npm install; fi
+  - if [ "$MODULE" != "integration" ]; then npm install; else npm run link-all && npm install; fi
 
-script: npm test && npm run upload-coverage
+script:
+  - if [ "$MODULE" != "integration" ]; npm test && npm run upload-coverage; else npm test; fi
 
 deploy:
   email: quantumjs.ci.noreply@ocado.com
