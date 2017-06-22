@@ -10,4 +10,4 @@ and an api for watching quantum files for changes.
 This is module contains all the low level stuff that makes everything else work.
 
 Documentation:
-https://ocadotechnology.github.io/quantumjs/docs/modules/quantum-code-highlight/
+https://ocadotechnology.github.io/quantumjs/docs/modules/quantum-core/
