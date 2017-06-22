@@ -26,7 +26,7 @@
     "test": "./node_modules/istanbul/lib/cli.js cover -x lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test/index.spec.js && npm run lint",
     "lint": "eslint lib/*.js test/*.js",
     "fix-lint-issues": "eslint --fix lib/*.js test/*.js",
-    "upload-coverage": "cat target/test-library/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "upload-coverage": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bin": {
     "quantum": "./bin/quantum"
