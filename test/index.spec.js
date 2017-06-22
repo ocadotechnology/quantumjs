@@ -1,16 +1,16 @@
 'use strict'
+
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+const path = require('path')
+const currDir = process.cwd()
+
+chai.use(chaiAsPromised)
+chai.should()
+
 describe('combined tests', () => {
-  const chai = require('chai')
-  const chaiAsPromised = require('chai-as-promised')
-  const path = require('path')
-  const currDir = process.cwd()
   after(() => {
     process.chdir(currDir)
-  })
-
-  beforeEach(() => {
-    chai.use(chaiAsPromised)
-    chai.should()
   })
 
   describe('quantum-api', () => {
