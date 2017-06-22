@@ -26,12 +26,6 @@
     "fix-lint-issues": "eslint --fix lib/*.js test/*.js",
     "prefix-css": "postcss --use autoprefixer --dir assets assets/*.css"
   },
-  "config": {
-    "blanket": {
-      "data-cover-never": "node_modules",
-      "pattern": "index.js"
-    }
-  },
   "dependencies": {
     "dagre": "0.7.4",
     "quantum-core": "^2.0.0",
