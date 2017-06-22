@@ -5,9 +5,8 @@
   "contributors": [
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
-  "contributors": [],
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.0.0"
   },
   "license": "Apache-2.0",
   "repository": {
