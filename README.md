@@ -1,5 +1,8 @@
 # QuantumJS
 
+[![Build Status](https://travis-ci.org/ocadotechnology/quantumjs.svg?branch=master)](https://travis-ci.org/ocadotechnology/quantumjs)
+[![Coverage Status](https://coveralls.io/repos/github/ocadotechnology/quantumjs/badge.svg)](https://coveralls.io/github/ocadotechnology/quantumjs)
+
 Documentation: <link goes here>
 
 A fast, customisable static site generator.
