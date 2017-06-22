@@ -29,8 +29,7 @@ before_install:
 install:
   - if [ "$MODULE" != "cross-compatible" ]; then npm install; else npm run link-all; fi
 
-test:
-  - npm test && npm run upload-coverage
+script: npm test && npm run upload-coverage
 
 deploy:
   email: quantumjs.ci.noreply@ocado.com
