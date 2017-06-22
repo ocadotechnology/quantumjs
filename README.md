@@ -27,4 +27,4 @@ This repository contains the parser for the language along with some common tran
 | quantum-api | A set of HTML entity transforms for writing API documentation (for JavaScript and CSS) |
 | quantum-diagram | A set of HTML entity transforms for creating graphviz style diagrams |
 | quantum-docs | A set of HTML entity transforms for building technical documentation sites |
-| docs | Contains the documentation site (https://quantum.hexagonjs.io) |
+| docs | Contains the documentation site (https://ocadotechnology.github.io/quantumjs/) |
