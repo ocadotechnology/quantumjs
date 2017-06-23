@@ -2,7 +2,7 @@ language: node_js
 
 cache:
   directories:
-    - node_modules
+    - $HOME/.npm
 
 node_js:
   - '6'
@@ -21,13 +21,13 @@ env:
   - MODULE="quantum-markdown"
   - MODULE="quantum-version"
   - MODULE="integration"
-  - MODULE="docs"
+  # - MODULE="docs"
 
 before_install:
   - if [ "$MODULE" != "integration" ]; then cd "$MODULE" || return; fi
 
 install:
-  - if [ "$MODULE" != "integration" ]; then npm install; else npm install && npm run link-all; fi
+  - if [ "$MODULE" != "integration" ]; then npm install; else npm run link-all && npm install; fi
 
 script:
   - if [ "$MODULE" != "integration" ]; then npm test && npm run upload-coverage; else npm test; fi
