@@ -12,6 +12,11 @@
     @reverseVisibleList true
     @process
       @inline api.um
+    @version 2.0.1
+      @link {{baseurl}}/docs/modules/quantum-diagram/2.0.1
+      @description
+        A patch release to fix an issue with an internal repo within 
+        Ocado. This version is identical to 2.0.0.
     @version 2.0.0
       @link {{baseurl}}/docs/modules/quantum-diagram/2.0.0
       @description
