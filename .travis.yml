@@ -27,7 +27,7 @@ before_install:
   - if [ "$MODULE" != "integration" ]; then cd "$MODULE" || return; fi
 
 install:
-  - if [ "$MODULE" != "integration" ]; then npm install; else npm run link-all && npm install; fi
+  - if [ "$MODULE" != "integration" ]; then npm install; else npm install && npm run link-all; fi
 
 script:
   - if [ "$MODULE" != "integration" ]; then npm test && npm run upload-coverage; else npm test; fi
