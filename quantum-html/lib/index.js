@@ -188,7 +188,9 @@ function buildDOM (options) {
   function transformer (selection) {
     const type = quantum.isSelection(selection) ? selection.type() : undefined
     const entityTransform = transformMap[type] || defaultTransform
-    return entityTransform(selection, transformer, meta) // bootstrap to itself to  make the transformer accessible to children
+    const res = entityTransform(selection, transformer, meta)
+    // if (type === 'codeblock') console.log(res)
+    return res // bootstrap to itself to  make the transformer accessible to children
   }
 
   // the file transform function that turns parsed content into html content

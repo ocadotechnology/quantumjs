@@ -97,10 +97,10 @@ function versionABeforeVersionB (versionA, versionB, versions) {
   return versions.indexOf(versionA) < versions.indexOf(versionB)
 }
 
-/* Processes all @added, @updated, @deprecated and @removed tags for a file */
+/* Processes all @added, @bugfix, @updated, @deprecated and @removed tags for a file */
 function processTags (content, version, versions, file) {
   const tags = quantum.select(content)
-    .selectAll(['added', 'updated', 'deprecated', 'removed'], {recursive: true})
+    .selectAll(['added', 'updated', 'deprecated', 'removed', 'bugfix'], {recursive: true})
     .filter(tag => {
       const tagHasKnownVersion = versions.indexOf(tag.ps()) > -1
 
@@ -129,6 +129,12 @@ function processTags (content, version, versions, file) {
   tags.filter(t => t.type() === 'updated').forEach(updatedTag => {
     if (updatedTag.ps() !== version) {
       updatedTag.remove()
+    }
+  })
+
+  tags.filter(t => t.type() === 'bugfix').forEach(bugfixTag => {
+    if (bugfixTag.ps() !== version) {
+      bugfixTag.remove()
     }
   })
 
