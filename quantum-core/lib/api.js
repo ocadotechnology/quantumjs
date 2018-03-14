@@ -71,6 +71,7 @@ function buildPage (sourceFile, pipeline, config, logger, addLiveReload) {
   const start = Date.now()
   return Promise.resolve(pipeline(sourceFile))
     .then(files => Array.isArray(files) ? files : [files])
+    .then(files => Array.from(new Map(files.map(f => [f.info.dest, f])).values()))
     .map(file => {
       const shouldInjectLiveReloadScript = addLiveReload &&
         file.info.dest.indexOf('.html') === file.info.dest.length - 5
