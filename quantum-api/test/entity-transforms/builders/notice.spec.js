@@ -7,7 +7,7 @@ describe('notice', () => {
 
   const paragraphAsset = dom.asset({
     url: '/quantum-html.css',
-    filename: path.join(__dirname, '../../../../quantum-html/assets/quantum-html.css'),
+    filename: path.join(__dirname, '../../../node_modules/quantum-html/assets/quantum-html.css'),
     shared: true
   })
 
