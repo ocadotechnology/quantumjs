@@ -37,8 +37,9 @@
     @changelogList
       @changelog 0.1.0
         @description: Version 0.1.0
-        @change added
-          @description: Api added
+        @entry
+          @change added
+            @description: Api added
         @entry
           @header test-language-1
             @function test1
@@ -132,8 +133,9 @@
       @changelog 0.1.0
         @description: Version 0.1.0
         @group ApiName
-          @change added
-            @description: Api added
+          @entry
+            @change added
+              @description: Api added
           @entry
             @header test-language-1
               @function test2
@@ -233,8 +235,9 @@
       @changelog 0.1.0
         @description: Version 0.1.0
         @group ApiName
-          @change added
-            @description: Api added
+          @entry
+            @change added
+              @description: Api added
           @entry
             @header test-language-1
               @function test3
@@ -376,8 +379,9 @@
             @description: Function updated
       @changelog 0.1.0
         @description: Version 0.1.0
-        @change added
-          @description: Api added
+        @entry
+          @change added
+            @description: Api added
         @entry
           @header test-language-1
             @function test4
@@ -471,8 +475,9 @@
             @description: Function updated
       @changelog 0.1.0
         @description: Version 0.1.0
-        @change added
-          @description: Api added
+        @entry
+          @change added
+            @description: Api added
         @entry
           @header test-language-1
             @function test5
@@ -499,8 +504,9 @@
   @output
     @changelogList
       @changelog 0.1.0
-        @change added
-          @description: Api does something
+        @entry
+          @change added
+            @description: Api does something
         @entry
           @header test-language-1
             @function test6
@@ -560,8 +566,9 @@
   @output
     @changelogList
       @changelog 0.1.0
-        @change added
-          @description: Api does something
+        @entry
+          @change added
+            @description: Api does something
         @entry
           @header test-language-1
             @function test

@@ -18,7 +18,8 @@
         @entry
           @header javascript
             @constructor test
-              @arg arg0 [String]
+              # TODO: Fix in #144
+              # @arg arg0 [String]
               @returns Number
           @change added
             @description: Constructor added

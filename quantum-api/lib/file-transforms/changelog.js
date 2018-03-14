@@ -204,7 +204,7 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
         if (selection.type() === 'group') {
           selection = selection.parent()
         } else {
-          const selType = selection.type().replace('?','')
+          const selType = selection.type().replace('?', '')
           // If we hit something that is not supported by the language, then quit
           if (entityTypeToLanguage[selType] !== language) {
             return

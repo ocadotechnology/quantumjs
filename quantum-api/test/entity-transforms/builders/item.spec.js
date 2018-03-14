@@ -60,7 +60,17 @@ describe('item', () => {
       type: 'function',
       params: [],
       content: [
-        {type: 'deprecated', params: [], content: ['Warning']}
+        {
+          type: 'deprecated',
+          params: [],
+          content: [
+            {
+              type: 'description',
+              params: [],
+              content: ['Warning']
+            }
+          ]
+        }
       ]
     })
 

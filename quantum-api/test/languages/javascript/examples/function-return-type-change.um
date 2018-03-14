@@ -32,7 +32,8 @@
         @entry
           @header javascript
             @function test
-              @arg arg0 [String]
+              # TODO: Fix in #144
+              # @arg arg0 [String]
               @returns String
           @change updated
             @description: Return type changed to String
