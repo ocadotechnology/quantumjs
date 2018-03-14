@@ -211,10 +211,6 @@
   content: '.';
 }
 
-.qm-changelog-javascript-function .qm-api-javascript-header-function-args {
-  opacity: 0.7;
-}
-
 .qm-changelog-javascript-prototype + .qm-changelog-javascript-method:before {
   content: '::';
 }
