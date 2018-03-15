@@ -12,3 +12,4 @@
   @inline api/paragraphTransform.um
   @inline api/prepareTransforms.um
   @inline api/entityTransforms.um
+  @inline api/assets.um

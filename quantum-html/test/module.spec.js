@@ -10,12 +10,12 @@ describe('module', () => {
       'paragraphTransform',
       'prepareTransforms',
       'entityTransforms',
-      'asset'
+      'assets'
     ]
     html.should.be.an('object')
     html.should.have.keys(keys)
     keys
-      .filter(k => k !== 'asset')
+      .filter(k => k !== 'assets')
       .forEach(key => html[key].should.be.a('function'))
   })
 })

@@ -23,5 +23,8 @@
     "quantum-version": "^2.0.0",
     "quantum-diagram": "^2.0.0"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "quantum-markdown": "^2.0.0"
+  }
 }

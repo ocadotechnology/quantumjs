@@ -1,0 +1,12 @@
+@object assets
+  @added 2.1.0
+    @description
+      An object which contains the assets for the html module
+
+  @property css [Asset]
+    @description
+      This asset contains the css required for the quantum-html module.
+
+      This asset is added when the paragraphTransform is used on a page. Normally
+      you won't need to use this asset - its exposed mainly for when writing tests
+      with the html module

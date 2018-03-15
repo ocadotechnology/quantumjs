@@ -55,7 +55,7 @@ describe('notice', () => {
       dom.create('div').class('qm-api-notice qm-api-notice-removed')
         .add(dom.create('div').class('qm-api-notice-header').add('Removed'))
         .add(dom.create('div').class('qm-api-notice-body')
-          .add(html.asset)
+          .add(html.assets.css)
           .add(dom.create('div').class('qm-html-paragraph')
             .add(dom.textNode('Hi '))))
     )
