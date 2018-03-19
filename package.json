@@ -12,11 +12,9 @@
     "lint:quantum-markdown": "cd quantum-markdown && npm run lint",
     "lint:quantum-template": "cd quantum-template && npm run lint",
     "lint:quantum-version": "cd quantum-version && npm run lint",
-
     "clean-coverage": "rm -rf */coverage",
     "combine-coverage": "node scripts/combine-coverage */coverage/coverage.json",
     "combined-test": "npm run clean-coverage && ./node_modules/istanbul/lib/cli.js cover -x */lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test/index.spec.js && node scripts/combine-coverage coverage/coverage.json",
-
     "test": "npm run clean-coverage && npm-run-all test:* && npm run combine-coverage",
     "test:quantum-api": "cd quantum-api && npm test",
     "test:quantum-code-highlight": "cd quantum-code-highlight && npm test",
@@ -29,7 +27,6 @@
     "test:quantum-template": "cd quantum-template && npm test",
     "test:quantum-version": "cd quantum-version && npm test",
     "postinstall": "npm-run-all install-all:*",
-
     "install-all:quantum-api": "cd quantum-api && npm install --production",
     "install-all:quantum-code-highlight": "cd quantum-code-highlight && npm install --production",
     "install-all:quantum-diagram": "cd quantum-diagram && npm install --production",
@@ -40,7 +37,6 @@
     "install-all:quantum-markdown": "cd quantum-markdown && npm install --production",
     "install-all:quantum-template": "cd quantum-template && npm install --production",
     "install-all:quantum-version": "cd quantum-version && npm install --production",
-
     "clean": "rm -rf coverage target node_modules */coverage */target */node_modules",
     "link-all": "./scripts/link",
     "unlink-all": "./scripts/unlink"
@@ -49,8 +45,8 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "eslint": "^3.3.1",
-    "eslint-config-standard": "^6.0.0-beta.3",
-    "eslint-plugin-promise": "^2.0.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.0",
     "istanbul": "^0.4.5",
     "istanbul-combine": "^0.3.0",
