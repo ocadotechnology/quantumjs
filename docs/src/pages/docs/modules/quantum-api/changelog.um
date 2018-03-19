@@ -1,7 +1,7 @@
 @inline /templates/sidebar-page.um
 
 @topSection
-  @title API changelog
+  @title quantum-api changelog
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
   @description
     What has changed in @code[quantum-api] for each release.
@@ -13,10 +13,17 @@
     @process
       @inline entities.um
       @inline api.um
+
+    @version 2.0.1
+      @link {{baseurl}}/docs/modules/quantum-api/2.0.1
+      @description
+        Resolved some bugs that were affecting changelogs and api notices
+
     @version 2.0.0
       @link {{baseurl}}/docs/modules/quantum-api/2.0.0
       @description
         Initial public release of quantum-api.
+
     @version 1.0.0
       @description
         Version 1.0.0 is an unsupported version of the library.

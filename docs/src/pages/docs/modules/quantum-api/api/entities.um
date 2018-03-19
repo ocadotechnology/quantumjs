@@ -147,6 +147,11 @@
               @reverseVisibleList true
 
     @entity process
+      @bugfix 2.0.1
+        @description
+          Resolved an issue where the changelog tried to process all tags for
+          all api groups
+
       @description
         Define the api content to process.
 
@@ -199,6 +204,59 @@
         @@um
           @property propertyName
             @description: Description of property
+
+  @entity added
+    @added 2.0.0
+    @description
+      Display an added tag on the API entry. Useful
+
+    @param version
+      @description
+        The version for the change. Use in conjunction with
+        @code[quantum-version]
+
+  @entity updated
+    @added 2.0.0
+    @description
+      Display an updated tag on the API entry. Useful
+
+    @param version
+      @description
+        The version for the change. Use in conjunction with
+        @code[quantum-version]
+
+  @entity bugfix
+    @added 2.0.0
+    @bugfix 2.0.1
+      @description
+        Resolved an issue where the bugfix icon did not display in the changelog
+    @description
+      Display an bugfix tag on the API entry. Useful
+
+    @param version
+      @description
+        The version for the change. Use in conjunction with
+        @code[quantum-version]
+
+  @entity deprecated
+    @added 2.0.0
+    @description
+      Display an deprecated tag on the API entry. Useful
+
+    @param version
+      @description
+        The version for the change. Use in conjunction with
+        @code[quantum-version]
+
+  @entity removed
+    @added 2.0.0
+    @description
+      Display an removed tag on the API entry. Useful
+
+    @param version
+      @description
+        The version for the change. Use in conjunction with
+        @code[quantum-version]
 
   @entity extra
     @added 2.0.0
