@@ -129,6 +129,39 @@
   @arg version
     The version when the content was updated
 
+@entity bugfix
+  @added 2.1.0
+    @description
+      Added the bugfix to match the tags that are available in quantum-api
+  @description
+    This tag has no real affect on the content that is output, but when other
+    modules are used, such as quantum-api, this tag can have an affect on the
+    visible output. A notice will be displayed for @italic[just] the version
+    specified. The content for the notice will be taken from the
+    @type[@description] tag.
+
+    @example
+      @file
+        @@um
+          @versionedPage
+            @version 2.0.0
+
+          @api
+            @function myFunction
+              @bugfix 2.0.0
+                @description
+                  The content of the description block will be shown in the api
+                  section.
+              @arg a [Number]
+              @arg b [number]
+              @return Number
+
+    The automatic changelog generation in quantum-api also uses these tags to
+    build up a summary of what has changed from one version to the next.
+
+  @arg version
+    The version for the bugfix
+
 @entity versionedPage
   @added 2.0.0
 
