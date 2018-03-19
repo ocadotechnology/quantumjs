@@ -16,15 +16,13 @@
     "bluebird": "^3.1.1",
     "quantum-api": "^2.0.0",
     "quantum-code-highlight": "^2.0.0",
+    "quantum-diagram": "^2.0.0",
     "quantum-docs": "^2.0.0",
     "quantum-dom": "^2.0.0",
     "quantum-html": "^2.0.0",
+    "quantum-markdown": "^2.0.0",
     "quantum-template": "^2.0.0",
-    "quantum-version": "^2.0.0",
-    "quantum-diagram": "^2.0.0"
+    "quantum-version": "^2.0.0"
   },
-  "private": true,
-  "dependencies": {
-    "quantum-markdown": "^2.0.0"
-  }
+  "private": true
 }
