@@ -13,6 +13,13 @@
     @process
       @inline api.um
       @inline entities.um
+
+    @version 2.1.0
+      @link {{baseurl}}/docs/modules/quantum-html/2.1.0
+      @description
+        Expose the css asset to allow transforms in other modules (as well as
+        custom transforms) to easily use the @code[paragraphTransform]
+
     @version 2.0.0
       @link {{baseurl}}/docs/modules/quantum-html/2.0.0
       @description

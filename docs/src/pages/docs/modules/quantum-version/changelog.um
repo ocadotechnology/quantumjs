@@ -12,6 +12,12 @@
     @reverseVisibleList true
     @process
       @inline api.um
+    @version 2.1.0
+      @link {{baseurl}}/docs/modules/quantum-version/2.1.0
+      @description
+        Fixed an inconsistency between the tags used here and those
+        available in quantum-api
+
     @version 2.0.0
       @link {{baseurl}}/docs/modules/quantum-version/2.0.0
       @description

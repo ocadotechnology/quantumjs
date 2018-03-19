@@ -7,8 +7,8 @@
     "James Smyth <james.smyth@ocado.com>",
     "Charlie Frater <charlie.frater@ocado.com>"
   ],
-  "engines" : {
-    "node" : ">=6.0.0"
+  "engines": {
+    "node": ">=6.0.0"
   },
   "repository": {
     "type": "git",

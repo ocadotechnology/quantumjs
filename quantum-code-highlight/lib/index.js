@@ -32,6 +32,7 @@ function code (selection, transform) {
 
 function codeblock (selection, transform) {
   const language = selection.ps()
+
   return dom.create('div')
     .class(`qm-code-highlight-codeblock${language && language !== 'nohighlight' ? ` language-${language}` : ''}`)
     .add(dom.create('pre')

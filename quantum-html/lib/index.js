@@ -259,6 +259,14 @@ function buildHTML (opts) {
   }
 }
 
+const assets = {
+  css: dom.asset({
+    url: '/quantum-html.css',
+    filename: path.join(__dirname, '../assets/quantum-html.css'),
+    shared: true
+  })
+}
+
 // Match a string that starts with '. ' or any other punctuation (e.g. '! ') so
 // we don't add an extra space
 const punctationRegex = /^\W\s/
@@ -267,11 +275,7 @@ const whitespaceRegex = /^\s*$/
 
 function paragraphTransform (selection, transformer) {
   const paragraphs = [
-    dom.asset({
-      url: '/quantum-html.css',
-      filename: path.join(__dirname, '../assets/quantum-html.css'),
-      shared: true
-    })
+    assets.css
   ]
 
   let currentParagraph = void (0)
@@ -352,5 +356,6 @@ module.exports = {
   htmlRenamer,
   paragraphTransform,
   prepareTransforms,
-  entityTransforms
+  entityTransforms,
+  assets
 }

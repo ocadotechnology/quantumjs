@@ -9,10 +9,13 @@ describe('module', () => {
       'htmlRenamer',
       'paragraphTransform',
       'prepareTransforms',
-      'entityTransforms'
+      'entityTransforms',
+      'assets'
     ]
     html.should.be.an('object')
     html.should.have.keys(keys)
-    keys.forEach(key => html[key].should.be.a('function'))
+    keys
+      .filter(k => k !== 'assets')
+      .forEach(key => html[key].should.be.a('function'))
   })
 })

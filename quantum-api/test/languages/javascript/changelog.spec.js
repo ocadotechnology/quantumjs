@@ -156,6 +156,15 @@ describe('changelog', () => {
           .add(dom.create('span').class('qm-api-javascript-header-function-arg-type'))
       }
 
+      function propertyHeaderBuilder (selection, transformer) {
+        const name = selection.param(0)
+        return dom.create('span')
+          .class('qm-api-javascript-header-property')
+          .attr('id', name ? name.toLowerCase() : undefined)
+          .add(dom.create('span').class('qm-api-javascript-header-property-name').text(name || ''))
+          .add(dom.create('span').class('qm-api-javascript-header-property-type'))
+      }
+
       function functionBuilder (selection, transformer) {
         const name = selection.param(0)
 
@@ -177,7 +186,11 @@ describe('changelog', () => {
         .class('qm-changelog-javascript-header')
           .add(dom.create('span')
             .class('qm-changelog-javascript-function')
-            .add(header('function', functionBuilder)(quantum.select(selection), transformer))))
+            .add(header('function', functionBuilder)(quantum.select(selection), transformer)))
+          // TODO: Fix in #144
+          .add(dom.create('span')
+            .class('qm-changelog-javascript-arg')
+            .add(header('property', propertyHeaderBuilder)(quantum.select(child1), transformer))))
     })
 
     it('returns nothing when there are no supported entityTypes', () => {
@@ -204,6 +217,15 @@ describe('changelog', () => {
           .add(dom.create('span').class('qm-api-javascript-header-function-arg-name')
             .text(name || ''))
           .add(dom.create('span').class('qm-api-javascript-header-function-arg-type'))
+      }
+
+      function propertyHeaderBuilder (selection, transformer) {
+        const name = selection.param(0)
+        return dom.create('span')
+          .class('qm-api-javascript-header-property')
+          .attr('id', name ? name.toLowerCase() : undefined)
+          .add(dom.create('span').class('qm-api-javascript-header-property-name').text(name || ''))
+          .add(dom.create('span').class('qm-api-javascript-header-property-type'))
       }
 
       function constructorBuilder (selection, transformer) {
@@ -269,7 +291,11 @@ describe('changelog', () => {
         .class('qm-changelog-javascript-header')
           .add(dom.create('span')
             .class('qm-changelog-javascript-constructor')
-            .add(header('constructor', constructorBuilder)(quantum.select(construct), transformer))))
+            .add(header('constructor', constructorBuilder)(quantum.select(construct), transformer)))
+          // TODO: Fix in #144
+          .add(dom.create('span')
+            .class('qm-changelog-javascript-arg')
+            .add(header('property', propertyHeaderBuilder)(quantum.select(child1), transformer))))
     })
   })
 

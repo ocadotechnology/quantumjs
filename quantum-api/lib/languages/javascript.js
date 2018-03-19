@@ -284,6 +284,14 @@ module.exports = (options) => {
     'function': {
       header: typeHeaderBuilders['function']
     },
+    'arg': {
+      header: typeHeaderBuilders.arg,
+      renderAsOther: { Function: typeHeaderBuilders['function'], Object: typeHeaderBuilders.object }
+    },
+    'arg?': {
+      header: typeHeaderBuilders.arg,
+      renderAsOther: { Function: typeHeaderBuilders['function'], Object: typeHeaderBuilders.object }
+    },
     'method': {
       header: typeHeaderBuilders.method
     },

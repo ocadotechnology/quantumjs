@@ -198,6 +198,10 @@
 }
 
 /* Changelog */
+.qm-changelog-javascript-function + .qm-changelog-javascript-arg:before,
+.qm-changelog-javascript-constructor + .qm-changelog-javascript-arg:before,
+.qm-changelog-javascript-method + .qm-changelog-javascript-arg:before,
+.qm-changelog-javascript-arg + .qm-changelog-javascript-property:before,
 .qm-changelog-javascript-prototype + .qm-changelog-javascript-constructor:before,
 .qm-changelog-javascript-prototype + .qm-changelog-javascript-property:before,
 .qm-changelog-javascript-property + .qm-changelog-javascript-property:before,

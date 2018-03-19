@@ -97,7 +97,9 @@ function buildChangelogs (changelogList, entityTypeToLanguage, groupByApi) {
       tagSelectionsByVersion[version]
         .filter(tag => tag.type() === 'deprecated')
         .forEach(tag => {
-          if (tag.parent().has('removed') && tag.parent().select('removed').ps() !== nextVersion) {
+          const parentHasRemoved = tag.parent().has('removed')
+          const parentRemovedInNextVersion = parentHasRemoved && tag.parent().select('removed').ps() === nextVersion
+          if (!parentHasRemoved || !parentRemovedInNextVersion) {
             tagSelectionsByVersion[nextVersion].push(tag)
           }
         })
@@ -143,7 +145,7 @@ function buildGroups (version, versions, tagSelections, entityTypeToLanguage) {
     return {
       type: 'group',
       params: [apiName],
-      content: buildEntries(version, versions, tagSelections, entityTypeToLanguage)
+      content: buildEntries(version, versions, tags, entityTypeToLanguage)
     }
   })
 }
@@ -158,18 +160,30 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
   })
 
   const res = []
-  Array.from(tagsByParent.entries()).forEach(([parent, tagSelections]) => {
+  Array.from(tagsByParent.entries()).forEach(([parent, tagsForApi]) => {
+    // Generate the changes for an api
     if (parent.type() === 'api') {
-      tagSelections.forEach(tag => {
+      tagsForApi.forEach(tag => {
         const content = tag.content()
         if (!tag.has('description') && parent.has('description') && tag.type() === 'added') {
           content.push(quantum.clone(parent.select('description').entity()))
         }
-        res.push({
+
+        const change = {
           type: 'change',
           params: [tag.type()],
           content: content
-        })
+        }
+
+        if (tag.parent() === parent) {
+          res.push({
+            type: 'entry',
+            params: [],
+            content: [change]
+          })
+        } else {
+          res.push(change)
+        }
       })
     } else {
       const language = entityTypeToLanguage[parent.type()]
@@ -190,12 +204,13 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
         if (selection.type() === 'group') {
           selection = selection.parent()
         } else {
+          const selType = selection.type().replace('?', '')
           // If we hit something that is not supported by the language, then quit
-          if (entityTypeToLanguage[selection.type()] !== language) {
+          if (entityTypeToLanguage[selType] !== language) {
             return
           }
           entity = {
-            type: selection.type(),
+            type: selType,
             params: selection.params().slice(),
             content: entity ? [entity] : sanitizedParent.content()
           }
@@ -213,7 +228,7 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
         res.push({
           type: 'entry',
           params: [],
-          content: [header].concat(tagSelections.map(tag => {
+          content: [header].concat(tagsForApi.map(tag => {
             const content = tag.content()
             if (!tag.has('description') && parent.has('description') && tag.type() === 'added') {
               content.push(quantum.clone(parent.select('description').entity()))
@@ -228,7 +243,6 @@ function buildEntries (version, versions, tagSelections, entityTypeToLanguage) {
       }
     }
   })
-
   return res
 }
 

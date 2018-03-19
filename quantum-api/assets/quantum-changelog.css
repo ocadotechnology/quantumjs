@@ -89,6 +89,10 @@
   padding: 0.5em;
 }
 
+.qm-changelog-entry-header:empty {
+  display: none;
+}
+
 .qm-changelog-entry-header .qm-api-item-header {
   display: inline-block;
 }

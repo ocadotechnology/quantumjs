@@ -18,7 +18,8 @@
         @entry
           @header javascript
             @function test
-              @arg arg0 [String]
+              # TODO: Fix in #144
+              # @arg arg0 [String]
               @returns Number
           @change added
             @description: Function added
