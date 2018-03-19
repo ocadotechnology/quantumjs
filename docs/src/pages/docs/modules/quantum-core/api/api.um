@@ -1,5 +1,11 @@
 @object api
   @added 2.0.0
+  @bugfix 2.0.1
+    @description
+      De-duplicated the static files that are written to the disc to prevent
+      static quantum assets being written multiple times and speed up the
+      build/watch process
+
   @description
     This object exposes the functionality that the CLI provides as an api that
     can be called from within your own code.
