@@ -32,7 +32,9 @@
   "dependencies": {
     "array-unique": "^0.3.2",
     "bluebird": "^3.4.6",
-    "merge": "^1.2.0"
+    "merge": "^1.2.0",
+    "quantum-dom": "^2.0.0",
+    "quantum-core": "^2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",
