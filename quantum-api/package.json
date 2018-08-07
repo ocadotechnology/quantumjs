@@ -1,6 +1,6 @@
 {
   "name": "quantum-api",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "quantum entity to virtual dom transforms for writing api docs",
   "contributors": [
     "James Smyth <james.smyth@ocado.com>",
@@ -39,13 +39,13 @@
     "autoprefixer": "^6.4.1",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
-    "coveralls": "^2.13.1",
+    "coveralls": "^3.0.2",
     "eslint": "^3.3.1",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.0.2",
+    "mocha": "^5.2.0",
     "postcss-cli": "^2.6.0"
   }
 }

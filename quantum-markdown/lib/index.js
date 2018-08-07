@@ -44,12 +44,12 @@ const singleQuotRegexAlt = /&#39;/g
 // Marked converts & -> &amp; (etc) so we have to convert back for the sluggify to work
 function unEscapeHtmlTags (text) {
   return text
-     .replace(ampRegex, '&')
-     .replace(ltRegex, '<')
-     .replace(gtRegex, '>')
-     .replace(quotRegex, '"')
-     .replace(singleQuotRegex, '\'')
-     .replace(singleQuotRegexAlt, '\'')
+    .replace(ampRegex, '&')
+    .replace(ltRegex, '<')
+    .replace(gtRegex, '>')
+    .replace(quotRegex, '"')
+    .replace(singleQuotRegex, '\'')
+    .replace(singleQuotRegexAlt, '\'')
 }
 
 // Takes a text string and returns a url-safe string for use when de-duplicating

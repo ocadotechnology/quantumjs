@@ -189,7 +189,7 @@ function tableOfContents (selection, transformer) {
     .add(dom.create('ul')
       .class('qm-docs-table-of-contents-container')
       .add(topics)
-  )
+    )
 }
 
 function makeNavigationMenuSection (sectionEntity) {
@@ -251,7 +251,7 @@ function header (selection, transformer) {
               .attr('href', e.ps())
               .text(e.cs())
           })))
-    ))
+      ))
     .add(stylesheetAsset)
     .add(scriptAsset)
     .add(mobileNavScriptAsset)
@@ -275,7 +275,7 @@ function breadcrumb (selection, transformer) {
     .add(dom.create('div')
       .class('qm-docs-top-section-centered qm-docs-breadcrumb-padding')
       .add(items)
-  )
+    )
 }
 
 function topSection (selection, transformer) {

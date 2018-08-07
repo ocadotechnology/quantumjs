@@ -19,7 +19,7 @@ describe('config', () => {
   describe('resolve', () => {
     const { resolve } = config
     it('is fine with undefined being passed in', () => {
-      resolve(undefined).should.be.an.object
+      resolve(undefined).should.be.an('object')
     })
 
     it('resolves targetVersions correctly', () => {

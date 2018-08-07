@@ -2,7 +2,7 @@ const dom = require('..')
 
 describe('randomId', () => {
   it('returns a 32 character string', () => {
-    dom.randomId().should.be.a.string
+    dom.randomId().should.be.a('string')
     dom.randomId().length.should.equal(32)
   })
 

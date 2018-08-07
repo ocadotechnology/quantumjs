@@ -156,7 +156,7 @@ function buildSpecs (startTime, specs, config, options, pipeline, logger) {
         }
       })
   }, {concurrency: options.concurrency})
-  .then(() => logger({type: 'end', builtCount: builtCount, timeTaken: Date.now() - startTime}))
+    .then(() => logger({type: 'end', builtCount: builtCount, timeTaken: Date.now() - startTime}))
 }
 
 function build (config) {
