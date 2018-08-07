@@ -13,6 +13,12 @@
     @process
       @inline api.um
 
+
+    @version 2.0.1
+      @link {{baseurl}}/docs/modules/quantum-api/2.0.1
+      @description
+        Updated npm dependencies to remove security issues
+
     @version 2.0.0
       @link {{baseurl}}/docs/modules/quantum-dom/2.0.0
       @description

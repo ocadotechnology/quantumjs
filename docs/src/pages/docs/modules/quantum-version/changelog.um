@@ -12,6 +12,13 @@
     @reverseVisibleList true
     @process
       @inline api.um
+
+
+    @version 2.1.1
+      @link {{baseurl}}/docs/modules/quantum-api/2.1.1
+      @description
+        Updated npm dependencies to remove security issues
+
     @version 2.1.0
       @link {{baseurl}}/docs/modules/quantum-version/2.1.0
       @description
