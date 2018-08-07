@@ -576,6 +576,24 @@ describe('parse', () => {
         { type: 'CONTENT', value: '}' }
       ])
     })
+
+    it('Should handle multiple levels of indentation in content', () => {
+      tokenize('@example\n  @@html\n    <div>\n      <div>\n        <div></div>\n      </div>\n    </div>\n').should.eql([
+        { type: 'TYPE', value: 'example' },
+        { type: 'INDENT', value: 2 },
+        { type: 'TYPE', value: 'html' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: '<div>' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: '<div>' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: '<div></div>' },
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: '</div>' },
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: '</div>' }
+      ])
+    })
   })
 
   describe('ast', () => {
@@ -1101,6 +1119,42 @@ describe('parse', () => {
         'function test () {',
         "  console.log('two')",
         '}'
+      ])
+    })
+
+    it('Should handle multiple levels of indentation in content', () => {
+      ast([
+        { type: 'TYPE', value: 'example' },
+        { type: 'INDENT', value: 2 },
+        { type: 'TYPE', value: 'html' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: '<div>' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: '<div>' },
+        { type: 'INDENT', value: 2 },
+        { type: 'CONTENT', value: '<div></div>' },
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: '</div>' },
+        { type: 'DEDENT', value: 2 },
+        { type: 'CONTENT', value: '</div>' }
+      ]).should.eql([
+        {
+          type: 'example',
+          params: [],
+          content: [
+            {
+              type: 'html',
+              params: [],
+              content: [
+                '<div>',
+                '  <div>',
+                '    <div></div>',
+                '  </div>',
+                '</div>'
+              ]
+            }
+          ]
+        }
       ])
     })
   })
@@ -1825,6 +1879,28 @@ describe('parse', () => {
         },
         '  ',
         'Some text'
+      ]))
+    })
+
+    it('Should handle multiple levels of indentation in content', () => {
+      parse('@example\n  @@html\n    <div>\n      <div>\n        <div></div>\n      </div>\n    </div>\n').should.eql(selection([
+        {
+          type: 'example',
+          params: [],
+          content: [
+            {
+              type: 'html',
+              params: [],
+              content: [
+                '<div>',
+                '  <div>',
+                '    <div></div>',
+                '  </div>',
+                '</div>'
+              ]
+            }
+          ]
+        }
       ]))
     })
   })

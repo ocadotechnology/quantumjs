@@ -487,8 +487,12 @@ function ast (tokens) {
       current = stack.pop()
       active = current
       absoluteIndent -= token.value
-      currentIndent = absoluteIndent
-      extraIndent = 0
+
+      if (extraIndent > 0) {
+        extraIndent -= token.value
+      } else {
+        currentIndent = absoluteIndent
+      }
     }
     i++
   }
