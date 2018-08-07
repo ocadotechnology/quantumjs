@@ -296,7 +296,7 @@ function paragraphTransform (selection, transformer) {
         currentParagraph = currentParagraph
           .add(transformer(quantum.select(e)))
 
-        if (next && quantum.isEntity(next) || !punctationRegex.test(next)) {
+        if ((next && quantum.isEntity(next)) || !punctationRegex.test(next)) {
           currentParagraph = currentParagraph
             .add(dom.textNode(' '))
         }

@@ -101,9 +101,9 @@ describe('fileTransform', () => {
         .then((res) => {
           should.not.exist(res)
         })
-        .catch((err) => {
-          err.should.be.defined
-        })
+        .catch((err) =>
+          should.exist(err)
+        )
     })
   })
 

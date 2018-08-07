@@ -85,8 +85,8 @@ describe('entityTransforms', () => {
       dom.create('div')
         .class('qm-code-highlight-codeblock')
         .add(dom.create('pre')
-            .add(dom.create('code').class('qm-code-font')
-              .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false})))
+          .add(dom.create('code').class('qm-code-font')
+            .text('<span class="hljs-keyword">function</span> <span class="hljs-title"></span>(x) { <span class="hljs-keyword">return</span> <span class="hljs-type">x</span> * x }', {escape: false})))
         .add(dom.asset({
           url: '/quantum-code-highlight.css',
           filename: path.join(__dirname, '../assets/quantum-code-highlight.css'),

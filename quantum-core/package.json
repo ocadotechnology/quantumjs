@@ -1,6 +1,6 @@
 {
   "name": "quantum-core",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "The quantum cli, parser, and selection api",
   "contributors": [
     "James Smyth <james.smyth@ocado.com>",
@@ -23,7 +23,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/istanbul/lib/cli.js cover -x lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec test/index.spec.js && npm run lint",
+    "test": "./node_modules/istanbul/lib/cli.js cover -x lib/cli.js --dir coverage ./node_modules/mocha/bin/_mocha -- --exit --ui bdd -R spec test/index.spec.js && npm run lint",
     "lint": "eslint lib/*.js test/*.js",
     "fix-lint-issues": "eslint --fix lib/*.js test/*.js",
     "upload-coverage": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
@@ -34,7 +34,7 @@
   "dependencies": {
     "bluebird": "^3.4.6",
     "chalk": "^1.1.3",
-    "chokidar": "^1.5.0",
+    "chokidar": "^2.0.4",
     "compression": "^1.6.2",
     "connect": "^3.5.0",
     "flatten": "^1.0.2",
@@ -47,12 +47,12 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
-    "coveralls": "^2.13.1",
-    "eslint": "^3.3.1",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.2.0",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.0.2"
+    "mocha": "^5.2.0"
   }
 }

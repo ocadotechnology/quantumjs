@@ -7,4 +7,3 @@ describe('module', () => {
     docs.entityTransforms.should.be.a('function')
   })
 })
-
