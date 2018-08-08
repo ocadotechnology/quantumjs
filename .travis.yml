@@ -16,7 +16,7 @@ module_test: &module_test
   before_install:
     - cd "$MODULE"
   install:
-    - npm install
+    - npm install --quiet
   script:
     - npm test && npm run upload-coverage
   node_js: '8'
@@ -26,7 +26,7 @@ integration_test: &integration_test
   env:
     - MODULE="integration"
   install:
-    - npm install && npm run link-all
+    - npm install --quiet && npm run link-all
   script:
     - npm test
 
@@ -69,7 +69,7 @@ jobs:
     <<: *module_test
 
   - stage: publish module
-    script: cd $(echo $TRAVIS_TAG | sed 's/_.*$//')
+    script: cd $(echo $TRAVIS_TAG | sed 's/-[0-9]*\.[0-9]*\.[0-9]*//')
     node_js: '8'
     deploy:
       email: quantumjs.ci.noreply@ocado.com

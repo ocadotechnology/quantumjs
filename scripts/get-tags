@@ -2,7 +2,7 @@
 maybe_get_tag () {
   if [ "$2" != "$3" ]
   then
-    echo "git tag -a $1_$2 -m ''"
+    echo "git tag -a $1-$2 -m ''"
   fi
 }
 
