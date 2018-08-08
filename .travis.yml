@@ -4,42 +4,56 @@ cache:
   directories:
     - "$HOME/.npm"
 
-node_js:
-  - '6'
-  - '7'
-  - '8'
+stages:
+  - test
 
-env:
-  - MODULE="quantum-api"
-  - MODULE="quantum-code-highlight"
-  - MODULE="quantum-core"
-  - MODULE="quantum-diagram"
-  - MODULE="quantum-docs"
-  - MODULE="quantum-dom"
-  - MODULE="quantum-html"
-  - MODULE="quantum-template"
-  - MODULE="quantum-markdown"
-  - MODULE="quantum-version"
-  - MODULE="integration"
-  # - MODULE="docs"
+  - integration
 
-before_install:
-  - if [ "$MODULE" != "integration" ]; then cd "$MODULE" || return; fi
+  - name: publish module
+    if: tag IS present AND repo = ocadotechnology/quantumjs
 
-install:
-  - if [ "$MODULE" != "integration" ]; then npm install; else npm install && npm run link-all; fi
+jobs:
+  - stage: test
+    env:
+      - MODULE="quantum-api"
+      - MODULE="quantum-code-highlight"
+      - MODULE="quantum-core"
+      - MODULE="quantum-diagram"
+      - MODULE="quantum-docs"
+      - MODULE="quantum-dom"
+      - MODULE="quantum-html"
+      - MODULE="quantum-template"
+      - MODULE="quantum-markdown"
+      - MODULE="quantum-version"
+    before_install:
+      - cd "$MODULE"
+    install:
+      - npm install
+    script:
+      - npm test && npm run upload-coverage
+    node_js: '8'
 
-script:
-  - if [ "$MODULE" != "integration" ]; then npm test && npm run upload-coverage; else npm test; fi
 
-deploy:
-  email: quantumjs.ci.noreply@ocado.com
-  provider: npm
-  api_key:
-    secure: oLEt0deDskq9/dbmOH3KqE7QnubsEVzJz6CCk7q4DUq7O7CoZdXtmG9HOf8TzFlvsFJRrmKtYYA7gZW8/iOlruYSBnJQDi00qr46M4KVxDmBB+uFrZYVQCIyq5t3lHqL7RPjyu5TV8c8TajWQ48RLSET34DDEe1lAQQykBBh/nbM28ZPWmb5DzVpfA+wpzg8YwNPzz2V536A03OVtS9A86HCvkk1EUzz4ldakNsF7HnTmyZK3JjEijIBAkfp+fvUw0ipJMXIOl4cltdwtylSg2sP2qjKJFniWWdD9/4qXNJL4WmPRZ/gmuFxopejcklKClQCl0O313bB5WL8CoSo+EWzmZVx7E6VYmh95cOcVcwKOe2mrVYUmBONj5eUSzX/b9YX3tUIXh3hySSUgyBtZD1yxvPCeM5kvA9mb+lLrio3NVD2SzT0jTEVco40te8vm51DR+OczJz1EiNFqUcM6yCdIny/YDs+KZp3YUP9BfJEscgKZgNkc7reGxqirzzgyomFinFJub4DRQVNpgoVcc7aA1QtAnqGOkYTCQM9Z8mWGnBXOiGpIFD7njBPmRGmLpGE/26T1lJ8HgmCF7ymYVJEcKOMq0eyhFvwMwu1dYOyGLMQnyKZ2TKHzemiUDq1Vtror5La/ytQL0xJLHqe1BSg1cGa2TSHGnptUVZ15/0=
-  on:
-    repo: ocadotechnology/quantumjs
-    branch: master
-    tags: true
-    node: '6'
-    condition: "$TRAVIS_TAG = $MODULE*"
+  - stage: integration
+    env:
+      - MODULE="integration"
+    install:
+      - npm install && npm run link-all
+    script:
+      - npm test
+    node_js:
+      - '6'
+      - '8'
+
+
+  - stage: publish module
+    script: skip
+    node_js: '8'
+    deploy:
+      email: quantumjs.ci.noreply@ocado.com
+      provider: npm
+      api_key:
+        secure: oLEt0deDskq9/dbmOH3KqE7QnubsEVzJz6CCk7q4DUq7O7CoZdXtmG9HOf8TzFlvsFJRrmKtYYA7gZW8/iOlruYSBnJQDi00qr46M4KVxDmBB+uFrZYVQCIyq5t3lHqL7RPjyu5TV8c8TajWQ48RLSET34DDEe1lAQQykBBh/nbM28ZPWmb5DzVpfA+wpzg8YwNPzz2V536A03OVtS9A86HCvkk1EUzz4ldakNsF7HnTmyZK3JjEijIBAkfp+fvUw0ipJMXIOl4cltdwtylSg2sP2qjKJFniWWdD9/4qXNJL4WmPRZ/gmuFxopejcklKClQCl0O313bB5WL8CoSo+EWzmZVx7E6VYmh95cOcVcwKOe2mrVYUmBONj5eUSzX/b9YX3tUIXh3hySSUgyBtZD1yxvPCeM5kvA9mb+lLrio3NVD2SzT0jTEVco40te8vm51DR+OczJz1EiNFqUcM6yCdIny/YDs+KZp3YUP9BfJEscgKZgNkc7reGxqirzzgyomFinFJub4DRQVNpgoVcc7aA1QtAnqGOkYTCQM9Z8mWGnBXOiGpIFD7njBPmRGmLpGE/26T1lJ8HgmCF7ymYVJEcKOMq0eyhFvwMwu1dYOyGLMQnyKZ2TKHzemiUDq1Vtror5La/ytQL0xJLHqe1BSg1cGa2TSHGnptUVZ15/0=
+      on:
+        tags: true
+        condition: "$TRAVIS_TAG = $MODULE*"
