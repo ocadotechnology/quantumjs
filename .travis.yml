@@ -10,7 +10,9 @@ stages:
   - name: publish module
     if: tag IS present AND repo = ocadotechnology/quantumjs
 
-test_script: &test_script
+
+module_test: &module_test
+  stage: test
   before_install:
     - cd "$MODULE"
   install:
@@ -19,68 +21,52 @@ test_script: &test_script
     - npm test && npm run upload-coverage
   node_js: '8'
 
+integration_test: &integration_test
+  stage: test
+  env:
+    - MODULE="integration"
+  install:
+    - npm install && npm run link-all
+  script:
+    - npm test
+
 jobs:
   include:
-  - stage: test
-    env:
-      - MODULE="quantum-api"
+  - env: MODULE="quantum-api"
+    <<: *module_test
 
-  - stage: test
-    <<: *test_script
-    env:
-      - MODULE="quantum-code-highlight"
+  - env: MODULE="quantum-code-highlight"
+    <<: *module_test
 
-  - stage: test
-    <<: *test_script
-    env:
-      - MODULE="quantum-core"
+  - env: MODULE="quantum-core"
+    <<: *module_test
 
-  - stage: test
-    <<: *test_script
-    env:
-      - MODULE="quantum-diagram"
+  - env: MODULE="quantum-diagram"
+    <<: *module_test
 
-  - stage: test
-    <<: *test_script
-    env:
-      - MODULE="quantum-docs"
+  - env: MODULE="quantum-docs"
+    <<: *module_test
 
-  - stage: test
-    <<: *test_script
-    env:
-      - MODULE="quantum-dom"
+  - env: MODULE="quantum-dom"
+    <<: *module_test
 
-  - stage: test
-    <<: *test_script
-    env:
-      - MODULE="quantum-html"
+  - env: MODULE="quantum-html"
+    <<: *module_test
 
-  - stage: test
-    <<: *test_script
-    env:
-      - MODULE="quantum-template"
+  - env: MODULE="quantum-template"
+    <<: *module_test
 
-  - stage: test
-    <<: *test_script
-    env:
-      - MODULE="quantum-markdown"
+  - env: MODULE="quantum-markdown"
+    <<: *module_test
 
-  - stage: test
-    <<: *test_script
-    env:
-      - MODULE="quantum-version"
+  - env: MODULE="quantum-version"
+    <<: *module_test
 
+  - node_js: '6'
+    <<: *integration_test
 
-  - stage: test
-    env:
-      - MODULE="integration"
-    install:
-      - npm install && npm run link-all
-    script:
-      - npm test
-    node_js:
-      - '6'
-      - '8'
+  - node_js: '8'
+    <<: *integration_test
 
   # - stage: publish module
   #   script: skip
