@@ -13,6 +13,7 @@ stages:
     if: tag IS present AND repo = ocadotechnology/quantumjs
 
 jobs:
+  include:
   - stage: test
     env:
       - MODULE="quantum-api"
