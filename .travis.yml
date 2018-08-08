@@ -2,7 +2,7 @@ language: node_js
 
 cache:
   directories:
-    - $HOME/.npm
+    - "$HOME/.npm"
 
 node_js:
   - '6'
@@ -36,10 +36,10 @@ deploy:
   email: quantumjs.ci.noreply@ocado.com
   provider: npm
   api_key:
-    secure: v9/6ZEYthP9ewv3hS2XkD4mnbCyPaoniP0UX/022PxuGT1gb0Vd0KVO8fnXjC/FpAJ3/0v6ph/nkCBt36bp3D5/RgmKi7C4QOXcESVt7NMViQKqkfm/VGu3EMg57D06cR3FDWoq+oYc/1HEzMlxMfQsl9h7ojkCi+9uNO5KLPDQSiAzDKrlrkCKP/M5kWEZJ60lHiXZy5LVUmnsd6dcEqRPUV+JJcn6JSmJ2G6g7UESIR4tcWrNo2ADZWpW5QlLE4BwIkX/m2kkrY2zqK7DtR9GeKGba3J/JxtrsFsxTUxNoog34CHUT/9FDKUaetP1dmc+2ApyUgFlvrd2LsysryokqNw7HWezUUexa1manrD/rLyi+o591etrIsjza42zZGaY4AI5vESlry1uzLmod8gwIU3e6f9ZhGiyQ2l2BFZeb6bdzJyGZyJ9nD1jbcT1F9VF4116d8dYlRyrdRZAZwOYhDVtysYv5MPkrdv7LcY7ov4bypcatu8tIQgRc9pnw///gW5GXXkG+wp/83t8sntmMG77aPuXR5Zq0l5anOnFRH2QVSesZc++eAHYJFT6cyLQiuNhQcSKpdrFLYPqsz25QvpnDWP8zT3g4D1Dt7aWtwgJz9hLFfIkW71XHDTw7/dVSPe2RD1sqzXt35KCxzGC9jIW5oqYPV9+djXAy1/M=
+    secure: oLEt0deDskq9/dbmOH3KqE7QnubsEVzJz6CCk7q4DUq7O7CoZdXtmG9HOf8TzFlvsFJRrmKtYYA7gZW8/iOlruYSBnJQDi00qr46M4KVxDmBB+uFrZYVQCIyq5t3lHqL7RPjyu5TV8c8TajWQ48RLSET34DDEe1lAQQykBBh/nbM28ZPWmb5DzVpfA+wpzg8YwNPzz2V536A03OVtS9A86HCvkk1EUzz4ldakNsF7HnTmyZK3JjEijIBAkfp+fvUw0ipJMXIOl4cltdwtylSg2sP2qjKJFniWWdD9/4qXNJL4WmPRZ/gmuFxopejcklKClQCl0O313bB5WL8CoSo+EWzmZVx7E6VYmh95cOcVcwKOe2mrVYUmBONj5eUSzX/b9YX3tUIXh3hySSUgyBtZD1yxvPCeM5kvA9mb+lLrio3NVD2SzT0jTEVco40te8vm51DR+OczJz1EiNFqUcM6yCdIny/YDs+KZp3YUP9BfJEscgKZgNkc7reGxqirzzgyomFinFJub4DRQVNpgoVcc7aA1QtAnqGOkYTCQM9Z8mWGnBXOiGpIFD7njBPmRGmLpGE/26T1lJ8HgmCF7ymYVJEcKOMq0eyhFvwMwu1dYOyGLMQnyKZ2TKHzemiUDq1Vtror5La/ytQL0xJLHqe1BSg1cGa2TSHGnptUVZ15/0=
   on:
     repo: ocadotechnology/quantumjs
     branch: master
     tags: true
-    node: "6"
-    condition: $TRAVIS_TAG = $MODULE*
+    node: '6'
+    condition: "$TRAVIS_TAG = $MODULE*"
