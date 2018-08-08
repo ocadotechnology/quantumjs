@@ -32,6 +32,12 @@ integration_test: &integration_test
 
 jobs:
   include:
+  - node_js: '6'
+    <<: *integration_test
+
+  - node_js: '8'
+    <<: *integration_test
+
   - env: MODULE="quantum-api"
     <<: *module_test
 
@@ -61,12 +67,6 @@ jobs:
 
   - env: MODULE="quantum-version"
     <<: *module_test
-
-  - node_js: '6'
-    <<: *integration_test
-
-  - node_js: '8'
-    <<: *integration_test
 
   - stage: publish module
     script: cd $(echo $TRAVIS_TAG | sed 's/_.*$//')
