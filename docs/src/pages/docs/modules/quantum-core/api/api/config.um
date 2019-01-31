@@ -184,3 +184,15 @@
 
     This is only used when watching.
   @default: 8080
+
+@property serverEnabled [Boolean]
+  @added 2.1.0
+  @description
+    An option to enable/disable the webserver when running @code[quantum watch]
+  @default: true
+
+@property liveReload [Boolean]
+  @added 2.1.0
+  @description
+    An option to enable/disable the live reload feature when running @code[quantum watch]
+  @default: true
