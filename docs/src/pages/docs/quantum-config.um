@@ -1,5 +1,10 @@
 @inline /templates/sidebar-page.um
 
+@versionedPage
+  @version 2.0.0
+  @version 2.0.1
+  @version 2.1.0
+
 @topSection
   @title quantum.config.js
   @source [https://github.com/ocadotechnology/quantumjs/tree/master/docs/{{filename}}]: Edit Page
@@ -74,6 +79,10 @@
             module.exports = {
               // The port to run quantum on when watching
               port: 9000,
+              // Enable the webserver
+              serverEnabled: true, // This is true by default
+              // Enable live reload
+              liveReload: true, // This is true by default
               // The quantum pipeline to use when transforming files
               pipeline: [
                 template.fileTransform(),
